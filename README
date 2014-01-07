@@ -3,9 +3,7 @@ SpaceGame - project
 
 SpaceGame is a simple 2d game.
 
-The aim of this project is to learn to write a simple 2D game using c++, SDL2 and OpenGL. I try to keep the structure of
-the code as simple as possible (less than 20 classes). The architecture is quite rigid, so the code may not be reusable.
-The focus is on the game programming basics (physics, rendering and so on), NOT on architectural design.
+The aim of this project is to learn to write a simple 2D game using c++, SDL2 and OpenGL. I try to keep the structure of the code as simple as possible (less than 20 classes). The architecture is quite rigid, so the code may not be reusable. The focus is on the game programming basics (physics, rendering and so on), NOT on architectural design.
 
 Developer: Miika Pelkonen
 
