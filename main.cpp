@@ -28,14 +28,30 @@ int main(int argc, const char * argv[])
 
     renderer->setGameWorld(world);
 
+    GameObject *object = new GameObject(
+            Point(50, 50),
+            Point(4500, 9000),
+            nullptr,
+            nullptr,
+            100,
+            100,
+            100
+    );
+
+    world->addObject(object);
+
     Camera* camera = renderer->getCamera();
 
     double x = 4000, y = 8500;
+    double angle = 0.0;
+
     while (!SDL_QuitRequested()) {
         renderer->render();
-        x++;
-        y++;
+        angle += 0.01;
+        x += cos(angle) * 2;
+        y += sin(angle) * 2;
         camera->setLocation(x, y);
+        object->turnCounterClockwise();
     }
 
     delete renderer;

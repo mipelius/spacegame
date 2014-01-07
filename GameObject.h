@@ -27,15 +27,18 @@ private:
     Texture* texture;
     CollisionShape* collisionShape;
     double mass;
-
+    int w, h;
 public:
     GameObject(
             Point focus,
             Point location,
             Texture *texture,
             CollisionShape *collisionShape,
-            double mass
+            double mass,
+            int w,
+            int h
     );
+    void render(int x, int y);
 
 };
 

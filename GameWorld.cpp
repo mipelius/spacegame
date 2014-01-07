@@ -20,8 +20,8 @@ void GameWorld::setMap(Map* map) {
     this->map = map;
 }
 
-void GameWorld::addObject(GameEntity gameObject) {
-
+void GameWorld::addObject(GameEntity *gameEntity) {
+    gameEntities->push_back(gameEntity);
 }
 
 void GameWorld::step(double time) {
@@ -30,9 +30,13 @@ void GameWorld::step(double time) {
 
 GameWorld::GameWorld() {
     this->map = nullptr;
-    this->gameEntities = new std::list<GameEntity>();
+    this->gameEntities = new std::list<GameEntity*>();
 }
 
 Map *GameWorld::getMap() {
     return this->map;
+}
+
+std::list<GameEntity*> *GameWorld::getGameEntities() {
+    return this->gameEntities;
 }

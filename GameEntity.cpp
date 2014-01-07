@@ -21,31 +21,31 @@ void GameEntity::applyForce(Vector force) {
 }
 
 void GameEntity::setAngle(double angle) {
-
+    this->angle = angle;
 }
 
 Point GameEntity::getFocus() {
-    return Point(0, 0);
+    return this->focus;
 }
 
-void GameEntity::setFocus(Point location) {
-
+void GameEntity::setFocus(Point focus) {
+    this->focus = focus;
 }
 
 Point GameEntity::getLocation() {
-    return Point(0, 0);
+    return this->location;
 }
 
 void GameEntity::setLocation(Point location) {
-
+    this->location = location;
 }
 
 void GameEntity::turnCounterClockwise() {
-
+    angle--;
 }
 
 void GameEntity::turnClockwise() {
-
+    angle++;
 }
 
 double GameEntity::getAngle() {
@@ -53,5 +53,9 @@ double GameEntity::getAngle() {
 }
 
 GameEntity::GameEntity(Point focus, Point location):focus(focus), location(location) {
+
+}
+
+void GameEntity::render(int x, int y) {
 
 }

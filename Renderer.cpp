@@ -106,11 +106,17 @@ void Renderer::renderMap() {
 }
 
 void Renderer::renderEntities() {
+    std::list<GameEntity*> *gameEntities = gameWorld->getGameEntities();
+    Point cameraLocation = camera->getLocation();
 
-}
+    for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
+        Point entityLocation = (*it)->getLocation();
 
-void Renderer::renderEntity(GameEntity gameEntity) {
-
+        (*it)->render(
+                (int)(entityLocation.x - cameraLocation.x),
+                (int)(entityLocation.y - cameraLocation.y)
+        );
+    }
 }
 
 void Renderer::render() {
@@ -120,6 +126,7 @@ void Renderer::render() {
     }
     glClear(GL_COLOR_BUFFER_BIT);
     renderMap();
+    renderEntities();
     SDL_GL_SwapWindow(window);
 }
 

@@ -24,14 +24,15 @@
 
 class GameWorld {
 private:
-    std::list<GameEntity> *gameEntities;
+    std::list<GameEntity*> *gameEntities;
     Map* map;
 public:
     GameWorld();
     void step(double time);
-    void addObject(GameEntity gameObject);
+    void addObject(GameEntity *gameEntity);
     void setMap(Map* map);
     Map* getMap();
+    std::list<GameEntity*> *getGameEntities();
 };
 
 #endif //__GameWorld_H_

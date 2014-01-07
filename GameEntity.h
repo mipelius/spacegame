@@ -22,7 +22,7 @@
 
 
 class GameEntity {
-private:
+protected:
     Point location;
     double angle;
     Point focus;
@@ -36,8 +36,9 @@ public:
     void turnCounterClockwise();
     void setLocation(Point location);
     Point getLocation();
-    void setFocus(Point location);
+    void setFocus(Point focus);
     Point getFocus();
+    virtual void render(int x, int y);
 };
 
 
