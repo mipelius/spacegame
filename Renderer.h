@@ -38,7 +38,7 @@ public:
     Renderer();
     ~Renderer();
     void render();
-    void init(int x, int y, int w, int h, bool enableFullScreen);
+    void init(int x, int y, int w, int h, bool enableFullScreen = false);
     void setGameWorld(GameWorld* gameWorld);
     Camera* getCamera();
 };

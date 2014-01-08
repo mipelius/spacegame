@@ -17,9 +17,6 @@
 #include <iostream>
 #include "Renderer.h"
 
-const int BLOCK_SIZE_W = 8;
-const int BLOCK_SIZE_H = 8;
-
 void Renderer::init(int x, int y, int w, int h, bool enableFullScreen) {
     // Window initialization
     window = SDL_CreateWindow(
@@ -60,49 +57,8 @@ void Renderer::renderBackground() {
 
 void Renderer::renderMap() {
     Map* map = this->gameWorld->getMap();
-
-    int iStart = 0;
-    int jStart = 0;
-
-    Point cameraLocation = camera->getLocation();
-
-    if (cameraLocation.x > 0) iStart = (int)(cameraLocation.x / BLOCK_SIZE_W);
-    if (cameraLocation.y > 0) jStart = (int)(cameraLocation.y / BLOCK_SIZE_H);
-
-    if (iStart < 0) iStart = 0;
-    if (jStart < 0) jStart = 0;
-
-    int iEnd = map->getW();
-    int jEnd = map->getH();
-
-    if (cameraLocation.x + camera->getW() < map->getW() * BLOCK_SIZE_W) iEnd = (int)((cameraLocation.x + camera->getW()) / BLOCK_SIZE_W + 1);
-    if (cameraLocation.y + camera->getH() < map->getH() * BLOCK_SIZE_H) jEnd = (int)((cameraLocation.y + camera->getH()) / BLOCK_SIZE_H + 1);
-
-    // TODO: use Block-object instead of unsigned char
-
-    for (int i = iStart; i < iEnd; i++) {
-        for (int j = jStart; j < jEnd; j++) {
-            if (!map->getValue(i, j)) continue; // continue if the block is empty
-            glColor3f(1.0, 1.0, 1.0);
-
-            glBegin(GL_QUADS);
-
-            //Bottom-left vertex (corner)
-            glVertex3f(i * BLOCK_SIZE_W - cameraLocation.x + 0.f, j * BLOCK_SIZE_H - cameraLocation.y + 0.f, 0.0f);
-
-            //Bottom-right vertex (corner)
-            glVertex3f(i * BLOCK_SIZE_W - cameraLocation.x + BLOCK_SIZE_W, j * BLOCK_SIZE_H - cameraLocation.y + 0.f, 0.f);
-
-            //Top-right vertex (corner)
-            glVertex3f(i * BLOCK_SIZE_W - cameraLocation.x + BLOCK_SIZE_W, j * BLOCK_SIZE_H - cameraLocation.y + BLOCK_SIZE_H, 0.f);
-
-            //Top-left vertex (corner)
-            glVertex3f(i * BLOCK_SIZE_W - cameraLocation.x + 0.f, j * BLOCK_SIZE_H - cameraLocation.y + BLOCK_SIZE_H, 0.f);
-
-            glEnd();
-        }
-    }
-    glColor3d(1, 1, 1);
+    Point location = camera->getLocation();
+    map->render(location.x, location.y, camera->getW(), camera->getH());
 }
 
 void Renderer::renderEntities() {

@@ -17,8 +17,12 @@
 #include "Map.h"
 #include <iostream>
 #include <fstream>
+#include <SDL2/SDL_opengl.h>
 
-Map::Map(char *path) {
+Map::Map(char *path, int blockSizeW, int blockSizeH) {
+    this->blockSizeW = blockSizeW;
+    this->blockSizeH = blockSizeH;
+
     using namespace std;
 
     ifstream file(path, ios::in|ios::binary|ios::beg);
@@ -110,3 +114,50 @@ short Map::getH() {
     return h;
 }
 
+void Map::render(long x, long y, int w, int h) {
+    int iStart = 0;
+    int jStart = 0;
+
+    if (x > 0) iStart = x / blockSizeW;
+    if (y > 0) jStart = y / blockSizeH;
+
+    if (iStart < 0) iStart = 0;
+    if (jStart < 0) jStart = 0;
+
+    int iEnd = this->getW();
+    int jEnd = this->getH();
+
+    if (x + w < this->getW() * blockSizeW) iEnd = (x + w) / blockSizeW + 1;
+    if (y + h < this->getH() * blockSizeH) jEnd = (y + h) / blockSizeH + 1;
+
+    // TODO: use Block-object instead of unsigned char
+
+
+
+    for (int i = iStart; i < iEnd; i++) {
+        for (int j = jStart; j < jEnd; j++) {
+            if (!this->getValue(i, j)) continue; // continue if the block is empty
+            glColor3f(0.2, 0.5, 0.0);
+
+            glBegin(GL_QUADS);
+
+            // TODO: add texture
+
+            //Bottom-left vertex (corner)
+            glVertex2i(i * blockSizeW - x, j * blockSizeH - y);
+
+            //Bottom-right vertex (corner)
+            glVertex2i(i * blockSizeW - x + blockSizeW, j * blockSizeH - y);
+
+            //Top-right vertex (corner)
+            glVertex2i(i * blockSizeW - x + blockSizeW, j * blockSizeH - y + blockSizeH);
+
+            //Top-left vertex (corner)
+            glVertex2i(i * blockSizeW - x + 0.f, j * blockSizeH - y + blockSizeH);
+
+            glEnd();
+
+        }
+    }
+
+}

@@ -20,7 +20,7 @@
 int main(int argc, const char * argv[])
 {
     Renderer* renderer = new Renderer();
-    renderer->init(0, 0, 1200, 800, false);
+    renderer->init(0, 0, 1200, 800);
     Map* map = new Map("images/map.bmp");
 
     GameWorld *world = new GameWorld();
@@ -48,8 +48,8 @@ int main(int argc, const char * argv[])
     while (!SDL_QuitRequested()) {
         renderer->render();
         angle += 0.01;
-        x += cos(angle) * 2;
-        y += sin(angle) * 2;
+        x += cos(angle) * 1;
+        y += sin(angle) * 1;
         camera->setLocation(x, y);
         object->turnCounterClockwise();
     }

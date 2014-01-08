@@ -49,11 +49,11 @@ void GameEntity::turnClockwise() {
 }
 
 double GameEntity::getAngle() {
-    return 0;
+    return this->angle;
 }
 
 GameEntity::GameEntity(Point focus, Point location):focus(focus), location(location) {
-
+    this->angle = 0;
 }
 
 void GameEntity::render(int x, int y) {

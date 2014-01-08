@@ -16,7 +16,7 @@
 
 #include "Camera.h"
 
-Camera::Camera(double x, double y, double w, double h): x(x), y(y), w(w), h(w)  {
+Camera::Camera(double x, double y, double w, double h): x(x), y(y), w(w), h(h)  {
     entityToFollow = nullptr;
 }
 
