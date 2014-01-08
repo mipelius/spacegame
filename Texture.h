@@ -15,14 +15,20 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <string>
+#include <SDL2/SDL_opengl.h>
+#include <SDL2/SDL.h>
 
 #ifndef __Texture_H_
 #define __Texture_H_
 
 
 class Texture {
+private:
+    GLuint texture;
 public:
     Texture(std::string filename);
+    void glBind();
+    void glUnbind();
 };
 
 

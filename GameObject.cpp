@@ -42,22 +42,28 @@ void GameObject::render(int x, int y) {
     glRotatef((GLfloat)angle, 0.0f, 0.0f, 1.0f);
     glTranslatef(-x, -y, 0);
 
-    glColor3f(1.0, 0.0, 0.0); // TODO: add texture
+    glColor3f(1.0, 1.0, 1.0);
+    texture->glBind();
     glBegin(GL_QUADS);
 
     //Bottom-left vertex (corner)
+    glTexCoord2f(0, 0);
     glVertex3f((GLfloat)(x - focus.x),(GLfloat)(y - focus.y), 0.0);
 
     //Bottom-right vertex (corner)
+    glTexCoord2f(1, 0);
     glVertex3f((GLfloat)(x - focus.x + w),(GLfloat)(y - focus.y), 0.0);
 
     //Top-right vertex (corner)
+    glTexCoord2f(1, 1);
     glVertex3f((GLfloat)(x - focus.x + w),(GLfloat)(y - focus.y + h), 0.0);
 
     //Top-left vertex (corner)
+    glTexCoord2f(0, 1);
     glVertex3f((GLfloat)(x - focus.x),(GLfloat)(y - focus.y + h), 0.0);
 
     glEnd();
+    texture->glUnbind();
 
     glLoadIdentity();
 }

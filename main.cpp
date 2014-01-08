@@ -28,17 +28,30 @@ int main(int argc, const char * argv[])
 
     renderer->setGameWorld(world);
 
-    GameObject *object = new GameObject(
+    Texture *texture = new Texture("images/spaceship.bmp");
+
+    GameObject *object1 = new GameObject(
             Point(50, 50),
-            Point(4500, 9000),
-            nullptr,
+            Point(4500, 9300),
+            texture,
             nullptr,
             100,
             100,
             100
     );
 
-    world->addObject(object);
+    GameObject *object2 = new GameObject(
+            Point(10, 10),
+            Point(4650, 9100),
+            texture,
+            nullptr,
+            100,
+            50,
+            50
+    );
+
+    world->addObject(object1);
+    world->addObject(object2);
 
     Camera* camera = renderer->getCamera();
 
@@ -51,7 +64,8 @@ int main(int argc, const char * argv[])
         x += cos(angle) * 1;
         y += sin(angle) * 1;
         camera->setLocation(x, y);
-        object->turnCounterClockwise();
+        object1->turnCounterClockwise();
+        object2->turnClockwise();
     }
 
     delete renderer;

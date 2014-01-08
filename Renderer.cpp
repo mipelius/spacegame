@@ -68,6 +68,8 @@ void Renderer::renderEntities() {
     for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
         Point entityLocation = (*it)->getLocation();
 
+        // TODO: render only if the entity is in sight
+
         (*it)->render(
                 (int)(entityLocation.x - cameraLocation.x),
                 (int)(entityLocation.y - cameraLocation.y)
