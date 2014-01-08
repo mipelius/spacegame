@@ -47,19 +47,19 @@ void GameObject::render(int x, int y) {
     glBegin(GL_QUADS);
 
     //Bottom-left vertex (corner)
-    glTexCoord2f(0, 0);
+    glTexCoord2i(0, 0);
     glVertex3f((GLfloat)(x - focus.x),(GLfloat)(y - focus.y), 0.0);
 
     //Bottom-right vertex (corner)
-    glTexCoord2f(1, 0);
+    glTexCoord2i(1, 0);
     glVertex3f((GLfloat)(x - focus.x + w),(GLfloat)(y - focus.y), 0.0);
 
     //Top-right vertex (corner)
-    glTexCoord2f(1, 1);
+    glTexCoord2i(1, 1);
     glVertex3f((GLfloat)(x - focus.x + w),(GLfloat)(y - focus.y + h), 0.0);
 
     //Top-left vertex (corner)
-    glTexCoord2f(0, 1);
+    glTexCoord2i(0, 1);
     glVertex3f((GLfloat)(x - focus.x),(GLfloat)(y - focus.y + h), 0.0);
 
     glEnd();

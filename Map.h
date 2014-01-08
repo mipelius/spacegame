@@ -17,9 +17,11 @@
 #ifndef __Map_H_
 #define __Map_H_
 
+#include <string>
+
 class Map {
 public:
-    Map(char* path, int blockSizeW = Map::DEFAULT_BLOCK_SIZE_W, int blockSizeH = Map::DEFAULT_BLOCK_SIZE_H);
+    Map(std::string path, int blockSizeW = Map::DEFAULT_BLOCK_SIZE_W, int blockSizeH = Map::DEFAULT_BLOCK_SIZE_H);
     void setValue(int x, int y, unsigned char value);
     char getValue(int x, int y);
     short getW();

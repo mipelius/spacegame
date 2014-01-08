@@ -19,13 +19,13 @@
 #include <fstream>
 #include <SDL2/SDL_opengl.h>
 
-Map::Map(char *path, int blockSizeW, int blockSizeH) {
+Map::Map(std::string path, int blockSizeW, int blockSizeH) {
     this->blockSizeW = blockSizeW;
     this->blockSizeH = blockSizeH;
 
     using namespace std;
 
-    ifstream file(path, ios::in|ios::binary|ios::beg);
+    ifstream file(path.data(), ios::in|ios::binary|ios::beg);
 
     // this is only temporary implementation.
 

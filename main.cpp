@@ -28,11 +28,11 @@ int main(int argc, const char * argv[])
 
     renderer->setGameWorld(world);
 
-    Texture *texture = new Texture("images/spaceship.bmp");
+    Texture *texture = new Texture("images/spaceship.png");
 
     GameObject *object1 = new GameObject(
             Point(50, 50),
-            Point(4500, 9300),
+            Point(4700, 9200),
             texture,
             nullptr,
             100,
@@ -42,7 +42,7 @@ int main(int argc, const char * argv[])
 
     GameObject *object2 = new GameObject(
             Point(10, 10),
-            Point(4650, 9100),
+            Point(4550, 9000),
             texture,
             nullptr,
             100,
@@ -61,8 +61,8 @@ int main(int argc, const char * argv[])
     while (!SDL_QuitRequested()) {
         renderer->render();
         angle += 0.01;
-        x += cos(angle) * 1;
-        y += sin(angle) * 1;
+        x += cos(angle);
+        y += sin(angle);
         camera->setLocation(x, y);
         object1->turnCounterClockwise();
         object2->turnClockwise();

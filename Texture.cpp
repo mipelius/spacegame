@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <iostream>
 #include "Texture.h"
 
 Texture::Texture(std::string filename) {
@@ -21,7 +22,7 @@ Texture::Texture(std::string filename) {
     GLenum texture_format;
     GLint nOfColors;
 
-    if ((surface = SDL_LoadBMP(filename.data()))) {
+    if ((surface = IMG_Load(filename.data()))) {
 
         // Check that the image's width is a power of 2
         if ((surface->w & (surface->w - 1)) != 0) {
@@ -80,9 +81,12 @@ Texture::Texture(std::string filename) {
 
 void Texture::glBind() {
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, this->texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Texture::glUnbind() {
     glDisable(GL_TEXTURE_2D);
+    glDisable(GL_BLEND);
 }
