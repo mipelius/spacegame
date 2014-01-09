@@ -58,12 +58,19 @@ void Renderer::renderBackground() {
 void Renderer::renderMap() {
     Map* map = this->gameWorld->getMap();
     Point location = camera->getLocation();
-    map->render(location.x, location.y, camera->getW(), camera->getH());
+    map->render(
+            (int)location.x,
+            (int)location.y,
+            (int)camera->getW(),
+            (int)camera->getH()
+    );
 }
 
 void Renderer::renderEntities() {
     std::list<GameEntity*> *gameEntities = gameWorld->getGameEntities();
     Point cameraLocation = camera->getLocation();
+
+    glMatrixMode(GL_MODELVIEW);
 
     for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
         Point entityLocation = (*it)->getLocation();
@@ -75,6 +82,8 @@ void Renderer::renderEntities() {
                 (int)(entityLocation.y - cameraLocation.y)
         );
     }
+
+    glLoadIdentity();
 }
 
 void Renderer::render() {

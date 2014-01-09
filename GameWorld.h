@@ -29,7 +29,7 @@ private:
 public:
     GameWorld();
     void step(double time);
-    void addObject(GameEntity *gameEntity);
+    void addEntity(GameEntity *gameEntity);
     void setMap(Map* map);
     Map* getMap();
     std::list<GameEntity*> *getGameEntities();

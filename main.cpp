@@ -16,6 +16,45 @@
 
 #include <iostream>
 #include "Renderer.h"
+#include "GameObjectGroup.h"
+
+Texture* textureTurret = nullptr;
+
+GameObjectGroup* createSpaceShip() {
+
+    Texture *textureSpaceShip = new Texture("images/spaceship.png");
+
+    GameObject *objectSpaceShip = new GameObject(
+            Point(0, 0),
+            Point(0, 0),
+            textureSpaceShip,
+            nullptr,
+            100,
+            64,
+            64
+    );
+
+    GameObjectGroup *spaceShip = new GameObjectGroup(Point(32, 32), Point(4550, 9000));
+    spaceShip->add(objectSpaceShip);
+
+    return spaceShip;
+}
+
+GameObject* createTurret(double x, double y) {
+    if (!textureTurret) textureTurret = new Texture("images/turret.png");
+
+    GameObject *turret = new GameObject(
+            Point(8, 32),
+            Point(x, y),
+            textureTurret,
+            nullptr,
+            100,
+            16,
+            32
+    );
+
+    return turret;
+}
 
 int main(int argc, const char * argv[])
 {
@@ -28,44 +67,44 @@ int main(int argc, const char * argv[])
 
     renderer->setGameWorld(world);
 
-    Texture *texture = new Texture("images/spaceship.png");
+    GameObjectGroup* spaceShip = createSpaceShip();
+    GameObject* leftTurret = createTurret(6, 42);
+    leftTurret->setAngle(-7);
+    GameObject* rightTurret = createTurret(64-6, 42);
+    rightTurret->setAngle(7);
 
-    GameObject *object1 = new GameObject(
-            Point(50, 50),
-            Point(4700, 9200),
-            texture,
-            nullptr,
-            100,
-            100,
-            100
-    );
+    spaceShip->add(leftTurret);
+    spaceShip->add(rightTurret);
 
-    GameObject *object2 = new GameObject(
-            Point(10, 10),
-            Point(4550, 9000),
-            texture,
-            nullptr,
-            100,
-            50,
-            50
-    );
-
-    world->addObject(object1);
-    world->addObject(object2);
+    world->addEntity(spaceShip);
 
     Camera* camera = renderer->getCamera();
 
     double x = 4000, y = 8500;
     double angle = 0.0;
 
+    int i = 0;
+    int addition = 1;
+
     while (!SDL_QuitRequested()) {
         renderer->render();
-        angle += 0.01;
-        x += cos(angle);
-        y += sin(angle);
+        angle += 0.02;
+
+        spaceShip->setLocation(Point(x + (cos(angle) * sin(angle)) * 100 + 500, y + sin(angle) * 100 + 500));
+
+        i += addition;
+        if (i > 15) addition = -addition;
+        if (i < -15) addition = -addition;
         camera->setLocation(x, y);
-        object1->turnCounterClockwise();
-        object2->turnClockwise();
+        if (i > 0) {
+            leftTurret->turnClockwise();
+            rightTurret->turnCounterClockwise();
+        }
+        else {
+            leftTurret->turnCounterClockwise();
+            rightTurret->turnClockwise();
+        }
+        spaceShip->turnClockwise();
     }
 
     delete renderer;

@@ -16,6 +16,33 @@
 
 #include "GameObjectGroup.h"
 
-void GameObjectGroup::add(GameObject gameObject) {
+void GameObjectGroup::add(GameObject *gameObject) {
+    this->gameObjects->push_back(gameObject);
+}
+
+GameObjectGroup::GameObjectGroup(Point focus, Point location) : GameEntity(focus, location) {
+    // Should it list of GameEntities? -> would provide support for group of groups
+    // change it later if you feel so...
+    this->gameObjects = new std::list<GameObject*>();
+}
+
+
+void GameObjectGroup::render(int x, int y) {
+    GameEntity::render(x, y);
+
+    glTranslatef(x, y, 0);
+    glRotatef((GLfloat)angle, 0.0f, 0.0f, 1.0f);
+    glTranslatef(-x, -y, 0);
+
+    for (std::list<GameObject*>::iterator it = gameObjects->begin(); it != gameObjects->end(); it++) {
+        Point location = (*it)->getLocation();
+                (*it)->render(
+                (int)(x + location.x - focus.x),
+                (int)(y + location.y - focus.y)
+        );
+    }
+    glTranslatef(x, y, 0);
+    glRotatef((GLfloat)-angle, 0.0f, 0.0f, 1.0f);
+    glTranslatef(-x, -y, 0);
 
 }

@@ -19,7 +19,7 @@
 
 Texture::Texture(std::string filename) {
     SDL_Surface *surface;    // This surface will tell us the details of the image
-    GLenum texture_format;
+    GLenum texture_format = GL_NONE;
     GLint nOfColors;
 
     if ((surface = IMG_Load(filename.data()))) {

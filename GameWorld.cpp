@@ -20,7 +20,7 @@ void GameWorld::setMap(Map* map) {
     this->map = map;
 }
 
-void GameWorld::addObject(GameEntity *gameEntity) {
+void GameWorld::addEntity(GameEntity *gameEntity) {
     gameEntities->push_back(gameEntity);
 }
 

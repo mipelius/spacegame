@@ -25,9 +25,6 @@
 
 class Renderer {
 private:
-    const static int ENTITY_MAX_SIZE_W = 100;
-    const static int ENTITY_MAX_SIZE_H = 100;
-
     SDL_Window *window;
     SDL_GLContext context;
     bool isInitialized;
@@ -36,7 +33,7 @@ private:
     void renderBackground();
     void renderMap();
     void renderEntities();
-    void renderEntity(GameEntity gameEntity);
+
 public:
     Renderer();
     ~Renderer();

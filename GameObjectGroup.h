@@ -21,11 +21,13 @@
 #define __GameObjectGroup_H_
 
 
-class GameObjectGroup {
+class GameObjectGroup : public GameEntity {
 private:
-    std::list<GameObject> gameObjects;
+    std::list<GameObject*> *gameObjects;
 public:
-    void add(GameObject gameObject);
+    GameObjectGroup(Point focus, Point location);
+    void add(GameObject *gameObject);
+    void render(int x, int y);
 };
 
 
