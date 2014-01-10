@@ -16,6 +16,7 @@
 
 #include "Camera.h"
 #include "GameWorld.h"
+#include "Background.h"
 #include <SDL2/sdl.h>
 #include <SDL2/sdl_opengl.h>
 
@@ -30,6 +31,7 @@ private:
     bool isInitialized;
     Camera* camera;
     GameWorld* gameWorld;
+    std::list<Background*> *backgrounds;
     void renderBackground();
     void renderMap();
     void renderEntities();
@@ -41,6 +43,7 @@ public:
     void init(int x, int y, int w, int h, bool enableFullScreen = false);
     void setGameWorld(GameWorld* gameWorld);
     Camera* getCamera();
+    void addBackground(Background *background);
 };
 
 

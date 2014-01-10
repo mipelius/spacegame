@@ -26,7 +26,11 @@
 class Texture {
 private:
     GLuint texture;
+    int w;
+    int h;
 public:
+    int getW();
+    int getH();
     Texture(std::string filename);
     void glBind();
     void glUnbind();

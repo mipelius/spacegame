@@ -62,11 +62,21 @@ int main(int argc, const char * argv[])
     Renderer* renderer = new Renderer();
     renderer->init(0, 0, 1200, 800, true);
 
-    std::string filenames[] = {
-            "images/red_block.bmp",
-            "images/blue_block.bmp",
-            "images/green_block.bmp",
-    };
+    renderer->addBackground(
+            new Background(
+                    new Texture("images/bg1.png"),
+                    0,
+                    7500
+            )
+    );
+
+    renderer->addBackground(
+            new Background(
+                    new Texture("images/bg2.png"),
+                    2000,
+                    7500
+            )
+    );
 
     MapTexture *mapTexture = new MapTexture(
             10,
@@ -75,7 +85,7 @@ int main(int argc, const char * argv[])
             (std::string[]) {
                     "images/red_block.bmp",
                     "images/blue_block.bmp",
-                    "images/green_block.bmp"
+                    "images/green_block.bmp",
             }
     );
 
@@ -86,46 +96,23 @@ int main(int argc, const char * argv[])
 
     renderer->setGameWorld(world);
 
-    std::list<GameObjectGroup*> *spaceShipList = new std::list<GameObjectGroup*>();
+    GameObjectGroup* spaceShip = createSpaceShip();
+    GameObject* leftTurret = createTurret(6, 36);
+    GameObject* rightTurret = createTurret(64-6, 36);
 
-    for(int i=0; i<20; i++) {
-        GameObjectGroup* spaceShip = createSpaceShip();
-        GameObject* leftTurret = createTurret(6, 42);
-        leftTurret->setAngle(-7);
-        GameObject* rightTurret = createTurret(64-6, 42);
-        rightTurret->setAngle(7);
+    spaceShip->add(leftTurret);
+    spaceShip->add(rightTurret);
+    spaceShip->setLocation(Point(4500, 8800));
 
-        spaceShip->add(leftTurret);
-        spaceShip->add(rightTurret);
-        spaceShip->setLocation(Point(4000 + i * 20, 8500 + i * 20));
-        spaceShipList->push_back(spaceShip);
-
-        world->addEntity(spaceShip);
-
-    }
+    world->addEntity(spaceShip);
 
     Camera* camera = renderer->getCamera();
-    camera->setLocation(3800, 8400);
-    double angle = 0.0;
-
-    int addition = 1;
+    camera->setLocation(0, 7500);
 
     while (!SDL_QuitRequested()) {
         renderer->render();
-        angle += 0.02;
-        int i = 0;
-        for (std::list<GameObjectGroup*>::iterator it = spaceShipList->begin(); it != spaceShipList->end(); it++) {
-            i++;
-            if (i % 3) {
-                Point location = (*it)->getLocation();
-                (*it)->turnClockwise();
-                (*it)->setLocation(Point(location.x + cos(angle) * 2, location.y + sin(angle) * 2));
-            }
-            else (*it)->turnCounterClockwise();
-
-        }
         Point cameraLocation = camera->getLocation();
-        camera->setLocation(cameraLocation.x + cos(angle) * 4, cameraLocation.y + sin(angle) * 4);
+        camera->setLocation(cameraLocation.x + 4, cameraLocation.y + 1);
     }
 
     delete renderer;

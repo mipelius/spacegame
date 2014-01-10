@@ -48,11 +48,40 @@ void Renderer::init(int x, int y, int w, int h, bool enableFullScreen) {
     // cameraInitialization
     this->camera = new Camera(0, 0, w, h);
 
+    // create list of backgrounds
+    this->backgrounds = new std::list<Background*>();
+
     isInitialized = true;
 }
 
 void Renderer::renderBackground() {
+    Point cameraLocation = camera->getLocation();
+    for (std::list<Background*>::iterator it = backgrounds->begin(); it != backgrounds->end(); it++) {
+        if (
+                cameraLocation.x >= (*it)->getX() &&
+                cameraLocation.x < (*it)->getX() + (*it)->getW() &&
+                cameraLocation.y >= (*it)->getY() &&
+                cameraLocation.y < (*it)->getY() + (*it)->getH()
+                ) {
 
+            double ratioX = ((*it)->getW() - camera->getW()) / (*it)->getW();
+            double ratioY = ((*it)->getH() - camera->getH()) / (*it)->getH();
+            int offSetX = (int)((cameraLocation.x - (*it)->getX()) * ratioX);
+            int offSetY = (int)((cameraLocation.y - (*it)->getY()) * ratioY);
+
+            (*it)->render(
+                    offSetX,
+                    offSetY,
+                    (int)this->camera->getW(),
+                    (int)this->camera->getH()
+            );
+        }
+
+    }
+}
+
+void Renderer::addBackground(Background *background) {
+    backgrounds->push_back(background);
 }
 
 void Renderer::renderMap() {
@@ -92,6 +121,7 @@ void Renderer::render() {
         return;
     }
     glClear(GL_COLOR_BUFFER_BIT);
+    renderBackground();
     renderMap();
     renderEntities();
     SDL_GL_SwapWindow(window);

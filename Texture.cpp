@@ -23,6 +23,8 @@ Texture::Texture(std::string filename) {
     GLint nOfColors;
 
     if ((surface = IMG_Load(filename.data()))) {
+        this->w = surface->w;
+        this->h = surface->h;
 
         // Check that the image's width is a power of 2
         if ((surface->w & (surface->w - 1)) != 0) {
@@ -89,4 +91,12 @@ void Texture::glBind() {
 void Texture::glUnbind() {
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
+}
+
+int Texture::getW() {
+    return this->w;
+}
+
+int Texture::getH() {
+    return this->h;
 }
