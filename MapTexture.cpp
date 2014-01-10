@@ -54,7 +54,7 @@ MapTexture::MapTexture(int blockW, int blockH, int count, std::string fileNames 
 
 void MapTexture::createGlTexture(SDL_Surface *surface) {
     GLint nOfColors = 4;
-    GLenum textureFormat = GL_RGBA;
+    GLenum textureFormat = GL_BGRA;
 
     // Have OpenGL generate a texture object handle for us
     glGenTextures(1, &texture);

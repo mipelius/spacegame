@@ -60,21 +60,21 @@ GameObject* createTurret(double x, double y) {
 int main(int argc, const char * argv[])
 {
     Renderer* renderer = new Renderer();
-    renderer->init(0, 0, 1200, 800, true);
+    renderer->init(0, 0, 1920, 1200, true);
 
     renderer->addBackground(
             new Background(
-                    new Texture("images/bg1.png"),
+                    new Texture("images/bg1.jpg"),
                     0,
-                    7500
+                    7200
             )
     );
 
     renderer->addBackground(
             new Background(
-                    new Texture("images/bg2.png"),
-                    2000,
-                    7500
+                    new Texture("images/bg2.jpg"),
+                    3400,
+                    7200
             )
     );
 
@@ -83,9 +83,9 @@ int main(int argc, const char * argv[])
             10,
             3,
             (std::string[]) {
+                    "images/green_block.bmp",
                     "images/red_block.bmp",
                     "images/blue_block.bmp",
-                    "images/green_block.bmp",
             }
     );
 
@@ -107,7 +107,7 @@ int main(int argc, const char * argv[])
     world->addEntity(spaceShip);
 
     Camera* camera = renderer->getCamera();
-    camera->setLocation(0, 7500);
+    camera->setLocation(0, 7200);
 
     while (!SDL_QuitRequested()) {
         renderer->render();
