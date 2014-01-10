@@ -26,12 +26,12 @@ Texture::Texture(std::string filename) {
 
         // Check that the image's width is a power of 2
         if ((surface->w & (surface->w - 1)) != 0) {
-            fprintf(stderr, "warning: %s 's width is not a power of 2\\n", filename.data());
+            fprintf(stderr, "warning: %s 's width is not a power of 2\n", filename.data());
         }
 
         // Also check if the height is a power of 2
         if ((surface->h & (surface->h - 1)) != 0) {
-            fprintf(stderr, "warning: %s 's heigth is not a power of 2\\n", filename.data());
+            fprintf(stderr, "warning: %s 's heigth is not a power of 2\n", filename.data());
         }
 
         // get the number of channels in the SDL surface

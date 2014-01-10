@@ -19,9 +19,15 @@
 #include <fstream>
 #include <SDL2/SDL_opengl.h>
 
-Map::Map(std::string path, int blockSizeW, int blockSizeH) {
+Map::Map(
+        std::string path,
+        MapTexture* mapTexture,
+        int blockSizeW,
+        int blockSizeH
+) {
     this->blockSizeW = blockSizeW;
     this->blockSizeH = blockSizeH;
+    this->mapTexture = mapTexture;
 
     using namespace std;
 
@@ -130,34 +136,24 @@ void Map::render(long x, long y, int w, int h) {
     if (x + w < this->getW() * blockSizeW) iEnd = (x + w) / blockSizeW + 1;
     if (y + h < this->getH() * blockSizeH) jEnd = (y + h) / blockSizeH + 1;
 
-    // TODO: use Block-object instead of unsigned char
+    // NOTE: the textureNumber that is used for the current block is return value from getValue(i, j) - 1;
+    // Maybe you should use more sophisticated way to indicate the correspondence between mapValues and textureNumbers
 
-
+    mapTexture->glBind();
 
     for (int i = iStart; i < iEnd; i++) {
         for (int j = jStart; j < jEnd; j++) {
             if (!this->getValue(i, j)) continue; // continue if the block is empty
-            glColor3f(0.2, 0.5, 0.0);
-
-            glBegin(GL_QUADS);
-
-            // TODO: add texture
-
-            //Bottom-left vertex (corner)
-            glVertex2i(i * blockSizeW - x, j * blockSizeH - y);
-
-            //Bottom-right vertex (corner)
-            glVertex2i(i * blockSizeW - x + blockSizeW, j * blockSizeH - y);
-
-            //Top-right vertex (corner)
-            glVertex2i(i * blockSizeW - x + blockSizeW, j * blockSizeH - y + blockSizeH);
-
-            //Top-left vertex (corner)
-            glVertex2i(i * blockSizeW - x + 0.f, j * blockSizeH - y + blockSizeH);
-
-            glEnd();
-
+            glColor3f(1.0, 1.0, 1.0);
+            mapTexture->renderBlock(
+                    i * blockSizeW - x,
+                    j * blockSizeH - y,
+                    blockSizeW,
+                    blockSizeH,
+                    this->getValue(i, j) - 1
+            );
         }
     }
+    mapTexture->glUnbind();
 
 }

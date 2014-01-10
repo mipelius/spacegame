@@ -18,10 +18,16 @@
 #define __Map_H_
 
 #include <string>
+#include "MapTexture.h"
 
 class Map {
 public:
-    Map(std::string path, int blockSizeW = Map::DEFAULT_BLOCK_SIZE_W, int blockSizeH = Map::DEFAULT_BLOCK_SIZE_H);
+    Map(
+            std::string path,
+            MapTexture* mapTexture,
+            int blockSizeW = Map::DEFAULT_BLOCK_SIZE_W,
+            int blockSizeH = Map::DEFAULT_BLOCK_SIZE_H
+    );
     void setValue(int x, int y, unsigned char value);
     char getValue(int x, int y);
     short getW();
@@ -29,6 +35,7 @@ public:
     void render(long x, long y, int w, int h);
 
 private:
+    MapTexture* mapTexture;
     static const int DEFAULT_BLOCK_SIZE_W = 8;
     static const int DEFAULT_BLOCK_SIZE_H = 8;
     int blockSizeW;
