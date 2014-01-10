@@ -32,6 +32,8 @@ public:
     char getValue(int x, int y);
     short getW();
     short getH();
+    long getActualW();
+    long getActualH();
     void render(long x, long y, int w, int h);
 
 private:

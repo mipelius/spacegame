@@ -15,12 +15,18 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Camera.h"
+#include "Renderer.h"
 
-Camera::Camera(double x, double y, double w, double h): x(x), y(y), w(w), h(h)  {
+Camera::Camera(double x, double y, double w, double h, Renderer *renderer): x(x), y(y), w(w), h(h)  {
     entityToFollow = nullptr;
+    this->renderer = renderer;
 }
 
 Point Camera::getLocation() {
+    if (entityToFollow) {
+        Point entityLocation = entityToFollow->getLocation();
+        this->setLocation(entityLocation.x - w/2, entityLocation.y - h/2);
+    }
     return Point(x, y);
 }
 
@@ -37,6 +43,11 @@ double Camera::getH() {
 }
 
 void Camera::setLocation(double x, double y) {
+    GameWorld *gameWorld = this->renderer->getGameWorld();
     this->x = x;
     this->y = y;
+    if (this->x < 0) this->x = 0;
+    if (this->x + w > gameWorld->getW()) this->x = gameWorld->getW() - w;
+    if (this->y < 0) this->y = 0;
+    if (this->y + h > gameWorld->getH()) this->y = gameWorld->getH() - h;
 }

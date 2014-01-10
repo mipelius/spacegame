@@ -32,6 +32,8 @@ public:
     void addEntity(GameEntity *gameEntity);
     void setMap(Map* map);
     Map* getMap();
+    long getW();
+    long getH();
     std::list<GameEntity*> *getGameEntities();
 };
 

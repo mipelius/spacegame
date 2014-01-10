@@ -21,13 +21,13 @@
 #ifndef __GameObject_H_
 #define __GameObject_H_
 
-
 class GameObject : public GameEntity {
 private:
     Texture* texture;
     CollisionShape* collisionShape;
     double mass;
     int w, h;
+
 public:
     GameObject(
             Point focus,

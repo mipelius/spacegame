@@ -40,3 +40,11 @@ Map *GameWorld::getMap() {
 std::list<GameEntity*> *GameWorld::getGameEntities() {
     return this->gameEntities;
 }
+
+long GameWorld::getW() {
+    return this->map->getActualW();
+}
+
+long GameWorld::getH() {
+    return this->map->getActualH();
+}

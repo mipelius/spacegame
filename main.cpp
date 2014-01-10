@@ -41,17 +41,17 @@ GameObjectGroup* createSpaceShip() {
     return spaceShip;
 }
 
-GameObject* createTurret(double x, double y) {
+GameObject* createTurret(Point focus, Point location, int w, int h) {
     if (!textureTurret) textureTurret = new Texture("images/turret.png");
 
     GameObject *turret = new GameObject(
-            Point(8, 16),
-            Point(x, y),
+            focus,
+            location,
             textureTurret,
             nullptr,
             100,
-            16,
-            32
+            w,
+            h
     );
 
     return turret;
@@ -97,22 +97,38 @@ int main(int argc, const char * argv[])
     renderer->setGameWorld(world);
 
     GameObjectGroup* spaceShip = createSpaceShip();
-    GameObject* leftTurret = createTurret(6, 36);
-    GameObject* rightTurret = createTurret(64-6, 36);
+
+    GameObject* leftTurret = createTurret(Point(8, 0), Point(6, 30), 16, 32 );
+    GameObject* rightTurret = createTurret(Point(8, 0), Point(64-6, 30), 16, 32);
+    GameObject* middleTurret = createTurret(Point(6.5, 16), Point(64/2, 0), 13, 32);
 
     spaceShip->add(leftTurret);
     spaceShip->add(rightTurret);
+    spaceShip->add(middleTurret);
+
     spaceShip->setLocation(Point(4500, 8800));
 
     world->addEntity(spaceShip);
 
     Camera* camera = renderer->getCamera();
-    camera->setLocation(0, 7200);
+    //camera->setLocation(0, 7200);
+
+    camera->follow(spaceShip);
+
+    const Uint8* keys;
 
     while (!SDL_QuitRequested()) {
+        keys = SDL_GetKeyboardState(0);
+        Point location = spaceShip->getLocation();
+        double additionX = 0;
+        double additionY = 0;
+        if (keys[SDL_SCANCODE_LEFT]) additionX -= 7;
+        if (keys[SDL_SCANCODE_RIGHT]) additionX += 7;
+        if (keys[SDL_SCANCODE_UP]) additionY -= 7;
+        if (keys[SDL_SCANCODE_DOWN]) additionY += 7;
+        spaceShip->setLocation(Point(location.x + additionX, location.y + additionY));
+        spaceShip->turnCounterClockwise();
         renderer->render();
-        Point cameraLocation = camera->getLocation();
-        camera->setLocation(cameraLocation.x + 4, cameraLocation.y + 1);
     }
 
     delete renderer;

@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Camera.h"
 #include "GameWorld.h"
 #include "Background.h"
 #include <SDL2/sdl.h>
@@ -23,6 +22,9 @@
 #ifndef __Renderer_H_
 #define __Renderer_H_
 
+#include "Camera.h"
+
+class Camera;
 
 class Renderer {
 private:
@@ -42,6 +44,7 @@ public:
     void render();
     void init(int x, int y, int w, int h, bool enableFullScreen = false);
     void setGameWorld(GameWorld* gameWorld);
+    GameWorld* getGameWorld();
     Camera* getCamera();
     void addBackground(Background *background);
 };

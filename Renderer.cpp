@@ -46,7 +46,7 @@ void Renderer::init(int x, int y, int w, int h, bool enableFullScreen) {
     glClearColor(0.0, 0.0, 0.0, 0.0);
 
     // cameraInitialization
-    this->camera = new Camera(0, 0, w, h);
+    this->camera = new Camera(0, 0, w, h, this);
 
     // create list of backgrounds
     this->backgrounds = new std::list<Background*>();
@@ -142,6 +142,10 @@ Renderer::~Renderer() {
     if (window) {
         SDL_DestroyWindow(window);
     }
+}
+
+GameWorld* Renderer::getGameWorld() {
+    return this->gameWorld;
 }
 
 void Renderer::setGameWorld(GameWorld *gameWorld) {

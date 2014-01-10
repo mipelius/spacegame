@@ -15,17 +15,22 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "GameObject.h"
+#include "GameWorld.h"
 
 #ifndef __Camera_H_
 #define __Camera_H_
 
+#include "Renderer.h"
+
+class Renderer;
 
 class Camera {
 private:
     GameEntity* entityToFollow;
+    Renderer* renderer;
     double x, y, w, h;
 public:
-    Camera(double x, double y, double  w, double  h);
+    Camera(double x, double y, double  w, double  h, Renderer *renderer);
     Point getLocation();
     void setLocation(double x, double y);
     double getW();

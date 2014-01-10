@@ -144,7 +144,13 @@ void Map::render(long x, long y, int w, int h) {
     for (int i = iStart; i < iEnd; i++) {
         for (int j = jStart; j < jEnd; j++) {
             if (!this->getValue(i, j)) continue; // continue if the block is empty
-            glColor3f(1.0, 1.0, 1.0);
+
+            GLdouble color = sin(((i*blockSizeW - x) / (float)w) * (M_PI / 1.0)) * sin(((j*blockSizeH - y) / (float)h) * (M_PI / 1.0));
+            color /= 1.5;
+            color += 0.25;
+            if (color > 1.0) color = 1.0;
+            glColor4d(color, color, color, color);
+
             mapTexture->renderBlock(
                     i * blockSizeW - x,
                     j * blockSizeH - y,
@@ -156,4 +162,12 @@ void Map::render(long x, long y, int w, int h) {
     }
     mapTexture->glUnbind();
 
+}
+
+long Map::getActualW() {
+    return w * blockSizeW;
+}
+
+long Map::getActualH() {
+    return h * blockSizeH;
 }
