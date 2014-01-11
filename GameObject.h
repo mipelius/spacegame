@@ -27,6 +27,7 @@ private:
     CollisionShape* collisionShape;
     double mass;
     int w, h;
+    const double ZERO_MASS = 0.0001;
 
 public:
     GameObject(
@@ -39,7 +40,7 @@ public:
             int h
     );
     void render(int x, int y);
-
+    double getMass();
 };
 
 

@@ -30,7 +30,7 @@ GameObjectGroup* createSpaceShip() {
             Point(0, 0),
             textureSpaceShip,
             nullptr,
-            100,
+            1000,
             64,
             64
     );
@@ -49,7 +49,7 @@ GameObject* createTurret(Point focus, Point location, int w, int h) {
             location,
             textureTurret,
             nullptr,
-            100,
+            40,
             w,
             h
     );
@@ -91,7 +91,7 @@ int main(int argc, const char * argv[])
 
     Map* map = new Map("images/map.bmp", mapTexture, 10, 10);
 
-    GameWorld *world = new GameWorld();
+    GameWorld *world = new GameWorld(Vector(0, 9.81), 0.5, 0.005);
     world->setMap(map);
 
     renderer->setGameWorld(world);
@@ -119,18 +119,17 @@ int main(int argc, const char * argv[])
 
     while (!SDL_QuitRequested()) {
         keys = SDL_GetKeyboardState(0);
-        Point location = spaceShip->getLocation();
-        double additionX = 0;
-        double additionY = 0;
-        if (keys[SDL_SCANCODE_LEFT]) additionX -= 7;
-        if (keys[SDL_SCANCODE_RIGHT]) additionX += 7;
-        if (keys[SDL_SCANCODE_UP]) additionY -= 7;
-        if (keys[SDL_SCANCODE_DOWN]) additionY += 7;
-        spaceShip->setLocation(Point(location.x + additionX, location.y + additionY));
-        spaceShip->turnCounterClockwise();
+
+        if (keys[SDL_SCANCODE_LEFT]) spaceShip->setAngle(spaceShip->getAngle() - 5);
+        if (keys[SDL_SCANCODE_RIGHT]) spaceShip->setAngle(spaceShip->getAngle() + 5);
+        if (keys[SDL_SCANCODE_UP]) spaceShip->applyForce(Vector::byAngle((spaceShip->getAngle() - 90) / 360 * 2 * M_PI, 80000));
+        if (keys[SDL_SCANCODE_DOWN]);
+
+        world->step(1.0 / 60.0);
         renderer->render();
     }
 
     delete renderer;
+
     return 0;
 }

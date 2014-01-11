@@ -19,8 +19,18 @@
 
 
 class Vector {
+public:
     double x;
     double y;
+    Vector(double x, double y);
+    static Vector byAngle(double amount, double angle);
+    Vector operator + (const Vector& otherVector);
+    Vector operator - (const Vector& otherVector);
+    Vector operator * (const Vector& otherVector);
+    Vector operator -= (const Vector& otherVector);
+    Vector operator += (const Vector& otherVector);
+    Vector operator *= (const Vector& otherVector);
+    Vector operator *(double const &amount);
 };
 
 

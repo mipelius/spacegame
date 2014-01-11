@@ -46,3 +46,11 @@ void GameObjectGroup::render(int x, int y) {
     glTranslatef(-x, -y, 0);
 
 }
+
+double GameObjectGroup::getMass() {
+    double mass = 0.0;
+    for (std::list<GameObject*>::iterator it = gameObjects->begin(); it != gameObjects->end(); it++) {
+        mass += (*it)->getMass();
+    }
+    return mass;
+}

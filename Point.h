@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "Vector.h"
+
 #ifndef __Location_H_
 #define __Location_H_
 
@@ -23,6 +25,7 @@ public:
     double x, y;
     Point(double x, double y);
     ~Point();
+    Point operator + (const Vector& vector);
 };
 
 

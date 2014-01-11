@@ -27,9 +27,12 @@ protected:
     double angle;
     Point focus;
     Vector force;
+    Vector speed;
 public:
     GameEntity(Point focus, Point location);
     void applyForce(Vector force);
+    void setForceToZero();
+    Vector getForce();
     void setAngle(double angle);
     double getAngle();
     void turnClockwise();
@@ -38,7 +41,10 @@ public:
     Point getLocation();
     void setFocus(Point focus);
     Point getFocus();
+    void setSpeed(Vector speed);
+    Vector getSpeed();
     virtual void render(int x, int y);
+    virtual double getMass();
 };
 
 

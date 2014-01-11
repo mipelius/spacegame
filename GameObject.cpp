@@ -28,7 +28,7 @@ GameObject::GameObject(
 ) : GameEntity(focus, location) {
     this->texture = texture;
     this->collisionShape = collisionShape;
-    this->mass = mass;
+    mass == 0 ? this->mass = ZERO_MASS : this->mass = mass;
     this->w = w;
     this->h = h;
 }
@@ -65,4 +65,8 @@ void GameObject::render(int x, int y) {
     glTranslatef(x, y, 0);
     glRotatef((GLfloat)-angle, 0.0f, 0.0f, 1.0f);
     glTranslatef(-x, -y, 0);
+}
+
+double GameObject::getMass() {
+    return mass;
 }

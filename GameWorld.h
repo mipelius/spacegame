@@ -26,9 +26,12 @@ class GameWorld {
 private:
     std::list<GameEntity*> *gameEntities;
     Map* map;
+    Vector gForce;
+    double metersPerPixel;
+    double airThickness;
 public:
-    GameWorld();
-    void step(double time);
+    GameWorld(Vector gforce, double metersPerPixel, double airThickness);
+    void step(double timeSeconds);
     void addEntity(GameEntity *gameEntity);
     void setMap(Map* map);
     Map* getMap();

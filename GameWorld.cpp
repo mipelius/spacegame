@@ -24,11 +24,23 @@ void GameWorld::addEntity(GameEntity *gameEntity) {
     gameEntities->push_back(gameEntity);
 }
 
-void GameWorld::step(double time) {
+void GameWorld::step(double timeSeconds) {
+    for(std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
+        Vector airResistance = (*it)->getSpeed() * (*it)->getSpeed() * (0.5 * airThickness);
+        Vector acceleration = ((*it)->getForce() - airResistance) * (1 / (*it)->getMass());
 
+        acceleration += gForce;
+        (*it)->setSpeed((*it)->getSpeed() + acceleration);
+        (*it)->setLocation((*it)->getLocation() + (*it)->getSpeed() * timeSeconds * metersPerPixel);
+        (*it)->setForceToZero();
+    }
 }
 
-GameWorld::GameWorld() {
+GameWorld::GameWorld(
+        Vector gForce,
+        double metersPerPixel,
+        double airThickness
+): gForce(gForce), metersPerPixel(metersPerPixel), airThickness(airThickness) {
     this->map = nullptr;
     this->gameEntities = new std::list<GameEntity*>();
 }

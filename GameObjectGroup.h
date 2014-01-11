@@ -28,6 +28,7 @@ public:
     GameObjectGroup(Point focus, Point location);
     void add(GameObject *gameObject);
     void render(int x, int y);
+    double getMass();
 };
 
 
