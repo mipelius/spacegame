@@ -21,7 +21,10 @@
 #define __GameEntity_H_
 
 #include "Event/Event.h"
+#include "GameWorld.h"
+
 class Event;
+class GameWorld;
 
 class GameEntity {
 protected:
@@ -31,8 +34,12 @@ protected:
     Vector force;
     Vector speed;
     Event* collisionEvent;
+    GameWorld* gameWorld;
+    bool _isDead;
 public:
     GameEntity(Point focus, Point location);
+    ~GameEntity();
+    void die();
     void applyForce(Vector force);
     void setForceToZero();
     Vector getForce();
@@ -47,8 +54,13 @@ public:
     void setSpeed(Vector speed);
     Vector getSpeed();
     Event* getCollisionEvent();
+    void setWorld(GameWorld* gameWorld);
+    GameWorld* getWorld();
+    bool isDead();
+
     virtual void render(int x, int y);
     virtual double getMass();
+
 };
 
 

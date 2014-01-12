@@ -15,14 +15,17 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #import <list>
-#include "GameEntity.h"
 #include "Map.h"
-#include "CollisionEventArgs.h"
-#include "CollisionEventHandler.h"
 
 #ifndef __GameWorld_H_
 #define __GameWorld_H_
 
+#include "CollisionEventArgs.h"
+class CollisionEventArgs;
+//#include "CollisionEventHandler.h"
+class CollisionEventHandler;
+#include "GameEntity.h"
+class GameEntity;
 
 class GameWorld {
 private:
@@ -37,6 +40,7 @@ public:
     GameWorld(Vector gforce, double metersPerPixel, double airDensity);
     void step(double timeSeconds);
     void addEntity(GameEntity *gameEntity);
+    void removeEntity(GameEntity *gameEntity);
     void setMap(Map* map);
     Map* getMap();
     long getW();

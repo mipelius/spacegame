@@ -42,21 +42,8 @@ Vector Vector::operator += (const Vector &otherVector) {
     return Vector(x, y);
 }
 
-Vector Vector::operator * (const Vector &otherVector) {
-    return Vector(
-            (x < 0 && otherVector.x < 0) ? -x * otherVector.x : x * otherVector.x,
-            (y < 0 && otherVector.y < 0) ? -y * otherVector.y : y * otherVector.y
-    );
-}
-
 Vector Vector::operator * (const double &amount) {
     return Vector(x * amount, y * amount);
-}
-
-Vector Vector::operator *= (const Vector &otherVector) {
-    x = (x < 0 && otherVector.x < 0) ? -x * otherVector.x : x * otherVector.x;
-    y = (y < 0 && otherVector.y < 0) ? -y * otherVector.y : y * otherVector.y;
-    return Vector(x, y);
 }
 
 Vector Vector::byAngle(double angleDegrees, double amount) {
@@ -65,4 +52,8 @@ Vector Vector::byAngle(double angleDegrees, double amount) {
             cos(angle) * amount,
             sin(angle) * amount
     );
+}
+
+double Vector::length() {
+    return sqrt(x * x + y * y);
 }

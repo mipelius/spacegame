@@ -25,12 +25,21 @@ void GameWorld::setMap(Map* map) {
 
 void GameWorld::addEntity(GameEntity *gameEntity) {
     gameEntities->push_back(gameEntity);
+    gameEntity->setWorld(this);
 }
 
 void GameWorld::step(double timeSeconds) {
     for(std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
-        Vector airResistance = (*it)->getSpeed() * (*it)->getSpeed() * (0.5 * airDensity);
-        Vector acceleration = ((*it)->getForce() - airResistance) * (1 / (*it)->getMass());
+
+        Vector airResistance = Vector(0, 0);
+        Vector speed = (*it)->getSpeed();
+        if (speed.x != 0 || speed.y != 0) {
+            double speedLengthPow2 = speed.x * speed.x + speed.y * speed.y;
+            Vector airResistanceUnitVector = (speed * -1) * (1 / sqrt(speed.x * speed.x + speed.y * speed.y));
+            airResistance = airResistanceUnitVector * speedLengthPow2 * (0.5 * airDensity);
+        }
+        Vector totalForce = (*it)->getForce() + airResistance;
+        Vector acceleration = totalForce * (1 / (*it)->getMass());
 
         acceleration += gForce;
         (*it)->setSpeed((*it)->getSpeed() + acceleration);
@@ -40,6 +49,16 @@ void GameWorld::step(double timeSeconds) {
         (*it)->setLocation(newLocation);
 
         detectCollision((*it), oldLocation, newLocation);
+    }
+    // delete dead entities
+
+    for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
+        if ((*it)->isDead()) {
+            GameEntity *currentEntity = *it;
+            gameEntities->erase(it);
+            it++;
+            delete (currentEntity);
+        }
     }
 }
 
@@ -85,10 +104,14 @@ void GameWorld::detectCollision(GameEntity *entity, Point oldLocation, Point new
 }
 
 void GameWorld::defaultOnEntityCollision(GameEntity *entity, CollisionEventArgs* args) {
-    entity->setSpeed(entity->getSpeed() * -0.2);
+    entity->setSpeed(entity->getSpeed() * 0.0);
     entity->setLocation(args->oldLocation);
 }
 
 CollisionEventHandler *GameWorld::defaultCollisionHandler() {
     return new CollisionEventHandler(defaultOnEntityCollision);
+}
+
+void GameWorld::removeEntity(GameEntity *gameEntity) {
+    gameEntities->remove(gameEntity);
 }

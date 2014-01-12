@@ -35,3 +35,9 @@ Event *Event::operator += (EventHandler *eventHandler) {
 void Event::add(EventHandler *eventHandler) {
     this->eventHandlers->push_back(eventHandler);
 }
+
+Event::~Event() {
+    for (std::list<EventHandler*>::iterator it = eventHandlers->begin(); it != eventHandlers->end(); it++) {
+        delete (*it);
+    }
+}

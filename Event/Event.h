@@ -32,6 +32,7 @@ private:
     GameEntity* eventOwner;
 public:
     Event(GameEntity *eventOwner);
+    ~Event();
     void raise(EventArgs *eventArgs);
     Event* operator += (EventHandler* eventHandler);
     void add(EventHandler* eventHandler);

@@ -54,6 +54,8 @@ double GameEntity::getAngle() {
 
 GameEntity::GameEntity(Point focus, Point location) :
     focus(focus), location(location), force(Vector(0, 0)), speed(Vector(0, 0)), collisionEvent(new Event(this)) {
+    gameWorld = nullptr;
+    _isDead = false;
     this->angle = 0;
 }
 
@@ -83,4 +85,25 @@ void GameEntity::setForceToZero() {
 
 Event *GameEntity::getCollisionEvent() {
     return this->collisionEvent;
+}
+
+void GameEntity::setWorld(GameWorld *gameWorld) {
+    this->gameWorld = gameWorld;
+}
+
+GameWorld *GameEntity::getWorld() {
+    return this->gameWorld;
+}
+
+GameEntity::~GameEntity() {
+    delete collisionEvent;
+}
+
+
+void GameEntity::die() {
+    _isDead = true;
+}
+
+bool GameEntity::isDead() {
+    return _isDead;
 }

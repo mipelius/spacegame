@@ -26,11 +26,10 @@ public:
     static Vector byAngle(double angleDegrees, double amount);
     Vector operator + (const Vector& otherVector);
     Vector operator - (const Vector& otherVector);
-    Vector operator * (const Vector& otherVector);
     Vector operator -= (const Vector& otherVector);
     Vector operator += (const Vector& otherVector);
-    Vector operator *= (const Vector& otherVector);
     Vector operator *(double const &amount);
+    double length();
 };
 
 
