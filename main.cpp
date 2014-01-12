@@ -17,9 +17,24 @@
 #include <iostream>
 #include "Renderer.h"
 #include "GameObjectGroup.h"
+#include "CollisionEventArgs.h"
+#include "CollisionEventHandler.h"
 
 Texture* textureTurret = nullptr;
 Texture* textureSpaceShip = nullptr;
+
+void onSpaceshipCollision(GameEntity *gameEntity, CollisionEventArgs *args) {
+    if (args->map) {
+        int x = (int)args->newLocation.x;
+        int y = (int)args->newLocation.y;
+        for (int i=-50; i<50; i+=10) {
+            for (int j=-50; j<50; j+=10) {
+                args->map->setValueActual(x + i, y + j, 0);
+            }
+        }
+
+    }
+}
 
 GameObjectGroup* createSpaceShip() {
 
@@ -49,7 +64,7 @@ GameObject* createTurret(Point focus, Point location, int w, int h) {
             location,
             textureTurret,
             nullptr,
-            40,
+            100,
             w,
             h
     );
@@ -60,7 +75,7 @@ GameObject* createTurret(Point focus, Point location, int w, int h) {
 int main(int argc, const char * argv[])
 {
     Renderer* renderer = new Renderer();
-    renderer->init(0, 0, 1920, 1200, true);
+    renderer->init(0, 0, 1200, 800, false);
 
     renderer->addBackground(
             new Background(
@@ -91,12 +106,13 @@ int main(int argc, const char * argv[])
 
     Map* map = new Map("images/map.bmp", mapTexture, 10, 10);
 
-    GameWorld *world = new GameWorld(Vector(0, 9.81), 0.5, 0.005);
+    GameWorld *world = new GameWorld(Vector(0, 9.81), 0.25, 0.005);
     world->setMap(map);
 
     renderer->setGameWorld(world);
 
     GameObjectGroup* spaceShip = createSpaceShip();
+    GameObjectGroup* enemySpaceShip = createSpaceShip();
 
     GameObject* leftTurret = createTurret(Point(8, 0), Point(6, 30), 16, 32 );
     GameObject* rightTurret = createTurret(Point(8, 0), Point(64-6, 30), 16, 32);
@@ -107,25 +123,34 @@ int main(int argc, const char * argv[])
     spaceShip->add(middleTurret);
 
     spaceShip->setLocation(Point(4500, 8800));
+    spaceShip->getCollisionEvent()->add(new CollisionEventHandler(onSpaceshipCollision));
+    spaceShip->getCollisionEvent()->add(GameWorld::defaultCollisionHandler());
+    enemySpaceShip->getCollisionEvent()->add(GameWorld::defaultCollisionHandler());
 
+    world->addEntity(enemySpaceShip);
     world->addEntity(spaceShip);
 
     Camera* camera = renderer->getCamera();
-    //camera->setLocation(0, 7200);
 
     camera->follow(spaceShip);
 
     const Uint8* keys;
 
+    Uint32 timeMilliSec = SDL_GetTicks();
+
     while (!SDL_QuitRequested()) {
+
         keys = SDL_GetKeyboardState(0);
 
         if (keys[SDL_SCANCODE_LEFT]) spaceShip->setAngle(spaceShip->getAngle() - 5);
         if (keys[SDL_SCANCODE_RIGHT]) spaceShip->setAngle(spaceShip->getAngle() + 5);
-        if (keys[SDL_SCANCODE_UP]) spaceShip->applyForce(Vector::byAngle((spaceShip->getAngle() - 90) / 360 * 2 * M_PI, 80000));
-        if (keys[SDL_SCANCODE_DOWN]);
+        if (keys[SDL_SCANCODE_UP]) spaceShip->applyForce(Vector::byAngle(spaceShip->getAngle() - 90, 80000));
 
-        world->step(1.0 / 60.0);
+        enemySpaceShip->applyForce(Vector(0, -5000));
+
+        Uint32 timeElapsedMilliSec = SDL_GetTicks() - timeMilliSec;
+        world->step(timeElapsedMilliSec / 1000.0);
+        timeMilliSec = SDL_GetTicks();
         renderer->render();
     }
 

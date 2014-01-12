@@ -14,7 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <iostream>
 #include "GameWorld.h"
+#include "CollisionEventArgs.h"
+#include "CollisionEventHandler.h"
 
 void GameWorld::setMap(Map* map) {
     this->map = map;
@@ -26,21 +29,25 @@ void GameWorld::addEntity(GameEntity *gameEntity) {
 
 void GameWorld::step(double timeSeconds) {
     for(std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
-        Vector airResistance = (*it)->getSpeed() * (*it)->getSpeed() * (0.5 * airThickness);
+        Vector airResistance = (*it)->getSpeed() * (*it)->getSpeed() * (0.5 * airDensity);
         Vector acceleration = ((*it)->getForce() - airResistance) * (1 / (*it)->getMass());
 
         acceleration += gForce;
         (*it)->setSpeed((*it)->getSpeed() + acceleration);
-        (*it)->setLocation((*it)->getLocation() + (*it)->getSpeed() * timeSeconds * metersPerPixel);
+        Point oldLocation = (*it)->getLocation();
+        Point newLocation = oldLocation + (*it)->getSpeed() * timeSeconds * metersPerPixel;
         (*it)->setForceToZero();
+        (*it)->setLocation(newLocation);
+
+        detectCollision((*it), oldLocation, newLocation);
     }
 }
 
 GameWorld::GameWorld(
         Vector gForce,
         double metersPerPixel,
-        double airThickness
-): gForce(gForce), metersPerPixel(metersPerPixel), airThickness(airThickness) {
+        double airDensity
+): gForce(gForce), metersPerPixel(metersPerPixel), airDensity(airDensity) {
     this->map = nullptr;
     this->gameEntities = new std::list<GameEntity*>();
 }
@@ -59,4 +66,29 @@ long GameWorld::getW() {
 
 long GameWorld::getH() {
     return this->map->getActualH();
+}
+
+void GameWorld::detectCollision(GameEntity *entity, Point oldLocation, Point newLocation) {
+    bool isMapCollision = map->getValueActual((int)newLocation.x, (int)newLocation.y);
+    bool isBoundsCollision = newLocation.x < 0 || newLocation.x > getW() || newLocation.y < 0 || newLocation.y > getH();
+    // bool isEntityCollision = ???
+
+    if (isMapCollision || isBoundsCollision /* || isEntityCollision */) {
+        CollisionEventArgs* args = new CollisionEventArgs();
+        if (isMapCollision) args->map = this->map;
+        args->oldLocation = oldLocation;
+        args->newLocation = newLocation;
+        args->collisionLocation = newLocation;
+        entity->getCollisionEvent()->raise(args);
+        delete args;
+    }
+}
+
+void GameWorld::defaultOnEntityCollision(GameEntity *entity, CollisionEventArgs* args) {
+    entity->setSpeed(entity->getSpeed() * -0.2);
+    entity->setLocation(args->oldLocation);
+}
+
+CollisionEventHandler *GameWorld::defaultCollisionHandler() {
+    return new CollisionEventHandler(defaultOnEntityCollision);
 }

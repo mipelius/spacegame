@@ -59,7 +59,8 @@ Vector Vector::operator *= (const Vector &otherVector) {
     return Vector(x, y);
 }
 
-Vector Vector::byAngle(double angle, double amount) {
+Vector Vector::byAngle(double angleDegrees, double amount) {
+    double angle = angleDegrees / 360 * 2 * M_PI;
     return Vector(
             cos(angle) * amount,
             sin(angle) * amount

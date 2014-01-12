@@ -17,7 +17,7 @@
 #include "GameEntity.h"
 
 void GameEntity::applyForce(Vector force) {
-    this->force = force;
+    this->force += force;
 }
 
 void GameEntity::setAngle(double angle) {
@@ -53,7 +53,7 @@ double GameEntity::getAngle() {
 }
 
 GameEntity::GameEntity(Point focus, Point location) :
-    focus(focus), location(location), force(Vector(0, 0)), speed(Vector(0, 0)) {
+    focus(focus), location(location), force(Vector(0, 0)), speed(Vector(0, 0)), collisionEvent(new Event(this)) {
     this->angle = 0;
 }
 
@@ -79,4 +79,8 @@ Vector GameEntity::getSpeed() {
 
 void GameEntity::setForceToZero() {
     this->force = Vector(0, 0);
+}
+
+Event *GameEntity::getCollisionEvent() {
+    return this->collisionEvent;
 }

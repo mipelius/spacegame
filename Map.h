@@ -29,7 +29,9 @@ public:
             int blockSizeH = Map::DEFAULT_BLOCK_SIZE_H
     );
     void setValue(int x, int y, unsigned char value);
-    char getValue(int x, int y);
+    void setValueActual(int x, int y, unsigned char value);
+    unsigned char getValue(int x, int y);
+    unsigned char getValueActual(int x, int y);
     short getW();
     short getH();
     long getActualW();

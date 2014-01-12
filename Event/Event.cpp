@@ -14,24 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Vector_H_
-#define __Vector_H_
+#include "Event.h"
 
+void Event::raise(EventArgs *eventArgs) {
+    for (std::list<EventHandler*>::iterator it = eventHandlers->begin(); it != eventHandlers->end(); it++) {
+        (*it)->handle(eventOwner, eventArgs);
+    }
+}
 
-class Vector {
-public:
-    double x;
-    double y;
-    Vector(double x, double y);
-    static Vector byAngle(double angleDegrees, double amount);
-    Vector operator + (const Vector& otherVector);
-    Vector operator - (const Vector& otherVector);
-    Vector operator * (const Vector& otherVector);
-    Vector operator -= (const Vector& otherVector);
-    Vector operator += (const Vector& otherVector);
-    Vector operator *= (const Vector& otherVector);
-    Vector operator *(double const &amount);
-};
+Event::Event(GameEntity *eventOwner) {
+    this->eventHandlers = new std::list<EventHandler*>();
+    this->eventOwner = eventOwner;
+}
 
+Event *Event::operator += (EventHandler *eventHandler) {
+    this->eventHandlers->push_back(eventHandler);
+    return this;
+}
 
-#endif //__Vector_H_
+void Event::add(EventHandler *eventHandler) {
+    this->eventHandlers->push_back(eventHandler);
+}

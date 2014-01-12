@@ -103,11 +103,13 @@ void Map::initialize(short w, short h) {
 }
 
 void Map::setValue(int x, int y, unsigned char value) {
+    if (x < 0 || x >= w || y < 0 || y >= h) return;
     unsigned char *row = p_values[x];
     row[y] = value;
 }
 
-char Map::getValue(int x, int y) {
+unsigned char Map::getValue(int x, int y) {
+    if (x < 0 || x >= w || y < 0 || y >= h) return 0;
     unsigned char *row = p_values[x];
     return row[y];
 }
@@ -170,4 +172,12 @@ long Map::getActualW() {
 
 long Map::getActualH() {
     return h * blockSizeH;
+}
+
+unsigned char Map::getValueActual(int x, int y) {
+    return this->getValue(x / blockSizeW, y / blockSizeH);
+}
+
+void Map::setValueActual(int x, int y, unsigned char value) {
+    this->setValue(x / blockSizeW, y / blockSizeH, value);
 }

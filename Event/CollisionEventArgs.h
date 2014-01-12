@@ -14,24 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Vector_H_
-#define __Vector_H_
+
+#include "EventArgs.h"
+#include "Point.h"
+#include "Map.h"
+
+#ifndef __CollisionEventArgs_H_
+#define __CollisionEventArgs_H_
 
 
-class Vector {
+class CollisionEventArgs : public EventArgs {
 public:
-    double x;
-    double y;
-    Vector(double x, double y);
-    static Vector byAngle(double angleDegrees, double amount);
-    Vector operator + (const Vector& otherVector);
-    Vector operator - (const Vector& otherVector);
-    Vector operator * (const Vector& otherVector);
-    Vector operator -= (const Vector& otherVector);
-    Vector operator += (const Vector& otherVector);
-    Vector operator *= (const Vector& otherVector);
-    Vector operator *(double const &amount);
+    CollisionEventArgs();
+    Point oldLocation;
+    Point newLocation;
+    Point collisionLocation;
+    Map* map;
 };
 
 
-#endif //__Vector_H_
+#endif //__CollisionEventArgs_H_

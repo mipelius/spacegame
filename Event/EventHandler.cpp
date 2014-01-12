@@ -14,24 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Vector_H_
-#define __Vector_H_
+#include "EventHandler.h"
 
 
-class Vector {
-public:
-    double x;
-    double y;
-    Vector(double x, double y);
-    static Vector byAngle(double angleDegrees, double amount);
-    Vector operator + (const Vector& otherVector);
-    Vector operator - (const Vector& otherVector);
-    Vector operator * (const Vector& otherVector);
-    Vector operator -= (const Vector& otherVector);
-    Vector operator += (const Vector& otherVector);
-    Vector operator *= (const Vector& otherVector);
-    Vector operator *(double const &amount);
-};
+void EventHandler::handle(GameEntity *gameEntity, EventArgs *eventArgs) {
+    _eventFunction(gameEntity, eventArgs);
+}
 
-
-#endif //__Vector_H_
+EventHandler::EventHandler(void (*eventFunction)(GameEntity *, EventArgs *)) {
+    this->_eventFunction = eventFunction;
+}

@@ -20,6 +20,8 @@
 #ifndef __GameEntity_H_
 #define __GameEntity_H_
 
+#include "Event/Event.h"
+class Event;
 
 class GameEntity {
 protected:
@@ -28,6 +30,7 @@ protected:
     Point focus;
     Vector force;
     Vector speed;
+    Event* collisionEvent;
 public:
     GameEntity(Point focus, Point location);
     void applyForce(Vector force);
@@ -43,6 +46,7 @@ public:
     Point getFocus();
     void setSpeed(Vector speed);
     Vector getSpeed();
+    Event* getCollisionEvent();
     virtual void render(int x, int y);
     virtual double getMass();
 };
