@@ -69,7 +69,7 @@ GameEntity::GameEntity(Point focus, Point location, CollisionShape* collisionSha
     this->angle = 0;
 }
 
-void GameEntity::render(int x, int y) {
+void GameEntity::render(double x, double y) {
 
 }
 

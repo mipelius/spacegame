@@ -28,7 +28,7 @@ GameEntity(focus, location, collisionShape) {
 }
 
 
-void GameObjectGroup::render(int x, int y) {
+void GameObjectGroup::render(double x, double y) {
     GameEntity::render(x, y);
 
     glTranslatef(x, y, 0);

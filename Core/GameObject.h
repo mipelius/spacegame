@@ -38,7 +38,7 @@ public:
             int h,
             CollisionShape *collisionShape = nullptr
     );
-    void render(int x, int y);
+    void render(double x, double y);
     double getMass();
 };
 

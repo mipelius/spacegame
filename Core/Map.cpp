@@ -122,12 +122,12 @@ short Map::getH() {
     return h;
 }
 
-void Map::render(long x, long y, int w, int h) {
+void Map::render(double x, double y, double w, double h) {
     int iStart = 0;
     int jStart = 0;
 
-    if (x > 0) iStart = x / blockSizeW;
-    if (y > 0) jStart = y / blockSizeH;
+    if (x > 0) iStart = int(x / blockSizeW);
+    if (y > 0) jStart = int(y / blockSizeH);
 
     if (iStart < 0) iStart = 0;
     if (jStart < 0) jStart = 0;
@@ -135,8 +135,8 @@ void Map::render(long x, long y, int w, int h) {
     int iEnd = this->getW();
     int jEnd = this->getH();
 
-    if (x + w < this->getW() * blockSizeW) iEnd = (x + w) / blockSizeW + 1;
-    if (y + h < this->getH() * blockSizeH) jEnd = (y + h) / blockSizeH + 1;
+    if (x + w < this->getW() * blockSizeW) iEnd = int((x + w) / blockSizeW + 1);
+    if (y + h < this->getH() * blockSizeH) jEnd = int((y + h) / blockSizeH + 1);
 
     // NOTE: the textureNumber that is used for the current block is return value from getValue(i, j) - 1;
     // Maybe you should use more sophisticated way to indicate the correspondence between mapValues and textureNumbers
@@ -154,8 +154,8 @@ void Map::render(long x, long y, int w, int h) {
             glColor4d(color, color, color, color);
 
             mapTexture->renderBlock(
-                    i * blockSizeW - x,
-                    j * blockSizeH - y,
+                    (int)(i * blockSizeW - x),
+                    (int)(j * blockSizeH - y),
                     blockSizeW,
                     blockSizeH,
                     this->getValue(i, j) - 1

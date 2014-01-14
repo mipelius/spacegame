@@ -19,7 +19,7 @@
 static Texture* textureSpaceShip = nullptr;
 static Texture* textureTurret = nullptr;
 
-Spaceship::Spaceship(Point location) :
+Spaceship::Spaceship(Point location, int maxHealt) :
 GameObjectGroup(Point(0, 0), location, nullptr) {
     if (!textureSpaceShip) textureSpaceShip = new Texture("images/spaceship.png");
 
@@ -41,6 +41,8 @@ GameObjectGroup(Point(0, 0), location, nullptr) {
 
     this->setCollisionShape(new CollisionShape(collisionPoints, 3));
     this->add(objectSpaceShip);
+
+    this->health = maxHealt;
 }
 
 
@@ -99,6 +101,12 @@ void Spaceship::onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *a
 
     if (args->otherEntity && args->otherEntity == gameEntity->getOwner()) return;
 
+    Spaceship* spaceship = dynamic_cast<Spaceship*>(args->otherEntity);
+    if(spaceship != 0) {
+        // old was safely casted to NewType
+        spaceship->damage(rand() % 5 + 5);
+    }
+
     if (args->otherEntity) {
         args->otherEntity->applyForce(Vector::byAngle(gameEntity->getAngle() - 90, 600000));
     }
@@ -130,4 +138,9 @@ void Spaceship::shootOnce(Point startPoint) {
     missile->setAngle(angle);
     missile->setSpeed(this->getSpeed());
     missile->applyForce(Vector::byAngle(missile->getAngle() - 90.0, 2000000));
+}
+
+void Spaceship::damage(int amount) {
+    this->health -= amount;
+    if (health <= 0) this->die();
 }

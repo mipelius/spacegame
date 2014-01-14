@@ -26,7 +26,7 @@ private:
 public:
     GameObjectGroup(Point focus, Point location, CollisionShape* collisionShape = nullptr);
     void add(GameObject *gameObject);
-    void render(int x, int y);
+    void render(double x, double y);
     double getMass();
 };
 

@@ -21,13 +21,15 @@
 
 class Spaceship : public GameObjectGroup {
 private:
+    int health;
     void shootOnce(Point startPoint);
     GameObject *createTurret(Point focus, Point location, int w, int h);
     static void onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *args);
 public:
-    Spaceship(Point location);
+    Spaceship(Point location, int maxHealth);
     void addTurrets();
     void shoot();
+    void damage(int amount);
 };
 
 

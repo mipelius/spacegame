@@ -32,7 +32,7 @@ GameObject::GameObject(
     this->h = h;
 }
 
-void GameObject::render(int x, int y) {
+void GameObject::render(double x, double y) {
     GameEntity::render(x, y);
     glTranslatef(x, y, 0);
     glRotatef((GLfloat)angle, 0.0f, 0.0f, 1.0f);

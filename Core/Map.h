@@ -36,7 +36,7 @@ public:
     short getH();
     long getActualW();
     long getActualH();
-    void render(long x, long y, int w, int h);
+    void render(double x, double y, double w, double h);
 
 private:
     MapTexture* mapTexture;

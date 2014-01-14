@@ -66,7 +66,7 @@ public:
     void setOwner(GameEntity *owner);
     GameEntity* getOwner();
     void setCollisionShape(CollisionShape* collisionShape);
-    virtual void render(int x, int y);
+    virtual void render(double x, double y);
     virtual double getMass();
 
 };

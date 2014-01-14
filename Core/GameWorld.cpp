@@ -50,14 +50,12 @@ void GameWorld::step(double timeSeconds) {
 
         detectCollision((*it), oldLocation, newLocation);
     }
-    // delete dead entities
+    // remove dead entities from world
 
     for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
         if ((*it)->isDead()) {
-            GameEntity *currentEntity = *it;
             gameEntities->erase(it);
             it++;
-            delete (currentEntity);
         }
     }
 }

@@ -88,10 +88,10 @@ void Renderer::renderMap() {
     Map* map = this->gameWorld->getMap();
     Point location = camera->getLocation();
     map->render(
-            (int)location.x,
-            (int)location.y,
-            (int)camera->getW(),
-            (int)camera->getH()
+            location.x,
+            location.y,
+            camera->getW(),
+            camera->getH()
     );
 }
 
@@ -107,8 +107,8 @@ void Renderer::renderEntities() {
         // TODO: render only if the entity is in sight
 
         (*it)->render(
-                (int)(entityLocation.x - cameraLocation.x),
-                (int)(entityLocation.y - cameraLocation.y)
+                entityLocation.x - cameraLocation.x,
+                entityLocation.y - cameraLocation.y
         );
 
         CollisionShape* shape = (*it)->getCollisionShape();
@@ -124,7 +124,6 @@ void Renderer::renderEntities() {
                 glVertex2i(
                         points[i].x + location.x - cameraLocation.x,
                         points[i].y + location.y - cameraLocation.y
-
                 );
             }
             glEnd();
@@ -144,7 +143,6 @@ void Renderer::render() {
     renderBackground();
     renderMap();
     renderEntities();
-    SDL_GL_SwapWindow(window);
 }
 
 Renderer::Renderer() {
@@ -190,4 +188,8 @@ void Renderer::hideCollisionShapes() {
 
 void Renderer::toggleCollisionShapesVisibility() {
     collisionShapesAreVisible = !collisionShapesAreVisible;
+}
+
+void Renderer::glSwap() {
+    SDL_GL_SwapWindow(window);
 }

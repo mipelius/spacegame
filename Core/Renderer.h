@@ -50,6 +50,7 @@ public:
     GameWorld* getGameWorld();
     Camera* getCamera();
     void addBackground(Background *background);
+    void glSwap();
 };
 
 
