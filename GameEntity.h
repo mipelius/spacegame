@@ -22,6 +22,7 @@
 
 #include "Event/Event.h"
 #include "GameWorld.h"
+#include "CollisionShape.h"
 
 class Event;
 class GameWorld;
@@ -36,8 +37,9 @@ protected:
     Event* collisionEvent;
     GameWorld* gameWorld;
     bool _isDead;
+    CollisionShape *collisionShape;
 public:
-    GameEntity(Point focus, Point location);
+    GameEntity(Point focus, Point location, CollisionShape* collisionShape = nullptr);
     ~GameEntity();
     void die();
     void applyForce(Vector force);
@@ -57,6 +59,8 @@ public:
     void setWorld(GameWorld* gameWorld);
     GameWorld* getWorld();
     bool isDead();
+    bool collidesWith(GameEntity *otherEntity);
+    CollisionShape* getCollisionShape();
 
     virtual void render(int x, int y);
     virtual double getMass();

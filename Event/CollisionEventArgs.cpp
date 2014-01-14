@@ -17,6 +17,6 @@
 #include "CollisionEventArgs.h"
 
 CollisionEventArgs::CollisionEventArgs():
-oldLocation(Point(0, 0)), newLocation(Point(0, 0)), collisionLocation(Point(0, 0)), map(nullptr) {
+oldLocation(Point(0, 0)), newLocation(Point(0, 0)), collisionLocation(Point(0, 0)), map(nullptr), otherEntity(nullptr) {
 
 }

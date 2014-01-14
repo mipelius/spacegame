@@ -28,3 +28,7 @@ Point::~Point() {
 Point Point::operator +(const Vector &vector) {
     return Point(x + vector.x, y + vector.y);
 }
+
+Point Point::operator -(const Vector &vector) {
+    return Point(x - vector.x, y - vector.y);
+}

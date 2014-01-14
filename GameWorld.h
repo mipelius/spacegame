@@ -35,7 +35,6 @@ private:
     double metersPerPixel;
     double airDensity;
     void detectCollision(GameEntity* entity, Point oldLocation, Point newLocation);
-    static void defaultOnEntityCollision(GameEntity *entity, CollisionEventArgs* args);
 public:
     GameWorld(Vector gforce, double metersPerPixel, double airDensity);
     void step(double timeSeconds);
@@ -46,7 +45,6 @@ public:
     long getW();
     long getH();
     std::list<GameEntity*> *getGameEntities();
-    static CollisionEventHandler* defaultCollisionHandler();
 };
 
 #endif //__GameWorld_H_

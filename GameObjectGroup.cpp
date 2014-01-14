@@ -20,7 +20,8 @@ void GameObjectGroup::add(GameObject *gameObject) {
     this->gameObjects->push_back(gameObject);
 }
 
-GameObjectGroup::GameObjectGroup(Point focus, Point location) : GameEntity(focus, location) {
+GameObjectGroup::GameObjectGroup(Point focus, Point location, CollisionShape* collisionShape) :
+GameEntity(focus, location, collisionShape) {
     // Should it list of GameEntities? -> would provide support for group of groups
     // change it later if you feel so...
     this->gameObjects = new std::list<GameObject*>();

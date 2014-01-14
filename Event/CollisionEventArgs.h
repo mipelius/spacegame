@@ -23,6 +23,9 @@
 #define __CollisionEventArgs_H_
 
 
+#include "GameEntity.h"
+class GameEntity;
+
 class CollisionEventArgs : public EventArgs {
 public:
     CollisionEventArgs();
@@ -30,6 +33,7 @@ public:
     Point newLocation;
     Point collisionLocation;
     Map* map;
+    GameEntity* otherEntity;
 };
 
 

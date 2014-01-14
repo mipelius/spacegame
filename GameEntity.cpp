@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <iostream>
 #include "GameEntity.h"
 
 void GameEntity::applyForce(Vector force) {
@@ -37,6 +38,7 @@ Point GameEntity::getLocation() {
 }
 
 void GameEntity::setLocation(Point location) {
+    if (this->collisionShape != nullptr) this->collisionShape->setLocation(location - Vector(this->focus.x, this->focus.y));
     this->location = location;
 }
 
@@ -52,8 +54,15 @@ double GameEntity::getAngle() {
     return this->angle;
 }
 
-GameEntity::GameEntity(Point focus, Point location) :
-    focus(focus), location(location), force(Vector(0, 0)), speed(Vector(0, 0)), collisionEvent(new Event(this)) {
+GameEntity::GameEntity(Point focus, Point location, CollisionShape* collisionShape) :
+    focus(focus),
+    location(location),
+    force(Vector(0, 0)),
+    speed(Vector(0, 0)),
+    collisionEvent(new Event(this)),
+    collisionShape(collisionShape) {
+
+    if (collisionShape != nullptr) collisionShape->setLocation(this->location);
     gameWorld = nullptr;
     _isDead = false;
     this->angle = 0;
@@ -106,4 +115,22 @@ void GameEntity::die() {
 
 bool GameEntity::isDead() {
     return _isDead;
+}
+
+bool GameEntity::collidesWith(GameEntity *otherEntity) {
+    // TODO: this is temporary optimization implementation. Make better using bounding box (put it into the CollisionShape)
+    if (
+            Vector(
+                    this->location.x - otherEntity->getLocation().x,
+                    this->location.y - otherEntity->getLocation().y
+            ).length() > 200
+            ) return false;
+
+    if (this->collisionShape == nullptr || otherEntity->collisionShape == nullptr) return false;
+    if (this->collisionShape->intersectsWith(otherEntity->getCollisionShape())) return true;
+    return otherEntity->getCollisionShape()->intersectsWith(this->collisionShape);
+}
+
+CollisionShape *GameEntity::getCollisionShape() {
+    return this->collisionShape;
 }

@@ -90,26 +90,28 @@ long GameWorld::getH() {
 void GameWorld::detectCollision(GameEntity *entity, Point oldLocation, Point newLocation) {
     bool isMapCollision = map->getValueActual((int)newLocation.x, (int)newLocation.y);
     bool isBoundsCollision = newLocation.x < 0 || newLocation.x > getW() || newLocation.y < 0 || newLocation.y > getH();
-    // bool isEntityCollision = ???
+    bool isEntityCollision = false;
 
-    if (isMapCollision || isBoundsCollision /* || isEntityCollision */) {
+    GameEntity* otherEntity = nullptr;
+    for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
+        if ((*it) == entity) continue;
+        if (entity->collidesWith(*it)) {
+            otherEntity = (*it);
+            isEntityCollision = true;
+        };
+        if (otherEntity) break;
+    }
+
+    if (isMapCollision || isBoundsCollision || isEntityCollision) {
         CollisionEventArgs* args = new CollisionEventArgs();
         if (isMapCollision) args->map = this->map;
+        if (isEntityCollision) args->otherEntity = otherEntity;
         args->oldLocation = oldLocation;
         args->newLocation = newLocation;
         args->collisionLocation = newLocation;
         entity->getCollisionEvent()->raise(args);
         delete args;
     }
-}
-
-void GameWorld::defaultOnEntityCollision(GameEntity *entity, CollisionEventArgs* args) {
-    entity->setSpeed(entity->getSpeed() * 0.0);
-    entity->setLocation(args->oldLocation);
-}
-
-CollisionEventHandler *GameWorld::defaultCollisionHandler() {
-    return new CollisionEventHandler(defaultOnEntityCollision);
 }
 
 void GameWorld::removeEntity(GameEntity *gameEntity) {

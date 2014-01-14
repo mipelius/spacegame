@@ -110,7 +110,27 @@ void Renderer::renderEntities() {
                 (int)(entityLocation.x - cameraLocation.x),
                 (int)(entityLocation.y - cameraLocation.y)
         );
+
+        CollisionShape* shape = (*it)->getCollisionShape();
+        Point* points = shape->getPoints();
+        Point location = shape->getLocation();
+
+        if (collisionShapesAreVisible) {
+            glColor3f(1, 1, 1);
+            glDisable(GL_TEXTURE_2D);
+
+            glBegin(GL_LINE_LOOP);
+            for (int i=0; i<shape->getCount(); i++) {
+                glVertex2i(
+                        points[i].x + location.x - cameraLocation.x,
+                        points[i].y + location.y - cameraLocation.y
+
+                );
+            }
+            glEnd();
+        }
     }
+
 
     glLoadIdentity();
 }
@@ -158,4 +178,16 @@ Camera *Renderer::getCamera() {
         return nullptr;
     }
     return this->camera;
+}
+
+void Renderer::showCollisionShapes() {
+    collisionShapesAreVisible = true;
+}
+
+void Renderer::hideCollisionShapes() {
+    collisionShapesAreVisible = false;
+}
+
+void Renderer::toggleCollisionShapesVisibility() {
+    collisionShapesAreVisible = !collisionShapesAreVisible;
 }

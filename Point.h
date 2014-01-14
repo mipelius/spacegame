@@ -26,6 +26,7 @@ public:
     Point(double x, double y);
     ~Point();
     Point operator + (const Vector& vector);
+    Point operator - (const Vector& vector);
 };
 
 

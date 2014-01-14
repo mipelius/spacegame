@@ -24,7 +24,6 @@
 class GameObject : public GameEntity {
 private:
     Texture* texture;
-    CollisionShape* collisionShape;
     double mass;
     int w, h;
     const double ZERO_MASS = 0.0001;
@@ -34,10 +33,10 @@ public:
             Point focus,
             Point location,
             Texture *texture,
-            CollisionShape *collisionShape,
             double mass,
             int w,
-            int h
+            int h,
+            CollisionShape *collisionShape = nullptr
     );
     void render(int x, int y);
     double getMass();

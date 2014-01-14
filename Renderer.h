@@ -34,6 +34,7 @@ private:
     Camera* camera;
     GameWorld* gameWorld;
     std::list<Background*> *backgrounds;
+    bool collisionShapesAreVisible;
     void renderBackground();
     void renderMap();
     void renderEntities();
@@ -41,6 +42,9 @@ private:
 public:
     Renderer();
     ~Renderer();
+    void showCollisionShapes();
+    void hideCollisionShapes();
+    void toggleCollisionShapesVisibility();
     void render();
     void init(int x, int y, int w, int h, bool enableFullScreen = false);
     void setGameWorld(GameWorld* gameWorld);

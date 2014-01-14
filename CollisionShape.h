@@ -22,10 +22,17 @@
 
 class CollisionShape {
 private:
-    Point** points;
+    Point *points;
+    Point location;
+    int count;
+    bool intersectsWithHalfLine(Point linePoint1, Point linePoint2, Point offset);
 public:
-    CollisionShape(Point** points);
-    Point** getPoints();
+    CollisionShape(Point points[], int count);
+    bool intersectsWith(CollisionShape *shape);
+    void setLocation(Point point);
+    Point getLocation();
+    Point* getPoints();
+    int getCount();
 };
 
 

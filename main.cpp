@@ -23,35 +23,63 @@
 Texture* textureTurret = nullptr;
 Texture* textureSpaceShip = nullptr;
 
+GameObjectGroup* spaceShip = nullptr;
+
+void onSpaceshipCollision(GameEntity *entity, CollisionEventArgs* args) {
+    if (args->otherEntity) return;
+    entity->setSpeed(entity->getSpeed() * 0.0);
+    entity->setLocation(args->oldLocation);
+}
+
 void onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *args) {
     if (args->map) {
         int x = (int)args->newLocation.x;
         int y = (int)args->newLocation.y;
-        for (int i=-50; i<50; i+=10) {
-            for (int j=-50; j<50; j+=10) {
-                args->map->setValueActual(x + i, y + j, 0);
+        for (int i=-20; i<20; i+=5) {
+            for (int j=-20; j<20; j+=5) {
+                if (args->map->getValueActual(x + i, y + j)) {
+                    args->map->setValueActual(x + i, y + j, 0);
+                }
+            }
+        }
+        for (int i=-60; i<60; i+=5) {
+            for (int j=-60; j<60; j+=5) {
+                if (args->map->getValueActual(x + i, y + j)) {
+                    args->map->setValueActual(x + i, y + j, rand() % 2 + 1);
+                }
             }
         }
     }
-    gameEntity->die();
+    if (args->otherEntity && args->otherEntity != spaceShip) {
+        args->otherEntity->applyForce(Vector::byAngle(gameEntity->getAngle() - 90, 600000));
+
+    }
+    if (args->otherEntity != spaceShip) gameEntity->die();
 }
 
 void shoot(GameWorld* world, Point location, double angle, GameEntity* spaceShip) {
+    Point collisionPoints[] = {
+            Point(0, 5),
+            Point(10, 5),
+            Point(10, 15),
+            Point(0, 15)
+    };
+
     GameObject *missile = new GameObject(
-            Point(10, 20),
+            Point(5, 10),
             location,
             textureTurret,
-            nullptr,
-            100,
+            200,
+            10,
             20,
-            40
+            new CollisionShape(collisionPoints, 4)
     );
 
     missile->getCollisionEvent()->add(new CollisionEventHandler(onMissileCollision));
     world->addEntity(missile);
     missile->setAngle(angle);
     missile->setSpeed(spaceShip->getSpeed());
-    missile->applyForce(Vector::byAngle(missile->getAngle() - 90.0, 1000000));
+    missile->applyForce(Vector::byAngle(missile->getAngle() - 90.0, 2000000));
 }
 
 GameObjectGroup* createSpaceShip() {
@@ -62,13 +90,22 @@ GameObjectGroup* createSpaceShip() {
             Point(0, 0),
             Point(0, 0),
             textureSpaceShip,
-            nullptr,
             1000,
-            64,
-            64
+            32,
+            32,
+            nullptr
     );
 
-    GameObjectGroup *spaceShip = new GameObjectGroup(Point(32, 32), Point(4550, 9000));
+    Point collisionPoints[] = {
+            Point(16, 0),
+            Point(32, 32),
+            Point(0, 32)
+    };
+
+    GameObjectGroup *spaceShip = new GameObjectGroup(
+            Point(16, 16), Point(4550, 9000),
+            new CollisionShape(collisionPoints, 3)
+    );
     spaceShip->add(objectSpaceShip);
 
     return spaceShip;
@@ -81,10 +118,10 @@ GameObject* createTurret(Point focus, Point location, int w, int h) {
             focus,
             location,
             textureTurret,
-            nullptr,
             100,
             w,
-            h
+            h,
+            nullptr
     );
 
     return turret;
@@ -93,7 +130,7 @@ GameObject* createTurret(Point focus, Point location, int w, int h) {
 int main(int argc, const char * argv[])
 {
     Renderer* renderer = new Renderer();
-    renderer->init(0, 0, 1200, 800, true);
+    renderer->init(0, 0, 1920, 1200, true);
 
     renderer->addBackground(
             new Background(
@@ -122,25 +159,33 @@ int main(int argc, const char * argv[])
             }
     );
 
-    Map* map = new Map("images/map.bmp", mapTexture, 10, 10);
+    Map* map = new Map("images/map.bmp", mapTexture, 5, 5);
 
-    GameWorld *world = new GameWorld(Vector(0, 9.81), 0.25, 0.001);
+    GameWorld *world = new GameWorld(Vector(0, 9.81), 0.15, 0.001);
     world->setMap(map);
+
+
+    for (int i=0; i<20; i++) {
+        GameObjectGroup* enemy = createSpaceShip();
+        enemy->setLocation(Point(4500 + i * 50, 8700));
+        enemy->getCollisionEvent()->add(new CollisionEventHandler(onSpaceshipCollision));
+        world->addEntity(enemy);
+    }
 
     renderer->setGameWorld(world);
 
-    GameObjectGroup* spaceShip = createSpaceShip();
+    spaceShip = createSpaceShip();
 
-    GameObject* leftTurret = createTurret(Point(8, 0), Point(6, 30), 16, 32);
-    GameObject* rightTurret = createTurret(Point(8, 0), Point(64-6, 30), 16, 32);
-    GameObject* middleTurret = createTurret(Point(6.5, 16), Point(64/2, 0), 13, 32);
+    GameObject* leftTurret = createTurret(Point(4, 0), Point(3, 10), 8, 16);
+    GameObject* rightTurret = createTurret(Point(4, 0), Point(32-3, 10), 8, 16);
+    GameObject* middleTurret = createTurret(Point(2.5, 5), Point(32/2, 0), 5, 10);
 
     spaceShip->add(leftTurret);
     spaceShip->add(rightTurret);
     spaceShip->add(middleTurret);
 
     spaceShip->setLocation(Point(4500, 8800));
-    spaceShip->getCollisionEvent()->add(GameWorld::defaultCollisionHandler());
+    spaceShip->getCollisionEvent()->add(new CollisionEventHandler(onSpaceshipCollision));
 
     world->addEntity(spaceShip);
 
@@ -161,7 +206,7 @@ int main(int argc, const char * argv[])
         if (keys[SDL_SCANCODE_UP]) spaceShip->applyForce(Vector::byAngle(spaceShip->getAngle() - 90, 120000));
         if (keys[SDL_SCANCODE_SPACE]) {
             Uint32 deltaTime = SDL_GetTicks() - lastMissile;
-            if (deltaTime > 200) {
+            if (deltaTime > 100) {
                 shoot(
                         world,
                         spaceShip->getLocation() + Vector::byAngle(spaceShip->getAngle() - 90, 5),
@@ -170,19 +215,21 @@ int main(int argc, const char * argv[])
                 );
                 shoot(
                         world,
-                        spaceShip->getLocation() + Vector::byAngle(spaceShip->getAngle() + 45, 38),
+                        spaceShip->getLocation() + Vector::byAngle(spaceShip->getAngle() + 45, 18),
                         spaceShip->getAngle(),
                         spaceShip
                 );
                 shoot(
                         world,
-                        spaceShip->getLocation() + Vector::byAngle(spaceShip->getAngle() + 180 - 45, 38),
+                        spaceShip->getLocation() + Vector::byAngle(spaceShip->getAngle() + 180 - 45, 18),
                         spaceShip->getAngle(),
                         spaceShip
                 );
                 lastMissile = SDL_GetTicks();
             }
         }
+
+        if (keys[SDL_SCANCODE_F1]) renderer->toggleCollisionShapesVisibility();
 
         Uint32 timeElapsedMilliSec = SDL_GetTicks() - timeMilliSec;
         world->step(timeElapsedMilliSec / 1000.0);
