@@ -14,14 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#ifndef __Renderer_H_
+#define __Renderer_H_
+
 #include "GameWorld.h"
 #include "Background.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
-
-#ifndef __Renderer_H_
-#define __Renderer_H_
-
 #include "Camera.h"
 
 class Camera;

@@ -14,11 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <string>
-
 #ifndef __Block_H_
 #define __Block_H_
 
+#include <string>
 
 class Block {
 private:

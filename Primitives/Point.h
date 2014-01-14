@@ -14,11 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Vector.h"
-
 #ifndef __Location_H_
 #define __Location_H_
 
+#include "Vector.h"
 
 class Point {
 public:

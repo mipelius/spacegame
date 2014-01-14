@@ -14,12 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-
-#include "Texture.h"
-
 #ifndef __Background_H_
 #define __Background_H_
 
+#include "Texture.h"
 
 class Background {
 private:

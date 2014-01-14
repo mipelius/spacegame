@@ -14,11 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <list>
-
 #ifndef __Event_H_
 #define __Event_H_
 
+#include <list>
 #include "../Core/GameEntity.h"
 #include "EventHandler.h"
 

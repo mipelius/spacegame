@@ -14,15 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#ifndef __CollisionEventArgs_H_
+#define __CollisionEventArgs_H_
 
 #include "EventArgs.h"
 #include "Point.h"
 #include "Map.h"
-
-#ifndef __CollisionEventArgs_H_
-#define __CollisionEventArgs_H_
-
-
 #include "GameEntity.h"
 class GameEntity;
 

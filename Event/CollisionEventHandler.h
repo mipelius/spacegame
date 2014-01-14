@@ -14,12 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#ifndef __CollisionEventHandler_H_
+#define __CollisionEventHandler_H_
 
 #include "EventHandler.h"
 #include "CollisionEventArgs.h"
-
-#ifndef __CollisionEventHandler_H_
-#define __CollisionEventHandler_H_
 
 class CollisionEventHandler : public EventHandler {
 public:

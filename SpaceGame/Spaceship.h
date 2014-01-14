@@ -14,16 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "GameObjectGroup.h"
-
 #ifndef __Spaceship_H_
 #define __Spaceship_H_
+
+#include "GameObjectGroup.h"
 
 class Spaceship : public GameObjectGroup {
 private:
     void shootOnce(Point startPoint);
     GameObject *createTurret(Point focus, Point location, int w, int h);
-    static void onMissileCollision(GameEntity *gameEntity, EventArgs *args);
+    static void onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *args);
 public:
     Spaceship(Point location);
     void addTurrets();

@@ -77,28 +77,32 @@ void Spaceship::shoot() {
     shootOnce(Point(0, 0) + Vector::byAngle(angle - 90, 10));
 }
 
-void Spaceship::onMissileCollision(GameEntity *gameEntity, EventArgs *args) {
-//    if (args->map) {
-//        int x = (int)args->newLocation.x;
-//        int y = (int)args->newLocation.y;
-//        for (int i=-20; i<20; i+=5) {
-//            for (int j=-20; j<20; j+=5) {
-//                if (args->map->getValueActual(x + i, y + j)) {
-//                    args->map->setValueActual(x + i, y + j, 0);
-//                }
-//            }
-//        }
-//        for (int i=-60; i<60; i+=5) {
-//            for (int j=-60; j<60; j+=5) {
-//                if (args->map->getValueActual(x + i, y + j)) {
-//                    args->map->setValueActual(x + i, y + j, rand() % 2 + 1);
-//                }
-//            }
-//        }
-//    }
-//    if (args->otherEntity) {
-//        args->otherEntity->applyForce(Vector::byAngle(gameEntity->getAngle() - 90, 600000));
-//    }
+void Spaceship::onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *args) {
+    if (args->map) {
+        int x = (int)args->newLocation.x;
+        int y = (int)args->newLocation.y;
+        for (int i=-20; i<20; i+=5) {
+            for (int j=-20; j<20; j+=5) {
+                if (args->map->getValueActual(x + i, y + j)) {
+                    args->map->setValueActual(x + i, y + j, 0);
+                }
+            }
+        }
+        for (int i=-60; i<60; i+=5) {
+            for (int j=-60; j<60; j+=5) {
+                if (args->map->getValueActual(x + i, y + j)) {
+                    args->map->setValueActual(x + i, y + j, rand() % 2 + 1);
+                }
+            }
+        }
+    }
+
+    if (args->otherEntity && args->otherEntity == gameEntity->getOwner()) return;
+
+    if (args->otherEntity) {
+        args->otherEntity->applyForce(Vector::byAngle(gameEntity->getAngle() - 90, 600000));
+    }
+
     gameEntity->die();
 }
 
@@ -120,8 +124,9 @@ void Spaceship::shootOnce(Point startPoint) {
             new CollisionShape(collisionPoints, 4)
     );
 
-    missile->getCollisionEvent()->add(new EventHandler(onMissileCollision));
+    missile->getCollisionEvent()->add(new CollisionEventHandler(onMissileCollision));
     this->getWorld()->addEntity(missile);
+    missile->setOwner(this);
     missile->setAngle(angle);
     missile->setSpeed(this->getSpeed());
     missile->applyForce(Vector::byAngle(missile->getAngle() - 90.0, 2000000));

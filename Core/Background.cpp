@@ -16,8 +16,6 @@
 
 #include "Background.h"
 
-
-
 Background::Background(Texture *texture, int x, int y) {
     init(texture, x, y, texture->getW(), texture->getH());
 }

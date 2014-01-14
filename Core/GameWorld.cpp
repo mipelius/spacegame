@@ -16,8 +16,8 @@
 
 #include <iostream>
 #include "GameWorld.h"
-#include "CollisionEventArgs.h"
-#include "CollisionEventHandler.h"
+#include "../Event/CollisionEventArgs.h"
+#include "../Event/CollisionEventHandler.h"
 
 void GameWorld::setMap(Map* map) {
     this->map = map;

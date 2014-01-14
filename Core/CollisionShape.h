@@ -14,11 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Point.h"
-
 #ifndef __CollisionShape_H_
 #define __CollisionShape_H_
 
+#include "Point.h"
 
 class CollisionShape {
 private:

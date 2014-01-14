@@ -14,16 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#import <list>
-#include "Map.h"
-
 #ifndef __GameWorld_H_
 #define __GameWorld_H_
 
-#include "CollisionEventArgs.h"
+#include <list>
+#include "Map.h"
+
+#include "../Event/CollisionEventArgs.h"
 class CollisionEventArgs;
-//#include "CollisionEventHandler.h"
-class CollisionEventHandler;
+#include "../Event/CollisionEventHandler.h"
+//class CollisionEventHandler;
 #include "GameEntity.h"
 class GameEntity;
 

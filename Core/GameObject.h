@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#ifndef __GameObject_H_
+#define __GameObject_H_
+
 #include "GameEntity.h"
 #include "CollisionShape.h"
 #include "Texture.h"
-
-#ifndef __GameObject_H_
-#define __GameObject_H_
 
 class GameObject : public GameEntity {
 private:

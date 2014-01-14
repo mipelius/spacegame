@@ -14,12 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "../Primitives/Point.h"
-#include "../Primitives/Vector.h"
+
 
 #ifndef __GameEntity_H_
 #define __GameEntity_H_
 
+#include "../Primitives/Point.h"
+#include "../Primitives/Vector.h"
 #include "../Event/Event.h"
 #include "GameWorld.h"
 #include "CollisionShape.h"
@@ -38,6 +39,7 @@ protected:
     GameWorld* gameWorld;
     bool _isDead;
     CollisionShape *collisionShape;
+    GameEntity* owner;
 public:
     GameEntity(Point focus, Point location, CollisionShape* collisionShape = nullptr);
     ~GameEntity();
@@ -61,6 +63,8 @@ public:
     bool isDead();
     bool collidesWith(GameEntity *otherEntity);
     CollisionShape* getCollisionShape();
+    void setOwner(GameEntity *owner);
+    GameEntity* getOwner();
     void setCollisionShape(CollisionShape* collisionShape);
     virtual void render(int x, int y);
     virtual double getMass();

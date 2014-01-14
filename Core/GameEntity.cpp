@@ -62,6 +62,7 @@ GameEntity::GameEntity(Point focus, Point location, CollisionShape* collisionSha
     collisionEvent(new Event(this)),
     collisionShape(collisionShape) {
 
+    owner = nullptr;
     if (collisionShape != nullptr) collisionShape->setLocation(this->location);
     gameWorld = nullptr;
     _isDead = false;
@@ -137,4 +138,12 @@ CollisionShape *GameEntity::getCollisionShape() {
 
 void GameEntity::setCollisionShape(CollisionShape* collisionShape) {
     this->collisionShape = collisionShape;
+}
+
+void GameEntity::setOwner(GameEntity* owner) {
+    this->owner = owner;
+}
+
+GameEntity *GameEntity::getOwner() {
+    return this->owner;
 }

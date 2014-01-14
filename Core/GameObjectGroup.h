@@ -14,12 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#import <list>
-#include "GameObject.h"
-
 #ifndef __GameObjectGroup_H_
 #define __GameObjectGroup_H_
 
+#include <list>
+#include "GameObject.h"
 
 class GameObjectGroup : public GameEntity {
 private:
