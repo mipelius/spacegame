@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Point.h"
-#include "Vector.h"
+#include "../Primitives/Point.h"
+#include "../Primitives/Vector.h"
 
 #ifndef __GameEntity_H_
 #define __GameEntity_H_
 
-#include "Event/Event.h"
+#include "../Event/Event.h"
 #include "GameWorld.h"
 #include "CollisionShape.h"
 
@@ -61,7 +61,7 @@ public:
     bool isDead();
     bool collidesWith(GameEntity *otherEntity);
     CollisionShape* getCollisionShape();
-
+    void setCollisionShape(CollisionShape* collisionShape);
     virtual void render(int x, int y);
     virtual double getMass();
 

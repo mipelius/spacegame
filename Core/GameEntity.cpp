@@ -134,3 +134,7 @@ bool GameEntity::collidesWith(GameEntity *otherEntity) {
 CollisionShape *GameEntity::getCollisionShape() {
     return this->collisionShape;
 }
+
+void GameEntity::setCollisionShape(CollisionShape* collisionShape) {
+    this->collisionShape = collisionShape;
+}

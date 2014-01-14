@@ -19,7 +19,7 @@
 #ifndef __EventHandler_H_
 #define __EventHandler_H_
 
-#include "GameEntity.h"
+#include "../Core/GameEntity.h"
 class GameEntity;
 
 class EventHandler {

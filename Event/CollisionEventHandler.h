@@ -21,8 +21,6 @@
 #ifndef __CollisionEventHandler_H_
 #define __CollisionEventHandler_H_
 
-
-
 class CollisionEventHandler : public EventHandler {
 public:
     CollisionEventHandler(void (*eventFunction)(GameEntity* gameEntity, CollisionEventArgs* eventArgs));

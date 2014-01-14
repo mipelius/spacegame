@@ -16,8 +16,8 @@
 
 #include "GameWorld.h"
 #include "Background.h"
-#include <SDL2/sdl.h>
-#include <SDL2/sdl_opengl.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
 
 #ifndef __Renderer_H_
 #define __Renderer_H_

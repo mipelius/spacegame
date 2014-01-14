@@ -14,28 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <list>
+#include "GameObjectGroup.h"
 
-#ifndef __Event_H_
-#define __Event_H_
+#ifndef __Spaceship_H_
+#define __Spaceship_H_
 
-#include "../Core/GameEntity.h"
-#include "EventHandler.h"
-
-class EventHandler;
-class GameEntity;
-
-class Event {
+class Spaceship : public GameObjectGroup {
 private:
-    std::list<EventHandler*> *eventHandlers;
-    GameEntity* eventOwner;
+    void shootOnce(Point startPoint);
+    GameObject *createTurret(Point focus, Point location, int w, int h);
+    static void onMissileCollision(GameEntity *gameEntity, EventArgs *args);
 public:
-    Event(GameEntity *eventOwner);
-    ~Event();
-    void raise(EventArgs *eventArgs);
-    Event* operator += (EventHandler* eventHandler);
-    void add(EventHandler* eventHandler);
+    Spaceship(Point location);
+    void addTurrets();
+    void shoot();
 };
 
 
-#endif //__Event_H_
+#endif //__Spaceship_H_
