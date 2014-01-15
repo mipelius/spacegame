@@ -23,6 +23,7 @@ class CollisionShape {
 private:
     Point *points;
     Point location;
+    double angle;
     int count;
     bool intersectsWithHalfLine(Point linePoint1, Point linePoint2, Point offset);
 public:
@@ -32,6 +33,9 @@ public:
     Point getLocation();
     Point* getPoints();
     int getCount();
+    Point *getRotatedPoints();
+
+    void setAngle(double angle);
 };
 
 

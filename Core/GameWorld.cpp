@@ -54,8 +54,10 @@ void GameWorld::step(double timeSeconds) {
 
     for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
         if ((*it)->isDead()) {
+            GameEntity* currentEntity = (*it);
             gameEntities->erase(it);
             it++;
+            removeEntity(currentEntity);
         }
     }
 }
@@ -114,4 +116,5 @@ void GameWorld::detectCollision(GameEntity *entity, Point oldLocation, Point new
 
 void GameWorld::removeEntity(GameEntity *gameEntity) {
     gameEntities->remove(gameEntity);
+    gameEntity->setWorld(nullptr);
 }

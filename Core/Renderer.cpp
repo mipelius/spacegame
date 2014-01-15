@@ -112,7 +112,7 @@ void Renderer::renderEntities() {
         );
 
         CollisionShape* shape = (*it)->getCollisionShape();
-        Point* points = shape->getPoints();
+        Point* points = shape->getRotatedPoints();
         Point location = shape->getLocation();
 
         if (collisionShapesAreVisible) {
@@ -128,6 +128,8 @@ void Renderer::renderEntities() {
             }
             glEnd();
         }
+
+        delete points;
     }
 
 

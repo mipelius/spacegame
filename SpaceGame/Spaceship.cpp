@@ -19,41 +19,44 @@
 static Texture* textureSpaceShip = nullptr;
 static Texture* textureTurret = nullptr;
 
-Spaceship::Spaceship(Point location, int maxHealt) :
+Spaceship::Spaceship(Point location, int maxHealt, int size) :
 GameObjectGroup(Point(0, 0), location, nullptr) {
     if (!textureSpaceShip) textureSpaceShip = new Texture("images/spaceship.png");
+    if (!textureTurret) textureTurret = new Texture("images/turret.png");
 
     GameObject *objectSpaceShip = new GameObject(
             Point(0, 0),
-            Point(-16, -16),
+            Point(-16 * size, -16 * size),
             textureSpaceShip,
             1000,
-            32,
-            32,
+            32 * size,
+            32 * size,
             nullptr
     );
 
     Point collisionPoints[] = {
-            Point(0, -16),
-            Point(16, 16),
-            Point(-16, 16),
+            Point(0 * size, -16 * size),
+            Point(16 * size, 16 * size),
+            Point(-16 * size, 16 * size),
     };
 
     this->setCollisionShape(new CollisionShape(collisionPoints, 3));
     this->add(objectSpaceShip);
 
     this->health = maxHealt;
+    this->lastTimeShot = 0;
+    this->shootingDelay = 0;
 }
 
 
 void Spaceship::addTurrets() {
-    GameObject* leftTurret = createTurret(Point(4, 0), Point(-14, -5), 8, 16);
-    GameObject* rightTurret = createTurret(Point(4, 0), Point(14, -5), 8, 16);
-    GameObject* middleTurret = createTurret(Point(2.5, 5), Point(0, -15), 5, 10);
-
-    this->add(leftTurret);
-    this->add(rightTurret);
-    this->add(middleTurret);
+//    GameObject* leftTurret = createTurret(Point(4, 0), Point(-14 * size, -5 * size), 8 * size, 16 * size);
+//    GameObject* rightTurret = createTurret(Point(4, 0), Point(14 * size, -5 * size), 8 * size, 16 * size);
+//    GameObject* middleTurret = createTurret(Point(2.5, 5), Point(0 * size, -15 * size), 5 * size, 10 * size);
+//
+//    this->add(leftTurret);
+//    this->add(rightTurret);
+//    this->add(middleTurret);
 }
 
 GameObject* Spaceship::createTurret(Point focus, Point location, int w, int h) {
@@ -73,10 +76,11 @@ GameObject* Spaceship::createTurret(Point focus, Point location, int w, int h) {
 }
 
 void Spaceship::shoot() {
-    Vector vector = Vector::byAngle(angle - 90, -22);
-    shootOnce(Point(0, 0) + Vector::byAngle(angle - 90 + 45, 17) + vector);
-    shootOnce(Point(0, 0) + Vector::byAngle(angle - 90 - 45, 17) + vector);
-    shootOnce(Point(0, 0) + Vector::byAngle(angle - 90, 10));
+    Uint32 currentTime = SDL_GetTicks();
+    if (currentTime - lastTimeShot > shootingDelay) {
+        forceShoot();
+        lastTimeShot = currentTime;
+    }
 }
 
 void Spaceship::onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *args) {
@@ -143,4 +147,16 @@ void Spaceship::shootOnce(Point startPoint) {
 void Spaceship::damage(int amount) {
     this->health -= amount;
     if (health <= 0) this->die();
+}
+
+void Spaceship::setShootingSpeed(Uint32 shootingPerSecond) {
+    if (shootingPerSecond == 0) shootingDelay = 9999;
+    else shootingDelay = 1000 / shootingPerSecond;
+}
+
+void Spaceship::forceShoot() {
+    Vector vector = Vector::byAngle(angle - 90, -22);
+    shootOnce(Point(0, 0) + (Vector::byAngle(angle - 90 + 45, 17) + vector));
+    shootOnce(Point(0, 0) + (Vector::byAngle(angle - 90 - 45, 17) + vector));
+    shootOnce(Point(0, 0) + (Vector::byAngle(angle - 90, 10)));
 }

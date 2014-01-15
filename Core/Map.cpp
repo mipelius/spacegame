@@ -123,6 +123,9 @@ short Map::getH() {
 }
 
 void Map::render(double x, double y, double w, double h) {
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
     int iStart = 0;
     int jStart = 0;
 

@@ -25,11 +25,16 @@ private:
     void shootOnce(Point startPoint);
     GameObject *createTurret(Point focus, Point location, int w, int h);
     static void onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *args);
+    Uint32 shootingDelay;
+    Uint32 lastTimeShot;
+    int size;
 public:
-    Spaceship(Point location, int maxHealth);
+    Spaceship(Point location, int maxHealth, int size);
     void addTurrets();
     void shoot();
+    void forceShoot();
     void damage(int amount);
+    void setShootingSpeed(Uint32 shootingPerSecond);
 };
 
 

@@ -15,6 +15,7 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "GameObjectGroup.h"
+#include <SDL2/SDL_opengl.h>
 
 void GameObjectGroup::add(GameObject *gameObject) {
     this->gameObjects->push_back(gameObject);
@@ -30,7 +31,6 @@ GameEntity(focus, location, collisionShape) {
 
 void GameObjectGroup::render(double x, double y) {
     GameEntity::render(x, y);
-
     glTranslatef(x, y, 0);
     glRotatef((GLfloat)angle, 0.0f, 0.0f, 1.0f);
     glTranslatef(-x, -y, 0);
@@ -42,10 +42,7 @@ void GameObjectGroup::render(double x, double y) {
                 (int)(y + location.y - focus.y)
         );
     }
-    glTranslatef(x, y, 0);
-    glRotatef((GLfloat)-angle, 0.0f, 0.0f, 1.0f);
-    glTranslatef(-x, -y, 0);
-
+    glLoadIdentity();
 }
 
 double GameObjectGroup::getMass() {

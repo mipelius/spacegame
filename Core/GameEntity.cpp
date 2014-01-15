@@ -22,6 +22,7 @@ void GameEntity::applyForce(Vector force) {
 }
 
 void GameEntity::setAngle(double angle) {
+    if (this->collisionShape != nullptr) this->collisionShape->setAngle(this->angle);
     this->angle = angle;
 }
 

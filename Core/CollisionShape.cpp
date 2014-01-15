@@ -16,6 +16,7 @@
 
 #include <list>
 #include <iostream>
+#include <math.h>
 #include "CollisionShape.h"
 
 CollisionShape::CollisionShape(Point points[], int count): location(Point(0, 0)) {
@@ -27,7 +28,8 @@ CollisionShape::CollisionShape(Point points[], int count): location(Point(0, 0))
 }
 
 bool CollisionShape::intersectsWith(CollisionShape* otherShape) {
-    Point *otherShapePoints = otherShape->getPoints();
+    Point *otherShapePoints = otherShape->getRotatedPoints();
+    Point *thisPoints = this->getRotatedPoints();
 
     // if one of the corners (points) of the other collision shape is inner side of this shape, collision has happened
     for (int i=0; i<otherShape->getCount(); i++) {
@@ -36,8 +38,8 @@ bool CollisionShape::intersectsWith(CollisionShape* otherShape) {
         for (int j=0; j<count-1; j++) {
             if (
                     intersectsWithHalfLine(
-                            points[j] + Vector(location.x, location.y),
-                            points[j+1] + Vector(location.x, location.y),
+                            thisPoints[j] + Vector(location.x, location.y),
+                            thisPoints[j+1] + Vector(location.x, location.y),
                             otherShapePoints[i] + Vector(otherShape->getLocation().x, otherShape->getLocation().y))
                     ) {
 
@@ -47,8 +49,8 @@ bool CollisionShape::intersectsWith(CollisionShape* otherShape) {
         // check also the line between the last and the first point
         if (
                 intersectsWithHalfLine(
-                        points[count-1] + Vector(location.x, location.y),
-                        points[0] + Vector(location.x, location.y),
+                        thisPoints[count-1] + Vector(location.x, location.y),
+                        thisPoints[0] + Vector(location.x, location.y),
                         otherShapePoints[i] + Vector(otherShape->getLocation().x, otherShape->getLocation().y))
                 ) {
 
@@ -58,6 +60,9 @@ bool CollisionShape::intersectsWith(CollisionShape* otherShape) {
         // if the count is odd the collision has happened
         if (intersectionCount % 2) return true;
     }
+
+    delete thisPoints;
+    delete otherShapePoints;
 
     return false;
 }
@@ -92,4 +97,18 @@ void CollisionShape::setLocation(Point point) {
 
 Point CollisionShape::getLocation() {
     return location;
+}
+
+Point* CollisionShape::getRotatedPoints() {
+    Point* points = (Point*)malloc(count * sizeof(Point));
+    double angleRad = -this->angle / 360 * 2 * M_PI;
+    for (int i=0; i<count; i++) {
+        points[i].x = this->points[i].x * cos(angleRad) + this->points[i].y * sin(angleRad);
+        points[i].y = this->points[i].x * -sin(angleRad) + this->points[i].y * cos(angleRad);
+    }
+    return points;
+}
+
+void CollisionShape::setAngle(double angle) {
+    this->angle = angle;
 }
