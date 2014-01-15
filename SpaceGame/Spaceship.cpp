@@ -120,21 +120,24 @@ void Spaceship::onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *a
 
 void Spaceship::shootOnce(Point startPoint) {
     Point collisionPoints[] = {
-            Point(4, 9),
-            Point(6, 9),
-            Point(6, 11),
-            Point(4, 11)
+            Point(-1, 1),
+            Point(-1, 1),
+            Point(-1, 1),
+            Point(-1, 1)
     };
 
-    GameObject *missile = new GameObject(
-            Point(5, 10),
-            location + Vector(startPoint.x, startPoint.y),
+    GameObject *obj = new GameObject(
+            Point(0, 0),
+            Point(-5, -10),
             textureTurret,
             200,
             10,
             20,
-            new CollisionShape(collisionPoints, 4)
+            nullptr //new CollisionShape(collisionPoints, 4)
     );
+
+    GameObjectGroup* missile = new GameObjectGroup(Point(0, 0), location + Vector(startPoint.x, startPoint.y), new CollisionShape(collisionPoints, 4));
+    missile->add(obj);
 
     missile->getCollisionEvent()->add(new CollisionEventHandler(onMissileCollision));
     this->getWorld()->addEntity(missile);

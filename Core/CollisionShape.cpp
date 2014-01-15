@@ -19,15 +19,27 @@
 #include <math.h>
 #include "CollisionShape.h"
 
-CollisionShape::CollisionShape(Point points[], int count): location(Point(0, 0)) {
+CollisionShape::CollisionShape(Point points[], int count): location(Point(0, 0)), boundingBox(Rectangle(Point(0,0), Point(0,0))) {
     this->points = (Point*)malloc(count * sizeof(Point));
+    this->count = count;
+
+    Point farMost = Point(0, 0);
+
     for (int i=0; i<count; i++) {
         this->points[i] = points[i];
+
+        double length = Vector(points[i].x, points[i].y).length();
+        double farMostLength = Vector(farMost.x, farMost.y).length();
+        if (length > farMostLength) farMost = points[i];
     }
-    this->count = count;
+
+    double length = Vector(farMost.x, farMost.y).length();
+    boundingBox = Rectangle(Point(-length, -length), Point(length, length));
 }
 
 bool CollisionShape::intersectsWith(CollisionShape* otherShape) {
+    if (!this->getBoundingBox().intersectsWith(otherShape->getBoundingBox())) return false;
+
     Point *otherShapePoints = otherShape->getRotatedPoints();
     Point *thisPoints = this->getRotatedPoints();
 
@@ -111,4 +123,18 @@ Point* CollisionShape::getRotatedPoints() {
 
 void CollisionShape::setAngle(double angle) {
     this->angle = angle;
+}
+
+
+Rectangle CollisionShape::getBoundingBox() {
+    return Rectangle(
+            Point(
+                    this->boundingBox.getTopLeftCorner().x + location.x,
+                    this->boundingBox.getTopLeftCorner().y + location.y
+            ),
+            Point(
+                    this->boundingBox.getBottomRightCorner().x + location.x,
+                    this->boundingBox.getBottomRightCorner().y + location.y
+            )
+    );
 }

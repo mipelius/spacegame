@@ -18,9 +18,11 @@
 #define __CollisionShape_H_
 
 #include "Point.h"
+#include "Rectangle.h"
 
 class CollisionShape {
 private:
+    Rectangle boundingBox;
     Point *points;
     Point location;
     double angle;
@@ -34,7 +36,7 @@ public:
     Point* getPoints();
     int getCount();
     Point *getRotatedPoints();
-
+    Rectangle getBoundingBox();
     void setAngle(double angle);
 };
 

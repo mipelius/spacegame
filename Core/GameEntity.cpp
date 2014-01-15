@@ -120,14 +120,6 @@ bool GameEntity::isDead() {
 }
 
 bool GameEntity::collidesWith(GameEntity *otherEntity) {
-    // TODO: this is temporary optimization implementation. Make better using bounding box (put it into the CollisionShape)
-    if (
-            Vector(
-                    this->location.x - otherEntity->getLocation().x,
-                    this->location.y - otherEntity->getLocation().y
-            ).length() > 200
-            ) return false;
-
     if (this->collisionShape == nullptr || otherEntity->collisionShape == nullptr) return false;
     if (this->collisionShape->intersectsWith(otherEntity->getCollisionShape())) return true;
     return otherEntity->getCollisionShape()->intersectsWith(this->collisionShape);

@@ -116,6 +116,8 @@ void Renderer::renderEntities() {
         Point location = shape->getLocation();
 
         if (collisionShapesAreVisible) {
+            // collision shape
+
             glColor3f(1, 1, 1);
             glDisable(GL_TEXTURE_2D);
 
@@ -126,6 +128,19 @@ void Renderer::renderEntities() {
                         points[i].y + location.y - cameraLocation.y
                 );
             }
+            glEnd();
+
+            // bounding box
+
+            glColor3f(0.5, 0.5, 0.5);
+
+            Rectangle rect = shape->getBoundingBox();
+
+            glBegin(GL_LINE_LOOP);
+            glVertex2f(rect.getTopLeftCorner().x - cameraLocation.x, rect.getTopLeftCorner().y - cameraLocation.y);
+            glVertex2f(rect.getTopRightCorner().x - cameraLocation.x, rect.getTopRightCorner().y - cameraLocation.y);
+            glVertex2f(rect.getBottomRightCorner().x - cameraLocation.x, rect.getBottomRightCorner().y - cameraLocation.y);
+            glVertex2f(rect.getBottomLeftCorner().x - cameraLocation.x, rect.getBottomLeftCorner().y - cameraLocation.y);
             glEnd();
         }
 
