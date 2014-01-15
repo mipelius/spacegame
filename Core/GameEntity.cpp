@@ -60,6 +60,7 @@ GameEntity::GameEntity(Point focus, Point location, CollisionShape* collisionSha
     location(location),
     force(Vector(0, 0)),
     speed(Vector(0, 0)),
+    velocity(Vector(0, 0)),
     collisionEvent(new Event(this)),
     collisionShape(collisionShape) {
 
@@ -139,4 +140,16 @@ void GameEntity::setOwner(GameEntity* owner) {
 
 GameEntity *GameEntity::getOwner() {
     return this->owner;
+}
+
+Vector GameEntity::getVelocity() {
+    return velocity;
+}
+
+void GameEntity::setVelocity(Vector velocity) {
+    this->velocity = velocity;
+}
+
+Point GameEntity::getLocationBeforeUpdate() {
+    return location - velocity;
 }

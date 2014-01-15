@@ -29,6 +29,7 @@ void GameWorld::addEntity(GameEntity *gameEntity) {
 }
 
 void GameWorld::step(double timeSeconds) {
+    // update velocities and new locations
     for(std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
 
         Vector airResistance = Vector(0, 0);
@@ -44,12 +45,17 @@ void GameWorld::step(double timeSeconds) {
         acceleration += gForce;
         (*it)->setSpeed((*it)->getSpeed() + acceleration);
         Point oldLocation = (*it)->getLocation();
-        Point newLocation = oldLocation + (*it)->getSpeed() * timeSeconds * metersPerPixel;
+        (*it)->setVelocity((*it)->getSpeed() * timeSeconds * metersPerPixel);
+        (*it)->setLocation((*it)->getLocation() + (*it)->getVelocity());
         (*it)->setForceToZero();
-        (*it)->setLocation(newLocation);
 
-        detectCollision((*it), oldLocation, newLocation);
     }
+
+    // now all the new locations are updated -> detect collision
+    for(std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
+        detectCollision((*it), (*it)->getLocationBeforeUpdate(), (*it)->getLocation());
+    }
+
     // remove dead entities from world
 
     for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {

@@ -35,6 +35,7 @@ protected:
     Point focus;
     Vector force;
     Vector speed;
+    Vector velocity;
     Event* collisionEvent;
     GameWorld* gameWorld;
     bool _isDead;
@@ -66,6 +67,9 @@ public:
     void setOwner(GameEntity *owner);
     GameEntity* getOwner();
     void setCollisionShape(CollisionShape* collisionShape);
+    Vector getVelocity();
+    void setVelocity(Vector velocity);
+    Point getLocationBeforeUpdate();
     virtual void render(double x, double y);
     virtual double getMass();
 
