@@ -62,7 +62,8 @@ public:
     void setWorld(GameWorld* gameWorld);
     GameWorld* getWorld();
     bool isDead();
-    bool collidesWith(GameEntity *otherEntity);
+    bool detectCollisionActualWith(GameEntity *otherEntity);
+    virtual bool detectCollisionWith(GameEntity *otherEntity);
     CollisionShape* getCollisionShape();
     void setOwner(GameEntity *owner);
     GameEntity* getOwner();

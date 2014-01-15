@@ -44,11 +44,9 @@ void GameWorld::step(double timeSeconds) {
 
         acceleration += gForce;
         (*it)->setSpeed((*it)->getSpeed() + acceleration);
-        Point oldLocation = (*it)->getLocation();
         (*it)->setVelocity((*it)->getSpeed() * timeSeconds * metersPerPixel);
         (*it)->setLocation((*it)->getLocation() + (*it)->getVelocity());
         (*it)->setForceToZero();
-
     }
 
     // now all the new locations are updated -> detect collision
@@ -57,13 +55,12 @@ void GameWorld::step(double timeSeconds) {
     }
 
     // remove dead entities from world
-
     for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
         if ((*it)->isDead()) {
             GameEntity* currentEntity = (*it);
             gameEntities->erase(it);
             it++;
-            removeEntity(currentEntity);
+            currentEntity->setWorld(nullptr);
         }
     }
 }
@@ -99,9 +96,10 @@ void GameWorld::detectCollision(GameEntity *entity, Point oldLocation, Point new
     bool isEntityCollision = false;
 
     GameEntity* otherEntity = nullptr;
+
     for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
         if ((*it) == entity) continue;
-        if (entity->collidesWith(*it)) {
+        if (entity->detectCollisionWith(*it)) {
             otherEntity = (*it);
             isEntityCollision = true;
         };
@@ -118,9 +116,4 @@ void GameWorld::detectCollision(GameEntity *entity, Point oldLocation, Point new
         entity->getCollisionEvent()->raise(args);
         delete args;
     }
-}
-
-void GameWorld::removeEntity(GameEntity *gameEntity) {
-    gameEntities->remove(gameEntity);
-    gameEntity->setWorld(nullptr);
 }

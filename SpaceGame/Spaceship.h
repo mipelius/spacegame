@@ -30,7 +30,6 @@ private:
     int size;
 public:
     Spaceship(Point location, int maxHealth, int size);
-    void addTurrets();
     void shoot();
     void forceShoot();
     void damage(int amount);

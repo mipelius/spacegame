@@ -120,7 +120,7 @@ bool GameEntity::isDead() {
     return _isDead;
 }
 
-bool GameEntity::collidesWith(GameEntity *otherEntity) {
+bool GameEntity::detectCollisionWith(GameEntity *otherEntity) {
     if (this->collisionShape == nullptr || otherEntity->collisionShape == nullptr) return false;
     if (this->collisionShape->intersectsWith(otherEntity->getCollisionShape())) return true;
     return otherEntity->getCollisionShape()->intersectsWith(this->collisionShape);
@@ -152,4 +152,8 @@ void GameEntity::setVelocity(Vector velocity) {
 
 Point GameEntity::getLocationBeforeUpdate() {
     return location - velocity;
+}
+
+bool GameEntity::detectCollisionActualWith(GameEntity *otherEntity) {
+    return detectCollisionWith(otherEntity);
 }

@@ -39,7 +39,6 @@ public:
     GameWorld(Vector gforce, double metersPerPixel, double airDensity);
     void step(double timeSeconds);
     void addEntity(GameEntity *gameEntity);
-    void removeEntity(GameEntity *gameEntity);
     void setMap(Map* map);
     Map* getMap();
     long getW();

@@ -15,14 +15,13 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Spaceship.h"
+#include "Missile.h"
 
 static Texture* textureSpaceShip = nullptr;
-static Texture* textureTurret = nullptr;
 
 Spaceship::Spaceship(Point location, int maxHealt, int size) :
 GameObjectGroup(Point(0, 0), location, nullptr) {
     if (!textureSpaceShip) textureSpaceShip = new Texture("images/spaceship.png");
-    if (!textureTurret) textureTurret = new Texture("images/turret.png");
 
     GameObject *objectSpaceShip = new GameObject(
             Point(0, 0),
@@ -48,33 +47,6 @@ GameObjectGroup(Point(0, 0), location, nullptr) {
     this->shootingDelay = 0;
 }
 
-
-void Spaceship::addTurrets() {
-//    GameObject* leftTurret = createTurret(Point(4, 0), Point(-14 * size, -5 * size), 8 * size, 16 * size);
-//    GameObject* rightTurret = createTurret(Point(4, 0), Point(14 * size, -5 * size), 8 * size, 16 * size);
-//    GameObject* middleTurret = createTurret(Point(2.5, 5), Point(0 * size, -15 * size), 5 * size, 10 * size);
-//
-//    this->add(leftTurret);
-//    this->add(rightTurret);
-//    this->add(middleTurret);
-}
-
-GameObject* Spaceship::createTurret(Point focus, Point location, int w, int h) {
-    if (!textureTurret) textureTurret = new Texture("images/turret.png");
-
-    GameObject *turret = new GameObject(
-            focus,
-            location,
-            textureTurret,
-            100,
-            w,
-            h,
-            nullptr
-    );
-
-    return turret;
-}
-
 void Spaceship::shoot() {
     Uint32 currentTime = SDL_GetTicks();
     if (currentTime - lastTimeShot > shootingDelay) {
@@ -83,68 +55,10 @@ void Spaceship::shoot() {
     }
 }
 
-void Spaceship::onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *args) {
-    if (args->map) {
-        int x = (int)args->newLocation.x;
-        int y = (int)args->newLocation.y;
-        for (int i=-20; i<20; i+=5) {
-            for (int j=-20; j<20; j+=5) {
-                if (args->map->getValueActual(x + i, y + j)) {
-                    args->map->setValueActual(x + i, y + j, 0);
-                }
-            }
-        }
-        for (int i=-60; i<60; i+=5) {
-            for (int j=-60; j<60; j+=5) {
-                if (args->map->getValueActual(x + i, y + j)) {
-                    args->map->setValueActual(x + i, y + j, rand() % 2 + 1);
-                }
-            }
-        }
-    }
-
-    if (args->otherEntity && args->otherEntity == gameEntity->getOwner()) return;
-
-    Spaceship* spaceship = dynamic_cast<Spaceship*>(args->otherEntity);
-    if(spaceship != 0) {
-        // old was safely casted to NewType
-        spaceship->damage(rand() % 5 + 5);
-    }
-
-    if (args->otherEntity) {
-        args->otherEntity->applyForce(Vector::byAngle(gameEntity->getAngle() - 90, 600000));
-    }
-
-    gameEntity->die();
-}
-
 void Spaceship::shootOnce(Point startPoint) {
-    Point collisionPoints[] = {
-            Point(-1, 1),
-            Point(-1, 1),
-            Point(-1, 1),
-            Point(-1, 1)
-    };
-
-    GameObject *obj = new GameObject(
-            Point(0, 0),
-            Point(-5, -10),
-            textureTurret,
-            200,
-            10,
-            20,
-            nullptr //new CollisionShape(collisionPoints, 4)
-    );
-
-    GameObjectGroup* missile = new GameObjectGroup(Point(0, 0), location + Vector(startPoint.x, startPoint.y), new CollisionShape(collisionPoints, 4));
-    missile->add(obj);
-
-    missile->getCollisionEvent()->add(new CollisionEventHandler(onMissileCollision));
-    this->getWorld()->addEntity(missile);
+    Missile* missile = new Missile(this->location + Vector(startPoint.x, startPoint.y), this->angle, 2000000, this->speed);
     missile->setOwner(this);
-    missile->setAngle(angle);
-    missile->setSpeed(this->getSpeed());
-    missile->applyForce(Vector::byAngle(missile->getAngle() - 90.0, 2000000));
+    gameWorld->addEntity(missile);
 }
 
 void Spaceship::damage(int amount) {
