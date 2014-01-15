@@ -24,13 +24,16 @@ class CollisionShape {
 private:
     Rectangle boundingBox;
     Point *points;
+    Point *rotatedPoints;
     Point location;
     double angle;
+    bool rotatedPointsNeedUpdate;
     int count;
     bool intersectsWithHalfLine(Point linePoint1, Point linePoint2, Point offset);
 public:
     CollisionShape(Point points[], int count);
     bool intersectsWith(CollisionShape *shape);
+    bool intersectsWith(Rectangle* rectangle);
     void setLocation(Point point);
     Point getLocation();
     Point* getPoints();

@@ -91,8 +91,8 @@ long GameWorld::getH() {
 }
 
 void GameWorld::detectCollision(GameEntity *entity, Point oldLocation, Point newLocation) {
-    bool isMapCollision = map->getValueActual((int)newLocation.x, (int)newLocation.y);
     bool isBoundsCollision = newLocation.x < 0 || newLocation.x > getW() || newLocation.y < 0 || newLocation.y > getH();
+    bool isMapCollision = map->detectCollisionWith(entity);
     bool isEntityCollision = false;
 
     GameEntity* otherEntity = nullptr;

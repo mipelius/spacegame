@@ -19,7 +19,7 @@
 
 #include <list>
 #include "Map.h"
-
+class Map;
 #include "../Event/CollisionEventArgs.h"
 class CollisionEventArgs;
 #include "../Event/CollisionEventHandler.h"

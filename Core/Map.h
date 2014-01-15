@@ -19,6 +19,8 @@
 
 #include <string>
 #include "MapTexture.h"
+#include "GameEntity.h"
+class GameEntity;
 
 class Map {
 public:
@@ -34,9 +36,14 @@ public:
     unsigned char getValueActual(int x, int y);
     short getW();
     short getH();
+    int getBlockW();
+    int getBlockH();
+
     long getActualW();
     long getActualH();
     void render(double x, double y, double w, double h);
+
+    bool detectCollisionWith(GameEntity * entity);
 
 private:
     MapTexture* mapTexture;

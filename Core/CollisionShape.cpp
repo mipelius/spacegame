@@ -17,10 +17,13 @@
 #include <list>
 #include <iostream>
 #include <math.h>
+#include <SDL2/SDL_opengl.h>
 #include "CollisionShape.h"
 
 CollisionShape::CollisionShape(Point points[], int count): location(Point(0, 0)), boundingBox(Rectangle(Point(0,0), Point(0,0))) {
     this->points = (Point*)malloc(count * sizeof(Point));
+    this->rotatedPoints = (Point*)malloc(count * sizeof(Point));
+    this->rotatedPointsNeedUpdate = true;
     this->count = count;
 
     Point farMost = Point(0, 0);
@@ -73,9 +76,6 @@ bool CollisionShape::intersectsWith(CollisionShape* otherShape) {
         if (intersectionCount % 2) return true;
     }
 
-    delete thisPoints;
-    delete otherShapePoints;
-
     return false;
 }
 
@@ -112,19 +112,23 @@ Point CollisionShape::getLocation() {
 }
 
 Point* CollisionShape::getRotatedPoints() {
-    Point* points = (Point*)malloc(count * sizeof(Point));
-    double angleRad = -this->angle / 360 * 2 * M_PI;
-    for (int i=0; i<count; i++) {
-        points[i].x = this->points[i].x * cos(angleRad) + this->points[i].y * sin(angleRad);
-        points[i].y = this->points[i].x * -sin(angleRad) + this->points[i].y * cos(angleRad);
+    if (rotatedPointsNeedUpdate) {
+        double angleRad = this->angle / 360 * 2 * M_PI * -1;
+        for (int i=0; i<count; i++) {
+            rotatedPoints[i].x = this->points[i].x * cos(angleRad) + this->points[i].y * sin(angleRad);
+            rotatedPoints[i].y = -this->points[i].x * sin(angleRad) + this->points[i].y * cos(angleRad);
+        }
+
+        rotatedPointsNeedUpdate = false;
     }
-    return points;
+
+    return rotatedPoints;
 }
 
 void CollisionShape::setAngle(double angle) {
     this->angle = angle;
+    rotatedPointsNeedUpdate = true;
 }
-
 
 Rectangle CollisionShape::getBoundingBox() {
     return Rectangle(
@@ -137,4 +141,26 @@ Rectangle CollisionShape::getBoundingBox() {
                     this->boundingBox.getBottomRightCorner().y + location.y
             )
     );
+}
+
+bool CollisionShape::intersectsWith(Rectangle* rectangle) {
+    Point* points = getRotatedPoints();
+
+    for (int i=0; i<count-1; i++) {
+        if (rectangle->intersectsWithLine(
+                points[i].x + location.x,
+                points[i].y + location.y,
+                points[i+1].x + location.x,
+                points[i+1].y + location.y)
+                ) return true;
+    }
+
+    if (rectangle->intersectsWithLine(
+            points[count-1].x + location.x,
+            points[count-1].y + location.y,
+            points[0].x + location.x,
+            points[0].y + location.y)
+            ) return true;
+
+    return false;
 }

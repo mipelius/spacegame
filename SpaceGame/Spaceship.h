@@ -23,8 +23,6 @@ class Spaceship : public GameObjectGroup {
 private:
     int health;
     void shootOnce(Point startPoint);
-    GameObject *createTurret(Point focus, Point location, int w, int h);
-    static void onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *args);
     Uint32 shootingDelay;
     Uint32 lastTimeShot;
     int size;

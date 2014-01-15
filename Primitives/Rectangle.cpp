@@ -58,4 +58,67 @@ bool Rectangle::intersectsWith(Rectangle otherRectangle) {
     return rectAx1 <= rectBx2 && rectAx2 >= rectBx1 && rectAy1 <= rectBy2 && rectAy2 >= rectBy1;
 }
 
+Point Rectangle::getFirstPoint() {
+    return firstPoint;
+}
 
+Point Rectangle::getSecondPoint() {
+    return secondPoint;
+}
+
+bool Rectangle::intersectsWithLine(double x1, double y1, double x2, double y2) {
+    double slope = (y2 - y1) / (x2 - x1);
+
+    if (
+            ((x1 >= firstPoint.x && x1 <= secondPoint.x) || (x1 <= firstPoint.x && x1 >= secondPoint.x)) &&
+            ((y1 >= firstPoint.y && y1 <= secondPoint.x) || (y1 <= firstPoint.y && y1 >= secondPoint.x))
+    ) return true;
+
+    if (
+            ((x2 >= firstPoint.x && x2 <= secondPoint.x) || (x2 <= firstPoint.x && x2 >= secondPoint.x)) &&
+            ((y2 >= firstPoint.y && y2 <= secondPoint.x) || (y2 <= firstPoint.y && y2 >= secondPoint.x))
+    ) return true;
+
+    // TODO: x1 == x2 or y1 = y2
+
+    // top line
+
+    double y = firstPoint.y;
+    double x = (y + slope * x1 - y1) / slope;
+    if (
+            x >= firstPoint.x && x <= secondPoint.x &&
+                    ((y1 >= y && y2 <= y) ||
+                    (y1 <= y && y2 >= y))
+            ) return true;
+
+    // bottom line
+
+    y = secondPoint.y;
+    x = (y + slope * x1 - y1) / slope;
+    if (
+            x >= firstPoint.x && x <= secondPoint.x &&
+                    ((y1 >= y && y2 <= y) ||
+                    (y1 <= y && y2 >= y))
+            ) return true;
+
+    // left line
+
+    x = firstPoint.x;
+    y = slope * x - slope * x1 + y1;
+    if (
+            y >= firstPoint.y && y <= secondPoint.y &&
+                    ((x1 >= x && x2 <= x) ||
+                    (x1 <= x && x2 >= x))
+            ) return true;
+
+    // right line
+
+    x = secondPoint.x;
+    y = slope * x - slope * x1 + y1;
+    if (y >= firstPoint.y && y <= secondPoint.y &&
+            ((x1 >= x && x2 <= x) ||
+            (x1 <= x && x2 >= x))
+            ) return true;
+
+    return false;
+}

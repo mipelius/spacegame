@@ -15,6 +15,7 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Map.h"
+#include "GameEntity.h"
 #include <iostream>
 #include <fstream>
 #include <SDL2/SDL_opengl.h>
@@ -183,4 +184,44 @@ unsigned char Map::getValueActual(int x, int y) {
 
 void Map::setValueActual(int x, int y, unsigned char value) {
     this->setValue(x / blockSizeW, y / blockSizeH, value);
+}
+
+bool Map::detectCollisionWith(GameEntity *entity) {
+    if (this->getValueActual(entity->getLocation().x, entity->getLocation().y)) return true;
+
+    Point* points = entity->getCollisionShape()->getRotatedPoints();
+    for (int i=0; i<entity->getCollisionShape()->getCount(); i++) {
+        int x = (int)(points[i].x + entity->getCollisionShape()->getLocation().x);
+        int y = (int)(points[i].y + entity->getCollisionShape()->getLocation().y);
+        if (this->getValueActual(x, y)) return true;
+    }
+
+    Rectangle boundingBox = entity->getCollisionShape()->getBoundingBox();
+
+    int iBegin = (int)boundingBox.getFirstPoint().x - ((int)boundingBox.getFirstPoint().x) % blockSizeW;
+    int iEnd = (int)boundingBox.getSecondPoint().x + (int)boundingBox.getSecondPoint().x % blockSizeW;
+    int jBegin = (int)boundingBox.getFirstPoint().y - ((int)boundingBox.getFirstPoint().y) % blockSizeH;
+    int jEnd = (int)boundingBox.getSecondPoint().y + (int)boundingBox.getSecondPoint().y % blockSizeH;
+
+    for (int i=iBegin; i <= iEnd; i += blockSizeW) {
+        for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
+            if (this->getValueActual(i, j)) {
+                Rectangle* rect = new Rectangle(Point(i, j), Point(i + blockSizeW, j + blockSizeH));
+                if (entity->getCollisionShape()->intersectsWith(rect)) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+int Map::getBlockW() {
+    return this->blockSizeW;
+}
+
+
+int Map::getBlockH() {
+    return this->blockSizeH;
 }

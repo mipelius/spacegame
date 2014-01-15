@@ -20,9 +20,12 @@ public:
     Point getTopRightCorner();
     Point getBottomLeftCorner();
     Point getBottomRightCorner();
+    Point getFirstPoint();
+    Point getSecondPoint();
     double getWidth();
     double getHeight();
     bool intersectsWith(Rectangle otherRectangle);
+    bool intersectsWithLine(double x1, double y1, double x2, double y2);
 };
 
 

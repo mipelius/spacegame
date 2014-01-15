@@ -104,8 +104,6 @@ void Renderer::renderEntities() {
     for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
         Point entityLocation = (*it)->getLocation();
 
-        // TODO: render only if the entity is in sight
-
         (*it)->render(
                 entityLocation.x - cameraLocation.x,
                 entityLocation.y - cameraLocation.y
@@ -123,7 +121,7 @@ void Renderer::renderEntities() {
 
             glBegin(GL_LINE_LOOP);
             for (int i=0; i<shape->getCount(); i++) {
-                glVertex2i(
+                glVertex2f(
                         points[i].x + location.x - cameraLocation.x,
                         points[i].y + location.y - cameraLocation.y
                 );
@@ -132,7 +130,7 @@ void Renderer::renderEntities() {
 
             // bounding box
 
-            glColor3f(0.5, 0.5, 0.5);
+            glColor3f(0.2, 0.2, 0.2);
 
             Rectangle rect = shape->getBoundingBox();
 
@@ -143,9 +141,38 @@ void Renderer::renderEntities() {
             glVertex2f(rect.getBottomLeftCorner().x - cameraLocation.x, rect.getBottomLeftCorner().y - cameraLocation.y);
             glEnd();
         }
-
-        delete points;
+//
+//
+//
+//        Rectangle boundingBox = (*it)->getCollisionShape()->getBoundingBox();
+//
+//        int w = this->gameWorld->getMap()->getBlockW();
+//        int h = this->gameWorld->getMap()->getBlockH();
+//
+//        int iBegin = (int)boundingBox.getFirstPoint().x - ((int)boundingBox.getFirstPoint().x) % w;
+//        int iEnd = (int)boundingBox.getSecondPoint().x + (int)boundingBox.getSecondPoint().x % w;
+//        int jBegin = (int)boundingBox.getFirstPoint().y - ((int)boundingBox.getFirstPoint().y) % h;
+//        int jEnd = (int)boundingBox.getSecondPoint().y + (int)boundingBox.getSecondPoint().y % h;
+//
+//        glDisable(GL_TEXTURE_2D);
+//
+//        for (int i=iBegin; i <= iEnd; i += w) {
+//            for (int j=jBegin; j <= jEnd ; j += h) {
+//                if (gameWorld->getMap()->getValueActual(i, j)) glColor3f(1, 1, 1);
+//                else glColor3f(0.5, 0, 0);
+//
+//                Rectangle rect = Rectangle(Point(i, j), Point(i + w, j + h));
+//                glBegin(GL_LINE_LOOP);
+//                glVertex2f(rect.getTopLeftCorner().x - cameraLocation.x, rect.getTopLeftCorner().y - cameraLocation.y);
+//                glVertex2f(rect.getTopRightCorner().x - cameraLocation.x, rect.getTopRightCorner().y - cameraLocation.y);
+//                glVertex2f(rect.getBottomRightCorner().x - cameraLocation.x, rect.getBottomRightCorner().y - cameraLocation.y);
+//                glVertex2f(rect.getBottomLeftCorner().x - cameraLocation.x, rect.getBottomLeftCorner().y - cameraLocation.y);
+//                glEnd();
+//
+//            }
+//        }
     }
+
 
 
     glLoadIdentity();
