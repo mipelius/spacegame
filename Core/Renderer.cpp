@@ -141,36 +141,37 @@ void Renderer::renderEntities() {
             glVertex2f(rect.getBottomLeftCorner().x - cameraLocation.x, rect.getBottomLeftCorner().y - cameraLocation.y);
             glEnd();
         }
-//
-//
-//
-//        Rectangle boundingBox = (*it)->getCollisionShape()->getBoundingBox();
-//
-//        int w = this->gameWorld->getMap()->getBlockW();
-//        int h = this->gameWorld->getMap()->getBlockH();
-//
-//        int iBegin = (int)boundingBox.getFirstPoint().x - ((int)boundingBox.getFirstPoint().x) % w;
-//        int iEnd = (int)boundingBox.getSecondPoint().x + (int)boundingBox.getSecondPoint().x % w;
-//        int jBegin = (int)boundingBox.getFirstPoint().y - ((int)boundingBox.getFirstPoint().y) % h;
-//        int jEnd = (int)boundingBox.getSecondPoint().y + (int)boundingBox.getSecondPoint().y % h;
-//
-//        glDisable(GL_TEXTURE_2D);
-//
-//        for (int i=iBegin; i <= iEnd; i += w) {
-//            for (int j=jBegin; j <= jEnd ; j += h) {
-//                if (gameWorld->getMap()->getValueActual(i, j)) glColor3f(1, 1, 1);
-//                else glColor3f(0.5, 0, 0);
-//
-//                Rectangle rect = Rectangle(Point(i, j), Point(i + w, j + h));
-//                glBegin(GL_LINE_LOOP);
-//                glVertex2f(rect.getTopLeftCorner().x - cameraLocation.x, rect.getTopLeftCorner().y - cameraLocation.y);
-//                glVertex2f(rect.getTopRightCorner().x - cameraLocation.x, rect.getTopRightCorner().y - cameraLocation.y);
-//                glVertex2f(rect.getBottomRightCorner().x - cameraLocation.x, rect.getBottomRightCorner().y - cameraLocation.y);
-//                glVertex2f(rect.getBottomLeftCorner().x - cameraLocation.x, rect.getBottomLeftCorner().y - cameraLocation.y);
-//                glEnd();
-//
-//            }
-//        }
+
+        if (mapCollisionAreaIsVisible) {
+
+        Rectangle boundingBox = (*it)->getCollisionShape()->getBoundingBox();
+
+        int w = this->gameWorld->getMap()->getBlockW();
+        int h = this->gameWorld->getMap()->getBlockH();
+
+        int iBegin = (int)boundingBox.getFirstPoint().x - ((int)boundingBox.getFirstPoint().x) % w;
+        int iEnd = (int)boundingBox.getSecondPoint().x + (int)boundingBox.getSecondPoint().x % w;
+        int jBegin = (int)boundingBox.getFirstPoint().y - ((int)boundingBox.getFirstPoint().y) % h;
+        int jEnd = (int)boundingBox.getSecondPoint().y + (int)boundingBox.getSecondPoint().y % h;
+
+        glDisable(GL_TEXTURE_2D);
+
+        for (int i=iBegin; i <= iEnd; i += w) {
+            for (int j=jBegin; j <= jEnd ; j += h) {
+                if (gameWorld->getMap()->getValueActual(i, j)) glColor3f(1, 1, 1);
+                else glColor3f(0.2, 0, 0);
+
+                Rectangle rect = Rectangle(Point(i, j), Point(i + w, j + h));
+                glBegin(GL_LINE_LOOP);
+                glVertex2f(rect.getTopLeftCorner().x - cameraLocation.x, rect.getTopLeftCorner().y - cameraLocation.y);
+                glVertex2f(rect.getTopRightCorner().x - cameraLocation.x, rect.getTopRightCorner().y - cameraLocation.y);
+                glVertex2f(rect.getBottomRightCorner().x - cameraLocation.x, rect.getBottomRightCorner().y - cameraLocation.y);
+                glVertex2f(rect.getBottomLeftCorner().x - cameraLocation.x, rect.getBottomLeftCorner().y - cameraLocation.y);
+                glEnd();
+
+            }
+        }
+        }
     }
 
 
@@ -236,4 +237,16 @@ void Renderer::toggleCollisionShapesVisibility() {
 
 void Renderer::glSwap() {
     SDL_GL_SwapWindow(window);
+}
+
+void Renderer::toggleMapCollisionAreaVisibility() {
+    mapCollisionAreaIsVisible = !mapCollisionAreaIsVisible;
+}
+
+void Renderer::hideMapCollisionArea() {
+    mapCollisionAreaIsVisible = false;
+}
+
+void Renderer::showMapCollisionArea() {
+    mapCollisionAreaIsVisible = true;
 }

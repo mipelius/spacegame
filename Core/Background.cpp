@@ -35,6 +35,8 @@ void Background::init(Texture *texture, int x, int y, int w, int h) {
 void Background::render(int offSetX, int offSetY, int w, int h) {
     texture->glBind();
 
+    glColor3f(1, 1, 1);
+
     GLfloat textureLeftX = offSetX / (GLfloat)texture->getW();
     GLfloat textureRightX = (w + offSetX) / (GLfloat)texture->getW();
     GLfloat textureTopY = offSetY / (GLfloat)texture->getH();

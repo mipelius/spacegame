@@ -67,19 +67,16 @@ Point Rectangle::getSecondPoint() {
 }
 
 bool Rectangle::intersectsWithLine(double x1, double y1, double x2, double y2) {
+    // if one of the points is inside the rectangle
+    if (
+            (x1 >= firstPoint.x && x1 <= secondPoint.x) && (y1 >= firstPoint.y && y1 <= secondPoint.y)
+            ) return true;
+
+    if (
+            (x2 >= firstPoint.x && x2 <= secondPoint.x) && (y2 >= firstPoint.y && y2 <= secondPoint.y)
+            ) return true;
+
     double slope = (y2 - y1) / (x2 - x1);
-
-    if (
-            ((x1 >= firstPoint.x && x1 <= secondPoint.x) || (x1 <= firstPoint.x && x1 >= secondPoint.x)) &&
-            ((y1 >= firstPoint.y && y1 <= secondPoint.x) || (y1 <= firstPoint.y && y1 >= secondPoint.x))
-    ) return true;
-
-    if (
-            ((x2 >= firstPoint.x && x2 <= secondPoint.x) || (x2 <= firstPoint.x && x2 >= secondPoint.x)) &&
-            ((y2 >= firstPoint.y && y2 <= secondPoint.x) || (y2 <= firstPoint.y && y2 >= secondPoint.x))
-    ) return true;
-
-    // TODO: x1 == x2 or y1 = y2
 
     // top line
 

@@ -45,6 +45,7 @@ GameObjectGroup(Point(0, 0), location, nullptr) {
     this->health = maxHealt;
     this->lastTimeShot = 0;
     this->shootingDelay = 0;
+    this->_isStuck = false;
 }
 
 void Spaceship::shoot() {
@@ -76,4 +77,16 @@ void Spaceship::forceShoot() {
     shootOnce(Point(0, 0) + (Vector::byAngle(angle - 90 + 45, 17) + vector));
     shootOnce(Point(0, 0) + (Vector::byAngle(angle - 90 - 45, 17) + vector));
     shootOnce(Point(0, 0) + (Vector::byAngle(angle - 90, 10)));
+}
+
+void Spaceship::setStuck() {
+    _isStuck = true;
+}
+
+bool Spaceship::isStuck() {
+    return _isStuck;
+}
+
+void Spaceship::setNotStuck() {
+    _isStuck = false;
 }

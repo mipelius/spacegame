@@ -34,6 +34,7 @@ private:
     GameWorld* gameWorld;
     std::list<Background*> *backgrounds;
     bool collisionShapesAreVisible;
+    bool mapCollisionAreaIsVisible;
     void renderBackground();
     void renderMap();
     void renderEntities();
@@ -44,6 +45,9 @@ public:
     void showCollisionShapes();
     void hideCollisionShapes();
     void toggleCollisionShapesVisibility();
+    void showMapCollisionArea();
+    void hideMapCollisionArea();
+    void toggleMapCollisionAreaVisibility();
     void render();
     void init(int x, int y, int w, int h, bool enableFullScreen = false);
     void setGameWorld(GameWorld* gameWorld);

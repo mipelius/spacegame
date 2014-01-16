@@ -25,6 +25,7 @@ private:
     void shootOnce(Point startPoint);
     Uint32 shootingDelay;
     Uint32 lastTimeShot;
+    bool _isStuck;
     int size;
 public:
     Spaceship(Point location, int maxHealth, int size);
@@ -32,6 +33,9 @@ public:
     void forceShoot();
     void damage(int amount);
     void setShootingSpeed(Uint32 shootingPerSecond);
+    void setStuck();
+    void setNotStuck();
+    bool isStuck();
 };
 
 
