@@ -14,10 +14,11 @@
 class Missile : public GameObjectGroup {
 private:
     static void onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *args);
+    double timeAlive;
 public:
     Missile(Point location, double angle, double forceAmount, Vector initialSpeed);
     bool detectCollisionWith(GameEntity* entity);
-
+    void beforeStep(double timeElapsedSec);
 };
 
 

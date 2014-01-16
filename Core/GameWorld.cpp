@@ -31,6 +31,7 @@ void GameWorld::addEntity(GameEntity *gameEntity) {
 void GameWorld::step(double timeSeconds) {
     // update velocities and new locations
     for(std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
+        (*it)->beforeStep(timeSeconds);
 
         Vector airResistance = Vector(0, 0);
         Vector speed = (*it)->getSpeed();

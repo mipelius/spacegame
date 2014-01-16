@@ -73,7 +73,7 @@ public:
     Point getLocationBeforeUpdate();
     virtual void render(double x, double y);
     virtual double getMass();
-
+    virtual void beforeStep(double timeElapsedSec);
 };
 
 

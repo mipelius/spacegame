@@ -45,6 +45,7 @@ GameObjectGroup(Point(0, 0), location, nullptr) {
     this->setAngle(angle);
     this->setSpeed(initialSpeed);
     this->applyForce(Vector::byAngle(this->getAngle() - 90.0, forceAmount));
+    this->timeAlive = 0;
 }
 
 void Missile::onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *args) {
@@ -85,4 +86,10 @@ bool Missile::detectCollisionWith(GameEntity *entity) {
     }
 
     return GameEntity::detectCollisionWith(entity);
+}
+
+void Missile::beforeStep(double timeElapsedSec) {
+    GameEntity::beforeStep(timeElapsedSec);
+    timeAlive += timeElapsedSec;
+    if (timeAlive > 2) this->die();
 }

@@ -157,3 +157,6 @@ Point GameEntity::getLocationBeforeUpdate() {
 bool GameEntity::detectCollisionActualWith(GameEntity *otherEntity) {
     return detectCollisionWith(otherEntity);
 }
+
+void GameEntity::beforeStep(double timeElapsedSec) {
+}
