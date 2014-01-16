@@ -30,6 +30,7 @@ private:
     bool rotatedPointsNeedUpdate;
     int count;
     bool intersectsWithHalfLine(Point linePoint1, Point linePoint2, Point offset);
+    void updateRotatedPoints();
 public:
     CollisionShape(Point points[], int count);
     bool intersectsWith(CollisionShape *shape);

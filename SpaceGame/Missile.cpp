@@ -11,27 +11,26 @@
 static Texture* textureTurret = nullptr;
 
 Missile::Missile(Point location, double angle, double forceAmount, Vector initialSpeed) :
-GameObjectGroup(Point(0, 0), location, nullptr) {
-
+GameObjectGroup(
+        Point(0, 0),
+        location,
+        angle,
+        new CollisionShape(
+                (Point[]){
+                        Point(-2, -10),
+                        Point(2, -10),
+                        Point(2, 10),
+                        Point(-2, 10)
+                },
+                4
+        )
+) {
     if (!textureTurret) textureTurret = new Texture("images/turret.png");
-
-    Point collisionPoints[] = {
-            Point(-1, 1),
-            Point(-1, 1),
-            Point(-1, 1),
-            Point(-1, 1)
-    };
-
-    this->setCollisionShape(
-            new CollisionShape(
-                    collisionPoints,
-                    4
-            )
-    );
 
     GameObject *obj = new GameObject(
             Point(0, 0),
             Point(-5, -10),
+            0.0,
             textureTurret,
             200,
             10,
@@ -40,9 +39,8 @@ GameObjectGroup(Point(0, 0), location, nullptr) {
     );
 
     this->add(obj);
-
-    this->getCollisionEvent()->add(new CollisionEventHandler(onMissileCollision));
     this->setAngle(angle);
+    this->getCollisionEvent()->add(new CollisionEventHandler(onMissileCollision));
     this->setSpeed(initialSpeed);
     this->applyForce(Vector::byAngle(this->getAngle() - 90.0, forceAmount));
     this->timeAlive = 0;

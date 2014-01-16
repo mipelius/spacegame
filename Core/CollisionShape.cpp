@@ -23,7 +23,6 @@
 CollisionShape::CollisionShape(Point points[], int count): location(Point(0, 0)), boundingBox(Rectangle(Point(0,0), Point(0,0))) {
     this->points = (Point*)malloc(count * sizeof(Point));
     this->rotatedPoints = (Point*)malloc(count * sizeof(Point));
-    this->rotatedPointsNeedUpdate = true;
     this->count = count;
 
     Point farMost = Point(0, 0);
@@ -38,6 +37,8 @@ CollisionShape::CollisionShape(Point points[], int count): location(Point(0, 0))
 
     double length = Vector(farMost.x, farMost.y).length();
     boundingBox = Rectangle(Point(-length, -length), Point(length, length));
+
+    this->updateRotatedPoints();
 }
 
 bool CollisionShape::intersectsWith(CollisionShape* otherShape) {
@@ -113,13 +114,7 @@ Point CollisionShape::getLocation() {
 
 Point* CollisionShape::getRotatedPoints() {
     if (rotatedPointsNeedUpdate) {
-        double angleRad = this->angle / 360 * 2 * M_PI * -1;
-        for (int i=0; i<count; i++) {
-            rotatedPoints[i].x = this->points[i].x * cos(angleRad) + this->points[i].y * sin(angleRad);
-            rotatedPoints[i].y = -this->points[i].x * sin(angleRad) + this->points[i].y * cos(angleRad);
-        }
-
-        rotatedPointsNeedUpdate = false;
+        updateRotatedPoints();
     }
 
     return rotatedPoints;
@@ -163,4 +158,14 @@ bool CollisionShape::intersectsWith(Rectangle* rectangle) {
             ) return true;
 
     return false;
+}
+
+void CollisionShape::updateRotatedPoints() {
+    double angleRad = this->angle / 360 * 2 * M_PI * -1;
+    for (int i=0; i<count; i++) {
+        rotatedPoints[i].x = this->points[i].x * cos(angleRad) + this->points[i].y * sin(angleRad);
+        rotatedPoints[i].y = -this->points[i].x * sin(angleRad) + this->points[i].y * cos(angleRad);
+    }
+
+    rotatedPointsNeedUpdate = false;
 }

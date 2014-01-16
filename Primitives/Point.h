@@ -26,6 +26,7 @@ public:
     ~Point();
     Point operator + (const Vector& vector);
     Point operator - (const Vector& vector);
+    double distance(Point otherPoint);
 };
 
 

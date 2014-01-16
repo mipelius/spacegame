@@ -20,12 +20,13 @@
 GameObject::GameObject(
         Point focus,
         Point location,
+        double angle,
         Texture *texture,
         double mass,
         int w,
         int h,
         CollisionShape *collisionShape
-) : GameEntity(focus, location, collisionShape) {
+) : GameEntity(focus, location, angle, collisionShape) {
     this->texture = texture;
     mass == 0 ? this->mass = ZERO_MASS : this->mass = mass;
     this->w = w;

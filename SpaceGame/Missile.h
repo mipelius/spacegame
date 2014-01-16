@@ -15,6 +15,7 @@ class Missile : public GameObjectGroup {
 private:
     static void onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *args);
     double timeAlive;
+    double missileAngle;
 public:
     Missile(Point location, double angle, double forceAmount, Vector initialSpeed);
     bool detectCollisionWith(GameEntity* entity);

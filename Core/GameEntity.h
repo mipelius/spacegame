@@ -42,7 +42,7 @@ protected:
     CollisionShape *collisionShape;
     GameEntity* owner;
 public:
-    GameEntity(Point focus, Point location, CollisionShape* collisionShape = nullptr);
+    GameEntity(Point focus, Point location, double angle, CollisionShape* collisionShape = nullptr);
     ~GameEntity();
     void die();
     void applyForce(Vector force);

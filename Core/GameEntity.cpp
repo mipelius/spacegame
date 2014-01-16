@@ -55,7 +55,7 @@ double GameEntity::getAngle() {
     return this->angle;
 }
 
-GameEntity::GameEntity(Point focus, Point location, CollisionShape* collisionShape) :
+GameEntity::GameEntity(Point focus, Point location, double angle, CollisionShape* collisionShape) :
     focus(focus),
     location(location),
     force(Vector(0, 0)),
@@ -65,10 +65,11 @@ GameEntity::GameEntity(Point focus, Point location, CollisionShape* collisionSha
     collisionShape(collisionShape) {
 
     owner = nullptr;
+    this->angle = angle;
     if (collisionShape != nullptr) collisionShape->setLocation(this->location);
     gameWorld = nullptr;
     _isDead = false;
-    this->angle = 0;
+    if (collisionShape) collisionShape->setAngle(angle);
 }
 
 void GameEntity::render(double x, double y) {

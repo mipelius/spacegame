@@ -32,6 +32,7 @@ public:
     GameObject(
             Point focus,
             Point location,
+            double angle,
             Texture *texture,
             double mass,
             int w,

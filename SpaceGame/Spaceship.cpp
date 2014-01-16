@@ -20,12 +20,13 @@
 static Texture* textureSpaceShip = nullptr;
 
 Spaceship::Spaceship(Point location, int maxHealt, int size) :
-GameObjectGroup(Point(0, 0), location, nullptr) {
+GameObjectGroup(Point(0, 0), location, 0.0, nullptr) {
     if (!textureSpaceShip) textureSpaceShip = new Texture("images/spaceship.png");
 
     GameObject *objectSpaceShip = new GameObject(
             Point(0, 0),
             Point(-16 * size, -16 * size),
+            0.0,
             textureSpaceShip,
             1000,
             32 * size,

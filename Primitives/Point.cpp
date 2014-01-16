@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <math.h>
 #include "Point.h"
 
 Point::Point(double x, double y) {
@@ -31,4 +32,11 @@ Point Point::operator +(const Vector &vector) {
 
 Point Point::operator -(const Vector &vector) {
     return Point(x - vector.x, y - vector.y);
+}
+
+double Point::distance(Point otherPoint) {
+    return sqrt(
+            (otherPoint.x - this->x) * (otherPoint.x - this->x) +
+            (otherPoint.y - this->y) * (otherPoint.y - this->y)
+    );
 }
