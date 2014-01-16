@@ -33,6 +33,7 @@ void GameWorld::step(double timeSeconds) {
     for(std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
         (*it)->beforeStep(timeSeconds);
 
+        // compute total force
         Vector airResistance = Vector(0, 0);
         Vector speed = (*it)->getSpeed();
         if (speed.x != 0 || speed.y != 0) {
@@ -41,13 +42,21 @@ void GameWorld::step(double timeSeconds) {
             airResistance = airResistanceUnitVector * speedLengthPow2 * (0.5 * airDensity);
         }
         Vector totalForce = (*it)->getForce() + airResistance;
-        Vector acceleration = totalForce * (1 / (*it)->getMass());
 
+        // use acceleration for updating speed --> velocity --> location
+        Vector acceleration = totalForce * (1 / (*it)->getMass());
         acceleration += gForce;
         (*it)->setSpeed((*it)->getSpeed() + acceleration);
         (*it)->setVelocity((*it)->getSpeed() * timeSeconds * metersPerPixel);
         (*it)->setLocation((*it)->getLocation() + (*it)->getVelocity());
+
+        // apply torque (not very nicely implemented, but good enough)
+        (*it)->setAngularVelocity((*it)->getTorque() * timeSeconds);
+        (*it)->setAngle((*it)->getAngle() + (*it)->getAngularVelocity());
+
+        // remove all applied forces
         (*it)->setForceToZero();
+        (*it)->setTorque((*it)->getTorque() / ((*it)->getMass() * timeSeconds));
     }
 
     // now all the new locations are updated -> detect collision

@@ -32,6 +32,8 @@ class GameEntity {
 protected:
     Point location;
     double angle;
+    double angularVelocity;
+    double torque;
     Point focus;
     Vector force;
     Vector speed;
@@ -46,6 +48,13 @@ public:
     ~GameEntity();
     void die();
     void applyForce(Vector force);
+    void applyTorque(double angle);
+    double getTorque();
+    void setTorque(double torque);
+    void setTorqueToZero();
+    double getAngleBeforeUpdate();
+    double getAngularVelocity();
+    void setAngularVelocity(double angularVelocity);
     void setForceToZero();
     Vector getForce();
     void setAngle(double angle);

@@ -66,6 +66,7 @@ GameEntity::GameEntity(Point focus, Point location, double angle, CollisionShape
 
     owner = nullptr;
     this->angle = angle;
+    this->torque = 0;
     if (collisionShape != nullptr) collisionShape->setLocation(this->location);
     gameWorld = nullptr;
     _isDead = false;
@@ -160,4 +161,32 @@ bool GameEntity::detectCollisionActualWith(GameEntity *otherEntity) {
 }
 
 void GameEntity::beforeStep(double timeElapsedSec) {
+}
+
+void GameEntity::applyTorque(double angle) {
+    this->torque += angle;
+}
+
+double GameEntity::getAngleBeforeUpdate() {
+    return angle - angularVelocity;
+}
+
+double GameEntity::getAngularVelocity() {
+    return angularVelocity;
+}
+
+void GameEntity::setAngularVelocity(double angularVelocity) {
+    this->angularVelocity = angularVelocity;
+}
+
+void GameEntity::setTorqueToZero() {
+    this->torque = 0;
+}
+
+double GameEntity::getTorque() {
+    return this->torque;
+}
+
+void GameEntity::setTorque(double torque) {
+    this->torque = torque;
 }
