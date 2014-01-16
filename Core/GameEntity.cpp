@@ -78,7 +78,7 @@ void GameEntity::render(double x, double y) {
 }
 
 double GameEntity::getMass() {
-    return 0.0;
+    return 0.001;
 }
 
 Vector GameEntity::getForce() {

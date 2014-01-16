@@ -34,8 +34,8 @@ public:
     void setValueActual(int x, int y, unsigned char value);
     unsigned char getValue(int x, int y);
     unsigned char getValueActual(int x, int y);
-    short getW();
-    short getH();
+    int getW();
+    int getH();
     int getBlockW();
     int getBlockH();
 
@@ -51,10 +51,10 @@ private:
     static const int DEFAULT_BLOCK_SIZE_H = 8;
     int blockSizeW;
     int blockSizeH;
-    short w;
-    short h;
+    int w;
+    int h;
     unsigned char **p_values;
-    void initialize(short w, short h);
+    void initialize(int w, int h);
 };
 
 #endif //__Map_H_

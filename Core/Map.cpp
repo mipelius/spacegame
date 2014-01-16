@@ -19,6 +19,7 @@
 #include <iostream>
 #include <fstream>
 #include <SDL2/SDL_opengl.h>
+#include <SDL2_image/SDL_image.h>
 
 Map::Map(
         std::string path,
@@ -32,64 +33,26 @@ Map::Map(
 
     using namespace std;
 
-    ifstream file(path.data(), ios::in|ios::binary|ios::beg);
-
-    // this is only temporary implementation.
-
-    if (file.is_open())
-    {
-        // the size is fixed: 2000 x 2000
-        short W = 2000;
-        short H = 2000;
-        this->initialize(W, H);
-
-        file.seekg(1078);
-
-        char currentChar = 0;
-
-        for (int i = H - 1; i >= 0; i--) {
-            for (int j = 0; j < W; j++) {
-                file.read(&currentChar, 1);
-                this->setValue(j, i, (unsigned char)currentChar);
-            }
-            //file.read(&currentChar, 2);
-        }
-
+    SDL_Surface* surface = IMG_Load(path.data());
+    if (!surface) {
+        fprintf(stderr, "Error during loading map: %s\n", SDL_GetError());
+        exit(1);
     }
 
-    file.close();
+    Uint8* pixels = (Uint8*)surface->pixels;
 
-    // comment the above code and uncomment the code below
+    this->initialize(surface->w, surface->h);
 
-//    if (file.is_open())
-//    {
-//        // read size of the map
-//
-//        file.read((char*)&w, 2);
-//        file.read((char*)&h, 2);
-//
-//        // allocate memory for the map
-//        fprintf(stdout, "sizeX: %d, sizeY: %d\n", w, h);
-//
-//        initialize(w, h);
-//
-//        char currentChar = 0;
-//
-//        for (int i = 0; i < h; i++) {
-//            for (int j = 0; j < w; j++) {
-//                file.read(&currentChar, 1);
-//                this->setValue(j, i, (unsigned char)currentChar);
-//            }
-//        }
-//
-//        file.close();
-//
-//    }
-//
-//    else cout << "Unable to open file";
+    for (int i=0; i<surface->w; i++) {
+        for (int j=0; j<surface->h; j++) {
+            this->setValue(i, j, *(pixels + j * w + i));
+        }
+    }
+
+    SDL_FreeSurface(surface);
 }
 
-void Map::initialize(short w, short h) {
+void Map::initialize(int w, int h) {
     this->w = w;
     this->h = h;
     p_values = new unsigned char*[w];
@@ -115,11 +78,11 @@ unsigned char Map::getValue(int x, int y) {
     return row[y];
 }
 
-short Map::getW() {
+int Map::getW() {
     return w;
 }
 
-short Map::getH() {
+int Map::getH() {
     return h;
 }
 
