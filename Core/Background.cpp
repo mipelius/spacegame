@@ -15,6 +15,8 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Background.h"
+#include "CollisionShape.h"
+#include "GameEntity.h"
 
 Background::Background(Texture *texture, int x, int y) {
     init(texture, x, y, texture->getW(), texture->getH());
@@ -32,15 +34,15 @@ void Background::init(Texture *texture, int x, int y, int w, int h) {
     this->h = h;
 }
 
-void Background::render(int offSetX, int offSetY, int w, int h) {
+void Background::render(int offsetX, int offsetY, int w, int h) {
     texture->glBind();
 
     glColor3f(1, 1, 1);
 
-    GLfloat textureLeftX = offSetX / (GLfloat)texture->getW();
-    GLfloat textureRightX = (w + offSetX) / (GLfloat)texture->getW();
-    GLfloat textureTopY = offSetY / (GLfloat)texture->getH();
-    GLfloat textureBottomY = (h + offSetY) / (GLfloat)texture->getH();
+    GLfloat textureLeftX = offsetX / (GLfloat)texture->getW();
+    GLfloat textureRightX = (w + offsetX) / (GLfloat)texture->getW();
+    GLfloat textureTopY = offsetY / (GLfloat)texture->getH();
+    GLfloat textureBottomY = (h + offsetY) / (GLfloat)texture->getH();
 
     glBegin(GL_QUADS);
     glTexCoord2f(textureLeftX, textureTopY);

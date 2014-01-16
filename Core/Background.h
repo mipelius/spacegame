@@ -28,15 +28,61 @@ private:
     int h;
     void init(Texture *texture, int x, int y, int w, int h);
 public:
+    /**
+     * Constructor that initializes the width and the height using the size of the texture
+     *
+     * @param texture   the texture object used for rendering
+     * @param x         the x-coordinate of the northwest corner
+     *                  of the destination rectangle in pixels
+     * @param y         the y-coordinate of the northwest corner
+     *                  of the destination rectangle in pixels
+     */
     Background(Texture *texture, int x, int y);
+
+    /**
+     * Constructor
+     *
+     * @param texture   the texture object used for rendering
+     * @param x         the x-coordinate of the northwest corner
+     *                  of the destination rectangle in pixels
+     * @param y         the y-coordinate of the northwest corner
+     *                  of the destination rectangle in pixels
+     * @param w         the width of the background
+     * @param h         the height of the background
+     */
     Background(Texture *texture, int x, int y, int w, int h);
 
-    void render(int offSetX, int offSetY, int w, int h);
-    int getX();
-    int getY();
-    int getW();
-    int getH();
+    /**
+     * Renders the background using texture area from point (offsetX, offsetY) to point (offsetX + w, offsetY + h)
+     *
+     * @param offsetX   the x-coordinate of the offset
+     * @param offsetY   the y-coordinate of the offset
+     * @param w         the width of the rectangle
+     * @param h         the height of the rectangle
+     */
+    void render(int offsetX, int offsetY, int w, int h);
 
+    /**
+     * @return          the x-coordinate of the northwest corner
+     *                  of the destination rectangle in pixels
+     */
+    int getX();
+
+    /**
+     * @return          the y-coordinate of the northwest corner
+     *                  of the destination rectangle in pixels
+     */
+    int getY();
+
+    /**
+     * @return          the width of the background
+     */
+    int getW();
+
+    /**
+     * @return          the height of the background
+     */
+    int getH();
 };
 
 

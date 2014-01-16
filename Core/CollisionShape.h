@@ -32,15 +32,77 @@ private:
     bool intersectsWithHalfLine(Point linePoint1, Point linePoint2, Point offset);
     void updateRotatedPoints();
 public:
+    /**
+     * Constructor that initializes the collision shape. Note: use only convex shapes.
+     *
+     * @param points[]  the points that defines the shape
+     * @param count     the count of the points
+     */
     CollisionShape(Point points[], int count);
+
+    /**
+     * Checks if the shape intersects with the other shape
+     *
+     * @param shape     the other shape
+     * @return bool     true if this shape intersects with the other shape, false otherwise
+     */
     bool intersectsWith(CollisionShape *shape);
+
+    /**
+     * Checks if the shape intersects with the given rectangle
+     *
+     * @param rectangle the rectangle
+     * @return bool     true if this shape intersects with the given rectangle, false otherwise
+     */
     bool intersectsWith(Rectangle* rectangle);
+
+    /**
+     * Sets the location of the CollisionShape
+     *
+     * @param point the location
+     */
     void setLocation(Point point);
+
+    /**
+     * Gets the location of the CollisionShape
+     *
+     * @return the location
+     */
     Point getLocation();
+
+    /**
+     * Gets the points of the CollisionShape
+     *
+     * @return the points
+     */
     Point* getPoints();
+
+    /**
+     * Gets the count of the points of the CollisionShape
+     *
+     * @return the count of the points
+     */
     int getCount();
+
+    /**
+     * Gets the rotated points of the CollisionShape
+     *
+     * @return the points
+     */
     Point *getRotatedPoints();
+
+    /**
+     * Gets the bounding box which. Note: the location is already summed to points in this rectangle
+     *
+     * @return the bounding box
+     */
     Rectangle getBoundingBox();
+
+    /**
+     * Sets the angle
+     *
+     * @param angle the angle
+     */
     void setAngle(double angle);
 };
 
