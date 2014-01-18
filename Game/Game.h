@@ -14,13 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Game.h"
+#ifndef __SpaceGame_H_
+#define __SpaceGame_H_
 
-int main(int argc, const char * argv[])
-{
-    SpaceGame* game = new SpaceGame();
-    game->launch();
-    delete game;
+#include "../Core/Map.h"
+#include "../Core/GameWorld.h"
+#include "../Core/Renderer.h"
+#include "Spaceship.h"
+#include "WalkingCreature.h"
 
-    return 0;
-}
+class SpaceGame {
+private:
+    Map* map;
+    GameWorld* world;
+    Renderer* renderer;
+    Spaceship*player;
+    std::list<Spaceship*> *enemies;
+    Spaceship* boss;
+public:
+    SpaceGame();
+    ~SpaceGame();
+    void launch();
+};
+
+
+#endif //__SpaceGame_H_

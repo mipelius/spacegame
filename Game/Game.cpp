@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "SpaceGame.h"
+#include "Game.h"
 #include <iostream>
 #include "../Core/Renderer.h"
 #include "../Core/GameObjectGroup.h"
@@ -23,8 +23,9 @@
 #include "../Primitives/Point.h"
 #include "../Primitives/Vector.h"
 #include "Spaceship.h"
+#import "Missile.h"
 
-void onSpaceshipCollision(GameEntity *entity, CollisionEventArgs* args) {
+void onCollision(GameEntity *entity, CollisionEventArgs* args) {
     if (args->otherEntity && args->otherEntity->getOwner() == entity) return;
     entity->setSpeed(entity->getSpeed() * 0.5);
     entity->setLocation(args->oldLocation);
@@ -32,6 +33,10 @@ void onSpaceshipCollision(GameEntity *entity, CollisionEventArgs* args) {
     if ((int) entity->getAngularVelocity() != 0) {
         entity->applyTorque(-entity->getAngularVelocity() * 50);
     }
+}
+
+void onSpaceshipCollision(GameEntity *entity, CollisionEventArgs* args) {
+    onCollision(entity, args);
 
     if (entity->getSpeed().length() < 10) {
         Spaceship* spaceship = dynamic_cast<Spaceship*>(entity);
@@ -39,14 +44,13 @@ void onSpaceshipCollision(GameEntity *entity, CollisionEventArgs* args) {
             spaceship->setStuck();
         }
     }
-
 }
 
 SpaceGame::SpaceGame() {
     // --- INITIALIZE RENDERER ---
 
     renderer = new Renderer();
-    renderer->init(0, 0, 1200, 800, false);
+    renderer->init(0, 0, 1920, 1200, true);
 
     renderer->addBackground(
             new Background(
@@ -78,7 +82,7 @@ SpaceGame::SpaceGame() {
     // --- WORLD ---
 
     map = new Map("images/map.bmp", mapTexture, 10, 10);
-    world = new GameWorld(Vector(0, 9.81), 0.15, 0.001);
+    world = new GameWorld(Vector(0, 9.81), 0.20, 0.001);
     world->setMap(map);
     renderer->setGameWorld(world);
 
@@ -110,6 +114,7 @@ SpaceGame::SpaceGame() {
     boss = new Spaceship(Point(4500, 8700), 300, 3);
     boss->getCollisionEvent()->add(new CollisionEventHandler(onSpaceshipCollision));
     boss->setShootingSpeed(4);
+
 }
 
 void SpaceGame::launch() {
@@ -153,11 +158,15 @@ void SpaceGame::launch() {
         }
 
         if (boss && boss->getWorld()) {
-            if (player->getLocation().distance(boss->getLocation()) < 500) renderer->getCamera()->follow(boss);
-            else renderer->getCamera()->follow(player);
             if(boss->getSpeed().y > 0) boss->applyForce(Vector(0, -10000));
             boss->setAngle(boss->getAngle() + 1);
             boss->shoot();
+            if (!(rand() % 100)) {
+                WalkingCreature* creature = new WalkingCreature(boss->getLocation(), 100);
+                creature->applyForce(Vector::byAngle(boss->getAngle() - 90, 20000));
+                creature->setTarget(player);
+                world->addEntity(creature);
+            }
         }
 
         Uint32 timeElapsedMilliSec = SDL_GetTicks() - timeMilliSec;
@@ -166,18 +175,21 @@ void SpaceGame::launch() {
 
         renderer->render();
 
-        // additional rendering
-        if (enemies->empty() && boss->isDead()) {
-            glDisable(GL_TEXTURE_2D);
-            glColor3f(1.0, 0, 0);
-            glRectf(10, 10, 100, 100);
-        }
 
-        if (player->isStuck()) {
-            glDisable(GL_TEXTURE_2D);
-            glColor3f(1.0, 1.0, 0);
-            glRectf(10, 10, 100, 100);
-        }
+        glDisable(GL_TEXTURE_2D);
+
+        glColor3f(0.6, 0.0, 0.0);
+
+        glRectf(1650, 20, 1650 + (250 * player->getHealth() / player->getMaxHealth()), 40);
+
+        glColor3f(1.0, 1.0, 1.0);
+
+        glBegin(GL_LINE_LOOP);
+        glVertex2i(1650, 20);
+        glVertex2i(1900, 20);
+        glVertex2i(1900, 40);
+        glVertex2i(1650, 40);
+        glEnd();
 
         renderer->glSwap();
     }

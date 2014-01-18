@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,27 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __SpaceGame_H_
-#define __SpaceGame_H_
+#include "SpaceGameObject.h"
 
-#include "../Core/Map.h"
-#include "../Core/GameWorld.h"
-#include "../Core/Renderer.h"
-#include "Spaceship.h"
+SpaceGameObject::SpaceGameObject(Point focus, Point location, double angle, CollisionShape *shape, int maxHealth) :
+GameObjectGroup(focus, location, angle, shape) {
+    this->health = maxHealth;
+    this->maxHealth = maxHealth;
+}
 
-class SpaceGame {
-private:
-    Map* map;
-    GameWorld* world;
-    Renderer* renderer;
-    Spaceship* player;
-    std::list<Spaceship*> *enemies;
-    Spaceship* boss;
-public:
-    SpaceGame();
-    ~SpaceGame();
-    void launch();
-};
+void SpaceGameObject::damage(int damage) {
+    health -= damage;
+    if (health <= 0) this->die();
+}
 
+int SpaceGameObject::getHealth() {
+    return health;
+}
 
-#endif //__SpaceGame_H_
+int SpaceGameObject::getMaxHealth() {
+    return maxHealth;
+}

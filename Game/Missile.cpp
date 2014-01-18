@@ -77,10 +77,10 @@ void Missile::onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *arg
         }
     }
 
-    Spaceship* spaceship = dynamic_cast<Spaceship*>(args->otherEntity);
-    if(spaceship != 0) {
-        spaceship->damage(rand() % 5 + 5);
-        spaceship->applyForce(Vector::byAngle(gameEntity->getAngle() - 90, 600000));
+    SpaceGameObject* spaceGameObject = dynamic_cast<SpaceGameObject*>(args->otherEntity);
+    if(spaceGameObject != 0) {
+        spaceGameObject->damage(rand() % 5 + 5);
+        spaceGameObject->applyForce(Vector::byAngle(gameEntity->getAngle() - 90, 6000));
     }
 
     gameEntity->die();

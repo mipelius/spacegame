@@ -20,7 +20,7 @@
 static Texture* textureSpaceShip = nullptr;
 
 Spaceship::Spaceship(Point location, int maxHealt, int size) :
-GameObjectGroup(Point(0, 0), location, 0.0, nullptr) {
+SpaceGameObject(Point(0, 0), location, 0.0, nullptr, maxHealt) {
     if (!textureSpaceShip) textureSpaceShip = new Texture("images/spaceship.png");
 
     GameObject *objectSpaceShip = new GameObject(
@@ -61,11 +61,6 @@ void Spaceship::shootOnce(Point startPoint) {
     Missile* missile = new Missile(this->location + Vector(startPoint.x, startPoint.y), this->angle, 2000000, this->speed);
     missile->setOwner(this);
     gameWorld->addEntity(missile);
-}
-
-void Spaceship::damage(int amount) {
-    this->health -= amount;
-    if (health <= 0) this->die();
 }
 
 void Spaceship::setShootingSpeed(Uint32 shootingPerSecond) {

@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,29 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Spaceship_H_
-#define __Spaceship_H_
-
 #include "GameObjectGroup.h"
 
-class Spaceship : public GameObjectGroup {
-private:
-    int health;
-    void shootOnce(Point startPoint);
-    Uint32 shootingDelay;
-    Uint32 lastTimeShot;
-    bool _isStuck;
-    int size;
+#ifndef __SpaceGameEntity_H_
+#define __SpaceGameEntity_H_
+
+class SpaceGameObject : public GameObjectGroup {
+    int health = 0;
+    int maxHealth = 0;
 public:
-    Spaceship(Point location, int maxHealth, int size);
-    void shoot();
-    void forceShoot();
-    void damage(int amount);
-    void setShootingSpeed(Uint32 shootingPerSecond);
-    void setStuck();
-    void setNotStuck();
-    bool isStuck();
+    SpaceGameObject(Point focus, Point location, double angle, CollisionShape* shape, int maxHealth);
+    void damage(int damage);
+    int getHealth();
+    int getMaxHealth();
 };
 
 
-#endif //__Spaceship_H_
+#endif //__SpaceGameEntity_H_

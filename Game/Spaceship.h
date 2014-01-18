@@ -14,13 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Game.h"
+#ifndef __Spaceship_H_
+#define __Spaceship_H_
 
-int main(int argc, const char * argv[])
-{
-    SpaceGame* game = new SpaceGame();
-    game->launch();
-    delete game;
+#include "SpaceGameObject.h"
 
-    return 0;
-}
+class Spaceship : public SpaceGameObject {
+private:
+    int health;
+    void shootOnce(Point startPoint);
+    Uint32 shootingDelay;
+    Uint32 lastTimeShot;
+    bool _isStuck;
+    int size;
+public:
+    Spaceship(Point location, int maxHealth, int size);
+    void shoot();
+    void forceShoot();
+    void setShootingSpeed(Uint32 shootingPerSecond);
+    void setStuck();
+    void setNotStuck();
+    bool isStuck();
+};
+
+
+#endif //__Spaceship_H_
