@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Rectangle.h"
+#include "Rect.h"
 
-Rectangle::Rectangle(Point firstPoint, Point secondPoint): firstPoint(firstPoint), secondPoint(secondPoint) {
+Rect::Rect(Point firstPoint, Point secondPoint): firstPoint(firstPoint), secondPoint(secondPoint) {
     // if (firstPoint.x == secondPoint.x || firstPoint.y == secondPoint.y) throw exception because not rectangle?
 
     // change the locations so that the first point is the top left corner and the second point is the bottom right corner
@@ -31,31 +31,31 @@ Rectangle::Rectangle(Point firstPoint, Point secondPoint): firstPoint(firstPoint
     }
 }
 
-Point Rectangle::getTopLeftCorner() {
+Point Rect::getTopLeftCorner() {
     return firstPoint;
 }
 
-Point Rectangle::getTopRightCorner() {
+Point Rect::getTopRightCorner() {
     return Point(secondPoint.x, firstPoint.y);
 }
 
-Point Rectangle::getBottomLeftCorner() {
+Point Rect::getBottomLeftCorner() {
     return Point(firstPoint.x, secondPoint.y);
 }
 
-Point Rectangle::getBottomRightCorner() {
+Point Rect::getBottomRightCorner() {
     return secondPoint;
 }
 
-double Rectangle::getWidth() {
+double Rect::getWidth() {
     return secondPoint.x - firstPoint.x;
 }
 
-double Rectangle::getHeight() {
+double Rect::getHeight() {
     return secondPoint.y - firstPoint.y;
 }
 
-bool Rectangle::intersectsWith(Rectangle otherRectangle) {
+bool Rect::intersectsWith(Rect otherRectangle) {
     double rectAx1 = this->getTopLeftCorner().x;
     double rectAy1 = this->getTopLeftCorner().y;
     double rectAx2 = this->getBottomRightCorner().x;
@@ -69,15 +69,15 @@ bool Rectangle::intersectsWith(Rectangle otherRectangle) {
     return rectAx1 <= rectBx2 && rectAx2 >= rectBx1 && rectAy1 <= rectBy2 && rectAy2 >= rectBy1;
 }
 
-Point Rectangle::getFirstPoint() {
+Point Rect::getFirstPoint() {
     return firstPoint;
 }
 
-Point Rectangle::getSecondPoint() {
+Point Rect::getSecondPoint() {
     return secondPoint;
 }
 
-bool Rectangle::intersectsWithLine(double x1, double y1, double x2, double y2) {
+bool Rect::intersectsWithLine(double x1, double y1, double x2, double y2) {
     // if one of the points is inside the rectangle
     if (
             (x1 >= firstPoint.x && x1 <= secondPoint.x) && (y1 >= firstPoint.y && y1 <= secondPoint.y)

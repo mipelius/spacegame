@@ -15,11 +15,8 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Map.h"
-#include "GameEntity.h"
 #include <iostream>
 #include <fstream>
-#include <SDL2/SDL_opengl.h>
-#include <SDL2_image/SDL_image.h>
 
 Map::Map(
         std::string path,
@@ -35,7 +32,7 @@ Map::Map(
 
     SDL_Surface* surface = IMG_Load(path.data());
     if (!surface) {
-        fprintf(stderr, "Error during loading map: %s\n", SDL_GetError());
+        std::fprintf(stderr, "Error during loading map: %s\n", SDL_GetError());
         exit(1);
     }
 
@@ -159,7 +156,7 @@ bool Map::detectCollisionWith(GameEntity *entity) {
         if (this->getValueActual(x, y)) return true;
     }
 
-    Rectangle boundingBox = entity->getCollisionShape()->getBoundingBox();
+    Rect boundingBox = entity->getCollisionShape()->getBoundingBox();
 
     int iBegin = (int)boundingBox.getFirstPoint().x - ((int)boundingBox.getFirstPoint().x) % blockSizeW;
     int iEnd = (int)boundingBox.getSecondPoint().x + (int)boundingBox.getSecondPoint().x % blockSizeW;
@@ -169,7 +166,7 @@ bool Map::detectCollisionWith(GameEntity *entity) {
     for (int i=iBegin; i <= iEnd; i += blockSizeW) {
         for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
             if (this->getValueActual(i, j)) {
-                Rectangle* rect = new Rectangle(Point(i, j), Point(i + blockSizeW, j + blockSizeH));
+                Rect * rect = new Rect(Point(i, j), Point(i + blockSizeW, j + blockSizeH));
                 if (entity->getCollisionShape()->intersectsWith(rect)) {
                     return true;
                 }

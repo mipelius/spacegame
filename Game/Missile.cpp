@@ -15,8 +15,8 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Missile.h"
-#include "GameObject.h"
-#include "GameObjectGroup.h"
+#include "../Core/GameObject.h"
+#include "../Core/GameObjectGroup.h"
 #include "Spaceship.h"
 
 static Texture* textureTurret = nullptr;

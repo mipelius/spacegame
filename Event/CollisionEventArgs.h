@@ -18,9 +18,9 @@
 #define __CollisionEventArgs_H_
 
 #include "EventArgs.h"
-#include "Point.h"
-#include "Map.h"
-#include "GameEntity.h"
+#include "../Primitives/Point.h"
+#include "../Core/Map.h"
+#include "../Core/GameEntity.h"
 class GameEntity;
 
 class CollisionEventArgs : public EventArgs {

@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Point.h"
-#include "GameObjectGroup.h"
+#include "../Primitives/Point.h"
+#include "../Core/GameObjectGroup.h"
 
 #ifndef __Missile_H_
 #define __Missile_H_

@@ -15,8 +15,6 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Background.h"
-#include "CollisionShape.h"
-#include "GameEntity.h"
 
 Background::Background(Texture *texture, int x, int y) {
     init(texture, x, y, texture->getW(), texture->getH());

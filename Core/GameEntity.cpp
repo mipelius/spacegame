@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <iostream>
 #include "GameEntity.h"
 
 void GameEntity::applyForce(Vector force) {

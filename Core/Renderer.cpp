@@ -28,7 +28,7 @@ void Renderer::init(int x, int y, int w, int h, bool enableFullScreen) {
             SDL_WINDOW_OPENGL | (enableFullScreen ? SDL_WINDOW_FULLSCREEN : 0)
     );
     if (!window) {
-        fprintf(stderr, "Error: %s", SDL_GetError());
+        std::fprintf(stderr, "Error: %s", SDL_GetError());
         return;
     }
 
@@ -132,7 +132,7 @@ void Renderer::renderEntities() {
 
             glColor3f(0.2, 0.2, 0.2);
 
-            Rectangle rect = shape->getBoundingBox();
+            Rect rect = shape->getBoundingBox();
 
             glBegin(GL_LINE_LOOP);
             glVertex2f(rect.getTopLeftCorner().x - cameraLocation.x, rect.getTopLeftCorner().y - cameraLocation.y);
@@ -144,7 +144,7 @@ void Renderer::renderEntities() {
 
         if (mapCollisionAreaIsVisible) {
 
-        Rectangle boundingBox = (*it)->getCollisionShape()->getBoundingBox();
+        Rect boundingBox = (*it)->getCollisionShape()->getBoundingBox();
 
         int w = this->gameWorld->getMap()->getBlockW();
         int h = this->gameWorld->getMap()->getBlockH();
@@ -161,7 +161,7 @@ void Renderer::renderEntities() {
                 if (gameWorld->getMap()->getValueActual(i, j)) glColor3f(1, 1, 1);
                 else glColor3f(0.2, 0, 0);
 
-                Rectangle rect = Rectangle(Point(i, j), Point(i + w, j + h));
+                Rect rect = Rect(Point(i, j), Point(i + w, j + h));
                 glBegin(GL_LINE_LOOP);
                 glVertex2f(rect.getTopLeftCorner().x - cameraLocation.x, rect.getTopLeftCorner().y - cameraLocation.y);
                 glVertex2f(rect.getTopRightCorner().x - cameraLocation.x, rect.getTopRightCorner().y - cameraLocation.y);

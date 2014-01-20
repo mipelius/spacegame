@@ -23,7 +23,7 @@
 #include "../Primitives/Point.h"
 #include "../Primitives/Vector.h"
 #include "Spaceship.h"
-#import "Missile.h"
+#include "Missile.h"
 
 void onCollision(GameEntity *entity, CollisionEventArgs* args) {
     if (args->otherEntity && args->otherEntity->getOwner() == entity) return;
@@ -46,11 +46,11 @@ void onSpaceshipCollision(GameEntity *entity, CollisionEventArgs* args) {
     }
 }
 
-SpaceGame::SpaceGame() {
+Game::Game() {
     // --- INITIALIZE RENDERER ---
 
     renderer = new Renderer();
-    renderer->init(0, 0, 1920, 1200, true);
+    renderer->init(0, 0, 1200, 800, false);
 
     renderer->addBackground(
             new Background(
@@ -117,7 +117,7 @@ SpaceGame::SpaceGame() {
 
 }
 
-void SpaceGame::launch() {
+void Game::launch() {
     const Uint8* keys;
     Uint32 timeMilliSec = 0;
 
@@ -195,7 +195,7 @@ void SpaceGame::launch() {
     }
 }
 
-SpaceGame::~SpaceGame() {
+Game::~Game() {
     delete renderer;
     delete map;
     delete world;
