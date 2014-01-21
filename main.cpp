@@ -14,13 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+
+#include "precompile.h"
 #include "Game.h"
+
+#undef main
 
 int main(int argc, const char * argv[])
 {
-    SpaceGame* game = new SpaceGame();
-    game->launch();
-    delete game;
-
-    return 0;
+	try
+	{
+		SpaceGame* game = new SpaceGame();
+		game->launch();
+		delete game;
+	}
+	catch (std::exception e)
+	{
+		std::cout << "Crashed LOL DAMN!";
+		// std::cout << e.what;
+		-1;
+	}
+	return 0;
 }

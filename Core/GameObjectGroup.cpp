@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "precompile.h"
 #include "GameObjectGroup.h"
-#include <SDL2/SDL_opengl.h>
 
 void GameObjectGroup::add(GameObject *gameObject) {
     this->gameObjects->push_back(gameObject);

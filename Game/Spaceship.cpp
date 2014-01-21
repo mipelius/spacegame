@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "precompile.h"
 #include "Spaceship.h"
 #include "Missile.h"
 
@@ -58,7 +59,15 @@ void Spaceship::shoot() {
 }
 
 void Spaceship::shootOnce(Point startPoint) {
-    Missile* missile = new Missile(this->location + Vector(startPoint.x, startPoint.y), this->angle, 2000000, this->speed);
+	Point missileShapePoints[] = {
+		Point(-2, -10),
+		Point(2, -10),
+		Point(2, 10),
+		Point(-2, 10)
+	};
+
+    Missile* missile = new Missile(this->location + Vector(startPoint.x, startPoint.y), this->angle, 2000000, this->speed,
+		new CollisionShape(missileShapePoints, 4));
     missile->setOwner(this);
     gameWorld->addEntity(missile);
 }

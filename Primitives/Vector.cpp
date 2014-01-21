@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <math.h>
+#include "precompile.h"
 #include "Vector.h"
 
 Vector::Vector(double x, double y) {

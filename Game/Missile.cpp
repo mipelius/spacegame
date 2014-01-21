@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "precompile.h"
 #include "Missile.h"
 #include "GameObject.h"
 #include "GameObjectGroup.h"
@@ -21,21 +22,17 @@
 
 static Texture* textureTurret = nullptr;
 
-Missile::Missile(Point location, double angle, double forceAmount, Vector initialSpeed) :
-GameObjectGroup(
+Missile::Missile(Point location, double angle, double forceAmount, Vector initialSpeed, CollisionShape* shape)
+  : GameObjectGroup
+    (
         Point(0, 0),
         location,
         angle,
-        new CollisionShape(
-                (Point[]){
-                        Point(-2, -10),
-                        Point(2, -10),
-                        Point(2, 10),
-                        Point(-2, 10)
-                },
-                4
-        )
-) {
+		shape
+	) 
+						
+{
+
     if (!textureTurret) textureTurret = new Texture("images/turret.png");
 
     GameObject *obj = new GameObject(

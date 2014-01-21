@@ -17,10 +17,7 @@
 #ifndef __Texture_H_
 #define __Texture_H_
 
-#include <string>
-#include <SDL2/SDL_opengl.h>
-#include <SDL2/SDL.h>
-#include <SDL2_image/SDL_image.h>
+#include "precompile.h"
 
 class Texture {
 private:

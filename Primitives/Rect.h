@@ -16,16 +16,16 @@
 
 #include "Point.h"
 
-#ifndef __Rectangle_H_
-#define __Rectangle_H_
+#ifndef __Rect_H_
+#define __Rect_H_
 
 
-class Rectangle {
+class Rect {
 private:
     Point firstPoint;
     Point secondPoint;
 public:
-    Rectangle(Point firstPoint, Point secondPoint);
+    Rect(Point firstPoint, Point secondPoint);
     Point getTopLeftCorner();
     Point getTopRightCorner();
     Point getBottomLeftCorner();
@@ -34,9 +34,9 @@ public:
     Point getSecondPoint();
     double getWidth();
     double getHeight();
-    bool intersectsWith(Rectangle otherRectangle);
+    bool intersectsWith(Rect otherRectangle);
     bool intersectsWithLine(double x1, double y1, double x2, double y2);
 };
 
 
-#endif //__Rectangle_H_
+#endif //__Rect_H_

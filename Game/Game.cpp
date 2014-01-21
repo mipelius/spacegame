@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "precompile.h"
 #include "Game.h"
-#include <iostream>
 #include "../Core/Renderer.h"
 #include "../Core/GameObjectGroup.h"
 #include "../Event/CollisionEventArgs.h"
@@ -23,7 +23,7 @@
 #include "../Primitives/Point.h"
 #include "../Primitives/Vector.h"
 #include "Spaceship.h"
-#import "Missile.h"
+#include "Missile.h"
 
 void onCollision(GameEntity *entity, CollisionEventArgs* args) {
     if (args->otherEntity && args->otherEntity->getOwner() == entity) return;
@@ -50,7 +50,7 @@ SpaceGame::SpaceGame() {
     // --- INITIALIZE RENDERER ---
 
     renderer = new Renderer();
-    renderer->init(0, 0, 1920, 1200, true);
+    renderer->init(0, 0, 800, 600, false);
 
     renderer->addBackground(
             new Background(
@@ -68,16 +68,12 @@ SpaceGame::SpaceGame() {
             )
     );
 
-    MapTexture *mapTexture = new MapTexture(
-            10,
-            10,
-            3,
-            (std::string[]) {
-                    "images/green_block.bmp",
-                    "images/red_block.bmp",
-                    "images/blue_block.bmp",
-            }
-    );
+	std::string filenames[] = {
+			"images/green_block.bmp",
+			"images/red_block.bmp",
+			"images/blue_block.bmp",
+			};
+	MapTexture *mapTexture = new MapTexture(10, 10,	3, filenames );
 
     // --- WORLD ---
 

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <iostream>
+#include "precompile.h"
 #include "Renderer.h"
 
 void Renderer::init(int x, int y, int w, int h, bool enableFullScreen) {
@@ -132,7 +132,7 @@ void Renderer::renderEntities() {
 
             glColor3f(0.2, 0.2, 0.2);
 
-            Rectangle rect = shape->getBoundingBox();
+            Rect rect = shape->getBoundingBox();
 
             glBegin(GL_LINE_LOOP);
             glVertex2f(rect.getTopLeftCorner().x - cameraLocation.x, rect.getTopLeftCorner().y - cameraLocation.y);
@@ -144,33 +144,33 @@ void Renderer::renderEntities() {
 
         if (mapCollisionAreaIsVisible) {
 
-        Rectangle boundingBox = (*it)->getCollisionShape()->getBoundingBox();
+			Rect boundingBox = (*it)->getCollisionShape()->getBoundingBox();
 
-        int w = this->gameWorld->getMap()->getBlockW();
-        int h = this->gameWorld->getMap()->getBlockH();
+			int w = this->gameWorld->getMap()->getBlockW();
+			int h = this->gameWorld->getMap()->getBlockH();
 
-        int iBegin = (int)boundingBox.getFirstPoint().x - ((int)boundingBox.getFirstPoint().x) % w;
-        int iEnd = (int)boundingBox.getSecondPoint().x + (int)boundingBox.getSecondPoint().x % w;
-        int jBegin = (int)boundingBox.getFirstPoint().y - ((int)boundingBox.getFirstPoint().y) % h;
-        int jEnd = (int)boundingBox.getSecondPoint().y + (int)boundingBox.getSecondPoint().y % h;
+			int iBegin = (int)boundingBox.getFirstPoint().x - ((int)boundingBox.getFirstPoint().x) % w;
+			int iEnd = (int)boundingBox.getSecondPoint().x + (int)boundingBox.getSecondPoint().x % w;
+			int jBegin = (int)boundingBox.getFirstPoint().y - ((int)boundingBox.getFirstPoint().y) % h;
+			int jEnd = (int)boundingBox.getSecondPoint().y + (int)boundingBox.getSecondPoint().y % h;
 
-        glDisable(GL_TEXTURE_2D);
+			glDisable(GL_TEXTURE_2D);
 
-        for (int i=iBegin; i <= iEnd; i += w) {
-            for (int j=jBegin; j <= jEnd ; j += h) {
-                if (gameWorld->getMap()->getValueActual(i, j)) glColor3f(1, 1, 1);
-                else glColor3f(0.2, 0, 0);
+			for (int i=iBegin; i <= iEnd; i += w) {
+				for (int j=jBegin; j <= jEnd ; j += h) {
+					if (gameWorld->getMap()->getValueActual(i, j)) glColor3f(1, 1, 1);
+					else glColor3f(0.2, 0, 0);
 
-                Rectangle rect = Rectangle(Point(i, j), Point(i + w, j + h));
-                glBegin(GL_LINE_LOOP);
-                glVertex2f(rect.getTopLeftCorner().x - cameraLocation.x, rect.getTopLeftCorner().y - cameraLocation.y);
-                glVertex2f(rect.getTopRightCorner().x - cameraLocation.x, rect.getTopRightCorner().y - cameraLocation.y);
-                glVertex2f(rect.getBottomRightCorner().x - cameraLocation.x, rect.getBottomRightCorner().y - cameraLocation.y);
-                glVertex2f(rect.getBottomLeftCorner().x - cameraLocation.x, rect.getBottomLeftCorner().y - cameraLocation.y);
-                glEnd();
+					Rect rect = Rect(Point(i, j), Point(i + w, j + h));
+					glBegin(GL_LINE_LOOP);
+					glVertex2f(rect.getTopLeftCorner().x - cameraLocation.x, rect.getTopLeftCorner().y - cameraLocation.y);
+					glVertex2f(rect.getTopRightCorner().x - cameraLocation.x, rect.getTopRightCorner().y - cameraLocation.y);
+					glVertex2f(rect.getBottomRightCorner().x - cameraLocation.x, rect.getBottomRightCorner().y - cameraLocation.y);
+					glVertex2f(rect.getBottomLeftCorner().x - cameraLocation.x, rect.getBottomLeftCorner().y - cameraLocation.y);
+					glEnd();
 
-            }
-        }
+				}
+			}
         }
     }
 

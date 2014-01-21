@@ -17,9 +17,6 @@
 #ifndef __MapTexture_H_
 #define __MapTexture_H_
 
-#include <string>
-#include <SDL2_image/SDL_image.h>
-#include <SDL2/SDL_opengl.h>
 
 class MapTexture {
 private:

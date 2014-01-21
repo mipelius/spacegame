@@ -27,7 +27,7 @@ private:
     double timeAlive;
     double missileAngle;
 public:
-    Missile(Point location, double angle, double forceAmount, Vector initialSpeed);
+    Missile(Point location, double angle, double forceAmount, Vector initialSpeed, CollisionShape* shape);
     bool detectCollisionWith(GameEntity* entity);
     void beforeStep(double timeElapsedSec);
 };

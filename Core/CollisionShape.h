@@ -18,11 +18,11 @@
 #define __CollisionShape_H_
 
 #include "Point.h"
-#include "Rectangle.h"
+#include "Rect.h"
 
 class CollisionShape {
 private:
-    Rectangle boundingBox;
+    Rect boundingBox;
     Point *points;
     Point *rotatedPoints;
     Point location;
@@ -54,7 +54,7 @@ public:
      * @param rectangle the rectangle
      * @return bool     true if this shape intersects with the given rectangle, false otherwise
      */
-    bool intersectsWith(Rectangle* rectangle);
+    bool intersectsWith(Rect* rectangle);
 
     /**
      * Sets the location of the CollisionShape
@@ -96,7 +96,7 @@ public:
      *
      * @return the bounding box
      */
-    Rectangle getBoundingBox();
+    Rect getBoundingBox();
 
     /**
      * Sets the angle

@@ -14,8 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "precompile.h"
 #include "WalkingCreature.h"
-#import "Missile.h"
+#include "Missile.h"
 
 static Texture* textureWalkingCreature = nullptr;
 
@@ -38,19 +39,16 @@ WalkingCreature::WalkingCreature(Point location, int maxHealth) : SpaceGameObjec
 
     );
 
-    this->add(obj);
+	this->add(obj);
 
-    this->setCollisionShape(
-            new CollisionShape(
-                (Point[]){
-                        Point(-20 * size, -30 * size),
-                        Point(20 * size, -30 * size),
-                        Point(20 * size, 30 * size),
-                        Point(-20 * size, 30 * size)
-                },
-                4
-            )
-    );
+	Point points[] = {
+		Point(-20 * size, -30 * size),
+		Point(20 * size, -30 * size),
+		Point(20 * size, 30 * size),
+		Point(-20 * size, 30 * size)
+	};
+	this->setCollisionShape(
+		new CollisionShape(points, 4));
 
     isAbleToMove = false;
 
@@ -170,12 +168,23 @@ void WalkingCreature::beforeStep(double timeElapsedSeconds) {
             double angle = atan(deltaY / deltaX) * 180 / M_PI + 90;
             if (deltaX < 0) angle -= 180;
 
-            Missile* missile = new Missile(
-                    this->getLocation(),
-                    angle,
-                    2000000,
-                    Vector(0, 0)
+			Point missileShapePoints[] = {
+				Point(-2, -10),
+				Point(2, -10),
+				Point(2, 10),
+				Point(-2, 10)
+			};
+
+
+			Missile* missile = new Missile(
+				this->getLocation(),
+				angle,
+				2000000,
+				Vector(0, 0),
+				new CollisionShape(missileShapePoints, 4)
             );
+
+
             missile->setOwner(this);
 
             this->getWorld()->addEntity(missile);

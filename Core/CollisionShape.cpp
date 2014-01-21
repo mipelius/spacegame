@@ -14,13 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <list>
-#include <iostream>
-#include <math.h>
-#include <SDL2/SDL_opengl.h>
+#include "precompile.h"
 #include "CollisionShape.h"
 
-CollisionShape::CollisionShape(Point points[], int count): location(Point(0, 0)), boundingBox(Rectangle(Point(0,0), Point(0,0))) {
+CollisionShape::CollisionShape(Point points[], int count)
+  : location(Point(0, 0)), boundingBox(Rect(Point(0,0), Point(0,0)))
+{
     this->points = (Point*)malloc(count * sizeof(Point));
     this->rotatedPoints = (Point*)malloc(count * sizeof(Point));
     this->count = count;
@@ -36,7 +35,7 @@ CollisionShape::CollisionShape(Point points[], int count): location(Point(0, 0))
     }
 
     double length = Vector(farMost.x, farMost.y).length();
-    boundingBox = Rectangle(Point(-length, -length), Point(length, length));
+    boundingBox = Rect(Point(-length, -length), Point(length, length));
 
     this->updateRotatedPoints();
 }
@@ -125,8 +124,8 @@ void CollisionShape::setAngle(double angle) {
     rotatedPointsNeedUpdate = true;
 }
 
-Rectangle CollisionShape::getBoundingBox() {
-    return Rectangle(
+Rect CollisionShape::getBoundingBox() {
+    return Rect(
             Point(
                     this->boundingBox.getTopLeftCorner().x + location.x,
                     this->boundingBox.getTopLeftCorner().y + location.y
@@ -138,7 +137,7 @@ Rectangle CollisionShape::getBoundingBox() {
     );
 }
 
-bool CollisionShape::intersectsWith(Rectangle* rectangle) {
+bool CollisionShape::intersectsWith(Rect* rectangle) {
     Point* points = getRotatedPoints();
 
     for (int i=0; i<count-1; i++) {
