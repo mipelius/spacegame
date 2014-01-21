@@ -67,9 +67,10 @@ void GameWorld::step(double timeSeconds) {
     // remove dead entities from world
     for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
         if ((*it)->isDead()) {
+			std::list<GameEntity*>::iterator removedIterator = it;
             GameEntity* currentEntity = (*it);
-            gameEntities->erase(it);
-            it++;
+			it++;
+			gameEntities->erase(removedIterator);
             currentEntity->setWorld(nullptr);
         }
     }

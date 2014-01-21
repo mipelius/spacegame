@@ -25,7 +25,9 @@ Texture::Texture(std::string filename) {
 	surface = IMG_Load(filename.data());
     if (!surface)
 	{
-		throw new std::exception("could not load texture file");
+		std::string error = "Could not load texture file: ";
+		error=error.append(SDL_GetError());
+		throw new std::exception();
 	}
 
 	this->w = surface->w;

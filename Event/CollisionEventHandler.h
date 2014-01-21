@@ -20,9 +20,10 @@
 #include "EventHandler.h"
 #include "CollisionEventArgs.h"
 
-class CollisionEventHandler : public EventHandler {
+class CollisionEventHandler : public EventHandler
+{
 public:
-    CollisionEventHandler(void (*eventFunction)(GameEntity* gameEntity, CollisionEventArgs* eventArgs));
+	CollisionEventHandler(void(*eventFunction)(GameEntity* gameEntity, CollisionEventArgs* eventArgs));
 };
 
 #endif //__CollisionEventHandler_H_
