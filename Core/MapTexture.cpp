@@ -38,12 +38,12 @@ MapTexture::MapTexture(int blockW, int blockH, int count, std::string fileNames 
     for (int i=0; i<count; i++) {
         SDL_Surface* srcSurface = IMG_Load(fileNames[i].data());
         if (!srcSurface) {
-            fprintf(stderr, "SDL could not load %s: %s\n", fileNames[i].data(), SDL_GetError());
+            std::fprintf(stderr, "SDL could not load %s: %s\n", fileNames[i].data(), SDL_GetError());
             SDL_Quit();
             exit(1);
         }
         if (srcSurface->w != blockW || srcSurface->h != blockH) {
-            fprintf(stderr, "Image has invalid size (%s)\n", fileNames[i].data());
+            std::fprintf(stderr, "Image has invalid size (%s)\n", fileNames[i].data());
             exit(1);
         }
 

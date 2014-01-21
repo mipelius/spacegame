@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-
 #include "precompile.h"
 #include "Game.h"
 
@@ -24,7 +23,7 @@ int main(int argc, const char * argv[])
 {
 	try
 	{
-		SpaceGame* game = new SpaceGame();
+		Game* game = new Game();
 		game->launch();
 		delete game;
 	}
@@ -32,7 +31,7 @@ int main(int argc, const char * argv[])
 	{
 		std::cout << "Crashed LOL DAMN!";
 		// std::cout << e.what;
-		-1;
+		return -1;
 	}
 	return 0;
 }

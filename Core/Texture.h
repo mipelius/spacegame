@@ -17,7 +17,6 @@
 #ifndef __Texture_H_
 #define __Texture_H_
 
-#include "precompile.h"
 
 class Texture {
 private:

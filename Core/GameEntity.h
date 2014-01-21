@@ -17,9 +17,9 @@
 #ifndef __GameEntity_H_
 #define __GameEntity_H_
 
-#include "../Primitives/Point.h"
-#include "../Primitives/Vector.h"
-#include "../Event/Event.h"
+#include "Point.h"
+#include "Vector.h"
+#include "Event.h"
 #include "GameWorld.h"
 #include "CollisionShape.h"
 

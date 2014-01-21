@@ -18,7 +18,7 @@
 #define __Event_H_
 
 #include <list>
-#include "../Core/GameEntity.h"
+#include "GameEntity.h"
 #include "EventHandler.h"
 
 class EventHandler;

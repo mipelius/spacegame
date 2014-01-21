@@ -16,8 +16,8 @@
 
 #include "precompile.h"
 #include "GameWorld.h"
-#include "../Event/CollisionEventArgs.h"
-#include "../Event/CollisionEventHandler.h"
+#include "CollisionEventArgs.h"
+#include "CollisionEventHandler.h"
 
 void GameWorld::setMap(Map* map) {
     this->map = map;

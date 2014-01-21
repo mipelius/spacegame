@@ -28,7 +28,7 @@ void Renderer::init(int x, int y, int w, int h, bool enableFullScreen) {
             SDL_WINDOW_OPENGL | (enableFullScreen ? SDL_WINDOW_FULLSCREEN : 0)
     );
     if (!window) {
-        fprintf(stderr, "Error: %s", SDL_GetError());
+        std::fprintf(stderr, "Error: %s", SDL_GetError());
         return;
     }
 

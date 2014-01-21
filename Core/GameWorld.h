@@ -20,10 +20,8 @@
 #include <list>
 #include "Map.h"
 class Map;
-#include "../Event/CollisionEventArgs.h"
-class CollisionEventArgs;
-#include "../Event/CollisionEventHandler.h"
-//class CollisionEventHandler;
+#include "CollisionEventArgs.h"
+#include "CollisionEventHandler.h"
 #include "GameEntity.h"
 class GameEntity;
 

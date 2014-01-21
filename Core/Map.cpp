@@ -32,7 +32,7 @@ Map::Map(
 
     SDL_Surface* surface = IMG_Load(path.data());
     if (!surface) {
-        fprintf(stderr, "Error during loading map: %s\n", SDL_GetError());
+        std::fprintf(stderr, "Error during loading map: %s\n", SDL_GetError());
         exit(1);
     }
 

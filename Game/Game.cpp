@@ -16,12 +16,12 @@
 
 #include "precompile.h"
 #include "Game.h"
-#include "../Core/Renderer.h"
-#include "../Core/GameObjectGroup.h"
-#include "../Event/CollisionEventArgs.h"
-#include "../Event/CollisionEventHandler.h"
-#include "../Primitives/Point.h"
-#include "../Primitives/Vector.h"
+#include "Renderer.h"
+#include "GameObjectGroup.h"
+#include "CollisionEventArgs.h"
+#include "CollisionEventHandler.h"
+#include "Point.h"
+#include "Vector.h"
 #include "Spaceship.h"
 #include "Missile.h"
 
@@ -46,11 +46,12 @@ void onSpaceshipCollision(GameEntity *entity, CollisionEventArgs* args) {
     }
 }
 
-SpaceGame::SpaceGame() {
+Game::Game() {
     // --- INITIALIZE RENDERER ---
 
     renderer = new Renderer();
-    renderer->init(0, 0, 800, 600, false);
+
+    renderer->init(0, 0, 1200, 800, false);
 
     renderer->addBackground(
             new Background(
@@ -113,7 +114,7 @@ SpaceGame::SpaceGame() {
 
 }
 
-void SpaceGame::launch() {
+void Game::launch() {
     const Uint8* keys;
     Uint32 timeMilliSec = 0;
 
@@ -191,7 +192,7 @@ void SpaceGame::launch() {
     }
 }
 
-SpaceGame::~SpaceGame() {
+Game::~Game() {
     delete renderer;
     delete map;
     delete world;

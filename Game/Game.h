@@ -17,13 +17,13 @@
 #ifndef __SpaceGame_H_
 #define __SpaceGame_H_
 
-#include "../Core/Map.h"
-#include "../Core/GameWorld.h"
-#include "../Core/Renderer.h"
+#include "Map.h"
+#include "GameWorld.h"
+#include "Renderer.h"
 #include "Spaceship.h"
 #include "WalkingCreature.h"
 
-class SpaceGame {
+class Game {
 private:
     Map* map;
     GameWorld* world;
@@ -32,8 +32,8 @@ private:
     std::list<Spaceship*> *enemies;
     Spaceship* boss;
 public:
-    SpaceGame();
-    ~SpaceGame();
+    Game();
+    ~Game();
     void launch();
 };
 

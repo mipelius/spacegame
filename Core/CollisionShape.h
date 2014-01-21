@@ -54,6 +54,7 @@ public:
      * @param rectangle the rectangle
      * @return bool     true if this shape intersects with the given rectangle, false otherwise
      */
+
     bool intersectsWith(Rect* rectangle);
 
     /**
