@@ -18,7 +18,8 @@
 #define __CollisionEventHandler_H_
 
 #include "EventHandler.h"
-#include "CollisionEventArgs.h"
+
+class CollisionEventArgs;
 
 class CollisionEventHandler : public EventHandler
 {
