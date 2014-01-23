@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C8D1B5CF-9ACB-45EE-9F0A-CD6D968D3439}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>SpaceGame</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Libraries\SDL2-2.0.1\include;C:\Libraries\SDL2_image-2.0.0\include</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);C:\Libraries\SDL2-2.0.1\lib\x86;C:\Libraries\SDL2_image-2.0.0\lib\x86</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\game; $(ProjectDir)\..\..\core; $(ProjectDir)\..\..\event; $(ProjectDir)\..\..\primitives; $(ProjectDir)\..\..</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>precompile.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AddModuleNamesToAssembly>
+      </AddModuleNamesToAssembly>
+      <AdditionalDependencies>opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);sdl2.lib;sdl2_image.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Core\Background.cpp" />
+    <ClCompile Include="..\..\Core\Block.cpp" />
+    <ClCompile Include="..\..\Core\Camera.cpp" />
+    <ClCompile Include="..\..\Core\CollisionShape.cpp" />
+    <ClCompile Include="..\..\Core\GameEntity.cpp" />
+    <ClCompile Include="..\..\Core\GameObject.cpp" />
+    <ClCompile Include="..\..\Core\GameObjectGroup.cpp" />
+    <ClCompile Include="..\..\Core\GameWorld.cpp" />
+    <ClCompile Include="..\..\Core\Map.cpp" />
+    <ClCompile Include="..\..\Core\MapTexture.cpp" />
+    <ClCompile Include="..\..\Core\Renderer.cpp" />
+    <ClCompile Include="..\..\Core\Texture.cpp" />
+    <ClCompile Include="..\..\Event\CollisionEventArgs.cpp" />
+    <ClCompile Include="..\..\Event\CollisionEventHandler.cpp" />
+    <ClCompile Include="..\..\Event\Event.cpp" />
+    <ClCompile Include="..\..\Event\EventArgs.cpp" />
+    <ClCompile Include="..\..\Event\EventHandler.cpp" />
+    <ClCompile Include="..\..\Game\Game.cpp" />
+    <ClCompile Include="..\..\Game\Missile.cpp" />
+    <ClCompile Include="..\..\Game\SpaceGameObject.cpp" />
+    <ClCompile Include="..\..\Game\Spaceship.cpp" />
+    <ClCompile Include="..\..\Game\WalkingCreature.cpp" />
+    <ClCompile Include="..\..\main.cpp" />
+    <ClCompile Include="..\..\Primitives\Point.cpp" />
+    <ClCompile Include="..\..\Primitives\Rect.cpp" />
+    <ClCompile Include="..\..\Primitives\Vector.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Core\Background.h" />
+    <ClInclude Include="..\..\Core\Block.h" />
+    <ClInclude Include="..\..\Core\Camera.h" />
+    <ClInclude Include="..\..\Core\CollisionShape.h" />
+    <ClInclude Include="..\..\Core\GameEntity.h" />
+    <ClInclude Include="..\..\Core\GameObject.h" />
+    <ClInclude Include="..\..\Core\GameObjectGroup.h" />
+    <ClInclude Include="..\..\Core\GameWorld.h" />
+    <ClInclude Include="..\..\Core\Map.h" />
+    <ClInclude Include="..\..\Core\MapTexture.h" />
+    <ClInclude Include="..\..\Core\Renderer.h" />
+    <ClInclude Include="..\..\Core\Texture.h" />
+    <ClInclude Include="..\..\Event\CollisionEventArgs.h" />
+    <ClInclude Include="..\..\Event\CollisionEventHandler.h" />
+    <ClInclude Include="..\..\Event\Event.h" />
+    <ClInclude Include="..\..\Event\EventArgs.h" />
+    <ClInclude Include="..\..\Event\EventHandler.h" />
+    <ClInclude Include="..\..\Game\Game.h" />
+    <ClInclude Include="..\..\Game\Missile.h" />
+    <ClInclude Include="..\..\Game\SpaceGameObject.h" />
+    <ClInclude Include="..\..\Game\Spaceship.h" />
+    <ClInclude Include="..\..\Game\WalkingCreature.h" />
+    <ClInclude Include="..\..\precompile.h" />
+    <ClInclude Include="..\..\Primitives\Point.h" />
+    <ClInclude Include="..\..\Primitives\Rect.h" />
+    <ClInclude Include="..\..\Primitives\Vector.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
