@@ -29,7 +29,7 @@ private:
     int heuristicFunction(Node *startNode, Node *goalNode);
 public:
     RouteGenerator(Map* map);
-    Node* generateRoute(Point startPoint, Point goalPoint);
+    Node* generateRoute(Point startPoint, Point goalPoint, unsigned int step = 1);
 };
 
 

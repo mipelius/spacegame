@@ -48,7 +48,7 @@ int RouteGenerator::heuristicFunction(Node *startNode, Node *goalNode) {
     return x + y;
 }
 
-Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint) {
+Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint, unsigned int step) {
     // if there is block at the start point or goal point, it's not possible to generate route -> return nullptr
 
     if (map->getValueActual((int)startPoint.x, (int)startPoint.y)) return nullptr;
@@ -71,7 +71,7 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint) {
 
     // 2) loop the following as long as the goal node has not been reached
 
-    while (!(!closedList.empty() && closedList.back()->equals(goalNode))) {
+    while (!(!closedList.empty() && closedList.back()->equals(goalNode, step))) {
         // 2.a) find the node having lowest fCost from the open list -> set current node to point that node
 
         Node* lowestCostNode = openList.front();
@@ -89,8 +89,8 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint) {
         // 2.c) do the following to all adjacent walkable nodes
 
         for(int i=0; i<ADJACENT_NODES_RELATIVE_LOCATIONS_COUNT; i++) {
-            int x = currentNode->x + ADJACENT_NODES_RELATIVE_LOCATIONS[i][0];
-            int y = currentNode->y + ADJACENT_NODES_RELATIVE_LOCATIONS[i][1];
+            int x = currentNode->x + ADJACENT_NODES_RELATIVE_LOCATIONS[i][0] * step;
+            int y = currentNode->y + ADJACENT_NODES_RELATIVE_LOCATIONS[i][1] * step;
             unsigned char value = map->getValue(x, y);
 
             if (value != 0) continue; // not walkable
@@ -175,6 +175,7 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint) {
     }
 
     currentNode->nextNode = nextNode;
+
 
     // TODO: clean up both open and closed lists
 

@@ -44,8 +44,8 @@ Point Node::getLocation() {
     return Point(x * w + w / 2, y * h + h / 2);
 }
 
-bool Node::equals(Node *anotherNode) {
-    return this->x == anotherNode->x && this->y == anotherNode->y;
+bool Node::equals(Node *anotherNode, unsigned int rounding) {
+    return this->x / rounding == anotherNode->x / rounding && this->y / rounding == anotherNode->y / rounding;
 }
 
 Node *Node::getPreviousNode() {

@@ -37,7 +37,7 @@ private:
     Node(int x, int y, Map* map);
     static Node* byPoint(Point point, Map* map);
 public:
-    bool equals(Node* anotherNode);
+    bool equals(Node* anotherNode, unsigned int rounding = 1);
     Point getLocation();
     Node* getPreviousNode();
     Node* getNextNode();

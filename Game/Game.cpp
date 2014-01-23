@@ -146,7 +146,7 @@ void Game::launch() {
 
             if (keys[SDL_SCANCODE_1]) routeStartPoint = player->getLocation();
             if (keys[SDL_SCANCODE_2]) routeGoalPoint = player->getLocation();
-            if (keys[SDL_SCANCODE_RETURN]) route = RouteGenerator(map).generateRoute(routeStartPoint, routeGoalPoint);
+            if (keys[SDL_SCANCODE_RETURN]) route = RouteGenerator(map).generateRoute(routeStartPoint, routeGoalPoint, 3);
         }
 
         for(std::list<Spaceship*>::iterator it = enemies->begin(); it != enemies->end(); it++) {
