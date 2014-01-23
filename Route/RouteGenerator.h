@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,17 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __CollisionEventHandler_H_
-#define __CollisionEventHandler_H_
+#ifndef __RouteGenerator_H_
+#define __RouteGenerator_H_
 
-#include "EventHandler.h"
+#include "Point.h"
 
-class CollisionEventArgs;
+class Map;
+class Node;
 
-class CollisionEventHandler : public EventHandler
-{
+class RouteGenerator {
+friend class Node;
+private:
+    Map* map;
+    int heuristicFunction(Node *startNode, Node *goalNode);
 public:
-	CollisionEventHandler(void(*eventFunction)(GameEntity* gameEntity, CollisionEventArgs* eventArgs));
+    RouteGenerator(Map* map);
+    Node* generateRoute(Point startPoint, Point goalPoint);
 };
 
-#endif //__CollisionEventHandler_H_
+
+#endif //__RouteGenerator_H_

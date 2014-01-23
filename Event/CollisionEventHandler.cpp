@@ -16,6 +16,7 @@
 
 #include "precompile.h"
 #include "CollisionEventHandler.h"
+#include "CollisionEventArgs.h"
 
 CollisionEventHandler::CollisionEventHandler(void (*eventFunction)(GameEntity *, CollisionEventArgs *))
 : EventHandler((void (*)(GameEntity *, EventArgs *))eventFunction) {

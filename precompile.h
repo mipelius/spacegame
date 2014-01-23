@@ -1,5 +1,5 @@
-#ifndef __INCLUDED_PRECOMPILE_H
-#define __INCLUDED_PRECOMPILE_H
+#ifndef __precompile_H_
+#define __precompile_H_
 
 #include <string>
 #include <list>
@@ -20,6 +20,4 @@
 #endif
 
 
-
-
-#endif
+#endif //__precompile_H_
