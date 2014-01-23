@@ -59,8 +59,8 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint) {
     std::list<Node*> openList = std::list<Node*>();
     std::list<Node*> closedList = std::list<Node*>();
 
-    Node* startNode = Node::byPoint(startPoint, map->getBlockW(), map->getBlockH());
-    Node* goalNode = Node::byPoint(goalPoint, map->getBlockW(), map->getBlockH());
+    Node* startNode = Node::byPoint(startPoint, this->map);
+    Node* goalNode = Node::byPoint(goalPoint, this->map);
 
     Node* currentNode;
 
@@ -95,7 +95,7 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint) {
 
             if (value != 0) continue; // not walkable
 
-            Node* adjacentNode = new Node(x, y);
+            Node* adjacentNode = new Node(x, y, this->map);
 
             // if it is already on the closed list ignore it
 
@@ -170,13 +170,11 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint) {
 
     while(currentNode->previousNode != nullptr) {
         currentNode->nextNode = nextNode;
-        currentNode->generator = this;
         nextNode = currentNode;
         currentNode = currentNode->previousNode;
     }
 
     currentNode->nextNode = nextNode;
-    currentNode->generator = this;
 
     // TODO: clean up both open and closed lists
 

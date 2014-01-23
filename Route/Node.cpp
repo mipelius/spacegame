@@ -19,7 +19,7 @@
 #include "RouteGenerator.h"
 #include "Map.h"
 
-Node::Node(int x, int y) {
+Node::Node(int x, int y, Map* map) {
     this->x = x;
     this->y = y;
     this->nextNode = nullptr;
@@ -27,19 +27,20 @@ Node::Node(int x, int y) {
     this->fCost = 0;
     this->gCost = 0;
     this->hCost = 0;
+    this->map = map;
 }
 
-Node *Node::byPoint(Point point, int blockSizeW, int blockSizeH) {
+Node *Node::byPoint(Point point, Map* map) {
     int x = (int)point.x;
-    x /= blockSizeW;
+    x /= map->getBlockW();
     int y = (int)point.y;
-    y /= blockSizeH;
-    return new Node(x, y);
+    y /= map->getBlockH();
+    return new Node(x, y, map);
 }
 
 Point Node::getLocation() {
-    int w = generator->map->getBlockW();
-    int h = generator->map->getBlockH();
+    int w = map->getBlockW();
+    int h = map->getBlockH();
     return Point(x * w + w / 2, y * h + h / 2);
 }
 

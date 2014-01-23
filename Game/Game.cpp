@@ -24,6 +24,8 @@
 #include "Vector.h"
 #include "Spaceship.h"
 #include "Missile.h"
+#include "Node.h"
+#include "RouteGenerator.h"
 
 void onCollision(GameEntity *entity, CollisionEventArgs* args) {
     if (args->otherEntity && args->otherEntity->getOwner() == entity) return;
@@ -51,7 +53,7 @@ Game::Game() {
 
     renderer = new Renderer();
 
-    renderer->init(0, 0, 1200, 800, false);
+    renderer->init(0, 0, 1920, 1200, true);
 
     renderer->addBackground(
             new Background(
@@ -118,6 +120,10 @@ void Game::launch() {
     const Uint8* keys;
     Uint32 timeMilliSec = 0;
 
+    Point routeStartPoint = Point(0, 0);
+    Point routeGoalPoint = Point(0, 0);
+    Node* route = nullptr;
+
     while (!SDL_QuitRequested()) {
         keys = SDL_GetKeyboardState(0);
 
@@ -137,6 +143,10 @@ void Game::launch() {
             }
 
             if (keys[SDL_SCANCODE_SPACE]) player->shoot();
+
+            if (keys[SDL_SCANCODE_1]) routeStartPoint = player->getLocation();
+            if (keys[SDL_SCANCODE_2]) routeGoalPoint = player->getLocation();
+            if (keys[SDL_SCANCODE_RETURN]) route = RouteGenerator(map).generateRoute(routeStartPoint, routeGoalPoint);
         }
 
         for(std::list<Spaceship*>::iterator it = enemies->begin(); it != enemies->end(); it++) {
@@ -172,21 +182,58 @@ void Game::launch() {
 
         renderer->render();
 
+        // additional rendering
+
+        // health
 
         glDisable(GL_TEXTURE_2D);
-
         glColor3f(0.6, 0.0, 0.0);
-
         glRectf(1650, 20, 1650 + (250 * player->getHealth() / player->getMaxHealth()), 40);
-
         glColor3f(1.0, 1.0, 1.0);
-
         glBegin(GL_LINE_LOOP);
         glVertex2i(1650, 20);
         glVertex2i(1900, 20);
         glVertex2i(1900, 40);
         glVertex2i(1650, 40);
         glEnd();
+
+        // route
+
+        glColor3f(0, 1, 0);
+        glRectf(
+                routeStartPoint.x-1 - renderer->getCamera()->getLocation().x,
+                routeStartPoint.y-1 - renderer->getCamera()->getLocation().y,
+                routeStartPoint.x+1 - renderer->getCamera()->getLocation().x,
+                routeStartPoint.y+1 - renderer->getCamera()->getLocation().y
+        );
+
+        glColor3f(1, 0, 0);
+        glRectf(
+                routeGoalPoint.x-1 - renderer->getCamera()->getLocation().x,
+                routeGoalPoint.y-1 - renderer->getCamera()->getLocation().y,
+                routeGoalPoint.x+1 - renderer->getCamera()->getLocation().x,
+                routeGoalPoint.y+1 - renderer->getCamera()->getLocation().y
+        );
+
+        if (route != nullptr) {
+            Node* currentNode = route;
+
+            glColor3f(0, 0, 1);
+            glBegin(GL_LINE_STRIP);
+
+            while (currentNode->getNextNode() != nullptr) {
+                Point location = currentNode->getLocation();
+
+                glVertex2f(
+                        location.x - renderer->getCamera()->getLocation().x,
+                        location.y - renderer->getCamera()->getLocation().y
+                );
+
+                currentNode = currentNode->getNextNode();
+            }
+
+            glEnd();
+        }
 
         renderer->glSwap();
     }
