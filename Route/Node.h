@@ -20,7 +20,7 @@
 #include <list>
 #include "Point.h"
 
-class RouteGenerator;
+class Map;
 
 class Node {
     friend class RouteGenerator;
@@ -28,14 +28,14 @@ class Node {
 private:
     Node* previousNode;
     Node* nextNode;
-    RouteGenerator* generator;
+    Map* map;
     int x;
     int y;
     int fCost;
     int hCost;
     int gCost;
-    Node(int x, int y);
-    static Node* byPoint(Point point, int blockSizeW, int blockSizeH);
+    Node(int x, int y, Map* map);
+    static Node* byPoint(Point point, Map* map);
 public:
     bool equals(Node* anotherNode);
     Point getLocation();
