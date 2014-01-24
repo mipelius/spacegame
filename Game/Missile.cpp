@@ -16,9 +16,13 @@
 
 #include "precompile.h"
 #include "Missile.h"
-#include "GameObject.h"
-#include "GameObjectGroup.h"
 #include "Spaceship.h"
+#include "Texture.h"
+#include "Event.h"
+#include "CollisionEventArgs.h"
+#include "CollisionEventHandler.h"
+#include "GameObject.h"
+#include "Map.h"
 
 static Texture* textureTurret = nullptr;
 
@@ -83,15 +87,18 @@ void Missile::onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *arg
     gameEntity->die();
 }
 
-bool Missile::detectCollisionWith(GameEntity *entity) {
-    if (entity == this->owner) return false;
+void Missile::beforeEntityCollisionDetection(GameEntity* otherEntity) {
+    GameEntity::beforeEntityCollisionDetection(otherEntity);
 
-    Missile* missile = dynamic_cast<Missile*>(entity);
-    if(missile != 0) {
-        return false;
+    if (otherEntity == this->owner) {
+        ignoreEntityCollisionDetection();
+        return;
     }
 
-    return GameEntity::detectCollisionWith(entity);
+    Missile* missile = dynamic_cast<Missile*>(otherEntity);
+    if(missile != 0) {
+        ignoreEntityCollisionDetection();
+    }
 }
 
 void Missile::beforeStep(double timeElapsedSec) {

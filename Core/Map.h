@@ -18,8 +18,8 @@
 #define __Map_H_
 
 #include <string>
-#include "MapTexture.h"
-#include "GameEntity.h"
+
+class MapTexture;
 class GameEntity;
 
 class Map {

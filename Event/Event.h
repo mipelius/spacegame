@@ -17,10 +17,8 @@
 #ifndef __Event_H_
 #define __Event_H_
 
-#include <list>
-#include "GameEntity.h"
-#include "EventHandler.h"
-
+class std::list;
+class EventArgs;
 class EventHandler;
 class GameEntity;
 

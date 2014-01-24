@@ -17,7 +17,7 @@
 #ifndef __Background_H_
 #define __Background_H_
 
-#include "Texture.h"
+class Texture;
 
 class Background {
 private:

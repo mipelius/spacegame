@@ -17,13 +17,12 @@
 #ifndef __GameWorld_H_
 #define __GameWorld_H_
 
-#include <list>
-#include "Map.h"
+class std::list;
 class Map;
-#include "CollisionEventArgs.h"
-#include "CollisionEventHandler.h"
-#include "GameEntity.h"
 class GameEntity;
+
+#include "Point.h"
+#include "Vector.h"
 
 class GameWorld {
 private:
@@ -34,13 +33,18 @@ private:
     double airDensity;
     void detectCollision(GameEntity* entity, Point oldLocation, Point newLocation);
 public:
-    GameWorld(Vector gforce, double metersPerPixel, double airDensity);
+    GameWorld(Vector gForce, double metersPerPixel, double airDensity);
     void step(double timeSeconds);
     void addEntity(GameEntity *gameEntity);
     void setMap(Map* map);
     Map* getMap();
     long getW();
     long getH();
+
+    const Vector getGForce();
+    double getMetersPerPixel();
+    double getAirDensity();
+
     std::list<GameEntity*> *getGameEntities();
 };
 

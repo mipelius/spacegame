@@ -17,6 +17,10 @@
 #include "precompile.h"
 #include "GameEntity.h"
 
+#include "CollisionShape.h"
+#include "Event.h"
+#include "GameWorld.h"
+
 void GameEntity::applyForce(Vector force) {
     this->force += force;
 }
@@ -26,29 +30,13 @@ void GameEntity::setAngle(double angle) {
     this->angle = angle;
 }
 
-Point GameEntity::getFocus() {
-    return this->focus;
-}
-
-void GameEntity::setFocus(Point focus) {
-    this->focus = focus;
-}
-
 Point GameEntity::getLocation() {
     return this->location;
 }
 
 void GameEntity::setLocation(Point location) {
-    if (this->collisionShape != nullptr) this->collisionShape->setLocation(location - Vector(this->focus.x, this->focus.y));
+    if (this->collisionShape != nullptr) this->collisionShape->setLocation(location);
     this->location = location;
-}
-
-void GameEntity::turnCounterClockwise() {
-    angle--;
-}
-
-void GameEntity::turnClockwise() {
-    angle++;
 }
 
 double GameEntity::getAngle() {
@@ -56,7 +44,6 @@ double GameEntity::getAngle() {
 }
 
 GameEntity::GameEntity(Point focus, Point location, double angle, CollisionShape* collisionShape) :
-    focus(focus),
     location(location),
     force(Vector(0, 0)),
     speed(Vector(0, 0)),
@@ -64,6 +51,7 @@ GameEntity::GameEntity(Point focus, Point location, double angle, CollisionShape
     collisionEvent(new Event(this)),
     collisionShape(collisionShape) {
 
+    _stepIsIgnored  = false;
     owner = nullptr;
     this->angle = angle;
     this->torque = 0;
@@ -122,10 +110,19 @@ bool GameEntity::isDead() {
     return _isDead;
 }
 
-bool GameEntity::detectCollisionWith(GameEntity *otherEntity) {
-    if (this->collisionShape == nullptr || otherEntity->collisionShape == nullptr) return false;
-    if (this->collisionShape->intersectsWith(otherEntity->getCollisionShape())) return true;
-    return otherEntity->getCollisionShape()->intersectsWith(this->collisionShape);
+bool GameEntity::_detectCollisionWith(GameEntity *otherEntity) {
+    beforeEntityCollisionDetection(otherEntity);
+
+    if (!_entityCollisionDetectionIsIgnored) {
+        // TODO: this is ugly, make it better
+        if (this->collisionShape == nullptr || otherEntity->collisionShape == nullptr) return false;
+        if (this->collisionShape->intersectsWith(otherEntity->getCollisionShape())) return true;
+        return otherEntity->getCollisionShape()->intersectsWith(this->collisionShape);
+    }
+
+    _entityCollisionDetectionIsIgnored = false;
+
+    return false;
 }
 
 CollisionShape *GameEntity::getCollisionShape() {
@@ -156,10 +153,6 @@ Point GameEntity::getLocationBeforeUpdate() {
     return location - velocity;
 }
 
-bool GameEntity::detectCollisionActualWith(GameEntity *otherEntity) {
-    return detectCollisionWith(otherEntity);
-}
-
 void GameEntity::beforeStep(double timeElapsedSec) {
 }
 
@@ -179,14 +172,63 @@ void GameEntity::setAngularVelocity(double angularVelocity) {
     this->angularVelocity = angularVelocity;
 }
 
-void GameEntity::setTorqueToZero() {
-    this->torque = 0;
-}
-
 double GameEntity::getTorque() {
     return this->torque;
 }
 
 void GameEntity::setTorque(double torque) {
     this->torque = torque;
+}
+
+void GameEntity::step(double timeElapsedSec) {
+    this->beforeStep(timeElapsedSec);
+
+    if (!_stepIsIgnored) {
+        // calculate air resistance
+
+        Vector airResistance = Vector(0, 0);
+
+        if (speed.x != 0 || speed.y != 0) {
+            double speedLengthPow2 = speed.x * speed.x + speed.y * speed.y;
+            Vector airResistanceUnitVector = (speed * -1) * (1 / sqrt(speed.x * speed.x + speed.y * speed.y));
+            airResistance = airResistanceUnitVector * speedLengthPow2 * (0.5 * gameWorld->getAirDensity());
+        }
+
+        Vector totalForce = force + airResistance;
+
+        // use acceleration for updating speed --> velocity --> location
+        Vector acceleration = totalForce * (1 / this->getMass());
+        acceleration += Vector(gameWorld->getGForce().x, gameWorld->getGForce().y);
+        speed += acceleration;
+        velocity = speed * timeElapsedSec * gameWorld->getMetersPerPixel();
+        this->setLocation(location + velocity);
+
+        // apply torque (not very nicely implemented, but good enough)
+        angularVelocity = torque * timeElapsedSec;
+        this->setAngle(angle + angularVelocity);
+
+        // remove all applied forces
+        this->setForceToZero();
+        this->setTorque(torque / (this->getMass() * timeElapsedSec));
+    }
+
+    this->afterStep(timeElapsedSec);
+
+    _stepIsIgnored = false;
+}
+
+void GameEntity::afterStep(double timeElapsedSec) {
+
+}
+
+void GameEntity::ignoreStep() {
+    this->_stepIsIgnored = true;
+}
+
+void GameEntity::ignoreEntityCollisionDetection() {
+    this->_entityCollisionDetectionIsIgnored = true;
+}
+
+void GameEntity::beforeEntityCollisionDetection(GameEntity *otherEntity) {
+
 }

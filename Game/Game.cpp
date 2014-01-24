@@ -16,16 +16,15 @@
 
 #include "precompile.h"
 #include "Game.h"
-#include "Renderer.h"
-#include "GameObjectGroup.h"
-#include "CollisionEventArgs.h"
-#include "CollisionEventHandler.h"
-#include "Point.h"
-#include "Vector.h"
-#include "Spaceship.h"
-#include "Missile.h"
 #include "Node.h"
 #include "RouteGenerator.h"
+#include "Camera.h"
+#include "Background.h"
+#include "Texture.h"
+#include "CollisionEventArgs.h"
+#include "CollisionEventHandler.h"
+#include "Event.h"
+#include "MapTexture.h"
 
 void onCollision(GameEntity *entity, CollisionEventArgs* args) {
     if (args->otherEntity && args->otherEntity->getOwner() == entity) return;

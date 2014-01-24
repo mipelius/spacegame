@@ -17,10 +17,8 @@
 #ifndef __Renderer_H_
 #define __Renderer_H_
 
-#include "GameWorld.h"
-#include "Background.h"
-#include "Camera.h"
-
+class GameWorld;
+class Background;
 class Camera;
 
 class Renderer {

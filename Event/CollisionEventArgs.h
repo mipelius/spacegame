@@ -19,8 +19,8 @@
 
 #include "EventArgs.h"
 #include "Point.h"
-#include "Map.h"
-#include "GameEntity.h"
+
+class Map;
 class GameEntity;
 
 class CollisionEventArgs : public EventArgs {

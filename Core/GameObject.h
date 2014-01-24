@@ -17,9 +17,10 @@
 #ifndef __GameObject_H_
 #define __GameObject_H_
 
+class CollisionShape;
+class Texture;
+
 #include "GameEntity.h"
-#include "CollisionShape.h"
-#include "Texture.h"
 
 class GameObject : public GameEntity {
 private:

@@ -17,6 +17,8 @@
 #include "precompile.h"
 #include "Camera.h"
 #include "Renderer.h"
+#include "GameEntity.h"
+#include "GameWorld.h"
 
 Camera::Camera(double x, double y, double w, double h, Renderer *renderer): x(x), y(y), w(w), h(h)  {
     entityToFollow = nullptr;

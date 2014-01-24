@@ -14,12 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Point.h"
-#include "GameObjectGroup.h"
-
 #ifndef __Missile_H_
 #define __Missile_H_
 
+class CollisionEventArgs;
+
+#include "Point.h"
+#include "GameObjectGroup.h"
 
 class Missile : public GameObjectGroup {
 private:
@@ -28,7 +29,7 @@ private:
     double missileAngle;
 public:
     Missile(Point location, double angle, double forceAmount, Vector initialSpeed, CollisionShape* shape);
-    bool detectCollisionWith(GameEntity* entity);
+    void beforeEntityCollisionDetection(GameEntity* otherEntity);
     void beforeStep(double timeElapsedSec);
 };
 

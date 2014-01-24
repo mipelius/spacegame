@@ -17,6 +17,14 @@
 #include "precompile.h"
 #include "WalkingCreature.h"
 #include "Missile.h"
+#include "Texture.h"
+#include "CollisionEventHandler.h"
+#include "CollisionEventArgs.h"
+#include "CollisionShape.h"
+#include "Event.h"
+#include "GameObject.h"
+#include "GameWorld.h"
+#include "Map.h"
 
 static Texture* textureWalkingCreature = nullptr;
 

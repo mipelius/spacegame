@@ -17,8 +17,11 @@
 #ifndef __GameObjectGroup_H_
 #define __GameObjectGroup_H_
 
-#include <list>
-#include "GameObject.h"
+class GameObject;
+class CollisionShape;
+
+#include "GameEntity.h"
+#include "Point.h"
 
 class GameObjectGroup : public GameEntity {
 private:

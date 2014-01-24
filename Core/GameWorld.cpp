@@ -16,8 +16,11 @@
 
 #include "precompile.h"
 #include "GameWorld.h"
+#include "Event.h"
 #include "CollisionEventArgs.h"
 #include "CollisionEventHandler.h"
+#include "GameEntity.h"
+#include "Map.h"
 
 void GameWorld::setMap(Map* map) {
     this->map = map;
@@ -31,32 +34,9 @@ void GameWorld::addEntity(GameEntity *gameEntity) {
 void GameWorld::step(double timeSeconds) {
     // update velocities and new locations
     for(std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
-        (*it)->beforeStep(timeSeconds);
-
+        (*it)->step(timeSeconds);
         // compute total force
-        Vector airResistance = Vector(0, 0);
-        Vector speed = (*it)->getSpeed();
-        if (speed.x != 0 || speed.y != 0) {
-            double speedLengthPow2 = speed.x * speed.x + speed.y * speed.y;
-            Vector airResistanceUnitVector = (speed * -1) * (1 / sqrt(speed.x * speed.x + speed.y * speed.y));
-            airResistance = airResistanceUnitVector * speedLengthPow2 * (0.5 * airDensity);
-        }
-        Vector totalForce = (*it)->getForce() + airResistance;
 
-        // use acceleration for updating speed --> velocity --> location
-        Vector acceleration = totalForce * (1 / (*it)->getMass());
-        acceleration += gForce;
-        (*it)->setSpeed((*it)->getSpeed() + acceleration);
-        (*it)->setVelocity((*it)->getSpeed() * timeSeconds * metersPerPixel);
-        (*it)->setLocation((*it)->getLocation() + (*it)->getVelocity());
-
-        // apply torque (not very nicely implemented, but good enough)
-        (*it)->setAngularVelocity((*it)->getTorque() * timeSeconds);
-        (*it)->setAngle((*it)->getAngle() + (*it)->getAngularVelocity());
-
-        // remove all applied forces
-        (*it)->setForceToZero();
-        (*it)->setTorque((*it)->getTorque() / ((*it)->getMass() * timeSeconds));
     }
 
     // now all the new locations are updated -> detect collision
@@ -110,7 +90,7 @@ void GameWorld::detectCollision(GameEntity *entity, Point oldLocation, Point new
 
     for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
         if ((*it) == entity) continue;
-        if (entity->detectCollisionWith(*it)) {
+        if (entity->_detectCollisionWith(*it)) {
             otherEntity = (*it);
             isEntityCollision = true;
         };
@@ -127,4 +107,16 @@ void GameWorld::detectCollision(GameEntity *entity, Point oldLocation, Point new
         entity->getCollisionEvent()->raise(args);
         delete args;
     }
+}
+
+const Vector GameWorld::getGForce() {
+    return Vector(gForce.x, gForce.y);
+}
+
+double GameWorld::getMetersPerPixel() {
+    return metersPerPixel;
+}
+
+double GameWorld::getAirDensity() {
+    return airDensity;
 }

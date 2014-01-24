@@ -17,7 +17,6 @@
 #include "precompile.h"
 #include "EventHandler.h"
 
-
 void EventHandler::handle(GameEntity *gameEntity, EventArgs *eventArgs) {
     _eventFunction(gameEntity, eventArgs);
 }

@@ -17,6 +17,10 @@
 #include "precompile.h"
 #include "Spaceship.h"
 #include "Missile.h"
+#include "Texture.h"
+#include "GameObject.h"
+#include "CollisionShape.h"
+#include "GameWorld.h"
 
 static Texture* textureSpaceShip = nullptr;
 

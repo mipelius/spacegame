@@ -16,6 +16,7 @@
 
 #include "precompile.h"
 #include "Background.h"
+#include "Texture.h"
 
 Background::Background(Texture *texture, int x, int y) {
     init(texture, x, y, texture->getW(), texture->getH());

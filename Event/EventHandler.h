@@ -17,7 +17,7 @@
 #ifndef __EventHandler_H_
 #define __EventHandler_H_
 
-#include "EventArgs.h"
+class EventArgs;
 class GameEntity;
 
 class EventHandler {

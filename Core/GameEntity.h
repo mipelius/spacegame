@@ -19,28 +19,35 @@
 
 #include "Point.h"
 #include "Vector.h"
-#include "Event.h"
-#include "GameWorld.h"
-#include "CollisionShape.h"
 
 class Event;
 class GameWorld;
+class CollisionShape;
 
 class GameEntity {
+    friend class GameWorld;
+private:
+    void step(double timeElapsedSec);
+    bool _isDead;
+    bool _stepIsIgnored;
+    bool _entityCollisionDetectionIsIgnored;
+    bool _detectCollisionWith(GameEntity *otherEntity);
 protected:
     Point location;
     double angle;
     double angularVelocity;
     double torque;
-    Point focus;
     Vector force;
     Vector speed;
     Vector velocity;
     Event* collisionEvent;
     GameWorld* gameWorld;
-    bool _isDead;
     CollisionShape *collisionShape;
     GameEntity* owner;
+
+    virtual void beforeStep(double timeElapsedSec);
+    virtual void afterStep(double timeElapsedSec);
+    virtual void beforeEntityCollisionDetection(GameEntity* otherEntity);
 public:
     GameEntity(Point focus, Point location, double angle, CollisionShape* collisionShape = nullptr);
     ~GameEntity();
@@ -49,7 +56,6 @@ public:
     void applyTorque(double angle);
     double getTorque();
     void setTorque(double torque);
-    void setTorqueToZero();
     double getAngleBeforeUpdate();
     double getAngularVelocity();
     void setAngularVelocity(double angularVelocity);
@@ -57,20 +63,15 @@ public:
     Vector getForce();
     void setAngle(double angle);
     double getAngle();
-    void turnClockwise();
-    void turnCounterClockwise();
     void setLocation(Point location);
     Point getLocation();
-    void setFocus(Point focus);
-    Point getFocus();
     void setSpeed(Vector speed);
     Vector getSpeed();
     Event* getCollisionEvent();
     void setWorld(GameWorld* gameWorld);
     GameWorld* getWorld();
     bool isDead();
-    bool detectCollisionActualWith(GameEntity *otherEntity);
-    virtual bool detectCollisionWith(GameEntity *otherEntity);
+
     CollisionShape* getCollisionShape();
     void setOwner(GameEntity *owner);
     GameEntity* getOwner();
@@ -78,9 +79,12 @@ public:
     Vector getVelocity();
     void setVelocity(Vector velocity);
     Point getLocationBeforeUpdate();
+
+    void ignoreEntityCollisionDetection();
+    void ignoreStep();
+
     virtual void render(double x, double y);
     virtual double getMass();
-    virtual void beforeStep(double timeElapsedSec);
 };
 
 

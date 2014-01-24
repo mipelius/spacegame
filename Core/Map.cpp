@@ -16,7 +16,10 @@
 
 #include "precompile.h"
 #include "Map.h"
+#include "Rect.h"
+#include "MapTexture.h"
 #include "GameEntity.h"
+#include "CollisionShape.h"
 
 Map::Map(
         std::string path,

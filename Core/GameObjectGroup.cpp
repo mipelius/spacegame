@@ -16,6 +16,7 @@
 
 #include "precompile.h"
 #include "GameObjectGroup.h"
+#include "GameObject.h"
 
 void GameObjectGroup::add(GameObject *gameObject) {
     this->gameObjects->push_back(gameObject);
@@ -38,8 +39,8 @@ void GameObjectGroup::render(double x, double y) {
     for (std::list<GameObject*>::iterator it = gameObjects->begin(); it != gameObjects->end(); it++) {
         Point location = (*it)->getLocation();
                 (*it)->render(
-                (int)(x + location.x - focus.x),
-                (int)(y + location.y - focus.y)
+                (int)(x + location.x),
+                (int)(y + location.y)
         );
     }
     glLoadIdentity();

@@ -16,6 +16,12 @@
 
 #include "precompile.h"
 #include "Renderer.h"
+#include "Camera.h"
+#include "Background.h"
+#include "GameWorld.h"
+#include "Map.h"
+#include "CollisionShape.h"
+#include "GameEntity.h"
 
 void Renderer::init(int x, int y, int w, int h, bool enableFullScreen) {
     // Window initialization

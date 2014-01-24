@@ -16,6 +16,8 @@
 
 #include "precompile.h"
 #include "Event.h"
+#include "EventArgs.h"
+#include "EventHandler.h"
 
 void Event::raise(EventArgs *eventArgs) {
     for (std::list<EventHandler*>::iterator it = eventHandlers->begin(); it != eventHandlers->end(); it++) {

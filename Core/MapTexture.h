@@ -17,7 +17,6 @@
 #ifndef __MapTexture_H_
 #define __MapTexture_H_
 
-
 class MapTexture {
 private:
     GLuint texture;

@@ -16,6 +16,7 @@
 
 #include "precompile.h"
 #include "GameObject.h"
+#include "Texture.h"
 
 GameObject::GameObject(
         Point focus,
@@ -45,19 +46,19 @@ void GameObject::render(double x, double y) {
 
     //Bottom-left vertex (corner)
     glTexCoord2d(0.01, 0.01);
-    glVertex3f((GLfloat)(x - focus.x),(GLfloat)(y - focus.y), 0.0);
+    glVertex3f((GLfloat)(x),(GLfloat)(y), 0.0);
 
     //Bottom-right vertex (corner)
     glTexCoord2d(0.99, 0.01);
-    glVertex3f((GLfloat)(x - focus.x + w),(GLfloat)(y - focus.y), 0.0);
+    glVertex3f((GLfloat)(x + w),(GLfloat)(y), 0.0);
 
     //Top-right vertex (corner)
     glTexCoord2d(0.99, 0.99);
-    glVertex3f((GLfloat)(x - focus.x + w),(GLfloat)(y - focus.y + h), 0.0);
+    glVertex3f((GLfloat)(x + w),(GLfloat)(y + h), 0.0);
 
     //Top-left vertex (corner)
     glTexCoord2d(0.01, 0.99);
-    glVertex3f((GLfloat)(x - focus.x),(GLfloat)(y - focus.y + h), 0.0);
+    glVertex3f((GLfloat)(x),(GLfloat)(y + h), 0.0);
 
     glEnd();
     texture->glUnbind();

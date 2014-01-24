@@ -17,11 +17,10 @@
 #ifndef __Camera_H_
 #define __Camera_H_
 
-#include "GameObject.h"
-#include "GameWorld.h"
-#include "Renderer.h"
-
+class GameEntity;
 class Renderer;
+
+#include "Point.h"
 
 class Camera {
 private:
@@ -36,6 +35,5 @@ public:
     double getH();
     void follow(GameEntity *gameEntity);
 };
-
 
 #endif //__Camera_H_

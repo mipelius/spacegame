@@ -17,8 +17,8 @@
 #ifndef __CollisionShape_H_
 #define __CollisionShape_H_
 
-#include "Point.h"
 #include "Rect.h"
+#include "Point.h"
 
 class CollisionShape {
 private:
