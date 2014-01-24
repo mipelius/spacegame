@@ -62,7 +62,8 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint, unsigned 
     Node* startNode = Node::byPoint(startPoint, this->map);
     Node* goalNode = Node::byPoint(goalPoint, this->map);
 
-    Node* currentNode;
+    Node* currentNode = nullptr;
+    bool goalNodeHasBeenReached = false;
 
     // the actual algorithm begins
 
@@ -71,7 +72,7 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint, unsigned 
 
     // 2) loop the following as long as the goal node has not been reached
 
-    while (!(!closedList.empty() && closedList.back()->equals(goalNode, step))) {
+    while (!goalNodeHasBeenReached) {
         // 2.a) find the node having lowest fCost from the open list -> set current node to point that node
 
         Node* lowestCostNode = openList.front();
@@ -156,28 +157,49 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint, unsigned 
             }
         }
 
-        // if open list is empty, there is no path -> return nullptr
+        // if the last node on the closed list is (approximately) same as goalNode the goal node has been reached
 
-        if (openList.empty()) return nullptr;
+        if (closedList.back()->equals(goalNode, step)) goalNodeHasBeenReached = true;
+
+        // if open list is empty, there is no path -> break the loop
+
+        if (openList.empty()) break;
     }
 
-    // 3) the path is found, but it's only possible to go it trough backwards
-    //    go through the nodes backwards and set the nextNode-values
+    if (goalNodeHasBeenReached) {
+        // 3) the path is found, but it's only possible to go it trough backwards
+        //    go through the nodes backwards and set the nextNode-values
 
-    Node* target = closedList.back();
-    currentNode = target;
-    Node* nextNode = nullptr;
+        Node* target = closedList.back();
+        currentNode = target;
+        Node* nextNode = nullptr;
 
-    while(currentNode->previousNode != nullptr) {
+        while(currentNode->previousNode != nullptr) {
+            closedList.remove(currentNode);
+            currentNode->nextNode = nextNode;
+            nextNode = currentNode;
+            currentNode = currentNode->previousNode;
+        }
+
+        // also first node should be updated
         currentNode->nextNode = nextNode;
-        nextNode = currentNode;
-        currentNode = currentNode->previousNode;
+        closedList.remove(currentNode);
     }
 
-    currentNode->nextNode = nextNode;
+    // clean up
 
+    for (std::list<Node*>::iterator it = openList.begin(); it != openList.end(); it++) {
+        delete (*it);
+    }
 
-    // TODO: clean up both open and closed lists
+    for (std::list<Node*>::iterator it = closedList.begin(); it != closedList.end(); it++) {
+        delete (*it);
+    }
 
-    return currentNode; // return the first node of the path
+    delete goalNode; // the last node of the route is the copy of this node
+
+    // if goal node has been reached return the route, else return nullptr
+
+    if (goalNodeHasBeenReached) return currentNode;
+    else return nullptr;
 }
