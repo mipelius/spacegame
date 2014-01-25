@@ -18,6 +18,7 @@
 #define __WalkingCreature_H_
 
 class CollisionEventArgs;
+
 #include "SpaceGameObject.h"
 
 class WalkingCreature : public SpaceGameObject {

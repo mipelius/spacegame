@@ -17,7 +17,6 @@
 #ifndef __Vector_H_
 #define __Vector_H_
 
-
 class Vector {
 public:
     double x;

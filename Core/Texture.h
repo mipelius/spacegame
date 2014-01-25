@@ -17,6 +17,8 @@
 #ifndef __Texture_H_
 #define __Texture_H_
 
+#include <string>
+
 class Texture {
 private:
     GLuint texture;

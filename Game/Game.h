@@ -17,11 +17,11 @@
 #ifndef __SpaceGame_H_
 #define __SpaceGame_H_
 
-#include "Map.h"
-#include "GameWorld.h"
-#include "Renderer.h"
-#include "Spaceship.h"
-#include "WalkingCreature.h"
+class std::list;
+class Spaceship;
+class Renderer;
+class GameWorld;
+class Map;
 
 class Game {
 private:

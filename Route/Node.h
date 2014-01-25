@@ -17,7 +17,6 @@
 #ifndef __Node_H_
 #define __Node_H_
 
-#include <list>
 #include "Point.h"
 
 class Map;

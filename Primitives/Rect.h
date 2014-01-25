@@ -19,7 +19,6 @@
 #ifndef __Rect_H_
 #define __Rect_H_
 
-
 class Rect {
 private:
     Point firstPoint;
