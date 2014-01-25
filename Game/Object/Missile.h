@@ -20,16 +20,16 @@
 class EntityCollisionEventArgs;
 
 #include "Point.h"
-#include "GameObjectGroup.h"
+#include "SpaceGameObject.h"
 
-class Missile : public GameObjectGroup {
+class Missile : public SpaceGameObject {
 private:
     double timeAlive;
 protected:
     void onEntityCollision(GameEntity *otherEntity);
     void onMapCollision();
 public:
-    Missile(Point location, double angle, double forceAmount, Vector initialSpeed, CollisionShape* shape);
+    Missile(Point location, double angle, double forceAmount, Vector initialSpeed);
     void beforeEntityCollisionDetection(GameEntity* otherEntity);
     void beforeStep(double timeElapsedSec);
 };

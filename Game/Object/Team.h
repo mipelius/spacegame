@@ -14,32 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __SpaceGameEntity_H_
-#define __SpaceGameEntity_H_
+#ifndef __Team_H_
+#define __Team_H_
 
-#include "GameObjectGroup.h"
+#include <string>
 
-class Controller;
-class Team;
-
-class SpaceGameObject : public GameObjectGroup {
-    friend class Controller;
+class Team {
 private:
-    Controller *controller;
-    int health = 0;
-    int maxHealth = 0;
-    Team* _team;
-protected:
-    void beforeEntityCollisionDetection(GameEntity *otherEntity);
-    virtual void beforeStep(double timeElapsedSec);
+    std::string _name;
 public:
-    SpaceGameObject(Point location, double angle, CollisionShape* shape, int maxHealth);
-    void damage(int damage);
-    int getHealth();
-    int getMaxHealth();
-    void setTeam(Team* team);
-    Team* getTeam();
+    Team(std::string name);
+    std::string getName();
 };
 
 
-#endif //__SpaceGameEntity_H_
+#endif //__Team_H_

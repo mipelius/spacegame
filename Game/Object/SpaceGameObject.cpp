@@ -17,6 +17,7 @@
 #include "precompile.h"
 #include "SpaceGameObject.h"
 #include "Controller.h"
+#include "Team.h"
 
 SpaceGameObject::SpaceGameObject(Point location, double angle, CollisionShape *shape, int maxHealth) :
 GameObjectGroup(location, angle, shape) {
@@ -41,4 +42,20 @@ int SpaceGameObject::getMaxHealth() {
 void SpaceGameObject::beforeStep(double timeElapsedSec) {
     GameEntity::beforeStep(timeElapsedSec);
     if (controller) controller->control();
+}
+
+void SpaceGameObject::setTeam(Team *team) {
+    this->_team = team;
+}
+
+Team *SpaceGameObject::getTeam() {
+    return _team;
+}
+
+void SpaceGameObject::beforeEntityCollisionDetection(GameEntity *otherEntity) {
+    SpaceGameObject* spaceGameObject = dynamic_cast<SpaceGameObject*>(otherEntity);
+
+    if (spaceGameObject) {
+        if (spaceGameObject->getTeam() == this->_team) ignoreEntityCollisionDetection();
+    }
 }

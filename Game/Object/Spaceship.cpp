@@ -39,8 +39,8 @@ SpaceGameObject(location, 0.0, nullptr, maxHealth) {
     );
 
     Point collisionPoints[] = {
-            Point(0 * size, -16 * size),
-            Point(16 * size, 16 * size),
+            Point(-16 * size, -16 * size),
+            Point(16 * size, 0 * size),
             Point(-16 * size, 16 * size),
     };
 
@@ -62,15 +62,8 @@ void Spaceship::shoot() {
 }
 
 void Spaceship::shootOnce(Point startPoint) {
-	Point missileShapePoints[] = {
-		Point(-2, -10),
-		Point(2, -10),
-		Point(2, 10),
-		Point(-2, 10)
-	};
-
-    Missile* missile = new Missile(this->location + Vector(startPoint.x, startPoint.y), this->angle, 2000000, this->speed,
-		new CollisionShape(missileShapePoints, 4));
+    Missile* missile = new Missile(this->location + Vector(startPoint.x, startPoint.y), this->angle, 2000000, this->speed);
+    missile->setTeam(this->getTeam());
     missile->setOwner(this);
     gameWorld->addEntity(missile);
 }

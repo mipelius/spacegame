@@ -23,14 +23,19 @@ class Renderer;
 class GameWorld;
 class Map;
 class HumanController;
+class Team;
 
 class Game {
 private:
     Map* map;
     GameWorld* world;
     Renderer* renderer;
-    Spaceship*player;
-    HumanController* humanController;
+
+    Team *playerTeam;
+    Spaceship* player;
+    HumanController* playerController;
+
+    Team *enemyTeam;
     std::list<Spaceship*> *enemies;
     Spaceship* boss;
 public:

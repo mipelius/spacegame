@@ -16,7 +16,6 @@
 
 #include "precompile.h"
 #include "Missile.h"
-#include "Spaceship.h"
 #include "Texture.h"
 #include "Event.h"
 #include "EntityCollisionEventArgs.h"
@@ -24,19 +23,20 @@
 #include "GameObject.h"
 #include "Map.h"
 #include "GameWorld.h"
+#include "CollisionShape.h"
 
 static Texture*textureMissile = nullptr;
 
-Missile::Missile(Point location, double angle, double forceAmount, Vector initialSpeed, CollisionShape* shape)
-  : GameObjectGroup
+Missile::Missile(Point location, double angle, double forceAmount, Vector initialSpeed)
+  : SpaceGameObject
     (
         location,
         angle,
-		shape
+		nullptr,
+        0
 	) 
 						
 {
-
     if (!textureMissile) textureMissile = new Texture("images/missile.png");
 
     GameObject *obj = new GameObject(
@@ -50,6 +50,16 @@ Missile::Missile(Point location, double angle, double forceAmount, Vector initia
     );
 
     this->add(obj);
+
+    Point missileShapePoints[] = {
+            Point(-10, -2),
+            Point(-10, 2),
+            Point(10, 2),
+            Point(10, -2)
+    };
+
+    this->setCollisionShape(new CollisionShape(missileShapePoints, 4));
+
     this->setAngle(angle);
     this->setSpeed(initialSpeed);
     this->applyForce(Vector::byAngle(this->getAngle(), forceAmount));
@@ -58,6 +68,14 @@ Missile::Missile(Point location, double angle, double forceAmount, Vector initia
 
 void Missile::beforeEntityCollisionDetection(GameEntity* otherEntity) {
     GameEntity::beforeEntityCollisionDetection(otherEntity);
+
+    SpaceGameObject* spaceGameObject = dynamic_cast<SpaceGameObject*>(otherEntity);
+    if(spaceGameObject != 0) {
+        if (spaceGameObject->getTeam() == this->getTeam()) {
+            ignoreEntityCollisionDetection();
+            return;
+        }
+    }
 
     if (otherEntity == this->owner) {
         ignoreEntityCollisionDetection();
@@ -89,6 +107,7 @@ void Missile::onEntityCollision(GameEntity *otherEntity) {
 void Missile::onMapCollision() {
     int x = (int)location.x;
     int y = (int)location.y;
+
     for (int i=-20; i<20; i+=5) {
         for (int j=-20; j<20; j+=5) {
             if (gameWorld->getMap()->getValueActual(x + i, y + j)) {
@@ -96,6 +115,7 @@ void Missile::onMapCollision() {
             }
         }
     }
+
     for (int i=-60; i<60; i+=5) {
         for (int j=-60; j<60; j+=5) {
             if (gameWorld->getMap()->getValueActual(x + i, y + j)) {

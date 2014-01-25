@@ -34,6 +34,8 @@
 
 #include "Spaceship.h"
 #include "WalkingCreature.h"
+#include "Team.h"
+
 #include "CpuController.h"
 #include "HumanController.h"
 
@@ -42,7 +44,7 @@ Game::Game() {
 
     renderer = new Renderer();
 
-    renderer->init(0, 0, 1200, 800, false);
+    renderer->init(0, 0, 1920, 1200, true);
 
     renderer->addBackground(
             new Background(
@@ -78,8 +80,10 @@ Game::Game() {
 
     player = new Spaceship(Point(4500, 8500), 1000, 1);
     player->setShootingSpeed(10);
-    humanController = new HumanController();
-    humanController->setControllableObject(player);
+    playerController = new HumanController();
+    playerController->setControllableObject(player);
+    playerTeam = new Team("Team America ;)");
+    player->setTeam(playerTeam);
     world->addEntity(player);
 
     // --- CAMERA ---
@@ -89,6 +93,8 @@ Game::Game() {
 
     // --- ENEMIES ---
 
+    enemyTeam = new Team("Team Bastards");
+
     enemies = new std::list<Spaceship*>;
     for (int i=0; i<20; i++) {
         Spaceship* enemy = new Spaceship(Point(4500 + i * 50, 8700), 20, 1);
@@ -96,6 +102,9 @@ Game::Game() {
         CpuController* controller = new CpuController();
         controller->setEnemyTarget(player);
         controller->setControllableObject(enemy);
+
+        enemy->setTeam(enemyTeam);
+
         world->addEntity(enemy);
         enemies->push_back(enemy);
     }
@@ -121,10 +130,10 @@ void Game::launch() {
         if (keys[SDL_SCANCODE_F2]) renderer->toggleMapCollisionAreaVisibility();
 
         if (!player->isDead()) {
-            if (keys[SDL_SCANCODE_LEFT]) humanController->left();
-            if (keys[SDL_SCANCODE_RIGHT]) humanController->right();
-            if (keys[SDL_SCANCODE_UP]) humanController->up();
-            if (keys[SDL_SCANCODE_SPACE]) humanController->space();
+            if (keys[SDL_SCANCODE_LEFT]) playerController->left();
+            if (keys[SDL_SCANCODE_RIGHT]) playerController->right();
+            if (keys[SDL_SCANCODE_UP]) playerController->up();
+            if (keys[SDL_SCANCODE_SPACE]) playerController->space();
         }
 
         for(std::list<Spaceship*>::iterator it = enemies->begin(); it != enemies->end(); it++) {

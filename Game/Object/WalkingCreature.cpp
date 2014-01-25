@@ -162,19 +162,11 @@ void WalkingCreature::beforeStep(double timeElapsedSeconds) {
             double angle = atan(deltaY / deltaX) * 180 / M_PI;
             if (deltaX < 0) angle -= 180;
 
-			Point missileShapePoints[] = {
-				Point(-2, -10),
-				Point(2, -10),
-				Point(2, 10),
-				Point(-2, 10)
-			};
-
 			Missile* missile = new Missile(
 				this->getLocation(),
 				angle,
 				2000000,
-				Vector(0, 0),
-				new CollisionShape(missileShapePoints, 4)
+				Vector(0, 0)
             );
 
             missile->setOwner(this);
