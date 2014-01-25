@@ -55,7 +55,7 @@ protected:
     virtual void onMapCollision();
     virtual void onEntityCollision(GameEntity* otherEntity);
 public:
-    GameEntity(Point focus, Point location, double angle, CollisionShape* collisionShape = nullptr);
+    GameEntity(Point location, double angle, CollisionShape* collisionShape = nullptr);
     ~GameEntity();
 
     void die();

@@ -14,24 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "precompile.h"
-#include "SpaceGameObject.h"
+#ifndef __CpuController_H_
+#define __CpuController_H_
 
-SpaceGameObject::SpaceGameObject(Point focus, Point location, double angle, CollisionShape *shape, int maxHealth) :
-GameObjectGroup(focus, location, angle, shape) {
-    this->health = maxHealth;
-    this->maxHealth = maxHealth;
-}
+#include "Controller.h"
 
-void SpaceGameObject::damage(int damage) {
-    health -= damage;
-    if (health <= 0) this->die();
-}
+class SpaceGameObject;
 
-int SpaceGameObject::getHealth() {
-    return health;
-}
+class CpuController : public Controller {
+private:
+    SpaceGameObject* enemyTarget;
+protected:
+    void control();
+public:
+    void setEnemyTarget(SpaceGameObject* enemyTarget);
+};
 
-int SpaceGameObject::getMaxHealth() {
-    return maxHealth;
-}
+#endif //__CpuController_H_

@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,31 +14,31 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Spaceship_H_
-#define __Spaceship_H_
-
+#include "precompile.h"
 #include "SpaceGameObject.h"
+#include "Controller.h"
 
-class Spaceship : public SpaceGameObject {
-private:
-    int health;
-    void shootOnce(Point startPoint);
-    Uint32 shootingDelay;
-    Uint32 lastTimeShot;
-    bool _isStuck;
-    int size;
-protected:
-    void onEntityCollision(GameEntity* otherEntity);
-    void onMapCollision();
-public:
-    Spaceship(Point location, int maxHealth, int size);
-    void shoot();
-    void forceShoot();
-    void setShootingSpeed(Uint32 shootingPerSecond);
-    void setStuck();
-    void setNotStuck();
-    bool isStuck();
-};
+SpaceGameObject::SpaceGameObject(Point location, double angle, CollisionShape *shape, int maxHealth) :
+GameObjectGroup(location, angle, shape) {
+    this->health = maxHealth;
+    this->maxHealth = maxHealth;
+    this->controller = nullptr;
+}
 
+void SpaceGameObject::damage(int damage) {
+    health -= damage;
+    if (health <= 0) this->die();
+}
 
-#endif //__Spaceship_H_
+int SpaceGameObject::getHealth() {
+    return health;
+}
+
+int SpaceGameObject::getMaxHealth() {
+    return maxHealth;
+}
+
+void SpaceGameObject::beforeStep(double timeElapsedSec) {
+    GameEntity::beforeStep(timeElapsedSec);
+    if (controller) controller->control();
+}

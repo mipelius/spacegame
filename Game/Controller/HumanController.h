@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,34 +14,37 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __GameObject_H_
-#define __GameObject_H_
+#ifndef __HumanController_H_
+#define __HumanController_H_
 
-class CollisionShape;
-class Texture;
+#include "Controller.h"
 
-#include "GameEntity.h"
-
-class GameObject : public GameEntity {
+class HumanController : public Controller {
 private:
-    Texture* texture;
-    double mass;
-    int w, h;
-    const double ZERO_MASS = 0.0001;
+    bool _left;
+    bool _right;
+    bool _up;
+    bool _down;
+    bool _space;
+    bool _enter;
 
+    void _setAllFalse();
+protected:
+    void control();
+    virtual void handleLeft();
+    virtual void handleRight();
+    virtual void handleUp();
+    virtual void handleDown();
+    virtual void handleSpace();
+    virtual void handleEnter();
 public:
-    GameObject(
-            Point location,
-            double angle,
-            Texture *texture,
-            double mass,
-            int w,
-            int h,
-            CollisionShape *collisionShape = nullptr
-    );
-    void render(double x, double y);
-    double getMass();
+    void left();
+    void right();
+    void up();
+    void down();
+    void space();
+    void enter();
 };
 
 
-#endif //__GameObject_H_
+#endif //__HumanController_H_

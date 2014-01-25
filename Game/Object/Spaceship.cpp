@@ -24,12 +24,11 @@
 
 static Texture* textureSpaceShip = nullptr;
 
-Spaceship::Spaceship(Point location, int maxHealt, int size) :
-SpaceGameObject(Point(0, 0), location, 0.0, nullptr, maxHealt) {
+Spaceship::Spaceship(Point location, int maxHealth, int size) :
+SpaceGameObject(location, 0.0, nullptr, maxHealth) {
     if (!textureSpaceShip) textureSpaceShip = new Texture("images/spaceship.png");
 
     GameObject *objectSpaceShip = new GameObject(
-            Point(0, 0),
             Point(-16 * size, -16 * size),
             0.0,
             textureSpaceShip,
@@ -48,7 +47,7 @@ SpaceGameObject(Point(0, 0), location, 0.0, nullptr, maxHealt) {
     this->setCollisionShape(new CollisionShape(collisionPoints, 3));
     this->add(objectSpaceShip);
 
-    this->health = maxHealt;
+    this->health = maxHealth;
     this->lastTimeShot = 0;
     this->shootingDelay = 0;
     this->_isStuck = false;
@@ -82,10 +81,10 @@ void Spaceship::setShootingSpeed(Uint32 shootingPerSecond) {
 }
 
 void Spaceship::forceShoot() {
-    Vector vector = Vector::byAngle(angle - 90, -22);
-    shootOnce(Point(0, 0) + (Vector::byAngle(angle - 90 + 45, 17) + vector));
-    shootOnce(Point(0, 0) + (Vector::byAngle(angle - 90 - 45, 17) + vector));
-    shootOnce(Point(0, 0) + (Vector::byAngle(angle - 90, 10)));
+    Vector vector = Vector::byAngle(angle, -22);
+    shootOnce(Point(0, 0) + (Vector::byAngle(angle + 45, 17) + vector));
+    shootOnce(Point(0, 0) + (Vector::byAngle(angle - 45, 17) + vector));
+    shootOnce(Point(0, 0) + (Vector::byAngle(angle, 10)));
 }
 
 void Spaceship::setStuck() {

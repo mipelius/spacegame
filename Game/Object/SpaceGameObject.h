@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,34 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __GameObject_H_
-#define __GameObject_H_
+#ifndef __SpaceGameEntity_H_
+#define __SpaceGameEntity_H_
 
-class CollisionShape;
-class Texture;
+#include "GameObjectGroup.h"
 
-#include "GameEntity.h"
+class Controller;
 
-class GameObject : public GameEntity {
+class SpaceGameObject : public GameObjectGroup {
+    friend class Controller;
 private:
-    Texture* texture;
-    double mass;
-    int w, h;
-    const double ZERO_MASS = 0.0001;
-
+    Controller *controller;
+    int health = 0;
+    int maxHealth = 0;
+protected:
+    virtual void beforeStep(double timeElapsedSec);
 public:
-    GameObject(
-            Point location,
-            double angle,
-            Texture *texture,
-            double mass,
-            int w,
-            int h,
-            CollisionShape *collisionShape = nullptr
-    );
-    void render(double x, double y);
-    double getMass();
+    SpaceGameObject(Point location, double angle, CollisionShape* shape, int maxHealth);
+    void damage(int damage);
+    int getHealth();
+    int getMaxHealth();
 };
 
 
-#endif //__GameObject_H_
+#endif //__SpaceGameEntity_H_

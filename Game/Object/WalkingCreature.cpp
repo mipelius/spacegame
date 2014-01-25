@@ -28,14 +28,13 @@
 
 static Texture* textureWalkingCreature = nullptr;
 
-WalkingCreature::WalkingCreature(Point location, int maxHealth) : SpaceGameObject(Point(0,0), location, 0.0, nullptr, maxHealth) {
+WalkingCreature::WalkingCreature(Point location, int maxHealth) : SpaceGameObject(location, 0.0, nullptr, maxHealth) {
 
     double size = 0.5;
 
     if (!textureWalkingCreature) textureWalkingCreature = new Texture("images/walking_creature.png");
 
     GameObject* obj = new GameObject(
-            Point(0,0),
             Point(-20 * size, -30 * size),
             0.0,
             textureWalkingCreature,
@@ -160,7 +159,7 @@ void WalkingCreature::beforeStep(double timeElapsedSeconds) {
             if (deltaX == 0) deltaX = 0.1;
             if (deltaY == 0) deltaY = 0.1;
 
-            double angle = atan(deltaY / deltaX) * 180 / M_PI + 90;
+            double angle = atan(deltaY / deltaX) * 180 / M_PI;
             if (deltaX < 0) angle -= 180;
 
 			Point missileShapePoints[] = {
@@ -170,7 +169,6 @@ void WalkingCreature::beforeStep(double timeElapsedSeconds) {
 				Point(-2, 10)
 			};
 
-
 			Missile* missile = new Missile(
 				this->getLocation(),
 				angle,
@@ -178,7 +176,6 @@ void WalkingCreature::beforeStep(double timeElapsedSeconds) {
 				Vector(0, 0),
 				new CollisionShape(missileShapePoints, 4)
             );
-
 
             missile->setOwner(this);
 

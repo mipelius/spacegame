@@ -25,7 +25,6 @@ class EntityCollisionEventArgs;
 class Missile : public GameObjectGroup {
 private:
     double timeAlive;
-    double missileAngle;
 protected:
     void onEntityCollision(GameEntity *otherEntity);
     void onMapCollision();

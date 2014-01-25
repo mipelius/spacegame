@@ -34,6 +34,8 @@
 
 #include "Spaceship.h"
 #include "WalkingCreature.h"
+#include "CpuController.h"
+#include "HumanController.h"
 
 Game::Game() {
     // --- INITIALIZE RENDERER ---
@@ -76,6 +78,8 @@ Game::Game() {
 
     player = new Spaceship(Point(4500, 8500), 1000, 1);
     player->setShootingSpeed(10);
+    humanController = new HumanController();
+    humanController->setControllableObject(player);
     world->addEntity(player);
 
     // --- CAMERA ---
@@ -89,6 +93,9 @@ Game::Game() {
     for (int i=0; i<20; i++) {
         Spaceship* enemy = new Spaceship(Point(4500 + i * 50, 8700), 20, 1);
         enemy->setShootingSpeed(10);
+        CpuController* controller = new CpuController();
+        controller->setEnemyTarget(player);
+        controller->setControllableObject(enemy);
         world->addEntity(enemy);
         enemies->push_back(enemy);
     }
@@ -114,22 +121,10 @@ void Game::launch() {
         if (keys[SDL_SCANCODE_F2]) renderer->toggleMapCollisionAreaVisibility();
 
         if (!player->isDead()) {
-            if (keys[SDL_SCANCODE_LEFT]) if (player->getAngularVelocity() > -80) player->applyTorque(-359);
-            if (keys[SDL_SCANCODE_RIGHT]) if (player->getAngularVelocity() < 80) player->applyTorque(359);
-            if (keys[SDL_SCANCODE_UP]) {
-                if (player->isStuck()) {
-                    player->setLocation(player->getLocation() + Vector::byAngle(player->getAngle() - 90, 2));
-                    player->setSpeed(Vector::byAngle(player->getAngle() - 90, 200));
-                    player->setNotStuck();
-                }
-                player->applyForce(Vector::byAngle(player->getAngle() - 90, 120000));
-            }
-
-            if (keys[SDL_SCANCODE_SPACE]) player->shoot();
-
-            if (keys[SDL_SCANCODE_1]) routeStartPoint = player->getLocation();
-            if (keys[SDL_SCANCODE_2]) routeGoalPoint = player->getLocation();
-            if (keys[SDL_SCANCODE_RETURN]) route = RouteGenerator(map).generateRoute(routeStartPoint, routeGoalPoint, 3);
+            if (keys[SDL_SCANCODE_LEFT]) humanController->left();
+            if (keys[SDL_SCANCODE_RIGHT]) humanController->right();
+            if (keys[SDL_SCANCODE_UP]) humanController->up();
+            if (keys[SDL_SCANCODE_SPACE]) humanController->space();
         }
 
         for(std::list<Spaceship*>::iterator it = enemies->begin(); it != enemies->end(); it++) {
@@ -140,7 +135,6 @@ void Game::launch() {
                 delete (currentEntity);
                 continue;
             }
-            if (!(rand() % 300)) (*it)->shoot();
         }
 
         if (enemies->empty() && !(boss->getWorld()) && (!boss->isDead())) {

@@ -19,7 +19,6 @@
 #include "Texture.h"
 
 GameObject::GameObject(
-        Point focus,
         Point location,
         double angle,
         Texture *texture,
@@ -27,7 +26,7 @@ GameObject::GameObject(
         int w,
         int h,
         CollisionShape *collisionShape
-) : GameEntity(focus, location, angle, collisionShape) {
+) : GameEntity(location, angle, collisionShape) {
     this->texture = texture;
     mass == 0 ? this->mass = ZERO_MASS : this->mass = mass;
     this->w = w;

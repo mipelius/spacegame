@@ -25,12 +25,11 @@
 #include "Map.h"
 #include "GameWorld.h"
 
-static Texture* textureTurret = nullptr;
+static Texture*textureMissile = nullptr;
 
 Missile::Missile(Point location, double angle, double forceAmount, Vector initialSpeed, CollisionShape* shape)
   : GameObjectGroup
     (
-        Point(0, 0),
         location,
         angle,
 		shape
@@ -38,23 +37,22 @@ Missile::Missile(Point location, double angle, double forceAmount, Vector initia
 						
 {
 
-    if (!textureTurret) textureTurret = new Texture("images/turret.png");
+    if (!textureMissile) textureMissile = new Texture("images/missile.png");
 
     GameObject *obj = new GameObject(
-            Point(0, 0),
-            Point(-5, -10),
+            Point(-10, -5),
             0.0,
-            textureTurret,
+            textureMissile,
             200,
-            10,
             20,
+            10,
             nullptr
     );
 
     this->add(obj);
     this->setAngle(angle);
     this->setSpeed(initialSpeed);
-    this->applyForce(Vector::byAngle(this->getAngle() - 90.0, forceAmount));
+    this->applyForce(Vector::byAngle(this->getAngle(), forceAmount));
     this->timeAlive = 0;
 }
 
@@ -75,14 +73,14 @@ void Missile::beforeEntityCollisionDetection(GameEntity* otherEntity) {
 void Missile::beforeStep(double timeElapsedSec) {
     GameEntity::beforeStep(timeElapsedSec);
     timeAlive += timeElapsedSec;
-    if (timeAlive > 2) this->die();
+    if (timeAlive > 2.0) this->die();
 }
 
 void Missile::onEntityCollision(GameEntity *otherEntity) {
     SpaceGameObject* spaceGameObject = dynamic_cast<SpaceGameObject*>(otherEntity);
     if(spaceGameObject != 0) {
         spaceGameObject->damage(rand() % 5 + 5);
-        spaceGameObject->applyForce(Vector::byAngle(this->getAngle() - 90, 6000));
+        spaceGameObject->applyForce(Vector::byAngle(this->getAngle(), 6000));
     }
 
     this->die();

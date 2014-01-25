@@ -20,6 +20,7 @@
 class GameObject;
 class CollisionShape;
 
+#include <list>
 #include "GameEntity.h"
 #include "Point.h"
 
@@ -27,7 +28,7 @@ class GameObjectGroup : public GameEntity {
 private:
     std::list<GameObject*> *gameObjects;
 public:
-    GameObjectGroup(Point focus, Point location, double angle, CollisionShape* collisionShape = nullptr);
+    GameObjectGroup(Point location, double angle, CollisionShape* collisionShape = nullptr);
     void add(GameObject *gameObject);
     void render(double x, double y);
     double getMass();

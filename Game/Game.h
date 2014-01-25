@@ -22,6 +22,7 @@ class Spaceship;
 class Renderer;
 class GameWorld;
 class Map;
+class HumanController;
 
 class Game {
 private:
@@ -29,6 +30,7 @@ private:
     GameWorld* world;
     Renderer* renderer;
     Spaceship*player;
+    HumanController* humanController;
     std::list<Spaceship*> *enemies;
     Spaceship* boss;
 public:
