@@ -19,10 +19,11 @@
 #include "Spaceship.h"
 #include "Texture.h"
 #include "Event.h"
-#include "CollisionEventArgs.h"
-#include "CollisionEventHandler.h"
+#include "EntityCollisionEventArgs.h"
+#include "EntityCollisionEventHandler.h"
 #include "GameObject.h"
 #include "Map.h"
+#include "GameWorld.h"
 
 static Texture* textureTurret = nullptr;
 
@@ -52,39 +53,9 @@ Missile::Missile(Point location, double angle, double forceAmount, Vector initia
 
     this->add(obj);
     this->setAngle(angle);
-    this->getCollisionEvent()->add(new CollisionEventHandler(onMissileCollision));
     this->setSpeed(initialSpeed);
     this->applyForce(Vector::byAngle(this->getAngle() - 90.0, forceAmount));
     this->timeAlive = 0;
-}
-
-void Missile::onMissileCollision(GameEntity *gameEntity, CollisionEventArgs *args) {
-    if (args->map) {
-        int x = (int)args->newLocation.x;
-        int y = (int)args->newLocation.y;
-        for (int i=-20; i<20; i+=5) {
-            for (int j=-20; j<20; j+=5) {
-                if (args->map->getValueActual(x + i, y + j)) {
-                    args->map->setValueActual(x + i, y + j, 0);
-                }
-            }
-        }
-        for (int i=-60; i<60; i+=5) {
-            for (int j=-60; j<60; j+=5) {
-                if (args->map->getValueActual(x + i, y + j)) {
-                    args->map->setValueActual(x + i, y + j, rand() % 2 + 1);
-                }
-            }
-        }
-    }
-
-    SpaceGameObject* spaceGameObject = dynamic_cast<SpaceGameObject*>(args->otherEntity);
-    if(spaceGameObject != 0) {
-        spaceGameObject->damage(rand() % 5 + 5);
-        spaceGameObject->applyForce(Vector::byAngle(gameEntity->getAngle() - 90, 6000));
-    }
-
-    gameEntity->die();
 }
 
 void Missile::beforeEntityCollisionDetection(GameEntity* otherEntity) {
@@ -105,4 +76,35 @@ void Missile::beforeStep(double timeElapsedSec) {
     GameEntity::beforeStep(timeElapsedSec);
     timeAlive += timeElapsedSec;
     if (timeAlive > 2) this->die();
+}
+
+void Missile::onEntityCollision(GameEntity *otherEntity) {
+    SpaceGameObject* spaceGameObject = dynamic_cast<SpaceGameObject*>(otherEntity);
+    if(spaceGameObject != 0) {
+        spaceGameObject->damage(rand() % 5 + 5);
+        spaceGameObject->applyForce(Vector::byAngle(this->getAngle() - 90, 6000));
+    }
+
+    this->die();
+}
+
+void Missile::onMapCollision() {
+    int x = (int)location.x;
+    int y = (int)location.y;
+    for (int i=-20; i<20; i+=5) {
+        for (int j=-20; j<20; j+=5) {
+            if (gameWorld->getMap()->getValueActual(x + i, y + j)) {
+                gameWorld->getMap()->setValueActual(x + i, y + j, 0);
+            }
+        }
+    }
+    for (int i=-60; i<60; i+=5) {
+        for (int j=-60; j<60; j+=5) {
+            if (gameWorld->getMap()->getValueActual(x + i, y + j)) {
+                gameWorld->getMap()->setValueActual(x + i, y + j, (unsigned char)rand() % 2 + 1);
+            }
+        }
+    }
+
+    this->die();
 }

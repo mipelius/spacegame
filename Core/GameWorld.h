@@ -31,7 +31,7 @@ private:
     Vector gForce;
     double metersPerPixel;
     double airDensity;
-    void detectCollision(GameEntity* entity, Point oldLocation, Point newLocation);
+    void detectCollision(GameEntity* entity);
 public:
     GameWorld(Vector gForce, double metersPerPixel, double airDensity);
     void step(double timeSeconds);

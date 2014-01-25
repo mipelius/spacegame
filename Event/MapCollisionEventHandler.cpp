@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,10 +15,12 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "precompile.h"
-#include "CollisionEventHandler.h"
-#include "CollisionEventArgs.h"
+#include "MapCollisionEventHandler.h"
 
-CollisionEventHandler::CollisionEventHandler(void (*eventFunction)(GameEntity *, CollisionEventArgs *))
+#include "GameEntity.h"
+#include "MapCollisionEventArgs.h"
+
+MapCollisionEventHandler::MapCollisionEventHandler(void (*eventFunction)(GameEntity *, MapCollisionEventArgs *))
 : EventHandler((void (*)(GameEntity *, EventArgs *))eventFunction) {
 
 }

@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,26 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Missile_H_
-#define __Missile_H_
+#ifndef __MapCollisionEventHandler_H_
+#define __MapCollisionEventHandler_H_
 
-class EntityCollisionEventArgs;
+class GameEntity;
+class MapCollisionEventArgs;
 
-#include "Point.h"
-#include "GameObjectGroup.h"
+#include "EventHandler.h"
 
-class Missile : public GameObjectGroup {
-private:
-    double timeAlive;
-    double missileAngle;
-protected:
-    void onEntityCollision(GameEntity *otherEntity);
-    void onMapCollision();
+class MapCollisionEventHandler : public EventHandler {
 public:
-    Missile(Point location, double angle, double forceAmount, Vector initialSpeed, CollisionShape* shape);
-    void beforeEntityCollisionDetection(GameEntity* otherEntity);
-    void beforeStep(double timeElapsedSec);
+    MapCollisionEventHandler(void (*eventFunction)(GameEntity *, MapCollisionEventArgs *));
 };
 
 
-#endif //__Missile_H_
+#endif //__MapCollisionEventHandler_H_

@@ -14,26 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Missile_H_
-#define __Missile_H_
+#include "precompile.h"
+#include "EntityCollisionEventHandler.h"
+#include "EntityCollisionEventArgs.h"
 
-class EntityCollisionEventArgs;
+EntityCollisionEventHandler::EntityCollisionEventHandler(void (*eventFunction)(GameEntity *, EntityCollisionEventArgs *))
+: EventHandler((void (*)(GameEntity *, EventArgs *))eventFunction) {
 
-#include "Point.h"
-#include "GameObjectGroup.h"
-
-class Missile : public GameObjectGroup {
-private:
-    double timeAlive;
-    double missileAngle;
-protected:
-    void onEntityCollision(GameEntity *otherEntity);
-    void onMapCollision();
-public:
-    Missile(Point location, double angle, double forceAmount, Vector initialSpeed, CollisionShape* shape);
-    void beforeEntityCollisionDetection(GameEntity* otherEntity);
-    void beforeStep(double timeElapsedSec);
-};
-
-
-#endif //__Missile_H_
+}

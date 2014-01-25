@@ -99,3 +99,15 @@ bool Spaceship::isStuck() {
 void Spaceship::setNotStuck() {
     _isStuck = false;
 }
+
+void Spaceship::onEntityCollision(GameEntity *otherEntity) {
+    GameEntity::onEntityCollision(otherEntity);
+    this->speed = Vector(0, 0);
+    this->location = getLocationBeforeUpdate();
+}
+
+void Spaceship::onMapCollision() {
+    GameEntity::onMapCollision();
+    this->speed = Vector(0, 0);
+    this->location = getLocationBeforeUpdate();
+}

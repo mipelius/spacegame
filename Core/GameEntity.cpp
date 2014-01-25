@@ -20,6 +20,9 @@
 #include "CollisionShape.h"
 #include "Event.h"
 #include "GameWorld.h"
+#include "EntityCollisionEventArgs.h"
+#include "Map.h"
+#include "MapCollisionEventArgs.h"
 
 void GameEntity::applyForce(Vector force) {
     this->force += force;
@@ -48,7 +51,8 @@ GameEntity::GameEntity(Point focus, Point location, double angle, CollisionShape
     force(Vector(0, 0)),
     speed(Vector(0, 0)),
     velocity(Vector(0, 0)),
-    collisionEvent(new Event(this)),
+    entityCollisionEvent(new Event(this)),
+    mapCollisionEvent(new Event(this)),
     collisionShape(collisionShape) {
 
     _stepIsIgnored  = false;
@@ -85,11 +89,11 @@ void GameEntity::setForceToZero() {
     this->force = Vector(0, 0);
 }
 
-Event *GameEntity::getCollisionEvent() {
-    return this->collisionEvent;
+Event *GameEntity::getEntityCollisionEvent() {
+    return this->entityCollisionEvent;
 }
 
-void GameEntity::setWorld(GameWorld *gameWorld) {
+void GameEntity::_setWorld(GameWorld *gameWorld) {
     this->gameWorld = gameWorld;
 }
 
@@ -98,7 +102,7 @@ GameWorld *GameEntity::getWorld() {
 }
 
 GameEntity::~GameEntity() {
-    delete collisionEvent;
+    delete entityCollisionEvent;
 }
 
 
@@ -114,10 +118,20 @@ bool GameEntity::_detectCollisionWith(GameEntity *otherEntity) {
     beforeEntityCollisionDetection(otherEntity);
 
     if (!_entityCollisionDetectionIsIgnored) {
-        // TODO: this is ugly, make it better
         if (this->collisionShape == nullptr || otherEntity->collisionShape == nullptr) return false;
-        if (this->collisionShape->intersectsWith(otherEntity->getCollisionShape())) return true;
-        return otherEntity->getCollisionShape()->intersectsWith(this->collisionShape);
+
+        // TODO: this is ugly, make it better
+        if (this->collisionShape->intersectsWith(otherEntity->getCollisionShape()) ||
+            otherEntity->getCollisionShape()->intersectsWith(this->collisionShape)) {
+
+            onEntityCollision(otherEntity);
+
+            EntityCollisionEventArgs* args = new EntityCollisionEventArgs(otherEntity);
+            entityCollisionEvent->raise(args);
+            delete args;
+
+            return true;
+        }
     }
 
     _entityCollisionDetectionIsIgnored = false;
@@ -153,15 +167,8 @@ Point GameEntity::getLocationBeforeUpdate() {
     return location - velocity;
 }
 
-void GameEntity::beforeStep(double timeElapsedSec) {
-}
-
 void GameEntity::applyTorque(double angle) {
     this->torque += angle;
-}
-
-double GameEntity::getAngleBeforeUpdate() {
-    return angle - angularVelocity;
 }
 
 double GameEntity::getAngularVelocity() {
@@ -217,9 +224,6 @@ void GameEntity::step(double timeElapsedSec) {
     _stepIsIgnored = false;
 }
 
-void GameEntity::afterStep(double timeElapsedSec) {
-
-}
 
 void GameEntity::ignoreStep() {
     this->_stepIsIgnored = true;
@@ -229,6 +233,31 @@ void GameEntity::ignoreEntityCollisionDetection() {
     this->_entityCollisionDetectionIsIgnored = true;
 }
 
-void GameEntity::beforeEntityCollisionDetection(GameEntity *otherEntity) {
+bool GameEntity::_detectMapCollision() {
+    if (this->getWorld()->getMap()->detectCollisionWith(this)) {
 
+        this->onMapCollision();
+
+        MapCollisionEventArgs* args = new MapCollisionEventArgs(this->getWorld()->getMap());
+        mapCollisionEvent->raise(args);
+        delete args;
+
+        return true;
+    }
+    return false;
 }
+
+Event *GameEntity::getMapCollisionEvent() {
+    return mapCollisionEvent;
+}
+
+// protected virtual methods
+
+void GameEntity::afterStep(double timeElapsedSec) { }
+void GameEntity::beforeStep(double timeElapsedSec) { }
+
+void GameEntity::beforeEntityCollisionDetection(GameEntity *otherEntity) { }
+
+void GameEntity::onEntityCollision(GameEntity *otherEntity) { }
+void GameEntity::onMapCollision() { }
+

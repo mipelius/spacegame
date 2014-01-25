@@ -14,10 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "precompile.h"
-#include "CollisionEventArgs.h"
+#ifndef __CollisionEventHandler_H_
+#define __CollisionEventHandler_H_
 
-CollisionEventArgs::CollisionEventArgs():
-oldLocation(Point(0, 0)), newLocation(Point(0, 0)), collisionLocation(Point(0, 0)), map(nullptr), otherEntity(nullptr) {
+#include "EventHandler.h"
 
-}
+class EntityCollisionEventArgs;
+
+class EntityCollisionEventHandler : public EventHandler
+{
+public:
+	EntityCollisionEventHandler(void(*eventFunction)(GameEntity* gameEntity, EntityCollisionEventArgs * eventArgs));
+};
+
+#endif //__CollisionEventHandler_H_

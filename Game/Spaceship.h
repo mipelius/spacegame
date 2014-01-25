@@ -27,6 +27,9 @@ private:
     Uint32 lastTimeShot;
     bool _isStuck;
     int size;
+protected:
+    void onEntityCollision(GameEntity* otherEntity);
+    void onMapCollision();
 public:
     Spaceship(Point location, int maxHealth, int size);
     void shoot();

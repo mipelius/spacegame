@@ -18,8 +18,8 @@
 #include "WalkingCreature.h"
 #include "Missile.h"
 #include "Texture.h"
-#include "CollisionEventHandler.h"
-#include "CollisionEventArgs.h"
+#include "EntityCollisionEventHandler.h"
+#include "EntityCollisionEventArgs.h"
 #include "CollisionShape.h"
 #include "Event.h"
 #include "GameObject.h"
@@ -29,7 +29,6 @@
 static Texture* textureWalkingCreature = nullptr;
 
 WalkingCreature::WalkingCreature(Point location, int maxHealth) : SpaceGameObject(Point(0,0), location, 0.0, nullptr, maxHealth) {
-    this->collisionEvent->add(new CollisionEventHandler(onCollision));
 
     double size = 0.5;
 
@@ -59,8 +58,6 @@ WalkingCreature::WalkingCreature(Point location, int maxHealth) : SpaceGameObjec
 		new CollisionShape(points, 4));
 
     isAbleToMove = false;
-
-    this->collisionEvent->add(new CollisionEventHandler(onCollision));
 }
 
 void WalkingCreature::walkLeft() {
@@ -97,49 +94,39 @@ void WalkingCreature::jump() {
     disableAbilityToMove();
 }
 
-void WalkingCreature::onCollision(GameEntity *entity, CollisionEventArgs *args) {
-    WalkingCreature* walkingCreature = dynamic_cast<WalkingCreature*>(entity);
-    if (walkingCreature) {
-        walkingCreature->enableAbilityToMove();
+void WalkingCreature::onMapCollision() {
+    this->enableAbilityToMove();
 
-        if (args->map) {
-            if (entity->getVelocity().y != 0) {
-                entity->setSpeed(Vector(entity->getSpeed().x, 0));
-                Point newLocation = Point(args->newLocation.x, args->oldLocation.y);
-                entity->setLocation(newLocation);
-            }
-            Point currentLocation = entity->getLocation();
-
-            if (args->map->detectCollisionWith(entity)) {
-                double factor = 0;
-                if (entity->getSpeed().x > 0) factor = 1;
-                if (entity->getSpeed().x < 0) factor = -1;
-                entity->setLocation(
-                        Point(
-                                args->oldLocation.x + (factor * (args->map->getBlockW() * 1.5)),
-                                args->oldLocation.y - (args->map->getBlockH() * 1.5)
-                        )
-
-                );
-                if (args->map->detectCollisionWith(entity)) {
-                    entity->setSpeed(Vector(0, 0));
-                }
-                else {
-                    entity->setSpeed(Vector(-factor * 20, -150));
-                }
-                entity->setLocation(Point(args->oldLocation.x, args->newLocation.y));
-                walkingCreature->setCollisionXAxis();
-
-            }
-        }
-        else {
-
-        }
-
+    if (this->getVelocity().y != 0) {
+        this->setSpeed(Vector(this->getSpeed().x, 0));
+        Point newLocation = Point(location.x, this->getLocationBeforeUpdate().y);
+        this->setLocation(newLocation);
     }
 
+    Point currentLocation = this->getLocation();
 
+    if (this->gameWorld->getMap()->detectCollisionWith(this)) {
+        double factor = 0;
+        if (this->getSpeed().x > 0) factor = 1;
+        if (this->getSpeed().x < 0) factor = -1;
 
+        this->setLocation(
+                Point(
+                        this->getLocationBeforeUpdate().x + (factor * (this->gameWorld->getMap()->getBlockW() * 1.5)),
+                        this->getLocationBeforeUpdate().y - (this->gameWorld->getMap()->getBlockH() * 1.5)
+                )
+        );
+
+        if (this->gameWorld->getMap()->detectCollisionWith(this)) {
+            this->setSpeed(Vector(0, 0));
+        }
+
+        else {
+            this->setSpeed(Vector(-factor * 20, -150));
+        }
+        this->setLocation(Point(getLocationBeforeUpdate().x, location.y));
+        this->setCollisionXAxis();
+    }
 }
 
 void WalkingCreature::disableAbilityToMove() {

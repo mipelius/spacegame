@@ -28,33 +28,12 @@
 #include "GameWorld.h"
 #include "Renderer.h"
 
-#include "CollisionEventArgs.h"
-#include "CollisionEventHandler.h"
+#include "EntityCollisionEventArgs.h"
+#include "EntityCollisionEventHandler.h"
 #include "Event.h"
 
 #include "Spaceship.h"
 #include "WalkingCreature.h"
-
-void onCollision(GameEntity *entity, CollisionEventArgs* args) {
-    if (args->otherEntity && args->otherEntity->getOwner() == entity) return;
-    entity->setSpeed(entity->getSpeed() * 0.5);
-    entity->setLocation(args->oldLocation);
-
-    if ((int) entity->getAngularVelocity() != 0) {
-        entity->applyTorque(-entity->getAngularVelocity() * 50);
-    }
-}
-
-void onSpaceshipCollision(GameEntity *entity, CollisionEventArgs* args) {
-    onCollision(entity, args);
-
-    if (entity->getSpeed().length() < 10) {
-        Spaceship* spaceship = dynamic_cast<Spaceship*>(entity);
-        if (spaceship) {
-            spaceship->setStuck();
-        }
-    }
-}
 
 Game::Game() {
     // --- INITIALIZE RENDERER ---
@@ -96,7 +75,6 @@ Game::Game() {
     // --- PLAYER ---
 
     player = new Spaceship(Point(4500, 8500), 1000, 1);
-    player->getCollisionEvent()->add(new CollisionEventHandler(onSpaceshipCollision));
     player->setShootingSpeed(10);
     world->addEntity(player);
 
@@ -110,7 +88,6 @@ Game::Game() {
     enemies = new std::list<Spaceship*>;
     for (int i=0; i<20; i++) {
         Spaceship* enemy = new Spaceship(Point(4500 + i * 50, 8700), 20, 1);
-        enemy->getCollisionEvent()->add(new CollisionEventHandler(onSpaceshipCollision));
         enemy->setShootingSpeed(10);
         world->addEntity(enemy);
         enemies->push_back(enemy);
@@ -119,9 +96,7 @@ Game::Game() {
     // --- BOSS ---
 
     boss = new Spaceship(Point(4500, 8700), 300, 3);
-    boss->getCollisionEvent()->add(new CollisionEventHandler(onSpaceshipCollision));
     boss->setShootingSpeed(4);
-
 }
 
 void Game::launch() {

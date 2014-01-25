@@ -17,17 +17,18 @@
 #ifndef __WalkingCreature_H_
 #define __WalkingCreature_H_
 
-class CollisionEventArgs;
+class EntityCollisionEventArgs;
 
 #include "SpaceGameObject.h"
 
 class WalkingCreature : public SpaceGameObject {
 private:
     bool isAbleToMove;
-    static void onCollision(GameEntity* entity, CollisionEventArgs* args);
     bool _isWalking;
     bool collidedInLastStepXAxis;
     GameEntity* target;
+protected:
+    void onMapCollision();
 public:
     WalkingCreature(Point location, int maxHealth);
     void walkLeft();
@@ -42,6 +43,7 @@ public:
     void setCollisionXAxis();
     void beforeStep(double timeElapsedSeconds);
     void setTarget(GameEntity* target);
+
 };
 
 

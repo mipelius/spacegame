@@ -17,8 +17,8 @@
 #include "precompile.h"
 #include "GameWorld.h"
 #include "Event.h"
-#include "CollisionEventArgs.h"
-#include "CollisionEventHandler.h"
+#include "EntityCollisionEventArgs.h"
+#include "EntityCollisionEventHandler.h"
 #include "GameEntity.h"
 #include "Map.h"
 
@@ -28,20 +28,18 @@ void GameWorld::setMap(Map* map) {
 
 void GameWorld::addEntity(GameEntity *gameEntity) {
     gameEntities->push_back(gameEntity);
-    gameEntity->setWorld(this);
+    gameEntity->_setWorld(this);
 }
 
 void GameWorld::step(double timeSeconds) {
     // update velocities and new locations
     for(std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
         (*it)->step(timeSeconds);
-        // compute total force
-
     }
 
     // now all the new locations are updated -> detect collision
     for(std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
-        detectCollision((*it), (*it)->getLocationBeforeUpdate(), (*it)->getLocation());
+        detectCollision((*it));
     }
 
     // remove dead entities from world
@@ -51,7 +49,7 @@ void GameWorld::step(double timeSeconds) {
             GameEntity* currentEntity = (*it);
 			it++;
 			gameEntities->erase(removedIterator);
-            currentEntity->setWorld(nullptr);
+            currentEntity->_setWorld(nullptr);
         }
     }
 }
@@ -81,31 +79,19 @@ long GameWorld::getH() {
     return this->map->getActualH();
 }
 
-void GameWorld::detectCollision(GameEntity *entity, Point oldLocation, Point newLocation) {
-    bool isBoundsCollision = newLocation.x < 0 || newLocation.x > getW() || newLocation.y < 0 || newLocation.y > getH();
-    bool isMapCollision = map->detectCollisionWith(entity);
-    bool isEntityCollision = false;
+void GameWorld::detectCollision(GameEntity *entity) {
+
+    entity->_detectMapCollision();
+
+    map->detectCollisionWith(entity);
 
     GameEntity* otherEntity = nullptr;
 
+    // go through
+
     for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
         if ((*it) == entity) continue;
-        if (entity->_detectCollisionWith(*it)) {
-            otherEntity = (*it);
-            isEntityCollision = true;
-        };
-        if (otherEntity) break;
-    }
-
-    if (isMapCollision || isBoundsCollision || isEntityCollision) {
-        CollisionEventArgs* args = new CollisionEventArgs();
-        if (isMapCollision) args->map = this->map;
-        if (isEntityCollision) args->otherEntity = otherEntity;
-        args->oldLocation = oldLocation;
-        args->newLocation = newLocation;
-        args->collisionLocation = newLocation;
-        entity->getCollisionEvent()->raise(args);
-        delete args;
+        entity->_detectCollisionWith(*it);
     }
 }
 

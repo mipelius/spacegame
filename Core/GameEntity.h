@@ -32,6 +32,8 @@ private:
     bool _stepIsIgnored;
     bool _entityCollisionDetectionIsIgnored;
     bool _detectCollisionWith(GameEntity *otherEntity);
+    bool _detectMapCollision();
+    void _setWorld(GameWorld *gameWorld);
 protected:
     Point location;
     double angle;
@@ -40,7 +42,8 @@ protected:
     Vector force;
     Vector speed;
     Vector velocity;
-    Event* collisionEvent;
+    Event* entityCollisionEvent;
+    Event* mapCollisionEvent;
     GameWorld* gameWorld;
     CollisionShape *collisionShape;
     GameEntity* owner;
@@ -48,36 +51,50 @@ protected:
     virtual void beforeStep(double timeElapsedSec);
     virtual void afterStep(double timeElapsedSec);
     virtual void beforeEntityCollisionDetection(GameEntity* otherEntity);
+
+    virtual void onMapCollision();
+    virtual void onEntityCollision(GameEntity* otherEntity);
 public:
     GameEntity(Point focus, Point location, double angle, CollisionShape* collisionShape = nullptr);
     ~GameEntity();
+
     void die();
+    bool isDead();
+
     void applyForce(Vector force);
+    void setForceToZero();
+    Vector getForce();
+
     void applyTorque(double angle);
     double getTorque();
     void setTorque(double torque);
-    double getAngleBeforeUpdate();
+
     double getAngularVelocity();
     void setAngularVelocity(double angularVelocity);
-    void setForceToZero();
-    Vector getForce();
+
     void setAngle(double angle);
     double getAngle();
+
     void setLocation(Point location);
     Point getLocation();
+
     void setSpeed(Vector speed);
     Vector getSpeed();
-    Event* getCollisionEvent();
-    void setWorld(GameWorld* gameWorld);
+
+    Event* getEntityCollisionEvent();
+    Event* getMapCollisionEvent();
+
     GameWorld* getWorld();
-    bool isDead();
 
     CollisionShape* getCollisionShape();
     void setOwner(GameEntity *owner);
     GameEntity* getOwner();
+
     void setCollisionShape(CollisionShape* collisionShape);
+
     Vector getVelocity();
     void setVelocity(Vector velocity);
+
     Point getLocationBeforeUpdate();
 
     void ignoreEntityCollisionDetection();
