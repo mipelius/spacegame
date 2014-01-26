@@ -23,10 +23,11 @@ class Controller {
 protected:
     friend class SpaceGameObject;
     SpaceGameObject* objectControllable;
-    virtual void control();
+    virtual void control(double timeElapsedSec);
 public:
     Controller();
     void setControllableObject(SpaceGameObject* objectControllable);
+    SpaceGameObject* getControllableObject();
 };
 
 

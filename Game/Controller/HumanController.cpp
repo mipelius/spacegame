@@ -19,8 +19,8 @@
 #include "SpaceGameObject.h"
 #include "Spaceship.h"
 
-void HumanController::control() {
-    Controller::control();
+void HumanController::control(double timeElapsedSec) {
+    Controller::control(timeElapsedSec);
 
     if (_left) handleLeft();
     if (_right) handleRight();

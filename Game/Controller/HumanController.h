@@ -30,7 +30,7 @@ private:
 
     void _setAllFalse();
 protected:
-    void control();
+    void control(double timeElapsedSec);
     virtual void handleLeft();
     virtual void handleRight();
     virtual void handleUp();

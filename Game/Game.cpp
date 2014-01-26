@@ -38,13 +38,16 @@
 
 #include "CpuController.h"
 #include "HumanController.h"
+#include "Brains.h"
+#include "NavigatorBrainCell.h"
+#include "TargetSelectorBrainCell.h"
 
 Game::Game() {
     // --- INITIALIZE RENDERER ---
 
     renderer = new Renderer();
 
-    renderer->init(0, 0, 1920, 1200, true);
+    renderer->init(0, 0, 1200, 800, false);
 
     renderer->addBackground(
             new Background(
@@ -67,7 +70,7 @@ Game::Game() {
 			"images/red_block.bmp",
 			"images/blue_block.bmp",
 			};
-	MapTexture *mapTexture = new MapTexture(10, 10,	3, filenames );
+	MapTexture *mapTexture = new MapTexture(10, 10,	3, filenames);
 
     // --- WORLD ---
 
@@ -86,6 +89,13 @@ Game::Game() {
     player->setTeam(playerTeam);
     world->addEntity(player);
 
+    // --- EXTERNAL PLAYER ---
+
+    Spaceship* playerExt = new Spaceship(Point(4300, 8500), 1000, 1);
+    //playerController->setControllableObject(player);
+    playerExt->setTeam(playerTeam);
+    world->addEntity(playerExt);
+
     // --- CAMERA ---
 
     Camera* camera = renderer->getCamera();
@@ -99,9 +109,19 @@ Game::Game() {
     for (int i=0; i<20; i++) {
         Spaceship* enemy = new Spaceship(Point(4500 + i * 50, 8700), 20, 1);
         enemy->setShootingSpeed(10);
-        CpuController* controller = new CpuController();
-        controller->setEnemyTarget(player);
+
+        // brains and controller
+
+        Brains* brains = new Brains();
+        brains->addEnemyTeam(playerTeam);
+
+        new NavigatorBrainCell(1.0, brains);
+        new TargetSelectorBrainCell(2.0, brains, 1000);
+
+        CpuController* controller = new CpuController(brains);
         controller->setControllableObject(enemy);
+
+        // set team
 
         enemy->setTeam(enemyTeam);
 
@@ -122,6 +142,8 @@ void Game::launch() {
     Point routeStartPoint = Point(0, 0);
     Point routeGoalPoint = Point(0, 0);
     Node* route = nullptr;
+
+
 
     while (!SDL_QuitRequested()) {
         keys = SDL_GetKeyboardState(0);

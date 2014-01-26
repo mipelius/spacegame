@@ -18,8 +18,13 @@
 
 Team::Team(std::string name) {
     this->_name = name;
+    this->members = new std::list<SpaceGameObject*>();
 }
 
 std::string Team::getName() {
     return this->_name;
+}
+
+std::list<SpaceGameObject*> *Team::getMembers() {
+    return this->members;
 }

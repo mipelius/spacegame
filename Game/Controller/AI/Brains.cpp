@@ -14,20 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Controller.h"
+#include "precompile.h"
+#include "Brains.h"
+#include "BrainCell.h"
+#include "Team.h"
 #include "SpaceGameObject.h"
 
-Controller::Controller() {
-    this->objectControllable = nullptr;
+Brains::Brains() {
+    this->enemyTeams = new std::list<Team*>();
+    this->brainCells = new std::list<BrainCell*>();
+    this->target = nullptr;
 }
 
-void Controller::setControllableObject(SpaceGameObject *objectControllable) {
-    this->objectControllable = objectControllable;
-    objectControllable->controller = this;
+void Brains::operate(double timeSec) {
+    for (std::list<BrainCell*>::iterator it = brainCells->begin(); it != brainCells->end(); it++) {
+        (*it)->operate(timeSec);
+    }
 }
 
-void Controller::control(double timeElapsedSec) { }
-
-SpaceGameObject *Controller::getControllableObject() {
-    return this->objectControllable;
+void Brains::addEnemyTeam(Team *team) {
+    enemyTeams->push_back(team);
 }

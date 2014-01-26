@@ -17,7 +17,6 @@
 #ifndef __GameWorld_H_
 #define __GameWorld_H_
 
-class std::list;
 class Map;
 class GameEntity;
 

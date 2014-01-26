@@ -17,17 +17,20 @@
 #ifndef __CpuController_H_
 #define __CpuController_H_
 
+class Brains;
+
 #include "Controller.h"
 
 class SpaceGameObject;
 
 class CpuController : public Controller {
+    friend class BrainCell;
 private:
-    SpaceGameObject* enemyTarget;
+    Brains* _brains;
 protected:
-    void control();
+    void control(double timeElapsedSec);
 public:
-    void setEnemyTarget(SpaceGameObject* enemyTarget);
+    CpuController(Brains* brains);
 };
 
 #endif //__CpuController_H_

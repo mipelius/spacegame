@@ -17,14 +17,20 @@
 #ifndef __Team_H_
 #define __Team_H_
 
+class SpaceGameObject;
+
 #include <string>
+#include <list>
 
 class Team {
+    friend class SpaceGameObject;
 private:
     std::string _name;
+    std::list<SpaceGameObject*> *members;
 public:
     Team(std::string name);
     std::string getName();
+    std::list<SpaceGameObject*> *getMembers();
 };
 
 

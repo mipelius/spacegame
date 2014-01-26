@@ -24,6 +24,7 @@ GameObjectGroup(location, angle, shape) {
     this->health = maxHealth;
     this->maxHealth = maxHealth;
     this->controller = nullptr;
+    this->_team = nullptr;
 }
 
 void SpaceGameObject::damage(int damage) {
@@ -41,10 +42,12 @@ int SpaceGameObject::getMaxHealth() {
 
 void SpaceGameObject::beforeStep(double timeElapsedSec) {
     GameEntity::beforeStep(timeElapsedSec);
-    if (controller) controller->control();
+    if (controller) controller->control(timeElapsedSec);
 }
 
 void SpaceGameObject::setTeam(Team *team) {
+    if (_team) _team->members->remove(this);
+    team->members->push_back(this);
     this->_team = team;
 }
 

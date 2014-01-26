@@ -14,27 +14,43 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "BrainCell.h"
 #include "CpuController.h"
-#include "SpaceGameObject.h"
-#include "Spaceship.h"
 #include "Brains.h"
+#include "SpaceGameObject.h"
+#include <list>
 
-CpuController::CpuController(Brains *brains) {
+BrainCell::BrainCell(double tickSeconds, Brains* brains) {
+    brains->brainCells->push_back(this);
     this->_brains = brains;
-    brains->controller = this;
+    timerSeconds = 0;
+    this->tickSeconds = tickSeconds;
 }
 
-void CpuController::control(double timeElapsedSec) {
-    Controller::control(timeElapsedSec);
-    _brains->operate(timeElapsedSec);
-
-    if (objectControllable) {
-//        Spaceship* spaceship = dynamic_cast<Spaceship*>(objectControllable);
-//
-//        if (spaceship) {
-//            if (!(rand() % 300)) spaceship->shoot();
-//        }
-//
-
+void BrainCell::operate(double timeElapsedSeconds) {
+    timerSeconds += timeElapsedSeconds;
+    if (timerSeconds >= tickSeconds) {
+        operate();
+        timerSeconds = 0;
     }
+}
+
+void BrainCell::operate() {
+
+}
+
+std::list<Team*> *BrainCell::getEnemyTeams() {
+    return _brains->enemyTeams;
+}
+
+CpuController *BrainCell::getController() {
+    return _brains->controller;
+}
+
+void BrainCell::setTarget(SpaceGameObject *target) {
+    _brains->target = target;
+}
+
+SpaceGameObject *BrainCell::getTarget() {
+    return _brains->target;
 }

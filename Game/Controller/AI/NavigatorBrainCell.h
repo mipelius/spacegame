@@ -14,20 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Controller.h"
-#include "SpaceGameObject.h"
+#ifndef __NavigatorBrainCell_H_
+#define __NavigatorBrainCell_H_
 
-Controller::Controller() {
-    this->objectControllable = nullptr;
-}
+#include "BrainCell.h"
 
-void Controller::setControllableObject(SpaceGameObject *objectControllable) {
-    this->objectControllable = objectControllable;
-    objectControllable->controller = this;
-}
+class NavigatorBrainCell : public BrainCell {
+private:
+    int currentStep;
+protected:
+    void operate();
+public:
+    NavigatorBrainCell(double tickSeconds, Brains* brains);
+};
 
-void Controller::control(double timeElapsedSec) { }
-
-SpaceGameObject *Controller::getControllableObject() {
-    return this->objectControllable;
-}
+#endif //__NavigatorBrainCell_H_
