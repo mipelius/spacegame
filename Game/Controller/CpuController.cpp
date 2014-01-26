@@ -34,7 +34,5 @@ void CpuController::control(double timeElapsedSec) {
 //        if (spaceship) {
 //            if (!(rand() % 300)) spaceship->shoot();
 //        }
-//
-
     }
 }

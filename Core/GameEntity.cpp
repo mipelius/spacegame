@@ -268,3 +268,4 @@ void GameEntity::beforeEntityCollisionDetection(GameEntity *otherEntity) { }
 void GameEntity::onEntityCollision(GameEntity *otherEntity) { }
 void GameEntity::onMapCollision() { }
 
+void GameEntity::onDying() { }

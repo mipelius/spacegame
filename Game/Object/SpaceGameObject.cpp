@@ -62,3 +62,9 @@ void SpaceGameObject::beforeEntityCollisionDetection(GameEntity *otherEntity) {
         if (spaceGameObject->getTeam() == this->_team) ignoreEntityCollisionDetection();
     }
 }
+
+void SpaceGameObject::onDying() {
+    GameEntity::onDying();
+    if (_team) _team->members->remove(this);
+    //delete this;
+}

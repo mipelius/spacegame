@@ -31,6 +31,7 @@ private:
     Team* _team;
 protected:
     void beforeEntityCollisionDetection(GameEntity *otherEntity);
+    void onDying();
     virtual void beforeStep(double timeElapsedSec);
 public:
     SpaceGameObject(Point location, double angle, CollisionShape* shape, int maxHealth);

@@ -47,7 +47,7 @@ Game::Game() {
 
     renderer = new Renderer();
 
-    renderer->init(0, 0, 1200, 800, false);
+    renderer->init(0, 0, 1920, 1200, true);
 
     renderer->addBackground(
             new Background(

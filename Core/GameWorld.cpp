@@ -52,6 +52,7 @@ void GameWorld::step(double timeSeconds) {
 			it++;
 			gameEntities->erase(removedIterator);
             currentEntity->_setWorld(nullptr);
+            currentEntity->onDying();
         }
     }
 }
