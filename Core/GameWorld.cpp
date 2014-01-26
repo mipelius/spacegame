@@ -32,6 +32,8 @@ void GameWorld::addEntity(GameEntity *gameEntity) {
 }
 
 void GameWorld::step(double timeSeconds) {
+    if (timeSeconds == 0.0) return;
+
     // update velocities and new locations
     for(std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
         (*it)->step(timeSeconds);
@@ -80,14 +82,7 @@ long GameWorld::getH() {
 }
 
 void GameWorld::detectCollision(GameEntity *entity) {
-
     entity->_detectMapCollision();
-
-    map->detectCollisionWith(entity);
-
-    GameEntity* otherEntity = nullptr;
-
-    // go through
 
     for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
         if ((*it) == entity) continue;

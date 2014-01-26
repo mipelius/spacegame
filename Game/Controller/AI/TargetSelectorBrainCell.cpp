@@ -37,7 +37,6 @@ void TargetSelectorBrainCell::operate() {
         for (std::list<SpaceGameObject*>::iterator targetIt = (*it)->getMembers()->begin(); targetIt != (*it)->getMembers()->end(); targetIt++) {
             double distance = (*targetIt)->getLocation().distance(object->getLocation());
             if (distance < maxDistance) {
-                // TODO: this is just a placeholder -> find real closest target
                 if (distance < closestTargetDistance) {
                     closestTarget = (*targetIt);
                     closestTargetDistance = distance;

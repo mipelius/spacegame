@@ -53,7 +53,9 @@ GameEntity::GameEntity(Point location, double angle, CollisionShape* collisionSh
     velocity(Vector(0, 0)),
     entityCollisionEvent(new Event(this)),
     mapCollisionEvent(new Event(this)),
-    collisionShape(collisionShape) {
+    collisionShape(collisionShape),
+    angularVelocity(0),
+    torque(0) {
 
     _entityCollisionDetectionIsIgnored = false;
     _stepIsIgnored  = false;
@@ -63,7 +65,6 @@ GameEntity::GameEntity(Point location, double angle, CollisionShape* collisionSh
     owner = nullptr;
 
     this->angle = angle;
-    this->torque = 0;
 
     if (collisionShape != nullptr) collisionShape->setLocation(this->location);
     gameWorld = nullptr;

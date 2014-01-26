@@ -18,8 +18,9 @@
 #include "CollisionShape.h"
 
 CollisionShape::CollisionShape(Point points[], int count)
-  : location(Point(0, 0)), boundingBox(Rect(Point(0,0), Point(0,0)))
+  : location(Point(0, 0)), boundingBox(Rect(Point(0,0), Point(0,0))), angle(0)
 {
+
     this->points = (Point*)malloc(count * sizeof(Point));
     this->rotatedPoints = (Point*)malloc(count * sizeof(Point));
     this->count = count;

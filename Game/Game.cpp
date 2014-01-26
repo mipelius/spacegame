@@ -115,8 +115,8 @@ Game::Game() {
         Brains* brains = new Brains();
         brains->addEnemyTeam(playerTeam);
 
-        new NavigatorBrainCell(1.0, brains);
-        new TargetSelectorBrainCell(2.0, brains, 1000);
+        new NavigatorBrainCell(0.01, brains);
+        new TargetSelectorBrainCell(0.01, brains, 500);
 
         CpuController* controller = new CpuController(brains);
         controller->setControllableObject(enemy);
@@ -142,8 +142,6 @@ void Game::launch() {
     Point routeStartPoint = Point(0, 0);
     Point routeGoalPoint = Point(0, 0);
     Node* route = nullptr;
-
-
 
     while (!SDL_QuitRequested()) {
         keys = SDL_GetKeyboardState(0);

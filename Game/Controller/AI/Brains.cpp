@@ -19,6 +19,7 @@
 #include "BrainCell.h"
 #include "Team.h"
 #include "SpaceGameObject.h"
+#include "CpuController.h"
 
 Brains::Brains() {
     this->enemyTeams = new std::list<Team*>();
@@ -27,6 +28,7 @@ Brains::Brains() {
 }
 
 void Brains::operate(double timeSec) {
+    controller->getControllableObject()->setSpeed(Vector(0, 0));
     for (std::list<BrainCell*>::iterator it = brainCells->begin(); it != brainCells->end(); it++) {
         (*it)->operate(timeSec);
     }

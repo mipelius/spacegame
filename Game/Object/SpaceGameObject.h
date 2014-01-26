@@ -26,8 +26,8 @@ class SpaceGameObject : public GameObjectGroup {
     friend class Controller;
 private:
     Controller *controller;
-    int health = 0;
-    int maxHealth = 0;
+    int health;
+    int maxHealth;
     Team* _team;
 protected:
     void beforeEntityCollisionDetection(GameEntity *otherEntity);

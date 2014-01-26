@@ -58,6 +58,9 @@ void Renderer::init(int x, int y, int w, int h, bool enableFullScreen) {
     this->backgrounds = new std::list<Background*>();
 
     isInitialized = true;
+
+    collisionShapesAreVisible = false;
+    mapCollisionAreaIsVisible = false;
 }
 
 void Renderer::renderBackground() {
