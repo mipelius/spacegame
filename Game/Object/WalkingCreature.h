@@ -43,7 +43,6 @@ public:
     void setCollisionXAxis();
     void beforeStep(double timeElapsedSeconds);
     void setTarget(GameEntity* target);
-
 };
 
 

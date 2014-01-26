@@ -79,54 +79,51 @@ Game::Game() {
     world->setMap(map);
     renderer->setGameWorld(world);
 
+    // --- TEAMS ---
+
+    playerTeam = new Team("Team America ;)");
+    enemyTeam = new Team("Team Bastards");
+
     // --- PLAYER ---
 
     player = new Spaceship(Point(4500, 8500), 1000, 1);
     player->setShootingSpeed(10);
     playerController = new HumanController();
     playerController->setControllableObject(player);
-    playerTeam = new Team("Team America ;)");
     player->setTeam(playerTeam);
     world->addEntity(player);
-
-    // --- EXTERNAL PLAYER ---
-
-    Spaceship* playerExt = new Spaceship(Point(4300, 8500), 1000, 1);
-    //playerController->setControllableObject(player);
-    playerExt->setTeam(playerTeam);
-    world->addEntity(playerExt);
 
     // --- CAMERA ---
 
     Camera* camera = renderer->getCamera();
     camera->follow(player);
 
-    // --- ENEMIES ---
+    // --- OTHER SPACESHIPS ---
 
-    enemyTeam = new Team("Team Bastards");
-
-    enemies = new std::list<Spaceship*>;
+    otherSpaceships = new std::list<Spaceship*>;
     for (int i=0; i<20; i++) {
-        Spaceship* enemy = new Spaceship(Point(4500 + i * 50, 8700), 20, 1);
-        enemy->setShootingSpeed(10);
+        bool isPlayerTeam = (bool)(i % 2);
+
+        Spaceship* spaceship = new Spaceship(Point(4000 + i * 100, 8700 - rand() % 1000), 20, isPlayerTeam ? 1 : 2);
+        spaceship->setShootingSpeed(10);
 
         // brains and controller
 
         Brains* brains = new Brains();
-        brains->addEnemyTeam(playerTeam);
+        brains->addEnemyTeam(isPlayerTeam ? enemyTeam : playerTeam);
 
         new NavigatorBrainCell(0.01, brains);
         new TargetSelectorBrainCell(0.01, brains, 500);
 
         CpuController* controller = new CpuController(brains);
-        controller->setControllableObject(enemy);
+        controller->setControllableObject(spaceship);
 
         // set team
 
-        enemy->setTeam(enemyTeam);
+        spaceship->setTeam(isPlayerTeam ? playerTeam : enemyTeam);
 
-        world->addEntity(enemy);
-        enemies->push_back(enemy);
+        world->addEntity(spaceship);
+        otherSpaceships->push_back(spaceship);
     }
 
     // --- BOSS ---
@@ -156,32 +153,6 @@ void Game::launch() {
             if (keys[SDL_SCANCODE_SPACE]) playerController->space();
         }
 
-        for(std::list<Spaceship*>::iterator it = enemies->begin(); it != enemies->end(); it++) {
-            if ((*it)->isDead()) {
-                GameEntity* currentEntity = (*it);
-                enemies->erase(it);
-                it++;
-                delete (currentEntity);
-                continue;
-            }
-        }
-
-        if (enemies->empty() && !(boss->getWorld()) && (!boss->isDead())) {
-            world->addEntity(boss);
-        }
-
-        if (boss && boss->getWorld()) {
-            if(boss->getSpeed().y > 0) boss->applyForce(Vector(0, -10000));
-            boss->setAngle(boss->getAngle() + 1);
-            boss->shoot();
-            if (!(rand() % 100)) {
-                WalkingCreature* creature = new WalkingCreature(boss->getLocation(), 100);
-                creature->applyForce(Vector::byAngle(boss->getAngle() - 90, 20000));
-                creature->setTarget(player);
-                world->addEntity(creature);
-            }
-        }
-
         Uint32 timeElapsedMilliSec = SDL_GetTicks() - timeMilliSec;
         world->step(timeElapsedMilliSec / 1000.0);
         timeMilliSec = SDL_GetTicks();
@@ -202,44 +173,6 @@ void Game::launch() {
         glVertex2i(1900, 40);
         glVertex2i(1650, 40);
         glEnd();
-
-        // route
-
-        glColor3f(0, 1, 0);
-        glRectf(
-                routeStartPoint.x-1 - renderer->getCamera()->getLocation().x,
-                routeStartPoint.y-1 - renderer->getCamera()->getLocation().y,
-                routeStartPoint.x+1 - renderer->getCamera()->getLocation().x,
-                routeStartPoint.y+1 - renderer->getCamera()->getLocation().y
-        );
-
-        glColor3f(1, 0, 0);
-        glRectf(
-                routeGoalPoint.x-1 - renderer->getCamera()->getLocation().x,
-                routeGoalPoint.y-1 - renderer->getCamera()->getLocation().y,
-                routeGoalPoint.x+1 - renderer->getCamera()->getLocation().x,
-                routeGoalPoint.y+1 - renderer->getCamera()->getLocation().y
-        );
-
-        if (route != nullptr) {
-            Node* currentNode = route;
-
-            glColor3f(0, 0, 1);
-            glBegin(GL_LINE_STRIP);
-
-            while (currentNode->getNextNode() != nullptr) {
-                Point location = currentNode->getLocation();
-
-                glVertex2f(
-                        location.x - renderer->getCamera()->getLocation().x,
-                        location.y - renderer->getCamera()->getLocation().y
-                );
-
-                currentNode = currentNode->getNextNode();
-            }
-
-            glEnd();
-        }
 
         renderer->glSwap();
     }

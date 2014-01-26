@@ -31,12 +31,14 @@ private:
     GameWorld* world;
     Renderer* renderer;
 
+    Team *enemyTeam;
     Team *playerTeam;
+
     Spaceship* player;
     HumanController* playerController;
 
-    Team *enemyTeam;
-    std::list<Spaceship*> *enemies;
+    std::list<Spaceship*> *otherSpaceships;
+
     Spaceship* boss;
 public:
     Game();
