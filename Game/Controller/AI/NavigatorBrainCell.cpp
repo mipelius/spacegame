@@ -19,8 +19,9 @@
 #include "Brains.h"
 #include "CpuController.h"
 #include "SpaceGameObject.h"
+#include "Spaceship.h"
 
-NavigatorBrainCell::NavigatorBrainCell(double tickSeconds, Brains* brains) : BrainCell(tickSeconds, brains) {
+NavigatorBrainCell::NavigatorBrainCell(double tickSeconds) : BrainCell(tickSeconds) {
 
 }
 
@@ -41,6 +42,5 @@ void NavigatorBrainCell::operate() {
 
         obj->setAngle(angle);
         obj->setSpeed(Vector(0, 0));
-        //obj->setSpeed(Vector::byAngle(angle, 400));
     }
 }

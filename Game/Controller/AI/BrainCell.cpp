@@ -20,9 +20,7 @@
 #include "SpaceGameObject.h"
 #include <list>
 
-BrainCell::BrainCell(double tickSeconds, Brains* brains) {
-    brains->brainCells->push_back(this);
-    this->_brains = brains;
+BrainCell::BrainCell(double tickSeconds) {
     timerSeconds = 0;
     this->tickSeconds = tickSeconds;
 }

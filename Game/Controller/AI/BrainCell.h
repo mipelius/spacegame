@@ -25,6 +25,8 @@ class Team;
 #include <list>
 
 class BrainCell {
+friend class Brains;
+private:
     double timerSeconds;
     double tickSeconds;
 protected:
@@ -35,7 +37,7 @@ protected:
     Brains* _brains;
     virtual void operate();
 public:
-    BrainCell(double tickSeconds, Brains* brains);
+    BrainCell(double tickSeconds);
     void operate(double timeElapsedSeconds);
 };
 

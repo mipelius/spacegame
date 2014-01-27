@@ -24,7 +24,7 @@ protected:
     void operate();
     double maxDistance;
 public:
-    TargetSelectorBrainCell(double tickSeconds, Brains* brains, double maxDistance);
+    TargetSelectorBrainCell(double tickSeconds, double maxDistance);
 };
 
 

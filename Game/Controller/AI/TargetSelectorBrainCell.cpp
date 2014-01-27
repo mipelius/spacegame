@@ -21,7 +21,7 @@
 #include "SpaceGameObject.h"
 #include "CpuController.h"
 
-TargetSelectorBrainCell::TargetSelectorBrainCell(double tickSeconds, Brains *brains, double maxDistance): BrainCell(tickSeconds, brains) {
+TargetSelectorBrainCell::TargetSelectorBrainCell(double tickSeconds, double maxDistance): BrainCell(tickSeconds) {
     this->maxDistance = maxDistance;
 }
 

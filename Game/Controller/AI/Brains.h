@@ -35,6 +35,7 @@ private:
 public:
     Brains();
     void addEnemyTeam(Team*);
+    void addCell(BrainCell* brainCell);
     void operate(double timeSec);
 };
 

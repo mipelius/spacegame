@@ -112,8 +112,8 @@ Game::Game() {
         Brains* brains = new Brains();
         brains->addEnemyTeam(isPlayerTeam ? enemyTeam : playerTeam);
 
-        new NavigatorBrainCell(0.01, brains);
-        new TargetSelectorBrainCell(0.01, brains, 500);
+        brains->addCell(new NavigatorBrainCell(0.01));
+        brains->addCell(new TargetSelectorBrainCell(0.01, 500.0));
 
         CpuController* controller = new CpuController(brains);
         controller->setControllableObject(spaceship);

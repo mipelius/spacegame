@@ -25,7 +25,7 @@ private:
 protected:
     void operate();
 public:
-    NavigatorBrainCell(double tickSeconds, Brains* brains);
+    NavigatorBrainCell(double tickSeconds);
 };
 
 #endif //__NavigatorBrainCell_H_

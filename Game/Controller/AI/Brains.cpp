@@ -37,3 +37,8 @@ void Brains::operate(double timeSec) {
 void Brains::addEnemyTeam(Team *team) {
     enemyTeams->push_back(team);
 }
+
+void Brains::addCell(BrainCell *brainCell) {
+    this->brainCells->push_back(brainCell);
+    brainCell->_brains = this;
+}
