@@ -26,6 +26,7 @@ class HumanController;
 class Team;
 
 class Game {
+    friend class TestRequest;
 private:
     Map* map;
     GameWorld* world;

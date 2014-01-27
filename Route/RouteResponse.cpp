@@ -18,11 +18,11 @@
 #include "Node.h"
 
 RouteResponse::RouteResponseMessage RouteResponse::getMsg() {
-    return ROUTE_NOT_FOUND;
+    return _msg;
 }
 
 Node *RouteResponse::getFirstNode() {
-    return nullptr;
+    return this->_firstNode;
 }
 
 RouteResponse::RouteResponse(RouteResponse::RouteResponseMessage msg, Node *firstNode) {

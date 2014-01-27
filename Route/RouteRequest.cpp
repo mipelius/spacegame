@@ -22,4 +22,5 @@ startPoint(startPoint), goalPoint(goalPoint), step(step) {
 
 }
 
-void RouteRequest::onResponse(RouteResponse* response) { }
+void RouteRequest::onResponse(RouteResponse* response) {
+}

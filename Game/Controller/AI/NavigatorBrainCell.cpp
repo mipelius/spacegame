@@ -19,7 +19,10 @@
 #include "Brains.h"
 #include "CpuController.h"
 #include "SpaceGameObject.h"
+#include "Node.h"
 #include "Spaceship.h"
+#include "GameWorld.h"
+#include "Map.h"
 
 NavigatorBrainCell::NavigatorBrainCell(double tickSeconds) : BrainCell(tickSeconds) {
 
@@ -29,11 +32,16 @@ void NavigatorBrainCell::operate() {
     BrainCell::operate();
     SpaceGameObject* obj = getController()->getControllableObject();
 
-    SpaceGameObject* target = getTarget();
+    Node* node = getRouteNextNode();
 
-    if (target) {
-        double deltaY = target->getLocation().y - obj->getLocation().y;
-        double deltaX = target->getLocation().x - obj->getLocation().x;
+    if (node && node->getLocation().distance(obj->getLocation()) < obj->getWorld()->getMap()->getBlockW()) {
+        node = node->getNextNode();
+        setRouteNextNode(node);
+    }
+
+    if (node) {
+        double deltaY = node->getLocation().y - obj->getLocation().y;
+        double deltaX = node->getLocation().x - obj->getLocation().x;
         if (deltaX == 0) deltaX = 0.1;
         if (deltaY == 0) deltaY = 0.1;
 
@@ -41,6 +49,15 @@ void NavigatorBrainCell::operate() {
         if (deltaX < 0) angle -= 180;
 
         obj->setAngle(angle);
-        obj->setSpeed(Vector(0, 0));
+        obj->setSpeed(Vector::byAngle(angle, 400.0));
     }
+
+    // TODO: make separate BattleBrainCell
+
+    Spaceship* ship = dynamic_cast<Spaceship*>(obj);
+
+    if (ship) {
+        if (!(rand() % 200)) ship->shoot();
+    }
+
 }

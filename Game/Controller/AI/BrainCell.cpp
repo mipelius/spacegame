@@ -52,3 +52,11 @@ void BrainCell::setTarget(SpaceGameObject *target) {
 SpaceGameObject *BrainCell::getTarget() {
     return _brains->target;
 }
+
+void BrainCell::setRouteNextNode(Node *node) {
+    this->_brains->routeNextNode = node;
+}
+
+Node* BrainCell::getRouteNextNode() {
+    return this->_brains->routeNextNode;
+}

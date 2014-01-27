@@ -23,6 +23,7 @@ class Brains;
 class Team;
 
 #include <list>
+#include "Node.h"
 
 class BrainCell {
 friend class Brains;
@@ -32,8 +33,13 @@ private:
 protected:
     std::list<Team*> *getEnemyTeams();
     CpuController* getController();
+
     void setTarget(SpaceGameObject* target);
     SpaceGameObject* getTarget();
+
+    void setRouteNextNode(Node *node);
+    Node *getRouteNextNode();
+
     Brains* _brains;
     virtual void operate();
 public:

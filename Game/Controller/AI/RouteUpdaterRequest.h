@@ -14,34 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Brains_H_
-#define __Brains_H_
+#ifndef __RouteUpdaterRequest_H_
+#define __RouteUpdaterRequest_H_
 
-class CpuController;
-class BrainCell;
-class SpaceGameObject;
-class Team;
-class Node;
+class RouteUpdaterRequest;
+class RouteUpdaterBrainCell;
 
-#include <list>
+#include "RouteRequest.h"
 
-class Brains {
-    friend class CpuController;
-    friend class BrainCell;
-private:
-    std::list<BrainCell*> *brainCells;
-    std::list<Team*> *enemyTeams;
-
-    Node* routeNextNode;
-
-    SpaceGameObject* target;
-    CpuController* controller;
+class RouteUpdaterRequest : public RouteRequest {
+protected:
+    void onResponse(RouteResponse* response);
+    RouteUpdaterBrainCell *sender;
 public:
-    Brains();
-    void addEnemyTeam(Team*);
-    void addCell(BrainCell* brainCell);
-    void operate(double timeSec);
+    RouteUpdaterRequest(Point const &startPoint, Point const &goalPoint, unsigned int step, RouteUpdaterBrainCell* sender);
 };
 
-
-#endif //__Brains_H_
+#endif //__RouteUpdaterRequest_H_

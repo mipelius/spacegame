@@ -43,13 +43,14 @@
 #include "Brains.h"
 #include "NavigatorBrainCell.h"
 #include "TargetSelectorBrainCell.h"
+#include "RouteUpdaterBrainCell.h"
 
 Game::Game() {
     // --- INITIALIZE RENDERER ---
 
     renderer = new Renderer();
 
-    renderer->init(0, 0, 1200, 800, false);
+    renderer->init(0, 0, 1920, 1200, false);
 
     renderer->addBackground(
             new Background(
@@ -103,8 +104,8 @@ Game::Game() {
     // --- OTHER SPACESHIPS ---
 
     otherSpaceships = new std::list<Spaceship*>;
-    for (int i=0; i<20; i++) {
-        bool isPlayerTeam = (bool)(i % 2);
+    for (int i=0; i<10; i++) {
+        bool isPlayerTeam = !(bool)(i % 3);
 
         Spaceship* spaceship = new Spaceship(Point(4000 + i * 100, 8700 - rand() % 1000), 20, isPlayerTeam ? 1 : 2);
         spaceship->setShootingSpeed(10);
@@ -114,8 +115,9 @@ Game::Game() {
         Brains* brains = new Brains();
         brains->addEnemyTeam(isPlayerTeam ? enemyTeam : playerTeam);
 
+        brains->addCell(new RouteUpdaterBrainCell(1.0));
         brains->addCell(new NavigatorBrainCell(0.01));
-        brains->addCell(new TargetSelectorBrainCell(0.01, 500.0));
+        brains->addCell(new TargetSelectorBrainCell(0.01, 1000.0));
 
         CpuController* controller = new CpuController(brains);
         controller->setControllableObject(spaceship);
@@ -137,10 +139,6 @@ Game::Game() {
 void Game::launch() {
     const Uint8* keys;
     Uint32 timeMilliSec = 0;
-
-    Point routeStartPoint = Point(0, 0);
-    Point routeGoalPoint = Point(0, 0);
-    Node* route = nullptr;
 
     while (!SDL_QuitRequested()) {
         keys = SDL_GetKeyboardState(0);
