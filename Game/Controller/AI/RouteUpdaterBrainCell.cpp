@@ -24,13 +24,13 @@
 #include "GameWorld.h"
 #include "RouteGenerator.h"
 #include "CpuController.h"
+#include "CollisionShape.h"
 
 RouteUpdaterBrainCell::RouteUpdaterBrainCell(double tickSeconds):BrainCell(tickSeconds) {
 
 }
 
 void RouteUpdaterBrainCell::handleResponse(RouteResponse *response) {
-
     switch (response->getMsg()) {
         case(RouteResponse::RouteResponseMessage::ROUTE_FOUND):
             setRouteNextNode(response->getFirstNode());
@@ -38,6 +38,9 @@ void RouteUpdaterBrainCell::handleResponse(RouteResponse *response) {
 
         case(RouteResponse::RouteResponseMessage::ROUTE_NOT_FOUND):
             setRouteNextNode(nullptr);
+            break;
+
+        case(RouteResponse::RouteResponseMessage::ROUTE_TIME_OUT):
             break;
     }
 }
@@ -51,6 +54,7 @@ void RouteUpdaterBrainCell::operate() {
                 getController()->getControllableObject()->getLocation(),
                 target->getLocation(),
                 2,
+                getController()->getControllableObject()->getCollisionShape()->getBoundingBox(),
                 this
             )
         );

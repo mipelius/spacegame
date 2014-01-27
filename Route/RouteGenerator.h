@@ -23,15 +23,18 @@
 class GameWorld;
 class Node;
 class RouteRequest;
+class RouteResponse;
 
 class RouteGenerator {
     friend class Node;
     friend class GameWorld;
 private:
+    int maxGeneratingTimeMilliSec;
+
     GameWorld* world;
     std::queue<RouteRequest*> routeRequestQueue;
 
-    Node* generateRoute(Point startPoint, Point goalPoint, unsigned int step = 1);
+    RouteResponse* generateRoute(RouteRequest* request);
     int heuristicFunction(Node *startNode, Node *goalNode);
 
     void handleNextRequest();
@@ -39,6 +42,7 @@ private:
     RouteGenerator();
 public:
     void sendRequest(RouteRequest *request);
+    void setMaxGeneratingTimeMilliSec(int timeMilliSec);
 };
 
 

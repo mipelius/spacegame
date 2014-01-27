@@ -17,6 +17,9 @@
 #include "RouteUpdaterRequest.h"
 #include "RouteResponse.h"
 #include "RouteUpdaterBrainCell.h"
+#include "CpuController.h"
+#include "SpaceGameObject.h"
+#include "CollisionShape.h"
 
 void RouteUpdaterRequest::onResponse(RouteResponse *response) {
     RouteRequest::onResponse(response);
@@ -24,7 +27,12 @@ void RouteUpdaterRequest::onResponse(RouteResponse *response) {
     sender->handleResponse(response);
 }
 
-RouteUpdaterRequest::RouteUpdaterRequest(Point const &startPoint, Point const &goalPoint, unsigned int step, RouteUpdaterBrainCell *sender):
-RouteRequest(startPoint, goalPoint, step) {
+RouteUpdaterRequest::RouteUpdaterRequest(
+        Point const &startPoint,
+        Point const &goalPoint,
+        unsigned int step,
+        Rect minSpace,
+        RouteUpdaterBrainCell *sender
+): RouteRequest(startPoint, goalPoint, step, minSpace) {
     this->sender = sender;
 }

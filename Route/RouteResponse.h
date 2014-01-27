@@ -22,7 +22,7 @@ class Node;
 class RouteResponse {
 friend class RouteGenerator;
 public:
-    enum RouteResponseMessage {ROUTE_NOT_FOUND, ROUTE_FOUND};
+    enum RouteResponseMessage {ROUTE_NOT_FOUND, ROUTE_FOUND, ROUTE_TIME_OUT};
     RouteResponseMessage getMsg();
     Node* getFirstNode();
 private:

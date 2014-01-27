@@ -80,6 +80,7 @@ Game::Game() {
     map = new Map("images/map.bmp", mapTexture, 10, 10);
     world = new GameWorld(Vector(0, 9.81), 0.20, 0.001);
     world->setMap(map);
+    world->getRouteGenerator()->setMaxGeneratingTimeMilliSec(20);
     renderer->setGameWorld(world);
 
     // --- TEAMS ---
@@ -104,8 +105,8 @@ Game::Game() {
     // --- OTHER SPACESHIPS ---
 
     otherSpaceships = new std::list<Spaceship*>;
-    for (int i=0; i<10; i++) {
-        bool isPlayerTeam = !(bool)(i % 3);
+    for (int i=0; i<2; i++) {
+        bool isPlayerTeam = false; //(bool)(i % 2);
 
         Spaceship* spaceship = new Spaceship(Point(4000 + i * 100, 8700 - rand() % 1000), 20, isPlayerTeam ? 1 : 2);
         spaceship->setShootingSpeed(10);
@@ -117,7 +118,7 @@ Game::Game() {
 
         brains->addCell(new RouteUpdaterBrainCell(1.0));
         brains->addCell(new NavigatorBrainCell(0.01));
-        brains->addCell(new TargetSelectorBrainCell(0.01, 1000.0));
+        brains->addCell(new TargetSelectorBrainCell(0.01, 3000.0));
 
         CpuController* controller = new CpuController(brains);
         controller->setControllableObject(spaceship);
@@ -136,9 +137,32 @@ Game::Game() {
     boss->setShootingSpeed(4);
 }
 
+
+class TestRequest: public RouteRequest {
+
+public:
+    TestRequest(Point const &startPoint, Point const &goalPoint, unsigned int step, Node* &node):
+    RouteRequest(startPoint, goalPoint, step, Rect(Point(-20, -20), Point(20, 20))), nodeToUpdate(node) {
+    }
+    Node* &nodeToUpdate;
+
+protected:
+    void onResponse(RouteResponse* response) {
+        if (response->getMsg() == RouteResponse::RouteResponseMessage::ROUTE_FOUND) {
+            nodeToUpdate = response->getFirstNode();
+        }
+    }
+
+};
+
 void Game::launch() {
+
     const Uint8* keys;
     Uint32 timeMilliSec = 0;
+
+    Point routeStartPoint = Point(0, 0);
+    Point routeGoalPoint = Point(0, 0);
+    Node* route = nullptr;
 
     while (!SDL_QuitRequested()) {
         keys = SDL_GetKeyboardState(0);
@@ -151,6 +175,14 @@ void Game::launch() {
             if (keys[SDL_SCANCODE_RIGHT]) playerController->right();
             if (keys[SDL_SCANCODE_UP]) playerController->up();
             if (keys[SDL_SCANCODE_SPACE]) playerController->space();
+
+            if (keys[SDL_SCANCODE_1]) routeStartPoint = player->getLocation();
+            if (keys[SDL_SCANCODE_2]) routeGoalPoint = player->getLocation();
+
+            if (keys[SDL_SCANCODE_RETURN]) {
+                TestRequest* request = new TestRequest(routeStartPoint, routeGoalPoint, 1, route);
+                world->getRouteGenerator()->sendRequest(request);
+            }
         }
 
         Uint32 timeElapsedMilliSec = SDL_GetTicks() - timeMilliSec;
@@ -173,6 +205,29 @@ void Game::launch() {
         glVertex2i(1900, 40);
         glVertex2i(1650, 40);
         glEnd();
+
+        // route
+
+        Node* currentNode = route;
+
+        GLfloat color = 0.1;
+
+        while(currentNode && currentNode->getNextNode()) {
+            Point p = currentNode->getLocation();
+
+            glDisable(GL_TEXTURE_2D);
+
+            color += 0.01;
+            glColor3f(color, color, color);
+
+            glRectf(
+                    p.x-1 - renderer->getCamera()->getLocation().x,
+                    p.y-1 - renderer->getCamera()->getLocation().y,
+                    p.x+1 - renderer->getCamera()->getLocation().x,
+                    p.y+1 - renderer->getCamera()->getLocation().y
+            );
+            currentNode = currentNode->getNextNode();
+        }
 
         renderer->glSwap();
     }

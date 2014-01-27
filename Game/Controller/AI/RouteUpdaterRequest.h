@@ -20,6 +20,7 @@
 class RouteUpdaterRequest;
 class RouteUpdaterBrainCell;
 
+#include "Rect.h"
 #include "RouteRequest.h"
 
 class RouteUpdaterRequest : public RouteRequest {
@@ -27,7 +28,13 @@ protected:
     void onResponse(RouteResponse* response);
     RouteUpdaterBrainCell *sender;
 public:
-    RouteUpdaterRequest(Point const &startPoint, Point const &goalPoint, unsigned int step, RouteUpdaterBrainCell* sender);
+    RouteUpdaterRequest(
+            Point const &startPoint,
+            Point const &goalPoint,
+            unsigned int step,
+            Rect minSpace,
+            RouteUpdaterBrainCell* sender
+    );
 };
 
 #endif //__RouteUpdaterRequest_H_

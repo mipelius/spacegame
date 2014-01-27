@@ -38,6 +38,7 @@ const int DIAGONAL_COST = 10;
 const int ORTHOGONAL_COST = 14;
 
 RouteGenerator::RouteGenerator() {
+    this->maxGeneratingTimeMilliSec = 20; // default
     this->routeRequestQueue = std::queue<RouteRequest*>();
 }
 
@@ -51,21 +52,27 @@ int RouteGenerator::heuristicFunction(Node *startNode, Node *goalNode) {
     return x + y;
 }
 
-Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint, unsigned int step) {
+RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
+    // TODO: this method is awfully long, you should refactor it (make more methods)
+
     Map* map = world->getMap();
+
+    int minSpaceX = (int)(request->minSpace.getWidth() / map->getBlockW() / 2);
+    int minSpaceY = (int)(request->minSpace.getHeight() / map->getBlockH() / 2);
+    bool timeOut = false;
 
     // if there is block at the start point or goal point, it's not possible to generate route -> return nullptr
 
-    if (map->getValueActual((int)startPoint.x, (int)startPoint.y)) return nullptr;
-    if (map->getValueActual((int)goalPoint.x, (int)goalPoint.y)) return nullptr;
+    if (map->getValueActual((int)request->startPoint.x, (int)request->startPoint.y)) return nullptr;
+    if (map->getValueActual((int)request->goalPoint.x, (int)request->goalPoint.y)) return nullptr;
 
     // initialize lists and both start node and goal node
 
     std::list<Node*> openList = std::list<Node*>();
     std::list<Node*> closedList = std::list<Node*>();
 
-    Node* startNode = Node::byPoint(startPoint, map);
-    Node* goalNode = Node::byPoint(goalPoint, map);
+    Node* startNode = Node::byPoint(request->startPoint, map);
+    Node* goalNode = Node::byPoint(request->goalPoint, map);
 
     Node* currentNode = nullptr;
     bool goalNodeHasBeenReached = false;
@@ -76,6 +83,8 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint, unsigned 
     openList.push_back(startNode);
 
     // 2) loop the following as long as the goal node has not been reached
+
+    int startTime = SDL_GetTicks();
 
     while (!goalNodeHasBeenReached) {
         // 2.a) find the node having lowest fCost from the open list -> set current node to point that node
@@ -95,13 +104,26 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint, unsigned 
         // 2.c) do the following to all adjacent walkable nodes
 
         for(int i=0; i<ADJACENT_NODES_RELATIVE_LOCATIONS_COUNT; i++) {
-            int x = currentNode->x + ADJACENT_NODES_RELATIVE_LOCATIONS[i][0] * step;
-            int y = currentNode->y + ADJACENT_NODES_RELATIVE_LOCATIONS[i][1] * step;
-            unsigned char value = map->getValue(x, y);
+            int xCenter = currentNode->x + ADJACENT_NODES_RELATIVE_LOCATIONS[i][0] * request->step;
+            int yCenter = currentNode->y + ADJACENT_NODES_RELATIVE_LOCATIONS[i][1] * request->step;
 
-            if (value != 0) continue; // not walkable
+            bool isWalkable = true;
+            for (int x=-minSpaceX; x<=minSpaceX; x++) {
+                for (int y=-minSpaceY; y<=minSpaceY; y++) {
+                    unsigned char value = map->getValue(xCenter + x, yCenter + y);
+                    if (value != 0) {
+                        isWalkable = false;
+                        continue;
+                    } // not walkable
 
-            Node* adjacentNode = new Node(x, y, map);
+                    if (!isWalkable) break;
+                }
+                if (!isWalkable) break;
+            }
+
+            if (!isWalkable) continue;
+
+            Node* adjacentNode = new Node(xCenter, yCenter, map);
 
             // if it is already on the closed list ignore it
 
@@ -164,19 +186,27 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint, unsigned 
 
         // if the last node on the closed list is (approximately) same as goalNode the goal node has been reached
 
-        if (closedList.back()->equals(goalNode, step)) goalNodeHasBeenReached = true;
+        if (closedList.back()->equals(goalNode, request->step)) goalNodeHasBeenReached = true;
 
-        // if open list is empty, there is no path -> break the loop
+        // open list is empty, so there is no path -> break
 
         if (openList.empty()) break;
+
+        // generating path takes too long -> break, set timeOut = true;
+
+        if (SDL_GetTicks() - startTime > maxGeneratingTimeMilliSec) {
+            timeOut = true;
+            break;
+        }
+
+
     }
 
     if (goalNodeHasBeenReached) {
         // 3) the path is found, but it's only possible to go it trough backwards
         //    go through the nodes backwards and set the nextNode-values
 
-        Node* target = closedList.back();
-        currentNode = target;
+        currentNode = closedList.back();
         Node* nextNode = nullptr;
 
         while(currentNode->previousNode != nullptr) {
@@ -203,10 +233,24 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint, unsigned 
 
     delete goalNode; // the last node of the route is the copy of this node
 
-    // if goal node has been reached return the route, else return nullptr
+    // make response
 
-    if (goalNodeHasBeenReached) return currentNode;
-    else return nullptr;
+    RouteResponse::RouteResponseMessage msg;
+    Node* firstNode = nullptr;
+
+    if (timeOut) msg = RouteResponse::RouteResponseMessage::ROUTE_TIME_OUT;
+    else if (!goalNodeHasBeenReached) msg = RouteResponse::RouteResponseMessage::ROUTE_NOT_FOUND;
+    else {
+        msg = RouteResponse::RouteResponseMessage::ROUTE_FOUND;
+        firstNode = currentNode;
+    }
+
+    RouteResponse* response = new RouteResponse(
+        msg,
+        firstNode
+    );
+
+    return response;
 }
 
 void RouteGenerator::sendRequest(RouteRequest *request) {
@@ -219,13 +263,11 @@ void RouteGenerator::handleNextRequest() {
     RouteRequest* request = routeRequestQueue.front();
     routeRequestQueue.pop();
 
-    Node* firstNode = generateRoute(request->startPoint, request->goalPoint, request->step);
+    RouteResponse* response = generateRoute(request);
 
-    request->onResponse(
-            new RouteResponse(
-            firstNode ?
-                    RouteResponse::RouteResponseMessage::ROUTE_FOUND :
-                    RouteResponse::RouteResponseMessage::ROUTE_NOT_FOUND,
-        firstNode
-    ));
+    request->onResponse(response);
+}
+
+void RouteGenerator::setMaxGeneratingTimeMilliSec(int timeMilliSec) {
+    this->maxGeneratingTimeMilliSec = timeMilliSec;
 }

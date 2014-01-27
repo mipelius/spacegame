@@ -17,8 +17,8 @@
 #include "precompile.h"
 #include "RouteRequest.h"
 
-RouteRequest::RouteRequest(Point startPoint, Point goalPoint, unsigned int step):
-startPoint(startPoint), goalPoint(goalPoint), step(step) {
+RouteRequest::RouteRequest(Point startPoint, Point goalPoint, unsigned int step, Rect minSpace):
+startPoint(startPoint), goalPoint(goalPoint), step(step), minSpace(minSpace){
 
 }
 

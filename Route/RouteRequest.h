@@ -21,6 +21,7 @@ class Node;
 class RouteResponse;
 
 #include "Point.h"
+#include "Rect.h"
 
 class RouteRequest {
     friend class RouteGenerator;
@@ -28,10 +29,11 @@ private:
     Point startPoint;
     Point goalPoint;
     unsigned int step;
+    Rect minSpace;
 protected:
     virtual void onResponse(RouteResponse* response);
 public:
-    RouteRequest(Point startPoint, Point goalPoint, unsigned int step);
+    RouteRequest(Point startPoint, Point goalPoint, unsigned int step, Rect minSpace);
 };
 
 
