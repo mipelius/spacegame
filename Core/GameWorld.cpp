@@ -21,6 +21,7 @@
 #include "EntityCollisionEventHandler.h"
 #include "GameEntity.h"
 #include "Map.h"
+#include "RouteGenerator.h"
 
 void GameWorld::setMap(Map* map) {
     this->map = map;
@@ -33,6 +34,8 @@ void GameWorld::addEntity(GameEntity *gameEntity) {
 
 void GameWorld::step(double timeSeconds) {
     if (timeSeconds == 0.0) return;
+
+    routeGenerator->handleNextRequest();
 
     // update velocities and new locations
     for(std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
@@ -62,6 +65,7 @@ GameWorld::GameWorld(
         double metersPerPixel,
         double airDensity
 ): gForce(gForce), metersPerPixel(metersPerPixel), airDensity(airDensity) {
+    this->setRouteGenerator(new RouteGenerator());
     this->map = nullptr;
     this->gameEntities = new std::list<GameEntity*>();
 }
@@ -101,4 +105,13 @@ double GameWorld::getMetersPerPixel() {
 
 double GameWorld::getAirDensity() {
     return airDensity;
+}
+
+RouteGenerator *GameWorld::getRouteGenerator() {
+    return this->routeGenerator;
+}
+
+void GameWorld::setRouteGenerator(RouteGenerator *routeGenerator) {
+    this->routeGenerator = routeGenerator;
+    routeGenerator->world = this;
 }

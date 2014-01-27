@@ -19,6 +19,8 @@
 
 #include "Node.h"
 #include "RouteGenerator.h"
+#include "RouteResponse.h"
+#include "RouteRequest.h"
 
 #include "Camera.h"
 #include "Background.h"

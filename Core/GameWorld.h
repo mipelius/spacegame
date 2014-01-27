@@ -19,6 +19,7 @@
 
 class Map;
 class GameEntity;
+class RouteGenerator;
 
 #include "Point.h"
 #include "Vector.h"
@@ -27,10 +28,12 @@ class GameWorld {
 private:
     std::list<GameEntity*> *gameEntities;
     Map* map;
+    RouteGenerator* routeGenerator;
     Vector gForce;
     double metersPerPixel;
     double airDensity;
     void detectCollision(GameEntity* entity);
+    void setRouteGenerator(RouteGenerator* routeGenerator); // consider making this public...
 public:
     GameWorld(Vector gForce, double metersPerPixel, double airDensity);
     void step(double timeSeconds);
@@ -39,6 +42,8 @@ public:
     Map* getMap();
     long getW();
     long getH();
+
+    RouteGenerator* getRouteGenerator();
 
     const Vector getGForce();
     double getMetersPerPixel();

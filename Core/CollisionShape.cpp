@@ -17,7 +17,6 @@
 #include "precompile.h"
 #include "CollisionShape.h"
 #include "GameEntity.h"
-#include "Rect.h"
 
 CollisionShape::CollisionShape(Point points[], int count): boundingBox(Rect(Point(-1, -1), Point(1, 1)))
 {

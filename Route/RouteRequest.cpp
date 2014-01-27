@@ -14,32 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __RouteGenerator_H_
-#define __RouteGenerator_H_
+#include "precompile.h"
+#include "RouteRequest.h"
 
-#include <queue>
-#include "Point.h"
+RouteRequest::RouteRequest(Point startPoint, Point goalPoint, unsigned int step):
+startPoint(startPoint), goalPoint(goalPoint), step(step) {
 
-class GameWorld;
-class Node;
-class RouteRequest;
+}
 
-class RouteGenerator {
-    friend class Node;
-    friend class GameWorld;
-private:
-    GameWorld* world;
-    std::queue<RouteRequest*> routeRequestQueue;
-
-    Node* generateRoute(Point startPoint, Point goalPoint, unsigned int step = 1);
-    int heuristicFunction(Node *startNode, Node *goalNode);
-
-    void handleNextRequest();
-
-    RouteGenerator();
-public:
-    void sendRequest(RouteRequest *request);
-};
-
-
-#endif //__RouteGenerator_H_
+void RouteRequest::onResponse(RouteResponse* response) { }

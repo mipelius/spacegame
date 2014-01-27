@@ -18,6 +18,9 @@
 #include "RouteGenerator.h"
 #include "Map.h"
 #include "Node.h"
+#include "RouteRequest.h"
+#include "RouteResponse.h"
+#include "GameWorld.h"
 
 static const int ADJACENT_NODES_RELATIVE_LOCATIONS_COUNT = 8;
 static const int ADJACENT_NODES_RELATIVE_LOCATIONS[ADJACENT_NODES_RELATIVE_LOCATIONS_COUNT][2] = {
@@ -34,8 +37,8 @@ static const int ADJACENT_NODES_RELATIVE_LOCATIONS[ADJACENT_NODES_RELATIVE_LOCAT
 const int DIAGONAL_COST = 10;
 const int ORTHOGONAL_COST = 14;
 
-RouteGenerator::RouteGenerator(Map *map) {
-    this->map = map;
+RouteGenerator::RouteGenerator() {
+    this->routeRequestQueue = std::queue<RouteRequest*>();
 }
 
 int RouteGenerator::heuristicFunction(Node *startNode, Node *goalNode) {
@@ -49,6 +52,8 @@ int RouteGenerator::heuristicFunction(Node *startNode, Node *goalNode) {
 }
 
 Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint, unsigned int step) {
+    Map* map = world->getMap();
+
     // if there is block at the start point or goal point, it's not possible to generate route -> return nullptr
 
     if (map->getValueActual((int)startPoint.x, (int)startPoint.y)) return nullptr;
@@ -59,8 +64,8 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint, unsigned 
     std::list<Node*> openList = std::list<Node*>();
     std::list<Node*> closedList = std::list<Node*>();
 
-    Node* startNode = Node::byPoint(startPoint, this->map);
-    Node* goalNode = Node::byPoint(goalPoint, this->map);
+    Node* startNode = Node::byPoint(startPoint, map);
+    Node* goalNode = Node::byPoint(goalPoint, map);
 
     Node* currentNode = nullptr;
     bool goalNodeHasBeenReached = false;
@@ -96,7 +101,7 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint, unsigned 
 
             if (value != 0) continue; // not walkable
 
-            Node* adjacentNode = new Node(x, y, this->map);
+            Node* adjacentNode = new Node(x, y, map);
 
             // if it is already on the closed list ignore it
 
@@ -202,4 +207,25 @@ Node *RouteGenerator::generateRoute(Point startPoint, Point goalPoint, unsigned 
 
     if (goalNodeHasBeenReached) return currentNode;
     else return nullptr;
+}
+
+void RouteGenerator::sendRequest(RouteRequest *request) {
+    routeRequestQueue.push(request);
+}
+
+void RouteGenerator::handleNextRequest() {
+    if (routeRequestQueue.empty()) return;
+
+    RouteRequest* request = routeRequestQueue.front();
+    routeRequestQueue.pop();
+
+    Node* firstNode = generateRoute(request->startPoint, request->goalPoint, request->step);
+
+    request->onResponse(
+            new RouteResponse(
+            firstNode ?
+                    RouteResponse::RouteResponseMessage::ROUTE_FOUND :
+                    RouteResponse::RouteResponseMessage::ROUTE_NOT_FOUND,
+        firstNode
+    ));
 }
