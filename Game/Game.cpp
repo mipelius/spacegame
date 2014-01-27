@@ -80,7 +80,7 @@ Game::Game() {
     map = new Map("images/map.bmp", mapTexture, 10, 10);
     world = new GameWorld(Vector(0, 9.81), 0.20, 0.001);
     world->setMap(map);
-    world->getRouteGenerator()->setMaxGeneratingTimeMilliSec(20);
+    world->getRouteGenerator()->setMaxGeneratingTimeMilliSec(5);
     renderer->setGameWorld(world);
 
     // --- TEAMS ---
@@ -105,10 +105,10 @@ Game::Game() {
     // --- OTHER SPACESHIPS ---
 
     otherSpaceships = new std::list<Spaceship*>;
-    for (int i=0; i<2; i++) {
-        bool isPlayerTeam = false; //(bool)(i % 2);
+    for (int i=0; i<20; i++) {
+        bool isPlayerTeam = false; //!((bool)(i % 4));
 
-        Spaceship* spaceship = new Spaceship(Point(4000 + i * 100, 8700 - rand() % 1000), 20, isPlayerTeam ? 1 : 2);
+        Spaceship* spaceship = new Spaceship(Point(4000 + i * 100, 8700 - rand() % 1000), 20, isPlayerTeam ? 1 : 1);
         spaceship->setShootingSpeed(10);
 
         // brains and controller

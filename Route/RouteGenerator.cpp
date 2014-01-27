@@ -63,8 +63,12 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
 
     // if there is block at the start point or goal point, it's not possible to generate route -> return nullptr
 
-    if (map->getValueActual((int)request->startPoint.x, (int)request->startPoint.y)) return nullptr;
-    if (map->getValueActual((int)request->goalPoint.x, (int)request->goalPoint.y)) return nullptr;
+    if (
+            map->getValueActual((int)request->startPoint.x, (int)request->startPoint.y) ||
+            map->getValueActual((int)request->goalPoint.x, (int)request->goalPoint.y)
+    ) {
+        return new RouteResponse(RouteResponse::RouteResponseMessage::ROUTE_NOT_FOUND, nullptr);
+    }
 
     // initialize lists and both start node and goal node
 

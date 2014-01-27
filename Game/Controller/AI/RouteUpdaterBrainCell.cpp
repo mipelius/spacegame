@@ -53,7 +53,7 @@ void RouteUpdaterBrainCell::operate() {
             new RouteUpdaterRequest(
                 getController()->getControllableObject()->getLocation(),
                 target->getLocation(),
-                2,
+                3,
                 getController()->getControllableObject()->getCollisionShape()->getBoundingBox(),
                 this
             )

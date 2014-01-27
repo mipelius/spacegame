@@ -34,7 +34,7 @@ void NavigatorBrainCell::operate() {
 
     Node* node = getRouteNextNode();
 
-    if (node && node->getLocation().distance(obj->getLocation()) < obj->getWorld()->getMap()->getBlockW()) {
+    if (node && node->getLocation().distance(obj->getLocation()) < 3.0) {
         node = node->getNextNode();
         setRouteNextNode(node);
     }
@@ -49,15 +49,15 @@ void NavigatorBrainCell::operate() {
         if (deltaX < 0) angle -= 180;
 
         obj->setAngle(angle);
-        obj->setSpeed(Vector::byAngle(angle, 400.0));
+        obj->setSpeed(Vector::byAngle(angle, 2000.0));
     }
 
-//    // TODO: make separate BattleBrainCell
-//
-//    Spaceship* ship = dynamic_cast<Spaceship*>(obj);
-//
-//    if (ship) {
-//        if (!(rand() % 200)) ship->shoot();
-//    }
+    // TODO: make separate BattleBrainCell
+
+    Spaceship* ship = dynamic_cast<Spaceship*>(obj);
+
+    if (ship) {
+        if (!(rand() % 200)) ship->shoot();
+    }
 
 }
