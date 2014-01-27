@@ -154,8 +154,8 @@ bool Map::detectCollisionWith(GameEntity *entity) {
 
     Point* points = entity->getCollisionShape()->getRotatedPoints();
     for (int i=0; i<entity->getCollisionShape()->getCount(); i++) {
-        int x = (int)(points[i].x + entity->getCollisionShape()->getLocation().x);
-        int y = (int)(points[i].y + entity->getCollisionShape()->getLocation().y);
+        int x = (int)(points[i].x + entity->getLocation().x);
+        int y = (int)(points[i].y + entity->getLocation().y);
         if (this->getValueActual(x, y)) return true;
     }
 

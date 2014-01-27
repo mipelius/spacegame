@@ -17,20 +17,19 @@
 #ifndef __CollisionShape_H_
 #define __CollisionShape_H_
 
+class GameEntity;
+
 #include "Rect.h"
 #include "Point.h"
 
 class CollisionShape {
+friend class GameEntity;
 private:
     Rect boundingBox;
     Point *points;
-    Point *rotatedPoints;
-    Point location;
-    double angle;
-    bool rotatedPointsNeedUpdate;
+    GameEntity *owner;
     int count;
     bool intersectsWithHalfLine(Point linePoint1, Point linePoint2, Point offset);
-    void updateRotatedPoints();
 public:
     /**
      * Constructor that initializes the collision shape. Note: use only convex shapes.
@@ -56,20 +55,6 @@ public:
      */
 
     bool intersectsWith(Rect* rectangle);
-
-    /**
-     * Sets the location of the CollisionShape
-     *
-     * @param point the location
-     */
-    void setLocation(Point point);
-
-    /**
-     * Gets the location of the CollisionShape
-     *
-     * @return the location
-     */
-    Point getLocation();
 
     /**
      * Gets the points of the CollisionShape
@@ -98,13 +83,6 @@ public:
      * @return the bounding box
      */
     Rect getBoundingBox();
-
-    /**
-     * Sets the angle
-     *
-     * @param angle the angle
-     */
-    void setAngle(double angle);
 };
 
 

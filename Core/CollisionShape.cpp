@@ -16,13 +16,12 @@
 
 #include "precompile.h"
 #include "CollisionShape.h"
+#include "GameEntity.h"
+#include "Rect.h"
 
-CollisionShape::CollisionShape(Point points[], int count)
-  : location(Point(0, 0)), boundingBox(Rect(Point(0,0), Point(0,0))), angle(0)
+CollisionShape::CollisionShape(Point points[], int count): boundingBox(Rect(Point(-1, -1), Point(1, 1)))
 {
-
     this->points = (Point*)malloc(count * sizeof(Point));
-    this->rotatedPoints = (Point*)malloc(count * sizeof(Point));
     this->count = count;
 
     Point farMost = Point(0, 0);
@@ -37,12 +36,12 @@ CollisionShape::CollisionShape(Point points[], int count)
 
     double length = Vector(farMost.x, farMost.y).length();
     boundingBox = Rect(Point(-length, -length), Point(length, length));
-
-    this->updateRotatedPoints();
 }
 
 bool CollisionShape::intersectsWith(CollisionShape* otherShape) {
     if (!this->getBoundingBox().intersectsWith(otherShape->getBoundingBox())) return false;
+
+    Point location = owner->getLocation();
 
     Point *otherShapePoints = otherShape->getRotatedPoints();
     Point *thisPoints = this->getRotatedPoints();
@@ -56,7 +55,7 @@ bool CollisionShape::intersectsWith(CollisionShape* otherShape) {
                     intersectsWithHalfLine(
                             thisPoints[j] + Vector(location.x, location.y),
                             thisPoints[j+1] + Vector(location.x, location.y),
-                            otherShapePoints[i] + Vector(otherShape->getLocation().x, otherShape->getLocation().y))
+                            otherShapePoints[i] + Vector(otherShape->owner->getLocation().x, otherShape->owner->getLocation().y))
                     ) {
 
                 intersectionCount++;
@@ -67,7 +66,7 @@ bool CollisionShape::intersectsWith(CollisionShape* otherShape) {
                 intersectsWithHalfLine(
                         thisPoints[count-1] + Vector(location.x, location.y),
                         thisPoints[0] + Vector(location.x, location.y),
-                        otherShapePoints[i] + Vector(otherShape->getLocation().x, otherShape->getLocation().y))
+                        otherShapePoints[i] + Vector(otherShape->owner->getLocation().x, otherShape->owner->getLocation().y))
                 ) {
 
             intersectionCount++;
@@ -104,28 +103,21 @@ bool CollisionShape::intersectsWithHalfLine(Point linePoint1, Point linePoint2, 
     return collisionX >= offset.x;
 }
 
-void CollisionShape::setLocation(Point point) {
-    this->location = point;
-}
-
-Point CollisionShape::getLocation() {
-    return location;
-}
-
 Point* CollisionShape::getRotatedPoints() {
-    if (rotatedPointsNeedUpdate) {
-        updateRotatedPoints();
-    }
+    double angleRad = this->owner->getAngle() / 360 * 2 * M_PI * -1;
 
+    Point* rotatedPoints = (Point*)malloc(count * sizeof(Point));
+
+    for (int i=0; i<count; i++) {
+        rotatedPoints[i].x = this->points[i].x * cos(angleRad) + this->points[i].y * sin(angleRad);
+        rotatedPoints[i].y = -this->points[i].x * sin(angleRad) + this->points[i].y * cos(angleRad);
+    }
     return rotatedPoints;
 }
 
-void CollisionShape::setAngle(double angle) {
-    this->angle = angle;
-    rotatedPointsNeedUpdate = true;
-}
-
 Rect CollisionShape::getBoundingBox() {
+    Point location = owner->getLocation();
+
     return Rect(
             Point(
                     this->boundingBox.getTopLeftCorner().x + location.x,
@@ -140,6 +132,8 @@ Rect CollisionShape::getBoundingBox() {
 
 
 bool CollisionShape::intersectsWith(Rect* rectangle) {
+    Point location = owner->getLocation();
+
     Point* points = getRotatedPoints();
 
     for (int i=0; i<count-1; i++) {
@@ -159,14 +153,4 @@ bool CollisionShape::intersectsWith(Rect* rectangle) {
             ) return true;
 
     return false;
-}
-
-void CollisionShape::updateRotatedPoints() {
-    double angleRad = this->angle / 360 * 2 * M_PI * -1;
-    for (int i=0; i<count; i++) {
-        rotatedPoints[i].x = this->points[i].x * cos(angleRad) + this->points[i].y * sin(angleRad);
-        rotatedPoints[i].y = -this->points[i].x * sin(angleRad) + this->points[i].y * cos(angleRad);
-    }
-
-    rotatedPointsNeedUpdate = false;
 }

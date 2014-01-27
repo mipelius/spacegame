@@ -111,16 +111,15 @@ void Renderer::renderEntities() {
     glMatrixMode(GL_MODELVIEW);
 
     for (std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
-        Point entityLocation = (*it)->getLocation();
+        Point location = (*it)->getLocation();
 
         (*it)->render(
-                entityLocation.x - cameraLocation.x,
-                entityLocation.y - cameraLocation.y
+                location.x - cameraLocation.x,
+                location.y - cameraLocation.y
         );
 
         CollisionShape* shape = (*it)->getCollisionShape();
         Point* points = shape->getRotatedPoints();
-        Point location = shape->getLocation();
 
         if (collisionShapesAreVisible) {
             // collision shape

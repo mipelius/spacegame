@@ -29,7 +29,6 @@ void GameEntity::applyForce(Vector force) {
 }
 
 void GameEntity::setAngle(double angle) {
-    if (this->collisionShape != nullptr) this->collisionShape->setAngle(this->angle);
     this->angle = angle;
 }
 
@@ -38,7 +37,6 @@ Point GameEntity::getLocation() {
 }
 
 void GameEntity::setLocation(Point location) {
-    if (this->collisionShape != nullptr) this->collisionShape->setLocation(location);
     this->location = location;
 }
 
@@ -66,10 +64,7 @@ GameEntity::GameEntity(Point location, double angle, CollisionShape* collisionSh
 
     this->angle = angle;
 
-    if (collisionShape != nullptr) collisionShape->setLocation(this->location);
     gameWorld = nullptr;
-
-    if (collisionShape) collisionShape->setAngle(angle);
 }
 
 void GameEntity::render(double x, double y) {
@@ -152,6 +147,7 @@ CollisionShape *GameEntity::getCollisionShape() {
 
 void GameEntity::setCollisionShape(CollisionShape* collisionShape) {
     this->collisionShape = collisionShape;
+    collisionShape->owner = this;
 }
 
 void GameEntity::setOwner(GameEntity* owner) {
