@@ -112,23 +112,35 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
             int xCenter = currentNode->x + ADJACENT_NODES_RELATIVE_LOCATIONS[i][0] * request->step;
             int yCenter = currentNode->y + ADJACENT_NODES_RELATIVE_LOCATIONS[i][1] * request->step;
 
+            Node* adjacentNode = new Node(xCenter, yCenter, map);
+
+            // if the current adjacent node is (approximately) same as goalNode the goal node has been reached
+
+            if (adjacentNode->equals(goalNode, request->step)) {
+                goalNodeHasBeenReached = true;
+                break;
+            }
+
             bool isWalkable = true;
+
             for (int x=-minSpaceX; x<=minSpaceX; x++) {
                 for (int y=-minSpaceY; y<=minSpaceY; y++) {
                     unsigned char value = map->getValue(xCenter + x, yCenter + y);
+
                     if (value != 0) {
                         isWalkable = false;
                         continue;
-                    } // not walkable
+                    }
 
                     if (!isWalkable) break;
                 }
                 if (!isWalkable) break;
             }
 
-            if (!isWalkable) continue;
-
-            Node* adjacentNode = new Node(xCenter, yCenter, map);
+            if (!isWalkable) {
+                delete adjacentNode;
+                continue;
+            }
 
             // if it is already on the closed list ignore it
 
@@ -189,10 +201,6 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
             }
         }
 
-        // if the last node on the closed list is (approximately) same as goalNode the goal node has been reached
-
-        if (closedList.back()->equals(goalNode, request->step)) goalNodeHasBeenReached = true;
-
         // open list is empty, so there is no path -> break
 
         if (openList.empty()) break;
@@ -203,8 +211,6 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
             timeOut = true;
             break;
         }
-
-
     }
 
     if (goalNodeHasBeenReached) {
