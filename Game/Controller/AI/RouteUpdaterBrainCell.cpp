@@ -17,7 +17,6 @@
 #include "precompile.h"
 #include "RouteUpdaterBrainCell.h"
 
-#include "RouteUpdaterRequest.h"
 #include "RouteResponse.h"
 #include "RouteRequest.h"
 #include "SpaceGameObject.h"
@@ -46,19 +45,24 @@ void RouteUpdaterBrainCell::handleResponse(RouteResponse *response) {
 }
 
 void RouteUpdaterBrainCell::operate() {
+    SpaceGameObject* controllableObject = this->getController()->getControllableObject();
     SpaceGameObject* target = getTarget();
 
-    if (target && !target->isDead()) {
-        target->getWorld()->getRouteGenerator()->sendRequest(
-            new RouteUpdaterRequest(
-                getController()->getControllableObject()->getLocation(),
-                target->getLocation(),
-                3,
-                getController()->getControllableObject()->getCollisionShape()->getBoundingBox(),
-                this
-            )
+    if (controllableObject && target && !target->isDead()) {
+        this->setRecipient(controllableObject->getWorld()->getRouteGenerator());
+
+        sendRequest(
+                new RouteRequest(
+                        target->getLocation(),
+                        3,
+                        getController()->getControllableObject()->getCollisionShape()->getBoundingBox()
+                )
         );
     }
 
     else setRouteNextNode(nullptr);
+}
+
+Point RouteUpdaterBrainCell::getLocation() {
+    return this->getController()->getControllableObject()->getLocation();
 }

@@ -24,6 +24,8 @@
 #include "GameWorld.h"
 #include "Map.h"
 
+static const double NODE_REACHED_DISTANCE = 3.0;
+
 NavigatorBrainCell::NavigatorBrainCell(double tickSeconds) : BrainCell(tickSeconds) {
 
 }
@@ -34,7 +36,7 @@ void NavigatorBrainCell::operate() {
 
     Node* node = getRouteNextNode();
 
-    if (node && node->getLocation().distance(obj->getLocation()) < 3.0) {
+    if (node && node->getLocation().distance(obj->getLocation()) < NODE_REACHED_DISTANCE) {
         node = node->getNextNode();
         setRouteNextNode(node);
     }
@@ -49,7 +51,7 @@ void NavigatorBrainCell::operate() {
         if (deltaX < 0) angle -= 180;
 
         obj->setAngle(angle);
-        obj->setSpeed(Vector::byAngle(angle, 2000.0));
+        obj->setSpeed(Vector::byAngle(angle, 1000.0));
     }
 
     // TODO: make separate BattleBrainCell

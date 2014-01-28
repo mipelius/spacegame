@@ -14,27 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __RouteUpdaterRequest_H_
-#define __RouteUpdaterRequest_H_
-
-class RouteUpdaterRequest;
-class RouteUpdaterBrainCell;
-
-#include "Rect.h"
+#include "RouteRequestSender.h"
+#include "RouteResponse.h"
+#include "RouteGenerator.h"
 #include "RouteRequest.h"
 
-class RouteUpdaterRequest : public RouteRequest {
-protected:
-    void onResponse(RouteResponse* response);
-    RouteUpdaterBrainCell *sender;
-public:
-    RouteUpdaterRequest(
-            Point const &startPoint,
-            Point const &goalPoint,
-            unsigned int step,
-            Rect minSpace,
-            RouteUpdaterBrainCell* sender
-    );
-};
+void RouteRequestSender::setRecipient(RouteGenerator *generator) {
+    this->generator = generator;
+}
 
-#endif //__RouteUpdaterRequest_H_
+RouteRequestSender::RouteRequestSender() {
+    this->generator = nullptr;
+}
+
+void RouteRequestSender::sendRequest(RouteRequest *request) {
+    if (generator) {
+        request->sender = this;
+        generator->sendRequest(request);
+    }
+}

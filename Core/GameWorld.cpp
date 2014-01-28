@@ -35,8 +35,6 @@ void GameWorld::addEntity(GameEntity *gameEntity) {
 void GameWorld::step(double timeSeconds) {
     if (timeSeconds == 0.0) return;
 
-    routeGenerator->handleNextRequest();
-
     // update velocities and new locations
     for(std::list<GameEntity*>::iterator it = gameEntities->begin(); it != gameEntities->end(); it++) {
         (*it)->step(timeSeconds);
@@ -58,6 +56,8 @@ void GameWorld::step(double timeSeconds) {
             currentEntity->onDying();
         }
     }
+
+    routeGenerator->handleNextRequest();
 }
 
 GameWorld::GameWorld(

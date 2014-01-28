@@ -21,6 +21,7 @@
 #include "RouteRequest.h"
 #include "RouteResponse.h"
 #include "GameWorld.h"
+#include "RouteRequestSender.h"
 
 static const int ADJACENT_NODES_RELATIVE_LOCATIONS_COUNT = 8;
 static const int ADJACENT_NODES_RELATIVE_LOCATIONS[ADJACENT_NODES_RELATIVE_LOCATIONS_COUNT][2] = {
@@ -64,7 +65,7 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
     // if there is block at the start point or goal point, it's not possible to generate route -> return nullptr
 
     if (
-            map->getValueActual((int)request->startPoint.x, (int)request->startPoint.y) ||
+            map->getValueActual((int)request->sender->getLocation().x, (int)request->sender->getLocation().y) ||
             map->getValueActual((int)request->goalPoint.x, (int)request->goalPoint.y)
     ) {
         return new RouteResponse(RouteResponse::RouteResponseMessage::ROUTE_NOT_FOUND, nullptr);
@@ -75,7 +76,7 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
     std::list<Node*> openList = std::list<Node*>();
     std::list<Node*> closedList = std::list<Node*>();
 
-    Node* startNode = Node::byPoint(request->startPoint, map);
+    Node* startNode = Node::byPoint(request->sender->getLocation(), map);
     Node* goalNode = Node::byPoint(request->goalPoint, map);
 
     Node* currentNode = nullptr;
@@ -267,9 +268,11 @@ void RouteGenerator::handleNextRequest() {
     RouteRequest* request = routeRequestQueue.front();
     routeRequestQueue.pop();
 
+    if (!request->sender) return;
+
     RouteResponse* response = generateRoute(request);
 
-    request->onResponse(response);
+    request->sender->handleResponse(response);
 }
 
 void RouteGenerator::setMaxGeneratingTimeMilliSec(int timeMilliSec) {

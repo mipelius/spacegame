@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "RouteRequestSender.h"
+
 #ifndef __SpaceGame_H_
 #define __SpaceGame_H_
 
@@ -26,7 +28,6 @@ class HumanController;
 class Team;
 
 class Game {
-    friend class TestRequest;
 private:
     Map* map;
     GameWorld* world;

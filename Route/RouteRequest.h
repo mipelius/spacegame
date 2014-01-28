@@ -19,21 +19,21 @@
 
 class Node;
 class RouteResponse;
+class RouteRequestSender;
 
 #include "Point.h"
 #include "Rect.h"
 
 class RouteRequest {
+    friend class RouteRequestSender;
     friend class RouteGenerator;
 private:
-    Point startPoint;
     Point goalPoint;
     unsigned int step;
     Rect minSpace;
-protected:
-    virtual void onResponse(RouteResponse* response);
+    RouteRequestSender* sender;
 public:
-    RouteRequest(Point startPoint, Point goalPoint, unsigned int step, Rect minSpace);
+    RouteRequest(Point goalPoint, unsigned int step, Rect minSpace);
 };
 
 
