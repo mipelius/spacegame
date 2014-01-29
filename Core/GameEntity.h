@@ -27,7 +27,6 @@ class CollisionShape;
 class GameEntity {
     friend class GameWorld;
 private:
-    void step(double timeElapsedSec);
     bool _isDead;
     bool _stepIsIgnored;
     bool _entityCollisionDetectionIsIgnored;
@@ -47,6 +46,8 @@ protected:
     GameWorld* gameWorld;
     CollisionShape *collisionShape;
     GameEntity* owner;
+
+    virtual void step(double timeElapsedSec);
 
     virtual void beforeStep(double timeElapsedSec);
     virtual void afterStep(double timeElapsedSec);

@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,27 +14,32 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __GameObjectGroup_H_
-#define __GameObjectGroup_H_
+#ifndef __AnimatedTexture_H_
+#define __AnimatedTexture_H_
 
-class GameObject;
-class CollisionShape;
+#include "Texture.h"
+#import "ITexture.h"
 
-#include <list>
-#include "GameEntity.h"
-#include "Point.h"
-
-class GameObjectGroup : public GameEntity {
+class AnimatedTexture : public ITexture {
 private:
-    std::list<GameObject*> *gameObjects;
-public:
-    GameObjectGroup(Point location, double angle, CollisionShape* collisionShape = nullptr);
-    void add(GameObject *gameObject);
-    void render(double x, double y);
-    double getMass();
+    Texture* texture;
+    double _timeElapsedAfterPreviousFrame;
+    int _currentFrame;
+    int _fps;
+    int _frames;
 
-    void step(double timeElapsedSec);
+    bool _isPlaying;
+    bool _isStopped;
+public:
+    AnimatedTexture(int frames, int fps, Texture* texture);
+    void play();
+    void stop();
+    void pause();
+    void update(double timeElapsedSec);
+
+    void glBind();
+    void glTexCorner(Corner corner);
+    void glUnbind();
 };
 
-
-#endif //__GameObjectGroup_H_
+#endif //__AnimatedTexture_H_

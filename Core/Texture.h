@@ -18,8 +18,9 @@
 #define __Texture_H_
 
 #include <string>
+#import "ITexture.h"
 
-class Texture {
+class Texture : public ITexture {
 private:
     GLuint texture;
     int w;
@@ -30,6 +31,7 @@ public:
     Texture(std::string filename);
     void glBind();
     void glUnbind();
+    void glTexCorner(Corner corner);
 };
 
 

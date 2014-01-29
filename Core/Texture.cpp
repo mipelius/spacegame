@@ -16,6 +16,7 @@
 
 #include "precompile.h"
 #include "Texture.h"
+#import "ITexture.h"
 
 Texture::Texture(std::string filename) {
     SDL_Surface *surface;    // This surface will tell us the details of the image
@@ -99,4 +100,21 @@ int Texture::getW() {
 
 int Texture::getH() {
     return this->h;
+}
+
+void Texture::glTexCorner(ITexture::Corner corner) {
+    switch (corner) {
+        case (TOP_LEFT):
+            glTexCoord2d(0.01, 0.01);
+            break;
+        case (TOP_RIGHT):
+            glTexCoord2d(0.99, 0.01);
+            break;
+        case (BOTTOM_LEFT):
+            glTexCoord2d(0.99, 0.99);
+            break;
+        case (BOTTOM_RIGHT):
+            glTexCoord2d(0.01, 0.99);
+            break;
+    }
 }

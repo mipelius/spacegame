@@ -18,13 +18,13 @@
 #define __GameObject_H_
 
 class CollisionShape;
-class Texture;
+class ITexture;
 
 #include "GameEntity.h"
 
 class GameObject : public GameEntity {
 private:
-    Texture* texture;
+    ITexture* texture;
     double mass;
     int w, h;
     const double ZERO_MASS = 0.0001;
@@ -33,12 +33,13 @@ public:
     GameObject(
             Point location,
             double angle,
-            Texture *texture,
+            ITexture *texture,
             double mass,
             int w,
             int h,
             CollisionShape *collisionShape = nullptr
     );
+    void update(double timeElapsedSec);
     void render(double x, double y);
     double getMass();
 };

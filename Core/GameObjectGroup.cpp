@@ -53,3 +53,10 @@ double GameObjectGroup::getMass() {
     }
     return mass;
 }
+
+void GameObjectGroup::step(double timeElapsedSec) {
+    GameEntity::step(timeElapsedSec);
+    for (std::list<GameObject*>::iterator it = gameObjects->begin(); it != gameObjects->end(); it++) {
+        (*it)->update(timeElapsedSec);
+    }
+}

@@ -51,15 +51,11 @@ void NavigatorBrainCell::operate() {
         if (deltaX < 0) angle -= 180;
 
         obj->setAngle(angle);
+        Spaceship* ship = dynamic_cast<Spaceship*>(obj);
+
+        if (ship) {
+            ship->accelerate();
+        }
         obj->setSpeed(Vector::byAngle(angle, 1000.0));
     }
-
-    // TODO: make separate BattleBrainCell
-
-    Spaceship* ship = dynamic_cast<Spaceship*>(obj);
-
-    if (ship) {
-        if (!(rand() % 200)) ship->shoot();
-    }
-
 }

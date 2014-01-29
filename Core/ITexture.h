@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,27 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __GameObjectGroup_H_
-#define __GameObjectGroup_H_
+#ifndef __ITexture_H_
+#define __ITexture_H_
 
-class GameObject;
-class CollisionShape;
-
-#include <list>
-#include "GameEntity.h"
-#include "Point.h"
-
-class GameObjectGroup : public GameEntity {
-private:
-    std::list<GameObject*> *gameObjects;
+class ITexture {
 public:
-    GameObjectGroup(Point location, double angle, CollisionShape* collisionShape = nullptr);
-    void add(GameObject *gameObject);
-    void render(double x, double y);
-    double getMass();
+    enum Corner {
+        TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT
+    };
 
-    void step(double timeElapsedSec);
+    ITexture() { };
+    ~ITexture() { };
+
+    virtual void glBind() = 0;
+    virtual void glTexCorner(Corner corner) = 0;
+    virtual void glUnbind() = 0;
 };
 
 
-#endif //__GameObjectGroup_H_
+#endif //__ITexture_H_

@@ -27,12 +27,4 @@ CpuController::CpuController(Brains *brains) {
 void CpuController::control(double timeElapsedSec) {
     Controller::control(timeElapsedSec);
     _brains->operate(timeElapsedSec);
-
-    if (objectControllable) {
-//        Spaceship* spaceship = dynamic_cast<Spaceship*>(objectControllable);
-//
-//        if (spaceship) {
-//            if (!(rand() % 300)) spaceship->shoot();
-//        }
-    }
 }

@@ -17,11 +17,12 @@
 #include "precompile.h"
 #include "GameObject.h"
 #include "Texture.h"
+#include "AnimatedTexture.h"
 
 GameObject::GameObject(
         Point location,
         double angle,
-        Texture *texture,
+        ITexture *texture,
         double mass,
         int w,
         int h,
@@ -43,20 +44,16 @@ void GameObject::render(double x, double y) {
     texture->glBind();
     glBegin(GL_QUADS);
 
-    //Bottom-left vertex (corner)
-    glTexCoord2d(0.01, 0.01);
+    texture->glTexCorner(Texture::Corner::TOP_LEFT);
     glVertex3f((GLfloat)(x),(GLfloat)(y), 0.0);
 
-    //Bottom-right vertex (corner)
-    glTexCoord2d(0.99, 0.01);
+    texture->glTexCorner(Texture::Corner::TOP_RIGHT);
     glVertex3f((GLfloat)(x + w),(GLfloat)(y), 0.0);
 
-    //Top-right vertex (corner)
-    glTexCoord2d(0.99, 0.99);
+    texture->glTexCorner(Texture::Corner::BOTTOM_LEFT);
     glVertex3f((GLfloat)(x + w),(GLfloat)(y + h), 0.0);
 
-    //Top-left vertex (corner)
-    glTexCoord2d(0.01, 0.99);
+    texture->glTexCorner(Texture::Corner::BOTTOM_RIGHT);
     glVertex3f((GLfloat)(x),(GLfloat)(y + h), 0.0);
 
     glEnd();
@@ -69,4 +66,14 @@ void GameObject::render(double x, double y) {
 
 double GameObject::getMass() {
     return mass;
+}
+
+void GameObject::update(double timeElapsedSec) {
+    // if the texture is animatedTexture, update it
+
+    AnimatedTexture* animatedTexture = dynamic_cast<AnimatedTexture*>(texture);
+
+    if (animatedTexture) {
+        animatedTexture->update(timeElapsedSec);
+    }
 }

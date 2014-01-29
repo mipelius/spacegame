@@ -17,20 +17,25 @@
 #ifndef __Spaceship_H_
 #define __Spaceship_H_
 
+class AnimatedTexture;
+
 #include "SpaceGameObject.h"
 #include <SDL2/SDL.h>
 
 class Spaceship : public SpaceGameObject {
 private:
+    AnimatedTexture* rocketFire;
     int health;
     void shootOnce(Point startPoint);
     Uint32 shootingDelay;
     Uint32 lastTimeShot;
     bool _isStuck;
+    bool _isAccelerating;
     int size;
 protected:
     void onEntityCollision(GameEntity* otherEntity);
     void onMapCollision();
+    void beforeStep(double timeElapsedSec);
 public:
     Spaceship(Point location, int maxHealth, int size);
     void shoot();
@@ -38,6 +43,7 @@ public:
     void setShootingSpeed(Uint32 shootingPerSecond);
     void setStuck();
     void setNotStuck();
+    void accelerate();
     bool isStuck();
 };
 

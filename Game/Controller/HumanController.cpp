@@ -81,6 +81,7 @@ void HumanController::handleUp() {
             spaceship->setSpeed(Vector::byAngle(spaceship->getAngle(), 200));
             spaceship->setNotStuck();
         }
+        spaceship->accelerate();
         spaceship->applyForce(Vector::byAngle(spaceship->getAngle(), 120000));
     }
 }

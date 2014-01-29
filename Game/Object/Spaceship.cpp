@@ -21,12 +21,17 @@
 #include "GameObject.h"
 #include "CollisionShape.h"
 #include "GameWorld.h"
+#include "AnimatedTexture.h"
 
 static Texture* textureSpaceShip = nullptr;
+static Texture* textureRocketFire = nullptr;
 
 Spaceship::Spaceship(Point location, int maxHealth, int size) :
 SpaceGameObject(location, 0.0, nullptr, maxHealth) {
     if (!textureSpaceShip) textureSpaceShip = new Texture("images/spaceship.png");
+    if (!textureRocketFire) textureRocketFire = new Texture("images/anim_rocket_fire.png");
+
+    this->rocketFire = new AnimatedTexture(8, 20, textureRocketFire);
 
     GameObject *objectSpaceShip = new GameObject(
             Point(-16 * size, -16 * size),
@@ -38,6 +43,24 @@ SpaceGameObject(location, 0.0, nullptr, maxHealth) {
             nullptr
     );
 
+    GameObject *leftRocketFire = new GameObject(
+            Point((-16 - 16)* size, -17 * size),
+            0.0,
+            rocketFire,
+            0,
+            16 * size,
+            8 * size
+    );
+
+    GameObject *rightRocketFire = new GameObject(
+            Point((-16 - 16)* size, (17 - 8) * size),
+            0.0,
+            rocketFire,
+            0,
+            16 * size,
+            8 * size
+    );
+
     Point collisionPoints[] = {
             Point(-16 * size, -16 * size),
             Point(16 * size, 0 * size),
@@ -46,6 +69,8 @@ SpaceGameObject(location, 0.0, nullptr, maxHealth) {
 
     this->setCollisionShape(new CollisionShape(collisionPoints, 3));
     this->add(objectSpaceShip);
+    this->add(leftRocketFire);
+    this->add(rightRocketFire);
 
     this->health = maxHealth;
     this->lastTimeShot = 0;
@@ -102,4 +127,20 @@ void Spaceship::onMapCollision() {
     GameEntity::onMapCollision();
     this->speed = Vector(0, 0);
     this->location = getLocationBeforeUpdate();
+}
+
+void Spaceship::accelerate() {
+    _isAccelerating = true;
+}
+
+void Spaceship::beforeStep(double timeElapsedSec) {
+    SpaceGameObject::beforeStep(timeElapsedSec);
+    if (_isAccelerating) {
+        _isAccelerating = false;
+        rocketFire->play();
+    }
+    else {
+        rocketFire->stop();
+    }
+
 }
