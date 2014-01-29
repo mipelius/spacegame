@@ -76,11 +76,6 @@ void HumanController::handleRight() {
 void HumanController::handleUp() {
     Spaceship* spaceship = dynamic_cast<Spaceship*>(objectControllable);
     if (spaceship) {
-        if (spaceship->isStuck()) {
-            spaceship->setLocation(spaceship->getLocation() + Vector::byAngle(spaceship->getAngle(), 2));
-            spaceship->setSpeed(Vector::byAngle(spaceship->getAngle(), 200));
-            spaceship->setNotStuck();
-        }
         spaceship->accelerate();
         spaceship->applyForce(Vector::byAngle(spaceship->getAngle(), 120000));
     }

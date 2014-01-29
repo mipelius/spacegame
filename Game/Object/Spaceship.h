@@ -41,10 +41,7 @@ public:
     void shoot();
     void forceShoot();
     void setShootingSpeed(Uint32 shootingPerSecond);
-    void setStuck();
-    void setNotStuck();
     void accelerate();
-    bool isStuck();
 };
 
 

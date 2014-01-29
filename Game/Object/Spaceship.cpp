@@ -22,6 +22,7 @@
 #include "CollisionShape.h"
 #include "GameWorld.h"
 #include "AnimatedTexture.h"
+#include "Map.h"
 
 static Texture* textureSpaceShip = nullptr;
 static Texture* textureRocketFire = nullptr;
@@ -62,9 +63,9 @@ SpaceGameObject(location, 0.0, nullptr, maxHealth) {
     );
 
     Point collisionPoints[] = {
-            Point(-16 * size, -16 * size),
-            Point(16 * size, 0 * size),
-            Point(-16 * size, 16 * size),
+            Point(-14 * size, -14 * size),
+            Point(14 * size, 0 * size),
+            Point(-14 * size, 14 * size),
     };
 
     this->setCollisionShape(new CollisionShape(collisionPoints, 3));
@@ -105,18 +106,6 @@ void Spaceship::forceShoot() {
     shootOnce(Point(0, 0) + (Vector::byAngle(angle, 10)));
 }
 
-void Spaceship::setStuck() {
-    _isStuck = true;
-}
-
-bool Spaceship::isStuck() {
-    return _isStuck;
-}
-
-void Spaceship::setNotStuck() {
-    _isStuck = false;
-}
-
 void Spaceship::onEntityCollision(GameEntity *otherEntity) {
     GameEntity::onEntityCollision(otherEntity);
     this->speed = Vector(0, 0);
@@ -127,10 +116,22 @@ void Spaceship::onMapCollision() {
     GameEntity::onMapCollision();
     this->speed = Vector(0, 0);
     this->location = getLocationBeforeUpdate();
+    this->_isStuck = true;
 }
 
 void Spaceship::accelerate() {
     _isAccelerating = true;
+
+    if (_isStuck) {
+        Point testLocation = this->getLocation() + Vector::byAngle(angle, this->collisionShape->getBoundingBox().getWidth());
+        Point newLocation = this->getLocation() + Vector::byAngle(angle, 1);
+
+        if (!this->getWorld()->getMap()->getValueActual((int)testLocation.x, (int)testLocation.y)) {
+            this->setLocation(newLocation);
+        }
+
+        _isStuck = false;
+    }
 }
 
 void Spaceship::beforeStep(double timeElapsedSec) {
@@ -142,5 +143,4 @@ void Spaceship::beforeStep(double timeElapsedSec) {
     else {
         rocketFire->stop();
     }
-
 }
