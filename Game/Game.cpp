@@ -82,7 +82,7 @@ Game::Game() {
     map = new Map("images/map.bmp", mapTexture, 10, 10);
     world = new GameWorld(Vector(0, 9.81), 0.20, 0.001);
     world->setMap(map);
-    world->getRouteGenerator()->setMaxGeneratingTimeMilliSec(2);
+    world->getRouteGenerator()->setMaxGeneratingTimeMilliSec(5);
     renderer->setGameWorld(world);
 
     // --- TEAMS ---
@@ -92,7 +92,7 @@ Game::Game() {
 
     // --- PLAYER ---
 
-    player = new Spaceship(Point(4500, 8500), 1000, 1);
+    player = new Spaceship(Point(4500, 9000), 1000, 1);
     player->setShootingSpeed(10);
     playerController = new HumanController();
     playerController->setControllableObject(player);
@@ -107,7 +107,7 @@ Game::Game() {
     // --- OTHER SPACESHIPS ---
 
     otherSpaceships = new std::list<Spaceship*>;
-    for (int i=0; i<160; i++) {
+    for (int i=0; i<20; i++) {
         double x = 4000 + (i % 20) * 64;
         double y = 8700 - rand() % 500 - (i / 20) * 500;
 
@@ -119,7 +119,7 @@ Game::Game() {
         brains->addEnemyTeam(playerTeam);
 
         // brain cell: target selector
-        TargetSelectorBrainCell* targetSelectorBrainCell = new TargetSelectorBrainCell(0.01, 600.0);
+        TargetSelectorBrainCell* targetSelectorBrainCell = new TargetSelectorBrainCell(0.5, 600.0);
         brains->addCell(targetSelectorBrainCell);
 
         // brain cell: eye
@@ -134,7 +134,7 @@ Game::Game() {
         // brain cell: navigator
         NavigatorBrainCell* navigatorBrainCell = new NavigatorBrainCell(0.01);
         navigatorBrainCell->setEyeBrainCell(eyeBrainCell);
-        //navigatorBrainCell->setRouteGeneratorBrainCell(routeGeneratorBrainCell);
+        navigatorBrainCell->setRouteGeneratorBrainCell(routeGeneratorBrainCell);
         brains->addCell(navigatorBrainCell);
 
         // controller
