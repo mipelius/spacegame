@@ -38,7 +38,7 @@ void NavigatorBrainCell::operate() {
     Point targetLocation = eye->getTargetLocation();
 
     if (eye->seesTarget()) {
-        routeGenerator->disable();
+        if (routeGenerator) routeGenerator->disable();
         navigate(targetLocation);
     }
     else {
