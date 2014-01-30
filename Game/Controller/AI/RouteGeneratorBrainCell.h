@@ -14,24 +14,39 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __RouteUpdaterBrainCell_H_
-#define __RouteUpdaterBrainCell_H_
+#ifndef __RouteGeneratorBrainCell_H_
+#define __RouteGeneratorBrainCell_H_
 
+class RouteResponse;
+class Route;
+
+#include "Point.h"
 #include "RouteRequestSender.h"
 #include "BrainCell.h"
-#include "RouteResponse.h"
 
-class RouteUpdaterBrainCell : public BrainCell, RouteRequestSender {
+class RouteGeneratorBrainCell : public BrainCell, RouteRequestSender {
 friend class RouteUpdaterRequest;
 private:
+    Route* _route;
+    bool _isEnabled;
+    Point _destination;
+
     Point getLocation();
     void handleResponse(RouteResponse * response);
+    void removeRoute();
 protected:
     void operate();
 public:
-    RouteUpdaterBrainCell(double tickSeconds);
+    RouteGeneratorBrainCell(double tickSeconds);
 
+    void enable();
+    void disable();
+    bool isEnabled();
+
+    void setDestination(Point location);
+
+    Route* getRoute();
 };
 
 
-#endif //__RouteUpdaterBrainCell_H_
+#endif //__RouteGeneratorBrainCell_H_

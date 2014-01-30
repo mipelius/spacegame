@@ -15,17 +15,17 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "RouteResponse.h"
-#include "Node.h"
+#include "Route.h"
 
-RouteResponse::RouteResponseMessage RouteResponse::getMsg() {
+RouteResponse::Message RouteResponse::getMsg() {
     return _msg;
 }
 
-Node *RouteResponse::getFirstNode() {
-    return this->_firstNode;
+Route *RouteResponse::getRoute() {
+    return this->_route;
 }
 
-RouteResponse::RouteResponse(RouteResponse::RouteResponseMessage msg, Node *firstNode) {
+RouteResponse::RouteResponse(RouteResponse::Message msg, Route *route) {
     this->_msg = msg;
-    this->_firstNode = firstNode;
+    this->_route = route;
 }

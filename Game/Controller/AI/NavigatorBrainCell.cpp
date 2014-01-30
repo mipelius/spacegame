@@ -21,41 +21,80 @@
 #include "SpaceGameObject.h"
 #include "Node.h"
 #include "Spaceship.h"
-#include "GameWorld.h"
-#include "Map.h"
+#include "EyeBrainCell.h"
+#include "RouteGeneratorBrainCell.h"
+#include "Route.h"
 
 static const double NODE_REACHED_DISTANCE = 3.0;
 
 NavigatorBrainCell::NavigatorBrainCell(double tickSeconds) : BrainCell(tickSeconds) {
-
+    eye = nullptr;
+    routeGenerator = nullptr;
 }
 
 void NavigatorBrainCell::operate() {
-    BrainCell::operate();
+    if (!eye) return;
+
+    Point targetLocation = eye->getTargetLocation();
+
+    if (eye->seesTarget()) {
+        routeGenerator->disable();
+        navigate(targetLocation);
+    }
+    else {
+        if (!routeGenerator) return;
+
+        routeGenerator->enable();
+        routeGenerator->setDestination(targetLocation);
+        navigate(routeGenerator->getRoute());
+    }
+}
+
+void NavigatorBrainCell::navigate(Point location) {
     SpaceGameObject* obj = getController()->getControllableObject();
 
-    Node* node = getRouteNextNode();
+    double deltaY = location.y - obj->getLocation().y;
+    double deltaX = location.x - obj->getLocation().x;
+    if (deltaX == 0) deltaX = 0.1;
+    if (deltaY == 0) deltaY = 0.1;
+
+    double angle = atan(deltaY / deltaX) * 180 / M_PI;
+    if (deltaX < 0) angle -= 180;
+
+    obj->setAngle(angle);
+
+    obj->setSpeed(Vector::byAngle(angle, 1000.0));
+
+    // TODO: this is just temporary stuff... remove in some point
+
+    Spaceship* ship = dynamic_cast<Spaceship*>(obj);
+
+    if (ship) {
+        ship->accelerate();
+    }
+}
+
+void NavigatorBrainCell::navigate(Route *route) {
+    if (!route) return;
+
+    SpaceGameObject* obj = getController()->getControllableObject();
+
+    Node* node = route->getCurrentNode();
 
     if (node && node->getLocation().distance(obj->getLocation()) < NODE_REACHED_DISTANCE) {
-        node = node->getNextNode();
-        setRouteNextNode(node);
+        route->nextNode();
+        node = route->getCurrentNode();
     }
 
     if (node) {
-        double deltaY = node->getLocation().y - obj->getLocation().y;
-        double deltaX = node->getLocation().x - obj->getLocation().x;
-        if (deltaX == 0) deltaX = 0.1;
-        if (deltaY == 0) deltaY = 0.1;
-
-        double angle = atan(deltaY / deltaX) * 180 / M_PI;
-        if (deltaX < 0) angle -= 180;
-
-        obj->setAngle(angle);
-        Spaceship* ship = dynamic_cast<Spaceship*>(obj);
-
-        if (ship) {
-            ship->accelerate();
-        }
-        obj->setSpeed(Vector::byAngle(angle, 1000.0));
+        navigate(node->getLocation());
     }
+}
+
+void NavigatorBrainCell::setRouteGeneratorBrainCell(RouteGeneratorBrainCell *routeGeneratorBrainCell) {
+    this->routeGenerator = routeGeneratorBrainCell;
+}
+
+void NavigatorBrainCell::setEyeBrainCell(EyeBrainCell *eyeBrainCell) {
+    this->eye = eyeBrainCell;
 }

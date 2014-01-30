@@ -17,15 +17,26 @@
 #ifndef __NavigatorBrainCell_H_
 #define __NavigatorBrainCell_H_
 
+class EyeBrainCell;
+class RouteGeneratorBrainCell;
+class Route;
+
 #include "BrainCell.h"
 
 class NavigatorBrainCell : public BrainCell {
 private:
     int currentStep;
+    EyeBrainCell* eye;
+    RouteGeneratorBrainCell* routeGenerator;
+
+    void navigate(Point location);
+    void navigate(Route* route);
 protected:
     void operate();
 public:
     NavigatorBrainCell(double tickSeconds);
+    void setEyeBrainCell(EyeBrainCell* eyeBrainCell);
+    void setRouteGeneratorBrainCell(RouteGeneratorBrainCell* routeGeneratorBrainCell);
 };
 
 #endif //__NavigatorBrainCell_H_

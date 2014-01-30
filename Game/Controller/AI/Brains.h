@@ -31,10 +31,6 @@ class Brains {
 private:
     std::list<BrainCell*> *brainCells;
     std::list<Team*> *enemyTeams;
-
-    Node* routeNextNode;
-
-    SpaceGameObject* target;
     CpuController* controller;
 public:
     Brains();

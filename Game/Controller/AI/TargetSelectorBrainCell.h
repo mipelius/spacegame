@@ -17,14 +17,19 @@
 #ifndef __TargetSelectorBrainCell_H_
 #define __TargetSelectorBrainCell_H_
 
+class SpaceGameObject;
+
 #include "BrainCell.h"
 
 class TargetSelectorBrainCell : public BrainCell {
+private:
+    SpaceGameObject* _targetObject;
 protected:
     void operate();
     double maxDistance;
 public:
     TargetSelectorBrainCell(double tickSeconds, double maxDistance);
+    SpaceGameObject* getTarget();
 };
 
 

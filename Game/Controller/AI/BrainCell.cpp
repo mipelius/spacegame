@@ -33,30 +33,10 @@ void BrainCell::operate(double timeElapsedSeconds) {
     }
 }
 
-void BrainCell::operate() {
-
-}
-
 std::list<Team*> *BrainCell::getEnemyTeams() {
     return _brains->enemyTeams;
 }
 
 CpuController *BrainCell::getController() {
     return _brains->controller;
-}
-
-void BrainCell::setTarget(SpaceGameObject *target) {
-    _brains->target = target;
-}
-
-SpaceGameObject *BrainCell::getTarget() {
-    return _brains->target;
-}
-
-void BrainCell::setRouteNextNode(Node *node) {
-    this->_brains->routeNextNode = node;
-}
-
-Node* BrainCell::getRouteNextNode() {
-    return this->_brains->routeNextNode;
 }

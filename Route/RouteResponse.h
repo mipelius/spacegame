@@ -17,18 +17,19 @@
 #ifndef __RouteResponse_H_
 #define __RouteResponse_H_
 
-class Node;
+class Route;
 
 class RouteResponse {
 friend class RouteGenerator;
 public:
-    enum RouteResponseMessage {ROUTE_NOT_FOUND, ROUTE_FOUND, ROUTE_TIME_OUT};
-    RouteResponseMessage getMsg();
-    Node* getFirstNode();
+    enum Message {ROUTE_NOT_FOUND, ROUTE_FOUND, ROUTE_TIME_OUT};
+
+    Message getMsg();
+    Route* getRoute();
 private:
-    RouteResponseMessage _msg;
-    Node* _firstNode;
-    RouteResponse(RouteResponseMessage msg, Node* firstNode);
+    Message _msg;
+    Route* _route;
+    RouteResponse(RouteResponse::Message msg, Route *route);
 };
 
 

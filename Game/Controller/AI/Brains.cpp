@@ -24,8 +24,6 @@
 Brains::Brains() {
     this->enemyTeams = new std::list<Team*>();
     this->brainCells = new std::list<BrainCell*>();
-    this->target = nullptr;
-    this->routeNextNode = nullptr;
 }
 
 void Brains::operate(double timeSec) {

@@ -14,31 +14,30 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __BrainCell_H_
-#define __BrainCell_H_
+#ifndef __EyeBrainCell_H_
+#define __EyeBrainCell_H_
 
-class SpaceGameObject;
-class CpuController;
-class Brains;
-class Team;
+class TargetSelectorBrainCell;
 
-#include <list>
-#include "Node.h"
+#include "Point.h"
+#include "BrainCell.h"
 
-class BrainCell {
-friend class Brains;
+class EyeBrainCell : public BrainCell {
+private:
+    bool _targetIsInSight;
+    Point _targetLocation;
+    TargetSelectorBrainCell*_targetSelectorBrainCell;
+
+    void updateIsInSight();
 protected:
-    double timerSeconds;
-    double tickSeconds;
-
-    std::list<Team*> *getEnemyTeams();
-    CpuController* getController();
-    Brains* _brains;
-    virtual void operate() = 0;
+    void operate();
 public:
-    BrainCell(double tickSeconds);
-    void operate(double timeElapsedSeconds);
+    EyeBrainCell(double tickSeconds);
+    bool seesTarget();
+    Point getTargetLocation();
+
+    void setTargetSelectorBrainCell(TargetSelectorBrainCell* targetSelectorBrainCell);
 };
 
 
-#endif //__BrainCell_H_
+#endif //__EyeBrainCell_H_

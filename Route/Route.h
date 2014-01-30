@@ -14,31 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __BrainCell_H_
-#define __BrainCell_H_
+#ifndef __Route_H_
+#define __Route_H_
 
-class SpaceGameObject;
-class CpuController;
-class Brains;
-class Team;
+class Node;
 
-#include <list>
-#include "Node.h"
-
-class BrainCell {
-friend class Brains;
-protected:
-    double timerSeconds;
-    double tickSeconds;
-
-    std::list<Team*> *getEnemyTeams();
-    CpuController* getController();
-    Brains* _brains;
-    virtual void operate() = 0;
+class Route {
+    friend class RouteGenerator;
+private:
+    Node* _firstNode;
+    Node* _lastNode;
+    Node* _currentNode;
+    Route(Node* firstNode, Node* lastNode);
 public:
-    BrainCell(double tickSeconds);
-    void operate(double timeElapsedSeconds);
+    ~Route();
+
+    void begin();
+    void end();
+    void nextNode();
+    void previousNode();
+    Node* getCurrentNode();
 };
 
 
-#endif //__BrainCell_H_
+#endif //__Route_H_

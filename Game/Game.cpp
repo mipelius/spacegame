@@ -40,17 +40,19 @@
 
 #include "CpuController.h"
 #include "HumanController.h"
+
 #include "Brains.h"
 #include "NavigatorBrainCell.h"
 #include "TargetSelectorBrainCell.h"
-#include "RouteUpdaterBrainCell.h"
+#include "RouteGeneratorBrainCell.h"
+#include "EyeBrainCell.h"
 
 Game::Game() {
     // --- INITIALIZE RENDERER ---
 
     renderer = new Renderer();
 
-    renderer->init(0, 0, 1200, 800, true);
+    renderer->init(0, 0, 1200, 800, false);
 
     renderer->addBackground(
             new Background(
@@ -110,20 +112,34 @@ Game::Game() {
         Spaceship* spaceship = new Spaceship(Point(4000 + i * 100, 8700 - rand() % 1000), 20, 1);
         spaceship->setShootingSpeed(10);
 
-        // brains and controller
-
+        // brains
         Brains* brains = new Brains();
         brains->addEnemyTeam(playerTeam);
 
-        brains->addCell(new RouteUpdaterBrainCell(1.0));
-        brains->addCell(new NavigatorBrainCell(0.01));
-        brains->addCell(new TargetSelectorBrainCell(0.01, 3000.0));
+        // brain cell: target selector
+        TargetSelectorBrainCell* targetSelectorBrainCell = new TargetSelectorBrainCell(0.01, 3000.0);
+        brains->addCell(targetSelectorBrainCell);
 
+        // brain cell: eye
+        EyeBrainCell* eyeBrainCell = new EyeBrainCell(0.1);
+        eyeBrainCell->setTargetSelectorBrainCell(targetSelectorBrainCell);
+        brains->addCell(eyeBrainCell);
+
+        // brain cell: route generator
+        RouteGeneratorBrainCell* routeGeneratorBrainCell = new RouteGeneratorBrainCell(1.0);
+        brains->addCell(routeGeneratorBrainCell);
+
+        // brain cell: navigator
+        NavigatorBrainCell* navigatorBrainCell = new NavigatorBrainCell(0.01);
+        navigatorBrainCell->setEyeBrainCell(eyeBrainCell);
+        navigatorBrainCell->setRouteGeneratorBrainCell(routeGeneratorBrainCell);
+        brains->addCell(navigatorBrainCell);
+
+        // controller
         CpuController* controller = new CpuController(brains);
         controller->setControllableObject(spaceship);
 
         // set team
-
         spaceship->setTeam(enemyTeam);
 
         world->addEntity(spaceship);

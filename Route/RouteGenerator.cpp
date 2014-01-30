@@ -22,6 +22,7 @@
 #include "RouteResponse.h"
 #include "GameWorld.h"
 #include "RouteRequestSender.h"
+#include "Route.h"
 
 static const int ADJACENT_NODES_RELATIVE_LOCATIONS_COUNT = 8;
 static const int ADJACENT_NODES_RELATIVE_LOCATIONS[ADJACENT_NODES_RELATIVE_LOCATIONS_COUNT][2] = {
@@ -68,7 +69,7 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
             map->getValueActual((int)request->sender->getLocation().x, (int)request->sender->getLocation().y) ||
             map->getValueActual((int)request->goalPoint.x, (int)request->goalPoint.y)
     ) {
-        return new RouteResponse(RouteResponse::RouteResponseMessage::ROUTE_NOT_FOUND, nullptr);
+        return new RouteResponse(RouteResponse::Message::ROUTE_NOT_FOUND, nullptr);
     }
 
     // initialize lists and both start node and goal node
@@ -213,11 +214,14 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
         }
     }
 
+    Route* route = nullptr;
+
     if (goalNodeHasBeenReached) {
         // 3) the path is found, but it's only possible to go it trough backwards
         //    go through the nodes backwards and set the nextNode-values
 
-        currentNode = closedList.back();
+        Node* lastNode = closedList.back();
+        currentNode = lastNode;
         Node* nextNode = nullptr;
 
         while(currentNode->previousNode != nullptr) {
@@ -230,6 +234,8 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
         // also first node should be updated
         currentNode->nextNode = nextNode;
         closedList.remove(currentNode);
+
+        route = new Route(currentNode, lastNode);
     }
 
     // clean up
@@ -246,19 +252,15 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
 
     // make response
 
-    RouteResponse::RouteResponseMessage msg;
-    Node* firstNode = nullptr;
+    RouteResponse::Message msg;
 
-    if (timeOut) msg = RouteResponse::RouteResponseMessage::ROUTE_TIME_OUT;
-    else if (!goalNodeHasBeenReached) msg = RouteResponse::RouteResponseMessage::ROUTE_NOT_FOUND;
-    else {
-        msg = RouteResponse::RouteResponseMessage::ROUTE_FOUND;
-        firstNode = currentNode;
-    }
+    if (timeOut) msg = RouteResponse::Message::ROUTE_TIME_OUT;
+    else if (!goalNodeHasBeenReached) msg = RouteResponse::Message::ROUTE_NOT_FOUND;
+    else msg = RouteResponse::Message::ROUTE_FOUND;
 
     RouteResponse* response = new RouteResponse(
         msg,
-        firstNode
+        route
     );
 
     return response;

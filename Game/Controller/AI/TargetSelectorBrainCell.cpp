@@ -26,8 +26,6 @@ TargetSelectorBrainCell::TargetSelectorBrainCell(double tickSeconds, double maxD
 }
 
 void TargetSelectorBrainCell::operate() {
-    BrainCell::operate();
-
     SpaceGameObject* object = getController()->getControllableObject();
 
     SpaceGameObject* closestTarget = nullptr;
@@ -45,5 +43,9 @@ void TargetSelectorBrainCell::operate() {
         }
     }
 
-    setTarget(closestTarget);
+    this->_targetObject = closestTarget;
+}
+
+SpaceGameObject *TargetSelectorBrainCell::getTarget() {
+    return this->_targetObject;
 }
