@@ -7,18 +7,6 @@ The aim of this project is to learn to write a simple 2D game using C++, SDL2 an
 
 Latest documentation: http://users.jyu.fi/~mipepelk/SpaceGame/docs/html/index.html
 
+Project on my website: http://users.jyu.fi/~mipepelk/index.php?r=dev/view&id=1
+
 Developer: Miika Pelkonen
-
-Notes on January 16, 2014
--------------------------
-
-Okay, now the first phase (or sprint, whatever) is almost done. There is basic physics, collision detection and rendering implemented. I'm going to add some comments and documentation during the next few days. If you're willing to use the engine in your own project, you are warned: I'm C++ newbie, so there might be some bugs (memory leaks, for example). In addition, I have done no testing at all. That's because I've been too busy learning just some SDL2/OpenGL/physics/C++ basics. I might add tests in some point. Not sure how to test OpenGL though... Maybe there should be one more layer for that.
-
-Notes on January 30, 2014
--------------------------
-
-The second phase is done. Now artificial intelligence related things are ready. The AI is not very sophisticated, but good enough. The Brains and BrainCell classes are meant to be used for AI purposes. I used A* algorithm for path finding (see RouteGenerator.cpp).
-
-I'm sorry that I haven't added any documentation yet. The core classes are still under heavy construction, so it's better to add the documentation later (i'm too lazy for updating the documentation all the time...).
-
-Over the next two weeks I'm going to study some soundFX and music related stuff. I'll design and implement a simple music/soundFX player. Although the focus is primarily on programming I'm also going to compose some music.
