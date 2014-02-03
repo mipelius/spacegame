@@ -33,6 +33,7 @@
 static Texture* textureSpaceShip = nullptr;
 static Texture* textureRocketFire = nullptr;
 
+// static Sample* sampleSpaceshipAcceleration = nullptr;
 static Sample* sampleSpaceshipCollision = nullptr;
 static Sample* sampleSpaceshipExplosion = nullptr;
 static Sample* sampleSpaceshipShoot = nullptr;
@@ -48,6 +49,7 @@ SpaceGameObject(location, 0.0, nullptr, maxHealth) {
     if (!sampleSpaceshipCollision) sampleSpaceshipCollision = new Sample("soundfx/spaceship_collision.wav");
     if (!sampleSpaceshipExplosion) sampleSpaceshipExplosion = new Sample("soundfx/spaceship_explosion.wav");
     if (!sampleSpaceshipShoot) sampleSpaceshipShoot = new Sample("soundfx/spaceship_shoot.wav");
+    // if (!sampleSpaceshipAcceleration) sampleSpaceshipAcceleration = new Sample("soundfx/spaceship_acceleration.wav");
 
     this->rocketFire = new AnimatedTexture(8, 20, textureRocketFire);
 
@@ -101,10 +103,8 @@ void Spaceship::shoot() {
     if (currentTime - lastTimeShot > shootingDelay) {
         forceShoot();
         lastTimeShot = currentTime;
+        App::instance()->getSamplePlayer()->play(sampleSpaceshipShoot, 1);
     }
-
-    Sample* sample = sampleSpaceshipShoot;
-    App::instance()->getSamplePlayer()->play(sampleSpaceshipShoot);
 }
 
 void Spaceship::shootOnce(Point startPoint) {
@@ -130,13 +130,11 @@ void Spaceship::onEntityCollision(GameEntity *otherEntity) {
     GameEntity::onEntityCollision(otherEntity);
     this->speed = Vector(0, 0);
     this->location = getLocationBeforeUpdate();
-
-    //App::instance()->getSamplePlayer()->play(sampleSpaceshipCollision);
 }
 
 void Spaceship::onMapCollision() {
     GameEntity::onMapCollision();
-    //if (!_isStuck) App::instance()->getSamplePlayer()->play(sampleSpaceshipCollision);
+    if (!_isStuck && speed.length() > 800.0) App::instance()->getSamplePlayer()->play(sampleSpaceshipCollision);
 
     this->speed = Vector(0, 0);
     this->location = getLocationBeforeUpdate();
@@ -144,6 +142,8 @@ void Spaceship::onMapCollision() {
 }
 
 void Spaceship::accelerate() {
+    // App::instance()->getSamplePlayer()->play(sampleSpaceshipAcceleration);
+
     _isAccelerating = true;
 
     if (_isStuck) {
@@ -154,7 +154,7 @@ void Spaceship::accelerate() {
             this->setLocation(newLocation);
         }
 
-        _isStuck = false;
+        if (!this->getWorld()->getMap()->detectCollisionWith(this)) _isStuck = false;
     }
 }
 

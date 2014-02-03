@@ -21,5 +21,5 @@
 MusicPlayer::MusicPlayer() : Player() { }
 
 void MusicPlayer::play(Music *music) {
-    Mix_PlayMusic(music->music, 0);
+    Mix_PlayMusic(music->music, -1);
 }

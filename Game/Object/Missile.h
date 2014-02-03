@@ -25,6 +25,7 @@ class EntityCollisionEventArgs;
 class Missile : public SpaceGameObject {
 private:
     double timeAlive;
+    void playCollisionSound();
 protected:
     void onEntityCollision(GameEntity *otherEntity);
     void onMapCollision();
@@ -32,6 +33,8 @@ public:
     Missile(Point location, double angle, double forceAmount, Vector initialSpeed);
     void beforeEntityCollisionDetection(GameEntity* otherEntity);
     void beforeStep(double timeElapsedSec);
+
+
 };
 
 

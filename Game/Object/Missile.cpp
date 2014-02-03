@@ -25,9 +25,13 @@
 #include "GameWorld.h"
 #include "CollisionShape.h"
 #include "Sample.h"
+#include "SamplePlayer.h"
+#include "App.h"
 
-// --- TODO: Clean up, when nobody is using this anymore --- //
+// --- TODO: Clean up, when nobody is using these anymore --- //
 static Texture*textureMissile = nullptr;
+
+static Sample* sampleMissileCollision = nullptr;
 // --------------------------------------------------------- //
 
 Missile::Missile(Point location, double angle, double forceAmount, Vector initialSpeed)
@@ -41,6 +45,8 @@ Missile::Missile(Point location, double angle, double forceAmount, Vector initia
 						
 {
     if (!textureMissile) textureMissile = new Texture("images/missile.png");
+
+    if (!sampleMissileCollision) sampleMissileCollision = new Sample("soundfx/missile_collision.wav");
 
     GameObject *obj = new GameObject(
             Point(-10, -5),
@@ -98,6 +104,8 @@ void Missile::beforeStep(double timeElapsedSec) {
 }
 
 void Missile::onEntityCollision(GameEntity *otherEntity) {
+    playCollisionSound();
+
     SpaceGameObject* spaceGameObject = dynamic_cast<SpaceGameObject*>(otherEntity);
     if(spaceGameObject != 0) {
         spaceGameObject->damage(rand() % 5 + 5);
@@ -108,6 +116,8 @@ void Missile::onEntityCollision(GameEntity *otherEntity) {
 }
 
 void Missile::onMapCollision() {
+    playCollisionSound();
+
     int x = (int)location.x;
     int y = (int)location.y;
 
@@ -128,4 +138,8 @@ void Missile::onMapCollision() {
     }
 
     this->die();
+}
+
+void Missile::playCollisionSound() {
+    App::instance()->getSamplePlayer()->play(sampleMissileCollision);
 }

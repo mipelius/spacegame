@@ -24,7 +24,7 @@ class Sample;
 class SamplePlayer : public Player {
 public:
     SamplePlayer();
-    void play(Sample* sample);
+    void play(Sample* sample, int channel = -1);
 };
 
 

@@ -20,6 +20,6 @@
 
 SamplePlayer::SamplePlayer() : Player() { }
 
-void SamplePlayer::play(Sample *sample) {
-    Mix_PlayChannel(-1, sample->chunk, 0);
+void SamplePlayer::play(Sample *sample, int channel) {
+    Mix_PlayChannel(channel, sample->chunk, 0);
 }

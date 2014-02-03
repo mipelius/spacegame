@@ -22,7 +22,7 @@ bool Player::isInitialized = false;
 Player::Player() {
     if (!isInitialized) {
         SDL_Init(SDL_INIT_AUDIO);
-        Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 );
+        Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 1024 );
         Player::isInitialized = true;
     }
 }
