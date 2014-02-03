@@ -15,15 +15,18 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "precompile.h"
+#include "App.h"
 #include "Game.h"
 
 #undef main
 
 int main(int argc, const char * argv[])
 {
+    App::initialize();
+
 	try
 	{
-		Game* game = new Game();
+        Game* game = new Game();
 		game->launch();
 		delete game;
 	}
@@ -33,5 +36,8 @@ int main(int argc, const char * argv[])
 		// std::cout << e.what;
 		return -1;
 	}
+
+    delete App::instance();
+
 	return 0;
 }

@@ -24,8 +24,11 @@
 #include "Map.h"
 #include "GameWorld.h"
 #include "CollisionShape.h"
+#include "Sample.h"
 
+// --- TODO: Clean up, when nobody is using this anymore --- //
 static Texture*textureMissile = nullptr;
+// --------------------------------------------------------- //
 
 Missile::Missile(Point location, double angle, double forceAmount, Vector initialSpeed)
   : SpaceGameObject

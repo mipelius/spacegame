@@ -17,6 +17,8 @@
 #include "precompile.h"
 #include "Game.h"
 
+#include "App.h"
+
 #include "Node.h"
 #include "RouteGenerator.h"
 #include "RouteResponse.h"
@@ -46,6 +48,11 @@
 #include "TargetSelectorBrainCell.h"
 #include "RouteGeneratorBrainCell.h"
 #include "EyeBrainCell.h"
+
+#include "MusicPlayer.h"
+#include "Music.h"
+#include "SamplePlayer.h"
+#include "Sample.h"
 
 Game::Game() {
     // --- INITIALIZE RENDERER ---
@@ -155,6 +162,8 @@ Game::Game() {
 }
 
 void Game::launch() {
+    Music* music = new Music("music/testing.mp3");
+    App::instance()->getMusicPlayer()->play(music);
 
     const Uint8* keys;
     Uint32 timeMilliSec = 0;
@@ -199,6 +208,8 @@ void Game::launch() {
 
         renderer->glSwap();
     }
+
+//    delete music;
 }
 
 Game::~Game() {

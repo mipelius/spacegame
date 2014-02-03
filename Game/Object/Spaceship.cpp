@@ -24,13 +24,30 @@
 #include "AnimatedTexture.h"
 #include "Map.h"
 
+#include "App.h"
+
+#include "SamplePlayer.h"
+#include "Sample.h"
+
+// --- TODO: Clean up, when nobody is using these anymore --- //
 static Texture* textureSpaceShip = nullptr;
 static Texture* textureRocketFire = nullptr;
 
+static Sample* sampleSpaceshipCollision = nullptr;
+static Sample* sampleSpaceshipExplosion = nullptr;
+static Sample* sampleSpaceshipShoot = nullptr;
+// ---------------------------------------------------------- //
+
 Spaceship::Spaceship(Point location, int maxHealth, int size) :
 SpaceGameObject(location, 0.0, nullptr, maxHealth) {
+    // load textures
     if (!textureSpaceShip) textureSpaceShip = new Texture("images/spaceship.png");
     if (!textureRocketFire) textureRocketFire = new Texture("images/anim_rocket_fire.png");
+
+    // load soundFX
+    if (!sampleSpaceshipCollision) sampleSpaceshipCollision = new Sample("soundfx/spaceship_collision.wav");
+    if (!sampleSpaceshipExplosion) sampleSpaceshipExplosion = new Sample("soundfx/spaceship_explosion.wav");
+    if (!sampleSpaceshipShoot) sampleSpaceshipShoot = new Sample("soundfx/spaceship_shoot.wav");
 
     this->rocketFire = new AnimatedTexture(8, 20, textureRocketFire);
 
@@ -85,6 +102,9 @@ void Spaceship::shoot() {
         forceShoot();
         lastTimeShot = currentTime;
     }
+
+    Sample* sample = sampleSpaceshipShoot;
+    App::instance()->getSamplePlayer()->play(sampleSpaceshipShoot);
 }
 
 void Spaceship::shootOnce(Point startPoint) {
@@ -110,10 +130,14 @@ void Spaceship::onEntityCollision(GameEntity *otherEntity) {
     GameEntity::onEntityCollision(otherEntity);
     this->speed = Vector(0, 0);
     this->location = getLocationBeforeUpdate();
+
+    //App::instance()->getSamplePlayer()->play(sampleSpaceshipCollision);
 }
 
 void Spaceship::onMapCollision() {
     GameEntity::onMapCollision();
+    //if (!_isStuck) App::instance()->getSamplePlayer()->play(sampleSpaceshipCollision);
+
     this->speed = Vector(0, 0);
     this->location = getLocationBeforeUpdate();
     this->_isStuck = true;
@@ -143,4 +167,9 @@ void Spaceship::beforeStep(double timeElapsedSec) {
     else {
         rocketFire->stop();
     }
+}
+
+void Spaceship::onDying() {
+    SpaceGameObject::onDying();
+    App::instance()->getSamplePlayer()->play(sampleSpaceshipExplosion);
 }

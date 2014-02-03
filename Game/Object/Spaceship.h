@@ -36,12 +36,14 @@ protected:
     void onEntityCollision(GameEntity* otherEntity);
     void onMapCollision();
     void beforeStep(double timeElapsedSec);
+    void onDying();
 public:
     Spaceship(Point location, int maxHealth, int size);
     void shoot();
     void forceShoot();
     void setShootingSpeed(Uint32 shootingPerSecond);
     void accelerate();
+
 };
 
 
