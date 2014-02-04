@@ -25,7 +25,7 @@
 
 void Renderer::init(int x, int y, int w, int h, bool enableFullScreen) {
     // Window initialization
-    window = SDL_CreateWindow(
+    window_ = SDL_CreateWindow(
             "",
             x,
             y,
@@ -33,14 +33,14 @@ void Renderer::init(int x, int y, int w, int h, bool enableFullScreen) {
             h,
             SDL_WINDOW_OPENGL | (enableFullScreen ? SDL_WINDOW_FULLSCREEN : 0)
     );
-    if (!window) {
+    if (!window_) {
         std::fprintf(stderr, "Error: %s", SDL_GetError());
         return;
     }
 
     // GL Rendering context creation
-    context = SDL_GL_CreateContext(window);
-    if (!context) {
+    context_ = SDL_GL_CreateContext(window_);
+    if (!context_) {
         fprintf(stderr, "Error: %s", SDL_GetError());
         return;
     }
@@ -52,61 +52,55 @@ void Renderer::init(int x, int y, int w, int h, bool enableFullScreen) {
     glClearColor(0.0, 0.0, 0.0, 0.0);
 
     // cameraInitialization
-    this->camera = new Camera(0, 0, w, h, this);
+    this->camera_ = new Camera(0, 0, w, h, this);
 
-    // create list of backgrounds
-    this->backgrounds = new std::list<Background*>();
+    // background initialization
+    background_ = nullptr;
+    oldBackground_ = nullptr;
 
-    isInitialized = true;
+    isInitialized_ = true;
 
-    collisionShapesAreVisible = false;
-    mapCollisionAreaIsVisible = false;
+    collisionShapesAreVisible_ = false;
+    mapCollisionAreaIsVisible_ = false;
 }
 
 void Renderer::renderBackground() {
-    Point cameraLocation = camera->getLocation();
-    for (std::list<Background*>::iterator it = backgrounds->begin(); it != backgrounds->end(); it++) {
-        if (
-                cameraLocation.x >= (*it)->getX() &&
-                cameraLocation.x < (*it)->getX() + (*it)->getW() &&
-                cameraLocation.y >= (*it)->getY() &&
-                cameraLocation.y < (*it)->getY() + (*it)->getH()
-                ) {
+    if (backgroundIsCrossFading) {
+        double opacity = (double)backgroundCrossFadingPhase / (double)BACKGROUND_CROSSFADE_RENDER_COUNT;
 
-            double ratioX = ((*it)->getW() - camera->getW()) / (*it)->getW();
-            double ratioY = ((*it)->getH() - camera->getH()) / (*it)->getH();
-            int offSetX = (int)((cameraLocation.x - (*it)->getX()) * ratioX);
-            int offSetY = (int)((cameraLocation.y - (*it)->getY()) * ratioY);
+        renderBackground(background_, opacity);
+        renderBackground(oldBackground_, 1.0 - opacity);
 
-            (*it)->render(
-                    offSetX,
-                    offSetY,
-                    (int)this->camera->getW(),
-                    (int)this->camera->getH()
-            );
+        backgroundCrossFadingPhase++;
+        if (backgroundCrossFadingPhase > BACKGROUND_CROSSFADE_RENDER_COUNT) {
+            backgroundCrossFadingPhase = 0;
+            backgroundIsCrossFading = false;
         }
-
     }
+    else renderBackground(background_, 1.0);
 }
 
-void Renderer::addBackground(Background *background) {
-    backgrounds->push_back(background);
+void Renderer::setBackground(Background *background) {
+    oldBackground_ = background_;
+    background_ = background;
+    backgroundIsCrossFading = true;
+    backgroundCrossFadingPhase = 0;
 }
 
 void Renderer::renderMap() {
-    Map* map = this->gameWorld->getMap();
-    Point location = camera->getLocation();
+    Map* map = this->gameWorld_->getMap();
+    Point location = camera_->getLocation();
     map->render(
             location.x,
             location.y,
-            camera->getW(),
-            camera->getH()
+            camera_->getW(),
+            camera_->getH()
     );
 }
 
 void Renderer::renderEntities() {
-    std::list<GameEntity*> *gameEntities = gameWorld->getGameEntities();
-    Point cameraLocation = camera->getLocation();
+    std::list<GameEntity*> *gameEntities = gameWorld_->getGameEntities();
+    Point cameraLocation = camera_->getLocation();
 
     glMatrixMode(GL_MODELVIEW);
 
@@ -121,7 +115,7 @@ void Renderer::renderEntities() {
         CollisionShape* shape = (*it)->getCollisionShape();
         Point* points = shape->getRotatedPoints();
 
-        if (collisionShapesAreVisible) {
+        if (collisionShapesAreVisible_) {
             // collision shape
 
             glColor3f(1, 1, 1);
@@ -150,12 +144,12 @@ void Renderer::renderEntities() {
             glEnd();
         }
 
-        if (mapCollisionAreaIsVisible) {
+        if (mapCollisionAreaIsVisible_) {
 
 			Rect boundingBox = (*it)->getCollisionShape()->getBoundingBox();
 
-			int w = this->gameWorld->getMap()->getBlockW();
-			int h = this->gameWorld->getMap()->getBlockH();
+			int w = this->gameWorld_->getMap()->getBlockW();
+			int h = this->gameWorld_->getMap()->getBlockH();
 
 			int iBegin = (int)boundingBox.getFirstPoint().x - ((int)boundingBox.getFirstPoint().x) % w;
 			int iEnd = (int)boundingBox.getSecondPoint().x + (int)boundingBox.getSecondPoint().x % w;
@@ -166,7 +160,7 @@ void Renderer::renderEntities() {
 
 			for (int i=iBegin; i <= iEnd; i += w) {
 				for (int j=jBegin; j <= jEnd ; j += h) {
-					if (gameWorld->getMap()->getValueActual(i, j)) glColor3f(1, 1, 1);
+					if (gameWorld_->getMap()->getValueActual(i, j)) glColor3f(1, 1, 1);
 					else glColor3f(0.2, 0, 0);
 
 					Rect rect = Rect(Point(i, j), Point(i + w, j + h));
@@ -188,7 +182,7 @@ void Renderer::renderEntities() {
 }
 
 void Renderer::render() {
-    if (!isInitialized) {
+    if (!isInitialized_) {
         fprintf(stderr, "Error: renderer is not initialized.");
         return;
     }
@@ -199,62 +193,84 @@ void Renderer::render() {
 }
 
 Renderer::Renderer() {
-    isInitialized = false;
-    this->camera = nullptr;
-    this->gameWorld = nullptr;
-    this->window = nullptr;
-    this->context = nullptr;
+    isInitialized_ = false;
+    this->camera_ = nullptr;
+    this->gameWorld_ = nullptr;
+    this->window_ = nullptr;
+    this->context_ = nullptr;
 }
 
 Renderer::~Renderer() {
-    if (context) {
-        SDL_GL_DeleteContext(context);
+    if (context_) {
+        SDL_GL_DeleteContext(context_);
     }
-    if (window) {
-        SDL_DestroyWindow(window);
+    if (window_) {
+        SDL_DestroyWindow(window_);
     }
 }
 
 GameWorld* Renderer::getGameWorld() {
-    return this->gameWorld;
+    return this->gameWorld_;
 }
 
 void Renderer::setGameWorld(GameWorld *gameWorld) {
-    this->gameWorld = gameWorld;
+    this->gameWorld_ = gameWorld;
 }
 
 Camera *Renderer::getCamera() {
-    if (!isInitialized) {
+    if (!isInitialized_) {
         fprintf(stderr, "Error: renderer is not initialized.");
         return nullptr;
     }
-    return this->camera;
+    return this->camera_;
 }
 
 void Renderer::showCollisionShapes() {
-    collisionShapesAreVisible = true;
+    collisionShapesAreVisible_ = true;
 }
 
 void Renderer::hideCollisionShapes() {
-    collisionShapesAreVisible = false;
+    collisionShapesAreVisible_ = false;
 }
 
 void Renderer::toggleCollisionShapesVisibility() {
-    collisionShapesAreVisible = !collisionShapesAreVisible;
+    collisionShapesAreVisible_ = !collisionShapesAreVisible_;
 }
 
 void Renderer::glSwap() {
-    SDL_GL_SwapWindow(window);
+    SDL_GL_SwapWindow(window_);
 }
 
 void Renderer::toggleMapCollisionAreaVisibility() {
-    mapCollisionAreaIsVisible = !mapCollisionAreaIsVisible;
+    mapCollisionAreaIsVisible_ = !mapCollisionAreaIsVisible_;
 }
 
 void Renderer::hideMapCollisionArea() {
-    mapCollisionAreaIsVisible = false;
+    mapCollisionAreaIsVisible_ = false;
 }
 
 void Renderer::showMapCollisionArea() {
-    mapCollisionAreaIsVisible = true;
+    mapCollisionAreaIsVisible_ = true;
+}
+
+void Renderer::renderBackground(Background *background, double opacity) {
+    if (background == nullptr) return;
+
+    Point location = camera_->getLocation();
+
+    // TODO: when going over the bounds make automatic mixing between backgrounds top and bottom / left and right
+
+    double ratioX = (background->getW() - camera_->getW()) / background->getW();
+    double ratioY = (background->getH() - camera_->getH()) / background->getH();
+    int offSetX = (int)((location.x - background->getX()) * ratioX);
+    int offSetY = (int)((location.y - background->getY()) * ratioY);
+
+    background->render(
+            offSetX,
+            offSetY,
+            (int)this->camera_->getW(),
+            (int)this->camera_->getH(),
+            opacity
+    );
+
 }

@@ -30,5 +30,6 @@ Player::Player() {
 Player::~Player() {
     if (isInitialized) {
         Mix_CloseAudio();
+        Mix_Quit();
     }
 }

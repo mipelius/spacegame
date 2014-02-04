@@ -54,6 +54,8 @@
 #include "SamplePlayer.h"
 #include "Sample.h"
 
+#include "GameArea.h"
+
 Game::Game() {
     // --- INITIALIZE RENDERER ---
 
@@ -61,21 +63,21 @@ Game::Game() {
 
     renderer->init(0, 0, 1200, 800, false);
 
-    renderer->addBackground(
-            new Background(
-                    new Texture("images/bg1.jpg"),
-                    0,
-                    7200
-            )
-    );
-
-    renderer->addBackground(
-            new Background(
-                    new Texture("images/bg2.jpg"),
-                    3400,
-                    7200
-            )
-    );
+//    renderer->addBackground(
+//            new Background(
+//                    new Texture("images/bg1.jpg"),
+//                    0,
+//                    7200
+//            )
+//    );
+//
+//    renderer->addBackground(
+//            new Background(
+//                    new Texture("images/bg2.jpg"),
+//                    3400,
+//                    7200
+//            )
+//    );
 
 	std::string filenames[] = {
 			"images/green_block.bmp",
@@ -92,6 +94,54 @@ Game::Game() {
     world->getRouteGenerator()->setMaxGeneratingTimeMilliSec(5);
     renderer->setGameWorld(world);
 
+    // --- GAME AREAS --- //
+
+    this->gameAreas = new std::list<GameArea*>();
+
+    int areasHorizontally = 2;
+    int areasVertically = 2;
+    double areaW = world->getW() / areasHorizontally;
+    double areaH = world->getH() / areasVertically;
+
+    Texture* bgTexture1 = new Texture("images/bg1.jpg");
+    Music* music1 = new Music("music/testing_reversed.mp3");
+
+    Texture* bgTexture2 = new Texture("images/bg2.jpg");
+    Music* music2 = new Music("music/testing.mp3");
+
+    for (int x = 0; x < areasHorizontally; x++) {
+        for (int y = 0; y < areasVertically; y++) {
+            int areaType = (x % 2 + (y + 1) % 2) % 2;
+
+            GameArea* area;
+            Background* background;
+
+            double x1 = ((double)x / areasHorizontally) * world->getW();
+            double y1 = ((double)y / areasHorizontally) * world->getH();
+            double x2 = x1 + areaW;
+            double y2 = y1 + areaH;
+
+            switch (areaType) {
+                case 0 :
+                    background = new Background(bgTexture1, x1, y1);
+                    area = new GameArea(background, music1, Rect(Point(x1, y1), Point(x2, y2)));
+                    break;
+                case 1 :
+                    background = new Background(bgTexture2, x1, y1);
+                    area = new GameArea(background, music2, Rect(Point(x1, y1), Point(x2, y2)));
+                    break;
+                default :
+                    area = nullptr;
+                    break;
+            }
+
+            if (area) {
+                gameAreas->push_back(area);
+            }
+
+        }
+    }
+
     // --- TEAMS ---
 
     playerTeam = new Team("Team America ;)");
@@ -105,6 +155,8 @@ Game::Game() {
     playerController->setControllableObject(player);
     player->setTeam(playerTeam);
     world->addEntity(player);
+
+    updateCurrentGameArea(player->getLocation());
 
     // --- CAMERA ---
 
@@ -162,13 +214,15 @@ Game::Game() {
 }
 
 void Game::launch() {
-    Music* music = new Music("music/testing.mp3");
-    App::instance()->getMusicPlayer()->play(music);
-
     const Uint8* keys;
     Uint32 timeMilliSec = 0;
 
+
     while (!SDL_QuitRequested()) {
+        /// --- GAME AREA UPDATING ---
+
+        updateCurrentGameArea(player->getLocation());
+
         /// --- INPUT READING AND HANDLING ---
 
         keys = SDL_GetKeyboardState(0);
@@ -208,8 +262,6 @@ void Game::launch() {
 
         renderer->glSwap();
     }
-
-//    delete music;
 }
 
 Game::~Game() {
@@ -217,4 +269,26 @@ Game::~Game() {
     delete map;
     delete world;
     delete player;
+}
+
+void Game::updateCurrentGameArea(Point point) {
+    for(std::list<GameArea*>::iterator it = gameAreas->begin(); it != gameAreas->end(); it++) {
+        Rect rect = (*it)->getRect();
+        if (point.isIn(rect)) {
+            if ((*it) != currentGameArea) {
+                currentGameArea = (*it);
+
+                renderer->setBackground(currentGameArea->getBackground());
+                App::instance()->getMusicPlayer()->play(currentGameArea->getMusic());
+            }
+
+            return;
+        }
+    }
+
+    // if there is no area in the given point
+
+    currentGameArea = nullptr;
+    renderer->setBackground(nullptr);
+    App::instance()->getMusicPlayer()->stop();
 }

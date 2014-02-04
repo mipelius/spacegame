@@ -22,6 +22,7 @@
 #include "CpuController.h"
 
 TargetSelectorBrainCell::TargetSelectorBrainCell(double tickSeconds, double maxDistance): BrainCell(tickSeconds) {
+    this->_targetObject = nullptr;
     this->maxDistance = maxDistance;
 }
 

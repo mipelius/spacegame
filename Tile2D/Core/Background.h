@@ -60,7 +60,7 @@ public:
      * @param w         the width of the rectangle
      * @param h         the height of the rectangle
      */
-    void render(int offsetX, int offsetY, int w, int h);
+    void render(int offsetX, int offsetY, int w, int h, double opacity);
 
     /**
      * @return          the x-coordinate of the northwest corner

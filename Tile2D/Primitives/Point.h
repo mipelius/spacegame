@@ -17,6 +17,8 @@
 #ifndef __Location_H_
 #define __Location_H_
 
+class Rect;
+
 #include "Vector.h"
 
 class Point {
@@ -27,6 +29,8 @@ public:
     Point operator + (const Vector& vector);
     Point operator - (const Vector& vector);
     double distance(Point otherPoint);
+
+    bool isIn(Rect& rect);
 };
 
 

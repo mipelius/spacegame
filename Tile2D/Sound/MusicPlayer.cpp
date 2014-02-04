@@ -18,8 +18,34 @@
 #include "MusicPlayer.h"
 #include "Music.h"
 
-MusicPlayer::MusicPlayer() : Player() { }
+Music* MusicPlayer::nextMusic_ = nullptr;
+
+MusicPlayer* MusicPlayer::instance_ = nullptr;
+
+void MusicPlayer::musicFinished() {
+    if (!nextMusic_) return;
+    Mix_FadeInMusic(nextMusic_->music, -1, FADING_MS);
+}
+
+MusicPlayer::MusicPlayer() : Player() {
+    Mix_HookMusicFinished(musicFinished);
+}
 
 void MusicPlayer::play(Music *music) {
-    Mix_PlayMusic(music->music, -1);
+    if (Mix_PlayingMusic()) {
+        nextMusic_ = music;
+        Mix_FadeOutMusic(FADING_MS);
+    }
+    else {
+        Mix_PlayMusic(music->music, -1);
+    }
+}
+
+void MusicPlayer::stop() {
+    Mix_FadeOutMusic(FADING_MS);
+}
+
+MusicPlayer *MusicPlayer::instance() {
+    if (!instance_) instance_ = new MusicPlayer();
+    return instance_;
 }

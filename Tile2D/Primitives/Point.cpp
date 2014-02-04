@@ -16,6 +16,7 @@
 
 #include "precompile.h"
 #include "Point.h"
+#include "Rect.h"
 
 Point::Point(double x, double y) {
     this->x = x;
@@ -39,4 +40,17 @@ double Point::distance(Point otherPoint) {
             (otherPoint.x - this->x) * (otherPoint.x - this->x) +
             (otherPoint.y - this->y) * (otherPoint.y - this->y)
     );
+}
+
+bool Point::isIn(Rect& rect) {
+    if (
+        x >= rect.getTopLeftCorner().x &&
+        x <= rect.getTopRightCorner().x &&
+        y >= rect.getTopLeftCorner().y &&
+        y <= rect.getBottomLeftCorner().y
+    ) {
+        return true;
+    }
+
+    return false;
 }

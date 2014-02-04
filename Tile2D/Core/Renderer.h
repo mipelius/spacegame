@@ -23,17 +23,26 @@ class Camera;
 
 class Renderer {
 private:
-    SDL_Window *window;
-    SDL_GLContext context;
-    bool isInitialized;
-    Camera* camera;
-    GameWorld* gameWorld;
-    std::list<Background*> *backgrounds;
-    bool collisionShapesAreVisible;
-    bool mapCollisionAreaIsVisible;
+    SDL_Window *window_;
+    SDL_GLContext context_;
+
+    bool isInitialized_;
+    Camera* camera_;
+    GameWorld* gameWorld_;
+    bool collisionShapesAreVisible_;
+    bool mapCollisionAreaIsVisible_;
     void renderBackground();
+    void renderBackground(Background* background, double opacity);
     void renderMap();
     void renderEntities();
+
+    Background* oldBackground_;
+    Background* background_;
+
+    int backgroundCrossFadingPhase;
+    bool backgroundIsCrossFading;
+
+    static const int BACKGROUND_CROSSFADE_RENDER_COUNT = 60;
 
 public:
     Renderer();
@@ -49,7 +58,7 @@ public:
     void setGameWorld(GameWorld* gameWorld);
     GameWorld* getGameWorld();
     Camera* getCamera();
-    void addBackground(Background *background);
+    void setBackground(Background *background);
     void glSwap();
 };
 

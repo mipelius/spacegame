@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,28 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Rect_H_
-#define __Rect_H_
+#include "GameArea.h"
 
-#include "Point.h"
+GameArea::GameArea(Background *background, Music *music, Rect areaRect) : areaRect_(areaRect) {
+    background_ = background;
+    music_ = music;
+}
 
-class Rect {
-private:
-    Point firstPoint;
-    Point secondPoint;
-public:
-    Rect(Point firstPoint, Point secondPoint);
-    Point getTopLeftCorner();
-    Point getTopRightCorner();
-    Point getBottomLeftCorner();
-    Point getBottomRightCorner();
-    Point getFirstPoint();
-    Point getSecondPoint();
-    double getWidth();
-    double getHeight();
-    bool intersectsWith(Rect otherRectangle);
-    bool intersectsWithLine(double x1, double y1, double x2, double y2);
-};
+Background *GameArea::getBackground() {
+    return background_;
+}
 
+Music *GameArea::getMusic() {
+    return music_;
+}
 
-#endif //__Rect_H_
+Rect GameArea::getRect() {
+    return areaRect_;
+}

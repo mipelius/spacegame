@@ -26,6 +26,7 @@ class GameWorld;
 class Map;
 class HumanController;
 class Team;
+class GameArea;
 
 class Game {
 private:
@@ -40,8 +41,12 @@ private:
     HumanController* playerController;
 
     std::list<Spaceship*> *otherSpaceships;
+    std::list<GameArea*> *gameAreas;
+    GameArea* currentGameArea;
 
     Spaceship* boss;
+
+    void updateCurrentGameArea(Point point);
 public:
     Game();
     ~Game();

@@ -22,10 +22,18 @@ class Music;
 #include "Player.h"
 
 class MusicPlayer : public Player {
+private:
+    static Music* nextMusic_;
+    static void musicFinished();
+    static const int FADING_MS = 500;
 
-public:
+    static MusicPlayer* instance_;
+
     MusicPlayer();
+public:
+    static MusicPlayer* instance();
     void play(Music *music);
+    void stop();
 };
 
 #endif //__MusicPlayer_H_

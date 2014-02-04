@@ -34,10 +34,15 @@ void Background::init(Texture *texture, int x, int y, int w, int h) {
     this->h = h;
 }
 
-void Background::render(int offsetX, int offsetY, int w, int h) {
+void Background::render(int offsetX, int offsetY, int w, int h, double opacity) {
     texture->glBind();
 
-    glColor3f(1, 1, 1);
+    if (opacity < 1.0) {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+
+    glColor4f(1.0, 1.0, 1.0, opacity);
 
     GLfloat textureLeftX = offsetX / (GLfloat)texture->getW();
     GLfloat textureRightX = (w + offsetX) / (GLfloat)texture->getW();
@@ -54,6 +59,8 @@ void Background::render(int offsetX, int offsetY, int w, int h) {
     glTexCoord2f(textureLeftX, textureBottomY);
     glVertex2i(0, h);
     glEnd();
+
+    if (opacity < 1.0) glDisable(GL_BLEND);
 
     texture->glUnbind();
 }

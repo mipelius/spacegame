@@ -10,7 +10,7 @@
 App* App::_instance = nullptr;
 
 App::App() {
-    this->musicPlayer = new MusicPlayer();
+    this->musicPlayer = MusicPlayer::instance();
     this->samplePlayer = new SamplePlayer();
 }
 
