@@ -61,23 +61,9 @@ Game::Game() {
 
     renderer = new Renderer();
 
-    renderer->init(0, 0, 1200, 800, false);
+    renderer->init(0, 0, 1920, 1200, true);
 
-//    renderer->addBackground(
-//            new Background(
-//                    new Texture("images/bg1.jpg"),
-//                    0,
-//                    7200
-//            )
-//    );
-//
-//    renderer->addBackground(
-//            new Background(
-//                    new Texture("images/bg2.jpg"),
-//                    3400,
-//                    7200
-//            )
-//    );
+    renderer->setSmallMap(Rect(Point(10, 10), Point(260, 260)), 2500, 2500);
 
 	std::string filenames[] = {
 			"images/green_block.bmp",
@@ -165,47 +151,47 @@ Game::Game() {
 
     // --- OTHER SPACESHIPS ---
 
-    otherSpaceships = new std::list<Spaceship*>;
-    for (int i=0; i<20; i++) {
-        double x = 4000 + (i % 20) * 64;
-        double y = 8700 - rand() % 500 - (i / 20) * 500;
-
-        Spaceship* spaceship = new Spaceship(Point(x, y), 20, 1);
-        spaceship->setShootingSpeed(10);
-
-        // brains
-        Brains* brains = new Brains();
-        brains->addEnemyTeam(playerTeam);
-
-        // brain cell: target selector
-        TargetSelectorBrainCell* targetSelectorBrainCell = new TargetSelectorBrainCell(0.5, 600.0);
-        brains->addCell(targetSelectorBrainCell);
-
-        // brain cell: eye
-        EyeBrainCell* eyeBrainCell = new EyeBrainCell(0.1);
-        eyeBrainCell->setTargetSelectorBrainCell(targetSelectorBrainCell);
-        brains->addCell(eyeBrainCell);
-
-        // brain cell: route generator
-        RouteGeneratorBrainCell* routeGeneratorBrainCell = new RouteGeneratorBrainCell(1.0);
-        brains->addCell(routeGeneratorBrainCell);
-
-        // brain cell: navigator
-        NavigatorBrainCell* navigatorBrainCell = new NavigatorBrainCell(0.01);
-        navigatorBrainCell->setEyeBrainCell(eyeBrainCell);
-        navigatorBrainCell->setRouteGeneratorBrainCell(routeGeneratorBrainCell);
-        brains->addCell(navigatorBrainCell);
-
-        // controller
-        CpuController* controller = new CpuController(brains);
-        controller->setControllableObject(spaceship);
-
-        // set team
-        spaceship->setTeam(enemyTeam);
-
-        world->addEntity(spaceship);
-        otherSpaceships->push_back(spaceship);
-    }
+//    otherSpaceships = new std::list<Spaceship*>;
+//    for (int i=0; i<20; i++) {
+//        double x = 4000 + (i % 20) * 64;
+//        double y = 8700 - rand() % 500 - (i / 20) * 500;
+//
+//        Spaceship* spaceship = new Spaceship(Point(x, y), 20, 1);
+//        spaceship->setShootingSpeed(10);
+//
+//        // brains
+//        Brains* brains = new Brains();
+//        brains->addEnemyTeam(playerTeam);
+//
+//        // brain cell: target selector
+//        TargetSelectorBrainCell* targetSelectorBrainCell = new TargetSelectorBrainCell(0.5, 600.0);
+//        brains->addCell(targetSelectorBrainCell);
+//
+//        // brain cell: eye
+//        EyeBrainCell* eyeBrainCell = new EyeBrainCell(0.1);
+//        eyeBrainCell->setTargetSelectorBrainCell(targetSelectorBrainCell);
+//        brains->addCell(eyeBrainCell);
+//
+//        // brain cell: route generator
+//        RouteGeneratorBrainCell* routeGeneratorBrainCell = new RouteGeneratorBrainCell(1.0);
+//        brains->addCell(routeGeneratorBrainCell);
+//
+//        // brain cell: navigator
+//        NavigatorBrainCell* navigatorBrainCell = new NavigatorBrainCell(0.01);
+//        navigatorBrainCell->setEyeBrainCell(eyeBrainCell);
+//        navigatorBrainCell->setRouteGeneratorBrainCell(routeGeneratorBrainCell);
+//        brains->addCell(navigatorBrainCell);
+//
+//        // controller
+//        CpuController* controller = new CpuController(brains);
+//        controller->setControllableObject(spaceship);
+//
+//        // set team
+//        spaceship->setTeam(enemyTeam);
+//
+//        world->addEntity(spaceship);
+//        otherSpaceships->push_back(spaceship);
+//    }
 
     // --- BOSS ---
 

@@ -22,6 +22,8 @@
 class MapTexture;
 class GameEntity;
 
+#include "Rect.h"
+
 class Map {
 public:
     Map(
@@ -44,6 +46,8 @@ public:
     void render(double x, double y, double w, double h);
 
     bool detectCollisionWith(GameEntity * entity);
+
+    void renderSmall(Rect mapRect, Rect renderingAreaRect);
 
 private:
     MapTexture* mapTexture;

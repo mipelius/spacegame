@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "Rect.h"
+
 #ifndef __Renderer_H_
 #define __Renderer_H_
 
@@ -42,6 +44,10 @@ private:
     int backgroundCrossFadingPhase;
     bool backgroundIsCrossFading;
 
+    Rect smallMapRenderingAreaRect;
+    double smallMapHeight;
+    double smallMapWidth;
+
     static const int BACKGROUND_CROSSFADE_RENDER_COUNT = 60;
 
 public:
@@ -60,6 +66,8 @@ public:
     Camera* getCamera();
     void setBackground(Background *background);
     void glSwap();
+
+    void setSmallMap(Rect renderingAreaRect, double mapWidth, double mapHeight);
 };
 
 

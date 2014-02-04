@@ -90,12 +90,26 @@ void Renderer::setBackground(Background *background) {
 void Renderer::renderMap() {
     Map* map = this->gameWorld_->getMap();
     Point location = camera_->getLocation();
+
     map->render(
             location.x,
             location.y,
             camera_->getW(),
             camera_->getH()
     );
+
+    Point cameraCenter = Point(location.x + camera_->getW() / 2, location.y + camera_->getH() / 2);
+
+    double x1 = cameraCenter.x - smallMapWidth / 2;
+    double y1 = cameraCenter.y - smallMapHeight / 2;
+    double x2 = cameraCenter.x + smallMapWidth / 2;
+    double y2 = cameraCenter.y + smallMapHeight / 2;
+
+    map->renderSmall(
+            Rect(Point(x1, y1), Point(x2, y2)),
+            smallMapRenderingAreaRect
+    );
+
 }
 
 void Renderer::renderEntities() {
@@ -192,7 +206,7 @@ void Renderer::render() {
     renderEntities();
 }
 
-Renderer::Renderer() {
+Renderer::Renderer() : smallMapRenderingAreaRect(Point(10, 10), Point(250, 250)) {
     isInitialized_ = false;
     this->camera_ = nullptr;
     this->gameWorld_ = nullptr;
@@ -273,4 +287,10 @@ void Renderer::renderBackground(Background *background, double opacity) {
             opacity
     );
 
+}
+
+void Renderer::setSmallMap(Rect renderingAreaRect, double mapWidth, double mapHeight) {
+    this->smallMapRenderingAreaRect = renderingAreaRect;
+    this->smallMapWidth = mapWidth;
+    this->smallMapHeight = mapHeight;
 }

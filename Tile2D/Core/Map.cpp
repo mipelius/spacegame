@@ -188,3 +188,69 @@ int Map::getBlockW() {
 int Map::getBlockH() {
     return this->blockSizeH;
 }
+
+void Map::renderSmall(Rect mapRect, Rect renderingAreaRect) {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    double opacity = 0.4;
+
+    double stepX = mapRect.getWidth() / renderingAreaRect.getWidth();
+    double stepY = mapRect.getHeight() / renderingAreaRect.getHeight();
+
+    glColor4f(0.0, 0.0, 0.0, opacity);
+
+    glRectf(
+            renderingAreaRect.getTopLeftCorner().x,
+            renderingAreaRect.getTopLeftCorner().y,
+            renderingAreaRect.getBottomRightCorner().x,
+            renderingAreaRect.getBottomRightCorner().y
+    );
+
+    glBegin(GL_POINTS);
+    int x = renderingAreaRect.getTopLeftCorner().x;
+    for (double mapX = mapRect.getTopLeftCorner().x; mapX < mapRect.getTopRightCorner().x; mapX += stepX) {
+        int y = renderingAreaRect.getTopLeftCorner().y;
+        for (double mapY = mapRect.getTopLeftCorner().y; mapY < mapRect.getBottomLeftCorner().y; mapY += stepY) {
+            unsigned char value = getValueActual(mapX, mapY);
+
+            if (value != 0) {
+                if (value % 3 == 2) glColor4f(0.7, 0.0, 0.0, opacity); // red
+                if (value % 3 == 1) glColor4f(0.0, 0.7, 0.0, opacity); // green
+                if (value % 3 == 0) glColor4f(0.0, 0.0, 0.7, opacity); // blue
+
+                glVertex2i(x, y);
+            }
+            y++;
+        }
+        x++;
+    }
+    glEnd();
+
+    glColor4f(0.6, 0.6, 1.0, opacity);
+
+    glBegin(GL_LINE_LOOP);
+    glVertex2i(renderingAreaRect.getTopLeftCorner().x, renderingAreaRect.getTopLeftCorner().y - 1);
+    glVertex2i(renderingAreaRect.getTopRightCorner().x, renderingAreaRect.getTopRightCorner().y - 1);
+    glVertex2i(renderingAreaRect.getBottomRightCorner().x + 1, renderingAreaRect.getBottomRightCorner().y);
+    glVertex2i(renderingAreaRect.getBottomLeftCorner().x + 1, renderingAreaRect.getBottomLeftCorner().y);
+    glEnd();
+
+    glDisable(GL_BLEND);
+
+    glColor3f(1.0, 1.0, 1.0);
+
+    Point center = Point(
+            renderingAreaRect.getTopLeftCorner().x + renderingAreaRect.getWidth() / 2,
+            renderingAreaRect.getTopLeftCorner().y + renderingAreaRect.getHeight() / 2
+    );
+
+    glBegin(GL_POINTS);
+    glVertex2i(center.x, center.y);
+    glVertex2i((int)center.x - 1, center.y);
+    glVertex2i((int)center.x + 1, center.y);
+    glVertex2i((int)center.x, (int)center.y - 1);
+    glVertex2i((int)center.x, (int)center.y + 1);
+    glEnd();
+
+}
