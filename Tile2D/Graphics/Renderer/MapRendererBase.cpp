@@ -14,21 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "GameArea.h"
+#include "MapRendererBase.h"
+#include "Map.h"
 
-GameArea::GameArea(Texture* backgroundTexture, Music *music, Rect areaRect) : areaRect_(areaRect) {
-    backgroundTexture_ = backgroundTexture;
-    music_ = music;
+MapRendererBase::MapRendererBase(Rect const &renderingAreaRect) : RendererBase(renderingAreaRect) {
+    map_ = nullptr;
 }
 
-Texture* GameArea::getBackgroundTexture() {
-    return backgroundTexture_;
-}
-
-Music* GameArea::getMusic() {
-    return music_;
-}
-
-Rect GameArea::getRect() {
-    return areaRect_;
+void MapRendererBase::setMap(Map *map) {
+    map_ = map;
 }

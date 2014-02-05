@@ -14,25 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Texture_H_
-#define __Texture_H_
+#ifndef __IRenderer_H_
+#define __IRenderer_H_
 
-#include <string>
-#import "ITexture.h"
+class Camera;
 
-class Texture : public ITexture {
-private:
-    GLuint texture;
-    int w;
-    int h;
+class IRenderer {
 public:
-    int getW();
-    int getH();
-    Texture(std::string filename);
-    void glBind();
-    void glUnbind();
-    void glTexCorner(Corner corner);
+    IRenderer() { };
+    ~IRenderer() { };
+
+    virtual void setCamera(Camera* camera) = 0;
+    virtual Camera* getCamera() = 0;
+    virtual void render() = 0;
 };
 
-
-#endif //__Texture_H_
+#endif //__IRenderer_H_

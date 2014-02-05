@@ -14,21 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "GameArea.h"
+#ifndef __RendererBase_H_
+#define __RendererBase_H_
 
-GameArea::GameArea(Texture* backgroundTexture, Music *music, Rect areaRect) : areaRect_(areaRect) {
-    backgroundTexture_ = backgroundTexture;
-    music_ = music;
-}
+class Camera;
 
-Texture* GameArea::getBackgroundTexture() {
-    return backgroundTexture_;
-}
+#include "IRenderer.h"
+#include "Rect.h"
 
-Music* GameArea::getMusic() {
-    return music_;
-}
+class RendererBase : public IRenderer {
+public:
+    RendererBase(Rect renderingAreaRect);
 
-Rect GameArea::getRect() {
-    return areaRect_;
-}
+    void setCamera(Camera* camera);
+    Camera* getCamera();
+    virtual void render() = 0;
+protected:
+    Rect renderingAreaRect_;
+    Camera* camera_;
+};
+
+#endif //__RendererBase_H_

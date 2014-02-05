@@ -18,7 +18,7 @@
 #include "CollisionShape.h"
 #include "GameEntity.h"
 
-CollisionShape::CollisionShape(Point points[], int count): boundingBox(Rect(Point(-1, -1), Point(1, 1)))
+CollisionShape::CollisionShape(Point points[], int count): boundingBox(Rect(-1, -1, 1, 1))
 {
     this->points = (Point*)malloc(count * sizeof(Point));
     this->count = count;
@@ -34,7 +34,7 @@ CollisionShape::CollisionShape(Point points[], int count): boundingBox(Rect(Poin
     }
 
     double length = Vector(farMost.x, farMost.y).length();
-    boundingBox = Rect(Point(-length, -length), Point(length, length));
+    boundingBox = Rect(-length, -length, length, length);
 }
 
 bool CollisionShape::intersectsWith(CollisionShape* otherShape) {
@@ -118,14 +118,10 @@ Rect CollisionShape::getBoundingBox() {
     Point location = owner->getLocation();
 
     return Rect(
-            Point(
-                    this->boundingBox.getTopLeftCorner().x + location.x,
-                    this->boundingBox.getTopLeftCorner().y + location.y
-            ),
-            Point(
-                    this->boundingBox.getBottomRightCorner().x + location.x,
-                    this->boundingBox.getBottomRightCorner().y + location.y
-            )
+        this->boundingBox.x1 + location.x,
+        this->boundingBox.y1 + location.y,
+        this->boundingBox.x2 + location.x,
+        this->boundingBox.y2 + location.y
     );
 }
 

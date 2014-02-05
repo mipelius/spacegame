@@ -14,21 +14,37 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "GameArea.h"
+#ifndef __CoreRenderer_H_
+#define __CoreRenderer_H_
 
-GameArea::GameArea(Texture* backgroundTexture, Music *music, Rect areaRect) : areaRect_(areaRect) {
-    backgroundTexture_ = backgroundTexture;
-    music_ = music;
-}
+#include <list>
+#include <SDL2/SDL_video.h>
 
-Texture* GameArea::getBackgroundTexture() {
-    return backgroundTexture_;
-}
+class IRenderer;
+class Camera;
+class RendererBase;
 
-Music* GameArea::getMusic() {
-    return music_;
-}
+class CoreRenderer {
+public:
+    CoreRenderer();
+    ~CoreRenderer();
+    void initialize(int x, int y, int w, int h, bool enableFullScreen);
 
-Rect GameArea::getRect() {
-    return areaRect_;
-}
+    void setCamera(Camera* camera);
+    Camera* getCamera();
+
+    void addRenderer(IRenderer* renderer);
+
+    void render();
+    void glSwap();
+
+private:
+    std::list<IRenderer*> renderers_;
+    Camera* camera_;
+    bool isInitialized_;
+
+    SDL_Window *window_;
+    SDL_GLContext context_;
+};
+
+#endif //__CoreRenderer_H_

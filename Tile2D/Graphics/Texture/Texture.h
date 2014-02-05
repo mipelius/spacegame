@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// Copyright (C) 2014  Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,21 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "GameArea.h"
+#ifndef __Texture_H_
+#define __Texture_H_
 
-GameArea::GameArea(Texture* backgroundTexture, Music *music, Rect areaRect) : areaRect_(areaRect) {
-    backgroundTexture_ = backgroundTexture;
-    music_ = music;
-}
+#include <string>
+#include "ITexture.h"
+#include <SDL2/SDL_opengl.h>
 
-Texture* GameArea::getBackgroundTexture() {
-    return backgroundTexture_;
-}
+class Texture : public ITexture {
+private:
+    GLuint texture;
+    int w;
+    int h;
+public:
+    int getW();
+    int getH();
+    Texture(std::string filename);
+    void glBind();
+    void glUnbind();
+    void glTexCorner(Corner corner);
+};
 
-Music* GameArea::getMusic() {
-    return music_;
-}
 
-Rect GameArea::getRect() {
-    return areaRect_;
-}
+#endif //__Texture_H_

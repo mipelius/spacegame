@@ -44,10 +44,10 @@ double Point::distance(Point otherPoint) {
 
 bool Point::isIn(Rect& rect) {
     if (
-        x >= rect.getTopLeftCorner().x &&
-        x <= rect.getTopRightCorner().x &&
-        y >= rect.getTopLeftCorner().y &&
-        y <= rect.getBottomLeftCorner().y
+        x >= rect.x1 &&
+        x <= rect.x2 &&
+        y >= rect.y1 &&
+        y <= rect.y2
     ) {
         return true;
     }

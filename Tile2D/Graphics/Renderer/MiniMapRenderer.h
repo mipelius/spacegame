@@ -14,21 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "GameArea.h"
+#ifndef __MiniMapRenderer_H_
+#define __MiniMapRenderer_H_
 
-GameArea::GameArea(Texture* backgroundTexture, Music *music, Rect areaRect) : areaRect_(areaRect) {
-    backgroundTexture_ = backgroundTexture;
-    music_ = music;
-}
+#include "MapRendererBase.h"
 
-Texture* GameArea::getBackgroundTexture() {
-    return backgroundTexture_;
-}
+class MiniMapRenderer : public MapRendererBase {
 
-Music* GameArea::getMusic() {
-    return music_;
-}
+public:
+    MiniMapRenderer(Rect const &renderingAreaRect);
+    void render();
+};
 
-Rect GameArea::getRect() {
-    return areaRect_;
-}
+
+#endif //__MiniMapRenderer_H_

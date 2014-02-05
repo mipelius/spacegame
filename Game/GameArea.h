@@ -17,23 +17,23 @@
 #ifndef __GameArea_H_
 #define __GameArea_H_
 
-class Background;
+class Texture;
 class Music;
 
 #include "Rect.h"
-#include "Background.h"
+#include "BackgroundRenderer.h"
 #include "Music.h"
 
 class GameArea {
 private:
-    Background* background_;
+    Texture* backgroundTexture_;
     Music* music_;
     Rect areaRect_;
 public:
-    GameArea(Background* background, Music* music, Rect areaRect);
+    GameArea(Texture* backgroundTexture, Music* music, Rect areaRect);
 
     Music* getMusic();
-    Background* getBackground();
+    Texture* getBackgroundTexture();
     Rect getRect();
 };
 

@@ -17,117 +17,94 @@
 #include "precompile.h"
 #include "Rect.h"
 
-Rect::Rect(Point firstPoint, Point secondPoint): firstPoint(firstPoint), secondPoint(secondPoint) {
-    // if (firstPoint.x == secondPoint.x || firstPoint.y == secondPoint.y) throw exception because not rectangle?
-
-    // change the locations so that the first point is the top left corner and the second point is the bottom right corner
-    if (firstPoint.x > secondPoint.x) {
-        this->firstPoint.x = secondPoint.x;
-        this->secondPoint.x = firstPoint.x;
-    }
-
-    if (firstPoint.y > secondPoint.y) {
-        this->firstPoint.y = secondPoint.y;
-        this->secondPoint.y = firstPoint.y;
-    }
-}
-
-Point Rect::getTopLeftCorner() {
-    return firstPoint;
-}
-
-Point Rect::getTopRightCorner() {
-    return Point(secondPoint.x, firstPoint.y);
-}
-
-Point Rect::getBottomLeftCorner() {
-    return Point(firstPoint.x, secondPoint.y);
-}
-
-Point Rect::getBottomRightCorner() {
-    return secondPoint;
-}
-
-double Rect::getWidth() {
-    return secondPoint.x - firstPoint.x;
-}
-
-double Rect::getHeight() {
-    return secondPoint.y - firstPoint.y;
+Rect::Rect(double x1, double y1, double x2, double y2) {
+    this->x1 = x1;
+    this->y1 = y1;
+    this->x2 = x2;
+    this->y2 = y2;
 }
 
 bool Rect::intersectsWith(Rect otherRectangle) {
-    double rectAx1 = this->getTopLeftCorner().x;
-    double rectAy1 = this->getTopLeftCorner().y;
-    double rectAx2 = this->getBottomRightCorner().x;
-    double rectAy2 = this->getBottomRightCorner().y;
+    double rectAx1 = x1;
+    double rectAy1 = y2;
+    double rectAx2 = x1;
+    double rectAy2 = y2;
 
-    double rectBx1 = otherRectangle.getTopLeftCorner().x;
-    double rectBy1 = otherRectangle.getTopLeftCorner().y;
-    double rectBx2 = otherRectangle.getBottomRightCorner().x;
-    double rectBy2 = otherRectangle.getBottomRightCorner().y;
+    double rectBx1 = otherRectangle.x1;
+    double rectBy1 = otherRectangle.y1;
+    double rectBx2 = otherRectangle.x2;
+    double rectBy2 = otherRectangle.y2;
 
     return rectAx1 <= rectBx2 && rectAx2 >= rectBx1 && rectAy1 <= rectBy2 && rectAy2 >= rectBy1;
-}
-
-Point Rect::getFirstPoint() {
-    return firstPoint;
-}
-
-Point Rect::getSecondPoint() {
-    return secondPoint;
 }
 
 bool Rect::intersectsWithLine(double x1, double y1, double x2, double y2) {
     // if one of the points is inside the rectangle
     if (
-            (x1 >= firstPoint.x && x1 <= secondPoint.x) && (y1 >= firstPoint.y && y1 <= secondPoint.y)
+            (x1 >= this->x1 && x1 <= this->x2) && (y1 >= this->y1 && y1 <= this->y2)
             ) return true;
 
     if (
-            (x2 >= firstPoint.x && x2 <= secondPoint.x) && (y2 >= firstPoint.y && y2 <= secondPoint.y)
+            (x2 >= this->x1 && x2 <= this->x2) && (y2 >= this->y1 && y2 <= this->y2)
             ) return true;
 
     double slope = (y2 - y1) / (x2 - x1);
 
     // top line
 
-    double y = firstPoint.y;
+    double y = this->y1;
     double x = (y + slope * x1 - y1) / slope;
     if (
-            x >= firstPoint.x && x <= secondPoint.x &&
+            x >= this->x1 && x <= this->x2 &&
                     ((y1 >= y && y2 <= y) ||
                     (y1 <= y && y2 >= y))
             ) return true;
 
     // bottom line
 
-    y = secondPoint.y;
+    y = this->y2;
     x = (y + slope * x1 - y1) / slope;
     if (
-            x >= firstPoint.x && x <= secondPoint.x &&
+            x >= this->x1 && x <= this->x2 &&
                     ((y1 >= y && y2 <= y) ||
                     (y1 <= y && y2 >= y))
             ) return true;
 
     // left line
 
-    x = firstPoint.x;
+    x = this->x1;
     y = slope * x - slope * x1 + y1;
     if (
-            y >= firstPoint.y && y <= secondPoint.y &&
+            y >= this->y1 && y <= this->y2 &&
                     ((x1 >= x && x2 <= x) ||
                     (x1 <= x && x2 >= x))
             ) return true;
 
     // right line
 
-    x = secondPoint.x;
+    x = this->x2;
     y = slope * x - slope * x1 + y1;
-    if (y >= firstPoint.y && y <= secondPoint.y &&
+    if (y >= this->y1 && y <= this->y2 &&
             ((x1 >= x && x2 <= x) ||
             (x1 <= x && x2 >= x))
             ) return true;
 
     return false;
+}
+
+void Rect::setLocation(Point point) {
+    double w = this->getWidth();
+    double h = this->getHeight();
+    x1 = point.x;
+    y1 = point.y;
+    x2 = point.x + w;
+    y2 = point.y + h;
+}
+
+double Rect::getWidth() {
+    return x2 - x1;
+}
+
+double Rect::getHeight() {
+    return y2 - y1;
 }

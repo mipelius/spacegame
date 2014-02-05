@@ -20,19 +20,19 @@
 #include "Point.h"
 
 class Rect {
-private:
-    Point firstPoint;
-    Point secondPoint;
 public:
-    Rect(Point firstPoint, Point secondPoint);
-    Point getTopLeftCorner();
-    Point getTopRightCorner();
-    Point getBottomLeftCorner();
-    Point getBottomRightCorner();
-    Point getFirstPoint();
-    Point getSecondPoint();
+    double x1;
+    double y1;
+    double x2;
+    double y2;
+
+    Rect(double x1, double y1, double x2, double y2);
+
+    void setLocation(Point point);
+
     double getWidth();
     double getHeight();
+
     bool intersectsWith(Rect otherRectangle);
     bool intersectsWithLine(double x1, double y1, double x2, double y2);
 };

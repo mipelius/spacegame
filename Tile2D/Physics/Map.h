@@ -28,10 +28,10 @@ class Map {
 public:
     Map(
             std::string path,
-            MapTexture* mapTexture,
             int blockSizeW = Map::DEFAULT_BLOCK_SIZE_W,
             int blockSizeH = Map::DEFAULT_BLOCK_SIZE_H
     );
+
     void setValue(int x, int y, unsigned char value);
     void setValueActual(int x, int y, unsigned char value);
     unsigned char getValue(int x, int y);
@@ -40,17 +40,14 @@ public:
     int getH();
     int getBlockW();
     int getBlockH();
-
     long getActualW();
     long getActualH();
-    void render(double x, double y, double w, double h);
 
     bool detectCollisionWith(GameEntity * entity);
 
     void renderSmall(Rect mapRect, Rect renderingAreaRect);
 
 private:
-    MapTexture* mapTexture;
     static const int DEFAULT_BLOCK_SIZE_W = 8;
     static const int DEFAULT_BLOCK_SIZE_H = 8;
     int blockSizeW;

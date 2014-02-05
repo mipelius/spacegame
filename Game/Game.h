@@ -21,18 +21,24 @@
 
 class std::list;
 class Spaceship;
-class Renderer;
+class CoreRenderer;
 class GameWorld;
 class Map;
 class HumanController;
 class Team;
 class GameArea;
+class BackgroundRenderer;
+class Camera;
 
 class Game {
 private:
-    Map* map;
-    GameWorld* world;
-    Renderer* renderer;
+    Map* map_;
+    GameWorld* world_;
+    CoreRenderer* renderer_;
+    BackgroundRenderer* backgroundRenderer_;
+
+    Camera* camera_;
+    Camera* miniMapCamera_;
 
     Team *enemyTeam;
     Team *playerTeam;
