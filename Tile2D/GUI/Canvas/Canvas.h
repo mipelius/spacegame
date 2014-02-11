@@ -14,29 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MusicPlayer_H_
-#define __MusicPlayer_H_
+#ifndef __Canvas_H_
+#define __Canvas_H_
 
-class Music;
+class IDrawable;
+class Camera;
 
-#include "Player.h"
+#include "GuiComponentBase.h"
 
-class MusicPlayer : public Player {
+class Canvas : public GuiComponentBase {
 
 public:
-    static MusicPlayer* getInstance();
-    void play(Music *music);
-    void stop();
+    Canvas();
+    ~Canvas();
+
+    void render();
+    void add(IDrawable* drawable);
+    void setCamera(Camera* camera);
 
 private:
-    MusicPlayer();
+    std::list<IDrawable*> drawables_;
+    Camera* camera_;
 
-    static void musicFinished();
-
-    static Music* nextMusic_;
-    static MusicPlayer* instance_;
-
-    static const int FADING_MS = 500;
 };
 
-#endif //__MusicPlayer_H_
+#endif //__Canvas_H_

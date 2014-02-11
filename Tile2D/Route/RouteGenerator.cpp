@@ -20,7 +20,7 @@
 #include "Node.h"
 #include "RouteRequest.h"
 #include "RouteResponse.h"
-#include "GameWorld.h"
+#include "PhysicsWorld.h"
 #include "RouteRequestSender.h"
 #include "Route.h"
 

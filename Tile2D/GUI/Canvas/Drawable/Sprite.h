@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// Copyright (C) 2014  Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,29 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MusicPlayer_H_
-#define __MusicPlayer_H_
+#ifndef __Sprite_H_
+#define __Sprite_H_
 
-class Music;
+class CollisionShape;
+class ITexture;
 
-#include "Player.h"
+#include "Rect.h"
 
-class MusicPlayer : public Player {
-
-public:
-    static MusicPlayer* getInstance();
-    void play(Music *music);
-    void stop();
-
+class Sprite {
 private:
-    MusicPlayer();
-
-    static void musicFinished();
-
-    static Music* nextMusic_;
-    static MusicPlayer* instance_;
-
-    static const int FADING_MS = 500;
+    ITexture* texture_;
+    Rect rect_;
+public:
+    Sprite(ITexture* texture, Rect rect);
+    void render(Point locationPoint, double angle);
 };
 
-#endif //__MusicPlayer_H_
+
+#endif //__Sprite_H_

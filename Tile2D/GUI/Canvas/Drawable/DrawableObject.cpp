@@ -1,0 +1,54 @@
+// This file is part of SpaceGame.
+// Copyright (C) 2014 Miika Pelkonen
+//
+// SpaceGame is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// SpaceGame is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
+
+#include "precompile.h"
+#include "DrawableObject.h"
+#include "Camera.h"
+#include "Sprite.h"
+
+DrawableObject::DrawableObject() : location_(Point(0, 0)), angle_(0) { }
+
+DrawableObject::~DrawableObject() { }
+
+void DrawableObject::draw(Camera* camera, Rect renderingAreaRect) {
+    if (!parentObject_) return;
+
+    Rect cameraRect = camera->areaRect->get();
+
+    for (std::list<Sprite*>::iterator i = sprites_.begin(); i != sprites_.end(); i++) {
+        (*i)->render(Point(location_.x - cameraRect.x1, location_.y - cameraRect.y1), angle_);
+    }
+}
+
+void DrawableObject::addSprite(Sprite *sprite) {
+    sprites_.push_back(sprite);
+}
+
+void DrawableObject::setAngle(double angle) {
+    angle_ = angle;
+}
+
+double DrawableObject::getAngle() {
+    return angle_;
+}
+
+Point DrawableObject::getLocation() {
+    return location_;
+}
+
+void DrawableObject::setLocation(Point location) {
+    location_ = location;
+}

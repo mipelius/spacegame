@@ -14,29 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MusicPlayer_H_
-#define __MusicPlayer_H_
+#ifndef __DrawableMap_H_
+#define __DrawableMap_H_
 
-class Music;
+class Map;
+class MapTexture;
 
-#include "Player.h"
+#include "IDrawable.h"
 
-class MusicPlayer : public Player {
-
+class DrawableMap : public IDrawable {
 public:
-    static MusicPlayer* getInstance();
-    void play(Music *music);
-    void stop();
+    DrawableMap();
+    ~DrawableMap();
+
+    void setMap(Map* map);
+    void setMapTexture(MapTexture* mapTexture);
+
+    void draw(Camera* camera, Rect renderingAreaRect);
 
 private:
-    MusicPlayer();
-
-    static void musicFinished();
-
-    static Music* nextMusic_;
-    static MusicPlayer* instance_;
-
-    static const int FADING_MS = 500;
+    MapTexture* mapTexture_;
+    Map* map_;
 };
 
-#endif //__MusicPlayer_H_
+#endif //__DrawableMap_H_

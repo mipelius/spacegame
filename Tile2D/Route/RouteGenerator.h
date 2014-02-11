@@ -20,18 +20,18 @@
 #include <queue>
 #include "Point.h"
 
-class GameWorld;
+class PhysicsWorld;
 class Node;
 class RouteRequest;
 class RouteResponse;
 
 class RouteGenerator {
     friend class Node;
-    friend class GameWorld;
+    friend class PhysicsWorld;
 private:
     int maxGeneratingTimeMilliSec;
 
-    GameWorld* world;
+    PhysicsWorld * world;
     std::queue<RouteRequest*> routeRequestQueue;
 
     RouteResponse* generateRoute(RouteRequest* request);

@@ -20,7 +20,7 @@
 #include <string>
 
 class MapTexture;
-class GameEntity;
+class Body;
 
 #include "Rect.h"
 
@@ -43,9 +43,7 @@ public:
     long getActualW();
     long getActualH();
 
-    bool detectCollisionWith(GameEntity * entity);
-
-    void renderSmall(Rect mapRect, Rect renderingAreaRect);
+    bool detectCollisionWith(Body *body);
 
 private:
     static const int DEFAULT_BLOCK_SIZE_W = 8;

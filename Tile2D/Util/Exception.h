@@ -14,29 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MusicPlayer_H_
-#define __MusicPlayer_H_
+#ifndef __Exception_H_
+#define __Exception_H_
 
-class Music;
+#include <exception>
+#include <string>
 
-#include "Player.h"
-
-class MusicPlayer : public Player {
+class Exception : std::exception {
 
 public:
-    static MusicPlayer* getInstance();
-    void play(Music *music);
-    void stop();
+    Exception(std::string msg);
+    ~Exception();
 
+    virtual const char* what() const throw();
 private:
-    MusicPlayer();
-
-    static void musicFinished();
-
-    static Music* nextMusic_;
-    static MusicPlayer* instance_;
-
-    static const int FADING_MS = 500;
+    std::string msg_;
 };
 
-#endif //__MusicPlayer_H_
+
+#endif //__Exception_H_

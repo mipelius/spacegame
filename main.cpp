@@ -24,20 +24,17 @@ int main(int argc, const char * argv[])
 {
     App::initialize();
 
-	try
-	{
+    try {
         Game* game = new Game();
-		game->launch();
-		delete game;
+        game->launch();
+        delete game;
 	}
-	catch (std::exception e)
-	{
-		std::cout << "Crashed LOL DAMN!";
-		// std::cout << e.what;
-		return -1;
-	}
+    catch (std::exception e) {
+        std::cout << "Crashed LOL DAMN!";
+        return -1;
+    }
 
-    delete App::instance();
+    delete App::getInstance();
 
 	return 0;
 }

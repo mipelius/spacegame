@@ -14,29 +14,43 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MusicPlayer_H_
-#define __MusicPlayer_H_
+#ifndef __Window_H_
+#define __Window_H_
 
-class Music;
+class GuiComponentBase;
 
-#include "Player.h"
+#include <SDL2/SDL_video.h>
+#include <list>
 
-class MusicPlayer : public Player {
+class Window {
 
 public:
-    static MusicPlayer* getInstance();
-    void play(Music *music);
-    void stop();
+    static Window* getInstance();
+    void initialize(int x, int y, int w, int h, bool enableFullScreen);
+    ~Window();
+
+    void update();
+    int getW();
+    int getH();
+    int getX();
+    int getY();
+
+    void addComponent(GuiComponentBase* guiComponent);
 
 private:
-    MusicPlayer();
+    Window();
 
-    static void musicFinished();
+    std::list<GuiComponentBase*> guiComponents_;
 
-    static Music* nextMusic_;
-    static MusicPlayer* instance_;
+    static Window* instance_;
 
-    static const int FADING_MS = 500;
+    SDL_Window* window_;
+    SDL_GLContext context_;
+
+    int w_;
+    int h_;
+    int x_;
+    int y_;
 };
 
-#endif //__MusicPlayer_H_
+#endif //__Window_H_

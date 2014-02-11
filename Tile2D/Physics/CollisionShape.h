@@ -17,17 +17,17 @@
 #ifndef __CollisionShape_H_
 #define __CollisionShape_H_
 
-class GameEntity;
+class Body;
 
 #include "Rect.h"
 #include "Point.h"
 
 class CollisionShape {
-friend class GameEntity;
+friend class Body;
 private:
     Rect boundingBox;
     Point *points;
-    GameEntity *owner;
+    Body *owner;
     int count;
     bool intersectsWithHalfLine(Point linePoint1, Point linePoint2, Point offset);
 public:

@@ -14,29 +14,37 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MusicPlayer_H_
-#define __MusicPlayer_H_
+#ifndef __DrawableGameObject_H_
+#define __DrawableGameObject_H_
 
-class Music;
+class Sprite;
+class GameObjectBase;
 
-#include "Player.h"
+#include <list>
+#include "IDrawable.h"
 
-class MusicPlayer : public Player {
+class DrawableObject : public IDrawable {
 
 public:
-    static MusicPlayer* getInstance();
-    void play(Music *music);
-    void stop();
+    DrawableObject();
+    ~DrawableObject();
+
+    void draw(Camera* camera, Rect renderingAreaRect);
+    void addSprite(Sprite* sprite);
+
+    double getAngle();
+    void setAngle(double angle);
+
+    Point getLocation();
+    void setLocation(Point location);
 
 private:
-    MusicPlayer();
+    GameObjectBase * parentObject_;
+    std::list<Sprite*> sprites_;
 
-    static void musicFinished();
-
-    static Music* nextMusic_;
-    static MusicPlayer* instance_;
-
-    static const int FADING_MS = 500;
+    double angle_;
+    Point location_;
 };
 
-#endif //__MusicPlayer_H_
+
+#endif //__DrawableGameObject_H_

@@ -14,45 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "RouteRequestSender.h"
-
 #ifndef __SpaceGame_H_
 #define __SpaceGame_H_
 
-class std::list;
-class Spaceship;
-class CoreRenderer;
-class GameWorld;
+class PhysicsWorld;
 class Map;
-class HumanController;
-class Team;
-class GameArea;
-class BackgroundRenderer;
 class Camera;
+class Body;
+
+class MyGameObject;
+
+#include "Point.h"
 
 class Game {
 private:
     Map* map_;
-    GameWorld* world_;
-    CoreRenderer* renderer_;
-    BackgroundRenderer* backgroundRenderer_;
-
+    PhysicsWorld * world_;
     Camera* camera_;
-    Camera* miniMapCamera_;
 
-    Team *enemyTeam;
-    Team *playerTeam;
+    MyGameObject* myGameObject_;
+    Body* playerBody_;
 
-    Spaceship* player;
-    HumanController* playerController;
-
-    std::list<Spaceship*> *otherSpaceships;
-    std::list<GameArea*> *gameAreas;
-    GameArea* currentGameArea;
-
-    Spaceship* boss;
-
-    void updateCurrentGameArea(Point point);
 public:
     Game();
     ~Game();

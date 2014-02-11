@@ -18,7 +18,7 @@
 #include "Map.h"
 #include "Rect.h"
 #include "MapTexture.h"
-#include "GameEntity.h"
+#include "Body.h"
 #include "CollisionShape.h"
 
 Map::Map(
@@ -100,17 +100,19 @@ void Map::setValueActual(int x, int y, unsigned char value) {
     this->setValue(x / blockSizeW, y / blockSizeH, value);
 }
 
-bool Map::detectCollisionWith(GameEntity *entity) {
-    if (this->getValueActual(entity->getLocation().x, entity->getLocation().y)) return true;
+bool Map::detectCollisionWith(Body *body) {
+    if (!body->getCollisionShape()) return false;
 
-    Point* points = entity->getCollisionShape()->getRotatedPoints();
-    for (int i=0; i<entity->getCollisionShape()->getCount(); i++) {
-        int x = (int)(points[i].x + entity->getLocation().x);
-        int y = (int)(points[i].y + entity->getLocation().y);
+    if (this->getValueActual((int) body->location->get().x, (int) body->location->get().y)) return true;
+
+    Point* points = body->getCollisionShape()->getRotatedPoints();
+    for (int i=0; i< body->getCollisionShape()->getCount(); i++) {
+        int x = (int)(points[i].x + body->location->get().x);
+        int y = (int)(points[i].y + body->location->get().y);
         if (this->getValueActual(x, y)) return true;
     }
 
-    Rect boundingBox = entity->getCollisionShape()->getBoundingBox();
+    Rect boundingBox = body->getCollisionShape()->getBoundingBox();
 
     int iBegin = (int)boundingBox.x1 - ((int)boundingBox.x1) % blockSizeW;
     int iEnd = (int)boundingBox.x2 + (int)boundingBox.x2 % blockSizeW;
@@ -121,7 +123,7 @@ bool Map::detectCollisionWith(GameEntity *entity) {
         for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
             if (this->getValueActual(i, j)) {
                 Rect* rect = new Rect(i, j, i + blockSizeW, j + blockSizeH);
-                if (entity->getCollisionShape()->intersectsWith(rect)) {
+                if (body->getCollisionShape()->intersectsWith(rect)) {
                     return true;
                 }
             }
@@ -138,9 +140,4 @@ int Map::getBlockW() {
 
 int Map::getBlockH() {
     return this->blockSizeH;
-}
-
-void Map::renderSmall(Rect mapRect, Rect renderingAreaRect) {
-
-
 }

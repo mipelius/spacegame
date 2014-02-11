@@ -45,7 +45,7 @@ void MusicPlayer::stop() {
     Mix_FadeOutMusic(FADING_MS);
 }
 
-MusicPlayer *MusicPlayer::instance() {
+MusicPlayer *MusicPlayer::getInstance() {
     if (!instance_) instance_ = new MusicPlayer();
     return instance_;
 }

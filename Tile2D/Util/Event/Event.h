@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// Copyright (C) 2014  Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,29 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MusicPlayer_H_
-#define __MusicPlayer_H_
+#include "EventHandler.h"
 
-class Music;
+#ifndef __Event_H_
+#define __Event_H_
 
-#include "Player.h"
+class std::list;
+class EventArgs;
+class EventHandler;
+class IEventOwner;
 
-class MusicPlayer : public Player {
-
-public:
-    static MusicPlayer* getInstance();
-    void play(Music *music);
-    void stop();
-
+class Event {
 private:
-    MusicPlayer();
-
-    static void musicFinished();
-
-    static Music* nextMusic_;
-    static MusicPlayer* instance_;
-
-    static const int FADING_MS = 500;
+    std::list<EventHandler*> eventHandlers_;
+    IEventOwner* eventOwner_;
+public:
+    Event(IEventOwner* eventOwner);
+    ~Event();
+    void raise(EventArgs *eventArgs);
+    void add(EventHandler *eventHandler);
 };
 
-#endif //__MusicPlayer_H_
+
+#endif //__Event_H_

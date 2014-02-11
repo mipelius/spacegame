@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// Copyright (C) 2014  Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,29 +14,36 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MusicPlayer_H_
-#define __MusicPlayer_H_
+#ifndef __PhysicsWorld_H_
+#define __PhysicsWorld_H_
 
-class Music;
+class Map;
+class Body;
 
-#include "Player.h"
+#include "Point.h"
+#include "Vector.h"
+#include "Property.h"
 
-class MusicPlayer : public Player {
+class PhysicsWorld {
 
 public:
-    static MusicPlayer* getInstance();
-    void play(Music *music);
-    void stop();
+    PhysicsWorld(Vector gForce, double metersPerPixel, double airDensity);
+    ~PhysicsWorld();
+
+    void step(double timeSeconds);
+    void add(Body *gameEntity);
+
+    void setMap(Map* map);
+    Map* getMap();
+
+    Property<Vector>* const gForce;
+    Property<double>* const metersPerPixel;
+    Property<double>* const airDensity;
 
 private:
-    MusicPlayer();
-
-    static void musicFinished();
-
-    static Music* nextMusic_;
-    static MusicPlayer* instance_;
-
-    static const int FADING_MS = 500;
+    std::list<Body *> gameEntities;
+    Map* map;
+    void detectCollision(Body * entity);
 };
 
-#endif //__MusicPlayer_H_
+#endif //__PhysicsWorld_H_

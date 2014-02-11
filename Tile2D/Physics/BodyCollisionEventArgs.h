@@ -14,29 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MusicPlayer_H_
-#define __MusicPlayer_H_
+#ifndef __BodyCollisionEventArgs_H_
+#define __BodyCollisionEventArgs_H_
 
-class Music;
+class Body;
 
-#include "Player.h"
+#include "EventArgs.h"
 
-class MusicPlayer : public Player {
-
+class BodyCollisionEventArgs : public EventArgs {
 public:
-    static MusicPlayer* getInstance();
-    void play(Music *music);
-    void stop();
-
-private:
-    MusicPlayer();
-
-    static void musicFinished();
-
-    static Music* nextMusic_;
-    static MusicPlayer* instance_;
-
-    static const int FADING_MS = 500;
+    Body* otherBody;
 };
 
-#endif //__MusicPlayer_H_
+
+#endif //__BodyCollisionEventArgs_H_

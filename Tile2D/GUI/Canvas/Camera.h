@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// Copyright (C) 2014  Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,29 +14,37 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MusicPlayer_H_
-#define __MusicPlayer_H_
+#ifndef __Camera_H_
+#define __Camera_H_
 
-class Music;
+class Body;
+class Renderer;
 
-#include "Player.h"
+#include "Rect.h"
+#include "Point.h"
 
-class MusicPlayer : public Player {
+#include "Property.h"
 
+class Camera {
 public:
-    static MusicPlayer* getInstance();
-    void play(Music *music);
-    void stop();
+    Property<Point>* const location;
+    Property<Rect>* const areaRect;
+    Property<Rect>* const boundsRect;
+
+    Camera();
+    ~Camera();
 
 private:
-    MusicPlayer();
+    class Location : public Property<Point> {
 
-    static void musicFinished();
+    public:
+        Property<Rect>* boundsRect;
+        Property<Rect>* areaRect;
 
-    static Music* nextMusic_;
-    static MusicPlayer* instance_;
+        Location(Point const &initialValue);
+        void setActual(Point value);
+    };
 
-    static const int FADING_MS = 500;
 };
 
-#endif //__MusicPlayer_H_
+#endif //__Camera_H_

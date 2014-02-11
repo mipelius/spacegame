@@ -1,3 +1,5 @@
+// TEMPORARY CLASS FOR TRYING OUT THE FEATURES OF THE TILE2D LIBRARY
+//
 // This file is part of SpaceGame.
 // Copyright (C) 2014 Miika Pelkonen
 //
@@ -14,29 +16,11 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MusicPlayer_H_
-#define __MusicPlayer_H_
+#ifndef __MyGameObject_H_
+#define __MyGameObject_H_
 
-class Music;
+class MyGameObject {
 
-#include "Player.h"
-
-class MusicPlayer : public Player {
-
-public:
-    static MusicPlayer* getInstance();
-    void play(Music *music);
-    void stop();
-
-private:
-    MusicPlayer();
-
-    static void musicFinished();
-
-    static Music* nextMusic_;
-    static MusicPlayer* instance_;
-
-    static const int FADING_MS = 500;
 };
 
-#endif //__MusicPlayer_H_
+#endif //__MyGameObject_H_

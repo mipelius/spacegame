@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// Copyright (C) 2014  Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,29 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MusicPlayer_H_
-#define __MusicPlayer_H_
+#ifndef __Location_H_
+#define __Location_H_
 
-class Music;
+class Rect;
 
-#include "Player.h"
+#include "Vector.h"
 
-class MusicPlayer : public Player {
-
+class Point {
 public:
-    static MusicPlayer* getInstance();
-    void play(Music *music);
-    void stop();
+    double x, y;
+    Point(double x, double y);
+    ~Point();
 
-private:
-    MusicPlayer();
+    bool equals(Point otherPoint);
 
-    static void musicFinished();
+    Point operator + (const Vector& vector);
+    Point operator - (const Vector& vector);
+    double distance(Point otherPoint);
 
-    static Music* nextMusic_;
-    static MusicPlayer* instance_;
-
-    static const int FADING_MS = 500;
+    bool isIn(Rect& rect);
 };
 
-#endif //__MusicPlayer_H_
+
+#endif //__Location_H_

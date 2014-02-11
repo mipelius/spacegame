@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// Copyright (C) 2014  Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,29 +14,30 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MusicPlayer_H_
-#define __MusicPlayer_H_
+#ifndef __Rect_H_
+#define __Rect_H_
 
-class Music;
+#include "Point.h"
 
-#include "Player.h"
-
-class MusicPlayer : public Player {
-
+class Rect {
 public:
-    static MusicPlayer* getInstance();
-    void play(Music *music);
-    void stop();
+    double x1;
+    double y1;
+    double x2;
+    double y2;
 
-private:
-    MusicPlayer();
+    Rect(double x1, double y1, double x2, double y2);
 
-    static void musicFinished();
+    void setLocation(Point point);
 
-    static Music* nextMusic_;
-    static MusicPlayer* instance_;
+    double getWidth();
+    double getHeight();
 
-    static const int FADING_MS = 500;
+    bool intersectsWith(Rect otherRectangle);
+    bool intersectsWithLine(double x1, double y1, double x2, double y2);
+
+    void copy(Rect rect);
 };
 
-#endif //__MusicPlayer_H_
+
+#endif //__Rect_H_
