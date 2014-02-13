@@ -40,8 +40,8 @@ Body::Body(double mass) :
 
     // events
 
-    bodyCollision   (   new Event(this) ),
-    mapCollision    (   new Event(this) ),
+    bodyCollision   (   new Event<Body, BodyCollisionEventArgs>(this) ),
+    mapCollision    (   new Event<Body, EventArgs>(this) ),
 
     // private member objects
 
@@ -131,9 +131,7 @@ bool Body::detectMapCollision_() {
     Map* map = this->getWorld()->getMap();
     if (map && map->detectCollisionWith(this)) {
 
-        EventArgs* args = new EventArgs;
-        mapCollision->raise(args);
-        delete args;
+        mapCollision->raise(EventArgs());
 
         return true;
     }
@@ -149,10 +147,7 @@ bool Body::detectCollisionWith_(Body *otherBody) {
         if (this->collisionShape_->intersectsWith(otherBody->getCollisionShape()) ||
                 otherBody->getCollisionShape()->intersectsWith(this->collisionShape_)) {
 
-            BodyCollisionEventArgs* args = new BodyCollisionEventArgs();
-            args->otherBody = otherBody;
-            bodyCollision->raise(args);
-            delete args;
+            bodyCollision->raise(BodyCollisionEventArgs(otherBody));
 
             return true;
         }

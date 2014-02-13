@@ -14,10 +14,35 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __IEventOwner_H_
-#define __IEventOwner_H_
+#ifndef __SpriteContainer_H_
+#define __SpriteContainer_H_
 
-class IEventOwner {
+class Sprite;
+class GameObjectBase;
+template <typename T> class Property;
+
+#include <list>
+#include "IDrawable.h"
+
+class SpriteContainer : public IDrawable {
+
+public:
+    SpriteContainer();
+    ~SpriteContainer();
+
+    void draw(Camera* camera, Rect renderingAreaRect);
+    void addSprite(Sprite* sprite);
+
+    Property<Point>* const location;
+    Property<double>* const angle;
+
+private:
+    GameObjectBase * parentObject_;
+    std::list<Sprite*> sprites_;
+
+    Point location_;
+    double angle_;
 };
 
-#endif //__IEventOwner_H_
+
+#endif //__SpriteContainer_H_

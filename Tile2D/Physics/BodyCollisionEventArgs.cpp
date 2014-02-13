@@ -15,3 +15,6 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "BodyCollisionEventArgs.h"
+#include "Body.h"
+
+BodyCollisionEventArgs::BodyCollisionEventArgs(Body *otherBody) : otherBody(otherBody) { }

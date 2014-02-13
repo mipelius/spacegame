@@ -19,8 +19,26 @@
 #ifndef __MyGameObject_H_
 #define __MyGameObject_H_
 
+#include "Body.h"
+#include "IEventHandler.h"
+#include "SpriteContainer.h"
+
 class MyGameObject {
 
+public:
+    MyGameObject();
+    ~MyGameObject();
+
+    Body* const body;
+    SpriteContainer* const spriteContainer;
+
+    Property<Point>* const location;
+
+private:
+
+    Point location_;
+
+    class Body_MapCollisionEventHandler;
 };
 
 #endif //__MyGameObject_H_

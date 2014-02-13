@@ -15,15 +15,24 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "precompile.h"
-#include "DrawableObject.h"
+#include "SpriteContainer.h"
 #include "Camera.h"
 #include "Sprite.h"
+#include "SimpleProperty.h"
 
-DrawableObject::DrawableObject() : location_(Point(0, 0)), angle_(0) { }
+SpriteContainer::SpriteContainer() :
+    location    (   new SimpleProperty<Point>   (&location_)    ),
+    angle       (   new SimpleProperty<double>  (&angle_)       ),
 
-DrawableObject::~DrawableObject() { }
+    location_   (Point(0, 0)),
+    angle_      (0          )
+{
 
-void DrawableObject::draw(Camera* camera, Rect renderingAreaRect) {
+}
+
+SpriteContainer::~SpriteContainer() { }
+
+void SpriteContainer::draw(Camera* camera, Rect renderingAreaRect) {
     if (!parentObject_) return;
 
     Rect cameraRect = camera->areaRect->get();
@@ -33,22 +42,6 @@ void DrawableObject::draw(Camera* camera, Rect renderingAreaRect) {
     }
 }
 
-void DrawableObject::addSprite(Sprite *sprite) {
+void SpriteContainer::addSprite(Sprite *sprite) {
     sprites_.push_back(sprite);
-}
-
-void DrawableObject::setAngle(double angle) {
-    angle_ = angle;
-}
-
-double DrawableObject::getAngle() {
-    return angle_;
-}
-
-Point DrawableObject::getLocation() {
-    return location_;
-}
-
-void DrawableObject::setLocation(Point location) {
-    location_ = location;
 }

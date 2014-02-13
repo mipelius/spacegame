@@ -24,10 +24,12 @@
 #include "Body.h"
 #include "PhysicsWorld.h"
 
-#include "DrawableObject.h"
+#include "SpriteContainer.h"
 #include "DrawableMap.h"
 #include "MapTexture.h"
 #include "Camera.h"
+
+#include "MyGameObject.h"
 
 Game::Game() {
 
@@ -78,13 +80,13 @@ Game::Game() {
 
     // --- PLAYER ---
 
-    Body* body = new Body(200);
-    body->applyForce(Vector(200000, -1000000));
+    myGameObject_ = new MyGameObject();
+    myGameObject_->body->location->set(Point(4000, 8000));
 
-    body->location->set(Point(10000, 10000));
-    world_->add(body);
+    world_->add(myGameObject_->body);
+    canvas->add(myGameObject_->spriteContainer);
 
-    camera_->location->bind(body->location);
+    camera_->location->bind(myGameObject_->body->location);
 }
 
 void Game::launch() {
@@ -96,9 +98,16 @@ void Game::launch() {
 
         keys = SDL_GetKeyboardState(0);
 
-        if (keys[SDL_SCANCODE_LEFT]);
-        if (keys[SDL_SCANCODE_RIGHT]);
-        if (keys[SDL_SCANCODE_UP]);
+        if (keys[SDL_SCANCODE_LEFT]) {
+            myGameObject_->body->torque->set(-200);
+        }
+        if (keys[SDL_SCANCODE_RIGHT]) {
+            myGameObject_->body->torque->set(200);
+        }
+        if (keys[SDL_SCANCODE_UP]) {
+            double angle = myGameObject_->body->angle->get();
+            myGameObject_->body->applyForce(Vector::byAngle(angle, 20000));
+        }
         if (keys[SDL_SCANCODE_SPACE]);
 
         /// --- PHYSICS ---

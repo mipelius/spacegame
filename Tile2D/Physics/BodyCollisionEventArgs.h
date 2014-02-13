@@ -23,7 +23,9 @@ class Body;
 
 class BodyCollisionEventArgs : public EventArgs {
 public:
-    Body* otherBody;
+    BodyCollisionEventArgs(Body* otherBody);
+
+    Body* const otherBody;
 };
 
 

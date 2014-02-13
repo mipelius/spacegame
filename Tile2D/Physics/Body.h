@@ -19,14 +19,15 @@
 
 #include "Point.h"
 #include "Vector.h"
-#include "IEventOwner.h"
 #include "Property.h"
 
-class Event;
+template <typename TOwner, typename TArgs> class Event;
 class PhysicsWorld;
 class CollisionShape;
+class BodyCollisionEventArgs;
+class EventArgs;
 
-class Body : public IEventOwner {
+class Body {
     friend class PhysicsWorld;
 
 public:
@@ -45,8 +46,8 @@ public:
 
     // events
 
-    Event* const bodyCollision;
-    Event* const mapCollision;
+    Event<Body, BodyCollisionEventArgs>* const bodyCollision;
+    Event<Body, EventArgs>* const mapCollision;
 
     // methods
 

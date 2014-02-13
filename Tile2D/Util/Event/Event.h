@@ -14,26 +14,52 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "EventHandler.h"
-
 #ifndef __Event_H_
 #define __Event_H_
 
-class std::list;
-class EventArgs;
-class EventHandler;
-class IEventOwner;
+#include <list>
 
-class Event {
-private:
-    std::list<EventHandler*> eventHandlers_;
-    IEventOwner* eventOwner_;
+template <typename TOwner, typename TArgs> class IEventHandler;
+
+template <typename TOwner, typename TArgs> class Event {
+
 public:
-    Event(IEventOwner* eventOwner);
+    Event(TOwner* eventOwner);
     ~Event();
-    void raise(EventArgs *eventArgs);
-    void add(EventHandler *eventHandler);
+
+    void raise(TArgs eventArgs);
+    void add(IEventHandler<TOwner, TArgs> * eventHandler);
+
+private:
+    std::list<IEventHandler<TOwner, TArgs>* > eventHandlers_;
+    TOwner* eventOwner_;
 };
+
+#include "IEventHandler.h"
+
+template <typename TOwner, typename TArgs>
+Event<TOwner, TArgs>::Event(TOwner *eventOwner) {
+    this->eventOwner_ = eventOwner;
+}
+
+template <typename TOwner, typename TArgs>
+Event<TOwner, TArgs>::~Event() {
+    for (typename std::list<IEventHandler<TOwner, TArgs> *>::iterator i = eventHandlers_.begin(); i != eventHandlers_.end(); i++) {
+        delete (*i);
+    }
+}
+
+template <typename TOwner, typename TArgs>
+void Event<TOwner, TArgs>::raise(TArgs eventArgs) {
+    for (typename std::list<IEventHandler<TOwner, TArgs> *>::iterator i = eventHandlers_.begin(); i != eventHandlers_.end(); i++) {
+        (*i)->handle(eventOwner_, eventArgs);
+    }
+}
+
+template <typename TOwner, typename TArgs>
+void Event<TOwner, TArgs>::add(IEventHandler<TOwner, TArgs> * eventHandler) {
+    eventHandlers_.push_back(eventHandler);
+}
 
 
 #endif //__Event_H_
