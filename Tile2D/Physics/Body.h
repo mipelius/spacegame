@@ -28,7 +28,6 @@ class CollisionShape;
 
 class Body : public IEventOwner {
     friend class PhysicsWorld;
-    friend class GameObjectBase;
 
 public:
     // properties
@@ -70,6 +69,17 @@ protected:
     CollisionShape* collisionShape_;
 
 private:
+    double mass_;
+
+    double angle_;
+    double angularVelocity_;
+    double torque_;
+
+    Point location_;
+    Vector speed_;
+    Vector velocity_;
+    Vector force_;
+
     bool stepIsIgnored_;
     bool entityCollisionDetectionIsIgnored_;
     bool detectCollisionWith_(Body *otherBody);

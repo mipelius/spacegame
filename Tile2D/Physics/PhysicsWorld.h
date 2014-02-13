@@ -41,9 +41,13 @@ public:
     Property<double>* const airDensity;
 
 private:
-    std::list<Body *> gameEntities;
-    Map* map;
-    void detectCollision(Body * entity);
+    Vector gForce_;
+    double metersPerPixel_;
+    double airDensity_;
+
+    std::list<Body *> bodies_;
+    Map* map_;
+    void detectCollision_(Body *entity);
 };
 
 #endif //__PhysicsWorld_H_

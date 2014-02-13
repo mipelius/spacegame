@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,32 +14,31 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Camera_H_
-#define __Camera_H_
+#ifndef __SimpleReadableProperty_H_
+#define __SimpleReadableProperty_H_
 
-class Body;
-class Renderer;
+#include "ReadableProperty.h"
 
-#include "Rect.h"
-#include "Point.h"
+// definition
 
-#include "Property.h"
-
-class Camera {
+template <typename T>
+class SimpleReadableProperty : public ReadableProperty<T> {
 
 public:
-    Property<Point>* const location;
-    Property<Rect>* const areaRect;
-    Property<Rect>* const boundsRect;
+    SimpleReadableProperty(T* actualData);
 
-    Camera();
-    ~Camera();
-
-private:
-    Rect areaRect_;
-    Rect boundsRect_;
-
-    class LocationProperty;
+protected:
+    T getActual();
 };
 
-#endif //__Camera_H_
+// implementation
+
+template <typename T>
+SimpleReadableProperty<T>::SimpleReadableProperty(T* actualData) : ReadableProperty<T>((void*)actualData) { }
+
+template <typename T>
+T SimpleReadableProperty<T>::getActual() {
+    return *(T*)this->actualData_;
+}
+
+#endif //__SimpleReadableProperty_H_

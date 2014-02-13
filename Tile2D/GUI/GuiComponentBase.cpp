@@ -29,11 +29,11 @@ GuiComponentBase::GuiComponentBase() {
     window_ = nullptr;
 }
 
-void GuiComponentBase::setMargin(double top, double bottom, double left, double right) {
+void GuiComponentBase::setMargin(double top, double right, double bottom, double left) {
     marginTop_ = top;
+    marginRight_ = right;
     marginBottom_ = bottom;
     marginLeft_ = left;
-    marginRight_ = right;
 }
 
 void GuiComponentBase::setAnchor(GuiComponentBase::Anchor anchor) {

@@ -79,6 +79,8 @@ Game::Game() {
     // --- PLAYER ---
 
     Body* body = new Body(200);
+    body->applyForce(Vector(200000, -1000000));
+
     body->location->set(Point(10000, 10000));
     world_->add(body);
 
@@ -108,6 +110,8 @@ void Game::launch() {
         /// --- RENDERING ---
 
         App::getInstance()->getWindow()->update();
+
+
     }
 }
 

@@ -22,23 +22,41 @@
 #include "PhysicsWorld.h"
 #include "Map.h"
 #include "BodyCollisionEventArgs.h"
+#include "SimpleProperty.h"
 
 Body::Body(double mass) :
-    mass(               new Property<double>    (mass)          ),
+    // properties
 
-    angle(              new Property<double>    (0.0)           ),
-    angularVelocity(    new Property<double>    (0.0)           ),
-    torque(             new Property<double>    (0.0)           ),
+    mass            (   new SimpleProperty<double>  (&mass_             )   ),
 
-    location(           new Property<Point>     (Point(0, 0))   ),
-    speed(              new Property<Vector>    (Vector(0, 0))  ),
-    velocity(           new Property<Vector>    (Vector(0, 0))  ),
-    force(              new Property<Vector>    (Vector(0, 0))  ),
+    angle           (   new SimpleProperty<double>  (&angle_            )   ),
+    angularVelocity (   new SimpleProperty<double>  (&angularVelocity_  )   ),
+    torque          (   new SimpleProperty<double>  (&torque_           )   ),
 
-    bodyCollision(      new Event(this)                         ),
-    mapCollision(       new Event(this)                         )
+    location        (   new SimpleProperty<Point>   (&location_         )   ),
+    speed           (   new SimpleProperty<Vector>  (&speed_            )   ),
+    velocity        (   new SimpleProperty<Vector>  (&velocity_         )   ),
+    force           (   new SimpleProperty<Vector>  (&force_            )   ),
+
+    // events
+
+    bodyCollision   (   new Event(this) ),
+    mapCollision    (   new Event(this) ),
+
+    // private member objects
+
+    location_       (   Point(0,0)  ),
+    speed_          (   Vector(0,0) ),
+    velocity_       (   Vector(0,0) ),
+    force_          (   Vector(0,0) )
 
 {
+    mass_ = mass;
+
+    angle_ = 0.0;
+    angularVelocity_ = 0.0;
+    torque_ = 0.0;
+
     entityCollisionDetectionIsIgnored_ = false;
     stepIsIgnored_ = false;
     gameWorld_ = nullptr;
@@ -63,59 +81,46 @@ Body::~Body() {
 
 void Body::step_(double timeElapsedSec) {
     if (!stepIsIgnored_) {
-
-        // store values from properties to local variables
-        // (we don't want to set the property values during the calculations)
-
-        double angle = this->angle->get();
-        double angularVelocity = this->angularVelocity->get();
-        double torque = this->torque->get();
-
-        Point location = this->location->get();
-        Vector velocity = this->velocity->get();
-        Vector speed = this->speed->get();
-        Vector force = this->force->get();
-
         // calculate air resistance
 
         Vector airResistance = Vector(0, 0);
 
-        if (speed.x != 0 || speed.y != 0) {
-            double speedLengthPow2 = speed.x * speed.x + speed.y * speed.y;
-            Vector airResistanceUnitVector = (speed * -1) * (1 / sqrt(speed.x * speed.x + speed.y * speed.y));
+        if (speed_.x != 0 || speed_.y != 0) {
+            double speedLengthPow2 = speed_.x * speed_.x + speed_.y * speed_.y;
+            Vector airResistanceUnitVector = (speed_ * -1) * (1 / sqrt(speed_.x * speed_.x + speed_.y * speed_.y));
             airResistance = airResistanceUnitVector * speedLengthPow2 * (0.5 * gameWorld_->airDensity->get());
         }
 
-        Vector totalForce = force + airResistance;
+        Vector totalForce = force_ + airResistance;
 
         // use acceleration for updating speed --> velocity --> location
 
         Vector acceleration = totalForce * (1 / this->mass->get());
         acceleration += gameWorld_->gForce->get();
-        speed += acceleration;
-        velocity = speed * timeElapsedSec * gameWorld_->metersPerPixel->get();
-        location = location + velocity;
+        speed_ += acceleration;
+        velocity_ = speed_ * timeElapsedSec * gameWorld_->metersPerPixel->get();
+        location_ = location_ + velocity_;
 
         // apply torque (not very nicely implemented, but good enough)
 
-        angularVelocity = torque * timeElapsedSec;
-        angle = angle + angularVelocity;
+        angularVelocity_ = torque_ * timeElapsedSec;
+        angle_ = angle_ + angularVelocity_;
 
         // remove all applied forces
 
-        force = Vector(0, 0);
-        torque = torque / (this->mass->get() * timeElapsedSec);
+        force_ = Vector(0, 0);
+        torque_ = torque_ / (this->mass->get() * timeElapsedSec);
 
-        // store values to properties
+        // update dependent properties
 
-        this->angle->set(angle);
-        this->angularVelocity->set(angularVelocity);
-        this->torque->set(torque);
+        this->angle->updateDependentProperties();
+        this->angularVelocity->updateDependentProperties();
+        this->torque->updateDependentProperties();
 
-        this->location->set(location);
-        this->velocity->set(velocity);
-        this->speed->set(speed);
-        this->force->set(force);
+        this->location->updateDependentProperties();
+        this->velocity->updateDependentProperties();
+        this->speed->updateDependentProperties();
+        this->force->updateDependentProperties();
     }
 
     stepIsIgnored_ = false;

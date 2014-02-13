@@ -34,7 +34,7 @@ public:
 
     Rect getRenderingAreaRect();
 
-    void setMargin(double top, double bottom, double left, double right);
+    void setMargin(double top, double right, double bottom, double left);
     void setAnchor(Anchor anchor);
 
     void addComponent(GuiComponentBase* guiComponent);

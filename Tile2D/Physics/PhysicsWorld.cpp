@@ -18,17 +18,23 @@
 #include "PhysicsWorld.h"
 #include "Body.h"
 #include "Map.h"
+#include "SimpleProperty.h"
 
 PhysicsWorld::PhysicsWorld(
         Vector gForce,
         double metersPerPixel,
         double airDensity
 ):
-    gForce(             new Property<Vector>    (gForce)            ),
-    metersPerPixel(     new Property<double>    (metersPerPixel)    ),
-    airDensity(         new Property<double>    (airDensity)        )
+    gForce(             new SimpleProperty<Vector>    (&gForce_)           ),
+    metersPerPixel(     new SimpleProperty<double>    (&metersPerPixel_)   ),
+    airDensity(         new SimpleProperty<double>    (&airDensity_)       ),
+
+    gForce_(gForce)
 {
-    this->map = nullptr;
+    metersPerPixel_ = metersPerPixel;
+    airDensity_ = airDensity;
+
+    this->map_ = nullptr;
 }
 
 PhysicsWorld::~PhysicsWorld() {
@@ -38,7 +44,7 @@ PhysicsWorld::~PhysicsWorld() {
 }
 
 void PhysicsWorld::add(Body *gameEntity) {
-    gameEntities.push_back(gameEntity);
+    bodies_.push_back(gameEntity);
     gameEntity->setWorld_(this);
 }
 
@@ -46,29 +52,29 @@ void PhysicsWorld::step(double timeSeconds) {
     if (timeSeconds == 0.0) return;
 
     // update velocities and new locations
-    for(std::list<Body *>::iterator it = gameEntities.begin(); it != gameEntities.end(); it++) {
+    for(std::list<Body *>::iterator it = bodies_.begin(); it != bodies_.end(); it++) {
         (*it)->step_(timeSeconds);
     }
 
     // now all the new locations are updated -> detect collision
-    for(std::list<Body *>::iterator it = gameEntities.begin(); it != gameEntities.end(); it++) {
-        detectCollision((*it));
+    for(std::list<Body *>::iterator it = bodies_.begin(); it != bodies_.end(); it++) {
+        detectCollision_((*it));
     }
 }
 
-void PhysicsWorld::detectCollision(Body *entity) {
+void PhysicsWorld::detectCollision_(Body *entity) {
     entity->detectMapCollision_();
 
-    for (std::list<Body *>::iterator it = gameEntities.begin(); it != gameEntities.end(); it++) {
+    for (std::list<Body *>::iterator it = bodies_.begin(); it != bodies_.end(); it++) {
         if ((*it) == entity) continue;
         entity->detectCollisionWith_(*it);
     }
 }
 
 void PhysicsWorld::setMap(Map* map) {
-    this->map = map;
+    this->map_ = map;
 }
 
 Map *PhysicsWorld::getMap() {
-    return this->map;
+    return this->map_;
 }
