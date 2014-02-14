@@ -3,7 +3,7 @@ SpaceGame - project
 
 SpaceGame is a simple 2d game.
 
-The aim of this project is to learn to write a simple 2D game using C++, SDL2 and OpenGL. I try to keep the structure of the code as simple as possible (less than 20 classes). The architecture is quite rigid, so the code may not be reusable. The focus is on the game programming basics (physics, rendering and so on), NOT on architectural design.
+The aim of this project is to learn to write a 2D game using C++, SDL2 and OpenGL. The original idea was to have a very simple architecture and concentrate on the game programming basics. However, In some point I was too unsatisfied with the complex and rigid code and decided to concentrate more on the architectural design. So, the project is divided in to two parts: the game engine library and the actual game. The game engine library (called Tile2D) provides some basic features such as GUI elements, sprites, dynamics, collision detection, path finding tools and some cross-cutting features such as events and (dependency)properties. The actual game (which might be quite simple) is going to be built on top of the Tile2D.
 
 Latest documentation: http://users.jyu.fi/~mipepelk/SpaceGame/docs/html/index.html
 
