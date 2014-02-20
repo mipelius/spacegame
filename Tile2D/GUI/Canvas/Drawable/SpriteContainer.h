@@ -18,7 +18,6 @@
 #define __SpriteContainer_H_
 
 class Sprite;
-class GameObjectBase;
 template <typename T> class Property;
 
 #include <list>
@@ -37,7 +36,6 @@ public:
     Property<double>* const angle;
 
 private:
-    GameObjectBase * parentObject_;
     std::list<Sprite*> sprites_;
 
     Point location_;

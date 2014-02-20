@@ -33,8 +33,6 @@ SpriteContainer::SpriteContainer() :
 SpriteContainer::~SpriteContainer() { }
 
 void SpriteContainer::draw(Camera* camera, Rect renderingAreaRect) {
-    if (!parentObject_) return;
-
     Rect cameraRect = camera->areaRect->get();
 
     for (std::list<Sprite*>::iterator i = sprites_.begin(); i != sprites_.end(); i++) {

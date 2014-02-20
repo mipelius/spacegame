@@ -31,6 +31,9 @@
 
 #include "MyGameObject.h"
 
+#include "Music.h"
+#include "MusicPlayer.h"
+
 Game::Game() {
 
     // --- WINDOW PROPERTIES ---
@@ -82,6 +85,7 @@ Game::Game() {
 
     myGameObject_ = new MyGameObject();
     myGameObject_->body->location->set(Point(4000, 8000));
+    myGameObject_->body->location->bind(myGameObject_->location);
 
     world_->add(myGameObject_->body);
     canvas->add(myGameObject_->spriteContainer);
@@ -90,6 +94,8 @@ Game::Game() {
 }
 
 void Game::launch() {
+    App::getInstance()->getMusicPlayer()->play(new Music("music/spacegame.mp3"));
+
     const Uint8* keys;
     Uint32 timeMilliSec = 0;
 
@@ -99,16 +105,18 @@ void Game::launch() {
         keys = SDL_GetKeyboardState(0);
 
         if (keys[SDL_SCANCODE_LEFT]) {
-            myGameObject_->body->torque->set(-200);
+            myGameObject_->body->torque->set(-250);
         }
         if (keys[SDL_SCANCODE_RIGHT]) {
-            myGameObject_->body->torque->set(200);
+            myGameObject_->body->torque->set(250);
         }
         if (keys[SDL_SCANCODE_UP]) {
             double angle = myGameObject_->body->angle->get();
-            myGameObject_->body->applyForce(Vector::byAngle(angle, 20000));
+            myGameObject_->body->applyForce(Vector::byAngle(angle, 10000));
         }
-        if (keys[SDL_SCANCODE_SPACE]);
+        if (keys[SDL_SCANCODE_SPACE]) {
+            myGameObject_->location->set(Point(4000, 8000));
+        }
 
         /// --- PHYSICS ---
 
@@ -119,6 +127,7 @@ void Game::launch() {
         /// --- RENDERING ---
 
         App::getInstance()->getWindow()->update();
+
 
 
     }

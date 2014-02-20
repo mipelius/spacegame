@@ -24,6 +24,7 @@
 #include "Texture.h"
 #include "Sprite.h"
 #include "SimpleProperty.h"
+#include "Body.h"
 
 class MyGameObject::Body_MapCollisionEventHandler : public IEventHandler<Body, EventArgs> {
     void handle(Body* body, EventArgs args) {
@@ -46,10 +47,9 @@ MyGameObject::MyGameObject() :
     body->mapCollision->add(new Body_MapCollisionEventHandler());
 
     Point points[] = {
-        Point(-10, -10),
-        Point(10, -10),
-        Point(10, 10),
-        Point(-10, 10),
+        Point(-20, -20),
+        Point(20, 0),
+        Point(-20, 20),
     };
 
     CollisionShape* shape = new CollisionShape(points, 3);
@@ -58,7 +58,9 @@ MyGameObject::MyGameObject() :
 
     // sprite container
 
-    if (!texture) texture = new Texture("images/spaceship.png");
+    if (!texture) {
+        texture = new Texture("images/spaceship.png");
+    }
 
     Sprite* sprite = new Sprite(texture, Rect(-20, -20, 20, 20));
 

@@ -35,7 +35,6 @@ public:
 private:
     std::list<IDrawable*> drawables_;
     Camera* camera_;
-
 };
 
 #endif //__Canvas_H_

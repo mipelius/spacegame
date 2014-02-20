@@ -19,9 +19,11 @@
 #ifndef __MyGameObject_H_
 #define __MyGameObject_H_
 
-#include "Body.h"
-#include "IEventHandler.h"
-#include "SpriteContainer.h"
+class Body;
+class SpriteContainer;
+template <typename T> class Property;
+
+#include "Point.h"
 
 class MyGameObject {
 
