@@ -27,10 +27,12 @@ class GuiComponentBase {
     friend class GuiComponentBase;
 public:
     enum Anchor {TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT};
+    static const int SIZE_MAX_WIDTH = -1;
+    static const int SIZE_MAX_HEIGHT = -1;
 
     GuiComponentBase();
 
-    virtual void render() = 0;
+    virtual void render();
 
     Rect getRenderingAreaRect();
 

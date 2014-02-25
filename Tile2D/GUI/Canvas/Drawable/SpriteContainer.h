@@ -29,7 +29,7 @@ public:
     SpriteContainer();
     ~SpriteContainer();
 
-    void draw(Camera* camera, Rect renderingAreaRect);
+    void draw(Canvas* canvas);
     void addSprite(Sprite* sprite);
 
     Property<Point>* const location;

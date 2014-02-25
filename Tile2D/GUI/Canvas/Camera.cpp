@@ -83,3 +83,14 @@ Camera::~Camera() {
     delete areaRect;
     delete boundsRect;
 }
+
+
+void Camera::zoom(double amount) {
+    double ratio = areaRect_.getHeight() / areaRect_.getWidth();
+
+    areaRect_.x1 += amount;
+    areaRect_.y1 += amount * ratio;
+    areaRect_.x2 -= amount;
+    areaRect_.y2 -= amount * ratio;
+    areaRect->updateDependentProperties();
+}

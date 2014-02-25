@@ -35,6 +35,8 @@ public:
     Camera();
     ~Camera();
 
+    void zoom(double amount);
+
 private:
     Rect areaRect_;
     Rect boundsRect_;

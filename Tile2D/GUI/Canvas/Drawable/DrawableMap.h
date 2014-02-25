@@ -30,11 +30,15 @@ public:
     void setMap(Map* map);
     void setMapTexture(MapTexture* mapTexture);
 
-    void draw(Camera* camera, Rect renderingAreaRect);
+    void draw(Canvas* canvas);
 
 private:
     MapTexture* mapTexture_;
     Map* map_;
+
+    void drawMap(Canvas* canvas);
+    void drawSmallMap(Canvas* canvas);
+
 };
 
 #endif //__DrawableMap_H_

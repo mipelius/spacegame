@@ -29,7 +29,7 @@ private:
 public:
     MapTexture(int blockW, int blockH, int count, std::string fileNames[]);
 
-    void renderBlock(int x, int y, int w, int h, int textureNumber);
+    void renderBlock(double x, double y, double w, double h, int textureNumber);
 
     void glUnbind();
 

@@ -22,23 +22,19 @@
 #include "Camera.h"
 
 void Canvas::render() {
-    if (!camera_) return;
+    GuiComponentBase::render();
 
-    Rect rect = getRenderingAreaRect();
+    if (!camera_) return;
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, getWindow()->getW(), getWindow()->getH(), 0, -1.0, 1.0);
+    glOrtho(0, camera_->areaRect->get().getWidth(), camera_->areaRect->get().getHeight(), 0, -1.0, 1.0);
 
     glMatrixMode(GL_MODELVIEW);
 
-    glTranslated(rect.x1, rect.y1, 0.0);
-
-    for (std::list<IDrawable*>::iterator i = drawables_.begin(); i != drawables_.end(); i++) {
-        (*i)->draw(camera_, rect);
+    for (std::list<IDrawable *>::iterator i = drawables_.begin(); i != drawables_.end(); i++) {
+        (*i)->draw(this);
     }
-
-    glTranslated(-rect.x1, -rect.y1, 0.0);
 }
 
 void Canvas::add(IDrawable *drawable) {
@@ -54,3 +50,7 @@ Canvas::Canvas() {
 }
 
 Canvas::~Canvas() { }
+
+Camera *Canvas::getCamera() {
+    return camera_;
+}

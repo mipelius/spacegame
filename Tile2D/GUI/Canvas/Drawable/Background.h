@@ -22,26 +22,26 @@
 class Texture;
 
 class Background : public IDrawable {
-//private:
-//    static const int TEXTURE_CROSSFADE_RENDER_COUNT = 30;
-//
-//    Texture* texture_;
-//    Texture* oldTexture_;
-//
-//    bool textureIsCrossFading_;
-//    int textureCrossFadingPhase_;
-//
-//    double ratio_;
-//
-//    void renderTexture(Texture* texture, double opacity);
-//
-//public:
-//    Background();
-//
-//    void render();
-//
-//    void setRatio(double ratio);
-//    void setBackgroundTexture(Texture *texture);
+private:
+    static const int TEXTURE_CROSSFADE_RENDER_COUNT = 30;
+
+    Texture* texture_;
+    Texture* oldTexture_;
+
+    bool textureIsCrossFading_;
+    int textureCrossFadingPhase_;
+
+    double ratio_;
+
+    void renderTexture(Texture* texture, double opacity, Canvas* canvas);
+
+public:
+    Background();
+
+    void draw(Canvas* canvas);
+
+    void setRatio(double ratio);
+    void setTexture(Texture *texture);
 
 };
 

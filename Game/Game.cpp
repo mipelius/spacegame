@@ -34,16 +34,19 @@
 #include "Music.h"
 #include "MusicPlayer.h"
 
-Game::Game() {
+#include "GuiComponentBase.h"
+#include "Background.h"
+#include "Texture.h"
 
+Game::Game() {
     // --- WINDOW PROPERTIES ---
 
     int x = 0;
     int y = 0;
-    int w = 1280;
-    int h = 800;
+    int w = 1920;
+    int h = 1200;
 
-    bool enableFullScreen = false;
+    bool enableFullScreen = true;
 
     Window* window = App::getInstance()->getWindow();
     window->initialize(x, y, w, h, enableFullScreen);
@@ -52,9 +55,25 @@ Game::Game() {
 
     Canvas* canvas = new Canvas();
     canvas->setMargin(0, 0, 0, 0);
-    canvas->setAnchor(GuiComponentBase::Anchor::BOTTOM_RIGHT);
+    canvas->setW(Canvas::SIZE_MAX_WIDTH);
+    canvas->setH(Canvas::SIZE_MAX_HEIGHT);
+    canvas->setAnchor(Canvas::Anchor::TOP_LEFT);
+
+    Canvas* canvas2 = new Canvas();
+    canvas2->setMargin(10, 10, 10, 10);
+    canvas2->setW(400);
+    canvas2->setH(300);
+    canvas2->setAnchor(Canvas::Anchor::TOP_RIGHT);
+
+    Texture* texture = new Texture("images/bg1.jpg");
+    Background* background = new Background();
+    background->setRatio(0.5);
+    background->setTexture(texture);
+
+    canvas->add(background);
 
     window->addComponent(canvas);
+    window->addComponent(canvas2);
 
     // --- WORLD & MAP ---
 
@@ -71,15 +90,23 @@ Game::Game() {
             "images/blue_block.bmp",
     };
 
-    MapTexture *mapTexture = new MapTexture(10, 10,	3, filenames);
+    MapTexture *mapTexture = new MapTexture(10, 10, 3, filenames);
     drawableMap->setMapTexture(mapTexture);
+
+    canvas->add(drawableMap);
+    canvas2->add(drawableMap);
 
     camera_ = new Camera();
     camera_->boundsRect->set(Rect(0, 0, 20000, 20000));
-    camera_->areaRect->set(canvas->getRenderingAreaRect());
+    camera_->areaRect->set(Rect(0, 0, 1920, 1200));
 
-    canvas->add(drawableMap);
     canvas->setCamera(camera_);
+
+    radarCamera_ = new Camera();
+    radarCamera_->boundsRect->set(Rect(0, 0, 20000, 20000));
+    radarCamera_->areaRect->set(Rect(0, 0, 4000, 3000));
+
+    canvas2->setCamera(radarCamera_);
 
     // --- PLAYER ---
 
@@ -90,6 +117,11 @@ Game::Game() {
     world_->add(myGameObject_->body);
     canvas->add(myGameObject_->spriteContainer);
 
+
+    canvas->add(myGameObject_->spriteContainer);
+    canvas2->add(myGameObject_->spriteContainer);
+
+    radarCamera_->location->bind(myGameObject_->body->location);
     camera_->location->bind(myGameObject_->body->location);
 }
 
@@ -104,11 +136,17 @@ void Game::launch() {
 
         keys = SDL_GetKeyboardState(0);
 
+        myGameObject_->body->torque->set(0);
+
         if (keys[SDL_SCANCODE_LEFT]) {
-            myGameObject_->body->torque->set(-250);
+            if (myGameObject_->body->angularVelocity->get() > -10) {
+                myGameObject_->body->torque->set(-250);
+            }
         }
         if (keys[SDL_SCANCODE_RIGHT]) {
-            myGameObject_->body->torque->set(250);
+            if (myGameObject_->body->angularVelocity->get() < 10) {
+                myGameObject_->body->torque->set(250);
+            }
         }
         if (keys[SDL_SCANCODE_UP]) {
             double angle = myGameObject_->body->angle->get();
@@ -117,19 +155,26 @@ void Game::launch() {
         if (keys[SDL_SCANCODE_SPACE]) {
             myGameObject_->location->set(Point(4000, 8000));
         }
+        if (keys[SDL_SCANCODE_Z]) {
+            radarCamera_->zoom(-5);
+        }
+        if (keys[SDL_SCANCODE_X]) {
+            radarCamera_->zoom(5);
+        }
+
 
         /// --- PHYSICS ---
 
         Uint32 timeElapsedMilliSec = SDL_GetTicks() - timeMilliSec;
-        world_->step(timeElapsedMilliSec / 1000.0);
         timeMilliSec = SDL_GetTicks();
+        world_->step(timeElapsedMilliSec / 1000.0);
+        timeElapsedMilliSec = SDL_GetTicks() - timeMilliSec;
+        timeMilliSec = SDL_GetTicks();
+        world_->step(timeElapsedMilliSec / 1000.0);
 
         /// --- RENDERING ---
 
         App::getInstance()->getWindow()->update();
-
-
-
     }
 }
 

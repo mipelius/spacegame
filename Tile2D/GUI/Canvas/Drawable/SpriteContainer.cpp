@@ -19,6 +19,7 @@
 #include "Camera.h"
 #include "Sprite.h"
 #include "SimpleProperty.h"
+#include "Canvas.h"
 
 SpriteContainer::SpriteContainer() :
     location    (   new SimpleProperty<Point>   (&location_)    ),
@@ -32,8 +33,8 @@ SpriteContainer::SpriteContainer() :
 
 SpriteContainer::~SpriteContainer() { }
 
-void SpriteContainer::draw(Camera* camera, Rect renderingAreaRect) {
-    Rect cameraRect = camera->areaRect->get();
+void SpriteContainer::draw(Canvas* canvas) {
+    Rect cameraRect = canvas->getCamera()->areaRect->get();
 
     for (std::list<Sprite*>::iterator i = sprites_.begin(); i != sprites_.end(); i++) {
         (*i)->render(Point(location_.x - cameraRect.x1, location_.y - cameraRect.y1), angle_);

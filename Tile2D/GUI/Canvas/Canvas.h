@@ -29,11 +29,12 @@ public:
     ~Canvas();
 
     void render();
-    void add(IDrawable* drawable);
+    void add(IDrawable * drawable);
     void setCamera(Camera* camera);
+    Camera* getCamera();
 
 private:
-    std::list<IDrawable*> drawables_;
+    std::list<IDrawable *> drawables_;
     Camera* camera_;
 };
 

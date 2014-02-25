@@ -75,8 +75,8 @@ void MapTexture::createGlTexture(SDL_Surface *surface) {
     glBindTexture(GL_TEXTURE_2D, texture);
 
     // Set the texture's stretching properties
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     // Edit the texture object's image data using the information SDL_Surface gives us
     glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, surface->w, surface->h, 0,
@@ -92,16 +92,16 @@ void MapTexture::glUnbind() {
     glDisable(GL_TEXTURE_2D);
 }
 
-void MapTexture::renderBlock(int x, int y, int w, int h, int textureNumber) {
+void MapTexture::renderBlock(double x, double y, double w, double h, int textureNumber) {
     glBegin(GL_QUADS);
     GLfloat textureWidth = 1.0 / count;
-    glTexCoord2f(textureNumber * textureWidth, 0);
-    glVertex2i(x, y);
-    glTexCoord2f((textureNumber + 1) * textureWidth, 0);
-    glVertex2i(x + w, y);
-    glTexCoord2f((textureNumber + 1) * textureWidth, 1);
-    glVertex2i(x + w, y + h);
-    glTexCoord2f(textureNumber * textureWidth, 1);
-    glVertex2i(x, y + h);
+    glTexCoord2f(textureNumber * textureWidth + 0.1, 0);
+    glVertex2d(x, y);
+    glTexCoord2f((textureNumber + 1) * textureWidth - 0.1, 0);
+    glVertex2d(x + w, y);
+    glTexCoord2f((textureNumber + 1) * textureWidth - 0.1, 1);
+    glVertex2d(x + w, y + h);
+    glTexCoord2f(textureNumber * textureWidth + 0.1, 1);
+    glVertex2d(x, y + h);
     glEnd();
 }

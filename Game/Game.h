@@ -31,6 +31,7 @@ private:
     Map* map_;
     PhysicsWorld * world_;
     Camera* camera_;
+    Camera* radarCamera_;
 
     MyGameObject* myGameObject_;
     Body* playerBody_;

@@ -19,15 +19,46 @@
 #include "MapTexture.h"
 #include "Map.h"
 #include "Camera.h"
+#include "Canvas.h"
 
-DrawableMap::DrawableMap() { }
+DrawableMap::DrawableMap() {
+    mapTexture_ = nullptr;
+    map_ = nullptr;
+}
 
 DrawableMap::~DrawableMap() { }
 
-void DrawableMap::draw(Camera* camera, Rect renderingAreaRect) {
-    if (!mapTexture_ || !map_) return;
+void DrawableMap::draw(Canvas* canvas) {
+    if (!map_) return;
 
-    Rect rect = camera->areaRect->get();
+    double blockSizeW =
+            canvas->getRenderingAreaRect().getWidth() /
+            canvas->getCamera()->areaRect->get().getWidth() *
+            map_->getBlockW();
+
+    double blockSizeH =
+            canvas->getRenderingAreaRect().getHeight() /
+            canvas->getCamera()->areaRect->get().getHeight() *
+            map_->getBlockH();
+
+    if (blockSizeW > 1.0 && blockSizeH > 1.0) {
+        drawMap(canvas);
+    }
+    else {
+        drawSmallMap(canvas);
+    }
+}
+
+void DrawableMap::setMap(Map *map) {
+    map_ = map;
+}
+
+void DrawableMap::setMapTexture(MapTexture *mapTexture) {
+    mapTexture_ = mapTexture;
+}
+
+void DrawableMap::drawMap(Canvas *canvas) {
+    Rect rect = canvas->getCamera()->areaRect->get();
 
     double x = rect.x1;
     double y = rect.y1;
@@ -59,7 +90,7 @@ void DrawableMap::draw(Camera* camera, Rect renderingAreaRect) {
 
     for (int i = iStart; i < iEnd; i++) {
         for (int j = jStart; j < jEnd; j++) {
-            if (!map_->getValue(i, j)) continue; // continue if the block is empty
+            if (map_->getValue(i, j) == 0) continue; // continue if the block is empty
             GLdouble color = sin(((i*map_->getBlockW() - x) / (float)w) * (M_PI / 1.0)) * sin(((j*map_->getBlockH() - y) / (float)h) * (M_PI / 1.0));
             color /= 1.5;
             color += 0.25;
@@ -67,8 +98,8 @@ void DrawableMap::draw(Camera* camera, Rect renderingAreaRect) {
             glColor4d(color, color, color, color);
 
             mapTexture_->renderBlock(
-                    (int)(i * map_->getBlockW() - x),
-                    (int)(j * map_->getBlockH() - y),
+                    i * map_->getBlockW() - x,
+                    j * map_->getBlockH() - y,
                     map_->getBlockW(),
                     map_->getBlockH(),
                     map_->getValue(i, j) - 1
@@ -79,10 +110,32 @@ void DrawableMap::draw(Camera* camera, Rect renderingAreaRect) {
     mapTexture_->glUnbind();
 }
 
-void DrawableMap::setMap(Map *map) {
-    map_ = map;
-}
+void DrawableMap::drawSmallMap(Canvas *canvas) {
+    Rect cameraRect = canvas->getCamera()->areaRect->get();
+    Rect renderingAreaRect = canvas->getRenderingAreaRect();
 
-void DrawableMap::setMapTexture(MapTexture *mapTexture) {
-    mapTexture_ = mapTexture;
+    double stepX = cameraRect.getWidth() / renderingAreaRect.getWidth();
+
+    double stepY = cameraRect.getHeight() / renderingAreaRect.getHeight();
+
+    glBegin(GL_QUADS);
+    for (double x = 0; x < cameraRect.getWidth(); x += stepX) {
+        for (double y = 0; y < cameraRect.getHeight(); y += stepY) {
+            int value = map_->getValueActual((int)(x + cameraRect.x1), (int)(y + cameraRect.y1));
+
+            if (value == 0) continue;
+
+            if (value % 3 == 2) glColor3f(0.7, 0.0, 0.0); // red
+            if (value % 3 == 1) glColor3f(0.0, 0.7, 0.0); // green
+            if (value % 3 == 0) glColor3f(0.0, 0.0, 0.7); // blue
+
+            glVertex2d(x, y);
+            glVertex2d(x + stepX, y);
+            glVertex2d(x + stepX, y + stepY);
+            glVertex2d(x, y + stepY);
+
+        }
+    }
+    glEnd();
+
 }

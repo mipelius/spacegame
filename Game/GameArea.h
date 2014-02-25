@@ -21,7 +21,7 @@ class Texture;
 class Music;
 
 #include "Rect.h"
-#include "BackgroundRenderer.h"
+#include "Background.h"
 #include "Music.h"
 
 class GameArea {

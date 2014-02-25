@@ -17,16 +17,19 @@
 #ifndef __IDrawable_H_
 #define __IDrawable_H_
 
-class Camera;
+class Canvas;
 
 #include "Rect.h"
 
 class IDrawable {
+    friend class Canvas;
+
+protected:
+    virtual void draw(Canvas* canvas) = 0;
+
 public:
     IDrawable() { };
     ~IDrawable() { };
-
-    virtual void draw(Camera* camera, Rect renderingAreaRect) = 0;
 };
 
 #endif //__IDrawable_H_
