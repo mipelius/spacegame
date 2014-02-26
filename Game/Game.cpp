@@ -56,11 +56,9 @@ Game::Game() {
 
     canvas_ = new Canvas();
     canvas_->setMargin(0, 0, 0, 0);
-    canvas_->setW(Canvas::SIZE_MAX_WIDTH);
-    canvas_->setH(Canvas::SIZE_MAX_HEIGHT);
-    canvas_->setAnchor(Canvas::Anchor::TOP_RIGHT);
-
-
+    canvas_->w->set(Canvas::SIZE_MAX_WIDTH);
+    canvas_->h->set(Canvas::SIZE_MAX_HEIGHT);
+    canvas_->anchor->set(Canvas::Anchor::TOP_RIGHT);
 
     Texture* texture = new Texture("images/bg1.jpg");
     Background* background = new Background();
@@ -112,27 +110,27 @@ Game::Game() {
 
     // --- SMALL MAP ---
 
-    Canvas*canvasSmallMap = new Canvas();
-    canvasSmallMap->setMargin(20, 20, 20, 20);
-    canvasSmallMap->setW(400);
-    canvasSmallMap->setH(300);
-    canvasSmallMap->setAnchor(Canvas::Anchor::TOP_RIGHT);
-    canvasSmallMap->showBounds();
-    canvasSmallMap->opacity_ = 0.5;
+    smallMapCanvas_ = new Canvas();
+    smallMapCanvas_->setMargin(20, 20, 20, 20);
+    smallMapCanvas_->w->set(400);
+    smallMapCanvas_->h->set(300);
+    smallMapCanvas_->anchor->bind(canvas_->anchor);
+    smallMapCanvas_->isBoundsVisible->set(true);
+    smallMapCanvas_->opacity->set(0.4);
 
     smallMapCamera_ = new Camera();
     smallMapCamera_->boundsRect->set(Rect(0, 0, 20000, 20000));
     smallMapCamera_->areaRect->set(Rect(0, 0, 4000, 3000));
     smallMapCamera_->location->bind(myGameObject_->body->location);
-    canvasSmallMap->setCamera(smallMapCamera_);
+    smallMapCanvas_->setCamera(smallMapCamera_);
 
-    canvasSmallMap->add(drawableMap);
+    smallMapCanvas_->add(drawableMap);
     Plot* plot = new Plot();
     plot->location->bind(myGameObject_->body->location);
     plot->size->set(1.0);
-    canvasSmallMap->add(plot);
+    smallMapCanvas_->add(plot);
 
-    canvas_->addComponent(canvasSmallMap);
+    canvas_->addComponent(smallMapCanvas_);
 }
 
 void Game::launch() {
@@ -170,6 +168,9 @@ void Game::launch() {
         }
         if (keys[SDL_SCANCODE_X]) {
             smallMapCamera_->zoom(5);
+        }
+        if (keys[SDL_SCANCODE_RETURN]) {
+            smallMapCanvas_->isVisible->toggle();
         }
 
         /// --- PHYSICS ---

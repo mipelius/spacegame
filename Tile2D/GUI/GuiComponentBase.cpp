@@ -17,15 +17,38 @@
 #include "precompile.h"
 #include "GuiComponentBase.h"
 #include "Window.h"
+#include "SimpleProperty.h"
+#include "SimpleBooleanProperty.h"
 
-GuiComponentBase::GuiComponentBase() {
+GuiComponentBase::GuiComponentBase() :
+    // properties
+
+    marginTop       (   new SimpleProperty<double>  (&marginTop_        )   ),
+    marginRight     (   new SimpleProperty<double>  (&marginRight_      )   ),
+    marginLeft      (   new SimpleProperty<double>  (&marginLeft_       )   ),
+    marginBottom    (   new SimpleProperty<double>  (&marginBottom_     )   ),
+
+    anchor          (   new SimpleProperty<Anchor>  (&anchor_           )   ),
+
+    w               (   new SimpleProperty<double>  (&w_                )   ),
+    h               (   new SimpleProperty<double>  (&h_                )   ),
+
+    opacity         (   new SimpleProperty<double>  (&opacity_          )   ),
+
+    isVisible       (   new SimpleBooleanProperty   (&isVisible_        )   ),
+    isBoundsVisible (   new SimpleBooleanProperty   (&isBoundsVisible_  )   )
+
+{
     parentGuiComponent_ = nullptr;
     opacity_ = 1.0;
-    anchor_ = Anchor::TOP_LEFT;
+
     marginTop_ = 0;
     marginBottom_ = 0;
     marginLeft_ = 0;
     marginRight_ = 0;
+
+    anchor_ = Anchor::TOP_LEFT;
+
     w_ = SIZE_MAX_WIDTH;
     h_ = SIZE_MAX_HEIGHT;
     window_ = nullptr;
@@ -34,15 +57,28 @@ GuiComponentBase::GuiComponentBase() {
     isBoundsVisible_ = false;
 }
 
-void GuiComponentBase::setMargin(double top, double right, double bottom, double left) {
-    marginTop_ = top;
-    marginRight_ = right;
-    marginBottom_ = bottom;
-    marginLeft_ = left;
+GuiComponentBase::~GuiComponentBase() {
+    delete marginTop;
+    delete marginRight;
+    delete marginBottom;
+    delete marginLeft;
+
+    delete anchor;
+
+    delete w;
+    delete h;
+
+    delete opacity;
+
+    delete isVisible;
+    delete isBoundsVisible;
 }
 
-void GuiComponentBase::setAnchor(GuiComponentBase::Anchor anchor) {
-    anchor_ = anchor;
+void GuiComponentBase::setMargin(double top, double right, double bottom, double left) {
+    marginTop->set(top);
+    marginRight->set(right);
+    marginBottom->set(bottom);
+    marginLeft->set(left);
 }
 
 void GuiComponentBase::setWindow(Window *window) {
@@ -65,7 +101,7 @@ Rect GuiComponentBase::getRenderingAreaRect() {
         parentRect.copy(parentGuiComponent_->getRenderingAreaRect());
     }
     else {
-        parentRect = Rect(0, 0, window_->getW(), window_->getH());
+        parentRect = Rect(0, 0, window_->w->get(), window_->h->get());
     }
 
     double w, h;
@@ -113,27 +149,9 @@ Window *GuiComponentBase::getWindow() {
     return parentGuiComponent_->getWindow();
 }
 
-void GuiComponentBase::setW(double w) {
-    w_ = w;
-}
-
-void GuiComponentBase::setH(double h) {
-    h_ = h;
-}
-
-void GuiComponentBase::toggleVisibility() {
-    isVisible_ = !isVisible_;
-}
-
-void GuiComponentBase::show() {
-    isVisible_ = true;
-}
-
-void GuiComponentBase::hide() {
-    isVisible_ = false;
-}
-
 void GuiComponentBase::render() {
+    if (!isVisible_) return;
+
     bool glBlendEnabled = false;
 
     if (opacity_ < 1.0) {
@@ -147,7 +165,7 @@ void GuiComponentBase::render() {
     Rect rect = getRenderingAreaRect();
 
     GLint x = (GLint)(rect.x1);
-    GLint y = (GLint)(getWindow()->getH() - rect.y2);
+    GLint y = (GLint)(getWindow()->h->get() - rect.y2);
     GLint w = (GLint)(rect.getWidth());
     GLint h = (GLint)(rect.getHeight());
 
@@ -165,6 +183,9 @@ void GuiComponentBase::render() {
         glOrtho(0, rect.getWidth(), rect.getHeight(), 0, -1, 1);
 
         glMatrixMode(GL_MODELVIEW);
+
+        glColor(1, 1, 1);
+
         glBegin(GL_LINE_LOOP);
         glVertex2d(1, 1);
         glVertex2d(rect.getWidth(), 1);
@@ -180,16 +201,4 @@ void GuiComponentBase::render() {
 
 void GuiComponentBase::glColor(double red, double green, double blue) {
     glColor4d(red, green, blue, opacity_);
-}
-
-void GuiComponentBase::hideBounds() {
-    isBoundsVisible_ = false;
-}
-
-void GuiComponentBase::showBounds() {
-    isBoundsVisible_ = true;
-}
-
-void GuiComponentBase::toggleBoundsVisibility() {
-    isBoundsVisible_ = !isBoundsVisible_;
 }

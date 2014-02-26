@@ -20,10 +20,15 @@
 #include "Camera.h"
 #include "Canvas.h"
 
-Background::Background() {
+Background::Background() : ratio( new SimpleProperty<double> (&ratio_) ) {
     texture_ = nullptr;
     ratio_ = 1.0;
 }
+
+Background::~Background() {
+    delete ratio;
+}
+
 
 void Background::setTexture(Texture *texture) {
     texture_ = texture;

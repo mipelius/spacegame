@@ -33,6 +33,8 @@ private:
     PhysicsWorld * world_;
     Canvas* canvas_;
     Camera* camera_;
+
+    Canvas* smallMapCanvas_;
     Camera* smallMapCamera_;
 
     MyGameObject* myGameObject_;

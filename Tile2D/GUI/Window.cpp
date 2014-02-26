@@ -17,10 +17,63 @@
 #include "precompile.h"
 #include "Window.h"
 #include "GuiComponentBase.h"
+#import "SimpleReadableProperty.h"
+
+class Window::PropertyLocation : public Property<Point> {
+
+public:
+    PropertyLocation(Window *actualData):Property(actualData) { }
+
+    Point getActual() {
+        Window* window = (Window*)actualData_;
+        return Point(window->x_, window->y_);
+    }
+
+    void setActual(Point point) {
+        Window* window = (Window*)actualData_;
+        SDL_SetWindowPosition(window->window_, (int)point.x, (int)point.y);
+        window->x_ = point.x;
+        window->y_ = point.y;
+    }
+};
+
+class Window::PropertyIsFullScreen : public Property<bool> {
+
+public:
+    PropertyIsFullScreen(Window *actualData):Property(actualData) { }
+
+    bool getActual() {
+        return ((Window*)actualData_)->isFullScreen_;
+    }
+
+    void setActual(bool value) {
+        Window* window = (Window*)actualData_;
+
+        int retValue;
+
+        if (value) {
+            retValue = SDL_SetWindowFullscreen(window->window_, SDL_WINDOW_FULLSCREEN);
+        }
+        else {
+            retValue = SDL_SetWindowFullscreen(window->window_, 0);
+        }
+
+        if (retValue == 0) {
+            window->isFullScreen_ = value;
+        }
+    }
+};
 
 Window* Window::instance_ = nullptr;
 
-Window::Window() { }
+Window::Window() :
+    location        (   new PropertyLocation                (this   )   ),
+    isFullScreen    (   new PropertyIsFullScreen            (this   )   ),
+    w               (   new SimpleReadableProperty<double>  (&w_    )   ),
+    h               (   new SimpleReadableProperty<double>  (&h_    )   )
+{
+    isInitialized_ = false;
+}
 
 Window::~Window() {
     if (window_) SDL_DestroyWindow(window_);
@@ -32,6 +85,8 @@ Window* Window::getInstance() {
 }
 
 void Window::initialize(int x, int y, int w, int h, bool enableFullScreen) {
+    if (isInitialized_) return;
+
     x_ = x;
     y_ = y;
     w_ = w;
@@ -60,12 +115,17 @@ void Window::initialize(int x, int y, int w, int h, bool enableFullScreen) {
         fprintf(stderr, "Error: %s", SDL_GetError());
         return;
     }
+
+    isFullScreen_ = enableFullScreen;
+    isFullScreen->updateDependentProperties();
+
+    isInitialized_ = true;
 }
 
 void Window::update() {
     // render
     glClear(GL_COLOR_BUFFER_BIT);
-    glViewport(0, 0, w_, h_);
+    glViewport(0, 0, (GLsizei)w_, (GLsizei)h_);
 
     for (std::list<GuiComponentBase*>::iterator i = guiComponents_.begin(); i != guiComponents_.end(); i++) {
         (*i)->render();
@@ -75,23 +135,16 @@ void Window::update() {
     SDL_GL_SwapWindow(window_);
 }
 
-int Window::getW() {
-    return w_;
-}
-
-int Window::getH() {
-    return h_;
-}
-
-int Window::getX() {
-    return x_;
-}
-
-int Window::getY() {
-    return y_;
-}
-
 void Window::addComponent(GuiComponentBase* guiComponent) {
     guiComponents_.push_back(guiComponent);
     guiComponent->setWindow(this);
+}
+
+void Window::setSize(double w, double h) {
+    SDL_SetWindowSize(window_, (int)w, (int)h);
+    w_ = w;
+    h_ = h;
+
+    this->w->updateDependentProperties();
+    this->h->updateDependentProperties();
 }

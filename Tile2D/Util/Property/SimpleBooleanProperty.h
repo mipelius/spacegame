@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,33 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Background_H_
-#define __Background_H_
+#include "SimpleProperty.h"
 
-#include "IDrawable.h"
-#include "Property.h"
+#ifndef __SimpleBooleanProperty_H_
+#define __SimpleBooleanProperty_H_
 
-class Texture;
-
-class Background : public IDrawable {
+class SimpleBooleanProperty : public SimpleProperty<bool> {
 
 public:
-    Background();
-    ~Background();
+    SimpleBooleanProperty(bool *actualData);
 
-    Property<double>* const ratio;
-
-    void draw(Canvas* canvas);
-
-    void setRatio(double ratio);
-    void setTexture(Texture *texture);
-
-private:
-    Texture* texture_;
-
-    double ratio_;
-
+    void toggle();
 };
 
-
-#endif //__BackgroundRenderer_H_
+#endif //__SimpleBooleanProperty_H_

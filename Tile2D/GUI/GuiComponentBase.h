@@ -21,6 +21,7 @@ class Window;
 
 #include <list>
 #include "Rect.h"
+#include "SimpleBooleanProperty.h"
 
 class GuiComponentBase {
     friend class Window;
@@ -31,6 +32,22 @@ public:
     static const int SIZE_MAX_HEIGHT = -1;
 
     GuiComponentBase();
+    ~GuiComponentBase();
+
+    Property<double>* const marginTop;
+    Property<double>* const marginRight;
+    Property<double>* const marginBottom;
+    Property<double>* const marginLeft;
+
+    Property<Anchor>* const anchor;
+
+    Property<double>* const w;
+    Property<double>* const h;
+
+    Property<double>* const opacity;
+
+    SimpleBooleanProperty* const isVisible;
+    SimpleBooleanProperty* const isBoundsVisible;
 
     virtual void renderActual() = 0;
 
@@ -39,24 +56,10 @@ public:
     Rect getRenderingAreaRect();
 
     void setMargin(double top, double right, double bottom, double left);
-    void setAnchor(Anchor anchor);
 
     void addComponent(GuiComponentBase* guiComponent);
 
     Window* getWindow();
-
-    void setW(double w);
-    void setH(double h);
-
-    void hide();
-    void show();
-    void toggleVisibility();
-
-    void hideBounds();
-    void showBounds();
-    void toggleBoundsVisibility();
-
-    double opacity_;
 
     void glColor(double red, double green, double blue);
 
@@ -67,6 +70,12 @@ private:
     void setWindow(Window* window);
     Window* window_;
     GuiComponentBase* parentGuiComponent_;
+
+    double marginTop_;
+    double marginRight_;
+    double marginBottom_;
+    double marginLeft_;
+
     Anchor anchor_;
 
     bool isVisible_;
@@ -75,10 +84,7 @@ private:
     double w_;
     double h_;
 
-    double marginTop_;
-    double marginBottom_;
-    double marginLeft_;
-    double marginRight_;
+    double opacity_;
 
     void setParent(GuiComponentBase *guiComponent);
 };

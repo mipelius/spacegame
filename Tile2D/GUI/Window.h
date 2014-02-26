@@ -21,19 +21,27 @@ class GuiComponentBase;
 
 #include <SDL2/SDL_video.h>
 #include <list>
+#include "Property.h"
+#include "Point.h"
 
 class Window {
+    friend class PropertyLocation;
+    friend class PropertyIsFullScreen;
 
 public:
+
     static Window* getInstance();
     void initialize(int x, int y, int w, int h, bool enableFullScreen);
     ~Window();
 
     void update();
-    int getW();
-    int getH();
-    int getX();
-    int getY();
+
+    Property<Point>* const location;
+    Property<bool>* const isFullScreen;
+    ReadableProperty<double>* const w;
+    ReadableProperty<double>* const h;
+
+    void setSize(double w, double h);
 
     void addComponent(GuiComponentBase* guiComponent);
 
@@ -47,10 +55,17 @@ private:
     SDL_Window* window_;
     SDL_GLContext context_;
 
-    int w_;
-    int h_;
-    int x_;
-    int y_;
+    double w_;
+    double h_;
+    double x_;
+    double y_;
+
+    bool isFullScreen_;
+
+    bool isInitialized_;
+
+    class PropertyLocation;
+    class PropertyIsFullScreen;
 };
 
 #endif //__Window_H_
