@@ -22,15 +22,11 @@
 
 Background::Background() {
     texture_ = nullptr;
-    oldTexture_ = nullptr;
     ratio_ = 1.0;
 }
 
 void Background::setTexture(Texture *texture) {
-    oldTexture_ = texture_;
     texture_ = texture;
-    textureIsCrossFading_ = true;
-    textureCrossFadingPhase_ = 0;
 }
 
 void Background::setRatio(double ratio) {
@@ -38,53 +34,38 @@ void Background::setRatio(double ratio) {
 }
 
 void Background::draw(Canvas* canvas) {
-    if (textureIsCrossFading_) {
-        double opacity = (double)textureCrossFadingPhase_ / TEXTURE_CROSSFADE_RENDER_COUNT;
-
-        renderTexture(texture_, opacity, canvas);
-        renderTexture(oldTexture_, 1.0 - opacity, canvas);
-
-        textureCrossFadingPhase_++;
-        if (textureCrossFadingPhase_ > TEXTURE_CROSSFADE_RENDER_COUNT) {
-            textureCrossFadingPhase_ = 0;
-            textureIsCrossFading_ = false;
-        }
-    }
-    else renderTexture(texture_, 1.0, canvas);
-}
-
-void Background::renderTexture(Texture *texture, double opacity, Canvas* canvas) {
-    if (!texture) return;
-
-    texture->glBind();
-
-    if (opacity < 1.0) {
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    }
-
-    glColor4f(1.0, 1.0, 1.0, (GLfloat)opacity);
-
     Rect rect = canvas->getCamera()->areaRect->get();
-    Point location = canvas->getCamera()->location->get();
 
-    GLdouble x = (location.x * ratio_) / texture->getW();
-    GLdouble y = (location.y * ratio_) / texture->getH();
-    GLdouble w = rect.getWidth() / texture->getW();
-    GLdouble h = rect.getHeight() / texture->getH();
+    if (texture_) {
 
-    glBegin(GL_QUADS);
-    glTexCoord2d(x - w / 2, y - h / 2);
-    glVertex2d(0, 0);
-    glTexCoord2d(x + w / 2, y - h / 2);
-    glVertex2d(rect.getWidth(), 0);
-    glTexCoord2d(x + w / 2, y + h / 2);
-    glVertex2d(rect.getWidth(), rect.getHeight());
-    glTexCoord2d(x - w / 2, y + h / 2);
-    glVertex2d(0, rect.getHeight());
-    glEnd();
+        texture_->glBind();
 
-    if (opacity < 1.0) glDisable(GL_BLEND);
+        Point location = canvas->getCamera()->location->get();
 
-    texture->glUnbind();
+        GLdouble x = (location.x * ratio_) / texture_->getW();
+        GLdouble y = (location.y * ratio_) / texture_->getH();
+        GLdouble w = rect.getWidth() / texture_->getW();
+        GLdouble h = rect.getHeight() / texture_->getH();
+
+        glBegin(GL_QUADS);
+        glTexCoord2d(x - w / 2, y - h / 2);
+        glVertex2d(0, 0);
+        glTexCoord2d(x + w / 2, y - h / 2);
+        glVertex2d(rect.getWidth(), 0);
+        glTexCoord2d(x + w / 2, y + h / 2);
+        glVertex2d(rect.getWidth(), rect.getHeight());
+        glTexCoord2d(x - w / 2, y + h / 2);
+        glVertex2d(0, rect.getHeight());
+        glEnd();
+
+        texture_->glUnbind();
+    }
+    else {
+        glBegin(GL_QUADS);
+        glVertex2d(0, 0);
+        glVertex2d(rect.getWidth(), 0);
+        glVertex2d(rect.getWidth(), rect.getHeight());
+        glVertex2d(0, rect.getHeight());
+        glEnd();
+    }
 }

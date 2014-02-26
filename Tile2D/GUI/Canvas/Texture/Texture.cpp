@@ -91,7 +91,6 @@ void Texture::glBind() {
 
 void Texture::glUnbind() {
     glDisable(GL_TEXTURE_2D);
-    glDisable(GL_BLEND);
 }
 
 int Texture::getW() {

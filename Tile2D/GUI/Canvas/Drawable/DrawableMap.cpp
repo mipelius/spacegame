@@ -95,7 +95,8 @@ void DrawableMap::drawMap(Canvas *canvas) {
             color /= 1.5;
             color += 0.25;
             if (color > 1.0) color = 1.0;
-            glColor4d(color, color, color, color);
+
+            canvas->glColor(color, color, color);
 
             mapTexture_->renderBlock(
                     i * map_->getBlockW() - x,
@@ -125,9 +126,9 @@ void DrawableMap::drawSmallMap(Canvas *canvas) {
 
             if (value == 0) continue;
 
-            if (value % 3 == 2) glColor3f(0.7, 0.0, 0.0); // red
-            if (value % 3 == 1) glColor3f(0.0, 0.7, 0.0); // green
-            if (value % 3 == 0) glColor3f(0.0, 0.0, 0.7); // blue
+            if (value % 3 == 2) canvas->glColor(0.7, 0.0, 0.0); // red
+            if (value % 3 == 1) canvas->glColor(0.0, 0.7, 0.0); // green
+            if (value % 3 == 0) canvas->glColor(0.0, 0.0, 0.7); // blue
 
             glVertex2d(x, y);
             glVertex2d(x + stepX, y);

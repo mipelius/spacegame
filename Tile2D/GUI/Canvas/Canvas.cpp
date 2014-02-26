@@ -21,9 +21,7 @@
 #include "IDrawable.h"
 #include "Camera.h"
 
-void Canvas::render() {
-    GuiComponentBase::render();
-
+void Canvas::renderActual() {
     if (!camera_) return;
 
     glMatrixMode(GL_PROJECTION);

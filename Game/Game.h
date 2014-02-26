@@ -21,6 +21,7 @@ class PhysicsWorld;
 class Map;
 class Camera;
 class Body;
+class Canvas;
 
 class MyGameObject;
 
@@ -30,8 +31,9 @@ class Game {
 private:
     Map* map_;
     PhysicsWorld * world_;
+    Canvas* canvas_;
     Camera* camera_;
-    Camera* radarCamera_;
+    Camera* smallMapCamera_;
 
     MyGameObject* myGameObject_;
     Body* playerBody_;

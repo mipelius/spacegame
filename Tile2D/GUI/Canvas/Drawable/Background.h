@@ -23,17 +23,9 @@ class Texture;
 
 class Background : public IDrawable {
 private:
-    static const int TEXTURE_CROSSFADE_RENDER_COUNT = 30;
-
     Texture* texture_;
-    Texture* oldTexture_;
-
-    bool textureIsCrossFading_;
-    int textureCrossFadingPhase_;
 
     double ratio_;
-
-    void renderTexture(Texture* texture, double opacity, Canvas* canvas);
 
 public:
     Background();

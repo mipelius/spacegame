@@ -32,7 +32,9 @@ public:
 
     GuiComponentBase();
 
-    virtual void render();
+    virtual void renderActual() = 0;
+
+    void render();
 
     Rect getRenderingAreaRect();
 
@@ -50,6 +52,14 @@ public:
     void show();
     void toggleVisibility();
 
+    void hideBounds();
+    void showBounds();
+    void toggleBoundsVisibility();
+
+    double opacity_;
+
+    void glColor(double red, double green, double blue);
+
 protected:
     std::list<GuiComponentBase*> children_;
 
@@ -60,6 +70,7 @@ private:
     Anchor anchor_;
 
     bool isVisible_;
+    bool isBoundsVisible_;
 
     double w_;
     double h_;

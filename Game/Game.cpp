@@ -37,6 +37,7 @@
 #include "GuiComponentBase.h"
 #include "Background.h"
 #include "Texture.h"
+#include "Plot.h"
 
 Game::Game() {
     // --- WINDOW PROPERTIES ---
@@ -53,27 +54,22 @@ Game::Game() {
 
     // --- CANVAS ---
 
-    Canvas* canvas = new Canvas();
-    canvas->setMargin(0, 0, 0, 0);
-    canvas->setW(Canvas::SIZE_MAX_WIDTH);
-    canvas->setH(Canvas::SIZE_MAX_HEIGHT);
-    canvas->setAnchor(Canvas::Anchor::TOP_LEFT);
+    canvas_ = new Canvas();
+    canvas_->setMargin(0, 0, 0, 0);
+    canvas_->setW(Canvas::SIZE_MAX_WIDTH);
+    canvas_->setH(Canvas::SIZE_MAX_HEIGHT);
+    canvas_->setAnchor(Canvas::Anchor::TOP_RIGHT);
 
-    Canvas* canvas2 = new Canvas();
-    canvas2->setMargin(10, 10, 10, 10);
-    canvas2->setW(400);
-    canvas2->setH(300);
-    canvas2->setAnchor(Canvas::Anchor::TOP_RIGHT);
+
 
     Texture* texture = new Texture("images/bg1.jpg");
     Background* background = new Background();
     background->setRatio(0.5);
     background->setTexture(texture);
 
-    canvas->add(background);
+    canvas_->add(background);
 
-    window->addComponent(canvas);
-    window->addComponent(canvas2);
+    window->addComponent(canvas_);
 
     // --- WORLD & MAP ---
 
@@ -93,20 +89,13 @@ Game::Game() {
     MapTexture *mapTexture = new MapTexture(10, 10, 3, filenames);
     drawableMap->setMapTexture(mapTexture);
 
-    canvas->add(drawableMap);
-    canvas2->add(drawableMap);
+    canvas_->add(drawableMap);
 
     camera_ = new Camera();
     camera_->boundsRect->set(Rect(0, 0, 20000, 20000));
     camera_->areaRect->set(Rect(0, 0, 1920, 1200));
 
-    canvas->setCamera(camera_);
-
-    radarCamera_ = new Camera();
-    radarCamera_->boundsRect->set(Rect(0, 0, 20000, 20000));
-    radarCamera_->areaRect->set(Rect(0, 0, 4000, 3000));
-
-    canvas2->setCamera(radarCamera_);
+    canvas_->setCamera(camera_);
 
     // --- PLAYER ---
 
@@ -115,14 +104,35 @@ Game::Game() {
     myGameObject_->body->location->bind(myGameObject_->location);
 
     world_->add(myGameObject_->body);
-    canvas->add(myGameObject_->spriteContainer);
+    canvas_->add(myGameObject_->spriteContainer);
 
+    canvas_->add(myGameObject_->spriteContainer);
 
-    canvas->add(myGameObject_->spriteContainer);
-    canvas2->add(myGameObject_->spriteContainer);
-
-    radarCamera_->location->bind(myGameObject_->body->location);
     camera_->location->bind(myGameObject_->body->location);
+
+    // --- SMALL MAP ---
+
+    Canvas*canvasSmallMap = new Canvas();
+    canvasSmallMap->setMargin(20, 20, 20, 20);
+    canvasSmallMap->setW(400);
+    canvasSmallMap->setH(300);
+    canvasSmallMap->setAnchor(Canvas::Anchor::TOP_RIGHT);
+    canvasSmallMap->showBounds();
+    canvasSmallMap->opacity_ = 0.5;
+
+    smallMapCamera_ = new Camera();
+    smallMapCamera_->boundsRect->set(Rect(0, 0, 20000, 20000));
+    smallMapCamera_->areaRect->set(Rect(0, 0, 4000, 3000));
+    smallMapCamera_->location->bind(myGameObject_->body->location);
+    canvasSmallMap->setCamera(smallMapCamera_);
+
+    canvasSmallMap->add(drawableMap);
+    Plot* plot = new Plot();
+    plot->location->bind(myGameObject_->body->location);
+    plot->size->set(1.0);
+    canvasSmallMap->add(plot);
+
+    canvas_->addComponent(canvasSmallMap);
 }
 
 void Game::launch() {
@@ -156,12 +166,11 @@ void Game::launch() {
             myGameObject_->location->set(Point(4000, 8000));
         }
         if (keys[SDL_SCANCODE_Z]) {
-            radarCamera_->zoom(-5);
+            smallMapCamera_->zoom(-5);
         }
         if (keys[SDL_SCANCODE_X]) {
-            radarCamera_->zoom(5);
+            smallMapCamera_->zoom(5);
         }
-
 
         /// --- PHYSICS ---
 

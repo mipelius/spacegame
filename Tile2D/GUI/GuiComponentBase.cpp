@@ -20,6 +20,7 @@
 
 GuiComponentBase::GuiComponentBase() {
     parentGuiComponent_ = nullptr;
+    opacity_ = 1.0;
     anchor_ = Anchor::TOP_LEFT;
     marginTop_ = 0;
     marginBottom_ = 0;
@@ -28,6 +29,9 @@ GuiComponentBase::GuiComponentBase() {
     w_ = SIZE_MAX_WIDTH;
     h_ = SIZE_MAX_HEIGHT;
     window_ = nullptr;
+
+    isVisible_ = true;
+    isBoundsVisible_ = false;
 }
 
 void GuiComponentBase::setMargin(double top, double right, double bottom, double left) {
@@ -130,6 +134,16 @@ void GuiComponentBase::hide() {
 }
 
 void GuiComponentBase::render() {
+    bool glBlendEnabled = false;
+
+    if (opacity_ < 1.0) {
+        glBlendEnabled = true;
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+
+    glColor(1.0, 1.0, 1.0);
+
     Rect rect = getRenderingAreaRect();
 
     GLint x = (GLint)(rect.x1);
@@ -138,4 +152,44 @@ void GuiComponentBase::render() {
     GLint h = (GLint)(rect.getHeight());
 
     glViewport(x, y, w, h);
+
+    renderActual();
+
+    for (std::list<GuiComponentBase*>::iterator i = children_.begin(); i != children_.end(); i++) {
+        (*i)->render();
+    }
+
+    if (isBoundsVisible_) {
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0, rect.getWidth(), rect.getHeight(), 0, -1, 1);
+
+        glMatrixMode(GL_MODELVIEW);
+        glBegin(GL_LINE_LOOP);
+        glVertex2d(1, 1);
+        glVertex2d(rect.getWidth(), 1);
+        glVertex2d(rect.getWidth(), rect.getHeight() - 1);
+        glVertex2d(1, rect.getHeight());
+        glEnd();
+    }
+
+    if (glBlendEnabled) {
+        glDisable(GL_BLEND);
+    }
+}
+
+void GuiComponentBase::glColor(double red, double green, double blue) {
+    glColor4d(red, green, blue, opacity_);
+}
+
+void GuiComponentBase::hideBounds() {
+    isBoundsVisible_ = false;
+}
+
+void GuiComponentBase::showBounds() {
+    isBoundsVisible_ = true;
+}
+
+void GuiComponentBase::toggleBoundsVisibility() {
+    isBoundsVisible_ = !isBoundsVisible_;
 }

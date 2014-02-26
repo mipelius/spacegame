@@ -14,28 +14,30 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Canvas_H_
-#define __Canvas_H_
+#ifndef __Plot_H_
+#define __Plot_H_
 
-class IDrawable;
-class Camera;
+template <typename T> class Property;
+class Canvas;
 
-#include "GuiComponentBase.h"
+#include "Point.h"
+#include "IDrawable.h"
 
-class Canvas : public GuiComponentBase {
+class Plot : public IDrawable {
 
 public:
-    Canvas();
-    ~Canvas();
+    Plot();
+    ~Plot();
 
-    void renderActual();
-    void add(IDrawable * drawable);
-    void setCamera(Camera* camera);
-    Camera* getCamera();
+    Property<Point>* const location;
+    Property<double>* const size;
+
+    virtual void draw(Canvas *canvas);
 
 private:
-    std::list<IDrawable *> drawables_;
-    Camera* camera_;
+    Point location_;
+    double size_;
+
 };
 
-#endif //__Canvas_H_
+#endif //__Plot_H_
