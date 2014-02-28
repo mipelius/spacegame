@@ -134,7 +134,7 @@ Game::Game() {
 }
 
 void Game::launch() {
-    App::getInstance()->getMusicPlayer()->play(new Music("music/spacegame.mp3"));
+    //App::getInstance()->getMusicPlayer()->play(new Music("music/spacegame.mp3"));
 
     const Uint8* keys;
     Uint32 timeMilliSec = 0;

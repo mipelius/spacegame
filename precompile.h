@@ -5,6 +5,7 @@
 #include <list>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <math.h>
 
 #ifdef __MACOS
