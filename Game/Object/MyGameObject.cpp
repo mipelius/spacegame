@@ -25,6 +25,10 @@
 #include "Sprite.h"
 #include "SimpleProperty.h"
 #include "Body.h"
+#include "BodyCollisionEventArgs.h"
+#include "AnimatedTexture.h"
+#include "App.h"
+#include "AnimationManager.h"
 
 class MyGameObject::Body_MapCollisionEventHandler : public IEventHandler<Body, EventArgs> {
     void handle(Body* body, EventArgs args) {
@@ -33,7 +37,16 @@ class MyGameObject::Body_MapCollisionEventHandler : public IEventHandler<Body, E
     }
 };
 
+class MyGameObject::Body_BodyCollisionEventHandler : public IEventHandler<Body, BodyCollisionEventArgs> {
+    void handle(Body* body, BodyCollisionEventArgs args) {
+        body->location->set(body->location->get() - body->velocity->get());
+        body->speed->set(Vector(0, 0));
+    }
+};
+
 static Texture* texture = nullptr;
+
+static Texture* accelerationAnimationTexture = nullptr;
 
 MyGameObject::MyGameObject() :
     location        (   new SimpleProperty<Point>   (&location_)    ),
@@ -45,6 +58,7 @@ MyGameObject::MyGameObject() :
     // body
 
     body->mapCollision->add(new Body_MapCollisionEventHandler());
+    body->bodyCollision->add(new Body_BodyCollisionEventHandler());
 
     Point points[] = {
         Point(-20, -20),
@@ -56,15 +70,28 @@ MyGameObject::MyGameObject() :
 
     body->setCollisionShape(shape);
 
-    // sprite container
+    // load textures
 
     if (!texture) {
         texture = new Texture("images/spaceship.png");
     }
 
+    if (!accelerationAnimationTexture) {
+        accelerationAnimationTexture = new Texture("images/anim_rocket_fire.png");
+    }
+
+    // sprite container
+
     Sprite* sprite = new Sprite(texture, Rect(-20, -20, 20, 20));
+    accelerationAnimation_ = new AnimatedTexture(60, 8, false, accelerationAnimationTexture);
+    App::getInstance()->getAnimationManager()->add(accelerationAnimation_);
+
+    Sprite* spriteAccelerationLeft = new Sprite(accelerationAnimation_, Rect(-40, -21, -20, -11));
+    Sprite* spriteAccelerationRight = new Sprite(accelerationAnimation_, Rect(-40, 11, -20, 21));
 
     spriteContainer->addSprite(sprite);
+    spriteContainer->addSprite(spriteAccelerationLeft);
+    spriteContainer->addSprite(spriteAccelerationRight);
 
     // bindings
 
@@ -76,4 +103,10 @@ MyGameObject::MyGameObject() :
 
 MyGameObject::~MyGameObject() {
     delete body;
+}
+
+void MyGameObject::accelerate() {
+    double angle = body->angle->get();
+    body->applyForce(Vector::byAngle(angle, 5000));
+    accelerationAnimation_->play();
 }

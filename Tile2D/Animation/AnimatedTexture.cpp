@@ -18,45 +18,16 @@
 #include "AnimatedTexture.h"
 #import "ITexture.h"
 
-AnimatedTexture::AnimatedTexture(int frames, int fps, Texture* texture) {
-    this->_frames = frames;
-    this->_fps = fps;
-
-    this->texture = texture;
-
-    stop();
-}
-
-void AnimatedTexture::update(double timeElapsedSec) {
-    if (_isStopped || !_isPlaying) return;
-    _timeElapsedAfterPreviousFrame += timeElapsedSec;
-    if (_timeElapsedAfterPreviousFrame >= 1.0 / _fps) {
-        _timeElapsedAfterPreviousFrame = 0;
-        _currentFrame++;
-        if (_currentFrame >= _frames) _currentFrame = 0;
-    }
-}
-
-void AnimatedTexture::stop() {
-    _timeElapsedAfterPreviousFrame = 0;
-    _currentFrame = 0;
-    _isStopped = true;
-    _isPlaying = false;
-}
-
-void AnimatedTexture::play() {
-    _isStopped = false;
-    _isPlaying = true;
-}
-
-void AnimatedTexture::pause() {
-    _isPlaying = false;
+AnimatedTexture::AnimatedTexture(unsigned int framesPerSecond, unsigned int frameAmount, bool enableLoop, Texture* texture) :
+AnimationBase(framesPerSecond, frameAmount, enableLoop)
+{
+    texture_ = texture;
 }
 
 void AnimatedTexture::glTexCorner(ITexture::Corner corner) {
-    GLfloat w = 1.0 / _frames;
-    GLfloat left = _currentFrame * w + 0.01;
-    GLfloat right = (_currentFrame + 1) * w - 0.01;
+    GLfloat w = 1.0 / frameAmount_;
+    GLfloat left = currentFrame_ * w + 0.01;
+    GLfloat right = (currentFrame_ + 1) * w - 0.01;
 
     switch (corner) {
         case (TOP_LEFT):
@@ -66,18 +37,22 @@ void AnimatedTexture::glTexCorner(ITexture::Corner corner) {
             glTexCoord2d(right, 0.01);
             break;
         case (BOTTOM_LEFT):
-            glTexCoord2d(right, 0.99);
+            glTexCoord2d(left, 0.99);
             break;
         case (BOTTOM_RIGHT):
-            glTexCoord2d(left, 0.99);
+            glTexCoord2d(right, 0.99);
             break;
     }
 }
 
 void AnimatedTexture::glUnbind() {
-    this->texture->glUnbind();
+    this->texture_->glUnbind();
 }
 
 void AnimatedTexture::glBind() {
-    this->texture->glBind();
+    this->texture_->glBind();
+}
+
+void AnimatedTexture::updateActual() {
+    // do nothing
 }

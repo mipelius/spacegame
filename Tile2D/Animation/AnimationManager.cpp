@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// Copyright (C) 2014  Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,32 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __AnimatedTexture_H_
-#define __AnimatedTexture_H_
+#include "AnimationManager.h"
+#include "IAnimation.h"
 
-#include "Texture.h"
-#import "ITexture.h"
+AnimationManager::AnimationManager() {
 
-class AnimatedTexture : public ITexture {
-private:
-    Texture* texture;
-    double _timeElapsedAfterPreviousFrame;
-    int _currentFrame;
-    int _fps;
-    int _frames;
+}
 
-    bool _isPlaying;
-    bool _isStopped;
-public:
-    AnimatedTexture(int frames, int fps, Texture* texture);
-    void play();
-    void stop();
-    void pause();
-    void update(double timeElapsedSec);
+AnimationManager::~AnimationManager() {
 
-    void glBind();
-    void glTexCorner(Corner corner);
-    void glUnbind();
-};
+}
 
-#endif //__AnimatedTexture_H_
+void AnimationManager::add(IAnimation *animation) {
+    animations_.push_back(animation);
+}
+
+void AnimationManager::update(double seconds) {
+    for (std::list<IAnimation*>::iterator i = animations_.begin(); i != animations_.end(); i++) {
+        (*i)->update(seconds);
+    }
+}

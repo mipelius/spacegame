@@ -21,6 +21,7 @@
 
 class Body;
 class SpriteContainer;
+class AnimatedTexture;
 template <typename T> class Property;
 
 #include "Point.h"
@@ -31,16 +32,19 @@ public:
     MyGameObject();
     ~MyGameObject();
 
+    void accelerate();
+
     Body* const body;
     SpriteContainer* const spriteContainer;
 
     Property<Point>* const location;
 
 private:
-
+    AnimatedTexture* accelerationAnimation_;
     Point location_;
 
     class Body_MapCollisionEventHandler;
+    class Body_BodyCollisionEventHandler;
 };
 
 #endif //__MyGameObject_H_

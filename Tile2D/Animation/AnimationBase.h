@@ -14,27 +14,35 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "precompile.h"
-#include "App.h"
-#include "Game.h"
+#ifndef __AnimationBase_H_
+#define __AnimationBase_H_
 
-#undef main
+#include "IAnimation.h"
 
-int main(int argc, const char * argv[])
-{
-    App::initialize();
+class AnimationBase : public IAnimation {
 
-    try {
-        Game* game = new Game();
-        game->launch();
-        delete game;
-	}
-    catch (std::exception e) {
-        std::cout << "Crashed LOL DAMN!";
-        return -1;
-    }
+public:
+    AnimationBase(unsigned int framesPerSecond, unsigned int frameAmount, bool enableLoop);
+    virtual ~AnimationBase();
 
-    delete App::getInstance();
+    void play();
+    void stop();
+    void pause();
 
-	return 0;
-}
+protected:
+    void update(double seconds);
+    virtual void updateActual() = 0;
+
+    double timeElapsedAfterPreviousFrame_;
+    unsigned int currentFrame_;
+    unsigned int fps_;
+    unsigned int frameAmount_;
+
+    bool isPlaying_;
+    bool isStopped_;
+
+    bool loopEnabled_;
+};
+
+
+#endif //__AnimationBase_H_

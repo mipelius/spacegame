@@ -38,16 +38,20 @@
 #include "Background.h"
 #include "Texture.h"
 #include "Plot.h"
+#include "json.h"
+#include "JsonFileManager.h"
+
+#include "AnimationManager.h"
 
 Game::Game() {
     // --- WINDOW PROPERTIES ---
 
     int x = 0;
     int y = 0;
-    int w = 1920;
-    int h = 1200;
+    int w = 1280;
+    int h = 800;
 
-    bool enableFullScreen = true;
+    bool enableFullScreen = false;
 
     Window* window = App::getInstance()->getWindow();
     window->initialize(x, y, w, h, enableFullScreen);
@@ -91,7 +95,7 @@ Game::Game() {
 
     camera_ = new Camera();
     camera_->boundsRect->set(Rect(0, 0, 20000, 20000));
-    camera_->areaRect->set(Rect(0, 0, 1920, 1200));
+    camera_->areaRect->set(Rect(0, 0, w, h));
 
     canvas_->setCamera(camera_);
 
@@ -104,15 +108,13 @@ Game::Game() {
     world_->add(myGameObject_->body);
     canvas_->add(myGameObject_->spriteContainer);
 
-    canvas_->add(myGameObject_->spriteContainer);
-
     camera_->location->bind(myGameObject_->body->location);
 
     // --- SMALL MAP ---
 
     smallMapCanvas_ = new Canvas();
     smallMapCanvas_->setMargin(20, 20, 20, 20);
-    smallMapCanvas_->w->set(400);
+    smallMapCanvas_->w->set(350);
     smallMapCanvas_->h->set(300);
     smallMapCanvas_->anchor->bind(canvas_->anchor);
     smallMapCanvas_->isBoundsVisible->set(true);
@@ -131,6 +133,10 @@ Game::Game() {
     smallMapCanvas_->add(plot);
 
     canvas_->addComponent(smallMapCanvas_);
+
+    // --- ANIMATIONS ---
+
+
 }
 
 void Game::launch() {
@@ -157,18 +163,12 @@ void Game::launch() {
             }
         }
         if (keys[SDL_SCANCODE_UP]) {
-            double angle = myGameObject_->body->angle->get();
-            myGameObject_->body->applyForce(Vector::byAngle(angle, 10000));
+            myGameObject_->accelerate();
         }
         if (keys[SDL_SCANCODE_SPACE]) {
             myGameObject_->location->set(Point(4000, 8000));
         }
-        if (keys[SDL_SCANCODE_Z]) {
-            smallMapCamera_->zoom(-5);
-        }
-        if (keys[SDL_SCANCODE_X]) {
-            smallMapCamera_->zoom(5);
-        }
+
         if (keys[SDL_SCANCODE_RETURN]) {
             smallMapCanvas_->isVisible->toggle();
         }
@@ -178,9 +178,10 @@ void Game::launch() {
         Uint32 timeElapsedMilliSec = SDL_GetTicks() - timeMilliSec;
         timeMilliSec = SDL_GetTicks();
         world_->step(timeElapsedMilliSec / 1000.0);
-        timeElapsedMilliSec = SDL_GetTicks() - timeMilliSec;
-        timeMilliSec = SDL_GetTicks();
-        world_->step(timeElapsedMilliSec / 1000.0);
+
+        /// --- ANIMATION ---
+
+        App::getInstance()->getAnimationManager()->update(timeElapsedMilliSec / 1000.0);
 
         /// --- RENDERING ---
 

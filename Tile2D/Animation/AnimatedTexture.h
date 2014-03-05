@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,27 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "precompile.h"
-#include "App.h"
-#include "Game.h"
+#ifndef __AnimatedTexture_H_
+#define __AnimatedTexture_H_
 
-#undef main
+#include "Texture.h"
+#import "ITexture.h"
+#include "AnimationBase.h"
 
-int main(int argc, const char * argv[])
-{
-    App::initialize();
+class AnimatedTexture : public AnimationBase, public ITexture {
+private:
+    Texture* texture_;
 
-    try {
-        Game* game = new Game();
-        game->launch();
-        delete game;
-	}
-    catch (std::exception e) {
-        std::cout << "Crashed LOL DAMN!";
-        return -1;
-    }
+public:
+    AnimatedTexture(unsigned int framesPerSecond, unsigned int frameAmount, bool enableLoop, Texture* texture);
+    void updateActual();
 
-    delete App::getInstance();
+    void glBind();
+    void glTexCorner(Corner corner);
+    void glUnbind();
+};
 
-	return 0;
-}
+#endif //__AnimatedTexture_H_
