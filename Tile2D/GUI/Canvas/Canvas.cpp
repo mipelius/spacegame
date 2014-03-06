@@ -20,6 +20,15 @@
 #include "Window.h"
 #include "IDrawable.h"
 #include "Camera.h"
+#include "LightMask.h"
+#include "ILight.h"
+
+Canvas::Canvas() {
+    camera_ = nullptr;
+}
+
+Canvas::~Canvas() { }
+
 
 void Canvas::renderActual() {
     if (!camera_) return;
@@ -35,19 +44,13 @@ void Canvas::renderActual() {
     }
 }
 
-void Canvas::add(IDrawable *drawable) {
+void Canvas::addDrawable(IDrawable *drawable) {
     drawables_.push_back(drawable);
 }
 
 void Canvas::setCamera(Camera *camera) {
     camera_ = camera;
 }
-
-Canvas::Canvas() {
-    camera_ = nullptr;
-}
-
-Canvas::~Canvas() { }
 
 Camera *Canvas::getCamera() {
     return camera_;

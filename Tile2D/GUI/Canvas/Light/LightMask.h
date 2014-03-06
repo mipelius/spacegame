@@ -14,31 +14,46 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Canvas_H_
-#define __Canvas_H_
+#ifndef __LightMask_H_
+#define __LightMask_H_
 
-class IDrawable;
-class ILight;
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
+#include "IDrawable.h"
+#include "Canvas.h"
 
-class Camera;
-
-#include "GuiComponentBase.h"
-
-class Canvas : public GuiComponentBase {
+class LightMask : public IDrawable {
 
 public:
-    Canvas();
-    ~Canvas();
+    LightMask(int w, int h);
+    ~LightMask();
 
-    void renderActual();
-    void addDrawable(IDrawable *drawable);
+    Property<double>* const ambientLight;
 
-    void setCamera(Camera* camera);
-    Camera* getCamera();
+    void add(ILight *light);
+
+    void addAlpha(int x, int y, double value);
+
+protected:
+    void draw(Canvas *canvas);
 
 private:
-    std::list<IDrawable *> drawables_;
-    Camera* camera_;
+    std::list<ILight*> lights;
+
+    double ambientLight_;
+    int w_;
+    int h_;
+
+    GLuint glTextureId_;
+    Uint32* pixels_;
+
+    void initialize();
+    void clearPixels();
+
+    Uint8 getNormalizedAmbientLightByte();
+
+    GLint lightMaskTextureId_;
+    bool lightMaskTextureCreated_;
 };
 
-#endif //__Canvas_H_
+#endif //__LightMask_H_

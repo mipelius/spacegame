@@ -22,6 +22,7 @@ class Map;
 class Camera;
 class Body;
 class Canvas;
+class LightMask;
 
 class MyGameObject;
 
@@ -39,6 +40,8 @@ private:
 
     MyGameObject* myGameObject_;
     Body* playerBody_;
+
+    LightMask*lightMask_;
 
 public:
     Game();

@@ -91,12 +91,6 @@ void DrawableMap::drawMap(Canvas *canvas) {
     for (int i = iStart; i < iEnd; i++) {
         for (int j = jStart; j < jEnd; j++) {
             if (map_->getValue(i, j) == 0) continue; // continue if the block is empty
-            GLdouble color = sin(((i*map_->getBlockW() - x) / (float)w) * (M_PI / 1.0)) * sin(((j*map_->getBlockH() - y) / (float)h) * (M_PI / 1.0));
-            color /= 1.5;
-            color += 0.25;
-            if (color > 1.0) color = 1.0;
-
-            canvas->glColor(color, color, color);
 
             mapTexture_->renderBlock(
                     i * map_->getBlockW() - x,
