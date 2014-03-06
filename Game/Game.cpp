@@ -42,16 +42,21 @@
 #include "JsonFileManager.h"
 
 #include "AnimationManager.h"
+#include "LightMask.h"
+#include "PointLight.h"
+
+#include "Sprite.h"
+#include "SpriteContainer.h"
 
 Game::Game() {
     // --- WINDOW PROPERTIES ---
 
     int x = 0;
     int y = 0;
-    int w = 1280;
-    int h = 800;
+    int w = 1920;
+    int h = 1200;
 
-    bool enableFullScreen = false;
+    bool enableFullScreen = true;
 
     Window* window = App::getInstance()->getWindow();
     window->initialize(x, y, w, h, enableFullScreen);
@@ -69,7 +74,7 @@ Game::Game() {
     background->setRatio(0.5);
     background->setTexture(texture);
 
-    canvas_->add(background);
+    canvas_->addDrawable(background);
 
     window->addComponent(canvas_);
 
@@ -91,7 +96,7 @@ Game::Game() {
     MapTexture *mapTexture = new MapTexture(10, 10, 3, filenames);
     drawableMap->setMapTexture(mapTexture);
 
-    canvas_->add(drawableMap);
+    canvas_->addDrawable(drawableMap);
 
     camera_ = new Camera();
     camera_->boundsRect->set(Rect(0, 0, 20000, 20000));
@@ -106,9 +111,30 @@ Game::Game() {
     myGameObject_->body->location->bind(myGameObject_->location);
 
     world_->add(myGameObject_->body);
-    canvas_->add(myGameObject_->spriteContainer);
+    canvas_->addDrawable(myGameObject_->spriteContainer);
 
     camera_->location->bind(myGameObject_->body->location);
+
+    // --- LIGHT MASK AND LIGHTS ---
+
+    Texture* lightTexture = new Texture("images/light.png");
+    Sprite* lightSprite = new Sprite(lightTexture, Rect(-16, -16, 16, 16));
+    SpriteContainer* lightSpriteContainer = new SpriteContainer();
+    lightSpriteContainer->addSprite(lightSprite);
+    canvas_->addDrawable(lightSpriteContainer);
+
+    lightMask_ = new LightMask(w, h);
+    canvas_->addDrawable(lightMask_);
+    lightMask_->ambientLight->set(0.15);
+
+    PointLight* light = new PointLight(Point(4000, 8000), 300);
+    light->location->bind(myGameObject_->body->location);
+    lightMask_->add(light);
+
+    PointLight* light1 = new PointLight(Point(5000, 9500), 300);
+    lightMask_->add(light1);
+
+    lightSpriteContainer->location->bind(light1->location);
 
     // --- SMALL MAP ---
 
@@ -126,11 +152,11 @@ Game::Game() {
     smallMapCamera_->location->bind(myGameObject_->body->location);
     smallMapCanvas_->setCamera(smallMapCamera_);
 
-    smallMapCanvas_->add(drawableMap);
+    smallMapCanvas_->addDrawable(drawableMap);
     Plot* plot = new Plot();
     plot->location->bind(myGameObject_->body->location);
     plot->size->set(1.0);
-    smallMapCanvas_->add(plot);
+    smallMapCanvas_->addDrawable(plot);
 
     canvas_->addComponent(smallMapCanvas_);
 
@@ -140,10 +166,11 @@ Game::Game() {
 }
 
 void Game::launch() {
-    //App::getInstance()->getMusicPlayer()->play(new Music("music/spacegame.mp3"));
+    App::getInstance()->getMusicPlayer()->play(new Music("music/spacegame.mp3"));
 
     const Uint8* keys;
     Uint32 timeMilliSec = 0;
+    double i = 0;
 
     while (!SDL_QuitRequested()) {
         /// --- INPUT READING AND HANDLING ---
@@ -182,6 +209,10 @@ void Game::launch() {
         /// --- ANIMATION ---
 
         App::getInstance()->getAnimationManager()->update(timeElapsedMilliSec / 1000.0);
+
+        i+= 0.1;
+
+        lightMask_->ambientLight->set((sin(i) + 2) / 16.0);
 
         /// --- RENDERING ---
 
