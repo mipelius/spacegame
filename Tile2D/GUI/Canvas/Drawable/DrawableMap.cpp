@@ -88,6 +88,8 @@ void DrawableMap::drawMap(Canvas *canvas) {
 
     mapTexture_->glBind();
 
+    glColor3d(1.0, 1.0, 1.0);
+
     for (int i = iStart; i < iEnd; i++) {
         for (int j = jStart; j < jEnd; j++) {
             if (map_->getValue(i, j) == 0) continue; // continue if the block is empty

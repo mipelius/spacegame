@@ -48,7 +48,13 @@
 #include "Sprite.h"
 #include "SpriteContainer.h"
 
+#include <OpenGL/gl3ext.h>
+#include <OpenGL/glext.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+
 Game::Game() {
+
     // --- WINDOW PROPERTIES ---
 
     int x = 0;
@@ -115,26 +121,15 @@ Game::Game() {
 
     camera_->location->bind(myGameObject_->body->location);
 
-    // --- LIGHT MASK AND LIGHTS ---
-
-    Texture* lightTexture = new Texture("images/light.png");
-    Sprite* lightSprite = new Sprite(lightTexture, Rect(-16, -16, 16, 16));
-    SpriteContainer* lightSpriteContainer = new SpriteContainer();
-    lightSpriteContainer->addSprite(lightSprite);
-    canvas_->addDrawable(lightSpriteContainer);
+    // --- LIGHT MASK  ---
 
     lightMask_ = new LightMask(w, h);
-    canvas_->addDrawable(lightMask_);
-    lightMask_->ambientLight->set(0.15);
+    canvas_->addLightMask(lightMask_);
+    lightMask_->ambientLight->set(0.1);
 
     PointLight* light = new PointLight(Point(4000, 8000), 300);
     light->location->bind(myGameObject_->body->location);
     lightMask_->add(light);
-
-    PointLight* light1 = new PointLight(Point(5000, 9500), 300);
-    lightMask_->add(light1);
-
-    lightSpriteContainer->location->bind(light1->location);
 
     // --- SMALL MAP ---
 
@@ -161,8 +156,6 @@ Game::Game() {
     canvas_->addComponent(smallMapCanvas_);
 
     // --- ANIMATIONS ---
-
-
 }
 
 void Game::launch() {
@@ -170,6 +163,29 @@ void Game::launch() {
 
     const Uint8* keys;
     Uint32 timeMilliSec = 0;
+
+    Texture* lightTexture = new Texture("images/light.png");
+
+    PointLight* light1 = new PointLight(Point(5000, 9500), 250);
+    lightMask_->add(light1);
+
+    Sprite* lightSprite1 = new Sprite(lightTexture, Rect(-8, -8, 8, 8));
+    SpriteContainer* lightSpriteContainer1 = new SpriteContainer();
+    lightSpriteContainer1->addSprite(lightSprite1);
+    canvas_->addDrawable(lightSpriteContainer1);
+
+    lightSpriteContainer1->location->bind(light1->location);
+
+    PointLight* light2 = new PointLight(Point(5000, 9500), 250);
+    lightMask_->add(light2);
+
+    Sprite* lightSprite2 = new Sprite(lightTexture, Rect(-8, -8, 8, 8));
+    SpriteContainer* lightSpriteContainer2 = new SpriteContainer();
+    lightSpriteContainer2->addSprite(lightSprite2);
+    canvas_->addDrawable(lightSpriteContainer2);
+
+    lightSpriteContainer2->location->bind(light2->location);
+
     double i = 0;
 
     while (!SDL_QuitRequested()) {
@@ -208,11 +224,14 @@ void Game::launch() {
 
         /// --- ANIMATION ---
 
+        i += 2.0;
+
+        Point point = myGameObject_->location->get();
+
+        light1->location->set(point + Vector::byAngle(i, 150));
+        light2->location->set(point + Vector::byAngle(i + 180.0, 150));
+
         App::getInstance()->getAnimationManager()->update(timeElapsedMilliSec / 1000.0);
-
-        i+= 0.1;
-
-        lightMask_->ambientLight->set((sin(i) + 2) / 16.0);
 
         /// --- RENDERING ---
 

@@ -21,6 +21,8 @@
 
 #include "LightMask.h"
 
+GLuint PointLight::glTextureId_ = 0;
+
 PointLight::PointLight(Point location, double radius) :
     location    (   new SimpleProperty<Point>   (&location_ )  ),
     radius      (   new SimpleProperty<double>  (&radius_   )  ),
@@ -28,43 +30,77 @@ PointLight::PointLight(Point location, double radius) :
     location_   (   location    ),
     radius_     (   radius      )
 {
-    int w = (int)(radius_ * 2);
-    int h = (int)(radius_ * 2);
-
-    alphaValues = new double[w * h];
-
-    double alphaValue;
-
-    for (int i = 0; i < w; i++) {
-        for (int j = 0; j < h; j++) {
-            alphaValue = sin(i * M_PI / w) * sin(j * M_PI / w);
-            alphaValue = pow(alphaValue, 4);
-            alphaValues[i + j * w] = alphaValue;
-        }
+    if (glTextureId_ == 0) {
+        createLightTexture();
     }
 }
 
-
-
-void PointLight::draw(Canvas *canvas, LightMask *lightMask) {
+void PointLight::draw(Canvas *canvas) {
     Rect rect = canvas->getCamera()->areaRect->get();
 
-    int offsetX = (int)(location_.x - rect.x1 - radius_);
-    int offsetY = (int)(location_.y - rect.y1 - radius_);
+    double x = location_.x - rect.x1 - radius_;
+    double y = location_.y - rect.y1 - radius_;
 
     int w = (int)(radius_ * 2);
     int h = (int)(radius_ * 2);
 
-    double alphaValue;
+    glEnable(GL_TEXTURE_2D);
 
-    for (int i = 0; i < w; i++) {
-        for (int j = 0; j < h; j++) {
-            alphaValue = alphaValues[i + j * w];
-            lightMask->addAlpha(offsetX + i, offsetY + j, alphaValue);
-        }
-    }
+    glBindTexture(GL_TEXTURE_2D, glTextureId_);
+
+    glColor4d(0.0, 0.0, 0.0, 1.0);
+    glBegin(GL_QUADS);
+    glTexCoord2d(0, 0);
+    glVertex2d(x, y);
+    glTexCoord2d(1, 0);
+    glVertex2d(x + w, y);
+    glTexCoord2d(1, 1);
+    glVertex2d(x + w, y + h);
+    glTexCoord2d(0, 1);
+    glVertex2d(x, y + h);
+    glEnd();
+
+    glDisable(GL_TEXTURE_2D);
 }
 
 PointLight::~PointLight() {
-    delete[] alphaValues;
+
+}
+
+void PointLight::createLightTexture() {
+    int w = 256;
+    int h = 256;
+
+    Uint8 alphaValue;
+    double temp;
+
+    Uint32* lightPixels = new Uint32[w * h];
+
+    for (int i = 0; i < w; i++) {
+        for (int j = 0; j < h; j++) {
+            temp = sin(i * M_PI / w) * sin(j * M_PI / w);
+            temp = temp * temp * temp * temp;
+            alphaValue = (Uint8)(temp * 255);
+            lightPixels[j * w + i] = (0x000000FF - alphaValue) << 24;
+        }
+    }
+
+    GLenum texture_format = GL_BGRA;
+    GLint nOfColors = 4;
+
+    // Have OpenGL generate a texture object handle for us
+    glGenTextures(1, &glTextureId_);
+
+    // Bind the texture object
+    glBindTexture(GL_TEXTURE_2D, glTextureId_);
+
+    // Set the texture's stretching properties
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    // Edit the texture object's image data using the information SDL_Surface gives us
+    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, w, h, 0,
+            texture_format, GL_UNSIGNED_BYTE, lightPixels);
+
+    delete[] lightPixels;
 }

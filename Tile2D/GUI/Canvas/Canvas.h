@@ -18,7 +18,7 @@
 #define __Canvas_H_
 
 class IDrawable;
-class ILight;
+class LightMask;
 
 class Camera;
 
@@ -33,11 +33,14 @@ public:
     void renderActual();
     void addDrawable(IDrawable *drawable);
 
+    void addLightMask(LightMask* lightMask);
+
     void setCamera(Camera* camera);
     Camera* getCamera();
 
 private:
     std::list<IDrawable *> drawables_;
+    std::list<LightMask *> lightMasks_;
     Camera* camera_;
 };
 

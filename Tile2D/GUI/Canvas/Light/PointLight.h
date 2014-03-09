@@ -26,7 +26,7 @@
 class PointLight : public ILight {
 
 public:
-    virtual void draw(Canvas *canvas, LightMask *lightMask);
+    virtual void draw(Canvas *canvas);
 
     PointLight(Point location, double radius);
     ~PointLight();
@@ -38,7 +38,10 @@ private:
     Point location_;
     double radius_;
 
-    double* alphaValues;
+    static GLuint glTextureId_;
+    static const int TEXTURE_SIZE = 512;
+
+    static void createLightTexture();
 };
 
 

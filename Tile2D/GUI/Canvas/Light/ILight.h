@@ -26,7 +26,7 @@ public:
     ILight() { }
     virtual ~ILight() { }
 
-    virtual void draw(Canvas* canvas, LightMask* lightMask) = 0;
+    virtual void draw(Canvas* canvas) = 0;
 };
 
 #endif //__ILight_H_

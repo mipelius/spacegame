@@ -33,6 +33,10 @@ Canvas::~Canvas() { }
 void Canvas::renderActual() {
     if (!camera_) return;
 
+    for (std::list<LightMask *>::iterator i = lightMasks_.begin(); i != lightMasks_.end(); i++) {
+        (*i)->update(this);
+    }
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0, camera_->areaRect->get().getWidth(), camera_->areaRect->get().getHeight(), 0, -1.0, 1.0);
@@ -40,6 +44,10 @@ void Canvas::renderActual() {
     glMatrixMode(GL_MODELVIEW);
 
     for (std::list<IDrawable *>::iterator i = drawables_.begin(); i != drawables_.end(); i++) {
+        (*i)->draw(this);
+    }
+
+    for (std::list<LightMask *>::iterator i = lightMasks_.begin(); i != lightMasks_.end(); i++) {
         (*i)->draw(this);
     }
 }
@@ -54,4 +62,8 @@ void Canvas::setCamera(Camera *camera) {
 
 Camera *Canvas::getCamera() {
     return camera_;
+}
+
+void Canvas::addLightMask(LightMask *lightMask) {
+    lightMasks_.push_back(lightMask);
 }

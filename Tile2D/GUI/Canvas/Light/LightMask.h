@@ -17,43 +17,40 @@
 #ifndef __LightMask_H_
 #define __LightMask_H_
 
+class ILight;
+class Canvas;
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
-#include "IDrawable.h"
-#include "Canvas.h"
+#include "Property.h"
 
-class LightMask : public IDrawable {
+class LightMask {
+    friend class Canvas;
 
 public:
-    LightMask(int w, int h);
+    LightMask(double w, double h);
     ~LightMask();
 
     Property<double>* const ambientLight;
 
     void add(ILight *light);
 
-    void addAlpha(int x, int y, double value);
-
 protected:
     void draw(Canvas *canvas);
+    void update(Canvas *canvas);
 
 private:
     std::list<ILight*> lights;
 
     double ambientLight_;
-    int w_;
-    int h_;
+    double w_;
+    double h_;
 
     GLuint glTextureId_;
-    Uint32* pixels_;
 
     void initialize();
-    void clearPixels();
-
-    Uint8 getNormalizedAmbientLightByte();
 
     GLint lightMaskTextureId_;
-    bool lightMaskTextureCreated_;
 };
 
 #endif //__LightMask_H_

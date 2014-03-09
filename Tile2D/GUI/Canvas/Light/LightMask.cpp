@@ -18,9 +18,10 @@
 #include "LightMask.h"
 #include "Camera.h"
 #include "ILight.h"
+#include "SimpleProperty.h"
 
 
-LightMask::LightMask(int w, int h) :
+LightMask::LightMask(double w, double h) :
     ambientLight    (   new SimpleProperty<double>( &ambientLight_ )    ),
     ambientLight_   (   1.0 )
 {
@@ -33,6 +34,45 @@ LightMask::~LightMask() {
     delete ambientLight;
 }
 
+void LightMask::update(Canvas *canvas) {
+    // turn projection upside down
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0, w_, 0, h_, -1, 1);
+    glMatrixMode(GL_MODELVIEW);
+
+    // clear
+
+    glColor4d(0, 0, 0, 1.0);
+    glRectd(0, 0, w_, h_);
+
+    // draw lights
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+
+    for (std::list<ILight*>::iterator i = lights.begin(); i != lights.end(); i++) {
+        (*i)->draw(canvas);
+    }
+
+    glDisable(GL_BLEND);
+
+    //update mask texture
+
+    glBindTexture(GL_TEXTURE_2D, glTextureId_);
+    glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, (int)w_, (int)h_);
+    glBindTexture(GL_TEXTURE_2D, NULL);
+
+    // set "normal" projection
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0, w_, h_, 0, -1, 1);
+
+    glMatrixMode(GL_MODELVIEW);
+}
+
 void LightMask::draw(Canvas *canvas) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -40,15 +80,7 @@ void LightMask::draw(Canvas *canvas) {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, glTextureId_);
 
-    clearPixels();
-
-    for (std::list<ILight*>::iterator i = lights.begin(); i != lights.end(); i++) {
-        (*i)->draw(canvas, this);
-    }
-
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w_, h_, GL_RGBA, GL_UNSIGNED_BYTE, pixels_);
-
-    glColor4d(1, 1, 1, 1);
+    glColor4d(1, 1, 1, 1.0 - ambientLight_);
 
     glBegin(GL_QUADS);
     glTexCoord2d(0, 0);
@@ -66,22 +98,11 @@ void LightMask::draw(Canvas *canvas) {
     glDisable(GL_BLEND);
 }
 
-
-void LightMask::clearPixels() {
-    Uint8 ambientLight = getNormalizedAmbientLightByte();
-
-    for (int i = 0; i < w_ * h_; i++) {
-        pixels_[i] = (0x000000FF - ambientLight) << 24;
-    }
-}
-
 void LightMask::initialize() {
     GLenum texture_format = GL_BGRA;
     GLint nOfColors = 4;
 
-    pixels_ = new Uint32[w_ * h_];
-
-    clearPixels();
+    Uint32* pixels = new Uint32[(int)w_ * (int)h_];
 
     // Have OpenGL generate a texture object handle for us
     glGenTextures(1, &glTextureId_);
@@ -94,35 +115,12 @@ void LightMask::initialize() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     // Edit the texture object's image data using the information SDL_Surface gives us
-    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, w_, h_, 0,
-            texture_format, GL_UNSIGNED_BYTE, pixels_);
+    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, (int)w_, (int)h_, 0,
+            texture_format, GL_UNSIGNED_BYTE, pixels);
+
+    delete[] pixels;
 }
 
 void LightMask::add(ILight *light) {
     lights.push_back(light);
-}
-
-Uint8 LightMask::getNormalizedAmbientLightByte() {
-    double value;
-
-    if (ambientLight_ < 0) {
-        value = 0;
-    }
-    else if (ambientLight_ > 1.0) {
-        value = 1.0;
-    }
-    else {
-        value = ambientLight_;
-    }
-
-    return (Uint8)(value * 255);
-}
-
-void LightMask::addAlpha(int x, int y, double value) {
-    if (x < 0 || x >= w_) return;
-    if (y < 0 || y >= h_) return;
-
-    Uint8 oldValue = (Uint8)(pixels_[y * w_ + x] >> 24);
-    Uint8 subtraction = (Uint8)(value * oldValue);
-    pixels_[y * w_ + x] = (oldValue - subtraction) << 24;
 }
