@@ -57,7 +57,7 @@ Game::Game() {
     int w = 1280;
     int h = 800;
 
-    bool enableFullScreen = true;
+    bool enableFullScreen = false;
 
     Window* window = App::getInstance()->getWindow();
     window->initialize(x, y, w, h, enableFullScreen);
@@ -122,9 +122,9 @@ Game::Game() {
     canvas_->addShadowMask(shadowMask_);
     shadowMask_->ambientLight->set(0.05);
 
-    shadowMask_->addStaticLight(new PointLight(Point(4000, 9000), 500));
-    shadowMask_->addStaticLight(new PointLight(Point(5000, 9000), 500));
-    shadowMask_->addStaticLight(new PointLight(Point(6000, 9000), 500));
+    PointLight* light = new PointLight(Point(4000, 9000), 300);
+    shadowMask_->addDynamicLight(light);
+    light->location->bind(myGameObject_->location);
 
     // --- SMALL MAP ---
 
@@ -134,7 +134,7 @@ Game::Game() {
     smallMapCanvas_->h->set(300);
     smallMapCanvas_->anchor->bind(canvas_->anchor);
     smallMapCanvas_->isBoundsVisible->set(true);
-    smallMapCanvas_->opacity->set(0.2);
+    smallMapCanvas_->opacity->set(0.5);
 
     smallMapCamera_ = new Camera();
     smallMapCamera_->boundsRect->set(Rect(0, 0, 20000, 20000));
@@ -195,7 +195,7 @@ void Game::launch() {
             if (timePassedAfterLastLightAdd > lightAddingInterval) {
                 timePassedAfterLastLightAdd = 0;
 
-                Light* light = new Light(myGameObject_->location->get(), 400);
+                Light* light = new Light(myGameObject_->location->get(), 200);
 
                 canvas_->addDrawable(light->spriteContainer);
                 shadowMask_->addStaticLight(light->pointLight);
@@ -218,6 +218,7 @@ void Game::launch() {
         int x, y;
 
         Uint32 value =  SDL_GetMouseState(&x, &y);
+
         if (value == 1) {
             int xx = x + camera_->areaRect->get().x1;
             int yy = y + camera_->areaRect->get().y1;
@@ -228,6 +229,7 @@ void Game::launch() {
                 }
             }
         }
+
         if (value == 4) {
             int xx = x + camera_->areaRect->get().x1;
             int yy = y + camera_->areaRect->get().y1;

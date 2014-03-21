@@ -21,9 +21,16 @@
 #include "Camera.h"
 #include "LightMap.h"
 #include "PointLight.h"
+#include "ShadowMask.h"
 
-ShadowMap::ShadowMap(Map *map) {
+ShadowMap::ShadowMap(Map *map, ShadowMask* shadowMask) {
     map_ = map;
+    shadowMask_ = shadowMask;
+
+    dynamicSceneW_ = (int)(shadowMask_->w_ / map_->getBlockW());
+    dynamicSceneH_ = (int)(shadowMask_->h_ / map_->getBlockH());
+    dynamicScene_ = new double[dynamicSceneW_ * dynamicSceneH_];
+    memset(dynamicScene_, 0x0, sizeof(double) * dynamicSceneW_ * dynamicSceneH_);
 
     staticLightMap_ = new double[map_->getW() * map_->getH()];
     memset(staticLightMap_, 0x0, sizeof(double) * map_->getW() * map_->getH());
@@ -32,10 +39,13 @@ ShadowMap::ShadowMap(Map *map) {
 }
 
 ShadowMap::~ShadowMap() {
+    delete[] dynamicScene_;
     delete[] staticLightMap_;
 }
 
 void ShadowMap::draw(Canvas *canvas) {
+    updateDynamicScene(canvas);
+
     Rect rect = canvas->getCamera()->areaRect->get();
 
     int xStart = 0;
@@ -76,12 +86,21 @@ void ShadowMap::draw(Canvas *canvas) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
 
-    double padding = 1.25;
+    double padding = 1.5;
     double texMargin = 0.15;
 
+    int dynamicSceneX = 0;
+
     for (int x = xStart; x < xEnd; x++) {
+
+        int dynamicSceneY = 0;
+
         for (int y = yStart; y < yEnd; y++) {
             double lightAmount = staticLightMap_[x + y * map_->getW()];
+
+            if (lightAmount <= 0.0) {
+                lightAmount += dynamicScene_[dynamicSceneX + dynamicSceneY * dynamicSceneW_];
+            }
 
             double xActual = x * map_->getBlockW() - rect.x1;
             double yActual = y * map_->getBlockH() - rect.y1;
@@ -97,7 +116,13 @@ void ShadowMap::draw(Canvas *canvas) {
                 glColor4d(0, 0, 0, lightAmount);
 
                 double value;
-                value = 1.0 - pow(1.0 - lightAmount, 0.2);
+
+                if (lightAmount > 0.8) {
+                    value = 1.0;
+                }
+                else {
+                    value = 1.0 - pow(1.0 - lightAmount, 0.33);
+                }
 
                 glColor4d(0.0, 0.0, 0.0, value);
 
@@ -117,7 +142,11 @@ void ShadowMap::draw(Canvas *canvas) {
                 glVertex2d(x1, y2);
                 glEnd();
             }
+
+            dynamicSceneY++;
         }
+
+        dynamicSceneX++;
     }
 
     glDisable(GL_BLEND);
@@ -159,9 +188,7 @@ void ShadowMap::createShadowTexture() {
     delete[] pixels;
 }
 
-void ShadowMap::update(PointLight* light) {
-    // update light map
-
+void ShadowMap::updateStaticLightMap(PointLight *light) {
     light->lightMap_->clear();
 
     int offsetX = (int)((light->location_.x - light->radius_) / map_->getBlockW());
@@ -178,14 +205,23 @@ void ShadowMap::update(PointLight* light) {
 
     for (int x = 0; x < w; x++) {
         for (int y = 0; y < h; y++) {
-            int srcIndex = y * w + x;
-            int dstIndex = (y + offsetY) * map_->getW() + (x + offsetX);
+            int dstX = x + offsetX;
+            int dstY = y + offsetY;
 
-            // TODO: check bounds...
+            if (dstX < 0 || dstX >= map_->getW()) {
+                continue;
+            }
+            if (dstY < 0 || dstY >= map_->getH()) {
+                continue;
+            }
+
+            int dstIndex = dstY * map_->getW() + dstX;
 
             if (dst[dstIndex] > 0.0 && dst[dstIndex] < 1.0) {
                 continue;
             }
+
+            int srcIndex = y * w + x;
 
             double newValue = dst[dstIndex] + src[srcIndex];
 
@@ -196,5 +232,58 @@ void ShadowMap::update(PointLight* light) {
             dst[dstIndex] = newValue;
         }    
     }
+}
 
+void ShadowMap::updateDynamicScene(Canvas* canvas) {
+    int camX = (int)(canvas->getCamera()->areaRect->get().x1 / map_->getBlockW());
+    int camY = (int)(canvas->getCamera()->areaRect->get().y1 / map_->getBlockH());
+
+    std::list<PointLight*>& lights = shadowMask_->dynamicLights_;
+
+    memset(dynamicScene_, 0x0, sizeof(double) * dynamicSceneW_ * dynamicSceneH_);
+
+    for (std::list<PointLight*>::iterator i = lights.begin(); i != lights.end(); i++) {
+        (*i)->lightMap_->clear();
+
+        int offsetX = (int)(((*i)->location_.x - (*i)->radius_) / map_->getBlockW());
+        int offsetY = (int)(((*i)->location_.y - (*i)->radius_) / map_->getBlockH());
+        (*i)->lightMap_->applyLightCenter(map_, offsetX, offsetY);
+
+        int w = (*i)->lightMap_->w_;
+        int h = (*i)->lightMap_->h_;
+
+        double* src = (*i)->lightMap_->data_;
+        double* dst = dynamicScene_;
+
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
+                int dstX = x + offsetX - camX;
+                int dstY = y + offsetY - camY;
+
+                if (dstX < 0 || dstX >= dynamicSceneW_) {
+                    continue;
+                }
+                if (dstY < 0 || dstY >= dynamicSceneH_) {
+                    continue;
+                }
+
+                int dstIndex = dstY * dynamicSceneW_ + dstX;
+
+                if (dst[dstIndex] > 0.0 && dst[dstIndex] < 1.0) {
+                    continue;
+                }
+
+                int srcIndex = y * w + x;
+
+                double newValue = dst[dstIndex] + src[srcIndex];
+
+                if (newValue > 1.0) {
+                    newValue = 1.0;
+                }
+
+                dst[dstIndex] = newValue;
+            }
+        }
+
+    }
 }

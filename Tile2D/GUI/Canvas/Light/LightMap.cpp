@@ -55,8 +55,6 @@ void LightMap::applyLightInternal(int currentX, int currentY, Map *map, int offs
     unsigned char value = map->getValue(offsetX + currentX, offsetY + currentY);
     double newLight = lastLight - (value == 0 ? 0.0 : 0.15);
 
-    if (newLight <= 0.45) return;
-
     int index = currentX + currentY * w_;
 
     if (newLight <= data_[index]) return;

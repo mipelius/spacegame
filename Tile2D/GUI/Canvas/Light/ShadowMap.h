@@ -27,16 +27,21 @@ class Canvas;
 class ShadowMap {
 
 public:
-    ShadowMap(Map* map);
+    ShadowMap(Map* map, ShadowMask* shadowMask);
     ~ShadowMap();
 
     void draw(Canvas* canvas);
 
-    void update(PointLight* light);
+    void updateStaticLightMap(PointLight *light);
+    void updateDynamicScene(Canvas* canvas);
 
 private:
+    ShadowMask* shadowMask_;
     Map* map_;
     double* staticLightMap_;
+    double* dynamicScene_;
+    int dynamicSceneW_;
+    int dynamicSceneH_;
 
     ShadowMask* shadowMask;
 

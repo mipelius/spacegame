@@ -21,6 +21,7 @@
 #include "Map.h"
 #include "ShadowMap.h"
 #include "PointLight.h"
+#include "LightMap.h"
 
 ShadowMask::ShadowMask(double w, double h, Map* map) :
 
@@ -31,7 +32,7 @@ ambientLight_   (   1.0 )
     w_ = w;
     h_ = h;
 
-    shadowMap_ = new ShadowMap(map);
+    shadowMap_ = new ShadowMap(map, this);
 
     initialize();
 }
@@ -47,6 +48,12 @@ void ShadowMask::update(Canvas *canvas) {
     glLoadIdentity();
     glOrtho(0, w_, 0, h_, -1, 1);
     glMatrixMode(GL_MODELVIEW);
+
+    // update dynamic light lightMaps
+
+    for (std::list<PointLight*>::iterator i = dynamicLights_.begin(); i != dynamicLights_.end(); i++) {
+
+    }
 
     // draw shadow map to texture
 
@@ -67,7 +74,11 @@ void ShadowMask::update(Canvas *canvas) {
     glBlendFunc(GL_DST_ALPHA, GL_ZERO);
 
     for (std::list<PointLight*>::iterator i = staticLights_.begin(); i != staticLights_.end(); i++) {
-        (*i)->draw(canvas); // TODO: edit this method
+        (*i)->draw(canvas);
+    }
+
+    for (std::list<PointLight*>::iterator i = dynamicLights_.begin(); i != dynamicLights_.end(); i++) {
+        (*i)->draw(canvas);
     }
 
     glDisable(GL_BLEND);
@@ -136,10 +147,10 @@ void ShadowMask::draw(Canvas *canvas) {
 
 void ShadowMask::addStaticLight(PointLight *light) {
     staticLights_.push_back(light);
-    shadowMap_->update(light);
+    shadowMap_->updateStaticLightMap(light);
 }
 
-void ShadowMask::addDynamicLight(ILight *light) {
+void ShadowMask::addDynamicLight(PointLight *light) {
     dynamicLights_.push_back(light);
 }
 

@@ -21,12 +21,14 @@
 #include "IShadowMask.h"
 #include "Property.h"
 
-class ILight;
 class PointLight;
 class Map;
 class ShadowMap;
 
 class ShadowMask : public IShadowMask {
+
+    friend class ShadowMap;
+
 public:
     ShadowMask(double w, double h, Map* map);
     ~ShadowMask();
@@ -37,10 +39,10 @@ public:
     void draw(Canvas* canvas);
 
     void addStaticLight(PointLight* light);
-    void addDynamicLight(ILight* light);
+    void addDynamicLight(PointLight* light);
 
 private:
-    std::list<ILight*> dynamicLights_;
+    std::list<PointLight*> dynamicLights_;
     std::list<PointLight*> staticLights_;
 
     double ambientLight_;
