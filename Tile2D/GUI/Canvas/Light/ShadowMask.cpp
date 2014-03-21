@@ -15,26 +15,32 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "precompile.h"
-#include "LightMask.h"
-#include "Camera.h"
+#include "ShadowMask.h"
+#include "Canvas.h"
 #include "ILight.h"
-#include "SimpleProperty.h"
+#include "Map.h"
+#include "ShadowMap.h"
+#include "PointLight.h"
 
+ShadowMask::ShadowMask(double w, double h, Map* map) :
 
-LightMask::LightMask(double w, double h) :
-    ambientLight    (   new SimpleProperty<double>( &ambientLight_ )    ),
-    ambientLight_   (   1.0 )
+ambientLight    (   new SimpleProperty<double>( &ambientLight_ )    ),
+ambientLight_   (   1.0 )
+
 {
     w_ = w;
     h_ = h;
+
+    shadowMap_ = new ShadowMap(map);
+
     initialize();
 }
 
-LightMask::~LightMask() {
-    delete ambientLight;
+ShadowMask::~ShadowMask() {
+    delete shadowMap_;
 }
 
-void LightMask::update(Canvas *canvas) {
+void ShadowMask::update(Canvas *canvas) {
     // turn projection upside down
 
     glMatrixMode(GL_PROJECTION);
@@ -42,23 +48,53 @@ void LightMask::update(Canvas *canvas) {
     glOrtho(0, w_, 0, h_, -1, 1);
     glMatrixMode(GL_MODELVIEW);
 
-    // clear
+    // draw shadow map to texture
 
     glColor4d(0, 0, 0, 1.0);
     glRectd(0, 0, w_, h_);
 
+    shadowMap_->draw(canvas);
+
+    glBindTexture(GL_TEXTURE_2D, glTextureId_);
+    glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, (int)w_, (int)h_);
+
     // draw lights
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+    glColor4d(0, 0, 0, 1.0);
+    glRectd(0, 0, w_, h_);
 
-    for (std::list<ILight*>::iterator i = lights.begin(); i != lights.end(); i++) {
-        (*i)->draw(canvas);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_DST_ALPHA, GL_ZERO);
+
+    for (std::list<PointLight*>::iterator i = staticLights_.begin(); i != staticLights_.end(); i++) {
+        (*i)->draw(canvas); // TODO: edit this method
     }
 
     glDisable(GL_BLEND);
 
-    //update mask texture
+    // blend it with map shadows
+
+    glEnable(GL_BLEND);
+    glBindTexture(GL_TEXTURE_2D, glTextureId_);
+
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+    glBegin(GL_QUADS);
+    glTexCoord2d(0, 0);
+    glVertex2d(0, 0);
+    glTexCoord2d(1, 0);
+    glVertex2d(w_, 0);
+    glTexCoord2d(1, 1);
+    glVertex2d(w_, h_);
+    glTexCoord2d(0, 1);
+    glVertex2d(0, h_);
+    glEnd();
+
+    glDisable(GL_BLEND);
+
+    // update mask texture
+
+    glDisable(GL_TEXTURE_2D);
 
     glBindTexture(GL_TEXTURE_2D, glTextureId_);
     glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, (int)w_, (int)h_);
@@ -73,7 +109,7 @@ void LightMask::update(Canvas *canvas) {
     glMatrixMode(GL_MODELVIEW);
 }
 
-void LightMask::draw(Canvas *canvas) {
+void ShadowMask::draw(Canvas *canvas) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -98,7 +134,16 @@ void LightMask::draw(Canvas *canvas) {
     glDisable(GL_BLEND);
 }
 
-void LightMask::initialize() {
+void ShadowMask::addStaticLight(PointLight *light) {
+    staticLights_.push_back(light);
+    shadowMap_->update(light);
+}
+
+void ShadowMask::addDynamicLight(ILight *light) {
+    dynamicLights_.push_back(light);
+}
+
+void ShadowMask::initialize() {
     GLenum texture_format = GL_BGRA;
     GLint nOfColors = 4;
 
@@ -119,8 +164,4 @@ void LightMask::initialize() {
             texture_format, GL_UNSIGNED_BYTE, pixels);
 
     delete[] pixels;
-}
-
-void LightMask::add(ILight *light) {
-    lights.push_back(light);
 }

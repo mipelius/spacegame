@@ -92,16 +92,93 @@ void MapTexture::glUnbind() {
     glDisable(GL_TEXTURE_2D);
 }
 
-void MapTexture::renderBlock(double x, double y, double w, double h, int textureNumber) {
-    glBegin(GL_QUADS);
+void MapTexture::renderBlock(double x, double y, double w, double h, int textureNumber, int cornerRounding) {
     GLfloat textureWidth = 1.0 / count;
-    glTexCoord2f(textureNumber * textureWidth + 0.1, 0);
-    glVertex2d(x, y);
-    glTexCoord2f((textureNumber + 1) * textureWidth - 0.1, 0);
-    glVertex2d(x + w, y);
-    glTexCoord2f((textureNumber + 1) * textureWidth - 0.1, 1);
-    glVertex2d(x + w, y + h);
-    glTexCoord2f(textureNumber * textureWidth + 0.1, 1);
-    glVertex2d(x, y + h);
+
+    if (cornerRounding == CORNER_ROUNDING_NONE) {
+        glBegin(GL_QUADS);
+
+        glTexCoord2d(textureNumber * textureWidth + 0.1, 0);
+        glVertex2d(x, y);
+        glTexCoord2d((textureNumber + 1) * textureWidth - 0.1, 0);
+        glVertex2d(x + w, y);
+        glTexCoord2d((textureNumber + 1) * textureWidth - 0.1, 1);
+        glVertex2d(x + w, y + h);
+        glTexCoord2d(textureNumber * textureWidth + 0.1, 1);
+        glVertex2d(x, y + h);
+        glEnd();
+    }
+
+    double additionW = w / 2.0;
+    double additionH = h / 2.0;
+
+    double texAddition = 1.0 / 2.0;
+
+    glBegin(GL_POLYGON);
+
+    // TOP LEFT CORNER
+    if (cornerRounding & CORNER_ROUNDING_TOP_LEFT) {
+        glTexCoord2d(textureNumber * textureWidth + 0.1, texAddition);
+        glVertex2d(x, y + additionH);
+
+        glTexCoord2d((textureNumber + texAddition/4.0) * textureWidth - 0.1, texAddition/4.0);
+        glVertex2d(x + additionW / 4.0, y + additionH / 4.0);
+
+        glTexCoord2d((textureNumber + texAddition) * textureWidth - 0.1, 0);
+        glVertex2d(x + additionW, y);
+    }
+    else {
+        glTexCoord2d(textureNumber * textureWidth + 0.1, 0);
+        glVertex2d(x, y);
+    }
+
+    // TOP RIGHT CORNER
+    if (cornerRounding & CORNER_ROUNDING_TOP_RIGHT) {
+        glTexCoord2d((textureNumber + 1.0 - texAddition) * textureWidth - 0.1, 0);
+        glVertex2d(x + w - additionW, y);
+
+        glTexCoord2d((textureNumber + 1.0 - texAddition/4.0) * textureWidth - 0.1, texAddition/4.0);
+        glVertex2d(x + w - additionW / 4.0, y + additionH / 4.0);
+
+        glTexCoord2d((textureNumber + 1) * textureWidth - 0.1, texAddition);
+        glVertex2d(x + w, y + additionH);
+    }
+    else {
+        glTexCoord2d((textureNumber + 1) * textureWidth - 0.1, 0);
+        glVertex2d(x + w, y);
+    }
+
+    // BOTTOM RIGHT CORNER
+    if (cornerRounding & CORNER_ROUNDING_BOTTOM_RIGHT) {
+        glTexCoord2d((textureNumber + 1) * textureWidth - 0.1, 1.0 - texAddition);
+        glVertex2d(x + w, y + h - additionH);
+
+        glTexCoord2d((textureNumber + 1.0 - texAddition/4.0) * textureWidth - 0.1, 1.0 - texAddition/4.0);
+        glVertex2d(x + w - additionW / 4.0, y + h - additionH / 4.0);
+
+        glTexCoord2d((textureNumber + 1 - texAddition) * textureWidth - 0.1, 1.0);
+        glVertex2d(x + w - additionW, y + h);
+    }
+    else {
+        glTexCoord2d((textureNumber + 1) * textureWidth - 0.1, 1);
+        glVertex2d(x + w, y + h);
+    }
+
+    // BOTTOM LEFT CORNER
+    if (cornerRounding & CORNER_ROUNDING_BOTTOM_LEFT) {
+        glTexCoord2d((textureNumber + texAddition) * textureWidth + 0.1, 1);
+        glVertex2d(x + additionW, y + h);
+
+        glTexCoord2d((textureNumber + texAddition/4.0) * textureWidth - 0.1, 1.0 - texAddition/4.0);
+        glVertex2d(x + additionW / 4.0, y + h - additionH / 4.0);
+
+        glTexCoord2d(textureNumber * textureWidth + 0.1, 1.0 - texAddition);
+        glVertex2d(x, y + h - additionH);
+    }
+    else {
+        glTexCoord2d(textureNumber * textureWidth + 0.1, 1);
+        glVertex2d(x, y + h);
+    }
+
     glEnd();
 }

@@ -17,13 +17,18 @@
 #ifndef __PointLight_H_
 #define __PointLight_H_
 
+class Canvas;
+class LightMap;
+class Map;
+
+#include <SDL2/SDL_opengl.h>
 #include "Property.h"
 #include "Point.h"
 #include "ILight.h"
-#include "Canvas.h"
-#include "LightMask.h"
 
 class PointLight : public ILight {
+    friend class ShadowMask;
+    friend class ShadowMap;
 
 public:
     virtual void draw(Canvas *canvas);
@@ -35,12 +40,13 @@ public:
     Property<double>* const radius;
 
 private:
+    LightMap* lightMap_;
+
     Point location_;
     double radius_;
 
     static GLuint glTextureId_;
-    static const int TEXTURE_SIZE = 512;
-
+    static const int TEXTURE_SIZE = 1024;
     static void createLightTexture();
 };
 

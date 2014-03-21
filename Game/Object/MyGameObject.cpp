@@ -29,11 +29,15 @@
 #include "AnimatedTexture.h"
 #include "App.h"
 #include "AnimationManager.h"
+#include "PhysicsWorld.h"
+#include "Map.h"
 
 class MyGameObject::Body_MapCollisionEventHandler : public IEventHandler<Body, EventArgs> {
     void handle(Body* body, EventArgs args) {
+
         body->location->set(body->location->get() - body->velocity->get());
         body->speed->set(Vector(0, 0));
+
     }
 };
 
@@ -86,12 +90,13 @@ MyGameObject::MyGameObject() :
     accelerationAnimation_ = new AnimatedTexture(60, 8, false, accelerationAnimationTexture);
     App::getInstance()->getAnimationManager()->add(accelerationAnimation_);
 
-    Sprite* spriteAccelerationLeft = new Sprite(accelerationAnimation_, Rect(-40, -21, -20, -11));
-    Sprite* spriteAccelerationRight = new Sprite(accelerationAnimation_, Rect(-40, 11, -20, 21));
+    Sprite* spriteAccelerationLeft = new Sprite(accelerationAnimation_, Rect(-40, -23, -20, -10));
+    Sprite* spriteAccelerationRight = new Sprite(accelerationAnimation_, Rect(-40, 10, -20, 23));
 
-    spriteContainer->addSprite(sprite);
     spriteContainer->addSprite(spriteAccelerationLeft);
     spriteContainer->addSprite(spriteAccelerationRight);
+
+    spriteContainer->addSprite(sprite);
 
     // bindings
 

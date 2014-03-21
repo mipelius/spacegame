@@ -14,33 +14,36 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Canvas_H_
-#define __Canvas_H_
+#ifndef __ShadowMap_H_
+#define __ShadowMap_H_
 
-class IDrawable;
-class IShadowMask;
-class Camera;
+#include <SDL2/SDL_opengl.h>
 
-#include "GuiComponentBase.h"
+class PointLight;
+class Map;
+class ShadowMask;
+class Canvas;
 
-class Canvas : public GuiComponentBase {
+class ShadowMap {
 
 public:
-    Canvas();
-    ~Canvas();
+    ShadowMap(Map* map);
+    ~ShadowMap();
 
-    void renderActual();
-    void addDrawable(IDrawable *drawable);
+    void draw(Canvas* canvas);
 
-    void addShadowMask(IShadowMask *shadowMask);
-
-    void setCamera(Camera* camera);
-    Camera* getCamera();
+    void update(PointLight* light);
 
 private:
-    std::list<IDrawable*> drawables_;
-    std::list<IShadowMask*> shadowMasks_;
-    Camera* camera_;
+    Map* map_;
+    double* staticLightMap_;
+
+    ShadowMask* shadowMask;
+
+    GLuint glShadowTextureId_;
+    static const int SHADOW_TEXTURE_SIZE = 32;
+
+    void createShadowTexture();
 };
 
-#endif //__Canvas_H_
+#endif //__ShadowMap_H_

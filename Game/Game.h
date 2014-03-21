@@ -22,7 +22,7 @@ class Map;
 class Camera;
 class Body;
 class Canvas;
-class LightMask;
+class ShadowMask;
 
 class MyGameObject;
 
@@ -41,7 +41,7 @@ private:
     MyGameObject* myGameObject_;
     Body* playerBody_;
 
-    LightMask*lightMask_;
+    ShadowMask* shadowMask_;
 
 public:
     Game();

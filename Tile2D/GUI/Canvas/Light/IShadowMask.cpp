@@ -14,33 +14,4 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Canvas_H_
-#define __Canvas_H_
-
-class IDrawable;
-class IShadowMask;
-class Camera;
-
-#include "GuiComponentBase.h"
-
-class Canvas : public GuiComponentBase {
-
-public:
-    Canvas();
-    ~Canvas();
-
-    void renderActual();
-    void addDrawable(IDrawable *drawable);
-
-    void addShadowMask(IShadowMask *shadowMask);
-
-    void setCamera(Camera* camera);
-    Camera* getCamera();
-
-private:
-    std::list<IDrawable*> drawables_;
-    std::list<IShadowMask*> shadowMasks_;
-    Camera* camera_;
-};
-
-#endif //__Canvas_H_
+#include "IShadowMask.h"

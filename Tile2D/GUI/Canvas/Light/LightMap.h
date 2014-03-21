@@ -14,43 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __LightMask_H_
-#define __LightMask_H_
+#ifndef __LightMap_H_
+#define __LightMap_H_
 
-class ILight;
-class Canvas;
+class Map;
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
-#include "Property.h"
+class LightMap {
 
-class LightMask {
-    friend class Canvas;
+    friend class ShadowMap;
 
 public:
-    LightMask(double w, double h);
-    ~LightMask();
+    LightMap(int w, int h);
+    ~LightMap();
 
-    Property<double>* const ambientLight;
-
-    void add(ILight *light);
-
-protected:
-    void draw(Canvas *canvas);
-    void update(Canvas *canvas);
+    void clear();
+    void applyLight(int x, int y, Map* map, int offsetX, int offsetY);
+    void applyLightCenter(Map* map, int offsetX, int offsetY);
 
 private:
-    std::list<ILight*> lights;
+    int w_;
+    int h_;
+    double* data_;
 
-    double ambientLight_;
-    double w_;
-    double h_;
-
-    GLuint glTextureId_;
-
-    void initialize();
-
-    GLint lightMaskTextureId_;
+    void applyLightInternal(int x, int y, Map* map, int offsetX, int offsetY, double lastLight);
 };
 
-#endif //__LightMask_H_
+#endif //__LightMap_H_

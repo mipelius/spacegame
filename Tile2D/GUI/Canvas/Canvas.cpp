@@ -20,8 +20,8 @@
 #include "Window.h"
 #include "IDrawable.h"
 #include "Camera.h"
-#include "LightMask.h"
 #include "ILight.h"
+#include "IShadowMask.h"
 
 Canvas::Canvas() {
     camera_ = nullptr;
@@ -33,7 +33,7 @@ Canvas::~Canvas() { }
 void Canvas::renderActual() {
     if (!camera_) return;
 
-    for (std::list<LightMask *>::iterator i = lightMasks_.begin(); i != lightMasks_.end(); i++) {
+    for (std::list<IShadowMask *>::iterator i = shadowMasks_.begin(); i != shadowMasks_.end(); i++) {
         (*i)->update(this);
     }
 
@@ -47,7 +47,7 @@ void Canvas::renderActual() {
         (*i)->draw(this);
     }
 
-    for (std::list<LightMask *>::iterator i = lightMasks_.begin(); i != lightMasks_.end(); i++) {
+    for (std::list<IShadowMask *>::iterator i = shadowMasks_.begin(); i != shadowMasks_.end(); i++) {
         (*i)->draw(this);
     }
 }
@@ -64,6 +64,6 @@ Camera *Canvas::getCamera() {
     return camera_;
 }
 
-void Canvas::addLightMask(LightMask *lightMask) {
-    lightMasks_.push_back(lightMask);
+void Canvas::addShadowMask(IShadowMask *shadowMask) {
+    shadowMasks_.push_back(shadowMask);
 }

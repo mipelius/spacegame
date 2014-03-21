@@ -27,9 +27,15 @@ private:
     void createGlTexture(SDL_Surface*);
 
 public:
+    static const unsigned int CORNER_ROUNDING_NONE           =   0;         // 00000000
+    static const unsigned int CORNER_ROUNDING_TOP_LEFT       =   1 << 0;    // 00000001
+    static const unsigned int CORNER_ROUNDING_TOP_RIGHT      =   1 << 1;    // 00000010
+    static const unsigned int CORNER_ROUNDING_BOTTOM_LEFT    =   1 << 2;    // 00000100
+    static const unsigned int CORNER_ROUNDING_BOTTOM_RIGHT   =   1 << 3;    // 00001000
+
     MapTexture(int blockW, int blockH, int count, std::string fileNames[]);
 
-    void renderBlock(double x, double y, double w, double h, int textureNumber);
+    void renderBlock(double x, double y, double w, double h, int textureNumber, int cornerRounding);
 
     void glUnbind();
 

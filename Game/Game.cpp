@@ -42,19 +42,14 @@
 #include "JsonFileManager.h"
 
 #include "AnimationManager.h"
-#include "LightMask.h"
+#include "ShadowMask.h"
 #include "PointLight.h"
 
 #include "Sprite.h"
 #include "SpriteContainer.h"
-
-#include <OpenGL/gl3ext.h>
-#include <OpenGL/glext.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
+#include "Light.h"
 
 Game::Game() {
-
     // --- WINDOW PROPERTIES ---
 
     int x = 0;
@@ -121,15 +116,15 @@ Game::Game() {
 
     camera_->location->bind(myGameObject_->body->location);
 
-    // --- LIGHT MASK  ---
+    // --- SHADOW MASK  ---
 
-    lightMask_ = new LightMask(w, h);
-    canvas_->addLightMask(lightMask_);
-    lightMask_->ambientLight->set(0.1);
+    shadowMask_ = new ShadowMask(w, h, map_);
+    canvas_->addShadowMask(shadowMask_);
+    shadowMask_->ambientLight->set(0.05);
 
-    PointLight* light = new PointLight(Point(4000, 8000), 300);
-    light->location->bind(myGameObject_->body->location);
-    lightMask_->add(light);
+    shadowMask_->addStaticLight(new PointLight(Point(4000, 9000), 500));
+    shadowMask_->addStaticLight(new PointLight(Point(5000, 9000), 500));
+    shadowMask_->addStaticLight(new PointLight(Point(6000, 9000), 500));
 
     // --- SMALL MAP ---
 
@@ -139,7 +134,7 @@ Game::Game() {
     smallMapCanvas_->h->set(300);
     smallMapCanvas_->anchor->bind(canvas_->anchor);
     smallMapCanvas_->isBoundsVisible->set(true);
-    smallMapCanvas_->opacity->set(0.4);
+    smallMapCanvas_->opacity->set(0.2);
 
     smallMapCamera_ = new Camera();
     smallMapCamera_->boundsRect->set(Rect(0, 0, 20000, 20000));
@@ -156,37 +151,24 @@ Game::Game() {
     canvas_->addComponent(smallMapCanvas_);
 
     // --- ANIMATIONS ---
+
+    MyGameObject* obj = new MyGameObject();
+    obj->body->location->set(Point(4000, 8300));
+
+    //world_->add(obj->body);
+    canvas_->addDrawable(obj->spriteContainer);
+
 }
 
 void Game::launch() {
-    App::getInstance()->getMusicPlayer()->play(new Music("music/spacegame.mp3"));
+//    App::getInstance()->getMusicPlayer()->play(new Music("music/spacegame.mp3"));
 
     const Uint8* keys;
     Uint32 timeMilliSec = 0;
 
-    Texture* lightTexture = new Texture("images/light.png");
+    Uint32 lightAddingInterval = 1000; // ms
 
-    PointLight* light1 = new PointLight(Point(5000, 9500), 250);
-    lightMask_->add(light1);
-
-    Sprite* lightSprite1 = new Sprite(lightTexture, Rect(-8, -8, 8, 8));
-    SpriteContainer* lightSpriteContainer1 = new SpriteContainer();
-    lightSpriteContainer1->addSprite(lightSprite1);
-    canvas_->addDrawable(lightSpriteContainer1);
-
-    lightSpriteContainer1->location->bind(light1->location);
-
-    PointLight* light2 = new PointLight(Point(5000, 9500), 250);
-    lightMask_->add(light2);
-
-    Sprite* lightSprite2 = new Sprite(lightTexture, Rect(-8, -8, 8, 8));
-    SpriteContainer* lightSpriteContainer2 = new SpriteContainer();
-    lightSpriteContainer2->addSprite(lightSprite2);
-    canvas_->addDrawable(lightSpriteContainer2);
-
-    lightSpriteContainer2->location->bind(light2->location);
-
-    double i = 0;
+    Uint32 timePassedAfterLastLightAdd = 0;
 
     while (!SDL_QuitRequested()) {
         /// --- INPUT READING AND HANDLING ---
@@ -208,12 +190,53 @@ void Game::launch() {
         if (keys[SDL_SCANCODE_UP]) {
             myGameObject_->accelerate();
         }
+
         if (keys[SDL_SCANCODE_SPACE]) {
-            myGameObject_->location->set(Point(4000, 8000));
+            if (timePassedAfterLastLightAdd > lightAddingInterval) {
+                timePassedAfterLastLightAdd = 0;
+
+                Light* light = new Light(myGameObject_->location->get(), 400);
+
+                canvas_->addDrawable(light->spriteContainer);
+                shadowMask_->addStaticLight(light->pointLight);
+            }
         }
 
         if (keys[SDL_SCANCODE_RETURN]) {
             smallMapCanvas_->isVisible->toggle();
+        }
+
+        if (keys[SDL_SCANCODE_Z]) {
+            double old = shadowMask_->ambientLight->get();
+            shadowMask_->ambientLight->set(old - 0.01);
+        }
+        if (keys[SDL_SCANCODE_X]) {
+            double old = shadowMask_->ambientLight->get();
+            shadowMask_->ambientLight->set(old + 0.01);
+        }
+
+        int x, y;
+
+        Uint32 value =  SDL_GetMouseState(&x, &y);
+        if (value == 1) {
+            int xx = x + camera_->areaRect->get().x1;
+            int yy = y + camera_->areaRect->get().y1;
+
+            for (int i = -1; i<=1; i++) {
+                for (int j = -1; j<=1; j++) {
+                    map_->setValueActual(xx+10*i, yy+10*j, 1);
+                }
+            }
+        }
+        if (value == 4) {
+            int xx = x + camera_->areaRect->get().x1;
+            int yy = y + camera_->areaRect->get().y1;
+
+            for (int i = -1; i<=1; i++) {
+                for (int j = -1; j<=1; j++) {
+                    map_->setValueActual(xx+10*i, yy+10*j, 0);
+                }
+            }
         }
 
         /// --- PHYSICS ---
@@ -222,14 +245,9 @@ void Game::launch() {
         timeMilliSec = SDL_GetTicks();
         world_->step(timeElapsedMilliSec / 1000.0);
 
+        timePassedAfterLastLightAdd +=  timeElapsedMilliSec;
+
         /// --- ANIMATION ---
-
-        i += 2.0;
-
-        Point point = myGameObject_->location->get();
-
-        light1->location->set(point + Vector::byAngle(i, 150));
-        light2->location->set(point + Vector::byAngle(i + 180.0, 150));
 
         App::getInstance()->getAnimationManager()->update(timeElapsedMilliSec / 1000.0);
 

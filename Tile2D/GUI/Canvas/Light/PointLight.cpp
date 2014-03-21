@@ -14,12 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "precompile.h"
 #include "PointLight.h"
 #include "SimpleProperty.h"
 #include "Canvas.h"
 #include "Camera.h"
-
-#include "LightMask.h"
+#include "Map.h"
+#include "LightMap.h"
 
 GLuint PointLight::glTextureId_ = 0;
 
@@ -33,6 +34,15 @@ PointLight::PointLight(Point location, double radius) :
     if (glTextureId_ == 0) {
         createLightTexture();
     }
+
+    int w = (int)(radius_ * 2 / 10);
+    int h = (int)(radius_ * 2 / 10);
+
+    lightMap_ = new LightMap(w, h);
+}
+
+PointLight::~PointLight() {
+    delete lightMap_;
 }
 
 void PointLight::draw(Canvas *canvas) {
@@ -40,36 +50,30 @@ void PointLight::draw(Canvas *canvas) {
 
     double x = location_.x - rect.x1 - radius_;
     double y = location_.y - rect.y1 - radius_;
-
-    int w = (int)(radius_ * 2);
-    int h = (int)(radius_ * 2);
+    double w = radius_ * 2;
+    double h = radius_ * 2;
 
     glEnable(GL_TEXTURE_2D);
-
     glBindTexture(GL_TEXTURE_2D, glTextureId_);
+
+    double margin = 0.10;
 
     glColor4d(0.0, 0.0, 0.0, 1.0);
     glBegin(GL_QUADS);
-    glTexCoord2d(0, 0);
+    glTexCoord2d(margin, margin);
     glVertex2d(x, y);
-    glTexCoord2d(1, 0);
+    glTexCoord2d(1 - margin, margin);
     glVertex2d(x + w, y);
-    glTexCoord2d(1, 1);
+    glTexCoord2d(1 - margin, 1 - margin);
     glVertex2d(x + w, y + h);
-    glTexCoord2d(0, 1);
+    glTexCoord2d(margin, 1 - margin);
     glVertex2d(x, y + h);
     glEnd();
-
-    glDisable(GL_TEXTURE_2D);
-}
-
-PointLight::~PointLight() {
-
 }
 
 void PointLight::createLightTexture() {
-    int w = 256;
-    int h = 256;
+    int w = TEXTURE_SIZE;
+    int h = TEXTURE_SIZE;
 
     Uint8 alphaValue;
     double temp;
