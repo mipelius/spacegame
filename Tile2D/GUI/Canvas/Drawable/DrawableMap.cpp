@@ -94,12 +94,33 @@ void DrawableMap::drawMap(Canvas *canvas) {
         for (int j = jStart; j < jEnd; j++) {
             if (map_->getValue(i, j) == 0) continue; // continue if the block is empty
 
+            bool left = map_->getValue(i - 1, j) == 0;
+            bool right = map_->getValue(i + 1, j) == 0;
+            bool top = map_->getValue(i, j - 1) == 0;
+            bool bottom = map_->getValue(i, j + 1) == 0;
+
+            int cornerRounding = MapTexture::CORNER_ROUNDING_NONE;
+
+            if (top && left) {
+                cornerRounding |= MapTexture::CORNER_ROUNDING_TOP_LEFT;
+            }
+            if (top && right) {
+                cornerRounding |= MapTexture::CORNER_ROUNDING_TOP_RIGHT;
+            }
+            if (bottom && left) {
+                cornerRounding |= MapTexture::CORNER_ROUNDING_BOTTOM_LEFT;
+            }
+            if (bottom && right) {
+                cornerRounding |= MapTexture::CORNER_ROUNDING_BOTTOM_RIGHT;
+            }
+
             mapTexture_->renderBlock(
                     i * map_->getBlockW() - x,
                     j * map_->getBlockH() - y,
                     map_->getBlockW(),
                     map_->getBlockH(),
-                    map_->getValue(i, j) - 1
+                    map_->getValue(i, j) - 1,
+                    cornerRounding
             );
         }
     }

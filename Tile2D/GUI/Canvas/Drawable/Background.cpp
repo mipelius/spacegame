@@ -41,6 +41,8 @@ void Background::setRatio(double ratio) {
 void Background::draw(Canvas* canvas) {
     Rect rect = canvas->getCamera()->areaRect->get();
 
+    glColor3d(1.0, 1.0, 1.0);
+
     if (texture_) {
 
         texture_->glBind();
