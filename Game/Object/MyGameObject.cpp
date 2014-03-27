@@ -30,7 +30,7 @@
 #include "App.h"
 #include "AnimationManager.h"
 #include "PhysicsWorld.h"
-#include "Map.h"
+#include "WorldMap.h"
 
 class MyGameObject::Body_MapCollisionEventHandler : public IEventHandler<Body, EventArgs> {
     void handle(Body* body, EventArgs args) {
@@ -55,7 +55,7 @@ static Texture* accelerationAnimationTexture = nullptr;
 MyGameObject::MyGameObject() :
     location        (   new SimpleProperty<Point>   (&location_)    ),
     location_       (   Point(0, 0)                                 ),
-    body            (   new Body(100)                               ),
+    body            (   new Body(100.0)                             ),
     spriteContainer (   new SpriteContainer()                       )
 
 {

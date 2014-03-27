@@ -17,9 +17,9 @@
 #include "precompile.h"
 #include "Node.h"
 #include "RouteGenerator.h"
-#include "Map.h"
+#include "WorldMap.h"
 
-Node::Node(int x, int y, Map* map) {
+Node::Node(int x, int y, WorldMap * map) {
     this->x = x;
     this->y = y;
     this->nextNode = nullptr;
@@ -30,7 +30,7 @@ Node::Node(int x, int y, Map* map) {
     this->map = map;
 }
 
-Node *Node::byPoint(Point point, Map* map) {
+Node *Node::byPoint(Point point, WorldMap * map) {
     int x = (int)point.x;
     x /= map->getBlockW();
     int y = (int)point.y;

@@ -14,29 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __LightMap_H_
-#define __LightMap_H_
+#include "LightObject.h"
+#include "Texture.h"
+#include "Sprite.h"
+#include "SpriteContainer.h"
+#include "PointLight.h"
 
-class WorldMap;
+Texture* lightTexture = nullptr;
 
-class LightMap {
+LightObject::LightObject(Point location, double radius) :
+    spriteContainer(new SpriteContainer()),
+    pointLight(new PointLight(location, radius))
+{
+    if (!lightTexture) {
+        lightTexture = new Texture("images/light.png");
+    }
 
-    friend class ShadowMap;
+    Sprite* sprite = new Sprite(lightTexture, Rect(-64, -64, 64, 64));
 
-public:
-    LightMap(int w, int h);
-    ~LightMap();
-
-    void clear();
-    void applyLight(int x, int y, WorldMap * map, int offsetX, int offsetY);
-    void applyLightCenter(WorldMap * map, int offsetX, int offsetY);
-
-private:
-    int w_;
-    int h_;
-    double* data_;
-
-    void applyLightInternal(int x, int y, WorldMap * map, int offsetX, int offsetY, double lastLight);
-};
-
-#endif //__LightMap_H_
+    spriteContainer->addSprite(sprite);
+    spriteContainer->location->set(location);
+}

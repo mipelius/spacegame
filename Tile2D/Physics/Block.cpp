@@ -15,15 +15,63 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Block.h"
+#include "MapTexture.h"
+#include "SimpleReadableProperty.h"
 
-Block::Block(std::string name) {
-
+Block::Block(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture, int mapTextureId) :
+    name(           new SimpleReadableProperty<std::string> (   &name_          )   ),
+    density(        new SimpleReadableProperty<double>      (   &density_       )   ),
+    translucency(   new SimpleReadableProperty<double>      (   &translucency_  )   ),
+    opacity(        new SimpleReadableProperty<double>      (   &opacity_       )   )
+{
+    initialize(name, density, translucency, opacity, mapTexture, mapTextureId);
 }
 
-std::string Block::getName() {
-    return this->name;
+Block::Block(json::Object object, MapTexture* mapTexture)  :
+name(           new SimpleReadableProperty<std::string> (   &name_          )   ),
+density(        new SimpleReadableProperty<double>      (   &density_       )   ),
+translucency(   new SimpleReadableProperty<double>      (   &translucency_  )   ),
+opacity(        new SimpleReadableProperty<double>      (   &opacity_       )   )
+{
+    MapTexture* mapTextureToUse = nullptr;
+    int mapTextureId = -1;
+
+    json::Value nullValue;
+
+    if (object["texture"] != nullValue) {
+        mapTextureToUse = mapTexture;
+
+        mapTextureId = mapTexture->addTexture(
+                object["texture"].ToString()
+        );
+    }
+
+    initialize(
+            object["name"].ToString(),
+            object["density"].ToFloat(),
+            object["translucency"].ToFloat(),
+            object["opacity"].ToFloat(),
+            mapTextureToUse,
+            mapTextureId
+    );
 }
 
-void Block::setName(std::string name) {
-    this->name = name;
+Block::~Block() {
+    delete name;
+    delete density;
+    delete translucency;
+    delete opacity;
+}
+
+void Block::initialize(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture, int mapTextureId) {
+    name_ = name;
+    density_ = density;
+    translucency_ = translucency;
+    opacity_ = opacity;
+    mapTexture_ = mapTexture;
+    mapTextureId_ = mapTextureId;
+}
+
+int Block::getMapTextureId() {
+    return mapTextureId_;
 }

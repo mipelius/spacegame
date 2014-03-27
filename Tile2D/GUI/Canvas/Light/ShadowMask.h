@@ -22,7 +22,7 @@
 #include "Property.h"
 
 class PointLight;
-class Map;
+class WorldMap;
 class ShadowMap;
 
 class ShadowMask : public IShadowMask {
@@ -30,7 +30,7 @@ class ShadowMask : public IShadowMask {
     friend class ShadowMap;
 
 public:
-    ShadowMask(double w, double h, Map* map);
+    ShadowMask(double w, double h, WorldMap * map);
     ~ShadowMask();
 
     Property<double>* const ambientLight;

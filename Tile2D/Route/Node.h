@@ -19,7 +19,7 @@
 
 #include "Point.h"
 
-class Map;
+class WorldMap;
 
 class Node {
     friend class RouteGenerator;
@@ -27,14 +27,14 @@ class Node {
 private:
     Node* previousNode;
     Node* nextNode;
-    Map* map;
+    WorldMap * map;
     int x;
     int y;
     int fCost;
     int hCost;
     int gCost;
-    Node(int x, int y, Map* map);
-    static Node* byPoint(Point point, Map* map);
+    Node(int x, int y, WorldMap * map);
+    static Node* byPoint(Point point, WorldMap * map);
 public:
     bool equals(Node* anotherNode, unsigned int rounding = 1);
     Point getLocation();

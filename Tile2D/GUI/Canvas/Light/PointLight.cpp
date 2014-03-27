@@ -19,7 +19,7 @@
 #include "SimpleProperty.h"
 #include "Canvas.h"
 #include "Camera.h"
-#include "Map.h"
+#include "WorldMap.h"
 #include "LightMap.h"
 
 GLuint PointLight::glTextureId_ = 0;
@@ -53,25 +53,26 @@ void PointLight::draw(Canvas *canvas) {
     double w = radius_ * 2;
     double h = radius_ * 2;
 
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, glTextureId_);
+//    glEnable(GL_TEXTURE_2D);
+//    glBindTexture(GL_TEXTURE_2D, glTextureId_);
 
-    double margin = 0.10;
+    double margin = 0.0;
 
-    glColor4d(0.0, 0.0, 0.0, 1.0);
-    glBegin(GL_QUADS);
-    glTexCoord2d(margin, margin);
-    glVertex2d(x, y);
-    glTexCoord2d(1 - margin, margin);
-    glVertex2d(x + w, y);
-    glTexCoord2d(1 - margin, 1 - margin);
-    glVertex2d(x + w, y + h);
-    glTexCoord2d(margin, 1 - margin);
-    glVertex2d(x, y + h);
-    glEnd();
+    glTexCoord2f(margin, margin);
+    glVertex2f(x, y);
+    glTexCoord2f(1 - margin, margin);
+    glVertex2f(x + w, y);
+    glTexCoord2f(1 - margin, 1 - margin);
+    glVertex2f(x + w, y + h);
+    glTexCoord2f(margin, 1 - margin);
+    glVertex2f(x, y + h);
+
+
 }
 
 void PointLight::createLightTexture() {
+    std::cout << TEXTURE_SIZE;
+
     int w = TEXTURE_SIZE;
     int h = TEXTURE_SIZE;
 
@@ -99,11 +100,11 @@ void PointLight::createLightTexture() {
     glBindTexture(GL_TEXTURE_2D, glTextureId_);
 
     // Set the texture's stretching properties
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     // Edit the texture object's image data using the information SDL_Surface gives us
-    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, w, h, 0,
+    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, w, h, 1,
             texture_format, GL_UNSIGNED_BYTE, lightPixels);
 
     delete[] lightPixels;

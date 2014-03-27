@@ -17,9 +17,10 @@
 #include "precompile.h"
 #include "DrawableMap.h"
 #include "MapTexture.h"
-#include "Map.h"
+#include "WorldMap.h"
 #include "Camera.h"
 #include "Canvas.h"
+#include "Block.h"
 
 DrawableMap::DrawableMap() {
     mapTexture_ = nullptr;
@@ -49,7 +50,7 @@ void DrawableMap::draw(Canvas* canvas) {
     }
 }
 
-void DrawableMap::setMap(Map *map) {
+void DrawableMap::setMap(WorldMap *map) {
     map_ = map;
 }
 
@@ -58,6 +59,10 @@ void DrawableMap::setMapTexture(MapTexture *mapTexture) {
 }
 
 void DrawableMap::drawMap(Canvas *canvas) {
+//    mapTexture_->glVertices(0, 0, 0, 0, 0, 0);
+//
+//    return;
+
     Rect rect = canvas->getCamera()->areaRect->get();
 
     double x = rect.x1;
@@ -90,40 +95,50 @@ void DrawableMap::drawMap(Canvas *canvas) {
 
     glColor3d(1.0, 1.0, 1.0);
 
+    glBegin(GL_QUADS);
+
     for (int i = iStart; i < iEnd; i++) {
         for (int j = jStart; j < jEnd; j++) {
-            if (map_->getValue(i, j) == 0) continue; // continue if the block is empty
+//            // TODO: make this work
 
-            bool left = map_->getValue(i - 1, j) == 0;
-            bool right = map_->getValue(i + 1, j) == 0;
-            bool top = map_->getValue(i, j - 1) == 0;
-            bool bottom = map_->getValue(i, j + 1) == 0;
+            Block* block = map_->getValue(i, j);
 
-            int cornerRounding = MapTexture::CORNER_ROUNDING_NONE;
+            if (block == nullptr || block->getMapTextureId() == -1) continue;
 
-            if (top && left) {
-                cornerRounding |= MapTexture::CORNER_ROUNDING_TOP_LEFT;
-            }
-            if (top && right) {
-                cornerRounding |= MapTexture::CORNER_ROUNDING_TOP_RIGHT;
-            }
-            if (bottom && left) {
-                cornerRounding |= MapTexture::CORNER_ROUNDING_BOTTOM_LEFT;
-            }
-            if (bottom && right) {
-                cornerRounding |= MapTexture::CORNER_ROUNDING_BOTTOM_RIGHT;
-            }
-
-            mapTexture_->renderBlock(
+            mapTexture_->glVertices(
                     i * map_->getBlockW() - x,
                     j * map_->getBlockH() - y,
                     map_->getBlockW(),
                     map_->getBlockH(),
-                    map_->getValue(i, j) - 1,
-                    cornerRounding
+                    block->getMapTextureId(),
+                    MapTexture::CORNER_ROUNDING_NONE
             );
+
+//            bool left = map_->getValue(i - 1, j) == 0;
+//            bool right = map_->getValue(i + 1, j) == 0;
+//            bool top = map_->getValue(i, j - 1) == 0;
+//            bool bottom = map_->getValue(i, j + 1) == 0;
+//
+//            int cornerRounding = MapTexture::CORNER_ROUNDING_NONE;
+//
+//            if (top && left) {
+//                cornerRounding |= MapTexture::CORNER_ROUNDING_TOP_LEFT;
+//            }
+//            if (top && right) {
+//                cornerRounding |= MapTexture::CORNER_ROUNDING_TOP_RIGHT;
+//            }
+//            if (bottom && left) {
+//                cornerRounding |= MapTexture::CORNER_ROUNDING_BOTTOM_LEFT;
+//            }
+//            if (bottom && right) {
+//                cornerRounding |= MapTexture::CORNER_ROUNDING_BOTTOM_RIGHT;
+//            }
+//
+
         }
     }
+
+    glEnd();
 
     mapTexture_->glUnbind();
 }
@@ -139,13 +154,23 @@ void DrawableMap::drawSmallMap(Canvas *canvas) {
     glBegin(GL_QUADS);
     for (double x = 0; x < cameraRect.getWidth(); x += stepX) {
         for (double y = 0; y < cameraRect.getHeight(); y += stepY) {
-            int value = map_->getValueActual((int)(x + cameraRect.x1), (int)(y + cameraRect.y1));
 
-            if (value == 0) continue;
+            // TODO: make this work
 
-            if (value % 3 == 2) canvas->glColor(0.7, 0.0, 0.0); // red
-            if (value % 3 == 1) canvas->glColor(0.0, 0.7, 0.0); // green
-            if (value % 3 == 0) canvas->glColor(0.0, 0.0, 0.7); // blue
+            Block* block = map_->getValueScaled(
+                    Point(
+                            x + cameraRect.x1,
+                            y + cameraRect.y1
+                    )
+            );
+
+            if (block == nullptr || block->getMapTextureId() == -1) continue;
+
+            // MAKE THIS WORK
+
+//            if (value % 3 == 2) canvas->glColor(0.7, 0.0, 0.0); // red
+//            if (value % 3 == 1) canvas->glColor(0.0, 0.7, 0.0); // green
+//            if (value % 3 == 0) canvas->glColor(0.0, 0.0, 0.7); // blue
 
             glVertex2d(x, y);
             glVertex2d(x + stepX, y);

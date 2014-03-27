@@ -20,14 +20,14 @@
 #include <SDL2/SDL_opengl.h>
 
 class PointLight;
-class Map;
+class WorldMap;
 class ShadowMask;
 class Canvas;
 
 class ShadowMap {
 
 public:
-    ShadowMap(Map* map, ShadowMask* shadowMask);
+    ShadowMap(WorldMap * map, ShadowMask* shadowMask);
     ~ShadowMap();
 
     void draw(Canvas* canvas);
@@ -37,7 +37,7 @@ public:
 
 private:
     ShadowMask* shadowMask_;
-    Map* map_;
+    WorldMap * map_;
     double* staticLightMap_;
     double* dynamicScene_;
     int dynamicSceneW_;

@@ -20,7 +20,7 @@
 #include "CollisionShape.h"
 #include "Event.h"
 #include "PhysicsWorld.h"
-#include "Map.h"
+#include "WorldMap.h"
 #include "BodyCollisionEventArgs.h"
 #include "SimpleProperty.h"
 
@@ -128,7 +128,7 @@ void Body::step_(double timeElapsedSec) {
 
 
 bool Body::detectMapCollision_() {
-    Map* map = this->getWorld()->getMap();
+    WorldMap * map = this->getWorld()->getMap();
     if (map && map->detectCollisionWith(this)) {
 
         mapCollision->raise(EventArgs());

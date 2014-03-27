@@ -18,6 +18,7 @@
 #include "App.h"
 #include "Game.h"
 
+#include "json.h"
 #undef main
 
 int main(int argc, const char * argv[])

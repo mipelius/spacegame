@@ -18,12 +18,12 @@
 #include "ShadowMask.h"
 #include "Canvas.h"
 #include "ILight.h"
-#include "Map.h"
+#include "WorldMap.h"
 #include "ShadowMap.h"
 #include "PointLight.h"
 #include "LightMap.h"
 
-ShadowMask::ShadowMask(double w, double h, Map* map) :
+ShadowMask::ShadowMask(double w, double h, WorldMap * map) :
 
 ambientLight    (   new SimpleProperty<double>( &ambientLight_ )    ),
 ambientLight_   (   1.0 )
@@ -73,6 +73,13 @@ void ShadowMask::update(Canvas *canvas) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_DST_ALPHA, GL_ZERO);
 
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, PointLight::glTextureId_);
+
+    glColor4d(0.0, 0.0, 0.0, 1.0);
+    glBegin(GL_QUADS);
+
+
     for (std::list<PointLight*>::iterator i = staticLights_.begin(); i != staticLights_.end(); i++) {
         (*i)->draw(canvas);
     }
@@ -80,6 +87,8 @@ void ShadowMask::update(Canvas *canvas) {
     for (std::list<PointLight*>::iterator i = dynamicLights_.begin(); i != dynamicLights_.end(); i++) {
         (*i)->draw(canvas);
     }
+
+    glEnd();
 
     glDisable(GL_BLEND);
 

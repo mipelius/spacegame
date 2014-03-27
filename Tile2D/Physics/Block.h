@@ -17,16 +17,37 @@
 #ifndef __Block_H_
 #define __Block_H_
 
+class MapTexture;
+
 #include <string>
+#include "ReadableProperty.h"
+#include "json.h"
 
 class Block {
+
 private:
-    std::string name;
-    // Texture???
+    std::string name_;
+    double density_;
+    double translucency_;
+    double opacity_;
+
+    MapTexture* mapTexture_;
+    int mapTextureId_;
+
+    void initialize(std::string name, double density, double translucency, double opacity, MapTexture* mapTexture, int mapTextureId);
+
 public:
-    Block(std::string name /* Texture, texture?? */);
-    std::string getName();
-    void setName(std::string);
+    Block(std::string name, double density, double translucency, double opacity, MapTexture* mapTexture, int mapTextureId);
+    Block(json::Object object, MapTexture* mapTexture);
+    ~Block();
+
+    ReadableProperty<std::string>* const name;
+    ReadableProperty<double>* const density;
+    ReadableProperty<double>* const translucency;
+    ReadableProperty<double>* const opacity;
+
+    int getMapTextureId();
+
 };
 
 

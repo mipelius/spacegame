@@ -15,7 +15,7 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "LightMap.h"
-#include "Map.h"
+#include "WorldMap.h"
 
 LightMap::LightMap(int w, int h) {
     w_ = w;
@@ -33,15 +33,15 @@ void LightMap::clear() {
     memset(data_, 0, sizeof(double) * w_ * h_);
 }
 
-void LightMap::applyLight(int x, int y, Map *map, int offsetX, int offsetY) {
-    applyLightInternal(x, y, map, offsetX, offsetY, 1.0);
+void LightMap::applyLight(int x, int y, WorldMap *map, int offsetX, int offsetY) {
+    applyLightInternal(x, y, map, offsetX, offsetY, 1.15);
 }
 
-void LightMap::applyLightCenter(Map *map, int offsetX, int offsetY) {
+void LightMap::applyLightCenter(WorldMap *map, int offsetX, int offsetY) {
     applyLight(w_ / 2, h_ / 2, map, offsetX, offsetY);
 }
 
-void LightMap::applyLightInternal(int currentX, int currentY, Map *map, int offsetX, int offsetY, double lastLight) {
+void LightMap::applyLightInternal(int currentX, int currentY, WorldMap *map, int offsetX, int offsetY, double lastLight) {
 //    double deltaX = currentX * map->getBlockW() - radius_;
 //    double deltaY = currentY * map->getBlockH() - radius_;
 //
@@ -52,17 +52,17 @@ void LightMap::applyLightInternal(int currentX, int currentY, Map *map, int offs
     if (currentX < 0 || currentX >= w_) return;
     if (currentY < 0 || currentY >= h_) return;
 
-    unsigned char value = map->getValue(offsetX + currentX, offsetY + currentY);
-    double newLight = lastLight - (value == 0 ? 0.0 : 0.15);
+//    unsigned char value = map->getByteValue(offsetX + currentX, offsetY + currentY);
+//    double newLight = lastLight - (value == 0 ? 0.0 : 0.15);
 
     int index = currentX + currentY * w_;
 
-    if (newLight <= data_[index]) return;
-
-    data_[index] = newLight;
-
-    applyLightInternal(currentX + 1, currentY, map, offsetX, offsetY, newLight);
-    applyLightInternal(currentX, currentY + 1 , map, offsetX, offsetY, newLight);
-    applyLightInternal(currentX - 1, currentY, map, offsetX, offsetY, newLight);
-    applyLightInternal(currentX, currentY - 1, map, offsetX, offsetY, newLight);
+//    if (newLight <= data_[index]) return;
+//
+//    data_[index] = newLight;
+//
+//    applyLightInternal(currentX + 1, currentY, map, offsetX, offsetY, newLight);
+//    applyLightInternal(currentX, currentY + 1 , map, offsetX, offsetY, newLight);
+//    applyLightInternal(currentX - 1, currentY, map, offsetX, offsetY, newLight);
+//    applyLightInternal(currentX, currentY - 1, map, offsetX, offsetY, newLight);
 }

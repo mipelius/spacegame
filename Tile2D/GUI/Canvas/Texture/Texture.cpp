@@ -104,16 +104,16 @@ int Texture::getH() {
 void Texture::glTexCorner(ITexture::Corner corner) {
     switch (corner) {
         case (TOP_LEFT):
-            glTexCoord2d(0.01, 0.01);
+            glTexCoord2f(0.01, 0.01);
             break;
         case (TOP_RIGHT):
-            glTexCoord2d(0.99, 0.01);
+            glTexCoord2f(0.99, 0.01);
             break;
         case (BOTTOM_LEFT):
-            glTexCoord2d(0.01, 0.99);
+            glTexCoord2f(0.01, 0.99);
             break;
         case (BOTTOM_RIGHT):
-            glTexCoord2d(0.99, 0.99);
+            glTexCoord2f(0.99, 0.99);
             break;
     }
 }

@@ -17,7 +17,7 @@
 #ifndef __PhysicsWorld_H_
 #define __PhysicsWorld_H_
 
-class Map;
+class WorldMap;
 class Body;
 
 #include "Point.h"
@@ -33,8 +33,8 @@ public:
     void step(double timeSeconds);
     void add(Body *gameEntity);
 
-    void setMap(Map* map);
-    Map* getMap();
+    void setMap(WorldMap * map);
+    WorldMap * getMap();
 
     Property<Vector>* const gForce;
     Property<double>* const metersPerPixel;
@@ -46,7 +46,7 @@ private:
     double airDensity_;
 
     std::list<Body *> bodies_;
-    Map* map_;
+    WorldMap * map_;
     void detectCollision_(Body *entity);
 };
 

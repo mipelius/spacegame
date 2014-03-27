@@ -17,7 +17,7 @@
 #include "precompile.h"
 #include "PhysicsWorld.h"
 #include "Body.h"
-#include "Map.h"
+#include "WorldMap.h"
 #include "SimpleProperty.h"
 
 PhysicsWorld::PhysicsWorld(
@@ -71,10 +71,10 @@ void PhysicsWorld::detectCollision_(Body *entity) {
     }
 }
 
-void PhysicsWorld::setMap(Map* map) {
+void PhysicsWorld::setMap(WorldMap * map) {
     this->map_ = map;
 }
 
-Map *PhysicsWorld::getMap() {
+WorldMap *PhysicsWorld::getMap() {
     return this->map_;
 }

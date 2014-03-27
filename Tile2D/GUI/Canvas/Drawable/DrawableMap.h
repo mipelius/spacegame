@@ -17,7 +17,7 @@
 #ifndef __DrawableMap_H_
 #define __DrawableMap_H_
 
-class Map;
+class WorldMap;
 class MapTexture;
 
 #include "IDrawable.h"
@@ -27,14 +27,14 @@ public:
     DrawableMap();
     ~DrawableMap();
 
-    void setMap(Map* map);
+    void setMap(WorldMap * map);
     void setMapTexture(MapTexture* mapTexture);
 
     void draw(Canvas* canvas);
 
 private:
     MapTexture* mapTexture_;
-    Map* map_;
+    WorldMap * map_;
 
     void drawMap(Canvas* canvas);
     void drawSmallMap(Canvas* canvas);

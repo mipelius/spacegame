@@ -14,28 +14,36 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Map_H_
-#define __Map_H_
+#ifndef __WorldMap_H_
+#define __WorldMap_H_
 
 #include <string>
 
 class MapTexture;
 class Body;
+class BlockMapping;
+class Block;
 
 #include "Rect.h"
+#include "Array2d.h"
+#include "Block.h"
 
-class Map {
+class WorldMap {
 public:
-    Map(
+    WorldMap(
             std::string path,
-            int blockSizeW = Map::DEFAULT_BLOCK_SIZE_W,
-            int blockSizeH = Map::DEFAULT_BLOCK_SIZE_H
+            BlockMapping* mapping,
+            int blockSizeW = WorldMap::DEFAULT_BLOCK_SIZE_W,
+            int blockSizeH = WorldMap::DEFAULT_BLOCK_SIZE_H
     );
 
-    void setValue(int x, int y, unsigned char value);
-    void setValueActual(int x, int y, unsigned char value);
-    unsigned char getValue(int x, int y);
-    unsigned char getValueActual(int x, int y);
+    ~WorldMap();
+
+    Block* getValue(int x, int y);
+    Block* getValueScaled(Point point);
+    void setValue(int x, int y, Block* value);
+    void setValueScaled(Point point, Block* value);
+
     int getW();
     int getH();
     int getBlockW();
@@ -50,10 +58,9 @@ private:
     static const int DEFAULT_BLOCK_SIZE_H = 8;
     int blockSizeW;
     int blockSizeH;
-    int w;
-    int h;
-    unsigned char **p_values;
-    void initialize(int w, int h);
+
+    Array2d<Block*> *blocks_;
+    BlockMapping* mapping_;
 };
 
-#endif //__Map_H_
+#endif //__WorldMap_H_

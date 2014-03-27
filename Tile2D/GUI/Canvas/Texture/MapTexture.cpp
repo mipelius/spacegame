@@ -17,168 +17,101 @@
 #include "precompile.h"
 #include "MapTexture.h"
 
-MapTexture::MapTexture(int blockW, int blockH, int count, std::string fileNames []) {
-    this->blockW = blockW;
-    this->blockH = blockH;
-    this->count = count;
-
-    SDL_Surface* dstSurface = SDL_CreateRGBSurface(
-            0,
-            blockW * count,
-            blockH,
-            32,
-            0xFF000000,
-            0x00FF0000,
-            0x0000FF00,
-            0x000000FF
-    );
-
-    Uint32* dstPixels = (Uint32*)dstSurface->pixels;
-
-    for (int i=0; i<count; i++) {
-        SDL_Surface* srcSurface = IMG_Load(fileNames[i].data());
-        if (!srcSurface) {
-            std::fprintf(stderr, "SDL could not load %s: %s\n", fileNames[i].data(), SDL_GetError());
-            SDL_Quit();
-            exit(1);
-        }
-        if (srcSurface->w != blockW || srcSurface->h != blockH) {
-            std::fprintf(stderr, "Image has invalid size (%s)\n", fileNames[i].data());
-            exit(1);
-        }
-
-        Uint32* srcPixels = (Uint32*)srcSurface->pixels;
-
-        for (int col=0; col<blockW; col++) {
-            for (int row=0; row<blockH; row++) {
-                Uint32* dstCurrentPixel = dstPixels + row * (blockW * count) + i * blockW + col;
-                Uint32* srcCurrentPixel = srcPixels + row * blockW + col;
-                *dstCurrentPixel = *srcCurrentPixel;
-            }
-        }
-
-        SDL_FreeSurface(srcSurface);
-    }
-
-    createGlTexture(dstSurface);
-    SDL_FreeSurface(dstSurface);
-}
-
-void MapTexture::createGlTexture(SDL_Surface *surface) {
+void MapTexture::createGlTexture() {
     GLint nOfColors = 4;
     GLenum textureFormat = GL_BGRA;
 
     // Have OpenGL generate a texture object handle for us
-    glGenTextures(1, &texture);
+    glGenTextures(1, &glTextureId_);
 
     // Bind the texture object
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindTexture(GL_TEXTURE_2D, glTextureId_);
 
     // Set the texture's stretching properties
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+
+    // create empty pixels
+    Uint32* pixels = new Uint32[GL_TEXTURE_SIZE * GL_TEXTURE_SIZE];
+    memset(pixels, '\0', sizeof(Uint32) * GL_TEXTURE_SIZE * GL_TEXTURE_SIZE);
 
     // Edit the texture object's image data using the information SDL_Surface gives us
-    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, surface->w, surface->h, 0,
-            textureFormat, GL_UNSIGNED_BYTE, surface->pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, GL_TEXTURE_SIZE, GL_TEXTURE_SIZE, 0,
+            textureFormat, GL_UNSIGNED_BYTE, pixels);
+
+    delete[] pixels;
 }
 
 void MapTexture::glBind() {
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, this->texture);
+    glBindTexture(GL_TEXTURE_2D, this->glTextureId_);
 }
 
 void MapTexture::glUnbind() {
     glDisable(GL_TEXTURE_2D);
 }
 
-void MapTexture::renderBlock(double x, double y, double w, double h, int textureNumber, int cornerRounding) {
-    GLfloat textureWidth = 1.0 / count;
+void MapTexture::glVertices(double x, double y, double w, double h, int textureNumber, int cornerRounding) {
+    double textureW = blockW_ / (double)GL_TEXTURE_SIZE;
+    double textureH = blockH_ / (double)GL_TEXTURE_SIZE;
 
-    if (cornerRounding == CORNER_ROUNDING_NONE) {
-        glBegin(GL_QUADS);
+    double texX1 = ((textureNumber * blockInternalSize_) % GL_TEXTURE_SIZE) / (double)GL_TEXTURE_SIZE;
+    double texY1 = ((textureNumber * blockInternalSize_) / GL_TEXTURE_SIZE) / (double)GL_TEXTURE_SIZE;
+    double texX2 = texX1 + textureW;
+    double texY2 = texY1 + textureH;
 
-        glTexCoord2d(textureNumber * textureWidth + 0.1, 0);
-        glVertex2d(x, y);
-        glTexCoord2d((textureNumber + 1) * textureWidth - 0.1, 0);
-        glVertex2d(x + w, y);
-        glTexCoord2d((textureNumber + 1) * textureWidth - 0.1, 1);
-        glVertex2d(x + w, y + h);
-        glTexCoord2d(textureNumber * textureWidth + 0.1, 1);
-        glVertex2d(x, y + h);
-        glEnd();
+    float margin = 0.000001;
+
+    glTexCoord2f((GLfloat)texX1 + margin, (GLfloat)texY1 + margin);    glVertex2f((GLfloat) x     , (GLfloat) y     );
+    glTexCoord2f((GLfloat)texX2 - margin, (GLfloat)texY1 + margin);    glVertex2f((GLfloat)(x + w), (GLfloat) y     );
+    glTexCoord2f((GLfloat)texX2 - margin, (GLfloat)texY2 - margin);    glVertex2f((GLfloat)(x + w), (GLfloat)(y + h));
+    glTexCoord2f((GLfloat)texX1 + margin, (GLfloat)texY2 - margin);    glVertex2f((GLfloat) x     , (GLfloat)(y + h));
+}
+
+MapTexture::MapTexture(int blockW, int blockH) {
+    count = 0;
+
+    blockW_ = blockW;
+    blockH_ = blockH;
+
+    int temp = (blockW > blockH ? blockW : blockH);
+
+    int blockInternalSize;
+
+    for (int i=0; i<8; i++) {
+        blockInternalSize = (int)pow(2, i);
+        if (blockInternalSize > temp) break;
     }
 
-    double additionW = w / 2.0;
-    double additionH = h / 2.0;
+    blockInternalSize_ = blockInternalSize;
 
-    double texAddition = 1.0 / 2.0;
+    createGlTexture();
+}
 
-    glBegin(GL_POLYGON);
+int MapTexture::addTexture(std::string filename) {
+    SDL_Surface* surface = IMG_Load(filename.data());
 
-    // TOP LEFT CORNER
-    if (cornerRounding & CORNER_ROUNDING_TOP_LEFT) {
-        glTexCoord2d(textureNumber * textureWidth + 0.1, texAddition);
-        glVertex2d(x, y + additionH);
-
-        glTexCoord2d((textureNumber + texAddition/4.0) * textureWidth - 0.1, texAddition/4.0);
-        glVertex2d(x + additionW / 4.0, y + additionH / 4.0);
-
-        glTexCoord2d((textureNumber + texAddition) * textureWidth - 0.1, 0);
-        glVertex2d(x + additionW, y);
+    if (!surface) {
+        std::fprintf(stderr, "SDL could not load %s: %s\n", filename.data(), SDL_GetError());
+        SDL_Quit();
+        exit(1);
     }
-    else {
-        glTexCoord2d(textureNumber * textureWidth + 0.1, 0);
-        glVertex2d(x, y);
+    if (surface->w != blockW_ || surface->h != blockH_) {
+        std::fprintf(stderr, "Image has invalid size (%s)\n", filename.data());
+        exit(1);
     }
 
-    // TOP RIGHT CORNER
-    if (cornerRounding & CORNER_ROUNDING_TOP_RIGHT) {
-        glTexCoord2d((textureNumber + 1.0 - texAddition) * textureWidth - 0.1, 0);
-        glVertex2d(x + w - additionW, y);
+    // Bind the texture object
+    glBindTexture(GL_TEXTURE_2D, glTextureId_);
 
-        glTexCoord2d((textureNumber + 1.0 - texAddition/4.0) * textureWidth - 0.1, texAddition/4.0);
-        glVertex2d(x + w - additionW / 4.0, y + additionH / 4.0);
+    // Update texture
+    int offsetX = (blockInternalSize_ * count) % GL_TEXTURE_SIZE;
+    int offsetY = (blockInternalSize_ * count) / GL_TEXTURE_SIZE;
 
-        glTexCoord2d((textureNumber + 1) * textureWidth - 0.1, texAddition);
-        glVertex2d(x + w, y + additionH);
-    }
-    else {
-        glTexCoord2d((textureNumber + 1) * textureWidth - 0.1, 0);
-        glVertex2d(x + w, y);
-    }
+    glTexSubImage2D(GL_TEXTURE_2D, 0, offsetX, offsetY, blockW_, blockH_, GL_BGRA, GL_UNSIGNED_BYTE, surface->pixels);
 
-    // BOTTOM RIGHT CORNER
-    if (cornerRounding & CORNER_ROUNDING_BOTTOM_RIGHT) {
-        glTexCoord2d((textureNumber + 1) * textureWidth - 0.1, 1.0 - texAddition);
-        glVertex2d(x + w, y + h - additionH);
+    count++;
 
-        glTexCoord2d((textureNumber + 1.0 - texAddition/4.0) * textureWidth - 0.1, 1.0 - texAddition/4.0);
-        glVertex2d(x + w - additionW / 4.0, y + h - additionH / 4.0);
-
-        glTexCoord2d((textureNumber + 1 - texAddition) * textureWidth - 0.1, 1.0);
-        glVertex2d(x + w - additionW, y + h);
-    }
-    else {
-        glTexCoord2d((textureNumber + 1) * textureWidth - 0.1, 1);
-        glVertex2d(x + w, y + h);
-    }
-
-    // BOTTOM LEFT CORNER
-    if (cornerRounding & CORNER_ROUNDING_BOTTOM_LEFT) {
-        glTexCoord2d((textureNumber + texAddition) * textureWidth + 0.1, 1);
-        glVertex2d(x + additionW, y + h);
-
-        glTexCoord2d((textureNumber + texAddition/4.0) * textureWidth - 0.1, 1.0 - texAddition/4.0);
-        glVertex2d(x + additionW / 4.0, y + h - additionH / 4.0);
-
-        glTexCoord2d(textureNumber * textureWidth + 0.1, 1.0 - texAddition);
-        glVertex2d(x, y + h - additionH);
-    }
-    else {
-        glTexCoord2d(textureNumber * textureWidth + 0.1, 1);
-        glVertex2d(x, y + h);
-    }
-
-    glEnd();
+    return count - 1;
 }

@@ -17,14 +17,21 @@
 #ifndef __MapTexture_H_
 #define __MapTexture_H_
 
+#include <SDL2/SDL_opengl.h>
+
 class MapTexture {
 private:
-    GLuint texture;
-    int blockW;
-    int blockH;
+    static const int GL_TEXTURE_SIZE = 1024; // Width == Height
+
+    GLuint glTextureId_;
+    int blockW_;
+    int blockH_;
+
+    int blockInternalSize_;
+
     int count;
 
-    void createGlTexture(SDL_Surface*);
+    void createGlTexture();
 
 public:
     static const unsigned int CORNER_ROUNDING_NONE           =   0;         // 00000000
@@ -33,9 +40,11 @@ public:
     static const unsigned int CORNER_ROUNDING_BOTTOM_LEFT    =   1 << 2;    // 00000100
     static const unsigned int CORNER_ROUNDING_BOTTOM_RIGHT   =   1 << 3;    // 00001000
 
-    MapTexture(int blockW, int blockH, int count, std::string fileNames[]);
+    MapTexture(int blockW, int blockH);
 
-    void renderBlock(double x, double y, double w, double h, int textureNumber, int cornerRounding);
+    int addTexture(std::string filename);
+
+    void glVertices(double x, double y, double w, double h, int textureNumber, int cornerRounding);
 
     void glUnbind();
 

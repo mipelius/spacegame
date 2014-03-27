@@ -18,7 +18,7 @@
 #define __SpaceGame_H_
 
 class PhysicsWorld;
-class Map;
+class WorldMap;
 class Camera;
 class Body;
 class Canvas;
@@ -30,7 +30,7 @@ class MyGameObject;
 
 class Game {
 private:
-    Map* map_;
+    WorldMap * map_;
     PhysicsWorld * world_;
     Canvas* canvas_;
     Camera* camera_;

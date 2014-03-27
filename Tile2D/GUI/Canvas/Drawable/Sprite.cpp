@@ -38,16 +38,16 @@ void Sprite::render(Point locationPoint, double angle) {
     glBegin(GL_QUADS);
 
     texture_->glTexCorner(Texture::Corner::TOP_LEFT);
-    glVertex3d(x + rect_.x1, y + rect_.y1, 0.0);
+    glVertex3f(x + rect_.x1, y + rect_.y1, 0.0);
 
     texture_->glTexCorner(Texture::Corner::TOP_RIGHT);
-    glVertex3d(x + rect_.x2, y + rect_.y1, 0.0);
+    glVertex3f(x + rect_.x2, y + rect_.y1, 0.0);
 
     texture_->glTexCorner(Texture::Corner::BOTTOM_RIGHT);
-    glVertex3d(x + rect_.x2, y + rect_.y2, 0.0);
+    glVertex3f(x + rect_.x2, y + rect_.y2, 0.0);
 
     texture_->glTexCorner(Texture::Corner::BOTTOM_LEFT);
-    glVertex3d(x + rect_.x1, y + rect_.y2, 0.0);
+    glVertex3f(x + rect_.x1, y + rect_.y2, 0.0);
 
     glEnd();
 

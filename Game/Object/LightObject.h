@@ -14,29 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __LightMap_H_
-#define __LightMap_H_
+#ifndef __LightObject_H_
+#define __LightObject_H_
 
-class WorldMap;
+class PointLight;
+class SpriteContainer;
 
-class LightMap {
+#include "Point.h"
 
-    friend class ShadowMap;
-
+class LightObject {
 public:
-    LightMap(int w, int h);
-    ~LightMap();
+    LightObject(Point location, double radius);
 
-    void clear();
-    void applyLight(int x, int y, WorldMap * map, int offsetX, int offsetY);
-    void applyLightCenter(WorldMap * map, int offsetX, int offsetY);
-
-private:
-    int w_;
-    int h_;
-    double* data_;
-
-    void applyLightInternal(int x, int y, WorldMap * map, int offsetX, int offsetY, double lastLight);
+    SpriteContainer* const spriteContainer;
+    PointLight* const pointLight;
 };
 
-#endif //__LightMap_H_
+#endif //__LightObject_H_

@@ -16,7 +16,7 @@
 
 #include "precompile.h"
 #include "RouteGenerator.h"
-#include "Map.h"
+#include "WorldMap.h"
 #include "Node.h"
 #include "RouteRequest.h"
 #include "RouteResponse.h"
@@ -57,7 +57,7 @@ int RouteGenerator::heuristicFunction(Node *startNode, Node *goalNode) {
 RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
     // TODO: this method is awfully long, you should refactor it (make more methods)
 
-    Map* map = world->getMap();
+    WorldMap * map = world->getMap();
 
     int minSpaceX = (int)(request->minSpace.getWidth() / map->getBlockW() / 2);
     int minSpaceY = (int)(request->minSpace.getHeight() / map->getBlockH() / 2);
@@ -65,12 +65,15 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
 
     // if there is block at the start point or goal point, it's not possible to generate route -> return nullptr
 
-    if (
-            map->getValueActual((int)request->sender->getLocation().x, (int)request->sender->getLocation().y) ||
-            map->getValueActual((int)request->goalPoint.x, (int)request->goalPoint.y)
-    ) {
-        return new RouteResponse(RouteResponse::Message::ROUTE_NOT_FOUND, nullptr);
-    }
+    // TODO: make this work ...
+
+//
+//    if (
+//            map->getByteValueActual((int) request->sender->getLocation().x, (int) request->sender->getLocation().y) ||
+//                    map->getByteValueActual((int) request->goalPoint.x, (int) request->goalPoint.y)
+//    ) {
+//        return new RouteResponse(RouteResponse::Message::ROUTE_NOT_FOUND, nullptr);
+//    }
 
     // initialize lists and both start node and goal node
 
@@ -126,12 +129,15 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
 
             for (int x=-minSpaceX; x<=minSpaceX; x++) {
                 for (int y=-minSpaceY; y<=minSpaceY; y++) {
-                    unsigned char value = map->getValue(xCenter + x, yCenter + y);
 
-                    if (value != 0) {
-                        isWalkable = false;
-                        continue;
-                    }
+                    // TODO: make this work ...
+
+//                    unsigned char value = map->getByteValue(xCenter + x, yCenter + y);
+
+//                    if (value != 0) {
+//                        isWalkable = false;
+//                        continue;
+//                    }
 
                     if (!isWalkable) break;
                 }

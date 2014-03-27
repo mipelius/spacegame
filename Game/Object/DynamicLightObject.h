@@ -14,21 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Light_H_
-#define __Light_H_
+#ifndef __DynamicLightObject_H_
+#define __DynamicLightObject_H_
 
-class PointLight;
-class SpriteContainer;
+#include "LightObject.h"
+#include "Body.h"
 
-#include "Point.h"
+class DynamicLightObject : public LightObject {
 
-class Light {
 public:
-    Light(Point location, double radius);
+    DynamicLightObject(Point const &location, double radius);
+    Body* const body;
 
-    SpriteContainer* const spriteContainer;
-    PointLight* const pointLight;
+private:
+    class Body_MapCollisionEventHandler;
 };
 
 
-#endif //__Light_H_
+#endif //__DynamicLightObject_H_

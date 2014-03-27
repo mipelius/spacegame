@@ -19,7 +19,7 @@
 
 class Canvas;
 class LightMap;
-class Map;
+class WorldMap;
 
 #include <SDL2/SDL_opengl.h>
 #include "Property.h"
@@ -39,14 +39,15 @@ public:
     Property<Point>* const location;
     Property<double>* const radius;
 
+    static GLuint glTextureId_;
+
 private:
     LightMap* lightMap_;
 
     Point location_;
     double radius_;
 
-    static GLuint glTextureId_;
-    static const int TEXTURE_SIZE = 1024;
+    static const int TEXTURE_SIZE = 32;
     static void createLightTexture();
 };
 

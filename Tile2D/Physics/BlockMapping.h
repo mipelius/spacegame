@@ -14,24 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Light.h"
-#include "Texture.h"
-#include "Sprite.h"
-#include "SpriteContainer.h"
-#include "PointLight.h"
+#ifndef __BlockMapping_H_
+#define __BlockMapping_H_
 
-Texture* lightTexture = nullptr;
+#include <vector>
+#include <string>
 
-Light::Light(Point location, double radius) :
-    spriteContainer(new SpriteContainer()),
-    pointLight(new PointLight(location, radius))
-{
-    if (!lightTexture) {
-        lightTexture = new Texture("images/light.png");
-    }
+class MapTexture;
+class Block;
 
-    Sprite* sprite = new Sprite(lightTexture, Rect(-64, -64, 64, 64));
+class BlockMapping {
 
-    spriteContainer->addSprite(sprite);
-    spriteContainer->location->set(location);
-}
+public:
+    BlockMapping(std::string jsonFilename);
+
+    Block* getBlock(unsigned char id);
+    MapTexture* getMapTexture();
+
+private:
+    std::vector<Block*> blocks_;
+    MapTexture* mapTexture_;
+};
+
+#endif //__BlockMapping_H_
