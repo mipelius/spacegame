@@ -23,12 +23,15 @@ class MapTexture;
 class Body;
 class BlockMapping;
 class Block;
+class WorldMapModifiedEventArgs;
 
 #include "Rect.h"
 #include "Array2d.h"
 #include "Block.h"
+#include "Event.h"
 
 class WorldMap {
+
 public:
     WorldMap(
             std::string path,
@@ -38,6 +41,8 @@ public:
     );
 
     ~WorldMap();
+
+    Event<WorldMap, WorldMapModifiedEventArgs>* const modification;
 
     Block* getValue(int x, int y);
     Block* getValueScaled(Point point);

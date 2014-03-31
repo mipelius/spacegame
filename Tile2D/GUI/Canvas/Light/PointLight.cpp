@@ -22,14 +22,38 @@
 #include "WorldMap.h"
 #include "LightMap.h"
 
+class PointLight::LocationProperty : public SimpleProperty<Point> {
+
+public:
+    LocationProperty(Point *actualData, PointLight* owner) : SimpleProperty(actualData) {
+        owner_ = owner;
+    }
+
+    void setActual(Point value) {
+        Point oldLocation = owner_->location_;
+
+        SimpleProperty<Point>::setActual(value);
+
+        Point newLocation = owner_->location_;
+
+        owner_->movement->raise(PointLightMovedEventArgs(oldLocation, newLocation));
+    }
+
+private:
+
+    PointLight* owner_;
+};
+
 GLuint PointLight::glTextureId_ = 0;
 
 PointLight::PointLight(Point location, double radius) :
-    location    (   new SimpleProperty<Point>   (&location_ )  ),
-    radius      (   new SimpleProperty<double>  (&radius_   )  ),
+    location    (   new LocationProperty        (&location_, this   )  ),
+    radius      (   new SimpleProperty<double>  (&radius_           )  ),
 
     location_   (   location    ),
-    radius_     (   radius      )
+    radius_     (   radius      ),
+
+    movement    (   new Event<PointLight, PointLightMovedEventArgs>(this)   )
 {
     if (glTextureId_ == 0) {
         createLightTexture();
@@ -43,6 +67,7 @@ PointLight::PointLight(Point location, double radius) :
 
 PointLight::~PointLight() {
     delete lightMap_;
+    delete movement;
 }
 
 void PointLight::draw(Canvas *canvas) {
@@ -52,9 +77,6 @@ void PointLight::draw(Canvas *canvas) {
     double y = location_.y - rect.y1 - radius_;
     double w = radius_ * 2;
     double h = radius_ * 2;
-
-//    glEnable(GL_TEXTURE_2D);
-//    glBindTexture(GL_TEXTURE_2D, glTextureId_);
 
     double margin = 0.0;
 
@@ -66,8 +88,6 @@ void PointLight::draw(Canvas *canvas) {
     glVertex2f(x + w, y + h);
     glTexCoord2f(margin, 1 - margin);
     glVertex2f(x, y + h);
-
-
 }
 
 void PointLight::createLightTexture() {
@@ -109,3 +129,5 @@ void PointLight::createLightTexture() {
 
     delete[] lightPixels;
 }
+
+

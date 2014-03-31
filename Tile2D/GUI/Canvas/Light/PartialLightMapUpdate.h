@@ -14,41 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __ShadowMap_H_
-#define __ShadowMap_H_
+#ifndef __PartialLightMapUpdate_H_
+#define __PartialLightMapUpdate_H_
 
-#include <SDL2/SDL_opengl.h>
+class PartialLightMap;
 
-class PointLight;
-class WorldMap;
-class ShadowMask;
-class Canvas;
-
-class ShadowMap {
-
-public:
-    ShadowMap(WorldMap * map, ShadowMask* shadowMask);
-    ~ShadowMap();
-
-    void draw(Canvas* canvas);
-
-    void updateStaticLightMap(PointLight *light);
-    void updateDynamicScene(Canvas* canvas);
-
-private:
-    ShadowMask* shadowMask_;
-    WorldMap * map_;
-    double* staticLightMap_;
-    double* dynamicScene_;
-    int dynamicSceneW_;
-    int dynamicSceneH_;
-
-    ShadowMask* shadowMask;
-
-    GLuint glShadowTextureId_;
-    static const int SHADOW_TEXTURE_SIZE = 32;
-
-    void createShadowTexture();
+struct PartialLightMapUpdate {
+    PartialLightMap* map;
+    int x;
+    int y;
+    bool isBlockUpdate;
 };
 
-#endif //__ShadowMap_H_
+#endif //__PartialLightMapUpdate_H_

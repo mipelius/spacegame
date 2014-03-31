@@ -21,13 +21,15 @@
 #include "Body.h"
 #include "CollisionShape.h"
 #include "BlockMapping.h"
+#include "WorldMapModifiedEventArgs.h"
 
 WorldMap::WorldMap(
         std::string path,
         BlockMapping* mapping,
         int blockSizeW,
         int blockSizeH
-)
+) :
+    modification(new Event<WorldMap, WorldMapModifiedEventArgs>(this))
 {
     mapping_ = mapping;
 
@@ -59,11 +61,24 @@ WorldMap::WorldMap(
 
 WorldMap::~WorldMap() {
     delete blocks_;
+    delete modification;
 }
 
 void WorldMap::setValue(int x, int y, Block* value) {
     if (blocks_->isInsideBounds(x, y)) {
-        blocks_->setValue(x, y, value);
+        Block* oldValue = blocks_->getValue(x, y);
+
+        if (oldValue != value) {
+            blocks_->setValue(x, y, value);
+
+            WorldMapModifiedEventArgs args;
+            args.x = x;
+            args.y = y;
+            args.oldValue = oldValue;
+            args.newValue = value;
+
+            modification->raise(args);
+        }
     }
 }
 
@@ -110,36 +125,39 @@ long WorldMap::getActualH() {
 bool WorldMap::detectCollisionWith(Body *body) {
     if (!body->getCollisionShape()) return false;
 
-    // TODO: make this work ...
+    Block* block = this->getValueScaled(body->location->get());
+    if (block && block->density->get() > 0.0) return true;
 
-//
-//    if (this->getByteValueActual((int) body->location->get().x, (int) body->location->get().y)) return true;
-//
-//    Point* points = body->getCollisionShape()->getRotatedPoints();
-//
-//    for (int i=0; i< body->getCollisionShape()->getCount(); i++) {
-//        int x = (int)(points[i].x + body->location->get().x);
-//        int y = (int)(points[i].y + body->location->get().y);
-//        if (this->getByteValueActual(x, y)) return true;
-//    }
-//
-//    Rect boundingBox = body->getCollisionShape()->getBoundingBox();
-//
-//    int iBegin = (int)boundingBox.x1 - ((int)boundingBox.x1) % blockSizeW;
-//    int iEnd = (int)boundingBox.x2 + (int)boundingBox.x2 % blockSizeW;
-//    int jBegin = (int)boundingBox.y1 - ((int)boundingBox.y1) % blockSizeH;
-//    int jEnd = (int)boundingBox.y2 + (int)boundingBox.y2 % blockSizeH;
-//
-//    for (int i=iBegin; i <= iEnd; i += blockSizeW) {
-//        for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
-//            if (this->getByteValueActual(i, j)) {
-//                Rect* rect = new Rect(i, j, i + blockSizeW, j + blockSizeH);
-//                if (body->getCollisionShape()->intersectsWith(rect)) {
-//                    return true;
-//                }
-//            }
-//        }
-//    }
+    Point* points = body->getCollisionShape()->getRotatedPoints();
+
+    for (int i=0; i< body->getCollisionShape()->getCount(); i++) {
+        Point point(
+                points[i].x + body->location->get().x,
+                points[i].y + body->location->get().y
+        );
+
+        block = this->getValueScaled(point);
+        if (block && block->density->get() > 0.0) return true;
+    }
+
+    Rect boundingBox = body->getCollisionShape()->getBoundingBox();
+
+    int iBegin = (int)boundingBox.x1 - ((int)boundingBox.x1) % blockSizeW;
+    int iEnd = (int)boundingBox.x2 + (int)boundingBox.x2 % blockSizeW;
+    int jBegin = (int)boundingBox.y1 - ((int)boundingBox.y1) % blockSizeH;
+    int jEnd = (int)boundingBox.y2 + (int)boundingBox.y2 % blockSizeH;
+
+    for (int i=iBegin; i <= iEnd; i += blockSizeW) {
+        for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
+            block = this->getValueScaled(Point(i, j));
+            if (block && block->density->get() > 0.0) {
+                Rect* rect = new Rect(i, j, i + blockSizeW, j + blockSizeH);
+                if (body->getCollisionShape()->intersectsWith(rect)) {
+                    return true;
+                }
+            }
+        }
+    }
 
     return false;
 }

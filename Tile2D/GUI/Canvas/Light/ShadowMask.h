@@ -18,16 +18,20 @@
 #define __ShadowMask_H_
 
 #include <list>
+#include <queue>
 #include "IShadowMask.h"
 #include "Property.h"
+#include "Canvas.h"
 
 class PointLight;
 class WorldMap;
-class ShadowMap;
+class LightMap;
+class PartialLightMapUpdate;
 
 class ShadowMask : public IShadowMask {
 
-    friend class ShadowMap;
+    friend class WorldMap_ModificationEventHandler;
+    friend class PointLight_MovementEventHandler;
 
 public:
     ShadowMask(double w, double h, WorldMap * map);
@@ -38,8 +42,7 @@ public:
     void update(Canvas* canvas);
     void draw(Canvas* canvas);
 
-    void addStaticLight(PointLight* light);
-    void addDynamicLight(PointLight* light);
+    void addLight(PointLight *light);
 
 private:
     std::list<PointLight*> dynamicLights_;
@@ -49,11 +52,28 @@ private:
     double w_;
     double h_;
 
+    WorldMap* worldMap_;
+    LightMap* lightMap_;
+
     void initialize();
+
+    void handleNextUpdate();
+
+    std::queue<PartialLightMapUpdate*> partialLightMapUpdatesQueue;
 
     GLuint glTextureId_;
 
-    ShadowMap* shadowMap_;
+    static GLuint glShadowTextureId_;
+
+    static const int MAX_PARTIAL_LIGHT_MAP_UPDATE_TIME = 5;
+
+    void drawShadowMap(Canvas *canvas);
+
+    static void createShadowTexture();
+    static const int SHADOW_TEXTURE_SIZE = 32;
+
+    class WorldMap_ModificationEventHandler;
+    class PointLight_MovementEventHandler;
 };
 
 

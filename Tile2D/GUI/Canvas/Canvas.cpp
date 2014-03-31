@@ -20,7 +20,6 @@
 #include "Window.h"
 #include "IDrawable.h"
 #include "Camera.h"
-#include "ILight.h"
 #include "IShadowMask.h"
 
 Canvas::Canvas() {

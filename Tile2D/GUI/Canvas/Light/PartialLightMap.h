@@ -14,19 +14,33 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __ILight_H_
-#define __ILight_H_
+#ifndef __PartialLightMap_H_
+#define __PartialLightMap_H_
 
-class Canvas;
-class LightMask;
+class WorldMap;
 
-class ILight {
+#include "Array2d.h"
+
+class PartialLightMap : public Array2d<unsigned char> {
 
 public:
-    ILight() { }
-    virtual ~ILight() { }
+    bool needsUpdate;
 
-    virtual void draw(Canvas* canvas) = 0;
+    PartialLightMap(int w, int h);
+
+    void setCenterLocation(int x, int y);
+    void clear();
+    void update(WorldMap* map);
+
+    int getX() const;
+    int getY() const;
+
+private:
+
+    int x_;
+    int y_;
+
+    void updateInternal(unsigned char lastLight, int currentX, int currentY, WorldMap* map);
+
 };
-
-#endif //__ILight_H_
+#endif //__PartialLightMap_H_

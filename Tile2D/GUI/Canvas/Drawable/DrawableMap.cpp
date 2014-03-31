@@ -99,8 +99,6 @@ void DrawableMap::drawMap(Canvas *canvas) {
 
     for (int i = iStart; i < iEnd; i++) {
         for (int j = jStart; j < jEnd; j++) {
-//            // TODO: make this work
-
             Block* block = map_->getValue(i, j);
 
             if (block == nullptr || block->getMapTextureId() == -1) continue;
@@ -113,28 +111,6 @@ void DrawableMap::drawMap(Canvas *canvas) {
                     block->getMapTextureId(),
                     MapTexture::CORNER_ROUNDING_NONE
             );
-
-//            bool left = map_->getValue(i - 1, j) == 0;
-//            bool right = map_->getValue(i + 1, j) == 0;
-//            bool top = map_->getValue(i, j - 1) == 0;
-//            bool bottom = map_->getValue(i, j + 1) == 0;
-//
-//            int cornerRounding = MapTexture::CORNER_ROUNDING_NONE;
-//
-//            if (top && left) {
-//                cornerRounding |= MapTexture::CORNER_ROUNDING_TOP_LEFT;
-//            }
-//            if (top && right) {
-//                cornerRounding |= MapTexture::CORNER_ROUNDING_TOP_RIGHT;
-//            }
-//            if (bottom && left) {
-//                cornerRounding |= MapTexture::CORNER_ROUNDING_BOTTOM_LEFT;
-//            }
-//            if (bottom && right) {
-//                cornerRounding |= MapTexture::CORNER_ROUNDING_BOTTOM_RIGHT;
-//            }
-//
-
         }
     }
 

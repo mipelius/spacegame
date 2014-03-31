@@ -23,6 +23,7 @@ class Camera;
 class Body;
 class Canvas;
 class ShadowMask;
+class BlockMapping;
 
 class MyGameObject;
 
@@ -42,7 +43,7 @@ private:
     Body* playerBody_;
 
     ShadowMask* shadowMask_;
-
+    BlockMapping*blockMapping_;
 public:
     Game();
     ~Game();

@@ -14,31 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __LightMap_H_
-#define __LightMap_H_
+#ifndef __WorldMapModifiedEventArgs_H_
+#define __WorldMapModifiedEventArgs_H_
 
-class PartialLightMap;
+class Block;
 
-#include "Array2d.h"
-#include <list>
-
-class LightMap {
+class WorldMapModifiedEventArgs {
 
 public:
-    LightMap(int w, int h);
-    ~LightMap();
-
-    unsigned char getLightAmount(int x, int y);
-    std::list<PartialLightMap *>* getPartialLightMaps(int x, int y);
-
-    void addPartialLightMap(PartialLightMap *lightMap);
-
-    void removePartialLightMap(PartialLightMap *lightMap);
-
-    void putGreatestValuesFront(PartialLightMap *lightMap);
-
-private:
-    Array2d<std::list<PartialLightMap *>*>* data_;
+    int x;
+    int y;
+    Block* oldValue;
+    Block* newValue;
 };
 
-#endif //__LightMap_H_
+
+#endif //__WorldMapModifiedEventArgs_H_

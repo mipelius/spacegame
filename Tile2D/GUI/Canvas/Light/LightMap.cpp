@@ -16,53 +16,120 @@
 
 #include "LightMap.h"
 #include "WorldMap.h"
+#include "PartialLightMap.h"
 
-LightMap::LightMap(int w, int h) {
-    w_ = w;
-    h_ = h;
-    data_ = new double[w * h];
-
-    clear();
+LightMap::LightMap(int w, int h) :
+    data_(new Array2d<std::list<PartialLightMap *>*>(w, h))
+{
+    for (int x=0; x<w; x++) {
+        for (int y=0; y<h; y++) {
+            data_->setValue(x, y, new std::list<PartialLightMap *>());
+        }
+    }
 }
 
 LightMap::~LightMap() {
-    delete[] data_;
+    for (int x=0; x<data_->getW(); x++) {
+        for (int y=0; y<data_->getH(); y++) {
+            delete data_->getValue(x, y);
+        }
+    }
+
+    delete data_;
 }
 
-void LightMap::clear() {
-    memset(data_, 0, sizeof(double) * w_ * h_);
+unsigned char LightMap::getLightAmount(int x, int y) {
+    if (!data_->isInsideBounds(x, y)) {
+        return 0x0;
+    }
+
+    std::list<PartialLightMap *>* list = data_->getValue(x, y);
+
+    if (!list || list->empty()) {
+        return 0x0;
+    }
+
+    PartialLightMap* partialLightMap = list->front();
+
+    int actualX = x - partialLightMap->getX();
+    int actualY = y - partialLightMap->getY();
+
+    return partialLightMap->getValue(actualX, actualY);
 }
 
-void LightMap::applyLight(int x, int y, WorldMap *map, int offsetX, int offsetY) {
-    applyLightInternal(x, y, map, offsetX, offsetY, 1.15);
+void LightMap::addPartialLightMap(PartialLightMap *lightMap) {
+    for (int x=0; x<lightMap->getW(); x++) {
+        for (int y=0; y<lightMap->getH(); y++) {
+            int actualX = x + lightMap->getX();
+            int actualY = y + lightMap->getY();
+
+            if (!data_->isInsideBounds(actualX, actualY)) {
+                continue;
+            }
+
+            std::list<PartialLightMap *>* list = data_->getValue(actualX, actualY);
+            list->push_back(lightMap);
+        }
+    }
+
+    putGreatestValuesFront(lightMap);
 }
 
-void LightMap::applyLightCenter(WorldMap *map, int offsetX, int offsetY) {
-    applyLight(w_ / 2, h_ / 2, map, offsetX, offsetY);
+void LightMap::putGreatestValuesFront(PartialLightMap *lightMap) {
+    for (int x=0; x<lightMap->getW(); x++) {
+        for (int y=0; y<lightMap->getH(); y++) {
+            int actualX = x + lightMap->getX();
+            int actualY = y + lightMap->getY();
+
+            if (!data_->isInsideBounds(actualX, actualY)) {
+                continue;
+            }
+
+            std::list<PartialLightMap *>* list = data_->getValue(actualX, actualY);
+
+            PartialLightMap* greatestValueMap = list->front();
+
+            unsigned greatestValue = greatestValueMap->getValue(
+                    actualX - greatestValueMap->getX(),
+                    actualY - greatestValueMap->getY()
+            );
+
+            for (std::list<PartialLightMap *>::iterator i = list->begin(); i != list->end(); i++) {
+                unsigned newValue = (*i)->getValue(
+                        actualX - (*i)->getX(),
+                        actualY - (*i)->getY()
+                );
+
+                if (newValue > greatestValue) {
+                    greatestValue = newValue;
+                    greatestValueMap = (*i);
+                }
+            }
+
+            list->remove(greatestValueMap);
+            list->push_front(greatestValueMap);
+        }
+    }
 }
 
-void LightMap::applyLightInternal(int currentX, int currentY, WorldMap *map, int offsetX, int offsetY, double lastLight) {
-//    double deltaX = currentX * map->getBlockW() - radius_;
-//    double deltaY = currentY * map->getBlockH() - radius_;
-//
-//    double dist = sqrt(deltaX * deltaX + deltaY * deltaY);
-//
-//    if (dist >= radius_) return;
+void LightMap::removePartialLightMap(PartialLightMap *lightMap) {
+    for (int x=0; x<lightMap->getW(); x++) {
+        for (int y=0; y<lightMap->getH(); y++) {
+            int actualX = x + lightMap->getX();
+            int actualY = y + lightMap->getY();
 
-    if (currentX < 0 || currentX >= w_) return;
-    if (currentY < 0 || currentY >= h_) return;
+            if (data_->isInsideBounds(actualX, actualY)) {
+                std::list<PartialLightMap *>* list = data_->getValue(actualX, actualY);
 
-//    unsigned char value = map->getByteValue(offsetX + currentX, offsetY + currentY);
-//    double newLight = lastLight - (value == 0 ? 0.0 : 0.15);
+                list->remove(lightMap);
+            }
+        }
+    }
+}
 
-    int index = currentX + currentY * w_;
-
-//    if (newLight <= data_[index]) return;
-//
-//    data_[index] = newLight;
-//
-//    applyLightInternal(currentX + 1, currentY, map, offsetX, offsetY, newLight);
-//    applyLightInternal(currentX, currentY + 1 , map, offsetX, offsetY, newLight);
-//    applyLightInternal(currentX - 1, currentY, map, offsetX, offsetY, newLight);
-//    applyLightInternal(currentX, currentY - 1, map, offsetX, offsetY, newLight);
+std::list<PartialLightMap *> *LightMap::getPartialLightMaps(int x, int y) {
+    if (data_->isInsideBounds(x, y)) {
+        return data_->getValue(x, y);
+    }
+    return nullptr;
 }

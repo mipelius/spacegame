@@ -40,10 +40,10 @@ public:
     }
 
     bool isInsideBounds(int x, int y) {
-        if (x < 0 && x >= w_) {
+        if (x < 0 || x >= w_) {
             return false;
         }
-        if (y < 0 && y >= h_) {
+        if (y < 0 || y >= h_) {
             return false;
         }
 

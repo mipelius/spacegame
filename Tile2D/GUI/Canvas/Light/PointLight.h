@@ -21,14 +21,15 @@ class Canvas;
 class LightMap;
 class WorldMap;
 
+#include "Event.h"
 #include <SDL2/SDL_opengl.h>
 #include "Property.h"
 #include "Point.h"
-#include "ILight.h"
+#include "PointLightMovedEventArgs.h"
 
-class PointLight : public ILight {
+class PointLight {
     friend class ShadowMask;
-    friend class ShadowMap;
+    friend class LocationProperty;
 
 public:
     virtual void draw(Canvas *canvas);
@@ -38,6 +39,8 @@ public:
 
     Property<Point>* const location;
     Property<double>* const radius;
+
+    Event<PointLight, PointLightMovedEventArgs>* const movement;
 
     static GLuint glTextureId_;
 
@@ -49,6 +52,8 @@ private:
 
     static const int TEXTURE_SIZE = 32;
     static void createLightTexture();
+
+    class LocationProperty;
 };
 
 

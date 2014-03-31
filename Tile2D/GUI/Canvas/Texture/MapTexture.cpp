@@ -61,12 +61,17 @@ void MapTexture::glVertices(double x, double y, double w, double h, int textureN
     double texX2 = texX1 + textureW;
     double texY2 = texY1 + textureH;
 
-    float margin = 0.000001;
+    double margin = 0.0001;
 
-    glTexCoord2f((GLfloat)texX1 + margin, (GLfloat)texY1 + margin);    glVertex2f((GLfloat) x     , (GLfloat) y     );
-    glTexCoord2f((GLfloat)texX2 - margin, (GLfloat)texY1 + margin);    glVertex2f((GLfloat)(x + w), (GLfloat) y     );
-    glTexCoord2f((GLfloat)texX2 - margin, (GLfloat)texY2 - margin);    glVertex2f((GLfloat)(x + w), (GLfloat)(y + h));
-    glTexCoord2f((GLfloat)texX1 + margin, (GLfloat)texY2 - margin);    glVertex2f((GLfloat) x     , (GLfloat)(y + h));
+    texX1 += margin;
+    texY1 += margin;
+    texX2 -= margin;
+    texY2 -= margin;
+
+    glTexCoord2f((GLfloat)texX1, (GLfloat)texY1);    glVertex2f((GLfloat) x     , (GLfloat) y     );
+    glTexCoord2f((GLfloat)texX2, (GLfloat)texY1);    glVertex2f((GLfloat)(x + w), (GLfloat) y     );
+    glTexCoord2f((GLfloat)texX2, (GLfloat)texY2);    glVertex2f((GLfloat)(x + w), (GLfloat)(y + h));
+    glTexCoord2f((GLfloat)texX1, (GLfloat)texY2);    glVertex2f((GLfloat) x     , (GLfloat)(y + h));
 }
 
 MapTexture::MapTexture(int blockW, int blockH) {

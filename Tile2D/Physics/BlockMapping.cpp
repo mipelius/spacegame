@@ -21,6 +21,10 @@
 #include "JsonFileManager.h"
 
 BlockMapping::BlockMapping(std::string jsonFilename) : blocks_(std::vector<Block*>(255)) {
+    for (int i = 0; i < 255; i++) {
+        blocks_[i] = nullptr;
+    }
+
     JsonFileManager manager;
     json::Object obj = manager.load(jsonFilename);
 
