@@ -31,7 +31,11 @@ SpriteContainer::SpriteContainer() :
 
 }
 
-SpriteContainer::~SpriteContainer() { }
+SpriteContainer::~SpriteContainer() {
+    for (std::list<Sprite*>::iterator i = sprites_.begin(); i != sprites_.end(); i++) {
+        delete (*i);
+    }
+}
 
 void SpriteContainer::draw(Canvas* canvas) {
     Rect cameraRect = canvas->getCamera()->areaRect->get();

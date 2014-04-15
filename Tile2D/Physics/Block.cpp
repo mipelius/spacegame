@@ -18,6 +18,8 @@
 #include "MapTexture.h"
 #include "SimpleReadableProperty.h"
 
+Block Block::emptyBlock_ = Block("empty block", 0.0, 1.0, 1.0, nullptr, -1);
+
 Block::Block(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture, int mapTextureId) :
     name(           new SimpleReadableProperty<std::string> (   &name_          )   ),
     density(        new SimpleReadableProperty<double>      (   &density_       )   ),
@@ -74,4 +76,8 @@ void Block::initialize(std::string name, double density, double translucency, do
 
 int Block::getMapTextureId() {
     return mapTextureId_;
+}
+
+Block *Block::getEmptyBlock() {
+    return &emptyBlock_;
 }

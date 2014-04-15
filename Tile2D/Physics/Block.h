@@ -48,6 +48,8 @@ public:
 
     int getMapTextureId();
 
+    static Block* getEmptyBlock();
+    static Block emptyBlock_;
 };
 
 

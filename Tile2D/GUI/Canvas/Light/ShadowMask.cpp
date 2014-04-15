@@ -70,7 +70,7 @@ public:
     }
 
     virtual void handle(WorldMap *owner, WorldMapModifiedEventArgs args) {
-        if (args.oldValue->translucency->get() == args.newValue->translucency->get()) {
+        if (args.oldValue && args.newValue && args.oldValue->translucency->get() == args.newValue->translucency->get()) {
             return;
         }
 
@@ -154,9 +154,7 @@ void ShadowMask::update(Canvas *canvas) {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, PointLight::glTextureId_);
 
-    glColor4d(0.0, 0.0, 0.0, 1.0);
     glBegin(GL_QUADS);
-
 
     for (std::list<PointLight*>::iterator i = staticLights_.begin(); i != staticLights_.end(); i++) {
         (*i)->draw(canvas);
@@ -166,7 +164,7 @@ void ShadowMask::update(Canvas *canvas) {
 
     glDisable(GL_BLEND);
 
-//    blend it with map shadows
+    // blend it with map shadows
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);

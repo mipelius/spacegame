@@ -43,8 +43,8 @@ class MyGameObject::Body_MapCollisionEventHandler : public IEventHandler<Body, E
 
 class MyGameObject::Body_BodyCollisionEventHandler : public IEventHandler<Body, BodyCollisionEventArgs> {
     void handle(Body* body, BodyCollisionEventArgs args) {
-        body->location->set(body->location->get() - body->velocity->get());
-        body->speed->set(Vector(0, 0));
+//        body->location->set(body->location->get() - body->velocity->get());
+//        body->speed->set(Vector(0, 0));
     }
 };
 
@@ -108,6 +108,7 @@ MyGameObject::MyGameObject() :
 
 MyGameObject::~MyGameObject() {
     delete body;
+    delete spriteContainer;
 }
 
 void MyGameObject::accelerate() {

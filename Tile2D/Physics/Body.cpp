@@ -121,6 +121,8 @@ void Body::step_(double timeElapsedSec) {
         this->velocity->updateDependentProperties();
         this->speed->updateDependentProperties();
         this->force->updateDependentProperties();
+
+        afterStep();
     }
 
     stepIsIgnored_ = false;
@@ -191,4 +193,8 @@ void Body::setCollisionShape(CollisionShape* collisionShape) {
 void Body::applyTorque(double angle) {
     double torqueBefore = this->torque->get();
     this->torque->set(torqueBefore + angle);
+}
+
+void Body::afterStep() {
+
 }

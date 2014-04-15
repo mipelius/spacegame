@@ -53,15 +53,18 @@
 #include "Sample.h"
 #include "SamplePlayer.h"
 
+#include "AnimatedTexture.h"
+#include "Bomb.h"
+
 Game::Game() {
     // --- WINDOW PROPERTIES ---
 
     int x = 0;
     int y = 0;
-    int w = 1280;
-    int h = 800;
+    int w = 1920;
+    int h = 1200;
 
-    bool enableFullScreen = true;
+    bool enableFullScreen = false;
 
     Window* window = App::getInstance()->getWindow();
     window->initialize(x, y, w, h, enableFullScreen);
@@ -194,7 +197,7 @@ void Game::launch() {
             if (timePassedAfterLastLightAdd > lightAddingInterval) {
                 timePassedAfterLastLightAdd = 0;
 
-                LightObject * light = new LightObject(myGameObject_->location->get(), 300);
+                LightObject * light = new LightObject(myGameObject_->location->get(), 500);
 
                 canvas_->addDrawable(light->spriteContainer);
                 shadowMask_->addLight(light->pointLight);
@@ -209,18 +212,31 @@ void Game::launch() {
 
         if (keys[SDL_SCANCODE_A]) {
             if (timePassedAfterLastLightAdd > lightAddingInterval) {
-                App::getInstance()->getSamplePlayer()->play(sample);
-
                 timePassedAfterLastLightAdd = 0;
 
-                DynamicLightObject* light = new DynamicLightObject(myGameObject_->location->get(), 512);
-                double angle = myGameObject_->body->angle->get();
-                light->body->angle->set(angle);
-                light->body->force->set(Vector::byAngle(angle, 100000));
+                Bomb* bomp = new Bomb();
+                bomp->body->location->set(
+                    myGameObject_->location->get() + Vector::byAngle(
+                        myGameObject_->body->angle->get(), -20.0
+                    )
+                );
 
-                world_->add(light->body);
-                canvas_->addDrawable(light->spriteContainer);
-                shadowMask_->addLight(light->pointLight);
+                // initial speed
+
+                Vector speed = myGameObject_->body->speed->get();
+                if (speed.y <= 0) {
+                    speed = speed * 0.25;
+                    speed.y = 0;
+                }
+                else {
+                    speed.x *= 0.25;
+                    speed.y *= 0.25;
+                }
+
+                bomp->body->speed->set(speed);
+
+                world_->add(bomp->body);
+                canvas_->addDrawable(bomp->spriteContainer);
             }
         }
 

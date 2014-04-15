@@ -57,3 +57,16 @@ Vector Vector::byAngle(double angleDegrees, double amount) {
 double Vector::length() {
     return sqrt(x * x + y * y);
 }
+
+double Vector::angle() {
+    if (y == 0) {
+        return 0;
+    }
+
+    if (x == 0) {
+        if (y > 0) return -90.0;
+        if (y < 0) return 90.0;
+    }
+
+    return atan2(y, x) * 180 / M_PI;
+}

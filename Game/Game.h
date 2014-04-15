@@ -44,6 +44,7 @@ private:
 
     ShadowMask* shadowMask_;
     BlockMapping*blockMapping_;
+
 public:
     Game();
     ~Game();

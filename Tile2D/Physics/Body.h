@@ -65,6 +65,8 @@ public:
     void ignoreCollisionDetection();
     void ignoreStep();
 
+    virtual void afterStep();
+
 protected:
     PhysicsWorld * gameWorld_;
     CollisionShape* collisionShape_;
