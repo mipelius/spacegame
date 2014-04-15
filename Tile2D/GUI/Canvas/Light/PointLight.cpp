@@ -20,7 +20,6 @@
 #include "Canvas.h"
 #include "Camera.h"
 #include "WorldMap.h"
-#include "LightMap.h"
 #include "PartialLightMap.h"
 
 class PointLight::LocationProperty : public SimpleProperty<Point> {
@@ -50,9 +49,11 @@ GLuint PointLight::glTextureId_ = 0;
 PointLight::PointLight(Point location, double radius) :
     location    (   new LocationProperty        (&location_, this   )  ),
     radius      (   new SimpleProperty<double>  (&radius_           )  ),
+    intensity   (   new SimpleProperty<double>  (&intensity_        )  ),
 
     location_   (   location    ),
     radius_     (   radius      ),
+    intensity_  (   1.0         ),
 
     movement    (   new Event<PointLight, PointLightMovedEventArgs>(this)   )
 {
@@ -81,6 +82,8 @@ void PointLight::draw(Canvas *canvas) {
 
     double margin = 0.0;
 
+    glColor4f(0.0, 0.0, 0.0, (GLfloat)intensity_);
+
     glTexCoord2f(margin, margin);
     glVertex2f(x, y);
     glTexCoord2f(1 - margin, margin);
@@ -104,8 +107,19 @@ void PointLight::createLightTexture() {
 
     for (int i = 0; i < w; i++) {
         for (int j = 0; j < h; j++) {
-            temp = sin(i * M_PI / w) * sin(j * M_PI / w);
-            temp = temp * temp * temp * temp;
+//            temp = sin(i * M_PI / w) * sin(j * M_PI / w);
+//            temp = temp * temp * temp * temp;
+
+            double deltaX = w/2 - i;
+            double deltaY = h/2 - j;
+
+            double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
+
+            temp = distance / (w / 2);
+            if (temp > 1.0) {
+                temp = 1.0;
+            }
+
             alphaValue = (Uint8)(temp * 255);
             lightPixels[j * w + i] = (0x000000FF - alphaValue) << 24;
         }

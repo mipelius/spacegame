@@ -32,14 +32,13 @@ private:
 
 protected:
     virtual void updateActual() {
-        double value = sin((M_PI / 2.0) + (currentFrame_ / 30.0) * (M_PI / 2.0));
-
-        light_->pointLight_->radius->set(value * light_->initialRadius_);
+        double value = sin((M_PI / 2.0) + (currentFrame_ / 35.0) * (M_PI / 2.0));
+        light_->pointLight_->intensity->set(value);
     };
 
 public:
     Animation(PulseLight *light_) :
-    AnimationBase(60, 30, false),
+    AnimationBase(60, 35, false),
     light_(light_) { }
 
     void stop() {

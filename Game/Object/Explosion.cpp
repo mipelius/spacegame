@@ -72,10 +72,10 @@ Explosion::Explosion(Point point, double radius) {
 
     PulseLight* pulseLight = new PulseLight(point, radius * 3);
 
-    Game::getInstance()->getCanvas()->addDrawable(spriteContainer_);
+    Game::getInstance()->getExternalCanvas()->addDrawable(spriteContainer_);
 }
 
 Explosion::~Explosion() {
-    Game::getInstance()->getCanvas()->removeDrawable(spriteContainer_);
+    Game::getInstance()->getExternalCanvas()->removeDrawable(spriteContainer_);
     explosionAnimation_->die();
 }

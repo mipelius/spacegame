@@ -150,6 +150,7 @@ void ShadowMask::update(Canvas *canvas) {
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_DST_ALPHA, GL_ZERO);
+    glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
 
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, PointLight::glTextureId_);
@@ -167,6 +168,8 @@ void ShadowMask::update(Canvas *canvas) {
     // blend it with map shadows
 
     glEnable(GL_BLEND);
+
+    glColor4f(0, 0, 0, 1.0);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
     glBindTexture(GL_TEXTURE_2D, glTextureId_);

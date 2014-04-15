@@ -40,6 +40,7 @@ public:
 
     Property<Point>* const location;
     Property<double>* const radius;
+    Property<double>* const intensity;
 
     Event<PointLight, PointLightMovedEventArgs>* const movement;
 
@@ -48,10 +49,11 @@ public:
 private:
     Point location_;
     double radius_;
+    double intensity_;
 
     PartialLightMap* partialLightMap_;
 
-    static const int TEXTURE_SIZE = 64;
+    static const int TEXTURE_SIZE = 128;
     static void createLightTexture();
 
     class LocationProperty;

@@ -263,7 +263,15 @@ void Game::initialize() {
     canvas_->h->set(Canvas::SIZE_MAX_HEIGHT);
     canvas_->anchor->set(Canvas::Anchor::TOP_RIGHT);
 
-    Texture* texture = new Texture("images/bg1.jpg");
+    externalCanvas_ = new Canvas();
+    externalCanvas_->setMargin(0, 0, 0, 0);
+    externalCanvas_->w->set(Canvas::SIZE_MAX_WIDTH);
+    externalCanvas_->h->set(Canvas::SIZE_MAX_HEIGHT);
+    externalCanvas_->anchor->set(Canvas::Anchor::TOP_RIGHT);
+
+    canvas_->addComponent(externalCanvas_);
+
+    Texture* texture = new Texture("images/bg2.jpg");
     Background* background = new Background();
     background->setRatio(0.5);
     background->setTexture(texture);
@@ -286,11 +294,14 @@ void Game::initialize() {
 
     canvas_->addDrawable(drawableMap);
 
+    // --- CAMERA ---
+
     camera_ = new Camera();
     camera_->boundsRect->set(Rect(0, 0, 20000, 20000));
     camera_->areaRect->set(Rect(0, 0, w, h));
 
     canvas_->setCamera(camera_);
+    externalCanvas_->setCamera(camera_);
 
     // --- PLAYER ---
 
@@ -348,4 +359,8 @@ void Game::initialize() {
     //
 
     isInitialized_ = true;
+}
+
+Canvas *Game::getExternalCanvas() {
+    return externalCanvas_;
 }

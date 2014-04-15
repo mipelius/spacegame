@@ -35,6 +35,7 @@ private:
     WorldMap * map_;
     PhysicsWorld * world_;
     Canvas* canvas_;
+    Canvas* externalCanvas_;
     Camera* camera_;
 
     Canvas* smallMapCanvas_;
@@ -63,6 +64,7 @@ public:
     Canvas* getCanvas();
     BlockMapping* getBlockMapping();
     ShadowMask* getShadowMask();
+    Canvas* getExternalCanvas();
 
     void launch();
 };
