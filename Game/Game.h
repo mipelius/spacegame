@@ -30,6 +30,7 @@ class MyGameObject;
 #include "Point.h"
 
 class Game {
+
 private:
     WorldMap * map_;
     PhysicsWorld * world_;
@@ -45,9 +46,24 @@ private:
     ShadowMask* shadowMask_;
     BlockMapping*blockMapping_;
 
-public:
     Game();
+
+    static Game* game_;
+    bool isInitialized_;
+
+public:
+    static Game* getInstance();
+
     ~Game();
+
+    void initialize();
+
+    PhysicsWorld* getWorld();
+    WorldMap* getMap();
+    Canvas* getCanvas();
+    BlockMapping* getBlockMapping();
+    ShadowMask* getShadowMask();
+
     void launch();
 };
 

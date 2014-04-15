@@ -28,6 +28,7 @@ public:
     ~AnimationManager();
 
     void add(IAnimation* animation);
+    void remove(IAnimation* animation);
 
     void update(double seconds);
 

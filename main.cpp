@@ -25,8 +25,10 @@ int main(int argc, const char * argv[])
 {
     App::initialize();
 
+    Game* game = Game::getInstance();
+    game->initialize();
+
     try {
-        Game* game = new Game();
         game->launch();
         delete game;
 	}

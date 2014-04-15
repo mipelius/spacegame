@@ -55,109 +55,12 @@
 
 #include "AnimatedTexture.h"
 #include "Bomb.h"
+#include "Explosion.h"
+
+Game* Game::game_ = nullptr;
 
 Game::Game() {
-    // --- WINDOW PROPERTIES ---
-
-    int x = 0;
-    int y = 0;
-    int w = 1920;
-    int h = 1200;
-
-    bool enableFullScreen = false;
-
-    Window* window = App::getInstance()->getWindow();
-    window->initialize(x, y, w, h, enableFullScreen);
-
-    // --- CANVAS ---
-
-    canvas_ = new Canvas();
-    canvas_->setMargin(0, 0, 0, 0);
-    canvas_->w->set(Canvas::SIZE_MAX_WIDTH);
-    canvas_->h->set(Canvas::SIZE_MAX_HEIGHT);
-    canvas_->anchor->set(Canvas::Anchor::TOP_RIGHT);
-
-    Texture* texture = new Texture("images/bg1.jpg");
-    Background* background = new Background();
-    background->setRatio(0.5);
-    background->setTexture(texture);
-
-    canvas_->addDrawable(background);
-
-    window->addComponent(canvas_);
-
-    // --- WORLD & MAP ---
-
-    blockMapping_ = new BlockMapping("json/blockMappings.json");
-
-    map_ = new WorldMap("images/map.bmp", blockMapping_, 10, 10);
-    world_ = new PhysicsWorld(Vector(0, 9.81), 0.20, 0.0001);
-    world_->setMap(map_);
-
-    DrawableMap* drawableMap = new DrawableMap();
-    drawableMap->setMap(map_);
-    drawableMap->setMapTexture(blockMapping_->getMapTexture());
-
-    canvas_->addDrawable(drawableMap);
-
-    camera_ = new Camera();
-    camera_->boundsRect->set(Rect(0, 0, 20000, 20000));
-    camera_->areaRect->set(Rect(0, 0, w, h));
-
-    canvas_->setCamera(camera_);
-
-    // --- PLAYER ---
-
-    myGameObject_ = new MyGameObject();
-    myGameObject_->body->location->set(Point(4000, 8000));
-    myGameObject_->body->location->bind(myGameObject_->location);
-
-    world_->add(myGameObject_->body);
-    canvas_->addDrawable(myGameObject_->spriteContainer);
-
-    camera_->location->bind(myGameObject_->body->location);
-
-    // --- SHADOW MASK  ---
-
-    shadowMask_ = new ShadowMask(w, h, map_);
-    canvas_->addShadowMask(shadowMask_);
-    shadowMask_->ambientLight->set(0.05);
-
-//    PointLight* light = new PointLight(Point(4000, 9000), 300);
-//    shadowMask_->addLight(light);
-//    light->location->bind(myGameObject_->location);
-
-    // --- SMALL MAP ---
-
-    smallMapCanvas_ = new Canvas();
-    smallMapCanvas_->setMargin(20, 20, 20, 20);
-    smallMapCanvas_->w->set(350);
-    smallMapCanvas_->h->set(300);
-    smallMapCanvas_->anchor->bind(canvas_->anchor);
-    smallMapCanvas_->isBoundsVisible->set(true);
-    smallMapCanvas_->opacity->set(0.5);
-
-    smallMapCamera_ = new Camera();
-    smallMapCamera_->boundsRect->set(Rect(0, 0, 20000, 20000));
-    smallMapCamera_->areaRect->set(Rect(0, 0, 4000, 3000));
-    smallMapCamera_->location->bind(myGameObject_->body->location);
-    smallMapCanvas_->setCamera(smallMapCamera_);
-
-    smallMapCanvas_->addDrawable(drawableMap);
-    Plot* plot = new Plot();
-    plot->location->bind(myGameObject_->body->location);
-    plot->size->set(1.0);
-    smallMapCanvas_->addDrawable(plot);
-
-    canvas_->addComponent(smallMapCanvas_);
-
-    // --- ANIMATIONS ---
-
-    MyGameObject* obj = new MyGameObject();
-    obj->body->location->set(Point(4000, 8300));
-
-    //world_->add(obj->body);
-    canvas_->addDrawable(obj->spriteContainer);
+    isInitialized_ = false;
 }
 
 void Game::launch() {
@@ -167,9 +70,7 @@ void Game::launch() {
 
     const Uint8* keys;
     Uint32 timeMilliSec = 0;
-
     Uint32 lightAddingInterval = 200; // ms
-
     Uint32 timePassedAfterLastLightAdd = 0;
 
     while (!SDL_QuitRequested()) {
@@ -311,4 +212,140 @@ void Game::launch() {
 Game::~Game() {
     delete map_;
     delete world_;
+}
+
+Game *Game::getInstance() {
+    if (!game_) {
+        game_ = new Game();
+    }
+
+    return game_;
+}
+
+PhysicsWorld *Game::getWorld() {
+    return world_;
+}
+
+WorldMap *Game::getMap() {
+    return map_;
+}
+
+Canvas *Game::getCanvas() {
+    return canvas_;
+}
+
+BlockMapping *Game::getBlockMapping() {
+    return blockMapping_;
+}
+
+ShadowMask *Game::getShadowMask() {
+    return shadowMask_;
+}
+
+void Game::initialize() {
+    // --- WINDOW PROPERTIES ---
+
+    int x = 0;
+    int y = 0;
+    int w = 1280;
+    int h = 800;
+
+    bool enableFullScreen = false;
+
+    Window* window = App::getInstance()->getWindow();
+    window->initialize(x, y, w, h, enableFullScreen);
+
+    // --- CANVAS ---
+
+    canvas_ = new Canvas();
+    canvas_->setMargin(0, 0, 0, 0);
+    canvas_->w->set(Canvas::SIZE_MAX_WIDTH);
+    canvas_->h->set(Canvas::SIZE_MAX_HEIGHT);
+    canvas_->anchor->set(Canvas::Anchor::TOP_RIGHT);
+
+    Texture* texture = new Texture("images/bg1.jpg");
+    Background* background = new Background();
+    background->setRatio(0.5);
+    background->setTexture(texture);
+
+    canvas_->addDrawable(background);
+
+    window->addComponent(canvas_);
+
+    // --- WORLD & MAP ---
+
+    blockMapping_ = new BlockMapping("json/blockMappings.json");
+
+    map_ = new WorldMap("images/map.bmp", blockMapping_, 10, 10);
+    world_ = new PhysicsWorld(Vector(0, 9.81), 0.20, 0.0001);
+    world_->setMap(map_);
+
+    DrawableMap* drawableMap = new DrawableMap();
+    drawableMap->setMap(map_);
+    drawableMap->setMapTexture(blockMapping_->getMapTexture());
+
+    canvas_->addDrawable(drawableMap);
+
+    camera_ = new Camera();
+    camera_->boundsRect->set(Rect(0, 0, 20000, 20000));
+    camera_->areaRect->set(Rect(0, 0, w, h));
+
+    canvas_->setCamera(camera_);
+
+    // --- PLAYER ---
+
+    myGameObject_ = new MyGameObject();
+    myGameObject_->body->location->set(Point(4000, 8000));
+    myGameObject_->body->location->bind(myGameObject_->location);
+
+    world_->add(myGameObject_->body);
+    canvas_->addDrawable(myGameObject_->spriteContainer);
+
+    camera_->location->bind(myGameObject_->body->location);
+
+    // --- SHADOW MASK  ---
+
+    shadowMask_ = new ShadowMask(w, h, map_);
+    canvas_->addShadowMask(shadowMask_);
+    shadowMask_->ambientLight->set(0.05);
+
+//    PointLight* light = new PointLight(Point(4000, 9000), 300);
+//    shadowMask_->addLight(light);
+//    light->location->bind(myGameObject_->location);
+
+    // --- SMALL MAP ---
+
+    smallMapCanvas_ = new Canvas();
+    smallMapCanvas_->setMargin(20, 20, 20, 20);
+    smallMapCanvas_->w->set(350);
+    smallMapCanvas_->h->set(300);
+    smallMapCanvas_->anchor->bind(canvas_->anchor);
+    smallMapCanvas_->isBoundsVisible->set(true);
+    smallMapCanvas_->opacity->set(0.5);
+
+    smallMapCamera_ = new Camera();
+    smallMapCamera_->boundsRect->set(Rect(0, 0, 20000, 20000));
+    smallMapCamera_->areaRect->set(Rect(0, 0, 4000, 3000));
+    smallMapCamera_->location->bind(myGameObject_->body->location);
+    smallMapCanvas_->setCamera(smallMapCamera_);
+
+    smallMapCanvas_->addDrawable(drawableMap);
+    Plot* plot = new Plot();
+    plot->location->bind(myGameObject_->body->location);
+    plot->size->set(1.0);
+    smallMapCanvas_->addDrawable(plot);
+
+    canvas_->addComponent(smallMapCanvas_);
+
+    // --- ANIMATIONS ---
+
+    MyGameObject* obj = new MyGameObject();
+    obj->body->location->set(Point(4000, 8300));
+
+    //world_->add(obj->body);
+    canvas_->addDrawable(obj->spriteContainer);
+
+    //
+
+    isInitialized_ = true;
 }

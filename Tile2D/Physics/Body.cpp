@@ -61,6 +61,8 @@ Body::Body(double mass) :
     stepIsIgnored_ = false;
     gameWorld_ = nullptr;
     collisionShape_ = nullptr;
+
+    isDead_ = false;
 }
 
 Body::~Body() {
@@ -197,4 +199,8 @@ void Body::applyTorque(double angle) {
 
 void Body::afterStep() {
 
+}
+
+void Body::die() {
+    isDead_ = true;
 }

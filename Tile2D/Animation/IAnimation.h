@@ -27,6 +27,7 @@ public:
 
 protected:
     virtual void update(double seconds) = 0;
+    virtual bool isDead() = 0;
 };
 
 

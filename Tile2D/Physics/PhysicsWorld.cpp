@@ -51,9 +51,21 @@ void PhysicsWorld::add(Body *gameEntity) {
 void PhysicsWorld::step(double timeSeconds) {
     if (timeSeconds == 0.0) return;
 
+    std::list<Body*> deadBodies;
+
     // update velocities and new locations
     for(std::list<Body *>::iterator it = bodies_.begin(); it != bodies_.end(); it++) {
-        (*it)->step_(timeSeconds);
+        if ((*it)->isDead_) {
+            deadBodies.push_back((*it));
+        }
+        else {
+            (*it)->step_(timeSeconds);
+        }
+    }
+
+    for(std::list<Body *>::iterator it = deadBodies.begin(); it != deadBodies.end(); it++) {
+        bodies_.remove((*it));
+        delete (*it);
     }
 
     // now all the new locations are updated -> detect collision

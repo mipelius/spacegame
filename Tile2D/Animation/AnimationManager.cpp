@@ -29,8 +29,26 @@ void AnimationManager::add(IAnimation *animation) {
     animations_.push_back(animation);
 }
 
+
+
 void AnimationManager::update(double seconds) {
+    std::list<IAnimation*> animationsToRemove;
+
     for (std::list<IAnimation*>::iterator i = animations_.begin(); i != animations_.end(); i++) {
-        (*i)->update(seconds);
+        if ((*i)->isDead()) {
+            animationsToRemove.push_back((*i));
+        }
+        else {
+            (*i)->update(seconds);
+        }
     }
+
+    for (std::list<IAnimation*>::iterator i = animationsToRemove.begin(); i != animationsToRemove.end(); i++) {
+        remove((*i));
+        delete (*i);
+    }
+}
+
+void AnimationManager::remove(IAnimation *animation) {
+    animations_.remove(animation);
 }

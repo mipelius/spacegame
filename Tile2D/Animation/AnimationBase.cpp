@@ -16,10 +16,13 @@
 
 #include "AnimationBase.h"
 
-AnimationBase::AnimationBase(unsigned int framesPerSecond, unsigned int frameAmount, bool enableLoop) {
+AnimationBase::AnimationBase(unsigned int framesPerSecond, unsigned int frameAmount, bool enableLoop)
+{
     fps_ = framesPerSecond;
     frameAmount_ = frameAmount;
     loopEnabled_ = enableLoop;
+
+    isDead_ = false;
 
     stop();
 }
@@ -65,3 +68,11 @@ void AnimationBase::pause() {
     isPlaying_ = false;
 }
 
+
+bool AnimationBase::isDead() {
+    return false;
+}
+
+void AnimationBase::die() {
+    isDead_ = true;
+}

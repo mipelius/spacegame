@@ -18,6 +18,8 @@
 #define __AnimationBase_H_
 
 #include "IAnimation.h"
+#include "Event.h"
+#include "EventArgs.h"
 
 class AnimationBase : public IAnimation {
 
@@ -26,8 +28,10 @@ public:
     virtual ~AnimationBase();
 
     void play();
-    void stop();
+    virtual void stop();
     void pause();
+
+    void die();
 
 protected:
     void update(double seconds);
@@ -42,6 +46,11 @@ protected:
     bool isStopped_;
 
     bool loopEnabled_;
+
+    bool isDead();
+
+private:
+    bool isDead_;
 };
 
 

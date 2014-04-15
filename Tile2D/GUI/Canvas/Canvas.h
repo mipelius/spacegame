@@ -31,6 +31,7 @@ public:
 
     void renderActual();
     void addDrawable(IDrawable *drawable);
+    void removeDrawable(IDrawable* drawable);
 
     void addShadowMask(IShadowMask *shadowMask);
 

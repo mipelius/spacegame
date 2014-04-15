@@ -67,6 +67,8 @@ public:
 
     virtual void afterStep();
 
+    void die();
+
 protected:
     PhysicsWorld * gameWorld_;
     CollisionShape* collisionShape_;
@@ -89,6 +91,8 @@ private:
     bool detectMapCollision_();
     void setWorld_(PhysicsWorld *gameWorld);
     void step_(double timeElapsedSec);
+
+    bool isDead_;
 };
 
 #endif //__Body_H_

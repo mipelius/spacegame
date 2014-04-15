@@ -14,28 +14,33 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __AnimatedTexture_H_
-#define __AnimatedTexture_H_
+#ifndef __Explosion_H_
+#define __Explosion_H_
 
-#include "Texture.h"
-#include "ITexture.h"
-#include "AnimationBase.h"
+class Texture;
+class AnimatedTexture;
+class SpriteContainer;
+class PointLight;
 
-class AnimatedTexture : public AnimationBase, public ITexture {
-private:
-    Texture* texture_;
+#include "Point.h"
+
+class Explosion {
+
+    friend class AnimatedTexture_Stopped;
 
 public:
-    AnimatedTexture(unsigned int framesPerSecond, unsigned int frameAmount, bool enableLoop, Texture* texture);
-    void updateActual();
+    Explosion(Point point, double radius);
 
-    void glBind();
-    void glTexCorner(Corner corner);
-    void glUnbind();
+private:
+    ~Explosion();
 
-    Event<AnimatedTexture, EventArgs>* const stopped;
+    static Texture* explosionTexture_;
+    AnimatedTexture* explosionAnimation_;
+    SpriteContainer* spriteContainer_;
 
-    void stop();
+    PointLight* light_;
+
+    class AnimatedTexture_Stopped;
 };
 
-#endif //__AnimatedTexture_H_
+#endif //__Explosion_H_

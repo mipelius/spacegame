@@ -66,3 +66,7 @@ Camera *Canvas::getCamera() {
 void Canvas::addShadowMask(IShadowMask *shadowMask) {
     shadowMasks_.push_back(shadowMask);
 }
+
+void Canvas::removeDrawable(IDrawable *drawable) {
+    drawables_.remove(drawable);
+}

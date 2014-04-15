@@ -35,53 +35,45 @@
 #include "AnimationManager.h"
 #include "PhysicsWorld.h"
 #include "WorldMap.h"
+#include "Explosion.h"
+#include "Game.h"
+#include "Canvas.h"
 
 static Texture* texture = nullptr;
-
-static Texture* explosionAnimationTexture = nullptr;
-
 
 class Bomb::Body_MapCollisionEventHandler : public IEventHandler<Body, EventArgs> {
 private:
     Bomb* owner;
-    bool hasExploded;
 
 public:
     Body_MapCollisionEventHandler(Bomb* owner) {
         this->owner = owner;
-        hasExploded = false;
     };
 
     void handle(Body* body, EventArgs args) {
 
+        new Explosion(body->location->get(), 300);
+
         body->location->set(body->location->get() - body->velocity->get());
         body->speed->set(Vector(0, 0));
 
-        if (!hasExploded) {
-            AnimatedTexture* texture = new AnimatedTexture(40, 8, false, explosionAnimationTexture);
-            App::getInstance()->getAnimationManager()->add(texture);
-            texture->play();
-            Sprite* sprite = new Sprite(texture, Rect(-255, -255, 255, 255));
-            owner->spriteContainer->addSprite(sprite);
+        int blockW = body->getWorld()->getMap()->getBlockW();
+        int blockH = body->getWorld()->getMap()->getBlockH();
 
-            hasExploded = true;
+        for (int i = -128; i < 128; i += blockW) {
+            for (int j = -128; j < 128; j += blockH) {
+                double distanceFromCenter = sqrt(i*i + j*j);
 
-            int blockW = body->getWorld()->getMap()->getBlockW();
-            int blockH = body->getWorld()->getMap()->getBlockH();
-
-            for (int i = -128; i < 128; i += blockW) {
-                for (int j = -128; j < 128; j += blockH) {
-                    double distanceFromCenter = sqrt(i*i + j*j);
-
-                    if (distanceFromCenter + rand() % 15 < 128) {
-                        body->getWorld()->getMap()->setValueScaled(
-                                body->location->get() + Vector(i, j),
-                                Block::getEmptyBlock()
-                        );
-                    }
+                if (distanceFromCenter + rand() % 15 < 128) {
+                    body->getWorld()->getMap()->setValueScaled(
+                            body->location->get() + Vector(i, j),
+                            Block::getEmptyBlock()
+                    );
                 }
             }
         }
+
+        delete owner;
     }
 };
 
@@ -131,10 +123,6 @@ spriteContainer (   new SpriteContainer()                       )
         texture = new Texture("images/bomb.png");
     }
 
-    if (!explosionAnimationTexture) {
-        explosionAnimationTexture = new Texture("images/anim_explosion.png");
-    }
-
     // sprite container
 
     Sprite* sprite = new Sprite(texture, Rect(-10, -10, 10, 10));
@@ -149,5 +137,7 @@ spriteContainer (   new SpriteContainer()                       )
 }
 
 Bomb::~Bomb() {
-    delete body;
+    Game::getInstance()->getCanvas()->removeDrawable(spriteContainer);
+    delete spriteContainer;
+    body->die();
 }

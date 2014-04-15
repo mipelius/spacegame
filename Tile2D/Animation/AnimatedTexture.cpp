@@ -19,7 +19,8 @@
 #import "ITexture.h"
 
 AnimatedTexture::AnimatedTexture(unsigned int framesPerSecond, unsigned int frameAmount, bool enableLoop, Texture* texture) :
-AnimationBase(framesPerSecond, frameAmount, enableLoop)
+    AnimationBase(framesPerSecond, frameAmount, enableLoop),
+    stopped   (   new Event<AnimatedTexture, EventArgs>(this) )
 {
     texture_ = texture;
 }
@@ -55,4 +56,9 @@ void AnimatedTexture::glBind() {
 
 void AnimatedTexture::updateActual() {
     // do nothing
+}
+
+void AnimatedTexture::stop() {
+    AnimationBase::stop();
+    stopped->raise(EventArgs());
 }
