@@ -87,6 +87,10 @@ void LightMap::putGreatestValuesFront(PartialLightMap *lightMap) {
 
             std::list<PartialLightMap *>* list = data_->getValue(actualX, actualY);
 
+            if (list->empty()) {
+                continue;
+            }
+
             PartialLightMap* greatestValueMap = list->front();
 
             unsigned greatestValue = greatestValueMap->getValue(

@@ -14,11 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __GameObjectBase_H_
-#define __GameObjectBase_H_
 
-class GameObjectBase {
+#ifndef __PulseLight_H_
+#define __PulseLight_H_
 
+class PointLight;
+
+#include "Point.h"
+
+class PulseLight {
+    friend class Animation;
+
+public:
+    PulseLight(Point point, double radius);
+
+private:
+    class Animation;
+
+    ~PulseLight();
+
+    Animation* animation_;
+    PointLight* pointLight_;
+
+    double initialRadius_;
 };
 
-#endif //__GameObjectBase_H_
+#endif //__PulseLight_H_

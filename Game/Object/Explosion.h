@@ -38,8 +38,6 @@ private:
     AnimatedTexture* explosionAnimation_;
     SpriteContainer* spriteContainer_;
 
-    PointLight* light_;
-
     class AnimatedTexture_Stopped;
 };
 

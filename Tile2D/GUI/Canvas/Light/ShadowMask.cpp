@@ -234,6 +234,8 @@ void ShadowMask::addLight(PointLight *light) {
             (int)(light->radius_ * 2 / worldMap_->getBlockH())
     );
 
+    light->partialLightMap_ = partialLightMap;
+
     // TODO: this doesn't seem to work well... Maybe totally different approach for the dynamic lights??
 
     // light->movement->add(new PointLight_MovementEventHandler(this, partialLightMap));
@@ -283,7 +285,6 @@ void ShadowMask::handleNextUpdate() {
         partialLightMapUpdatesQueue.pop();
 
         if (update->map->needsUpdate) {
-
             update->map->needsUpdate = false;
 
             if (update->isBlockUpdate) {
@@ -440,3 +441,15 @@ void ShadowMask::createShadowTexture() {
     delete[] pixels;
 }
 
+void ShadowMask::removeLight(PointLight *light) {
+    lightMap_->removePartialLightMap(light->partialLightMap_);
+    lightMap_->putGreatestValuesFront(light->partialLightMap_);
+
+    // you should figure out, how to do this, without crashing
+    // (it will crash, if partialLightMapUpdatesQueue has update containing pointer to partialLightMap_)
+    // delete light->partialLightMap_;
+
+    light->partialLightMap_->needsUpdate = false;
+
+    staticLights_.remove(light);
+}

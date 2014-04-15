@@ -22,6 +22,7 @@
 #include "IShadowMask.h"
 #include "Property.h"
 #include "Canvas.h"
+#include "PointLight.h"
 
 class PointLight;
 class WorldMap;
@@ -43,6 +44,8 @@ public:
     void draw(Canvas* canvas);
 
     void addLight(PointLight *light);
+
+    void removeLight(PointLight *light);
 
 private:
     std::list<PointLight*> dynamicLights_;

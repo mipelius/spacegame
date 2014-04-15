@@ -20,6 +20,7 @@
 class Canvas;
 class LightMap;
 class WorldMap;
+class PartialLightMap;
 
 #include "Event.h"
 #include <SDL2/SDL_opengl.h>
@@ -45,12 +46,12 @@ public:
     static GLuint glTextureId_;
 
 private:
-    LightMap* lightMap_;
-
     Point location_;
     double radius_;
 
-    static const int TEXTURE_SIZE = 32;
+    PartialLightMap* partialLightMap_;
+
+    static const int TEXTURE_SIZE = 64;
     static void createLightTexture();
 
     class LocationProperty;

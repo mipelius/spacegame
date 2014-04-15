@@ -24,7 +24,7 @@ AnimationBase::AnimationBase(unsigned int framesPerSecond, unsigned int frameAmo
 
     isDead_ = false;
 
-    stop();
+    AnimationBase::stop();
 }
 
 AnimationBase::~AnimationBase() {
@@ -70,9 +70,13 @@ void AnimationBase::pause() {
 
 
 bool AnimationBase::isDead() {
-    return false;
+    return isDead_;
 }
 
 void AnimationBase::die() {
     isDead_ = true;
+}
+
+void AnimationBase::onDie() {
+
 }

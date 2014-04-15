@@ -44,6 +44,7 @@ void AnimationManager::update(double seconds) {
     }
 
     for (std::list<IAnimation*>::iterator i = animationsToRemove.begin(); i != animationsToRemove.end(); i++) {
+        (*i)->onDie();
         remove((*i));
         delete (*i);
     }

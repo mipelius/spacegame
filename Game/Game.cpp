@@ -131,7 +131,7 @@ void Game::launch() {
                 }
                 else {
                     speed.x *= 0.25;
-                    speed.y *= 0.25;
+                    speed.y *= 0.5;
                 }
 
                 bomp->body->speed->set(speed);
@@ -247,8 +247,8 @@ void Game::initialize() {
 
     int x = 0;
     int y = 0;
-    int w = 1280;
-    int h = 800;
+    int w = 1920;
+    int h = 1200;
 
     bool enableFullScreen = false;
 

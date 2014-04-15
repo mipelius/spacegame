@@ -21,6 +21,7 @@
 #include "Camera.h"
 #include "WorldMap.h"
 #include "LightMap.h"
+#include "PartialLightMap.h"
 
 class PointLight::LocationProperty : public SimpleProperty<Point> {
 
@@ -61,13 +62,13 @@ PointLight::PointLight(Point location, double radius) :
 
     int w = (int)(radius_ * 2 / 10);
     int h = (int)(radius_ * 2 / 10);
-
-    lightMap_ = new LightMap(w, h);
 }
 
 PointLight::~PointLight() {
-    delete lightMap_;
     delete movement;
+
+    delete location;
+    delete radius;
 }
 
 void PointLight::draw(Canvas *canvas) {
@@ -97,7 +98,7 @@ void PointLight::createLightTexture() {
     int h = TEXTURE_SIZE;
 
     Uint8 alphaValue;
-    double temp;
+    double temp = 0.0;
 
     Uint32* lightPixels = new Uint32[w * h];
 

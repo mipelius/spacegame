@@ -25,6 +25,7 @@
 #include "Sprite.h"
 #include "PointLight.h"
 #include "ShadowMask.h"
+#include "PulseLight.h"
 
 class Explosion::AnimatedTexture_Stopped : public IEventHandler<AnimatedTexture, EventArgs> {
 
@@ -48,7 +49,7 @@ Explosion::Explosion(Point point, double radius) {
         explosionTexture_ = new Texture("images/anim_explosion.png");
     }
 
-    explosionAnimation_ = new AnimatedTexture(40, 8, false, explosionTexture_);
+    explosionAnimation_ = new AnimatedTexture(32, 8, false, explosionTexture_);
     explosionAnimation_->play();
     App::getInstance()->getAnimationManager()->add(explosionAnimation_);
 
@@ -69,8 +70,7 @@ Explosion::Explosion(Point point, double radius) {
     spriteContainer_->addSprite(explosionSprite);
     spriteContainer_->location->set(point);
 
-    light_ = new PointLight(point, radius * 3);
-    Game::getInstance()->getShadowMask()->addLight(light_);
+    PulseLight* pulseLight = new PulseLight(point, radius * 3);
 
     Game::getInstance()->getCanvas()->addDrawable(spriteContainer_);
 }

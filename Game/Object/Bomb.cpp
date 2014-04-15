@@ -52,7 +52,7 @@ public:
 
     void handle(Body* body, EventArgs args) {
 
-        new Explosion(body->location->get(), 300);
+        new Explosion(body->location->get(), 200);
 
         body->location->set(body->location->get() - body->velocity->get());
         body->speed->set(Vector(0, 0));
@@ -60,11 +60,11 @@ public:
         int blockW = body->getWorld()->getMap()->getBlockW();
         int blockH = body->getWorld()->getMap()->getBlockH();
 
-        for (int i = -128; i < 128; i += blockW) {
-            for (int j = -128; j < 128; j += blockH) {
+        for (int i = -100; i < 100; i += blockW) {
+            for (int j = -100; j < 100; j += blockH) {
                 double distanceFromCenter = sqrt(i*i + j*j);
 
-                if (distanceFromCenter + rand() % 15 < 128) {
+                if (distanceFromCenter + rand() % 15 < 100) {
                     body->getWorld()->getMap()->setValueScaled(
                             body->location->get() + Vector(i, j),
                             Block::getEmptyBlock()

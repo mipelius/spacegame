@@ -37,6 +37,8 @@ protected:
     void update(double seconds);
     virtual void updateActual() = 0;
 
+    void virtual onDie();
+
     double timeElapsedAfterPreviousFrame_;
     unsigned int currentFrame_;
     unsigned int fps_;
