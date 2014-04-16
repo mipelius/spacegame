@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,27 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Location_H_
-#define __Location_H_
+#ifndef __Ears_H_
+#define __Ears_H_
 
-class Rect;
+#include "Point.h"
+#import "Property.h"
 
-#include "Vector.h"
+class Ears {
 
-class Point {
 public:
-    double x, y;
-    Point(double x, double y);
-    ~Point();
+    Ears();
+    ~Ears();
 
-    bool equals(Point otherPoint);
+    Property<Point>* const location;
+    Property<double>* const maxDistance;
 
-    Point operator + (const Vector& vector);
-    Point operator - (const Vector& vector);
-    double distance(Point otherPoint) const;
-
-    bool isIn(Rect& rect);
+private:
+    Point location_;
+    double maxDistance_;
 };
 
-
-#endif //__Location_H_
+#endif //__Ears_H_

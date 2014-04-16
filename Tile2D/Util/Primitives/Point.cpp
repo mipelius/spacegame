@@ -35,7 +35,7 @@ Point Point::operator -(const Vector &vector) {
     return Point(x - vector.x, y - vector.y);
 }
 
-double Point::distance(Point otherPoint) {
+double Point::distance(Point otherPoint) const {
     return sqrt(
             (otherPoint.x - this->x) * (otherPoint.x - this->x) +
             (otherPoint.y - this->y) * (otherPoint.y - this->y)

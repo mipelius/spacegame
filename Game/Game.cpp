@@ -52,6 +52,7 @@
 #include "DynamicLightObject.h"
 #include "Sample.h"
 #include "SamplePlayer.h"
+#include "Ears.h"
 
 #include "AnimatedTexture.h"
 #include "Bomb.h"
@@ -250,7 +251,7 @@ void Game::initialize() {
     int w = 1280;
     int h = 800;
 
-    bool enableFullScreen = true;
+    bool enableFullScreen = false;
 
     Window* window = App::getInstance()->getWindow();
     window->initialize(x, y, w, h, enableFullScreen);
@@ -313,6 +314,11 @@ void Game::initialize() {
     canvas_->addDrawable(myGameObject_->spriteContainer);
 
     camera_->location->bind(myGameObject_->body->location);
+
+    Ears* ears = new Ears();
+    ears->maxDistance->set(1400);
+    ears->location->bind(myGameObject_->location);
+    App::getInstance()->getSamplePlayer()->setEars(ears);
 
     // --- SHADOW MASK  ---
 

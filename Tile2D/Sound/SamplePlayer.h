@@ -18,13 +18,20 @@
 #define __SamplePlayer_H_
 
 class Sample;
+class Ears;
+class Point;
 
 #include "Player.h"
 
 class SamplePlayer : public Player {
 public:
     SamplePlayer();
-    void play(Sample* sample, int channel = -1);
+    void play(Sample* sample, int channel = -1, const Point* location = nullptr);
+
+    void setEars(Ears* ears);
+
+private:
+    Ears* ears_;
 };
 
 

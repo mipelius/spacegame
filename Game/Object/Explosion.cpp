@@ -29,7 +29,6 @@
 #include "Sample.h"
 #include "SamplePlayer.h"
 
-
 class Explosion::AnimatedTexture_Stopped : public IEventHandler<AnimatedTexture, EventArgs> {
 
 private:
@@ -75,9 +74,9 @@ Explosion::Explosion(Point point, double radius) {
             )
     );
 
-    App::getInstance()->getSamplePlayer()->play(Explosion::explosionSample_, sampleChannel_);
+    App::getInstance()->getSamplePlayer()->play(Explosion::explosionSample_, sampleChannel_, &point);
     sampleChannel_++;
-    if (sampleChannel_ > 3) sampleChannel_ = 0;
+    if (sampleChannel_ > 4) sampleChannel_ = 0;
 
     spriteContainer_ = new SpriteContainer();
     spriteContainer_->addSprite(explosionSprite);
