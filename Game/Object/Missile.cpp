@@ -112,7 +112,7 @@ spriteContainer (   new SpriteContainer()                           )
 {
     if (!missileCollisionSample_) {
         sampleChannel_ = 0;
-        missileCollisionSample_ = new Sample("soundfx/missile_collision.wav");
+        missileCollisionSample_ = new Sample("soundfx/missile_collision.wav", 10);
     }
 
     // body
@@ -145,7 +145,7 @@ spriteContainer (   new SpriteContainer()                           )
 
     Sprite* sprite = new Sprite(texture, Rect(-10, -5, 10, 5));
     spriteContainer->addSprite(sprite);
-    Game::getInstance()->getCanvas()->addDrawable(spriteContainer);
+    Game::getInstance()->getExternalCanvas()->addDrawable(spriteContainer);
 
     // bindings
 
@@ -154,7 +154,7 @@ spriteContainer (   new SpriteContainer()                           )
 }
 
 Missile::~Missile() {
-    Game::getInstance()->getCanvas()->removeDrawable(spriteContainer);
+    Game::getInstance()->getExternalCanvas()->removeDrawable(spriteContainer);
     delete spriteContainer;
 
     delete body;

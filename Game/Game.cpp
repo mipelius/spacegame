@@ -67,7 +67,7 @@ Game::Game() {
 void Game::launch() {
     App::getInstance()->getMusicPlayer()->play(new Music("music/spacegame.mp3"));
 
-    Sample* sample = new Sample("soundfx/spaceship_shoot.wav");
+    Sample* sample = new Sample("soundfx/spaceship_shoot.wav", 0);
 
     const Uint8* keys;
     Uint32 timeMilliSec = 0;
@@ -253,10 +253,10 @@ void Game::initialize() {
 
     int x = 0;
     int y = 0;
-    int w = 1280;
-    int h = 800;
+    int w = 1920;
+    int h = 1200;
 
-    bool enableFullScreen = false;
+    bool enableFullScreen = true;
 
     Window* window = App::getInstance()->getWindow();
     window->initialize(x, y, w, h, enableFullScreen);
@@ -329,7 +329,7 @@ void Game::initialize() {
 
     shadowMask_ = new ShadowMask(w, h, map_);
     canvas_->addShadowMask(shadowMask_);
-    shadowMask_->ambientLight->set(0.05);
+    shadowMask_->ambientLight->set(0.00);
 
     PointLight* light = new PointLight(Point(4000, 9000), 400, true);
     shadowMask_->addLight(light);
@@ -339,8 +339,8 @@ void Game::initialize() {
 
     smallMapCanvas_ = new Canvas();
     smallMapCanvas_->setMargin(20, 20, 20, 20);
-    smallMapCanvas_->w->set(350);
-    smallMapCanvas_->h->set(300);
+    smallMapCanvas_->w->set(250);
+    smallMapCanvas_->h->set(200);
     smallMapCanvas_->anchor->bind(canvas_->anchor);
     smallMapCanvas_->isBoundsVisible->set(true);
     smallMapCanvas_->opacity->set(0.5);

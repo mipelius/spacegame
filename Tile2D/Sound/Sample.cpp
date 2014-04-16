@@ -17,11 +17,16 @@
 #include "precompile.h"
 #include "Sample.h"
 
-Sample::Sample(std::string filename) {
-    this->chunk = Mix_LoadWAV(filename.data());
+Sample::Sample(std::string filename, unsigned char volume) {
+    chunk_ = Mix_LoadWAV(filename.data());
 
+    if (volume > 128) {
+        volume = 128;
+    }
+
+    Mix_VolumeChunk(chunk_, volume);
 }
 
 Sample::~Sample() {
-    Mix_FreeChunk(this->chunk);
+    Mix_FreeChunk(this->chunk_);
 }

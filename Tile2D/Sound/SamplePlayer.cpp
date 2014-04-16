@@ -62,7 +62,7 @@ void SamplePlayer::play(Sample *sample, int channel, const Point* location) {
         }
     }
 
-    Mix_PlayChannel(channel, sample->chunk, 0);
+    Mix_PlayChannel(channel, sample->chunk_, 0);
 }
 
 void SamplePlayer::setEars(Ears *ears) {

@@ -53,7 +53,7 @@ Explosion::Explosion(Point point, double radius) {
         explosionTexture_ = new Texture("images/anim_explosion.png");
     }
     if (!explosionSample_) {
-        explosionSample_ = new Sample("soundfx/explosion.wav");
+        explosionSample_ = new Sample("soundfx/explosion.wav", 32);
         sampleChannel_ = 0;
     }
 

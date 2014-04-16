@@ -21,11 +21,14 @@
 
 class Sample {
     friend class SamplePlayer;
-private:
-    Mix_Chunk* chunk;
+
 public:
-    Sample(std::string filename);
+    Sample(std::string filename, unsigned char volume);
     ~Sample();
+
+private:
+    Mix_Chunk* chunk_;
+
 };
 
 
