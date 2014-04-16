@@ -35,7 +35,7 @@ class PointLight {
 public:
     virtual void draw(Canvas *canvas);
 
-    PointLight(Point location, double radius);
+    PointLight(Point location, double radius, bool isDynamic = false);
     ~PointLight();
 
     Property<Point>* const location;
@@ -50,6 +50,8 @@ private:
     Point location_;
     double radius_;
     double intensity_;
+
+    bool isDynamic_;
 
     PartialLightMap* partialLightMap_;
 

@@ -23,6 +23,8 @@
 #include "Property.h"
 #include "Canvas.h"
 #include "PointLight.h"
+#include "Array2d.h"
+#include "Camera.h"
 
 class PointLight;
 class WorldMap;
@@ -51,6 +53,8 @@ private:
     std::list<PointLight*> dynamicLights_;
     std::list<PointLight*> staticLights_;
 
+    Array2d<unsigned char>* dynamicLightScene_;
+
     double ambientLight_;
     double w_;
     double h_;
@@ -77,6 +81,8 @@ private:
 
     class WorldMap_ModificationEventHandler;
     class PointLight_MovementEventHandler;
+
+    void updateDynamicScene(Rect *areaRect);
 };
 
 

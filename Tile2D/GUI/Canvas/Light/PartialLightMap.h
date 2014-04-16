@@ -29,7 +29,6 @@ public:
     PartialLightMap(int w, int h);
 
     void setCenterLocation(int x, int y);
-    void clear();
     void update(WorldMap* map);
 
     int getX() const;

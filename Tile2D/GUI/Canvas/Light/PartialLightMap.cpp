@@ -75,7 +75,3 @@ int PartialLightMap::getX() const {
 int PartialLightMap::getY() const {
     return y_;
 }
-
-void PartialLightMap::clear() {
-    memset(data_, '\0', sizeof(unsigned char) * w_ * h_);
-}

@@ -58,6 +58,10 @@ public:
         return h_;
     }
 
+    void clear() {
+        memset(data_, '\0', sizeof(unsigned char) * w_ * h_);
+    }
+
 protected:
 
     int w_;

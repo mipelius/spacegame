@@ -46,7 +46,7 @@ private:
 
 GLuint PointLight::glTextureId_ = 0;
 
-PointLight::PointLight(Point location, double radius) :
+PointLight::PointLight(Point location, double radius, bool isDynamic) :
     location    (   new LocationProperty        (&location_, this   )  ),
     radius      (   new SimpleProperty<double>  (&radius_           )  ),
     intensity   (   new SimpleProperty<double>  (&intensity_        )  ),
@@ -57,6 +57,8 @@ PointLight::PointLight(Point location, double radius) :
 
     movement    (   new Event<PointLight, PointLightMovedEventArgs>(this)   )
 {
+    isDynamic_ = isDynamic;
+
     if (glTextureId_ == 0) {
         createLightTexture();
     }
@@ -95,8 +97,6 @@ void PointLight::draw(Canvas *canvas) {
 }
 
 void PointLight::createLightTexture() {
-    std::cout << TEXTURE_SIZE;
-
     int w = TEXTURE_SIZE;
     int h = TEXTURE_SIZE;
 

@@ -29,36 +29,46 @@ class ShadowMask::PointLight_MovementEventHandler : public IEventHandler<PointLi
 
 public:
 
-    PointLight_MovementEventHandler(ShadowMask* mask, PartialLightMap* partialLightMap) {
+    PointLight_MovementEventHandler(ShadowMask* mask) {
         mask_ = mask;
-        partialLightMap_ = partialLightMap;
+        updatePhase_ = 0;
     }
 
     virtual void handle(PointLight *owner, PointLightMovedEventArgs args) {
+        if (!owner->isDynamic_) {
+            return;
+        }
+
+        updatePhase_++;
+
+        if (updatePhase_ % UPDATE_INTERVAL == 0) {
+            return;
+        }
+
         int actualNewLocationX = (int)(args.newLocation.x / mask_->worldMap_->getBlockW());
         int actualNewLocationY = (int)(args.newLocation.y / mask_->worldMap_->getBlockH());
 
         if (
-                abs(partialLightMap_->getX() - actualNewLocationX) == 0 &&
-                abs(partialLightMap_->getY() - actualNewLocationY) == 0
+                abs(owner->partialLightMap_->getX() - actualNewLocationX) == 0 &&
+                abs(owner->partialLightMap_->getY() - actualNewLocationY) == 0
         ) {
             return;
         }
 
-        PartialLightMapUpdate* update = new PartialLightMapUpdate();
+        owner->partialLightMap_->setCenterLocation(
+                actualNewLocationX,
+                actualNewLocationY
+        );
 
-        update->x = actualNewLocationX;
-        update->y = actualNewLocationY;
-        update->isBlockUpdate = false;
-        update->map = partialLightMap_;
-        update->map->needsUpdate = true;
-
-        mask_->partialLightMapUpdatesQueue.push(update);
+        owner->partialLightMap_->clear();
+        owner->partialLightMap_->update(mask_->worldMap_);
     }
 
 private:
     ShadowMask* mask_;
-    PartialLightMap* partialLightMap_;
+    unsigned int updatePhase_;
+
+    static const unsigned int UPDATE_INTERVAL = 10;
 };
 
 class ShadowMask::WorldMap_ModificationEventHandler : public IEventHandler<WorldMap, WorldMapModifiedEventArgs> {
@@ -104,6 +114,11 @@ ambientLight_   (   1.0 )
     w_ = w;
     h_ = h;
 
+    dynamicLightScene_ = new Array2d<unsigned char>(
+            (int)(w_ / map->getBlockW() + 2),
+            (int)(h_ / map->getBlockH() + 2)
+    );
+
     lightMap_ = new LightMap(map->getW(), map->getH());
     worldMap_ = map;
 
@@ -118,6 +133,7 @@ ambientLight_   (   1.0 )
 
 ShadowMask::~ShadowMask() {
     delete lightMap_;
+    delete dynamicLightScene_;
 }
 
 void ShadowMask::update(Canvas *canvas) {
@@ -158,6 +174,10 @@ void ShadowMask::update(Canvas *canvas) {
     glBegin(GL_QUADS);
 
     for (std::list<PointLight*>::iterator i = staticLights_.begin(); i != staticLights_.end(); i++) {
+        (*i)->draw(canvas);
+    }
+
+    for (std::list<PointLight*>::iterator i = dynamicLights_.begin(); i != dynamicLights_.end(); i++) {
         (*i)->draw(canvas);
     }
 
@@ -230,7 +250,9 @@ void ShadowMask::draw(Canvas *canvas) {
 }
 
 void ShadowMask::addLight(PointLight *light) {
-    staticLights_.push_back(light);
+    if (!light) {
+        return;
+    }
 
     PartialLightMap* partialLightMap = new PartialLightMap(
             (int)(light->radius_ * 2 / worldMap_->getBlockW()),
@@ -239,23 +261,27 @@ void ShadowMask::addLight(PointLight *light) {
 
     light->partialLightMap_ = partialLightMap;
 
-    // TODO: this doesn't seem to work well... Maybe totally different approach for the dynamic lights??
-
-    // light->movement->add(new PointLight_MovementEventHandler(this, partialLightMap));
-
     partialLightMap->setCenterLocation(
             (int)(light->location->get().x / worldMap_->getBlockW()),
             (int)(light->location->get().y / worldMap_->getBlockH())
     );
 
-    PartialLightMapUpdate* update = new PartialLightMapUpdate();
-    update->x = (int)(light->location->get().x / worldMap_->getBlockW());
-    update->y = (int)(light->location->get().y / worldMap_->getBlockH());
-    update->map = partialLightMap;
-    update->map->needsUpdate = true;
-    update->isBlockUpdate = false;
+    if (light->isDynamic_) {
+        dynamicLights_.push_back(light);
+        light->movement->add(new PointLight_MovementEventHandler(this));
+    }
+    else {
+        staticLights_.push_back(light);
 
-    partialLightMapUpdatesQueue.push(update);
+        PartialLightMapUpdate* update = new PartialLightMapUpdate();
+        update->x = (int)(light->location->get().x / worldMap_->getBlockW());
+        update->y = (int)(light->location->get().y / worldMap_->getBlockH());
+        update->map = partialLightMap;
+        update->map->needsUpdate = true;
+        update->isBlockUpdate = false;
+
+        partialLightMapUpdatesQueue.push(update);
+    }
 }
 
 void ShadowMask::initialize() {
@@ -309,6 +335,7 @@ void ShadowMask::handleNextUpdate() {
 
 void ShadowMask::drawShadowMap(Canvas* canvas) {
     Rect rect = canvas->getCamera()->areaRect->get();
+    updateDynamicScene(&rect);
 
     int xStart = 0;
     int xEnd = 0;
@@ -353,9 +380,18 @@ void ShadowMask::drawShadowMap(Canvas* canvas) {
 
     glBegin(GL_QUADS);
 
+    int dynX = 0;
+
     for (int x = xStart; x < xEnd; x++) {
+        int dynY = 0;
+
         for (int y = yStart; y < yEnd; y++) {
             unsigned char lightAmount = lightMap_->getLightAmount(x, y);
+            unsigned char dynamicLightAmount = dynamicLightScene_->getValue(dynX, dynY);
+
+            if (dynamicLightAmount > lightAmount) {
+                lightAmount = dynamicLightAmount;
+            }
 
             double xActual = x * worldMap_->getBlockW() - rect.x1;
             double yActual = y * worldMap_->getBlockH() - rect.y1;
@@ -399,7 +435,9 @@ void ShadowMask::drawShadowMap(Canvas* canvas) {
                 glVertex2f(x1, y2);
 
             }
+            dynY++;
         }
+        dynX++;
     }
 
     glEnd();
@@ -445,14 +483,46 @@ void ShadowMask::createShadowTexture() {
 }
 
 void ShadowMask::removeLight(PointLight *light) {
-    lightMap_->removePartialLightMap(light->partialLightMap_);
-    lightMap_->putGreatestValuesFront(light->partialLightMap_);
+    if (light->isDynamic_) {
+        dynamicLights_.remove(light);
+        delete light->partialLightMap_;
+    }
+    else {
+        lightMap_->removePartialLightMap(light->partialLightMap_);
+        lightMap_->putGreatestValuesFront(light->partialLightMap_);
 
-    // you should figure out, how to do this, without crashing
-    // (it will crash, if partialLightMapUpdatesQueue has update containing pointer to partialLightMap_)
-    // delete light->partialLightMap_;
+        // you should figure out, how to do this without crashing
+        // (it will crash, if partialLightMapUpdatesQueue has update containing pointer to partialLightMap_)
+        // delete light->partialLightMap_;
 
-    light->partialLightMap_->needsUpdate = false;
+        light->partialLightMap_->needsUpdate = false;
 
-    staticLights_.remove(light);
+        staticLights_.remove(light);
+    }
+}
+
+void ShadowMask::updateDynamicScene(Rect *areaRect) {
+    int cameraX = (int)(areaRect->x1 / worldMap_->getBlockW());
+    int cameraY = (int)(areaRect->y1 / worldMap_->getBlockH());
+
+    dynamicLightScene_->clear();
+
+    for (std::list<PointLight*>::iterator i = dynamicLights_.begin(); i != dynamicLights_.end(); i++) {
+        PartialLightMap* partialLightMap = (*i)->partialLightMap_;
+
+        for (int x = 0; x < partialLightMap->getW(); x++) {
+            for (int y = 0; y < partialLightMap->getH(); y++) {
+                int dynX = x + partialLightMap->getX() - cameraX;
+                int dynY = y + partialLightMap->getY() - cameraY;
+
+                if (dynamicLightScene_->isInsideBounds(dynX, dynY)) {
+                    unsigned char newValue = partialLightMap->getValue(x, y);
+
+                    if (dynamicLightScene_->getValue(dynX, dynY) < newValue) {
+                        dynamicLightScene_->setValue(dynX, dynY, newValue);
+                    }
+                }
+            }    
+        }
+    }
 }
