@@ -326,7 +326,7 @@ void Game::initialize() {
     canvas_->addShadowMask(shadowMask_);
     shadowMask_->ambientLight->set(0.05);
 
-    PointLight* light = new PointLight(Point(4000, 9000), 500, true);
+    PointLight* light = new PointLight(Point(4000, 9000), 400, true);
     shadowMask_->addLight(light);
     light->location->bind(myGameObject_->location);
 

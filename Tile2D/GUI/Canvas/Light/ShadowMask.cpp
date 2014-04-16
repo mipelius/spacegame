@@ -376,7 +376,6 @@ void ShadowMask::drawShadowMap(Canvas* canvas) {
     glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
 
     double padding = 1.5;
-    double texMargin = 0.15;
 
     glBegin(GL_QUADS);
 
@@ -404,19 +403,15 @@ void ShadowMask::drawShadowMap(Canvas* canvas) {
             if (lightAmount == 255) {
                 glColor4f(0, 0, 0, 1.0);
 
-                float texMargin = 0.499;
+                float texMargin = 0.4999;
 
-                glTexCoord2f(0.0 + texMargin, 0.0 + texMargin);
-                glVertex2f(x1, y1);
-                glTexCoord2f(1.0 - texMargin, 0.0 + texMargin);
-                glVertex2f(x2, y1);
-                glTexCoord2f(1.0 - texMargin, 1.0 - texMargin);
-                glVertex2f(x2, y2);
-                glTexCoord2f(0.0 + texMargin, 1.0 - texMargin);
-                glVertex2f(x1, y2);
+                glTexCoord2f(0.0 + texMargin, 0.0 + texMargin); glVertex2f(x1, y1);
+                glTexCoord2f(1.0 - texMargin, 0.0 + texMargin); glVertex2f(x2, y1);
+                glTexCoord2f(1.0 - texMargin, 1.0 - texMargin); glVertex2f(x2, y2);
+                glTexCoord2f(0.0 + texMargin, 1.0 - texMargin); glVertex2f(x1, y2);
             }
             else if (lightAmount > 0) {
-                float value = (float)(1.0 - pow(1.0 - lightAmount / 255.0, 0.2));
+                float value = (float)(1.0 - pow(1.0 - lightAmount / 255.0, 0.25));
 
                 glColor4f(0.0, 0.0, 0.0, value);
 
@@ -425,14 +420,10 @@ void ShadowMask::drawShadowMap(Canvas* canvas) {
                 x2 += padding * worldMap_->getBlockW();
                 y2 += padding * worldMap_->getBlockH();
 
-                glTexCoord2f(0.0 + texMargin, 0.0 + texMargin);
-                glVertex2f(x1, y1);
-                glTexCoord2f(1.0 - texMargin, 0.0 + texMargin);
-                glVertex2f(x2, y1);
-                glTexCoord2f(1.0 - texMargin, 1.0 - texMargin);
-                glVertex2f(x2, y2);
-                glTexCoord2f(0.0 + texMargin, 1.0 - texMargin);
-                glVertex2f(x1, y2);
+                glTexCoord2f(0.0, 0.0); glVertex2f(x1, y1);
+                glTexCoord2f(1.0, 0.0); glVertex2f(x2, y1);
+                glTexCoord2f(1.0, 1.0); glVertex2f(x2, y2);
+                glTexCoord2f(0.0, 1.0); glVertex2f(x1, y2);
 
             }
             dynY++;
@@ -455,9 +446,17 @@ void ShadowMask::createShadowTexture() {
 
     for (int i = 0; i < SHADOW_TEXTURE_SIZE; i++) {
         for (int j = 0; j < SHADOW_TEXTURE_SIZE; j++) {
-            temp = sin(i * M_PI / SHADOW_TEXTURE_SIZE) * sin(j * M_PI / SHADOW_TEXTURE_SIZE);
-            temp = temp * temp * temp * temp;
-            alphaValue = (Uint8)(255 - temp * 255);
+            double deltaX = SHADOW_TEXTURE_SIZE/2 - i;
+            double deltaY = SHADOW_TEXTURE_SIZE/2 - j;
+
+            double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
+
+            temp = distance / (SHADOW_TEXTURE_SIZE / 2);
+            if (temp > 1.0) {
+                temp = 1.0;
+            }
+
+            alphaValue = (Uint8)(temp * 255);
             pixels[j * SHADOW_TEXTURE_SIZE + i] = (0x000000FF - alphaValue) << 24;
         }
     }

@@ -107,9 +107,6 @@ void PointLight::createLightTexture() {
 
     for (int i = 0; i < w; i++) {
         for (int j = 0; j < h; j++) {
-//            temp = sin(i * M_PI / w) * sin(j * M_PI / w);
-//            temp = temp * temp * temp * temp;
-
             double deltaX = w/2 - i;
             double deltaY = h/2 - j;
 
