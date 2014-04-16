@@ -65,7 +65,7 @@ void PhysicsWorld::step(double timeSeconds) {
 
     for(std::list<Body *>::iterator it = deadBodies.begin(); it != deadBodies.end(); it++) {
         bodies_.remove((*it));
-        delete (*it);
+        (*it)->onDie();
     }
 
     // now all the new locations are updated -> detect collision

@@ -30,7 +30,7 @@
 #include "MapTexture.h"
 #include "Camera.h"
 
-#include "MyGameObject.h"
+#include "Spaceship.h"
 
 #include "Music.h"
 #include "MusicPlayer.h"
@@ -74,38 +74,50 @@ void Game::launch() {
     Uint32 lightAddingInterval = 200; // ms
     Uint32 timePassedAfterLastLightAdd = 0;
 
+    Uint32 shootingInterval = 200;
+    Uint32 timePassedAfterLastShot = 0;
+    Uint32 bombingInterval = 200;
+    Uint32 timePassedAfterLastBomb = 0;
+
     while (!SDL_QuitRequested()) {
         /// --- INPUT READING AND HANDLING ---
 
         keys = SDL_GetKeyboardState(0);
 
-        myGameObject_->body->torque->set(0);
+        spaceship_->body->torque->set(0);
 
         if (keys[SDL_SCANCODE_LEFT]) {
-            if (myGameObject_->body->angularVelocity->get() > -10) {
-                myGameObject_->body->torque->set(-250);
+            if (spaceship_->body->angularVelocity->get() > -10) {
+                spaceship_->body->torque->set(-250);
             }
         }
         if (keys[SDL_SCANCODE_RIGHT]) {
-            if (myGameObject_->body->angularVelocity->get() < 10) {
-                myGameObject_->body->torque->set(250);
+            if (spaceship_->body->angularVelocity->get() < 10) {
+                spaceship_->body->torque->set(250);
             }
         }
         if (keys[SDL_SCANCODE_UP]) {
-            myGameObject_->accelerate();
+            spaceship_->accelerate();
         }
 
         if (keys[SDL_SCANCODE_SPACE]) {
+            if (timePassedAfterLastShot > shootingInterval) {
+                timePassedAfterLastShot = 0;
+                spaceship_->shoot();
+            }
+        }
+
+        if (keys[SDL_SCANCODE_X]) {
             if (timePassedAfterLastLightAdd > lightAddingInterval) {
                 timePassedAfterLastLightAdd = 0;
 
-                LightObject * light = new LightObject(myGameObject_->location->get(), 500);
+                LightObject * light = new LightObject(spaceship_->location->get(), 400);
 
                 canvas_->addDrawable(light->spriteContainer);
                 shadowMask_->addLight(light->pointLight);
 
                 Plot* plot = new Plot();
-                plot->location->set(myGameObject_->body->location->get());
+                plot->location->set(spaceship_->body->location->get());
                 plot->size->set(1.0);
 
                 smallMapCanvas_->addDrawable(plot);
@@ -113,19 +125,19 @@ void Game::launch() {
         }
 
         if (keys[SDL_SCANCODE_A]) {
-            if (timePassedAfterLastLightAdd > lightAddingInterval) {
-                timePassedAfterLastLightAdd = 0;
+            if (timePassedAfterLastBomb > bombingInterval) {
+                timePassedAfterLastBomb = 0;
 
                 Bomb* bomp = new Bomb();
                 bomp->body->location->set(
-                    myGameObject_->location->get() + Vector::byAngle(
-                        myGameObject_->body->angle->get(), -20.0
+                    spaceship_->location->get() + Vector::byAngle(
+                        spaceship_->body->angle->get(), -20.0
                     )
                 );
 
                 // initial speed
 
-                Vector speed = myGameObject_->body->speed->get();
+                Vector speed = spaceship_->body->speed->get();
                 if (speed.y <= 0) {
                     speed = speed * 0.25;
                     speed.y = 0;
@@ -143,8 +155,8 @@ void Game::launch() {
         }
 
         if (keys[SDL_SCANCODE_C]) {
-            int xx = myGameObject_->location->get().x;
-            int yy = myGameObject_->location->get().y;
+            int xx = spaceship_->location->get().x;
+            int yy = spaceship_->location->get().y;
 
             for (int i = -10; i<=10; i++) {
                 for (int j = -10; j<=10; j++) {
@@ -155,15 +167,6 @@ void Game::launch() {
 
         if (keys[SDL_SCANCODE_RETURN]) {
             smallMapCanvas_->isVisible->toggle();
-        }
-
-        if (keys[SDL_SCANCODE_Z]) {
-            double old = shadowMask_->ambientLight->get();
-            shadowMask_->ambientLight->set(old - 0.01);
-        }
-        if (keys[SDL_SCANCODE_X]) {
-            double old = shadowMask_->ambientLight->get();
-            shadowMask_->ambientLight->set(old + 0.01);
         }
 
         int x, y;
@@ -199,6 +202,8 @@ void Game::launch() {
         world_->step(timeElapsedMilliSec / 1000.0);
 
         timePassedAfterLastLightAdd +=  timeElapsedMilliSec;
+        timePassedAfterLastBomb += timeElapsedMilliSec;
+        timePassedAfterLastShot += timeElapsedMilliSec;
 
         /// --- ANIMATION ---
 
@@ -306,18 +311,18 @@ void Game::initialize() {
 
     // --- PLAYER ---
 
-    myGameObject_ = new MyGameObject();
-    myGameObject_->body->location->set(Point(4000, 8000));
-    myGameObject_->body->location->bind(myGameObject_->location);
+    spaceship_ = new Spaceship();
+    spaceship_->body->location->set(Point(4000, 8000));
+    spaceship_->body->location->bind(spaceship_->location);
 
-    world_->add(myGameObject_->body);
-    canvas_->addDrawable(myGameObject_->spriteContainer);
+    world_->add(spaceship_->body);
+    canvas_->addDrawable(spaceship_->spriteContainer);
 
-    camera_->location->bind(myGameObject_->body->location);
+    camera_->location->bind(spaceship_->body->location);
 
     Ears* ears = new Ears();
     ears->maxDistance->set(1400);
-    ears->location->bind(myGameObject_->location);
+    ears->location->bind(spaceship_->location);
     App::getInstance()->getSamplePlayer()->setEars(ears);
 
     // --- SHADOW MASK  ---
@@ -328,7 +333,7 @@ void Game::initialize() {
 
     PointLight* light = new PointLight(Point(4000, 9000), 400, true);
     shadowMask_->addLight(light);
-    light->location->bind(myGameObject_->location);
+    light->location->bind(spaceship_->location);
 
     // --- SMALL MAP ---
 
@@ -343,24 +348,18 @@ void Game::initialize() {
     smallMapCamera_ = new Camera();
     smallMapCamera_->boundsRect->set(Rect(0, 0, 20000, 20000));
     smallMapCamera_->areaRect->set(Rect(0, 0, 4000, 3000));
-    smallMapCamera_->location->bind(myGameObject_->body->location);
+    smallMapCamera_->location->bind(spaceship_->body->location);
     smallMapCanvas_->setCamera(smallMapCamera_);
 
     smallMapCanvas_->addDrawable(drawableMap);
     Plot* plot = new Plot();
-    plot->location->bind(myGameObject_->body->location);
+    plot->location->bind(spaceship_->body->location);
     plot->size->set(1.0);
     smallMapCanvas_->addDrawable(plot);
 
     canvas_->addComponent(smallMapCanvas_);
 
     // --- ANIMATIONS ---
-
-    MyGameObject* obj = new MyGameObject();
-    obj->body->location->set(Point(4000, 8300));
-
-    //world_->add(obj->body);
-    canvas_->addDrawable(obj->spriteContainer);
 
     //
 

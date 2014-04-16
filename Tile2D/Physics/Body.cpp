@@ -204,3 +204,7 @@ void Body::afterStep() {
 void Body::die() {
     isDead_ = true;
 }
+
+void Body::onDie() {
+
+}

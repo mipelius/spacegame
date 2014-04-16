@@ -76,7 +76,7 @@ Explosion::Explosion(Point point, double radius) {
 
     App::getInstance()->getSamplePlayer()->play(Explosion::explosionSample_, sampleChannel_, &point);
     sampleChannel_++;
-    if (sampleChannel_ > 4) sampleChannel_ = 0;
+    if (sampleChannel_ > 7) sampleChannel_ = 0;
 
     spriteContainer_ = new SpriteContainer();
     spriteContainer_->addSprite(explosionSprite);

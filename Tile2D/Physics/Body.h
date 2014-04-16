@@ -73,6 +73,8 @@ protected:
     PhysicsWorld * gameWorld_;
     CollisionShape* collisionShape_;
 
+    virtual void onDie();
+
 private:
     double mass_;
 

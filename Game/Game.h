@@ -25,7 +25,7 @@ class Canvas;
 class ShadowMask;
 class BlockMapping;
 
-class MyGameObject;
+class Spaceship;
 
 #include "Point.h"
 
@@ -41,8 +41,7 @@ private:
     Canvas* smallMapCanvas_;
     Camera* smallMapCamera_;
 
-    MyGameObject* myGameObject_;
-    Body* playerBody_;
+    Spaceship *spaceship_;
 
     ShadowMask* shadowMask_;
     BlockMapping*blockMapping_;

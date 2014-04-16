@@ -1,5 +1,3 @@
-// TEMPORARY CLASS FOR TRYING OUT THE FEATURES OF THE TILE2D LIBRARY
-//
 // This file is part of SpaceGame.
 // Copyright (C) 2014 Miika Pelkonen
 //
@@ -16,35 +14,39 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MyGameObject_H_
-#define __MyGameObject_H_
+#ifndef __Missile_H_
+#define __Missile_H_
 
 class Body;
 class SpriteContainer;
 class AnimatedTexture;
+class Sample;
+
 template <typename T> class Property;
 
 #include "Point.h"
 
-class MyGameObject {
+class Missile {
+    friend class MissileBody;
+    friend class Body_MapCollisionEventHandler;
 
 public:
-    MyGameObject();
-    ~MyGameObject();
-
-    void accelerate();
+    Missile(Point initialLocation, Vector force);
+    ~Missile();
 
     Body* const body;
     SpriteContainer* const spriteContainer;
 
-    Property<Point>* const location;
-
 private:
     AnimatedTexture* accelerationAnimation_;
-    Point location_;
+
+    class MissileBody;
 
     class Body_MapCollisionEventHandler;
     class Body_BodyCollisionEventHandler;
+
+    static Sample* missileCollisionSample_;
+    static int sampleChannel_;
 };
 
-#endif //__MyGameObject_H_
+#endif //__Missile_H_
