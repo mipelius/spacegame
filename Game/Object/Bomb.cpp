@@ -52,7 +52,7 @@ public:
 
     void handle(Body* body, EventArgs args) {
 
-        new Explosion(body->location->get(), 200);
+        new Explosion(body->location->get(), 300);
 
         body->location->set(body->location->get() - body->velocity->get());
         body->speed->set(Vector(0, 0));
@@ -60,11 +60,11 @@ public:
         int blockW = body->getWorld()->getMap()->getBlockW();
         int blockH = body->getWorld()->getMap()->getBlockH();
 
-        for (int i = -100; i < 100; i += blockW) {
-            for (int j = -100; j < 100; j += blockH) {
+        for (int i = -150; i < 150; i += blockW) {
+            for (int j = -150; j < 150; j += blockH) {
                 double distanceFromCenter = sqrt(i*i + j*j);
 
-                if (distanceFromCenter + rand() % 15 < 100) {
+                if (distanceFromCenter + rand() % 15 < 150) {
                     body->getWorld()->getMap()->setValueScaled(
                             body->location->get() + Vector(i, j),
                             Block::getEmptyBlock()
@@ -108,9 +108,9 @@ spriteContainer (   new SpriteContainer()                       )
 //    body->bodyCollision->add(new Body_BodyCollisionEventHandler());
 
     Point points[] = {
-            Point(-20, -20),
-            Point(20, 0),
-            Point(-20, 20),
+            Point(-10, -5),
+            Point(8, 0),
+            Point(-10, 5),
     };
 
     CollisionShape* shape = new CollisionShape(points, 3);

@@ -21,6 +21,7 @@ class Texture;
 class AnimatedTexture;
 class SpriteContainer;
 class PointLight;
+class Sample;
 
 #include "Point.h"
 
@@ -37,6 +38,9 @@ private:
     static Texture* explosionTexture_;
     AnimatedTexture* explosionAnimation_;
     SpriteContainer* spriteContainer_;
+
+    static Sample* explosionSample_;
+    static int sampleChannel_;
 
     class AnimatedTexture_Stopped;
 };

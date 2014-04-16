@@ -26,6 +26,9 @@
 #include "PointLight.h"
 #include "ShadowMask.h"
 #include "PulseLight.h"
+#include "Sample.h"
+#include "SamplePlayer.h"
+
 
 class Explosion::AnimatedTexture_Stopped : public IEventHandler<AnimatedTexture, EventArgs> {
 
@@ -43,15 +46,21 @@ public:
 };
 
 Texture* Explosion::explosionTexture_ = nullptr;
+Sample*  Explosion::explosionSample_ = nullptr;
+int Explosion::sampleChannel_;
 
 Explosion::Explosion(Point point, double radius) {
     if (!explosionTexture_) {
         explosionTexture_ = new Texture("images/anim_explosion.png");
     }
+    if (!explosionSample_) {
+        explosionSample_ = new Sample("soundfx/explosion.wav");
+        sampleChannel_ = 0;
+    }
 
     explosionAnimation_ = new AnimatedTexture(32, 8, false, explosionTexture_);
-    explosionAnimation_->play();
     App::getInstance()->getAnimationManager()->add(explosionAnimation_);
+    explosionAnimation_->play();
 
     AnimatedTexture_Stopped* handler = new AnimatedTexture_Stopped(this);
     explosionAnimation_->stopped->add(handler);
@@ -66,11 +75,15 @@ Explosion::Explosion(Point point, double radius) {
             )
     );
 
+    App::getInstance()->getSamplePlayer()->play(Explosion::explosionSample_, sampleChannel_);
+    sampleChannel_++;
+    if (sampleChannel_ > 3) sampleChannel_ = 0;
+
     spriteContainer_ = new SpriteContainer();
     spriteContainer_->addSprite(explosionSprite);
     spriteContainer_->location->set(point);
 
-    PulseLight* pulseLight = new PulseLight(point, radius * 3);
+    PulseLight* pulseLight = new PulseLight(point, radius * 2.5);
 
     Game::getInstance()->getExternalCanvas()->addDrawable(spriteContainer_);
 }
