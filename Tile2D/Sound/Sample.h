@@ -23,7 +23,7 @@ class Sample {
     friend class SamplePlayer;
 
 public:
-    Sample(std::string filename, unsigned char volume);
+    Sample(std::string filename, unsigned char volume = 128);
     ~Sample();
 
 private:

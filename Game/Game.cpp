@@ -253,8 +253,8 @@ void Game::initialize() {
 
     int x = 0;
     int y = 0;
-    int w = 1920;
-    int h = 1200;
+    int w = 1280;
+    int h = 800;
 
     bool enableFullScreen = true;
 

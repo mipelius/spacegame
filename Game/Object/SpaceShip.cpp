@@ -64,7 +64,7 @@ Spaceship::Spaceship() :
     spriteContainer (   new SpriteContainer()                       )
 {
     if (!missileShotSample_) {
-        missileShotSample_ = new Sample("soundfx/spaceship_shoot.wav");
+        missileShotSample_ = new Sample("soundfx/spaceship_shoot.wav", 10);
     }
 
     // body
