@@ -79,12 +79,23 @@ void Game::launch() {
     Uint32 bombingInterval = 200;
     Uint32 timePassedAfterLastBomb = 0;
 
+    Uint32 inventoryInterval = 300;
+    Uint32 timePassedAfterLastInventoryToggle = 0;
+
+
     while (!SDL_QuitRequested()) {
         /// --- INPUT READING AND HANDLING ---
 
         keys = SDL_GetKeyboardState(0);
 
         spaceship_->body->torque->set(0);
+
+        if (keys[SDL_SCANCODE_TAB]) {
+            if (timePassedAfterLastInventoryToggle > inventoryInterval) {
+                inventory_->canvas.isVisible->toggle();
+                timePassedAfterLastInventoryToggle = 0;
+            }
+        }
 
         if (keys[SDL_SCANCODE_LEFT]) {
             if (spaceship_->body->angularVelocity->get() > -10) {
@@ -204,6 +215,7 @@ void Game::launch() {
         timePassedAfterLastLightAdd +=  timeElapsedMilliSec;
         timePassedAfterLastBomb += timeElapsedMilliSec;
         timePassedAfterLastShot += timeElapsedMilliSec;
+        timePassedAfterLastInventoryToggle += timeElapsedMilliSec;
 
         /// --- ANIMATION ---
 
@@ -358,6 +370,11 @@ void Game::initialize() {
     smallMapCanvas_->addDrawable(plot);
 
     canvas_->addComponent(smallMapCanvas_);
+
+    // --- INVENTORY ---
+
+    inventory_ = new Inventory();
+    canvas_->addComponent(&inventory_->canvas);
 
     // --- ANIMATIONS ---
 

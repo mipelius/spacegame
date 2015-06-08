@@ -28,6 +28,7 @@ class BlockMapping;
 class Spaceship;
 
 #include "Point.h"
+#include "Inventory.h"
 
 class Game {
 
@@ -45,6 +46,8 @@ private:
 
     ShadowMask* shadowMask_;
     BlockMapping*blockMapping_;
+
+    Inventory *inventory_;
 
     Game();
 
