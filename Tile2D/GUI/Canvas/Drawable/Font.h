@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2015 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,29 +14,40 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "precompile.h"
-#include "App.h"
-#include "Game.h"
+#ifndef __Font_H_
+#define __Font_H_
 
-#undef main
+class Texture;
 
-int main(int argc, const char * argv[])
-{
-    App::initialize();
+#include <string>
+#include <map>
 
-    Game* game = Game::getInstance();
-    game->initialize();
+class Font {
 
-    try {
-        game->launch();
-        delete game;
-	}
-    catch (std::exception e) {
-        std::cout << "Crashed LOL DAMN!";
-        return -1;
-    }
+friend class Text;
 
-    delete App::getInstance();
+public:
+    Font(std::string filename);
+    ~Font();
+private:
+    class Letter {
+    public:
+        float x, y, w, h;
 
-	return 0;
-}
+        Letter(float x, float y, float w, float h) {
+            this->x = x;
+            this->y = y;
+            this->w = w;
+            this->h = h;
+        }
+    };
+
+    Texture* fontTexture_;
+
+    Letter* getLetter(unsigned char ch);
+
+    std::map<unsigned char, Letter*> mappings;
+};
+
+
+#endif //__Font_H_

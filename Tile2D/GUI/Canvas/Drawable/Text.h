@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2015 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,29 +14,37 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "precompile.h"
-#include "App.h"
-#include "Game.h"
+#ifndef __Text_H_
+#define __Text_H_
 
-#undef main
+#include <string>
+#include "IDrawable.h"
+#include "Property.h"
+#include "Point.h"
 
-int main(int argc, const char * argv[])
-{
-    App::initialize();
+class Font;
 
-    Game* game = Game::getInstance();
-    game->initialize();
+class Text : public IDrawable {
+public:
+    Text(Font* font);
+    ~Text();
 
-    try {
-        game->launch();
-        delete game;
-	}
-    catch (std::exception e) {
-        std::cout << "Crashed LOL DAMN!";
-        return -1;
-    }
+    // properties
 
-    delete App::getInstance();
+    Property<Point>* const location;
+    Property<double>* const size;
+    Property<std::string>* const string;
 
-	return 0;
-}
+    virtual void draw(Canvas *canvas);
+
+private:
+    Font* font_;
+
+    Point location_;
+    double size_;
+    std::string string_;
+
+};
+
+
+#endif //__Text_H_

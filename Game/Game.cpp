@@ -57,6 +57,8 @@
 #include "AnimatedTexture.h"
 #include "Bomb.h"
 #include "Explosion.h"
+#include "Font.h"
+#include "Text.h"
 
 Game* Game::game_ = nullptr;
 
@@ -65,6 +67,12 @@ Game::Game() {
 }
 
 void Game::launch() {
+    Font* font = new Font("json/smallfont.json");
+    Text* text = new Text(font);
+    text->location->set(Point(4000, 8000));
+    text->string->set("Paula ja Miika ajattelivat syoda, koska se on suorastaan vatsantayttava toimenpide. Heh hehhhh.");
+    externalCanvas_->addDrawable(text);
+
     App::getInstance()->getMusicPlayer()->play(new Music("music/spacegame.mp3"));
 
     Sample* sample = new Sample("soundfx/spaceship_shoot.wav", 0);
@@ -265,10 +273,10 @@ void Game::initialize() {
 
     int x = 0;
     int y = 0;
-    int w = 1280;
-    int h = 800;
+    int w = 1000;
+    int h = 700;
 
-    bool enableFullScreen = true;
+    bool enableFullScreen = false;
 
     Window* window = App::getInstance()->getWindow();
     window->initialize(x, y, w, h, enableFullScreen);
