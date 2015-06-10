@@ -15,6 +15,7 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "App.h"
+#include <SDL2/SDL.h>
 #include "SamplePlayer.h"
 #include "MusicPlayer.h"
 #include "Window.h"
@@ -23,10 +24,24 @@
 App* App::instance_ = nullptr;
 
 App::App() {
-    this->musicPlayer_ = MusicPlayer::getInstance();
-    this->samplePlayer_ = new SamplePlayer();
-    this->window_ = Window::getInstance();
-    this->animationManager_ = new AnimationManager();
+    SDL_Init(SDL_INIT_EVERYTHING);
+
+    // --- WINDOW PROPERTIES ---
+
+    int x = 0;
+    int y = 0;
+    int w = 800;
+    int h = 600;
+
+    bool enableFullScreen = false;
+
+    window_ = Window::getInstance();
+    window_->initialize(x, y, w, h, enableFullScreen);
+
+    musicPlayer_ = MusicPlayer::getInstance();
+    samplePlayer_ = new SamplePlayer();
+    animationManager_ = new AnimationManager();
+    resources_ = new Resources();
 }
 
 App::~App() {
@@ -34,29 +49,35 @@ App::~App() {
     delete samplePlayer_;
     delete window_;
     delete animationManager_;
-}
-
-App *App::getInstance() {
-    if (instance_) initialize();
-    return instance_;
+    delete resources_;
 }
 
 void App::initialize() {
-    if (!instance_) instance_ = new App();
+    if (!instance_) {
+        instance_ = new App();
+    }
 }
 
 Window *App::getWindow() {
-    return window_;
+    return instance_->window_;
 }
 
 MusicPlayer *App::getMusicPlayer() {
-    return musicPlayer_;
+    return instance_->musicPlayer_;
 }
 
 SamplePlayer *App::getSamplePlayer() {
-    return samplePlayer_;
+    return instance_->samplePlayer_;
 }
 
 AnimationManager *App::getAnimationManager() {
-    return animationManager_;
+    return instance_->animationManager_;
+}
+
+Resources *App::getResources() {
+    return instance_->resources_;
+}
+
+void App::free() {
+    delete instance_;
 }

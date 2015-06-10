@@ -21,6 +21,7 @@
 #include "Sprite.h"
 #include "SpriteContainer.h"
 #include "Text.h"
+#include "App.h"
 
 Inventory::Inventory() {
     // --- CANVAS ---
@@ -30,30 +31,23 @@ Inventory::Inventory() {
     canvas.h->set(300);
     canvas.anchor->set(Canvas::Anchor::TOP_LEFT);
 
-    Texture* slotTexture = new Texture("images/inventory_slot.png");
-
     for (int x = 0; x < 5; x++) {
         for (int y = 0; y < 5; y++) {
-            Sprite* sprite = new Sprite(slotTexture, Rect(50+0+x*40,0+y*40,50+40+x*40,40+y*40));
+            Sprite* sprite = new Sprite(App::getResources()->textures->inventorySlot, Rect(50+0+x*40,0+y*40,50+40+x*40,40+y*40));
             SpriteContainer* spriteContainer = new SpriteContainer();
             spriteContainer->addSprite(sprite);
             canvas.addDrawable(spriteContainer);
         }
     }
 
-    Texture* usableSlotTexture = new Texture("images/inventory_usable_slot.png");
-
-
     for (int y = 0; y < 3; y++) {
-        Sprite* sprite = new Sprite(usableSlotTexture, Rect(0, 80+y*40, 40, 80+40+y*40));
+        Sprite* sprite = new Sprite(App::getResources()->textures->inventoryUsableSlot, Rect(0, 80+y*40, 40, 80+40+y*40));
         SpriteContainer* spriteContainer = new SpriteContainer();
         spriteContainer->addSprite(sprite);
         canvas.addDrawable(spriteContainer);
     }
 
-    Texture* weaponSlotTexture = new Texture("images/inventory_weapon_slots.png");
-
-    Sprite* sprite = new Sprite(weaponSlotTexture, Rect(0, 0, 40, 80));
+    Sprite* sprite = new Sprite(App::getResources()->textures->inventoryWeaponSlots, Rect(0, 0, 40, 80));
     SpriteContainer* spriteContainer = new SpriteContainer();
     spriteContainer->addSprite(sprite);
     canvas.addDrawable(spriteContainer);

@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "Resources.h"
+
 #ifndef __App_H_
 #define __App_H_
 
@@ -23,25 +25,30 @@ class Window;
 class AnimationManager;
 
 class App {
+
 private:
     static App* instance_;
+
     MusicPlayer* musicPlayer_;
     SamplePlayer* samplePlayer_;
     Window* window_;
     AnimationManager* animationManager_;
+    Resources* resources_;
 
     App();
-
-public:
-    static App* getInstance();
-
-    static void initialize();
     ~App();
 
-    AnimationManager* getAnimationManager();
-    MusicPlayer* getMusicPlayer();
-    SamplePlayer* getSamplePlayer();
-    Window* getWindow();
+public:
+    static void initialize();
+    static void free();
+
+    static AnimationManager* getAnimationManager();
+    static MusicPlayer* getMusicPlayer();
+    static SamplePlayer* getSamplePlayer();
+    static Window* getWindow();
+
+    static Resources* getResources();
 };
+
 
 #endif //__App_H_

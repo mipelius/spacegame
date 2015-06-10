@@ -36,8 +36,7 @@
 #include "App.h"
 #include "SamplePlayer.h"
 
-Sample* Missile::missileCollisionSample_ = nullptr;
-int Missile::sampleChannel_;
+int Missile::sampleChannel_ = 0;
 
 class Missile::MissileBody : public Body {
 
@@ -69,7 +68,7 @@ class Missile::Body_MapCollisionEventHandler : public IEventHandler<Body, EventA
         Point* point = new Point(0, 0);
         point->x = body->location->get().x;
         point->y = body->location->get().y;
-        App::getInstance()->getSamplePlayer()->play(missileCollisionSample_, sampleChannel_, point);
+        App::getSamplePlayer()->play(App::getResources()->samples->missileCollision, sampleChannel_, point);
 
         sampleChannel_++;
 
@@ -101,20 +100,11 @@ class Missile::Body_BodyCollisionEventHandler : public IEventHandler<Body, BodyC
     }
 };
 
-static Texture* texture = nullptr;
-
-static Texture* accelerationAnimationTexture = nullptr;
-
 Missile::Missile(Point initialLocation, Vector force) :
 body            (   new MissileBody(10.0, initialLocation, this)    ),
 spriteContainer (   new SpriteContainer()                           )
 
 {
-    if (!missileCollisionSample_) {
-        sampleChannel_ = 0;
-        missileCollisionSample_ = new Sample("soundfx/missile_collision.wav", 10);
-    }
-
     // body
 
     body->mapCollision->add(new Body_MapCollisionEventHandler());
@@ -135,15 +125,13 @@ spriteContainer (   new SpriteContainer()                           )
 
     body->force->set(force);
 
-    // load textures
-
-    if (!texture) {
-        texture = new Texture("images/missile.png");
-    }
-
     // sprite container
 
-    Sprite* sprite = new Sprite(texture, Rect(-10, -5, 10, 5));
+    Sprite* sprite = new Sprite(
+            App::getResources()->textures->missile,
+            Rect(-10, -5, 10, 5)
+    );
+
     spriteContainer->addSprite(sprite);
     Game::getInstance()->getExternalCanvas()->addDrawable(spriteContainer);
 

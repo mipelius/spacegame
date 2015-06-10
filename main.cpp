@@ -36,7 +36,7 @@ int main(int argc, const char * argv[])
         return -1;
     }
 
-    delete App::getInstance();
+    App::free();
 
 	return 0;
 }

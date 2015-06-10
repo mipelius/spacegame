@@ -45,7 +45,6 @@ private:
     Spaceship *spaceship_;
 
     ShadowMask* shadowMask_;
-    BlockMapping*blockMapping_;
 
     Inventory *inventory_;
 
@@ -64,7 +63,6 @@ public:
     PhysicsWorld* getWorld();
     WorldMap* getMap();
     Canvas* getCanvas();
-    BlockMapping* getBlockMapping();
     ShadowMask* getShadowMask();
     Canvas* getExternalCanvas();
 

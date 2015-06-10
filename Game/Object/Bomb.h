@@ -37,7 +37,6 @@ public:
     Property<Point>* const location;
 
 private:
-    AnimatedTexture*explosionAnimation_;
     Point location_;
 
     class Body_MapCollisionEventHandler;

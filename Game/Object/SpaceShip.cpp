@@ -51,22 +51,12 @@ class Spaceship::Body_BodyCollisionEventHandler : public IEventHandler<Body, Bod
     }
 };
 
-static Texture* texture = nullptr;
-
-static Texture* accelerationAnimationTexture = nullptr;
-
-Sample* Spaceship::missileShotSample_ = nullptr;
-
 Spaceship::Spaceship() :
     location        (   new SimpleProperty<Point>   (&location_)    ),
     location_       (   Point(0, 0)                                 ),
     body            (   new Body(100.0)                             ),
     spriteContainer (   new SpriteContainer()                       )
 {
-    if (!missileShotSample_) {
-        missileShotSample_ = new Sample("soundfx/spaceship_shoot.wav", 10);
-    }
-
     // body
 
     body->mapCollision->add(new Body_MapCollisionEventHandler());
@@ -82,21 +72,14 @@ Spaceship::Spaceship() :
 
     body->setCollisionShape(shape);
 
-    // load textures
-
-    if (!texture) {
-        texture = new Texture("images/spaceship.png");
-    }
-
-    if (!accelerationAnimationTexture) {
-        accelerationAnimationTexture = new Texture("images/anim_rocket_fire.png");
-    }
-
     // sprite container
 
-    Sprite* sprite = new Sprite(texture, Rect(-20, -20, 20, 20));
-    accelerationAnimation_ = new AnimatedTexture(60, 8, false, accelerationAnimationTexture);
-    App::getInstance()->getAnimationManager()->add(accelerationAnimation_);
+    Sprite* sprite = new Sprite(
+            App::getResources()->textures->spaceship,
+            Rect(-20, -20, 20, 20)
+    );
+    accelerationAnimation_ = new AnimatedTexture(60, 8, false, App::getResources()->textures->animRocketFire);
+    App::getAnimationManager()->add(accelerationAnimation_);
 
     Sprite* spriteAccelerationLeft = new Sprite(accelerationAnimation_, Rect(-40, -23, -20, -10));
     Sprite* spriteAccelerationRight = new Sprite(accelerationAnimation_, Rect(-40, 10, -20, 23));
@@ -141,5 +124,5 @@ void Spaceship::shoot() {
             Vector::byAngle(body->angle->get(), 100000)
     );
 
-    App::getInstance()->getSamplePlayer()->play(missileShotSample_);
+    App::getSamplePlayer()->play(App::getResources()->samples->spaceshipShoot);
 }

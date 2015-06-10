@@ -44,21 +44,13 @@ public:
     }
 };
 
-Texture* Explosion::explosionTexture_ = nullptr;
-Sample*  Explosion::explosionSample_ = nullptr;
-int Explosion::sampleChannel_;
+int Explosion::sampleChannel_ = 0;
 
 Explosion::Explosion(Point point, double radius) {
-    if (!explosionTexture_) {
-        explosionTexture_ = new Texture("images/anim_explosion.png");
-    }
-    if (!explosionSample_) {
-        explosionSample_ = new Sample("soundfx/explosion.wav", 32);
-        sampleChannel_ = 0;
-    }
+    sampleChannel_ = 0;
 
-    explosionAnimation_ = new AnimatedTexture(32, 8, false, explosionTexture_);
-    App::getInstance()->getAnimationManager()->add(explosionAnimation_);
+    explosionAnimation_ = new AnimatedTexture(32, 8, false, App::getResources()->textures->animExplosion);
+    App::getAnimationManager()->add(explosionAnimation_);
     explosionAnimation_->play();
 
     AnimatedTexture_Stopped* handler = new AnimatedTexture_Stopped(this);
@@ -74,7 +66,7 @@ Explosion::Explosion(Point point, double radius) {
             )
     );
 
-    App::getInstance()->getSamplePlayer()->play(Explosion::explosionSample_, sampleChannel_, &point);
+    App::getSamplePlayer()->play(App::getResources()->samples->explosion, sampleChannel_, &point);
     sampleChannel_++;
     if (sampleChannel_ > 7) sampleChannel_ = 0;
 

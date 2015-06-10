@@ -39,8 +39,6 @@
 #include "Game.h"
 #include "Canvas.h"
 
-static Texture* texture = nullptr;
-
 class Bomb::Body_MapCollisionEventHandler : public IEventHandler<Body, EventArgs> {
 private:
     Bomb* owner;
@@ -117,15 +115,13 @@ spriteContainer (   new SpriteContainer()                       )
 
     body->setCollisionShape(shape);
 
-    // load textures
-
-    if (!texture) {
-        texture = new Texture("images/bomb.png");
-    }
-
     // sprite container
 
-    Sprite* sprite = new Sprite(texture, Rect(-10, -10, 10, 10));
+    Sprite* sprite = new Sprite(
+        App::getResources()->textures->bomb,
+        Rect(-10, -10, 10, 10)
+    );
+
     spriteContainer->addSprite(sprite);
 
     // bindings

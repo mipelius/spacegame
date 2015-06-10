@@ -19,18 +19,13 @@
 #include "Sprite.h"
 #include "SpriteContainer.h"
 #include "PointLight.h"
-
-Texture* lightTexture = nullptr;
+#include "App.h"
 
 LightObject::LightObject(Point location, double radius) :
     spriteContainer(new SpriteContainer()),
     pointLight(new PointLight(location, radius))
 {
-    if (!lightTexture) {
-        lightTexture = new Texture("images/light.png");
-    }
-
-    Sprite* sprite = new Sprite(lightTexture, Rect(-64, -64, 64, 64));
+    Sprite* sprite = new Sprite(App::getResources()->textures->light, Rect(-64, -64, 64, 64));
 
     spriteContainer->addSprite(sprite);
     spriteContainer->location->set(location);

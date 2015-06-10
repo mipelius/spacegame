@@ -59,7 +59,7 @@ PulseLight::PulseLight(Point point, double radius) {
     Game::getInstance()->getShadowMask()->addLight(pointLight_);
 
     animation_ = new Animation(this);
-    App::getInstance()->getAnimationManager()->add(animation_);
+    App::getAnimationManager()->add(animation_);
     animation_->play();
 }
 

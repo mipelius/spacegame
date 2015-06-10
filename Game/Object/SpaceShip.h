@@ -47,8 +47,6 @@ private:
 
     class Body_MapCollisionEventHandler;
     class Body_BodyCollisionEventHandler;
-
-    static Sample* missileShotSample_;
 };
 
 #endif //__Spaceship_H_

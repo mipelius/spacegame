@@ -41,9 +41,6 @@ Font::Font(std::string filename) {
 
         std::string letters = mapping["letters"].ToString();
 
-        //TODO: remove
-        printf("%s|", letters.data());
-
         for (int j=0; j < letters.length(); j++) {
             unsigned char ch = letters.data()[j];
             std::pair<unsigned char, Letter*> pair = std::pair<unsigned char, Letter*>(ch, letter);

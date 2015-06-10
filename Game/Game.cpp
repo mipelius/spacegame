@@ -67,17 +67,14 @@ Game::Game() {
 }
 
 void Game::launch() {
-    Font* font = new Font("json/smallfont.json");
-    Text* text = new Text(font);
+    Text* text = new Text(App::getResources()->other->smallFont);
     text->location->set(Point(4000, 8000));
     text->string->set("Welcome to Space Game!");
     text->size->set(3);
 
     externalCanvas_->addDrawable(text);
 
-    App::getInstance()->getMusicPlayer()->play(new Music("music/spacegame.mp3"));
-
-    Sample* sample = new Sample("soundfx/spaceship_shoot.wav", 0);
+    App::getMusicPlayer()->play(App::getResources()->tunes->spacegame);
 
     const Uint8* keys;
     Uint32 timeMilliSec = 0;
@@ -180,7 +177,7 @@ void Game::launch() {
 
             for (int i = -10; i<=10; i++) {
                 for (int j = -10; j<=10; j++) {
-                    map_->setValueScaled(Point(xx + 10 * i, yy + 10 * j), blockMapping_->getBlock(0));
+                    map_->setValueScaled(Point(xx + 10 * i, yy + 10 * j), App::getResources()->other->blockMapping->getBlock(0));
                 }
             }
         }
@@ -199,7 +196,7 @@ void Game::launch() {
 
             for (int i = -1; i<=1; i++) {
                 for (int j = -1; j<=1; j++) {
-                    map_->setValueScaled(Point(xx + 10 * i, yy + 10 * j), blockMapping_->getBlock(255));
+                    map_->setValueScaled(Point(xx + 10 * i, yy + 10 * j), App::getResources()->other->blockMapping->getBlock(255));
                 }
             }
         }
@@ -210,7 +207,7 @@ void Game::launch() {
 
             for (int i = -1; i<=1; i++) {
                 for (int j = -1; j<=1; j++) {
-                    map_->setValueScaled(Point(xx + 10 * i, yy + 10 * j), blockMapping_->getBlock(0));
+                    map_->setValueScaled(Point(xx + 10 * i, yy + 10 * j), App::getResources()->other->blockMapping->getBlock(0));
                 }
             }
         }
@@ -228,11 +225,11 @@ void Game::launch() {
 
         /// --- ANIMATION ---
 
-        App::getInstance()->getAnimationManager()->update(timeElapsedMilliSec / 1000.0);
+        App::getAnimationManager()->update(timeElapsedMilliSec / 1000.0);
 
         /// --- RENDERING ---
 
-        App::getInstance()->getWindow()->update();
+        App::getWindow()->update();
     }
 }
 
@@ -261,27 +258,11 @@ Canvas *Game::getCanvas() {
     return canvas_;
 }
 
-BlockMapping *Game::getBlockMapping() {
-    return blockMapping_;
-}
-
 ShadowMask *Game::getShadowMask() {
     return shadowMask_;
 }
 
 void Game::initialize() {
-    // --- WINDOW PROPERTIES ---
-
-    int x = 0;
-    int y = 0;
-    int w = 1000;
-    int h = 700;
-
-    bool enableFullScreen = false;
-
-    Window* window = App::getInstance()->getWindow();
-    window->initialize(x, y, w, h, enableFullScreen);
-
     // --- CANVAS ---
 
     canvas_ = new Canvas();
@@ -298,26 +279,29 @@ void Game::initialize() {
 
     canvas_->addComponent(externalCanvas_);
 
-    Texture* texture = new Texture("images/bg2.jpg");
     Background* background = new Background();
     background->setRatio(0.5);
-    background->setTexture(texture);
+    background->setTexture(App::getResources()->textures->bg2);
 
     canvas_->addDrawable(background);
 
-    window->addComponent(canvas_);
+    App::getWindow()->addComponent(canvas_);
 
     // --- WORLD & MAP ---
 
-    blockMapping_ = new BlockMapping("json/blockMappings.json");
+    map_ = new WorldMap(
+            "images/map.bmp",
+            App::getResources()->other->blockMapping,
+            10,
+            10
+    );
 
-    map_ = new WorldMap("images/map.bmp", blockMapping_, 10, 10);
     world_ = new PhysicsWorld(Vector(0, 9.81), 0.20, 0.0001);
     world_->setMap(map_);
 
     DrawableMap* drawableMap = new DrawableMap();
     drawableMap->setMap(map_);
-    drawableMap->setMapTexture(blockMapping_->getMapTexture());
+    drawableMap->setMapTexture(App::getResources()->other->blockMapping->getMapTexture());
 
     canvas_->addDrawable(drawableMap);
 
@@ -325,7 +309,7 @@ void Game::initialize() {
 
     camera_ = new Camera();
     camera_->boundsRect->set(Rect(0, 0, 20000, 20000));
-    camera_->areaRect->set(Rect(0, 0, w, h));
+    camera_->areaRect->set(Rect(0, 0, App::getWindow()->w->get(), App::getWindow()->h->get()));
 
     canvas_->setCamera(camera_);
     externalCanvas_->setCamera(camera_);
@@ -344,11 +328,16 @@ void Game::initialize() {
     Ears* ears = new Ears();
     ears->maxDistance->set(1400);
     ears->location->bind(spaceship_->location);
-    App::getInstance()->getSamplePlayer()->setEars(ears);
+    App::getSamplePlayer()->setEars(ears);
 
     // --- SHADOW MASK  ---
 
-    shadowMask_ = new ShadowMask(w, h, map_);
+    shadowMask_ = new ShadowMask(
+            App::getWindow()->w->get(),
+            App::getWindow()->h->get(),
+            map_
+    );
+
     canvas_->addShadowMask(shadowMask_);
     shadowMask_->ambientLight->set(0.00);
 

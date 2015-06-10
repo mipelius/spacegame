@@ -38,14 +38,11 @@ public:
     SpriteContainer* const spriteContainer;
 
 private:
-    AnimatedTexture* accelerationAnimation_;
-
     class MissileBody;
 
     class Body_MapCollisionEventHandler;
     class Body_BodyCollisionEventHandler;
 
-    static Sample* missileCollisionSample_;
     static int sampleChannel_;
 };
 
