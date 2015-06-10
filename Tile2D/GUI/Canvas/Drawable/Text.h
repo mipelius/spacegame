@@ -32,7 +32,7 @@ public:
     // properties
 
     Property<Point>* const location;
-    Property<double>* const size;
+    Property<float>* const size;
     Property<std::string>* const string;
 
     virtual void draw(Canvas *canvas);
@@ -41,7 +41,7 @@ private:
     Font* font_;
 
     Point location_;
-    double size_;
+    float size_;
     std::string string_;
 
 };

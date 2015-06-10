@@ -25,12 +25,13 @@
 Text::Text(Font *font) :
 
     location(   new SimpleProperty<Point>       (&location_)    ),
-    size(       new SimpleProperty<double>      (&size_   )     ),
+    size(       new SimpleProperty<float>       (&size_   )     ),
     string(     new SimpleProperty<std::string> (&string_)   ),
 
     location_(Point(0,0))
 {
     font_ = font;
+    size_ = 1.0;
 }
 
 Text::~Text() {
@@ -43,8 +44,10 @@ void Text::draw(Canvas *canvas) {
     float textureW = font_->fontTexture_->getW();
     float textureH = font_->fontTexture_->getH();
 
-    float offsetX = 0;
-    float offsetY = 0;
+    Rect cameraRect = canvas->getCamera()->areaRect->get();
+
+    float offsetX = location_.x - cameraRect.x1;
+    float offsetY = location_.y - cameraRect.y1;;
 
     glBegin(GL_QUADS);
 
@@ -59,19 +62,19 @@ void Text::draw(Canvas *canvas) {
             float y1 = 0;
 
             float texX2 = (1.0 / textureW) * (letter->x + letter->w);
-            float x2 = 0 + letter->w;
+            float x2 = (0 + letter->w) * size_;
             float texY2 = (1.0 / textureH) * letter->y;
             float y2 = 0;
 
             float texX3 = (1.0 / textureW) * (letter->x + letter->w);
-            float x3 = 0 + letter->w;
+            float x3 = (0 + letter->w) * size_;
             float texY3 = (1.0 / textureH) * (letter->y + letter->h);
-            float y3 = 0 + letter->h;
+            float y3 = (0 + letter->h) * size_;
 
             float texX4 = (1.0 / textureW) * letter->x;
             float x4 = 0;
             float texY4 = (1.0 / textureH) * (letter->y + letter->h);
-            float y4 = 0 + letter->h;
+            float y4 = (0 + letter->h) * size_;
 
             x1 += offsetX; x2 += offsetX; x3 += offsetX; x4 += offsetX;
             y1 += offsetY; y2 += offsetY; y3 += offsetY; y4 += offsetY;
@@ -81,7 +84,7 @@ void Text::draw(Canvas *canvas) {
             glTexCoord2f(texX3, texY3); glVertex2f(x3, y3);
             glTexCoord2f(texX4, texY4); glVertex2f(x4, y4);
 
-            offsetX += letter->w;
+            offsetX += (letter->w) * size_;
             // offsetY = ???
         }
         else {

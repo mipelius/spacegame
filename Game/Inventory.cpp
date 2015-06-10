@@ -20,6 +20,7 @@
 #include "Camera.h"
 #include "Sprite.h"
 #include "SpriteContainer.h"
+#include "Text.h"
 
 Inventory::Inventory() {
     // --- CANVAS ---
@@ -56,7 +57,6 @@ Inventory::Inventory() {
     SpriteContainer* spriteContainer = new SpriteContainer();
     spriteContainer->addSprite(sprite);
     canvas.addDrawable(spriteContainer);
-
 
     // --- CAMERA ---
 

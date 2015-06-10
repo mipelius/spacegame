@@ -70,7 +70,9 @@ void Game::launch() {
     Font* font = new Font("json/smallfont.json");
     Text* text = new Text(font);
     text->location->set(Point(4000, 8000));
-    text->string->set("Paula ja Miika ajattelivat syoda, koska se on suorastaan vatsantayttava toimenpide. Heh hehhhh.");
+    text->string->set("Welcome to Space Game!");
+    text->size->set(3);
+
     externalCanvas_->addDrawable(text);
 
     App::getInstance()->getMusicPlayer()->play(new Music("music/spacegame.mp3"));
@@ -89,7 +91,6 @@ void Game::launch() {
 
     Uint32 inventoryInterval = 300;
     Uint32 timePassedAfterLastInventoryToggle = 0;
-
 
     while (!SDL_QuitRequested()) {
         /// --- INPUT READING AND HANDLING ---
