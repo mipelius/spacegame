@@ -22,6 +22,7 @@ template <typename T> class Property;
 
 #include <list>
 #include "IDrawable.h"
+#include "Sprite.h"
 
 class SpriteContainer : public IDrawable {
 
@@ -34,6 +35,8 @@ public:
 
     Property<Point>* const location;
     Property<double>* const angle;
+
+    void removeSprite(Sprite *sprite);
 
 private:
     std::list<Sprite*> sprites_;

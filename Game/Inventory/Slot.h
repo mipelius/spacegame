@@ -14,20 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Inventory_H_
-#define __Inventory_H_
+#ifndef __Slot_H_
+#define __Slot_H_
 
-#include "Canvas.h"
+#include "Item.h"
 
-class Camera;
+#include "Point.h"
 
-class Inventory {
+class Slot {
+
+friend class Inventory;
+
 public:
-    Inventory();
-    Canvas canvas;
+    Slot(Point location);
+    ~Slot();
+    void setItem(Item* item);
+    Item* getItem();
+    Item* removeItem();
 
 private:
-    Camera* camera_;
+    Rect rect_;
+    Item* item_;
+    SpriteContainer* spriteContainer_;
 };
 
-#endif //__Inventory_H_
+
+#endif //__Slot_H_

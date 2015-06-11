@@ -115,3 +115,15 @@ void Rect::copy(Rect rect) {
     this->x2 = rect.x2;
     this->y2 = rect.y2;
 }
+
+bool Rect::hasPointInside(Point point) {
+    if (
+            (point.x >= this->x1 && point.x <= this->x2) &&
+            (point.y >= this->y1 && point.y <= this->y2)
+    ) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}

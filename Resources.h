@@ -69,6 +69,8 @@ public:
         Texture* const inventoryUsableSlot;
         Texture* const inventoryWeaponSlots;
         Texture* const inventorySlot;
+        Texture* const laserCannon;
+        Texture* const plasmaCannon;
 
     private:
         Textures();

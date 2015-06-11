@@ -89,6 +89,9 @@ void Game::launch() {
     Uint32 inventoryInterval = 300;
     Uint32 timePassedAfterLastInventoryToggle = 0;
 
+    Uint32 mouseState = 0;
+    Uint32 previousMouseState = 0;
+
     while (!SDL_QuitRequested()) {
         /// --- INPUT READING AND HANDLING ---
 
@@ -188,29 +191,21 @@ void Game::launch() {
 
         int x, y;
 
-        Uint32 value =  SDL_GetMouseState(&x, &y);
+        mouseState = SDL_GetMouseState(&x, &y);
 
-        if (value == 1) {
-            int xx = x + camera_->areaRect->get().x1;
-            int yy = y + camera_->areaRect->get().y1;
-
-            for (int i = -1; i<=1; i++) {
-                for (int j = -1; j<=1; j++) {
-                    map_->setValueScaled(Point(xx + 10 * i, yy + 10 * j), App::getResources()->other->blockMapping->getBlock(255));
-                }
-            }
+        if (mouseState == 1) {
+            inventory_->mouseButtonDown(x, y);
         }
 
-        if (value == 4) {
-            int xx = x + camera_->areaRect->get().x1;
-            int yy = y + camera_->areaRect->get().y1;
-
-            for (int i = -1; i<=1; i++) {
-                for (int j = -1; j<=1; j++) {
-                    map_->setValueScaled(Point(xx + 10 * i, yy + 10 * j), App::getResources()->other->blockMapping->getBlock(0));
-                }
-            }
+        if (mouseState == 4) {
+            // ---
         }
+
+        if (mouseState == 0 && previousMouseState != 0) {
+            inventory_->mouseButtonReleased(x, y);
+        }
+
+        previousMouseState = mouseState;
 
         /// --- PHYSICS ---
 

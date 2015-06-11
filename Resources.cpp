@@ -20,11 +20,11 @@
 
 Resources::Samples::Samples() :
 explosion               (   new Sample("soundfx/explosion.wav",               127)  ),
-missileCollision        (   new Sample("soundfx/missile_collision.wav",       127)  ),
+missileCollision        (   new Sample("soundfx/missile_collision.wav",       30)   ),
 spaceshipAcceleration   (   new Sample("soundfx/spaceship_acceleration.wav",  127)  ),
 spaceshipCollision      (   new Sample("soundfx/spaceship_collision.wav",     127)  ),
-spaceshipExplosion      (   new Sample("soundfx/spaceship_explosion.wav",     127)  ),
-spaceshipShoot          (   new Sample("soundfx/spaceship_shoot.wav",         127)  )
+spaceshipExplosion      (   new Sample("soundfx/spaceship_explosion.wav",     100)  ),
+spaceshipShoot          (   new Sample("soundfx/spaceship_shoot.wav",         30)   )
 {
 
 }
@@ -63,7 +63,9 @@ missile                 ( new Texture("images/missile.png"                  )   
 spaceship               ( new Texture("images/spaceship.png"                )   ),
 inventoryUsableSlot     ( new Texture("images/inventory_usable_slot.png"    )   ),
 inventoryWeaponSlots    ( new Texture("images/inventory_weapon_slots.png"   )   ),
-inventorySlot           ( new Texture("images/inventory_slot.png"           )   )
+inventorySlot           ( new Texture("images/inventory_slot.png"           )   ),
+laserCannon             ( new Texture("images/laser_cannon.png"             )   ),
+plasmaCannon            ( new Texture("images/plasma_cannon.png"            )   )
 {
 
 }

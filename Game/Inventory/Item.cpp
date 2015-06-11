@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2015 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,32 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Rect_H_
-#define __Rect_H_
+#include "Item.h"
+#include "Rect.h"
+#include "Sprite.h"
 
-#include "Point.h"
+Item::Item(ITexture *texture) {
+    spriteContainer_ = new SpriteContainer();
 
-class Rect {
-public:
-    double x1;
-    double y1;
-    double x2;
-    double y2;
+    spriteContainer_->addSprite(
+            new Sprite(
+                    texture,
+                    Rect(0, 0, 40, 40)
+            )
+    );
+}
 
-    Rect(double x1, double y1, double x2, double y2);
+Item::~Item() {
 
-    void setLocation(Point point);
-
-    double getWidth();
-    double getHeight();
-
-    bool hasPointInside(Point point);
-
-    bool intersectsWith(Rect otherRectangle);
-    bool intersectsWithLine(double x1, double y1, double x2, double y2);
-
-    void copy(Rect rect);
-};
-
-
-#endif //__Rect_H_
+}

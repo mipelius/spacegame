@@ -48,3 +48,7 @@ void SpriteContainer::draw(Canvas* canvas) {
 void SpriteContainer::addSprite(Sprite *sprite) {
     sprites_.push_back(sprite);
 }
+
+void SpriteContainer::removeSprite(Sprite *sprite) {
+    sprites_.remove(sprite);
+}
