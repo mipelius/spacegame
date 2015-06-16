@@ -19,18 +19,11 @@
 #include "Texture.h"
 #include "AnimatedTexture.h"
 
-Sprite::Sprite(ITexture *texture, Rect rect) : rect_(rect) {
+Sprite::Sprite(ITexture *texture, Rect rect) : DrawableBase(), rect_(rect) {
     texture_ = texture;
 }
 
-void Sprite::render(Point locationPoint, double angle) {
-    double x = locationPoint.x;
-    double y = locationPoint.y;
-
-    glTranslated(x, y, 0);
-    glRotatef((GLfloat)angle, 0.0f, 0.0f, 1.0f);
-    glTranslated(-x, -y, 0);
-
+void Sprite::drawActual(Canvas* canvas) {
     glColor3f(1.0, 1.0, 1.0);
 
     texture_->glBind();
@@ -38,22 +31,18 @@ void Sprite::render(Point locationPoint, double angle) {
     glBegin(GL_QUADS);
 
     texture_->glTexCorner(Texture::Corner::TOP_LEFT);
-    glVertex3f(x + rect_.x1, y + rect_.y1, 0.0);
+    glVertex3f(rect_.x1, rect_.y1, 0.0);
 
     texture_->glTexCorner(Texture::Corner::TOP_RIGHT);
-    glVertex3f(x + rect_.x2, y + rect_.y1, 0.0);
+    glVertex3f(rect_.x2, rect_.y1, 0.0);
 
     texture_->glTexCorner(Texture::Corner::BOTTOM_RIGHT);
-    glVertex3f(x + rect_.x2, y + rect_.y2, 0.0);
+    glVertex3f(rect_.x2, rect_.y2, 0.0);
 
     texture_->glTexCorner(Texture::Corner::BOTTOM_LEFT);
-    glVertex3f(x + rect_.x1, y + rect_.y2, 0.0);
+    glVertex3f(rect_.x1, rect_.y2, 0.0);
 
     glEnd();
-
-    glTranslated(x, y, 0);
-    glRotatef((GLfloat)-angle, 0.0f, 0.0f, 1.0f);
-    glTranslated(-x, -y, 0);
 
     texture_->glUnbind();
 }

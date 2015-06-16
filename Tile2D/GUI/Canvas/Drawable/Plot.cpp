@@ -50,8 +50,8 @@ void Plot::draw(Canvas *canvas) {
         addition = size_ / 2;
     }
 
-    double x1 = location_.x - cameraRect.x1 - addition * pixelWidth;
-    double y1 = location_.y - cameraRect.y1 - addition * pixelHeight;
+    double x1 = location_.x - addition * pixelWidth;
+    double y1 = location_.y - addition * pixelHeight;
     double x2 = x1 + pixelWidth + addition * pixelWidth * 2;
     double y2 = y1 + pixelHeight + addition * pixelHeight * 2;
 

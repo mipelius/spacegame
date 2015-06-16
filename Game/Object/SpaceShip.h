@@ -26,6 +26,7 @@ class Sample;
 template <typename T> class Property;
 
 #include "Point.h"
+#include "Sprite.h"
 
 class Spaceship {
 

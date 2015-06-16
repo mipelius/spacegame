@@ -72,7 +72,7 @@ void Game::launch() {
     text->string->set("Welcome to Space Game!");
     text->size->set(3);
 
-    externalCanvas_->addDrawable(text);
+    canvas_->addDrawable(text);
 
     App::getMusicPlayer()->play(App::getResources()->tunes->spacegame);
 

@@ -59,10 +59,6 @@ void DrawableMap::setMapTexture(MapTexture *mapTexture) {
 }
 
 void DrawableMap::drawMap(Canvas *canvas) {
-//    mapTexture_->glVertices(0, 0, 0, 0, 0, 0);
-//
-//    return;
-
     Rect rect = canvas->getCamera()->areaRect->get();
 
     double x = rect.x1;
@@ -104,8 +100,8 @@ void DrawableMap::drawMap(Canvas *canvas) {
             if (block == nullptr || block->getMapTextureId() == -1) continue;
 
             mapTexture_->glVertices(
-                    i * map_->getBlockW() - x,
-                    j * map_->getBlockH() - y,
+                    i * map_->getBlockW(),
+                    j * map_->getBlockH(),
                     map_->getBlockW(),
                     map_->getBlockH(),
                     block->getMapTextureId(),
@@ -124,29 +120,16 @@ void DrawableMap::drawSmallMap(Canvas *canvas) {
     Rect renderingAreaRect = canvas->getRenderingAreaRect();
 
     double stepX = cameraRect.getWidth() / renderingAreaRect.getWidth();
-
     double stepY = cameraRect.getHeight() / renderingAreaRect.getHeight();
 
     glBegin(GL_QUADS);
-    for (double x = 0; x < cameraRect.getWidth(); x += stepX) {
-        for (double y = 0; y < cameraRect.getHeight(); y += stepY) {
-
-            // TODO: make this work
-
+    for (double x = cameraRect.x1; x < cameraRect.x2; x += stepX) {
+        for (double y = cameraRect.y1; y < cameraRect.y2; y += stepY) {
             Block* block = map_->getValueScaled(
-                    Point(
-                            x + cameraRect.x1,
-                            y + cameraRect.y1
-                    )
+                    Point(x, y)
             );
 
             if (block == nullptr || block->getMapTextureId() == -1) continue;
-
-            // MAKE THIS WORK
-
-//            if (value % 3 == 2) canvas->glColor(0.7, 0.0, 0.0); // red
-//            if (value % 3 == 1) canvas->glColor(0.0, 0.7, 0.0); // green
-//            if (value % 3 == 0) canvas->glColor(0.0, 0.0, 0.7); // blue
 
             glVertex2d(x, y);
             glVertex2d(x + stepX, y);

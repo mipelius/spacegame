@@ -21,28 +21,23 @@ class Sprite;
 template <typename T> class Property;
 
 #include <list>
-#include "IDrawable.h"
+#include "DrawableBase.h"
 #include "Sprite.h"
+#include "SimpleBooleanProperty.h"
 
-class SpriteContainer : public IDrawable {
+class SpriteContainer : public DrawableBase {
 
 public:
     SpriteContainer();
     ~SpriteContainer();
 
-    void draw(Canvas* canvas);
-    void addSprite(Sprite* sprite);
-
-    Property<Point>* const location;
-    Property<double>* const angle;
+    void drawActual (Canvas* canvas);
+    void addSprite(IDrawable* drawable);
 
     void removeSprite(Sprite *sprite);
 
 private:
-    std::list<Sprite*> sprites_;
-
-    Point location_;
-    double angle_;
+    std::list<IDrawable*> sprites_;
 };
 
 

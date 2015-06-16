@@ -21,32 +21,25 @@
 #include "SimpleProperty.h"
 #include "Canvas.h"
 
-SpriteContainer::SpriteContainer() :
-    location    (   new SimpleProperty<Point>   (&location_)    ),
-    angle       (   new SimpleProperty<double>  (&angle_)       ),
-
-    location_   (Point(0, 0)),
-    angle_      (0          )
+SpriteContainer::SpriteContainer() : DrawableBase()
 {
 
 }
 
 SpriteContainer::~SpriteContainer() {
-    for (std::list<Sprite*>::iterator i = sprites_.begin(); i != sprites_.end(); i++) {
+    for (std::list<IDrawable*>::iterator i = sprites_.begin(); i != sprites_.end(); i++) {
         delete (*i);
     }
 }
 
-void SpriteContainer::draw(Canvas* canvas) {
-    Rect cameraRect = canvas->getCamera()->areaRect->get();
-
-    for (std::list<Sprite*>::iterator i = sprites_.begin(); i != sprites_.end(); i++) {
-        (*i)->render(Point(location_.x - cameraRect.x1, location_.y - cameraRect.y1), angle_);
+void SpriteContainer::drawActual(Canvas* canvas) {
+    for (std::list<IDrawable*>::iterator i = sprites_.begin(); i != sprites_.end(); i++) {
+        (*i)->draw(canvas);
     }
 }
 
-void SpriteContainer::addSprite(Sprite *sprite) {
-    sprites_.push_back(sprite);
+void SpriteContainer::addSprite(IDrawable* drawable) {
+    sprites_.push_back(drawable);
 }
 
 void SpriteContainer::removeSprite(Sprite *sprite) {

@@ -233,15 +233,17 @@ void ShadowMask::draw(Canvas *canvas) {
 
     glColor4d(1, 1, 1, 1.0 - ambientLight_);
 
+    Rect rect = canvas->getCamera()->areaRect->get();
+
     glBegin(GL_QUADS);
     glTexCoord2d(0, 0);
-    glVertex2d(0, 0);
+    glVertex2d(rect.x1, rect.y1);
     glTexCoord2d(1, 0);
-    glVertex2d(w_, 0);
+    glVertex2d(rect.x2, rect.y1);
     glTexCoord2d(1, 1);
-    glVertex2d(w_, h_);
+    glVertex2d(rect.x2, rect.y2);
     glTexCoord2d(0, 1);
-    glVertex2d(0, h_);
+    glVertex2d(rect.x1, rect.y2);
     glEnd();
 
     glDisable(GL_TEXTURE_2D);

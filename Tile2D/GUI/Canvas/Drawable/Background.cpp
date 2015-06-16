@@ -44,7 +44,6 @@ void Background::draw(Canvas* canvas) {
     glColor3d(1.0, 1.0, 1.0);
 
     if (texture_) {
-
         texture_->glBind();
 
         Point location = canvas->getCamera()->location->get();
@@ -56,13 +55,13 @@ void Background::draw(Canvas* canvas) {
 
         glBegin(GL_QUADS);
         glTexCoord2d(x - w / 2, y - h / 2);
-        glVertex2d(0, 0);
+        glVertex2d(rect.x1, rect.y1);
         glTexCoord2d(x + w / 2, y - h / 2);
-        glVertex2d(rect.getWidth(), 0);
+        glVertex2d(rect.x2, rect.y1);
         glTexCoord2d(x + w / 2, y + h / 2);
-        glVertex2d(rect.getWidth(), rect.getHeight());
+        glVertex2d(rect.x2, rect.y2);
         glTexCoord2d(x - w / 2, y + h / 2);
-        glVertex2d(0, rect.getHeight());
+        glVertex2d(rect.x1, rect.y2);
         glEnd();
 
         texture_->glUnbind();

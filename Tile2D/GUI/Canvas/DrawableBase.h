@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2015 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,26 +14,32 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Sprite_H_
-#define __Sprite_H_
+#ifndef __DrawableBase_H_
+#define __DrawableBase_H_
 
-#include "DrawableBase.h"
+#include "IDrawable.h"
+#include "Canvas.h"
 
-class CollisionShape;
-class ITexture;
-
-#include "Rect.h"
-
-class Sprite : public DrawableBase {
+class DrawableBase : public IDrawable{
 
 public:
-    Sprite(ITexture* texture, Rect rect);
-    void drawActual(Canvas* canvas);
+    DrawableBase();
+    ~DrawableBase();
+
+    Property<Point>* const location;
+    Property<double>* const angle;
+    SimpleBooleanProperty* const isVisible;
+
+    void draw(Canvas *canvas);
+
+protected:
+    virtual void drawActual(Canvas* canvas) = 0;
 
 private:
-    ITexture* texture_;
-    Rect rect_;
+    Point location_;
+    double angle_;
+    bool isVisible_;
 };
 
 
-#endif //__Sprite_H_
+#endif //__DrawableBase_H_

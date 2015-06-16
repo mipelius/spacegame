@@ -30,8 +30,8 @@ App::App() {
 
     int x = 0;
     int y = 0;
-    int w = 800;
-    int h = 600;
+    int w = 1280;
+    int h = 800;
 
     bool enableFullScreen = false;
 

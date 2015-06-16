@@ -71,7 +71,6 @@ GuiComponentBase::~GuiComponentBase() {
     delete opacity;
 
     delete isVisible;
-    delete isBoundsVisible;
 }
 
 void GuiComponentBase::setMargin(double top, double right, double bottom, double left) {
@@ -186,12 +185,10 @@ void GuiComponentBase::render() {
 
         glColor(1, 1, 1);
 
-        glBegin(GL_LINE_LOOP);
-        glVertex2d(1, 1);
-        glVertex2d(rect.getWidth(), 1);
-        glVertex2d(rect.getWidth(), rect.getHeight() - 1);
-        glVertex2d(1, rect.getHeight());
-        glEnd();
+        glRectd(0, 0, rect.getWidth(), 1);
+        glRectd(0, 1, 1, rect.getHeight()-1);
+        glRectd(rect.getWidth()-1, 1, rect.getWidth(), rect.getHeight()-1);
+        glRectd(0, rect.getHeight()-1, rect.getWidth(), rect.getHeight());
     }
 
     if (glBlendEnabled) {

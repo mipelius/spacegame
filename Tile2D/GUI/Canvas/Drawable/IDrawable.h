@@ -22,12 +22,10 @@ class Canvas;
 #include "Rect.h"
 
 class IDrawable {
-    friend class Canvas;
-
-protected:
-    virtual void draw(Canvas* canvas) = 0;
 
 public:
+    virtual void draw(Canvas* canvas) = 0;
+
     IDrawable() { };
     ~IDrawable() { };
 };
