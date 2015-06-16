@@ -25,11 +25,15 @@ DrawableBase::DrawableBase() :
 location    (   new SimpleProperty<Point>   (&location_)    ),
 angle       (   new SimpleProperty<double>  (&angle_)       ),
 isVisible   (   new SimpleBooleanProperty   (&isVisible_)   ),
+opacity     (   new SimpleProperty<double>  (&opacity_)     ),
+color       (   new SimpleProperty<Color>   (&color_)       ),
 
 // private attributes initialization
 location_   (Point(0, 0)),
 angle_      (0          ),
-isVisible_  (true       )
+isVisible_  (true       ),
+opacity_    (1.0        ),
+color_      (Color(1.0, 1.0, 1.0))
 
 {
 
@@ -46,6 +50,15 @@ void DrawableBase::draw(Canvas *canvas) {
         return;
     }
 
+    if (opacity_ > 0.0 && opacity_ < 1.0) {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glColor4d(color_.red, color_.green, color_.blue, opacity_);
+    }
+    else {
+        glColor4d(color_.red, color_.green, color_.blue, 1.0);
+    }
+
     glTranslated(location_.x, location_.y, 0);
     glRotatef((GLfloat)angle_, 0.0f, 0.0f, 1.0f);
 
@@ -53,4 +66,8 @@ void DrawableBase::draw(Canvas *canvas) {
 
     glRotatef((GLfloat)-angle_, 0.0f, 0.0f, 1.0f);
     glTranslated(-location_.x, -location_.y, 0);
+
+    if (opacity_ > 0.0 && opacity_ < 1.0) {
+        glDisable(GL_BLEND);
+    }
 }

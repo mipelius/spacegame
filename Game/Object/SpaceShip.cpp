@@ -34,6 +34,7 @@
 #include "Missile.h"
 #include "Sample.h"
 #include "SamplePlayer.h"
+#include "Text.h"
 
 class Spaceship::Body_MapCollisionEventHandler : public IEventHandler<Body, EventArgs> {
     void handle(Body* body, EventArgs args) {

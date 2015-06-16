@@ -38,16 +38,14 @@ Text::~Text() {
 
 }
 
-void Text::draw(Canvas *canvas) {
+void Text::drawActual(Canvas *canvas) {
     font_->fontTexture_->glBind();
 
     float textureW = font_->fontTexture_->getW();
     float textureH = font_->fontTexture_->getH();
 
-    Rect cameraRect = canvas->getCamera()->areaRect->get();
-
-    float offsetX = location_.x - cameraRect.x1;
-    float offsetY = location_.y - cameraRect.y1;;
+    float offsetX = location_.x;
+    float offsetY = location_.y;
 
     glBegin(GL_QUADS);
 
@@ -86,9 +84,6 @@ void Text::draw(Canvas *canvas) {
 
             offsetX += (letter->w) * size_;
             // offsetY = ???
-        }
-        else {
-//            printf("\"%c\"", ch);
         }
 
     }

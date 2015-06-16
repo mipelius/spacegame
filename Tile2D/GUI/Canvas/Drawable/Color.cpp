@@ -14,38 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Text_H_
-#define __Text_H_
+#include "Color.h"
 
-#include <string>
-#include "IDrawable.h"
-#include "Property.h"
-#include "Point.h"
-#include "DrawableBase.h"
+Color::Color(double red, double green, double blue) : red(red), green(green), blue(blue) {
 
-class Font;
-
-class Text : public DrawableBase {
-public:
-    Text(Font* font);
-    ~Text();
-
-    // properties
-
-    Property<Point>* const location;
-    Property<float>* const size;
-    Property<std::string>* const string;
-
-    virtual void drawActual(Canvas *canvas);
-
-private:
-    Font* font_;
-
-    Point location_;
-    float size_;
-    std::string string_;
-
-};
-
-
-#endif //__Text_H_
+}

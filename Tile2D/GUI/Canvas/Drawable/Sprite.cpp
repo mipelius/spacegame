@@ -24,8 +24,6 @@ Sprite::Sprite(ITexture *texture, Rect rect) : DrawableBase(), rect_(rect) {
 }
 
 void Sprite::drawActual(Canvas* canvas) {
-    glColor3f(1.0, 1.0, 1.0);
-
     texture_->glBind();
 
     glBegin(GL_QUADS);
