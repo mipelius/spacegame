@@ -32,18 +32,21 @@ class Inventory : public DrawableBase {
 public:
     Inventory();
     void checkMouseActions();
-
     void toggleBigInventoryVisibility();
+
+    void selectSlot(int slotNumber);
+    Slot* getSelectedSlot();
 
 protected:
     virtual void drawActual(Canvas *canvas) override;
 
 private:
+    Slot* selectedSlot_;
+
     Slot* getSlot(Point location);
 
     std::vector<Slot*> inventorySlots_;
     std::vector<Slot*> equipableSlots_;
-
 
     Camera* camera_;
 

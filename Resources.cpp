@@ -62,6 +62,7 @@ light                   ( new Texture("images/light.png"                    )   
 missile                 ( new Texture("images/missile.png"                  )   ),
 spaceship               ( new Texture("images/spaceship.png"                )   ),
 inventoryEquipableSlot  ( new Texture("images/inventory_equipable_slot.png" )   ),
+inventorySelectedSlot   ( new Texture("images/inventory_selected_slot.png"  )   ),
 inventorySlot           ( new Texture("images/inventory_slot.png"           )   ),
 laserCannon             ( new Texture("images/laser_cannon.png"             )   ),
 plasmaCannon            ( new Texture("images/plasma_cannon.png"            )   )

@@ -33,19 +33,13 @@ int marginBottom;
 Inventory::Inventory()
 {
     for (int x = 0; x < 5; x++) {
-        Slot* slot = new Slot(
-                App::getResources()->textures->inventoryEquipableSlot,
-                Point(x * 40, 0)
-        );
+        Slot* slot = new Slot(Point(x * 40, 0), x + 1);
         equipableSlots_.push_back(slot);
     }
 
     for (int x = 0; x < 5; x++) {
         for (int y = 1; y < 5; y++) {
-            Slot* slot = new Slot(
-                    App::getResources()->textures->inventorySlot,
-                    Point(x * 40, y * 40)
-            );
+            Slot* slot = new Slot(Point(x * 40, y * 40));
             inventorySlots_.push_back(slot);
         }
     }
@@ -64,6 +58,9 @@ Inventory::Inventory()
 
     mouseState_ = 0;
     previousMouseState_ = 0;
+
+    selectedSlot_ = equipableSlots_[0];
+    selectedSlot_->select();
 }
 
 
@@ -119,7 +116,7 @@ void Inventory::checkMouseActions() {
                 mouseSelectedSlot_ = nullptr;
             }
             else {
-                // remove item ?
+                cancelMouseSelection();
             }
         }
     }
@@ -184,5 +181,17 @@ void Inventory::cancelMouseSelection() {
         mouseSelectedSlot_->setItem(mouseSelectedItem_);
         mouseSelectedItem_ = nullptr;
         mouseSelectedSlot_ = nullptr;
+    }
+}
+
+Slot *Inventory::getSelectedSlot() {
+    return selectedSlot_;
+}
+
+void Inventory::selectSlot(int slotNumber) {
+    if (slotNumber >= 1 && slotNumber <= 5) {
+        selectedSlot_->unselect();
+        selectedSlot_ = equipableSlots_[slotNumber - 1];
+        selectedSlot_->select();
     }
 }

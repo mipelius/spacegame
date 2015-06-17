@@ -22,12 +22,13 @@
 #include "Point.h"
 #include "Sprite.h"
 #include "Texture.h"
+#include "Text.h"
 
 class Slot : public IDrawable {
 
 friend class Inventory;
 
-    Slot(Texture* texture, Point location);
+    Slot(Point location, int slotNumber = 0);
     ~Slot();
     void setItem(Item* item);
     Item* getItem();
@@ -35,11 +36,23 @@ friend class Inventory;
 
 private:
     Item* item_;
+
     Sprite* sprite_;
+    Sprite* selectedSprite_;
+
+    Text* slotNumberText;
+
+    bool isSelected_;
+
 
 protected:
     virtual void draw(Canvas *canvas);
 
+    void select();
+    void unselect();
+
+    void glTranslate_();
+    void glUnTranslate_();
 };
 
 

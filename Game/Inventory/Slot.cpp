@@ -20,16 +20,41 @@
 #include "Sprite.h"
 #include "Property.h"
 
-Slot::Slot(Texture* texture, Point location) : IDrawable()
+Slot::Slot(Point location, int slotNumber) : IDrawable()
 {
-    sprite_ = new Sprite(
-            texture,
+    if (slotNumber > 0) {
+        sprite_ = new Sprite(
+            App::getResources()->textures->inventoryEquipableSlot,
             Rect(0, 0, 40, 40)
-    );
+        );
+
+        selectedSprite_ = new Sprite(
+                App::getResources()->textures->inventorySelectedSlot,
+                Rect(0, 0, 40, 40)
+        );
+
+        slotNumberText = new Text(App::getResources()->other->smallFont);
+        slotNumberText->location->set(location + Vector(3, 2));
+        slotNumberText->string->set(std::to_string(slotNumber));
+
+        selectedSprite_->location->set(location);
+    }
+    else {
+        sprite_ = new Sprite(
+                App::getResources()->textures->inventorySlot,
+                Rect(0, 0, 40, 40)
+        );
+
+        selectedSprite_ = nullptr;
+
+        slotNumberText = nullptr;
+
+    }
 
     sprite_->location->set(location);
 
     item_ = nullptr;
+    isSelected_ = false;
 }
 
 Slot::~Slot() {
@@ -51,26 +76,55 @@ Item *Slot::removeItem() {
 }
 
 void Slot::draw(Canvas *canvas) {
-    sprite_->draw(canvas);
+    if (selectedSprite_) {
+        if (isSelected_) {
+            selectedSprite_->draw(canvas);
+        }
+        else {
+            sprite_->draw(canvas);
+        }
+    }
+    else {
+        sprite_->draw(canvas);
+    }
+
+    if (slotNumberText) {
+        slotNumberText->draw(canvas);
+    }
 
     if (item_) {
-        Point slotLocation = sprite_->location->get();
-
-        glMatrixMode(GL_MODELVIEW);
-
-        glTranslated(
-                slotLocation.x,
-                slotLocation.y,
-                0
-        );
-
+        glTranslate_();
         item_->sprite_->draw(canvas);
-
-        glTranslated(
-                -slotLocation.x,
-                -slotLocation.y,
-                0
-        );
-
+        glUnTranslate_();
     }
+}
+
+void Slot::select() {
+    isSelected_ = true;
+}
+
+void Slot::unselect() {
+    isSelected_ = false;
+}
+
+void Slot::glTranslate_() {
+    Point slotLocation = sprite_->location->get();
+
+    glMatrixMode(GL_MODELVIEW);
+
+    glTranslated(
+            slotLocation.x,
+            slotLocation.y,
+            0
+    );
+}
+
+void Slot::glUnTranslate_() {
+    Point slotLocation = sprite_->location->get();
+
+    glTranslated(
+            -slotLocation.x,
+            -slotLocation.y,
+            0
+    );
 }

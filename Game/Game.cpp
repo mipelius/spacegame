@@ -70,8 +70,8 @@ void Game::launch() {
     Text* text = new Text(App::getResources()->other->smallFont);
     text->location->set(Point(4000, 8000));
     text->string->set("Welcome to Space Game!");
-    text->size->set(4);
-    text->color->set(Color(1,0,1));
+    text->size->set(3);
+    text->color->set(Color(0.5, 0.7, 1));
 
     canvas_->addDrawable(text);
 
@@ -102,6 +102,26 @@ void Game::launch() {
                 inventory_->toggleBigInventoryVisibility();
                 timePassedAfterLastInventoryToggle = 0;
             }
+        }
+
+        if (keys[SDL_SCANCODE_1]) {
+            inventory_->selectSlot(1);
+        }
+
+        if (keys[SDL_SCANCODE_2]) {
+            inventory_->selectSlot(2);
+        }
+
+        if (keys[SDL_SCANCODE_3]) {
+            inventory_->selectSlot(3);
+        }
+
+        if (keys[SDL_SCANCODE_4]) {
+            inventory_->selectSlot(4);
+        }
+
+        if (keys[SDL_SCANCODE_5]) {
+            inventory_->selectSlot(5);
         }
 
         if (keys[SDL_SCANCODE_LEFT]) {
