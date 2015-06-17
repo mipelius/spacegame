@@ -14,31 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __SpriteContainer_H_
-#define __SpriteContainer_H_
-
-class Sprite;
-template <typename T> class Property;
+#ifndef __DrawableGroup_H_
+#define __DrawableGroup_H_
 
 #include <list>
 #include "DrawableBase.h"
-#include "Sprite.h"
-#include "SimpleBooleanProperty.h"
 
-class SpriteContainer : public DrawableBase {
+class DrawableGroup : public DrawableBase {
 
 public:
-    SpriteContainer();
-    ~SpriteContainer();
+    DrawableGroup();
+    ~DrawableGroup();
 
     void drawActual (Canvas* canvas);
-    void addSprite(IDrawable* drawable);
-
-    void removeSprite(Sprite *sprite);
+    void addDrawable(IDrawable *drawable);
+    void removeDrawable(IDrawable *drawable);
 
 private:
-    std::list<IDrawable*> sprites_;
+    std::list<IDrawable*> drawables_;
 };
 
 
-#endif //__SpriteContainer_H_
+#endif //__DrawableGroup_H_

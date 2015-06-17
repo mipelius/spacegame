@@ -24,11 +24,9 @@
 
 Text::Text(Font *font) :
 
-    location(   new SimpleProperty<Point>       (&location_)    ),
     size(       new SimpleProperty<float>       (&size_   )     ),
-    string(     new SimpleProperty<std::string> (&string_)   ),
+    string(     new SimpleProperty<std::string> (&string_)   )
 
-    location_(Point(0,0))
 {
     font_ = font;
     size_ = 1.0;
@@ -44,8 +42,8 @@ void Text::drawActual(Canvas *canvas) {
     float textureW = font_->fontTexture_->getW();
     float textureH = font_->fontTexture_->getH();
 
-    float offsetX = location_.x;
-    float offsetY = location_.y;
+    float offsetX = 0;
+    float offsetY = 0;
 
     glBegin(GL_QUADS);
 

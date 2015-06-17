@@ -24,7 +24,7 @@
 #include "EventArgs.h"
 #include "Event.h"
 #include "CollisionShape.h"
-#include "SpriteContainer.h"
+#include "DrawableGroup.h"
 #include "Texture.h"
 #include "Sprite.h"
 #include "SimpleProperty.h"
@@ -97,7 +97,7 @@ Bomb::Bomb() :
 location        (   new SimpleProperty<Point>   (&location_)    ),
 location_       (   Point(0, 0)                                 ),
 body            (   new BombBody(200.0)                         ),
-spriteContainer (   new SpriteContainer()                       )
+spriteContainer (   new DrawableGroup()                       )
 
 {
     // body
@@ -122,7 +122,7 @@ spriteContainer (   new SpriteContainer()                       )
         Rect(-10, -10, 10, 10)
     );
 
-    spriteContainer->addSprite(sprite);
+    spriteContainer->addDrawable(sprite);
 
     // bindings
 

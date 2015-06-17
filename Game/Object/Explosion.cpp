@@ -21,7 +21,7 @@
 #include "Canvas.h"
 #include "App.h"
 #include "AnimationManager.h"
-#include "SpriteContainer.h"
+#include "DrawableGroup.h"
 #include "Sprite.h"
 #include "PointLight.h"
 #include "ShadowMask.h"
@@ -70,8 +70,8 @@ Explosion::Explosion(Point point, double radius) {
     sampleChannel_++;
     if (sampleChannel_ > 7) sampleChannel_ = 0;
 
-    spriteContainer_ = new SpriteContainer();
-    spriteContainer_->addSprite(explosionSprite);
+    spriteContainer_ = new DrawableGroup();
+    spriteContainer_->addDrawable(explosionSprite);
     spriteContainer_->location->set(point);
 
     PulseLight* pulseLight = new PulseLight(point, radius * 2.5);

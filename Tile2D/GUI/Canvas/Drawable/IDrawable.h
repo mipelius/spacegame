@@ -27,7 +27,7 @@ public:
     virtual void draw(Canvas* canvas) = 0;
 
     IDrawable() { };
-    ~IDrawable() { };
+    virtual ~IDrawable() { };
 };
 
 #endif //__IDrawable_H_

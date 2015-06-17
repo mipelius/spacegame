@@ -18,7 +18,7 @@
 #define __LightObject_H_
 
 class PointLight;
-class SpriteContainer;
+class DrawableGroup;
 
 #include "Point.h"
 
@@ -26,7 +26,7 @@ class LightObject {
 public:
     LightObject(Point location, double radius);
 
-    SpriteContainer* const spriteContainer;
+    DrawableGroup * const spriteContainer;
     PointLight* const pointLight;
 };
 

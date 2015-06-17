@@ -42,6 +42,8 @@ private:
     Canvas* smallMapCanvas_;
     Camera* smallMapCamera_;
 
+    Canvas* GUICanvas_;
+
     Spaceship *spaceship_;
 
     ShadowMask* shadowMask_;

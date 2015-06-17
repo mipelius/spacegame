@@ -20,7 +20,7 @@
 #define __Spaceship_H_
 
 class Body;
-class SpriteContainer;
+class DrawableGroup;
 class AnimatedTexture;
 class Sample;
 template <typename T> class Property;
@@ -35,7 +35,7 @@ public:
     ~Spaceship();
 
     Body* const body;
-    SpriteContainer* const spriteContainer;
+    DrawableGroup * const spriteContainer;
 
     Property<Point>* const location;
 

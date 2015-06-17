@@ -20,7 +20,7 @@
 #include "EventArgs.h"
 #include "Event.h"
 #include "CollisionShape.h"
-#include "SpriteContainer.h"
+#include "DrawableGroup.h"
 #include "Texture.h"
 #include "Sprite.h"
 #include "SimpleProperty.h"
@@ -56,7 +56,7 @@ Spaceship::Spaceship() :
     location        (   new SimpleProperty<Point>   (&location_)    ),
     location_       (   Point(0, 0)                                 ),
     body            (   new Body(100.0)                             ),
-    spriteContainer (   new SpriteContainer()                       )
+    spriteContainer (   new DrawableGroup()                       )
 {
     // body
 
@@ -85,10 +85,10 @@ Spaceship::Spaceship() :
     Sprite* spriteAccelerationLeft = new Sprite(accelerationAnimation_, Rect(-40, -23, -20, -10));
     Sprite* spriteAccelerationRight = new Sprite(accelerationAnimation_, Rect(-40, 10, -20, 23));
 
-    spriteContainer->addSprite(spriteAccelerationLeft);
-    spriteContainer->addSprite(spriteAccelerationRight);
+    spriteContainer->addDrawable(spriteAccelerationLeft);
+    spriteContainer->addDrawable(spriteAccelerationRight);
 
-    spriteContainer->addSprite(sprite);
+    spriteContainer->addDrawable(sprite);
 
     // bindings
 

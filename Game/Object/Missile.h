@@ -18,7 +18,7 @@
 #define __Missile_H_
 
 class Body;
-class SpriteContainer;
+class DrawableGroup;
 class AnimatedTexture;
 class Sample;
 
@@ -35,7 +35,7 @@ public:
     ~Missile();
 
     Body* const body;
-    SpriteContainer* const spriteContainer;
+    DrawableGroup * const spriteContainer;
 
 private:
     class MissileBody;

@@ -20,22 +20,26 @@
 #include "Item.h"
 
 #include "Point.h"
+#include "Sprite.h"
+#include "Texture.h"
 
-class Slot {
+class Slot : public IDrawable {
 
 friend class Inventory;
 
-public:
-    Slot(Point location);
+    Slot(Texture* texture, Point location);
     ~Slot();
     void setItem(Item* item);
     Item* getItem();
     Item* removeItem();
 
 private:
-    Rect rect_;
     Item* item_;
-    SpriteContainer* spriteContainer_;
+    Sprite* sprite_;
+
+protected:
+    virtual void draw(Canvas *canvas);
+
 };
 
 

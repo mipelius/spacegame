@@ -33,7 +33,7 @@ public:
     Property<double>* const opacity;
     Property<Color>* const color;
 
-    void draw(Canvas *canvas);
+    virtual void draw(Canvas *canvas);
 
 protected:
     virtual void drawActual(Canvas* canvas) = 0;

@@ -15,33 +15,29 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "precompile.h"
-#include "SpriteContainer.h"
-#include "Camera.h"
-#include "Sprite.h"
-#include "SimpleProperty.h"
-#include "Canvas.h"
+#include "DrawableGroup.h"
 
-SpriteContainer::SpriteContainer() : DrawableBase()
+DrawableGroup::DrawableGroup() : DrawableBase()
 {
 
 }
 
-SpriteContainer::~SpriteContainer() {
-    for (std::list<IDrawable*>::iterator i = sprites_.begin(); i != sprites_.end(); i++) {
+DrawableGroup::~DrawableGroup() {
+    for (std::list<IDrawable*>::iterator i = drawables_.begin(); i != drawables_.end(); i++) {
         delete (*i);
     }
 }
 
-void SpriteContainer::drawActual(Canvas* canvas) {
-    for (std::list<IDrawable*>::iterator i = sprites_.begin(); i != sprites_.end(); i++) {
+void DrawableGroup::drawActual(Canvas* canvas) {
+    for (std::list<IDrawable*>::iterator i = drawables_.begin(); i != drawables_.end(); i++) {
         (*i)->draw(canvas);
     }
 }
 
-void SpriteContainer::addSprite(IDrawable* drawable) {
-    sprites_.push_back(drawable);
+void DrawableGroup::addDrawable(IDrawable *drawable) {
+    drawables_.push_back(drawable);
 }
 
-void SpriteContainer::removeSprite(Sprite *sprite) {
-    sprites_.remove(sprite);
+void DrawableGroup::removeDrawable(IDrawable *drawable) {
+    drawables_.remove(drawable);
 }

@@ -17,8 +17,9 @@
 #ifndef __Item_H_
 #define __Item_H_
 
-#include "SpriteContainer.h"
+#include "DrawableGroup.h"
 #include "ITexture.h"
+#include "Sprite.h"
 
 class Item {
 
@@ -26,11 +27,12 @@ friend class Inventory;
 friend class Slot;
 
 public:
-    Item(ITexture* texture );
+    Item(ITexture* texture);
     ~Item();
 
 private:
-    SpriteContainer* spriteContainer_;
+    Sprite* sprite_;
+
 };
 
 #endif //__Item_H_

@@ -32,7 +32,6 @@ public:
 
     // properties
 
-    Property<Point>* const location;
     Property<float>* const size;
     Property<std::string>* const string;
 
@@ -41,7 +40,6 @@ public:
 private:
     Font* font_;
 
-    Point location_;
     float size_;
     std::string string_;
 

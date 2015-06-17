@@ -17,18 +17,16 @@
 #include "Item.h"
 #include "Rect.h"
 #include "Sprite.h"
+#include "Text.h"
+#include "App.h"
 
 Item::Item(ITexture *texture) {
-    spriteContainer_ = new SpriteContainer();
-
-    spriteContainer_->addSprite(
-            new Sprite(
-                    texture,
-                    Rect(0, 0, 40, 40)
-            )
+    sprite_ = new Sprite(
+            texture,
+            Rect(0, 0, 40, 40)
     );
 }
 
 Item::~Item() {
-
+    delete sprite_;
 }

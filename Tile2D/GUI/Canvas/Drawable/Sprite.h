@@ -28,9 +28,15 @@ class Sprite : public DrawableBase {
 
 public:
     Sprite(ITexture* texture, Rect rect);
+
+    Rect getRect();
+    Rect getActualRect();
+
+protected:
     void drawActual(Canvas* canvas);
 
 private:
+
     ITexture* texture_;
     Rect rect_;
 };

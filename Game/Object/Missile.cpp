@@ -23,7 +23,7 @@
 #include "Texture.h"
 #include "Event.h"
 #include "Sprite.h"
-#include "SpriteContainer.h"
+#include "DrawableGroup.h"
 #include "CollisionShape.h"
 #include "Game.h"
 #include "Canvas.h"
@@ -102,7 +102,7 @@ class Missile::Body_BodyCollisionEventHandler : public IEventHandler<Body, BodyC
 
 Missile::Missile(Point initialLocation, Vector force) :
 body            (   new MissileBody(10.0, initialLocation, this)    ),
-spriteContainer (   new SpriteContainer()                           )
+spriteContainer (   new DrawableGroup()                           )
 
 {
     // body
@@ -132,7 +132,7 @@ spriteContainer (   new SpriteContainer()                           )
             Rect(-10, -5, 10, 5)
     );
 
-    spriteContainer->addSprite(sprite);
+    spriteContainer->addDrawable(sprite);
     Game::getInstance()->getExternalCanvas()->addDrawable(spriteContainer);
 
     // bindings

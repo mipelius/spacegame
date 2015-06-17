@@ -18,26 +18,48 @@
 #define __Inventory_H_
 
 #include "Canvas.h"
+#include "DrawableBase.h"
 #include <vector>
+#include <SDL2/SDL_types.h>
+#include "SimpleBooleanProperty.h"
 
 class Camera;
 class Slot;
 class Item;
 
-class Inventory {
+class Inventory : public DrawableBase {
+
 public:
     Inventory();
-    Canvas canvas;
+    void checkMouseActions();
 
-    void mouseButtonDown(int x, int y);
-    void mouseButtonReleased(int x, int y);
+    void toggleBigInventoryVisibility();
+
+protected:
+    virtual void drawActual(Canvas *canvas) override;
 
 private:
-    std::vector<Slot*> slots_;
+    Slot* getSlot(Point location);
+
+    std::vector<Slot*> inventorySlots_;
+    std::vector<Slot*> equipableSlots_;
+
+
     Camera* camera_;
 
-    Item* selectedItem_;
-    Slot* selectedSlot_;
+    bool isBigInventoryVisible_;
+
+    // --- MOUSE ---
+
+    Item* mouseSelectedItem_;
+    Slot* mouseSelectedSlot_;
+
+    Uint32 mouseState_;
+    Uint32 previousMouseState_;
+
+    int mouseX_, mouseY_;
+
+    void cancelMouseSelection();
 };
 
 #endif //__Inventory_H_

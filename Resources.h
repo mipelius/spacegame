@@ -66,8 +66,7 @@ public:
         Texture* const light;
         Texture* const missile;
         Texture* const spaceship;
-        Texture* const inventoryUsableSlot;
-        Texture* const inventoryWeaponSlots;
+        Texture* const inventoryEquipableSlot;
         Texture* const inventorySlot;
         Texture* const laserCannon;
         Texture* const plasmaCannon;

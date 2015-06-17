@@ -20,14 +20,16 @@
 #include "Sprite.h"
 #include "Property.h"
 
-Slot::Slot(Point location) : rect_(Rect(location.x, location.y, location.x + 40, location.y + 40))
+Slot::Slot(Texture* texture, Point location) : IDrawable()
 {
-    Sprite* sprite = new Sprite(
-            App::getResources()->textures->inventorySlot,
-            rect_
+    sprite_ = new Sprite(
+            texture,
+            Rect(0, 0, 40, 40)
     );
-    spriteContainer_ = new SpriteContainer();
-    spriteContainer_->addSprite(sprite);
+
+    sprite_->location->set(location);
+
+    item_ = nullptr;
 }
 
 Slot::~Slot() {
@@ -36,7 +38,6 @@ Slot::~Slot() {
 
 void Slot::setItem(Item *item) {
     item_ = item;
-    item_->spriteContainer_->location->set(Point(rect_.x1, rect_.y1));
 }
 
 Item *Slot::getItem() {
@@ -47,4 +48,29 @@ Item *Slot::removeItem() {
     Item* item = item_;
     item_ = nullptr;
     return item;
+}
+
+void Slot::draw(Canvas *canvas) {
+    sprite_->draw(canvas);
+
+    if (item_) {
+        Point slotLocation = sprite_->location->get();
+
+        glMatrixMode(GL_MODELVIEW);
+
+        glTranslated(
+                slotLocation.x,
+                slotLocation.y,
+                0
+        );
+
+        item_->sprite_->draw(canvas);
+
+        glTranslated(
+                -slotLocation.x,
+                -slotLocation.y,
+                0
+        );
+
+    }
 }

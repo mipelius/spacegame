@@ -17,16 +17,16 @@
 #include "LightObject.h"
 #include "Texture.h"
 #include "Sprite.h"
-#include "SpriteContainer.h"
+#include "DrawableGroup.h"
 #include "PointLight.h"
 #include "App.h"
 
 LightObject::LightObject(Point location, double radius) :
-    spriteContainer(new SpriteContainer()),
+    spriteContainer(new DrawableGroup()),
     pointLight(new PointLight(location, radius))
 {
     Sprite* sprite = new Sprite(App::getResources()->textures->light, Rect(-64, -64, 64, 64));
 
-    spriteContainer->addSprite(sprite);
+    spriteContainer->addDrawable(sprite);
     spriteContainer->location->set(location);
 }

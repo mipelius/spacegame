@@ -25,7 +25,7 @@
 #include "Body.h"
 #include "PhysicsWorld.h"
 
-#include "SpriteContainer.h"
+#include "DrawableGroup.h"
 #include "DrawableMap.h"
 #include "MapTexture.h"
 #include "Camera.h"
@@ -47,7 +47,7 @@
 #include "PointLight.h"
 
 #include "Sprite.h"
-#include "SpriteContainer.h"
+#include "DrawableGroup.h"
 #include "LightObject.h"
 #include "DynamicLightObject.h"
 #include "Sample.h"
@@ -70,7 +70,8 @@ void Game::launch() {
     Text* text = new Text(App::getResources()->other->smallFont);
     text->location->set(Point(4000, 8000));
     text->string->set("Welcome to Space Game!");
-    text->size->set(3);
+    text->size->set(4);
+    text->color->set(Color(1,0,1));
 
     canvas_->addDrawable(text);
 
@@ -89,9 +90,6 @@ void Game::launch() {
     Uint32 inventoryInterval = 300;
     Uint32 timePassedAfterLastInventoryToggle = 0;
 
-    Uint32 mouseState = 0;
-    Uint32 previousMouseState = 0;
-
     while (!SDL_QuitRequested()) {
         /// --- INPUT READING AND HANDLING ---
 
@@ -101,7 +99,7 @@ void Game::launch() {
 
         if (keys[SDL_SCANCODE_TAB]) {
             if (timePassedAfterLastInventoryToggle > inventoryInterval) {
-                inventory_->canvas.isVisible->toggle();
+                inventory_->toggleBigInventoryVisibility();
                 timePassedAfterLastInventoryToggle = 0;
             }
         }
@@ -189,23 +187,7 @@ void Game::launch() {
             smallMapCanvas_->isVisible->toggle();
         }
 
-        int x, y;
-
-        mouseState = SDL_GetMouseState(&x, &y);
-
-        if (mouseState == 1) {
-            inventory_->mouseButtonDown(x, y);
-        }
-
-        if (mouseState == 4) {
-            // ---
-        }
-
-        if (mouseState == 0 && previousMouseState != 0) {
-            inventory_->mouseButtonReleased(x, y);
-        }
-
-        previousMouseState = mouseState;
+        inventory_->checkMouseActions();
 
         /// --- PHYSICS ---
 
@@ -364,14 +346,45 @@ void Game::initialize() {
 
     canvas_->addComponent(smallMapCanvas_);
 
-    // --- INVENTORY ---
-
-    inventory_ = new Inventory();
-    canvas_->addComponent(&inventory_->canvas);
-
     // --- ANIMATIONS ---
 
     //
+
+    // --- GUI CANVAS ---
+
+    GUICanvas_ = new Canvas();
+    GUICanvas_->setMargin(0, 0, 0, 0);
+    GUICanvas_->w->set(Canvas::SIZE_MAX_WIDTH);
+    GUICanvas_->h->set(Canvas::SIZE_MAX_HEIGHT);
+    GUICanvas_->anchor->set(Canvas::Anchor::TOP_RIGHT);
+
+    Camera* GUICanvasCamera = new Camera();
+    GUICanvasCamera->boundsRect->set(
+            Rect(
+                    0,
+                    0,
+                    App::getWindow()->w->get(),
+                    App::getWindow()->h->get()
+            )
+    );
+    GUICanvasCamera->areaRect->set(
+            Rect(
+                    0,
+                    0,
+                    App::getWindow()->w->get(),
+                    App::getWindow()->h->get()
+            )
+    );
+
+    GUICanvas_->setCamera(GUICanvasCamera);
+
+    App::getWindow()->addComponent(GUICanvas_);
+
+    // --- INVENTORY ---
+
+    inventory_ = new Inventory();
+    inventory_->location->set(Point(20, 20));
+    GUICanvas_->addDrawable(inventory_);
 
     isInitialized_ = true;
 }

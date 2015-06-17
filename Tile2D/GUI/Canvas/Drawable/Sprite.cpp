@@ -44,3 +44,19 @@ void Sprite::drawActual(Canvas* canvas) {
 
     texture_->glUnbind();
 }
+
+Rect Sprite::getRect() {
+    return rect_;
+}
+
+Rect Sprite::getActualRect() {
+    double x = location->get().x;
+    double y = location->get().y;
+
+    return Rect(
+            rect_.x1 + x,
+            rect_.y1 + y,
+            rect_.x2 + x,
+            rect_.y2 + y
+    );
+}

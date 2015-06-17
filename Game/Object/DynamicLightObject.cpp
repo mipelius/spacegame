@@ -17,7 +17,7 @@
 #include "DynamicLightObject.h"
 #include "Body.h"
 #include "PointLight.h"
-#include "SpriteContainer.h"
+#include "DrawableGroup.h"
 #include "IEventHandler.h"
 #include "EventArgs.h"
 #include "Event.h"

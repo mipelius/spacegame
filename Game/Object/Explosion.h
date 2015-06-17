@@ -19,7 +19,7 @@
 
 class Texture;
 class AnimatedTexture;
-class SpriteContainer;
+class DrawableGroup;
 class PointLight;
 class Sample;
 
@@ -36,7 +36,7 @@ private:
     ~Explosion();
 
     AnimatedTexture* explosionAnimation_;
-    SpriteContainer* spriteContainer_;
+    DrawableGroup * spriteContainer_;
 
     static int sampleChannel_;
 

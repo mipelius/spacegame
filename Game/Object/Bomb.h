@@ -18,7 +18,7 @@
 #define __Bomb_H_
 
 class Body;
-class SpriteContainer;
+class DrawableGroup;
 class AnimatedTexture;
 
 #include "Point.h"
@@ -32,7 +32,7 @@ public:
     ~Bomb();
 
     Body* const body;
-    SpriteContainer* const spriteContainer;
+    DrawableGroup * const spriteContainer;
 
     Property<Point>* const location;
 
