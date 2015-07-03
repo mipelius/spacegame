@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// Copyright (C) 2015 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,29 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "BooleanProperty.h"
 
-#ifndef __PulseLight_H_
-#define __PulseLight_H_
+BooleanProperty::BooleanProperty(bool *actualValue) : Property<bool>(actualValue) {
 
-class PointLight;
+}
 
-#include "Point.h"
+void BooleanProperty::toggle() {
+    set(!get());
+}
 
-class PulseLight {
-    friend class Animation;
+BooleanProperty::BooleanProperty(void *owner, bool (*getter)(void *), void (*setter)(void *, const bool&)) :
+Property<bool>(owner, getter, setter)
 
-public:
-    PulseLight(Point point, double radius);
+{
 
-private:
-    class Animation;
-
-    ~PulseLight();
-
-    Animation* animation_;
-    PointLight* pointLight_;
-
-    double initialRadius_;
-};
-
-#endif //__PulseLight_H_
+}

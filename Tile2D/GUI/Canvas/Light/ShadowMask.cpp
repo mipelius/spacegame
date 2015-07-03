@@ -80,7 +80,7 @@ public:
     }
 
     virtual void handle(WorldMap *owner, WorldMapModifiedEventArgs args) {
-        if (args.oldValue && args.newValue && args.oldValue->translucency->get() == args.newValue->translucency->get()) {
+        if (args.oldValue && args.newValue && args.oldValue->translucency.get() == args.newValue->translucency.get()) {
             return;
         }
 
@@ -107,7 +107,7 @@ GLuint ShadowMask::glShadowTextureId_ = 0;
 
 ShadowMask::ShadowMask(double w, double h, WorldMap * map) :
 
-ambientLight    (   new SimpleProperty<double>( &ambientLight_ )    ),
+ambientLight    (   Property<double>( &ambientLight_ )    ),
 ambientLight_   (   1.0 )
 
 {
@@ -233,7 +233,7 @@ void ShadowMask::draw(Canvas *canvas) {
 
     glColor4d(1, 1, 1, 1.0 - ambientLight_);
 
-    Rect rect = canvas->getCamera()->areaRect->get();
+    Rect rect = canvas->getCamera()->areaRect.get();
 
     glBegin(GL_QUADS);
     glTexCoord2d(0, 0);
@@ -264,8 +264,8 @@ void ShadowMask::addLight(PointLight *light) {
     light->partialLightMap_ = partialLightMap;
 
     partialLightMap->setCenterLocation(
-            (int)(light->location->get().x / worldMap_->getBlockW()),
-            (int)(light->location->get().y / worldMap_->getBlockH())
+            (int)(light->location.get().x / worldMap_->getBlockW()),
+            (int)(light->location.get().y / worldMap_->getBlockH())
     );
 
     if (light->isDynamic_) {
@@ -276,8 +276,8 @@ void ShadowMask::addLight(PointLight *light) {
         staticLights_.push_back(light);
 
         PartialLightMapUpdate* update = new PartialLightMapUpdate();
-        update->x = (int)(light->location->get().x / worldMap_->getBlockW());
-        update->y = (int)(light->location->get().y / worldMap_->getBlockH());
+        update->x = (int)(light->location.get().x / worldMap_->getBlockW());
+        update->y = (int)(light->location.get().y / worldMap_->getBlockH());
         update->map = partialLightMap;
         update->map->needsUpdate = true;
         update->isBlockUpdate = false;
@@ -336,7 +336,7 @@ void ShadowMask::handleNextUpdate() {
 }
 
 void ShadowMask::drawShadowMap(Canvas* canvas) {
-    Rect rect = canvas->getCamera()->areaRect->get();
+    Rect rect = canvas->getCamera()->areaRect.get();
     updateDynamicScene(&rect);
 
     int xStart = 0;

@@ -16,9 +16,6 @@
 
 #include "Slot.h"
 #include "App.h"
-#include "Rect.h"
-#include "Sprite.h"
-#include "Property.h"
 
 Slot::Slot(Point location, int slotNumber) : IDrawable()
 {
@@ -34,10 +31,10 @@ Slot::Slot(Point location, int slotNumber) : IDrawable()
         );
 
         slotNumberText = new Text(App::getResources()->other->smallFont);
-        slotNumberText->location->set(location + Vector(3, 2));
-        slotNumberText->string->set(std::to_string(slotNumber));
-
-        selectedSprite_->location->set(location);
+        slotNumberText->location.set(location + Vector(3, 2));
+//        slotNumberText->string.set(std::to_string(slotNumber));
+//
+//        selectedSprite_->location->set(location);
     }
     else {
         sprite_ = new Sprite(
@@ -51,7 +48,7 @@ Slot::Slot(Point location, int slotNumber) : IDrawable()
 
     }
 
-    sprite_->location->set(location);
+//    sprite_->location->set(location);
 
     item_ = nullptr;
     isSelected_ = false;
@@ -108,7 +105,7 @@ void Slot::unselect() {
 }
 
 void Slot::glTranslate_() {
-    Point slotLocation = sprite_->location->get();
+    Point slotLocation = sprite_->location.get();
 
     glMatrixMode(GL_MODELVIEW);
 
@@ -120,7 +117,7 @@ void Slot::glTranslate_() {
 }
 
 void Slot::glUnTranslate_() {
-    Point slotLocation = sprite_->location->get();
+    Point slotLocation = sprite_->location.get();
 
     glTranslated(
             -slotLocation.x,

@@ -15,11 +15,11 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Ears.h"
-#include "SimpleProperty.h"
+#include "Property.h"
 
 Ears::Ears() :
-    location    (   new SimpleProperty<Point>   (&location_)    ),
-    maxDistance (   new SimpleProperty<double>  (&maxDistance_) ),
+    location    (   Property<Point>   (&location_)    ),
+    maxDistance (   Property<double>  (&maxDistance_) ),
 
     location_       (   Point(0, 0) ),
     maxDistance_    (   0.0         )
@@ -28,5 +28,5 @@ Ears::Ears() :
 }
 
 Ears::~Ears() {
-    delete location;
+
 }

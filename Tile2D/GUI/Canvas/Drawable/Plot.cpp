@@ -18,11 +18,10 @@
 #include "Plot.h"
 #include "Canvas.h"
 #include "Camera.h"
-#include "SimpleProperty.h"
 
 Plot::Plot() :
-    location(   new SimpleProperty<Point>   (&location_)    ),
-    size(       new SimpleProperty<double>  (&size_   )     ),
+    location(   Property<Point>   (&location_)    ),
+    size(       Property<double>  (&size_   )     ),
 
     location_(  Point(0, 0) ),
     size_(      1.0         )
@@ -31,11 +30,11 @@ Plot::Plot() :
 }
 
 Plot::~Plot() {
-    delete location;
+
 }
 
 void Plot::draw(Canvas *canvas) {
-    Rect cameraRect = canvas->getCamera()->areaRect->get();
+    Rect cameraRect = canvas->getCamera()->areaRect.get();
     Rect renderingAreaRect = canvas->getRenderingAreaRect();
 
     double pixelWidth = cameraRect.getWidth() / renderingAreaRect.getWidth();

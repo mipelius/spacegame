@@ -20,8 +20,8 @@
 class MapTexture;
 
 #include <string>
-#include "ReadableProperty.h"
 #include "json.h"
+#include "ReadableProperty.h"
 
 class Block {
 
@@ -41,10 +41,10 @@ public:
     Block(json::Object object, MapTexture* mapTexture);
     ~Block();
 
-    ReadableProperty<std::string>* const name;
-    ReadableProperty<double>* const density;
-    ReadableProperty<double>* const translucency;
-    ReadableProperty<double>* const opacity;
+    ReadableProperty<std::string> const name;
+    ReadableProperty<double> const density;
+    ReadableProperty<double> const translucency;
+    ReadableProperty<double> const opacity;
 
     int getMapTextureId();
 

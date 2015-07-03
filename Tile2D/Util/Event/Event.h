@@ -27,11 +27,11 @@ public:
     Event(TOwner* eventOwner);
     ~Event();
 
-    void raise(TArgs eventArgs);
-    void add(IEventHandler<TOwner, TArgs> * eventHandler);
+    void raise(TArgs eventArgs) const;
+    void add(IEventHandler<TOwner, TArgs> * eventHandler) const;
 
 private:
-    std::list<IEventHandler<TOwner, TArgs>* > eventHandlers_;
+    mutable std::list<IEventHandler<TOwner, TArgs>* > eventHandlers_;
     TOwner* eventOwner_;
 };
 
@@ -50,14 +50,14 @@ Event<TOwner, TArgs>::~Event() {
 }
 
 template <typename TOwner, typename TArgs>
-void Event<TOwner, TArgs>::raise(TArgs eventArgs) {
+void Event<TOwner, TArgs>::raise(TArgs eventArgs) const {
     for (typename std::list<IEventHandler<TOwner, TArgs> *>::iterator i = eventHandlers_.begin(); i != eventHandlers_.end(); i++) {
         (*i)->handle(eventOwner_, eventArgs);
     }
 }
 
 template <typename TOwner, typename TArgs>
-void Event<TOwner, TArgs>::add(IEventHandler<TOwner, TArgs> * eventHandler) {
+void Event<TOwner, TArgs>::add(IEventHandler<TOwner, TArgs> * eventHandler) const {
     eventHandlers_.push_back(eventHandler);
 }
 

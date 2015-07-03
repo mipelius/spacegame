@@ -28,7 +28,7 @@ public:
     Background();
     ~Background();
 
-    Property<double>* const ratio;
+    Property<double> const ratio;
 
     void draw(Canvas* canvas);
 

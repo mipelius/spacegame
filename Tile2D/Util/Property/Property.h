@@ -1,97 +1,96 @@
-// This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// This file is part of Properties.
+// Copyright (C) 2015 Miika Pelkonen
 //
-// SpaceGame is free software: you can redistribute it and/or modify
+// Properties is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// SpaceGame is distributed in the hope that it will be useful,
+// Properties is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
+// along with Properties.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef __Property_H_
 #define __Property_H_
 
+#include <string>
 #include "ReadableProperty.h"
-#include "Exception.h"
-
-// definition
 
 template <typename T>
 class Property : public ReadableProperty<T> {
-    friend class ReadableProperty<T>;
 
 public:
-    Property(void* actualData);
-    ~Property();
+    Property(void *owner, T (*getter)(void *), void (*setter)(void*, const T&));
+    Property(T* actualValue);
 
-    void set(T value);
-    void bind(ReadableProperty<T>* otherProperty);
+    void set(const T& value) const;
 
-protected:
-
-    virtual void setActual(T value) = 0;
+    void bind(const ReadableProperty<T>& otherProperty) const;
 
 private:
-    ReadableProperty<T>* otherPropertyToBeBoundTo_;
-    void setInternal_(T value, std::list<ReadableProperty<T> *>& updatedProperties);
+    void init();
+
+    mutable bool isBound_;
+    void (*setter_)(void*, const T&);
+
+    static void defaultSetter(void* owner, const T& value);
 };
 
-// implementation
-
 template <typename T>
-Property<T>::Property(void* actualData) : ReadableProperty<T>(actualData) {
-    otherPropertyToBeBoundTo_ = nullptr;
+Property<T>::Property(void *owner, T (*getter)(void *), void (*setter)(void*, const T&)) :
+        ReadableProperty<T>(owner, getter)
+{
+    init();
+    setter_ = setter;
 }
 
 template <typename T>
-Property<T>::~Property() {
-    if (otherPropertyToBeBoundTo_) {
-        otherPropertyToBeBoundTo_->dependentProperties_.remove(this);
+Property<T>::Property(T* actualValue) : ReadableProperty<T>(actualValue) {
+    init();
+    setter_ = defaultSetter;
+}
+template <typename T>
+void Property<T>::init() {
+    isBound_ = false;
+}
+
+
+template <typename T>
+void Property<T>::bind(const ReadableProperty<T>& otherProperty) const {
+    if (&otherProperty == this) {
+        throw "Binding failed: property cannot be bound to itself.";
     }
+
+    if (isBound_) {
+        throw "Binding failed: property is already bound";
+    }
+
+    if (otherProperty.nextIndexForPropertyToBeBound_ >= ReadableProperty<T>::MAX_DEPENDENT_PROPERTIES_) {
+        throw "Binding failed: target property has already maximum amount (=" +
+                std::to_string(ReadableProperty<T>::MAX_DEPENDENT_PROPERTIES_) +
+                        ") of dependent properties.";
+    }
+
+    otherProperty.dependentProperties_[otherProperty.nextIndexForPropertyToBeBound_] = this;
+    otherProperty.nextIndexForPropertyToBeBound_++;
+
+    this->setter_(ReadableProperty<T>::owner_, otherProperty.get());
+
+    isBound_ = true;
 }
 
 template <typename T>
-void Property<T>::setInternal_(T value, std::list<ReadableProperty<T> *>& updatedProperties) {
-    for (typename std::list<ReadableProperty<T> *>::iterator i = updatedProperties.begin(); i != updatedProperties.end(); i++) {
-        if ((*i) == this) return;
-    }
-
-    setActual(value);
-
-    updatedProperties.push_back(this);
-
-    std::list<Property<T>*> properties = ReadableProperty<T>::dependentProperties_;
-
-    if (!properties.empty()) {
-
-        typename std::list<Property<T>* >::const_iterator i = properties.begin();
-
-        for (; i != properties.end(); i++) {
-            (*i)->setInternal_(this->getActual(), updatedProperties);
-        }
-    }
+void Property<T>::defaultSetter(void* owner, const T& value) {
+    *(T*)(owner) = value;
 }
 
 template <typename T>
-void Property<T>::bind(ReadableProperty<T>* otherProperty) {
-    if (otherPropertyToBeBoundTo_) {
-        throw Exception("Property is already bound.");
-    }
-
-    otherPropertyToBeBoundTo_ = otherProperty;
-    otherProperty->dependentProperties_.push_back(this);
-    setActual(otherPropertyToBeBoundTo_->get());
-}
-
-template <typename T>
-void Property<T>::set(T value) {
-    setActual(value);
+void Property<T>::set(const T& value) const {
+    setter_(ReadableProperty<T>::owner_, value);
     ReadableProperty<T>::updateDependentProperties();
 }
 

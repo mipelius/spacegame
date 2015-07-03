@@ -31,14 +31,14 @@ public:
     ~PhysicsWorld();
 
     void step(double timeSeconds);
-    void add(Body *gameEntity);
+    void add(Body *body);
 
     void setMap(WorldMap * map);
     WorldMap * getMap();
 
-    Property<Vector>* const gForce;
-    Property<double>* const metersPerPixel;
-    Property<double>* const airDensity;
+    Property<Vector> const gForce;
+    Property<double> const metersPerPixel;
+    Property<double> const airDensity;
 
 private:
     Vector gForce_;

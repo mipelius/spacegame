@@ -77,8 +77,8 @@ void Inventory::drawActual(Canvas *canvas) {
     }
 
     if (mouseSelectedItem_) {
-        double x = mouseX_ - this->location->get().x - 20;
-        double y = mouseY_ - this->location->get().y - 20;
+        double x = mouseX_ - this->location.get().x - 20;
+        double y = mouseY_ - this->location.get().y - 20;
 
         glTranslated(x, y, 0.0);
         mouseSelectedItem_->sprite_->draw(canvas);
@@ -133,18 +133,18 @@ void Inventory::checkMouseActions() {
 
 Slot *Inventory::getSlot(Point location) {
     if (
-            location.x < this->location->get().x            ||
-            location.x > this->location->get().x + 40 * 5   ||
-            location.y < this->location->get().y            ||
-            location.y > this->location->get().y + 40 * 5
+            location.x < this->location.get().x            ||
+            location.x > this->location.get().x + 40 * 5   ||
+            location.y < this->location.get().y            ||
+            location.y > this->location.get().y + 40 * 5
     ) {
         return nullptr;
     }
 
     Point actualLocation = location -
                     Vector(
-                            this->location->get().x,
-                            this->location->get().y
+                            this->location.get().x,
+                            this->location.get().y
                     );
 
     for (std::vector<Slot*>::iterator i = equipableSlots_.begin(); i != equipableSlots_.end(); i++) {

@@ -17,26 +17,24 @@
 #include "precompile.h"
 #include "GuiComponentBase.h"
 #include "Window.h"
-#include "SimpleProperty.h"
-#include "SimpleBooleanProperty.h"
 
 GuiComponentBase::GuiComponentBase() :
     // properties
 
-    marginTop       (   new SimpleProperty<double>  (&marginTop_        )   ),
-    marginRight     (   new SimpleProperty<double>  (&marginRight_      )   ),
-    marginLeft      (   new SimpleProperty<double>  (&marginLeft_       )   ),
-    marginBottom    (   new SimpleProperty<double>  (&marginBottom_     )   ),
+    marginTop       (   Property<double>  (&marginTop_        )   ),
+    marginRight     (   Property<double>  (&marginRight_      )   ),
+    marginLeft      (   Property<double>  (&marginLeft_       )   ),
+    marginBottom    (   Property<double>  (&marginBottom_     )   ),
 
-    anchor          (   new SimpleProperty<Anchor>  (&anchor_           )   ),
+    anchor          (   Property<Anchor>  (&anchor_           )   ),
 
-    w               (   new SimpleProperty<double>  (&w_                )   ),
-    h               (   new SimpleProperty<double>  (&h_                )   ),
+    w               (   Property<double>  (&w_                )   ),
+    h               (   Property<double>  (&h_                )   ),
 
-    opacity         (   new SimpleProperty<double>  (&opacity_          )   ),
+    opacity         (   Property<double>  (&opacity_          )   ),
 
-    isVisible       (   new SimpleBooleanProperty   (&isVisible_        )   ),
-    isBoundsVisible (   new SimpleBooleanProperty   (&isBoundsVisible_  )   )
+    isVisible       (   BooleanProperty   (&isVisible_        )   ),
+    isBoundsVisible (   BooleanProperty   (&isBoundsVisible_  )   )
 
 {
     parentGuiComponent_ = nullptr;
@@ -58,26 +56,14 @@ GuiComponentBase::GuiComponentBase() :
 }
 
 GuiComponentBase::~GuiComponentBase() {
-    delete marginTop;
-    delete marginRight;
-    delete marginBottom;
-    delete marginLeft;
 
-    delete anchor;
-
-    delete w;
-    delete h;
-
-    delete opacity;
-
-    delete isVisible;
 }
 
 void GuiComponentBase::setMargin(double top, double right, double bottom, double left) {
-    marginTop->set(top);
-    marginRight->set(right);
-    marginBottom->set(bottom);
-    marginLeft->set(left);
+    marginTop.set(top);
+    marginRight.set(right);
+    marginBottom.set(bottom);
+    marginLeft.set(left);
 }
 
 void GuiComponentBase::setWindow(Window *window) {
@@ -100,7 +86,7 @@ Rect GuiComponentBase::getRenderingAreaRect() {
         parentRect.copy(parentGuiComponent_->getRenderingAreaRect());
     }
     else {
-        parentRect = Rect(0, 0, window_->w->get(), window_->h->get());
+        parentRect = Rect(0, 0, window_->w.get(), window_->h.get());
     }
 
     double w, h;
@@ -164,7 +150,7 @@ void GuiComponentBase::render() {
     Rect rect = getRenderingAreaRect();
 
     GLint x = (GLint)(rect.x1);
-    GLint y = (GLint)(getWindow()->h->get() - rect.y2);
+    GLint y = (GLint)(getWindow()->h.get() - rect.y2);
     GLint w = (GLint)(rect.getWidth());
     GLint h = (GLint)(rect.getHeight());
 

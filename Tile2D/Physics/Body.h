@@ -20,8 +20,8 @@
 #include "Point.h"
 #include "Vector.h"
 #include "Property.h"
+#include "Event.h"
 
-template <typename TOwner, typename TArgs> class Event;
 class PhysicsWorld;
 class CollisionShape;
 class BodyCollisionEventArgs;
@@ -33,21 +33,21 @@ class Body {
 public:
     // properties
 
-    Property<double>* const mass;
+    Property<double> const mass;
 
-    Property<double>* const angle;
-    Property<double>* const angularVelocity;
-    Property<double>* const torque;
+    Property<double> const angle;
+    Property<double> const angularVelocity;
+    Property<double> const torque;
 
-    Property<Point>* const location;
-    Property<Vector>* const velocity;
-    Property<Vector>* const speed;
-    Property<Vector>* const force;
+    Property<Point> const location;
+    Property<Vector> const velocity;
+    Property<Vector> const speed;
+    Property<Vector> const force;
 
     // events
 
-    Event<Body, BodyCollisionEventArgs>* const bodyCollision;
-    Event<Body, EventArgs>* const mapCollision;
+    Event<Body, BodyCollisionEventArgs> const bodyCollision;
+    Event<Body, EventArgs> const mapCollision;
 
     // methods
 
@@ -70,7 +70,7 @@ public:
     void die();
 
 protected:
-    PhysicsWorld * gameWorld_;
+    PhysicsWorld *physicsWorld_;
     CollisionShape* collisionShape_;
 
     virtual void onDie();

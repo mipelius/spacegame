@@ -17,11 +17,11 @@
 #ifndef __Plot_H_
 #define __Plot_H_
 
-template <typename T> class Property;
 class Canvas;
 
 #include "Point.h"
 #include "IDrawable.h"
+#include "Property.h"
 
 class Plot : public IDrawable {
 
@@ -29,8 +29,8 @@ public:
     Plot();
     ~Plot();
 
-    Property<Point>* const location;
-    Property<double>* const size;
+    Property<Point> const location;
+    Property<double> const size;
 
     virtual void draw(Canvas *canvas);
 

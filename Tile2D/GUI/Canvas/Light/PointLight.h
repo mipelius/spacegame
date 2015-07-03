@@ -38,9 +38,9 @@ public:
     PointLight(Point location, double radius, bool isDynamic = false);
     ~PointLight();
 
-    Property<Point>* const location;
-    Property<double>* const radius;
-    Property<double>* const intensity;
+    Property<Point> const location;
+    Property<double> const radius;
+    Property<double> const intensity;
 
     Event<PointLight, PointLightMovedEventArgs>* const movement;
 
@@ -57,6 +57,9 @@ private:
 
     static const int TEXTURE_SIZE = 128;
     static void createLightTexture();
+
+    static Point getLocation_(void* owner);
+    static void setLocation_(void* owner, const Point& value);
 
     class LocationProperty;
 };

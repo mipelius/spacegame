@@ -16,40 +16,18 @@
 
 #include "precompile.h"
 #include "PointLight.h"
-#include "SimpleProperty.h"
+#include "Property.h"
 #include "Canvas.h"
 #include "Camera.h"
 #include "WorldMap.h"
 #include "PartialLightMap.h"
 
-class PointLight::LocationProperty : public SimpleProperty<Point> {
-
-public:
-    LocationProperty(Point *actualData, PointLight* owner) : SimpleProperty(actualData) {
-        owner_ = owner;
-    }
-
-    void setActual(Point value) {
-        Point oldLocation = owner_->location_;
-
-        SimpleProperty<Point>::setActual(value);
-
-        Point newLocation = owner_->location_;
-
-        owner_->movement->raise(PointLightMovedEventArgs(oldLocation, newLocation));
-    }
-
-private:
-
-    PointLight* owner_;
-};
-
 GLuint PointLight::glTextureId_ = 0;
 
 PointLight::PointLight(Point location, double radius, bool isDynamic) :
-    location    (   new LocationProperty        (&location_, this   )  ),
-    radius      (   new SimpleProperty<double>  (&radius_           )  ),
-    intensity   (   new SimpleProperty<double>  (&intensity_        )  ),
+    location    (   Property<Point>   (this, getLocation_, setLocation_)  ),
+    radius      (   Property<double>  (&radius_           )  ),
+    intensity   (   Property<double>  (&intensity_        )  ),
 
     location_   (   location    ),
     radius_     (   radius      ),
@@ -69,13 +47,10 @@ PointLight::PointLight(Point location, double radius, bool isDynamic) :
 
 PointLight::~PointLight() {
     delete movement;
-
-    delete location;
-    delete radius;
 }
 
 void PointLight::draw(Canvas *canvas) {
-    Rect rect = canvas->getCamera()->areaRect->get();
+    Rect rect = canvas->getCamera()->areaRect.get();
 
     double x = location_.x - rect.x1 - radius_;
     double y = location_.y - rect.y1 - radius_;
@@ -143,3 +118,18 @@ void PointLight::createLightTexture() {
 }
 
 
+Point PointLight::getLocation_(void *owner) {
+    return ((PointLight*)owner)->location_;
+}
+
+void PointLight::setLocation_(void *owner, const Point &value) {
+    PointLight* pointLight = (PointLight*)owner;
+
+    Point oldLocation = pointLight->location_;
+
+    pointLight->location_ = value;
+
+    Point newLocation = pointLight->location_;
+
+    pointLight->movement->raise(PointLightMovedEventArgs(oldLocation, newLocation));
+}

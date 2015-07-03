@@ -17,15 +17,15 @@
 #include <iostream>
 #include "Text.h"
 #include "Font.h"
-#include "SimpleProperty.h"
+#include "Property.h"
 #include "Canvas.h"
 #include "Camera.h"
 #include "Texture.h"
 
 Text::Text(Font *font) :
 
-    size(       new SimpleProperty<float>       (&size_   )     ),
-    string(     new SimpleProperty<std::string> (&string_)   )
+    size(       Property<float>       (&size_   )     ),
+    string(     Property<std::string> (&string_)   )
 
 {
     font_ = font;

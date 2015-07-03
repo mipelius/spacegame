@@ -40,7 +40,7 @@ CollisionShape::CollisionShape(Point points[], int count): boundingBox(Rect(-1, 
 bool CollisionShape::intersectsWith(CollisionShape* otherShape) {
     if (!this->getBoundingBox().intersectsWith(otherShape->getBoundingBox())) return false;
 
-    Point location = owner->location->get();
+    Point location = owner->location.get();
 
     Point *otherShapePoints = otherShape->getRotatedPoints();
     Point *thisPoints = this->getRotatedPoints();
@@ -54,7 +54,7 @@ bool CollisionShape::intersectsWith(CollisionShape* otherShape) {
                     intersectsWithHalfLine(
                             thisPoints[j] + Vector(location.x, location.y),
                             thisPoints[j+1] + Vector(location.x, location.y),
-                            otherShapePoints[i] + Vector(otherShape->owner->location->get().x, otherShape->owner->location->get().y))
+                            otherShapePoints[i] + Vector(otherShape->owner->location.get().x, otherShape->owner->location.get().y))
                     ) {
 
                 intersectionCount++;
@@ -65,7 +65,7 @@ bool CollisionShape::intersectsWith(CollisionShape* otherShape) {
                 intersectsWithHalfLine(
                         thisPoints[count-1] + Vector(location.x, location.y),
                         thisPoints[0] + Vector(location.x, location.y),
-                        otherShapePoints[i] + Vector(otherShape->owner->location->get().x, otherShape->owner->location->get().y))
+                        otherShapePoints[i] + Vector(otherShape->owner->location.get().x, otherShape->owner->location.get().y))
                 ) {
 
             intersectionCount++;
@@ -103,7 +103,7 @@ bool CollisionShape::intersectsWithHalfLine(Point linePoint1, Point linePoint2, 
 }
 
 Point* CollisionShape::getRotatedPoints() {
-    double angleRad = this->owner->angle->get() / 360 * 2 * M_PI * -1;
+    double angleRad = this->owner->angle.get() / 360 * 2 * M_PI * -1;
 
     Point* rotatedPoints = (Point*)malloc(count * sizeof(Point));
 
@@ -115,7 +115,7 @@ Point* CollisionShape::getRotatedPoints() {
 }
 
 Rect CollisionShape::getBoundingBox() {
-    Point location = owner->location->get();
+    Point location = owner->location.get();
 
     return Rect(
         this->boundingBox.x1 + location.x,
@@ -127,7 +127,7 @@ Rect CollisionShape::getBoundingBox() {
 
 
 bool CollisionShape::intersectsWith(Rect* rectangle) {
-    Point location = owner->location->get();
+    Point location = owner->location.get();
 
     Point* points = getRotatedPoints();
 

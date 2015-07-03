@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// Copyright (C) 2015 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,13 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "SimpleBooleanProperty.h"
+#ifndef __BooleanProperty_H_
+#define __BooleanProperty_H_
 
-SimpleBooleanProperty::SimpleBooleanProperty(bool *actualData) : SimpleProperty(actualData) {
+#include "Property.h"
 
-}
+class BooleanProperty : public Property<bool> {
 
-void SimpleBooleanProperty::toggle() {
-    bool oldValue = get();
-    set(!oldValue);
-}
+public:
+    BooleanProperty(bool *actualValue);
+    BooleanProperty(void* owner, bool (*getter)(void* owner), void (*setter)(void* owner, const bool& value));
+
+    void toggle();
+
+};
+
+#endif //__BooleanProperty_H_

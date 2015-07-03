@@ -27,6 +27,7 @@ class ITexture;
 class Sprite : public DrawableBase {
 
 public:
+    Sprite();
     Sprite(ITexture* texture, Rect rect);
 
     Rect getRect();

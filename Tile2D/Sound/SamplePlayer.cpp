@@ -28,16 +28,16 @@ void SamplePlayer::play(Sample *sample, int channel, const Point* location) {
         Mix_SetPanning(channel, 255, 255);
     }
     else {
-        double distance = location->distance(ears_->location->get());
+        double distance = location->distance(ears_->location.get());
 
-        if (distance < ears_->maxDistance->get()) {
-            double amount = 1.0 - (distance / ears_->maxDistance->get());
+        if (distance < ears_->maxDistance.get()) {
+            double amount = 1.0 - (distance / ears_->maxDistance.get());
 
             if (amount < 0) {
                 amount = 0;
             }
 
-            double deltaX = location->x - ears_->location->get().x;
+            double deltaX = location->x - ears_->location.get().x;
 
             Uint8 left;
             Uint8 right;

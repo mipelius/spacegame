@@ -50,8 +50,8 @@ Rect Sprite::getRect() {
 }
 
 Rect Sprite::getActualRect() {
-    double x = location->get().x;
-    double y = location->get().y;
+    double x = location.get().x;
+    double y = location.get().y;
 
     return Rect(
             rect_.x1 + x,
@@ -59,4 +59,8 @@ Rect Sprite::getActualRect() {
             rect_.x2 + x,
             rect_.y2 + y
     );
+}
+
+Sprite::Sprite() : rect_(Rect(0, 0, 0, 0)) {
+
 }

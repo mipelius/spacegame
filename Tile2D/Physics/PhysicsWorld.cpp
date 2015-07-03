@@ -18,16 +18,16 @@
 #include "PhysicsWorld.h"
 #include "Body.h"
 #include "WorldMap.h"
-#include "SimpleProperty.h"
+#include "Property.h"
 
 PhysicsWorld::PhysicsWorld(
         Vector gForce,
         double metersPerPixel,
         double airDensity
 ):
-    gForce(             new SimpleProperty<Vector>    (&gForce_)           ),
-    metersPerPixel(     new SimpleProperty<double>    (&metersPerPixel_)   ),
-    airDensity(         new SimpleProperty<double>    (&airDensity_)       ),
+    gForce(             Property<Vector>    (&gForce_)           ),
+    metersPerPixel(     Property<double>    (&metersPerPixel_)   ),
+    airDensity(         Property<double>    (&airDensity_)       ),
 
     gForce_(gForce)
 {
@@ -38,14 +38,12 @@ PhysicsWorld::PhysicsWorld(
 }
 
 PhysicsWorld::~PhysicsWorld() {
-    delete gForce;
-    delete metersPerPixel;
-    delete airDensity;
+
 }
 
-void PhysicsWorld::add(Body *gameEntity) {
-    bodies_.push_back(gameEntity);
-    gameEntity->setWorld_(this);
+void PhysicsWorld::add(Body *body) {
+    bodies_.push_back(body);
+    body->setWorld_(this);
 }
 
 void PhysicsWorld::step(double timeSeconds) {

@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// Copyright (C) 2015 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,20 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __LightObject_H_
-#define __LightObject_H_
+#ifndef __GameObjectBase_H_
+#define __GameObjectBase_H_
 
-class PointLight;
-class DrawableGroup;
+#include "IDrawable.h"
+#include "Body.h"
 
-#include "Point.h"
+class GameObjectBase {
 
-class LightObject {
 public:
-    LightObject(Point location, double radius);
-
-    DrawableGroup * const spriteContainer;
-    PointLight* const pointLight;
+    IDrawable* const drawable;
+    Body* const body;
 };
 
-#endif //__LightObject_H_
+#endif //__GameObjectBase_H_

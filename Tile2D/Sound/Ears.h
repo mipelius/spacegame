@@ -18,7 +18,7 @@
 #define __Ears_H_
 
 #include "Point.h"
-#import "Property.h"
+#include "Property.h"
 
 class Ears {
 
@@ -26,8 +26,8 @@ public:
     Ears();
     ~Ears();
 
-    Property<Point>* const location;
-    Property<double>* const maxDistance;
+    Property<Point> const location;
+    Property<double> const maxDistance;
 
 private:
     Point location_;

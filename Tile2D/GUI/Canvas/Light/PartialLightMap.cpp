@@ -41,7 +41,7 @@ void PartialLightMap::updateInternal(unsigned char lastLight, int currentX, int 
     Block* currentBlock = map->getValue(actualX, actualY);
     if (!currentBlock) return;
 
-    double translucency = currentBlock->translucency->get();
+    double translucency = currentBlock->translucency.get();
 
     unsigned newLight = lastLight;
 

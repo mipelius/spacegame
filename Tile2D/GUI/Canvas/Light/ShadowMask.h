@@ -40,7 +40,7 @@ public:
     ShadowMask(double w, double h, WorldMap * map);
     ~ShadowMask();
 
-    Property<double>* const ambientLight;
+    Property<double> const ambientLight;
 
     void update(Canvas* canvas);
     void draw(Canvas* canvas);

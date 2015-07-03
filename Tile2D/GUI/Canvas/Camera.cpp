@@ -18,58 +18,14 @@
 #include "Camera.h"
 #include "Body.h"
 #include "PhysicsWorld.h"
-#include "SimpleProperty.h"
-
-class Camera::LocationProperty : public Property<Point> {
-
-public:
-
-    LocationProperty(Camera* camera) : Property<Point>((void*)camera) { }
-
-    Point getActual() {
-        Rect rect = ((Camera*)actualData_)->areaRect->get();
-        double x = rect.x1 + rect.getWidth() / 2;
-        double y = rect.y1 + rect.getHeight() / 2;
-        return Point(x, y);
-    }
-
-    void setActual(Point value) {
-        Rect areaRect = ((Camera*)actualData_)->areaRect->get();
-        Rect boundsRect = ((Camera*)actualData_)->boundsRect->get();
-
-        double x = value.x - areaRect.getWidth() / 2;
-        double y = value.y - areaRect.getHeight() / 2;
-        double w = areaRect.getWidth();
-        double h = areaRect.getHeight();
-
-        double x1 = boundsRect.x1;
-        double y1 = boundsRect.y1;
-        double x2 = boundsRect.x2;
-        double y2 = boundsRect.y2;
-
-        if (x < x1)     x = x1;
-        if (x + w > x2) x = x2 - w;
-        if (y < y1)     y = y1;
-        if (y + h > y2) y = y2 - h;
-
-        ((Camera*)actualData_)->areaRect->set(
-                Rect(
-                        x,
-                        y,
-                        x + w,
-                        y + h
-                )
-        );
-    }
-
-};
+#include "Property.h"
 
 Camera::Camera() :
     // properties
 
-    location(       new LocationProperty      (this           )   ),
-    areaRect(       new SimpleProperty<Rect>  (&areaRect_     )   ),
-    boundsRect(     new SimpleProperty<Rect>  (&boundsRect_   )   ),
+    location(       Property<Point> (this, getLocation_, setLocation_)   ),
+    areaRect(       Property<Rect>  (&areaRect_     )   ),
+    boundsRect(     Property<Rect>  (&boundsRect_   )   ),
 
     // member objects
     areaRect_(      Rect(0, 0, 0, 0)    ),
@@ -79,9 +35,6 @@ Camera::Camera() :
 }
 
 Camera::~Camera() {
-    delete location;
-    delete areaRect;
-    delete boundsRect;
 }
 
 
@@ -92,5 +45,43 @@ void Camera::zoom(double amount) {
     areaRect_.y1 += amount * ratio;
     areaRect_.x2 -= amount;
     areaRect_.y2 -= amount * ratio;
-    areaRect->updateDependentProperties();
+    areaRect.updateDependentProperties();
+}
+
+Point Camera::getLocation_(void *owner) {
+    Rect rect = ((Camera*)owner)->areaRect.get();
+
+    double x = rect.x1 + rect.getWidth() / 2;
+    double y = rect.y1 + rect.getHeight() / 2;
+
+    return Point(x, y);
+}
+
+void Camera::setLocation_(void *owner, const Point &value) {
+    Rect areaRect = ((Camera*)owner)->areaRect.get();
+    Rect boundsRect = ((Camera*)owner)->boundsRect.get();
+
+    double x = value.x - areaRect.getWidth() / 2;
+    double y = value.y - areaRect.getHeight() / 2;
+    double w = areaRect.getWidth();
+    double h = areaRect.getHeight();
+
+    double x1 = boundsRect.x1;
+    double y1 = boundsRect.y1;
+    double x2 = boundsRect.x2;
+    double y2 = boundsRect.y2;
+
+    if (x < x1)     x = x1;
+    if (x + w > x2) x = x2 - w;
+    if (y < y1)     y = y1;
+    if (y + h > y2) y = y2 - h;
+
+    ((Camera*)owner)->areaRect.set(
+            Rect(
+                    x,
+                    y,
+                    x + w,
+                    y + h
+            )
+    );
 }

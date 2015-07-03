@@ -22,11 +22,11 @@
 DrawableBase::DrawableBase() :
 
 // properties
-location    (   new SimpleProperty<Point>   (&location_)    ),
-angle       (   new SimpleProperty<double>  (&angle_)       ),
-isVisible   (   new SimpleBooleanProperty   (&isVisible_)   ),
-opacity     (   new SimpleProperty<double>  (&opacity_)     ),
-color       (   new SimpleProperty<Color>   (&color_)       ),
+location    (   Property<Point>   (&location_)    ),
+angle       (   Property<double>  (&angle_)       ),
+isVisible   (   BooleanProperty   (&isVisible_)   ),
+opacity     (   Property<double>  (&opacity_)     ),
+color       (   Property<Color>   (&color_)       ),
 
 // private attributes initialization
 location_   (Point(0, 0)),
@@ -40,9 +40,7 @@ color_      (Color(1.0, 1.0, 1.0))
 }
 
 DrawableBase::~DrawableBase() {
-    delete location;
-    delete angle;
-    delete isVisible;
+
 }
 
 void DrawableBase::draw(Canvas *canvas) {

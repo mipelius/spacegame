@@ -1,75 +1,77 @@
-// This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// This file is part of Properties.
+// Copyright (C) 2015 Miika Pelkonen
 //
-// SpaceGame is free software: you can redistribute it and/or modify
+// Properties is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// SpaceGame is distributed in the hope that it will be useful,
+// Properties is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
+// along with Properties.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef __ReadableProperty_H_
 #define __ReadableProperty_H_
 
-template<typename T>
-class Property;
+template <typename T> class Property;
 
-#include <list>
-
-// definition
-
-template<typename T>
+template <typename T>
 class ReadableProperty {
+
     friend class Property<T>;
 
 public:
-    ReadableProperty(void* actualData);
-    virtual ~ReadableProperty();
+    ReadableProperty(void* owner, T (*getter)(void*));
+    ReadableProperty(T* actualValue);
 
-    T get();
+    void updateDependentProperties() const;
 
-    void updateDependentProperties();
-
-protected:
-    void* actualData_;
-    virtual T getActual() = 0;
+    T get() const;
 
 private:
-    std::list<Property<T>*> dependentProperties_;
-    std::list<ReadableProperty<T>*> updatedProperties_;
+    void* owner_;
+    T (*getter_)(void*);
+    static T defaultGetter(void* owner);
+
+    static const int MAX_DEPENDENT_PROPERTIES_ = 4;
+
+    mutable const Property<T> * dependentProperties_[MAX_DEPENDENT_PROPERTIES_];
+    mutable int nextIndexForPropertyToBeBound_ = 0;
 };
 
-// implementation
-
 template <typename T>
-ReadableProperty<T>::ReadableProperty(void* actualData) : actualData_(actualData) { }
-
-template <typename T>
-ReadableProperty<T>::~ReadableProperty() { }
-
-template <typename T>
-T ReadableProperty<T>::get() {
-    return getActual();
+ReadableProperty<T>::ReadableProperty(void *owner, T (*getter)(void *)) {
+    owner_ = owner;
+    getter_ = getter;
 }
 
 template <typename T>
-void ReadableProperty<T>::updateDependentProperties() {
-    if (!dependentProperties_.empty()) {
-        for (typename std::list<Property<T>* >::iterator i = dependentProperties_.begin(); i != dependentProperties_.end(); i++) {
+ReadableProperty<T>::ReadableProperty(T *actualValue) {
+    owner_ = actualValue;
+    getter_ = defaultGetter;
+}
 
-            updatedProperties_.push_back(this);
+template <typename T>
+T ReadableProperty<T>::get() const {
+    return getter_(owner_);
+}
 
-            (*i)->Property<T>::setInternal_(getActual(), updatedProperties_);
+template <typename T>
+T ReadableProperty<T>::defaultGetter(void* owner) {
+    return *(T*)(owner);
+}
 
-            updatedProperties_.clear();
-        }
+template <typename T>
+void ReadableProperty<T>::updateDependentProperties() const {
+    for (int i = 0; i < nextIndexForPropertyToBeBound_; i++) {
+        const Property<T>* currentProperty = dependentProperties_[i];
+        currentProperty->set(get());
     }
 }
 
 #endif //__ReadableProperty_H_
+

@@ -125,19 +125,19 @@ long WorldMap::getActualH() {
 bool WorldMap::detectCollisionWith(Body *body) {
     if (!body->getCollisionShape()) return false;
 
-    Block* block = this->getValueScaled(body->location->get());
-    if (block && block->density->get() > 0.0) return true;
+    Block* block = this->getValueScaled(body->location.get());
+    if (block && block->density.get() > 0.0) return true;
 
     Point* points = body->getCollisionShape()->getRotatedPoints();
 
     for (int i=0; i< body->getCollisionShape()->getCount(); i++) {
         Point point(
-                points[i].x + body->location->get().x,
-                points[i].y + body->location->get().y
+                points[i].x + body->location.get().x,
+                points[i].y + body->location.get().y
         );
 
         block = this->getValueScaled(point);
-        if (block && block->density->get() > 0.0) return true;
+        if (block && block->density.get() > 0.0) return true;
     }
 
     Rect boundingBox = body->getCollisionShape()->getBoundingBox();
@@ -150,7 +150,7 @@ bool WorldMap::detectCollisionWith(Body *body) {
     for (int i=iBegin; i <= iEnd; i += blockSizeW) {
         for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
             block = this->getValueScaled(Point(i, j));
-            if (block && block->density->get() > 0.0) {
+            if (block && block->density.get() > 0.0) {
                 Rect* rect = new Rect(i, j, i + blockSizeW, j + blockSizeH);
                 if (body->getCollisionShape()->intersectsWith(rect)) {
                     return true;

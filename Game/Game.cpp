@@ -30,8 +30,6 @@
 #include "MapTexture.h"
 #include "Camera.h"
 
-#include "Spaceship.h"
-
 #include "Music.h"
 #include "MusicPlayer.h"
 
@@ -44,19 +42,10 @@
 
 #include "AnimationManager.h"
 #include "ShadowMask.h"
-#include "PointLight.h"
-
-#include "Sprite.h"
-#include "DrawableGroup.h"
-#include "LightObject.h"
-#include "DynamicLightObject.h"
-#include "Sample.h"
 #include "SamplePlayer.h"
 #include "Ears.h"
 
 #include "AnimatedTexture.h"
-#include "Bomb.h"
-#include "Explosion.h"
 #include "Font.h"
 #include "Text.h"
 
@@ -67,42 +56,14 @@ Game::Game() {
 }
 
 void Game::launch() {
-    Text* text = new Text(App::getResources()->other->smallFont);
-    text->location->set(Point(4000, 8000));
-    text->string->set("Welcome to Space Game!");
-    text->size->set(3);
-    text->color->set(Color(0.5, 0.7, 1));
-
-    canvas_->addDrawable(text);
-
     App::getMusicPlayer()->play(App::getResources()->tunes->spacegame);
 
     const Uint8* keys;
-    Uint32 timeMilliSec = 0;
-    Uint32 lightAddingInterval = 200; // ms
-    Uint32 timePassedAfterLastLightAdd = 0;
-
-    Uint32 shootingInterval = 200;
-    Uint32 timePassedAfterLastShot = 0;
-    Uint32 bombingInterval = 200;
-    Uint32 timePassedAfterLastBomb = 0;
-
-    Uint32 inventoryInterval = 300;
-    Uint32 timePassedAfterLastInventoryToggle = 0;
 
     while (!SDL_QuitRequested()) {
         /// --- INPUT READING AND HANDLING ---
 
         keys = SDL_GetKeyboardState(0);
-
-        spaceship_->body->torque->set(0);
-
-        if (keys[SDL_SCANCODE_TAB]) {
-            if (timePassedAfterLastInventoryToggle > inventoryInterval) {
-                inventory_->toggleBigInventoryVisibility();
-                timePassedAfterLastInventoryToggle = 0;
-            }
-        }
 
         if (keys[SDL_SCANCODE_1]) {
             inventory_->selectSlot(1);
@@ -125,104 +86,40 @@ void Game::launch() {
         }
 
         if (keys[SDL_SCANCODE_LEFT]) {
-            if (spaceship_->body->angularVelocity->get() > -10) {
-                spaceship_->body->torque->set(-250);
-            }
+
         }
+
         if (keys[SDL_SCANCODE_RIGHT]) {
-            if (spaceship_->body->angularVelocity->get() < 10) {
-                spaceship_->body->torque->set(250);
-            }
+
         }
+
         if (keys[SDL_SCANCODE_UP]) {
-            spaceship_->accelerate();
+
         }
 
         if (keys[SDL_SCANCODE_SPACE]) {
-            if (timePassedAfterLastShot > shootingInterval) {
-                timePassedAfterLastShot = 0;
-                spaceship_->shoot();
-            }
+
         }
 
         if (keys[SDL_SCANCODE_X]) {
-            if (timePassedAfterLastLightAdd > lightAddingInterval) {
-                timePassedAfterLastLightAdd = 0;
 
-                LightObject * light = new LightObject(spaceship_->location->get(), 400);
-
-                canvas_->addDrawable(light->spriteContainer);
-                shadowMask_->addLight(light->pointLight);
-
-                Plot* plot = new Plot();
-                plot->location->set(spaceship_->body->location->get());
-                plot->size->set(1.0);
-
-                smallMapCanvas_->addDrawable(plot);
-            }
-        }
-
-        if (keys[SDL_SCANCODE_A]) {
-            if (timePassedAfterLastBomb > bombingInterval) {
-                timePassedAfterLastBomb = 0;
-
-                Bomb* bomp = new Bomb();
-                bomp->body->location->set(
-                    spaceship_->location->get() + Vector::byAngle(
-                        spaceship_->body->angle->get(), -20.0
-                    )
-                );
-
-                // initial speed
-
-                Vector speed = spaceship_->body->speed->get();
-                if (speed.y <= 0) {
-                    speed = speed * 0.25;
-                    speed.y = 0;
-                }
-                else {
-                    speed.x *= 0.25;
-                    speed.y *= 0.5;
-                }
-
-                bomp->body->speed->set(speed);
-
-                world_->add(bomp->body);
-                canvas_->addDrawable(bomp->spriteContainer);
-            }
-        }
-
-        if (keys[SDL_SCANCODE_C]) {
-            int xx = spaceship_->location->get().x;
-            int yy = spaceship_->location->get().y;
-
-            for (int i = -10; i<=10; i++) {
-                for (int j = -10; j<=10; j++) {
-                    map_->setValueScaled(Point(xx + 10 * i, yy + 10 * j), App::getResources()->other->blockMapping->getBlock(0));
-                }
-            }
         }
 
         if (keys[SDL_SCANCODE_RETURN]) {
-            smallMapCanvas_->isVisible->toggle();
+
         }
 
         inventory_->checkMouseActions();
 
         /// --- PHYSICS ---
 
-        Uint32 timeElapsedMilliSec = SDL_GetTicks() - timeMilliSec;
-        timeMilliSec = SDL_GetTicks();
-        world_->step(timeElapsedMilliSec / 1000.0);
-
-        timePassedAfterLastLightAdd +=  timeElapsedMilliSec;
-        timePassedAfterLastBomb += timeElapsedMilliSec;
-        timePassedAfterLastShot += timeElapsedMilliSec;
-        timePassedAfterLastInventoryToggle += timeElapsedMilliSec;
+//        Uint32 timeElapsedMilliSec = SDL_GetTicks() - timeMilliSec;
+//        timeMilliSec = SDL_GetTicks();
+//        world_->step(timeElapsedMilliSec / 1000.0);   //TODO
 
         /// --- ANIMATION ---
 
-        App::getAnimationManager()->update(timeElapsedMilliSec / 1000.0);
+//        App::getAnimationManager()->update(timeElapsedMilliSec / 1000.0);
 
         /// --- RENDERING ---
 
@@ -264,15 +161,15 @@ void Game::initialize() {
 
     canvas_ = new Canvas();
     canvas_->setMargin(0, 0, 0, 0);
-    canvas_->w->set(Canvas::SIZE_MAX_WIDTH);
-    canvas_->h->set(Canvas::SIZE_MAX_HEIGHT);
-    canvas_->anchor->set(Canvas::Anchor::TOP_RIGHT);
+    canvas_->w.set(Canvas::SIZE_MAX_WIDTH);
+    canvas_->h.set(Canvas::SIZE_MAX_HEIGHT);
+    canvas_->anchor.set(Canvas::Anchor::TOP_RIGHT);
 
     externalCanvas_ = new Canvas();
     externalCanvas_->setMargin(0, 0, 0, 0);
-    externalCanvas_->w->set(Canvas::SIZE_MAX_WIDTH);
-    externalCanvas_->h->set(Canvas::SIZE_MAX_HEIGHT);
-    externalCanvas_->anchor->set(Canvas::Anchor::TOP_RIGHT);
+    externalCanvas_->w.set(Canvas::SIZE_MAX_WIDTH);
+    externalCanvas_->h.set(Canvas::SIZE_MAX_HEIGHT);
+    externalCanvas_->anchor.set(Canvas::Anchor::TOP_RIGHT);
 
     canvas_->addComponent(externalCanvas_);
 
@@ -305,94 +202,68 @@ void Game::initialize() {
     // --- CAMERA ---
 
     camera_ = new Camera();
-    camera_->boundsRect->set(Rect(0, 0, 20000, 20000));
-    camera_->areaRect->set(Rect(0, 0, App::getWindow()->w->get(), App::getWindow()->h->get()));
+    camera_->boundsRect.set(Rect(0, 0, 20000, 20000));
+    camera_->areaRect.set(Rect(0, 0, App::getWindow()->w.get(), App::getWindow()->h.get()));
 
     canvas_->setCamera(camera_);
     externalCanvas_->setCamera(camera_);
 
-    // --- PLAYER ---
-
-    spaceship_ = new Spaceship();
-    spaceship_->body->location->set(Point(4000, 8000));
-    spaceship_->body->location->bind(spaceship_->location);
-
-    world_->add(spaceship_->body);
-    canvas_->addDrawable(spaceship_->spriteContainer);
-
-    camera_->location->bind(spaceship_->body->location);
-
-    Ears* ears = new Ears();
-    ears->maxDistance->set(1400);
-    ears->location->bind(spaceship_->location);
-    App::getSamplePlayer()->setEars(ears);
-
     // --- SHADOW MASK  ---
 
     shadowMask_ = new ShadowMask(
-            App::getWindow()->w->get(),
-            App::getWindow()->h->get(),
+            App::getWindow()->w.get(),
+            App::getWindow()->h.get(),
             map_
     );
 
     canvas_->addShadowMask(shadowMask_);
-    shadowMask_->ambientLight->set(0.00);
-
-    PointLight* light = new PointLight(Point(4000, 9000), 400, true);
-    shadowMask_->addLight(light);
-    light->location->bind(spaceship_->location);
+    shadowMask_->ambientLight.set(0.05);
 
     // --- SMALL MAP ---
 
     smallMapCanvas_ = new Canvas();
     smallMapCanvas_->setMargin(20, 20, 20, 20);
-    smallMapCanvas_->w->set(250);
-    smallMapCanvas_->h->set(200);
-    smallMapCanvas_->anchor->bind(canvas_->anchor);
-    smallMapCanvas_->isBoundsVisible->set(true);
-    smallMapCanvas_->opacity->set(0.5);
+    smallMapCanvas_->w.set(250);
+    smallMapCanvas_->h.set(200);
+    smallMapCanvas_->anchor.bind(canvas_->anchor);
+    smallMapCanvas_->isBoundsVisible.set(true);
+    smallMapCanvas_->opacity.set(0.5);
 
     smallMapCamera_ = new Camera();
-    smallMapCamera_->boundsRect->set(Rect(0, 0, 20000, 20000));
-    smallMapCamera_->areaRect->set(Rect(0, 0, 4000, 3000));
-    smallMapCamera_->location->bind(spaceship_->body->location);
+    smallMapCamera_->boundsRect.set(Rect(0, 0, 20000, 20000));
+    smallMapCamera_->areaRect.set(Rect(0, 0, 4000, 3000));
     smallMapCanvas_->setCamera(smallMapCamera_);
 
     smallMapCanvas_->addDrawable(drawableMap);
     Plot* plot = new Plot();
-    plot->location->bind(spaceship_->body->location);
-    plot->size->set(1.0);
+    plot->size.set(1.0);
     smallMapCanvas_->addDrawable(plot);
 
     canvas_->addComponent(smallMapCanvas_);
-
-    // --- ANIMATIONS ---
-
-    //
 
     // --- GUI CANVAS ---
 
     GUICanvas_ = new Canvas();
     GUICanvas_->setMargin(0, 0, 0, 0);
-    GUICanvas_->w->set(Canvas::SIZE_MAX_WIDTH);
-    GUICanvas_->h->set(Canvas::SIZE_MAX_HEIGHT);
-    GUICanvas_->anchor->set(Canvas::Anchor::TOP_RIGHT);
+    GUICanvas_->w.set(Canvas::SIZE_MAX_WIDTH);
+    GUICanvas_->h.set(Canvas::SIZE_MAX_HEIGHT);
+    GUICanvas_->anchor.set(Canvas::Anchor::TOP_RIGHT);
 
     Camera* GUICanvasCamera = new Camera();
-    GUICanvasCamera->boundsRect->set(
+    GUICanvasCamera->boundsRect.set(
             Rect(
                     0,
                     0,
-                    App::getWindow()->w->get(),
-                    App::getWindow()->h->get()
+                    App::getWindow()->w.get(),
+                    App::getWindow()->h.get()
             )
     );
-    GUICanvasCamera->areaRect->set(
+    GUICanvasCamera->areaRect.set(
             Rect(
                     0,
                     0,
-                    App::getWindow()->w->get(),
-                    App::getWindow()->h->get()
+                    App::getWindow()->w.get(),
+                    App::getWindow()->h.get()
             )
     );
 
@@ -403,7 +274,7 @@ void Game::initialize() {
     // --- INVENTORY ---
 
     inventory_ = new Inventory();
-    inventory_->location->set(Point(20, 20));
+    inventory_->location.set(Point(20, 20));
     GUICanvas_->addDrawable(inventory_);
 
     isInitialized_ = true;

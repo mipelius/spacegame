@@ -22,26 +22,26 @@
 #include "PhysicsWorld.h"
 #include "WorldMap.h"
 #include "BodyCollisionEventArgs.h"
-#include "SimpleProperty.h"
+#include "Property.h"
 
 Body::Body(double mass) :
     // properties
 
-    mass            (   new SimpleProperty<double>  (&mass_             )   ),
+    mass            (   Property<double>  (&mass_             )   ),
 
-    angle           (   new SimpleProperty<double>  (&angle_            )   ),
-    angularVelocity (   new SimpleProperty<double>  (&angularVelocity_  )   ),
-    torque          (   new SimpleProperty<double>  (&torque_           )   ),
+    angle           (   Property<double>  (&angle_            )   ),
+    angularVelocity (   Property<double>  (&angularVelocity_  )   ),
+    torque          (   Property<double>  (&torque_           )   ),
 
-    location        (   new SimpleProperty<Point>   (&location_         )   ),
-    speed           (   new SimpleProperty<Vector>  (&speed_            )   ),
-    velocity        (   new SimpleProperty<Vector>  (&velocity_         )   ),
-    force           (   new SimpleProperty<Vector>  (&force_            )   ),
+    location        (   Property<Point>   (&location_         )   ),
+    speed           (   Property<Vector>  (&speed_            )   ),
+    velocity        (   Property<Vector>  (&velocity_         )   ),
+    force           (   Property<Vector>  (&force_            )   ),
 
     // events
 
-    bodyCollision   (   new Event<Body, BodyCollisionEventArgs>(this) ),
-    mapCollision    (   new Event<Body, EventArgs>(this) ),
+    bodyCollision   (   Event<Body, BodyCollisionEventArgs>(this) ),
+    mapCollision    (   Event<Body, EventArgs>(this) ),
 
     // private member objects
 
@@ -49,36 +49,21 @@ Body::Body(double mass) :
     speed_          (   Vector(0,0) ),
     velocity_       (   Vector(0,0) ),
     force_          (   Vector(0,0) )
-
 {
-    mass_ = mass;
-
     angle_ = 0.0;
     angularVelocity_ = 0.0;
     torque_ = 0.0;
 
     entityCollisionDetectionIsIgnored_ = false;
     stepIsIgnored_ = false;
-    gameWorld_ = nullptr;
+    physicsWorld_ = nullptr;
     collisionShape_ = nullptr;
 
     isDead_ = false;
 }
 
 Body::~Body() {
-    delete mass;
 
-    delete angle;
-    delete angularVelocity;
-    delete torque;
-
-    delete location;
-    delete speed;
-    delete velocity;
-    delete force;
-
-    delete bodyCollision;
-    delete mapCollision;
 }
 
 void Body::step_(double timeElapsedSec) {
@@ -90,17 +75,17 @@ void Body::step_(double timeElapsedSec) {
         if (speed_.x != 0 || speed_.y != 0) {
             double speedLengthPow2 = speed_.x * speed_.x + speed_.y * speed_.y;
             Vector airResistanceUnitVector = (speed_ * -1) * (1 / sqrt(speed_.x * speed_.x + speed_.y * speed_.y));
-            airResistance = airResistanceUnitVector * speedLengthPow2 * (0.5 * gameWorld_->airDensity->get());
+            airResistance = airResistanceUnitVector * speedLengthPow2 * (0.5 * physicsWorld_->airDensity.get());
         }
 
         Vector totalForce = force_ + airResistance;
 
         // use acceleration for updating speed --> velocity --> location
 
-        Vector acceleration = totalForce * (1 / this->mass->get());
-        acceleration += gameWorld_->gForce->get();
+        Vector acceleration = totalForce * (1 / this->mass.get());
+        acceleration += physicsWorld_->gForce.get();
         speed_ += acceleration;
-        velocity_ = speed_ * timeElapsedSec * gameWorld_->metersPerPixel->get();
+        velocity_ = speed_ * timeElapsedSec * physicsWorld_->metersPerPixel.get();
         location_ = location_ + velocity_;
 
         // apply torque (not very nicely implemented, but good enough)
@@ -111,18 +96,18 @@ void Body::step_(double timeElapsedSec) {
         // remove all applied forces
 
         force_ = Vector(0, 0);
-        torque_ = torque_ / (this->mass->get() * timeElapsedSec);
+        torque_ = torque_ / (this->mass.get() * timeElapsedSec);
 
         // update dependent properties
 
-        this->angle->updateDependentProperties();
-        this->angularVelocity->updateDependentProperties();
-        this->torque->updateDependentProperties();
+        this->angle.updateDependentProperties();
+        this->angularVelocity.updateDependentProperties();
+        this->torque.updateDependentProperties();
 
-        this->location->updateDependentProperties();
-        this->velocity->updateDependentProperties();
-        this->speed->updateDependentProperties();
-        this->force->updateDependentProperties();
+        this->location.updateDependentProperties();
+        this->velocity.updateDependentProperties();
+        this->speed.updateDependentProperties();
+        this->force.updateDependentProperties();
 
         afterStep();
     }
@@ -135,7 +120,7 @@ bool Body::detectMapCollision_() {
     WorldMap * map = this->getWorld()->getMap();
     if (map && map->detectCollisionWith(this)) {
 
-        mapCollision->raise(EventArgs());
+        mapCollision.raise(EventArgs());
 
         return true;
     }
@@ -146,12 +131,10 @@ bool Body::detectMapCollision_() {
 bool Body::detectCollisionWith_(Body *otherBody) {
     if (!entityCollisionDetectionIsIgnored_) {
         if (this->collisionShape_ == nullptr || otherBody->collisionShape_ == nullptr) return false;
-
-        // TODO: this is ugly, make it better
         if (this->collisionShape_->intersectsWith(otherBody->getCollisionShape()) ||
                 otherBody->getCollisionShape()->intersectsWith(this->collisionShape_)) {
 
-            bodyCollision->raise(BodyCollisionEventArgs(otherBody));
+            bodyCollision.raise(BodyCollisionEventArgs(otherBody));
 
             return true;
         }
@@ -171,16 +154,16 @@ void Body::ignoreCollisionDetection() {
 }
 
 void Body::applyForce(Vector force) {
-    Vector forceBefore = this->force->get();
-    this->force->set(forceBefore + force);
+    Vector forceBefore = this->force.get();
+    this->force.set(forceBefore + force);
 }
 
 void Body::setWorld_(PhysicsWorld *gameWorld) {
-    this->gameWorld_ = gameWorld;
+    this->physicsWorld_ = gameWorld;
 }
 
 PhysicsWorld *Body::getWorld() {
-    return this->gameWorld_;
+    return this->physicsWorld_;
 }
 
 CollisionShape *Body::getCollisionShape() {
@@ -193,8 +176,8 @@ void Body::setCollisionShape(CollisionShape* collisionShape) {
 }
 
 void Body::applyTorque(double angle) {
-    double torqueBefore = this->torque->get();
-    this->torque->set(torqueBefore + angle);
+    double torqueBefore = this->torque.get();
+    this->torque.set(torqueBefore + angle);
 }
 
 void Body::afterStep() {

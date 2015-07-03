@@ -55,8 +55,6 @@ int RouteGenerator::heuristicFunction(Node *startNode, Node *goalNode) {
 }
 
 RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
-    // TODO: this method is awfully long, you should refactor it (make more methods)
-
     WorldMap * map = world->getMap();
 
     int minSpaceX = (int)(request->minSpace.getWidth() / map->getBlockW() / 2);
@@ -64,9 +62,6 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
     bool timeOut = false;
 
     // if there is block at the start point or goal point, it's not possible to generate route -> return nullptr
-
-    // TODO: make this work ...
-
 //
 //    if (
 //            map->getByteValueActual((int) request->sender->getLocation().x, (int) request->sender->getLocation().y) ||
@@ -129,8 +124,6 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
 
             for (int x=-minSpaceX; x<=minSpaceX; x++) {
                 for (int y=-minSpaceY; y<=minSpaceY; y++) {
-
-                    // TODO: make this work ...
 
 //                    unsigned char value = map->getByteValue(xCenter + x, yCenter + y);
 

@@ -21,7 +21,7 @@
 #include "DrawableBase.h"
 #include <vector>
 #include <SDL2/SDL_types.h>
-#include "SimpleBooleanProperty.h"
+#include "BooleanProperty.h"
 
 class Camera;
 class Slot;

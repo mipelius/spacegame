@@ -19,6 +19,7 @@
 
 #include "IDrawable.h"
 #include "Canvas.h"
+#include "Property.h"
 #include "Color.h"
 
 class DrawableBase : public IDrawable{
@@ -27,11 +28,11 @@ public:
     DrawableBase();
     ~DrawableBase();
 
-    Property<Point>* const location;
-    Property<double>* const angle;
-    SimpleBooleanProperty* const isVisible;
-    Property<double>* const opacity;
-    Property<Color>* const color;
+    Property<Point>     const location;
+    Property<double>    const angle;
+    BooleanProperty     const isVisible;
+    Property<double>    const opacity;
+    Property<Color>     const color;
 
     virtual void draw(Canvas *canvas);
 

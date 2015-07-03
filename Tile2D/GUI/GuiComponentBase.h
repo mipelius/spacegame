@@ -21,7 +21,8 @@ class Window;
 
 #include <list>
 #include "Rect.h"
-#include "SimpleBooleanProperty.h"
+#include "BooleanProperty.h"
+#include "Property.h"
 
 class GuiComponentBase {
     friend class Window;
@@ -34,20 +35,20 @@ public:
     GuiComponentBase();
     ~GuiComponentBase();
 
-    Property<double>* const marginTop;
-    Property<double>* const marginRight;
-    Property<double>* const marginBottom;
-    Property<double>* const marginLeft;
+    Property<double> const marginTop;
+    Property<double> const marginRight;
+    Property<double> const marginBottom;
+    Property<double> const marginLeft;
 
-    Property<Anchor>* const anchor;
+    Property<Anchor> const anchor;
 
-    Property<double>* const w;
-    Property<double>* const h;
+    Property<double> const w;
+    Property<double> const h;
 
-    Property<double>* const opacity;
+    Property<double> const opacity;
 
-    SimpleBooleanProperty* const isVisible;
-    SimpleBooleanProperty* const isBoundsVisible;
+    BooleanProperty const isVisible;
+    BooleanProperty const isBoundsVisible;
 
     virtual void renderActual() = 0;
 

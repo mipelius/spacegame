@@ -16,24 +16,24 @@
 
 #include "Block.h"
 #include "MapTexture.h"
-#include "SimpleReadableProperty.h"
+#include "ReadableProperty.h"
 
 Block Block::emptyBlock_ = Block("empty block", 0.0, 1.0, 1.0, nullptr, -1);
 
 Block::Block(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture, int mapTextureId) :
-    name(           new SimpleReadableProperty<std::string> (   &name_          )   ),
-    density(        new SimpleReadableProperty<double>      (   &density_       )   ),
-    translucency(   new SimpleReadableProperty<double>      (   &translucency_  )   ),
-    opacity(        new SimpleReadableProperty<double>      (   &opacity_       )   )
+    name(           ReadableProperty<std::string> (   &name_          )   ),
+    density(        ReadableProperty<double>      (   &density_       )   ),
+    translucency(   ReadableProperty<double>      (   &translucency_  )   ),
+    opacity(        ReadableProperty<double>      (   &opacity_       )   )
 {
     initialize(name, density, translucency, opacity, mapTexture, mapTextureId);
 }
 
 Block::Block(json::Object object, MapTexture* mapTexture)  :
-name(           new SimpleReadableProperty<std::string> (   &name_          )   ),
-density(        new SimpleReadableProperty<double>      (   &density_       )   ),
-translucency(   new SimpleReadableProperty<double>      (   &translucency_  )   ),
-opacity(        new SimpleReadableProperty<double>      (   &opacity_       )   )
+name(           ReadableProperty<std::string> (   &name_          )   ),
+density(        ReadableProperty<double>      (   &density_       )   ),
+translucency(   ReadableProperty<double>      (   &translucency_  )   ),
+opacity(        ReadableProperty<double>      (   &opacity_       )   )
 {
     MapTexture* mapTextureToUse = nullptr;
     int mapTextureId = -1;
@@ -59,10 +59,7 @@ opacity(        new SimpleReadableProperty<double>      (   &opacity_       )   
 }
 
 Block::~Block() {
-    delete name;
-    delete density;
-    delete translucency;
-    delete opacity;
+
 }
 
 void Block::initialize(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture, int mapTextureId) {

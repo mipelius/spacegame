@@ -20,13 +20,13 @@
 #include "Camera.h"
 #include "Canvas.h"
 
-Background::Background() : ratio( new SimpleProperty<double> (&ratio_) ) {
+Background::Background() : ratio( Property<double> (&ratio_) ) {
     texture_ = nullptr;
     ratio_ = 1.0;
 }
 
 Background::~Background() {
-    delete ratio;
+
 }
 
 
@@ -39,14 +39,14 @@ void Background::setRatio(double ratio) {
 }
 
 void Background::draw(Canvas* canvas) {
-    Rect rect = canvas->getCamera()->areaRect->get();
+    Rect rect = canvas->getCamera()->areaRect.get();
 
     glColor3d(1.0, 1.0, 1.0);
 
     if (texture_) {
         texture_->glBind();
 
-        Point location = canvas->getCamera()->location->get();
+        Point location = canvas->getCamera()->location.get();
 
         GLdouble x = (location.x * ratio_) / texture_->getW();
         GLdouble y = (location.y * ratio_) / texture_->getH();

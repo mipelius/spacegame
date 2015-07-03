@@ -32,8 +32,8 @@ public:
 
     // properties
 
-    Property<float>* const size;
-    Property<std::string>* const string;
+    Property<float> const size;
+    Property<std::string> const string;
 
     virtual void drawActual(Canvas *canvas);
 

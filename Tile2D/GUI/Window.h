@@ -22,11 +22,11 @@ class GuiComponentBase;
 #include <SDL2/SDL_video.h>
 #include <list>
 #include "Property.h"
+#include "ReadableProperty.h"
 #include "Point.h"
+#include "BooleanProperty.h"
 
 class Window {
-    friend class PropertyLocation;
-    friend class PropertyIsFullScreen;
 
 public:
 
@@ -36,10 +36,10 @@ public:
 
     void update();
 
-    Property<Point>* const location;
-    Property<bool>* const isFullScreen;
-    ReadableProperty<double>* const w;
-    ReadableProperty<double>* const h;
+    Property<Point>             const location;
+    BooleanProperty             const isFullScreen;
+    ReadableProperty<double>    const w;
+    ReadableProperty<double>    const h;
 
     void setSize(double w, double h);
 
@@ -64,7 +64,12 @@ private:
 
     bool isInitialized_;
 
-    class PropertyLocation;
+    static Point getLocation_(void* owner);
+    static void setLocation_(void* owner, const Point& value);
+
+    static bool getIsFullScreen_(void *owner);
+    static void setIsFullScreen_(void *owner, const bool &value);
+
     class PropertyIsFullScreen;
 };
 
