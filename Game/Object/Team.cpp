@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,29 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "precompile.h"
-#include "App.h"
-#include "Game.h"
+#include "Team.h"
 
-#undef main
+Team::Team(std::string name) {
+    this->_name = name;
+    this->members = new std::list<SpaceGameObject*>();
+}
 
-int main(int argc, const char * argv[])
-{
-    App::initialize();
+std::string Team::getName() {
+    return this->_name;
+}
 
-    Game* game = Game::getInstance();
-    game->initialize();
-
-    try {
-        game->launch();
-        delete game;
-	}
-    catch (std::exception e) {
-        std::cout << "Something went wrong!";
-        return -1;
-    }
-
-    App::free();
-
-	return 0;
+std::list<SpaceGameObject*> *Team::getMembers() {
+    return this->members;
 }

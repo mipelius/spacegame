@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,29 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "precompile.h"
+#include "LightObject.h"
+#include "Texture.h"
+#include "Sprite.h"
+#include "DrawableGroup.h"
+#include "PointLight.h"
 #include "App.h"
-#include "Game.h"
 
-#undef main
-
-int main(int argc, const char * argv[])
+LightObject::LightObject(Point location, double radius) :
+    spriteContainer(new DrawableGroup()),
+    pointLight(new PointLight(location, radius))
 {
-    App::initialize();
+    Sprite* sprite = new Sprite(App::getResources()->textures->light, Rect(-64, -64, 64, 64));
 
-    Game* game = Game::getInstance();
-    game->initialize();
-
-    try {
-        game->launch();
-        delete game;
-	}
-    catch (std::exception e) {
-        std::cout << "Something went wrong!";
-        return -1;
-    }
-
-    App::free();
-
-	return 0;
+    spriteContainer->addDrawable(sprite);
+    spriteContainer->location.set(location);
 }

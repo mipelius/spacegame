@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <Game/Object/SpaceShip.h>
 #include "precompile.h"
 #include "Game.h"
 #include "App.h"
@@ -45,9 +46,12 @@
 #include "SamplePlayer.h"
 #include "Ears.h"
 
+#include "Spaceship.h"
 #include "AnimatedTexture.h"
 #include "Font.h"
 #include "Text.h"
+#include "LightObject.h"
+#include "Bomb.h"
 
 Game* Game::game_ = nullptr;
 
@@ -56,14 +60,42 @@ Game::Game() {
 }
 
 void Game::launch() {
-    App::getMusicPlayer()->play(App::getResources()->tunes->spacegame);
+    Text* text = new Text(App::getResources()->other->smallFont);
+    text->location.set(Point(4000, 8000));
+    text->string.set("Welcome to Space Game!");
+    text->size.set(3);
+    text->color.set(Color(0.5, 0.7, 1));
+
+    canvas_->addDrawable(text);
+
+    // App::getMusicPlayer()->play(App::getResources()->tunes->spacegame);
 
     const Uint8* keys;
+    Uint32 timeMilliSec = 0;
+    Uint32 lightAddingInterval = 200; // ms
+    Uint32 timePassedAfterLastLightAdd = 0;
+
+    Uint32 shootingInterval = 200;
+    Uint32 timePassedAfterLastShot = 0;
+    Uint32 bombingInterval = 200;
+    Uint32 timePassedAfterLastBomb = 0;
+
+    Uint32 inventoryInterval = 300;
+    Uint32 timePassedAfterLastInventoryToggle = 0;
 
     while (!SDL_QuitRequested()) {
         /// --- INPUT READING AND HANDLING ---
 
         keys = SDL_GetKeyboardState(0);
+
+        spaceship_->body->torque.set(0);
+
+        if (keys[SDL_SCANCODE_TAB]) {
+            if (timePassedAfterLastInventoryToggle > inventoryInterval) {
+                inventory_->toggleBigInventoryVisibility();
+                timePassedAfterLastInventoryToggle = 0;
+            }
+        }
 
         if (keys[SDL_SCANCODE_1]) {
             inventory_->selectSlot(1);
@@ -86,40 +118,106 @@ void Game::launch() {
         }
 
         if (keys[SDL_SCANCODE_LEFT]) {
-
+            if (spaceship_->body->angularVelocity.get() > -10) {
+                spaceship_->body->torque.set(-250);
+            }
         }
 
         if (keys[SDL_SCANCODE_RIGHT]) {
-
+            if (spaceship_->body->angularVelocity.get() < 10) {
+                spaceship_->body->torque.set(250);
+            }
         }
 
         if (keys[SDL_SCANCODE_UP]) {
-
+            spaceship_->accelerate();
         }
 
         if (keys[SDL_SCANCODE_SPACE]) {
-
+            if (timePassedAfterLastShot > shootingInterval) {
+                timePassedAfterLastShot = 0;
+                spaceship_->shoot();
+            }
         }
 
         if (keys[SDL_SCANCODE_X]) {
+            if (timePassedAfterLastLightAdd > lightAddingInterval) {
+                timePassedAfterLastLightAdd = 0;
 
+                LightObject * light = new LightObject(spaceship_->body->location.get(), 400);
+
+                canvas_->addDrawable(light->spriteContainer);
+                shadowMask_->addLight(light->pointLight);
+
+                Plot* plot = new Plot();
+                plot->location.set(spaceship_->body->location.get());
+                plot->size.set(1.0);
+
+                smallMapCanvas_->addDrawable(plot);
+            }
+        }
+
+        if (keys[SDL_SCANCODE_A]) {
+            if (timePassedAfterLastBomb > bombingInterval) {
+                timePassedAfterLastBomb = 0;
+
+                Bomb* bomp = new Bomb();
+                bomp->body->location.set(
+                    spaceship_->body->location.get() + Vector::byAngle(
+                        spaceship_->body->angle.get(), -20.0
+                    )
+                );
+
+                // initial speed
+
+                Vector speed = spaceship_->body->speed.get();
+                if (speed.y <= 0) {
+                    speed = speed * 0.25;
+                    speed.y = 0;
+                }
+                else {
+                    speed.x *= 0.25;
+                    speed.y *= 0.5;
+                }
+
+                bomp->body->speed.set(speed);
+
+                world_->add(bomp->body);
+                canvas_->addDrawable(bomp->spriteContainer);
+            }
+        }
+
+        if (keys[SDL_SCANCODE_C]) {
+            int xx = (int)spaceship_->body->location.get().x;
+            int yy = (int)spaceship_->body->location.get().y;
+
+            for (int i = -10; i<=10; i++) {
+                for (int j = -10; j<=10; j++) {
+                    map_->setValueScaled(Point(xx + 10 * i, yy + 10 * j), App::getResources()->other->blockMapping->getBlock(0));
+                }
+            }
         }
 
         if (keys[SDL_SCANCODE_RETURN]) {
-
+            //smallMapCanvas_->isVisible.toggle();
         }
 
         inventory_->checkMouseActions();
 
         /// --- PHYSICS ---
 
-//        Uint32 timeElapsedMilliSec = SDL_GetTicks() - timeMilliSec;
-//        timeMilliSec = SDL_GetTicks();
-//        world_->step(timeElapsedMilliSec / 1000.0);   //TODO
+        Uint32 timeElapsedMilliSec = SDL_GetTicks() - timeMilliSec;
+        timeMilliSec = SDL_GetTicks();
+        world_->step(timeElapsedMilliSec / 1000.0);
+
+        timePassedAfterLastLightAdd +=  timeElapsedMilliSec;
+        timePassedAfterLastBomb += timeElapsedMilliSec;
+        timePassedAfterLastShot += timeElapsedMilliSec;
+        timePassedAfterLastInventoryToggle += timeElapsedMilliSec;
 
         /// --- ANIMATION ---
 
-//        App::getAnimationManager()->update(timeElapsedMilliSec / 1000.0);
+        App::getAnimationManager()->update(timeElapsedMilliSec / 1000.0);
 
         /// --- RENDERING ---
 
@@ -208,6 +306,21 @@ void Game::initialize() {
     canvas_->setCamera(camera_);
     externalCanvas_->setCamera(camera_);
 
+    // --- PLAYER ---
+
+    spaceship_ = new Spaceship();
+    spaceship_->body->location.set(Point(4000, 8000));
+
+    world_->add(spaceship_->body);
+    canvas_->addDrawable(spaceship_->spriteContainer);
+
+    camera_->location.bind(spaceship_->body->location);
+
+    Ears* ears = new Ears();
+    ears->maxDistance.set(1400);
+    ears->location.bind(spaceship_->body->location);
+    App::getSamplePlayer()->setEars(ears);
+
     // --- SHADOW MASK  ---
 
     shadowMask_ = new ShadowMask(
@@ -217,7 +330,7 @@ void Game::initialize() {
     );
 
     canvas_->addShadowMask(shadowMask_);
-    shadowMask_->ambientLight.set(0.05);
+    shadowMask_->ambientLight.set(0.1);
 
     // --- SMALL MAP ---
 

@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,29 +14,33 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "precompile.h"
-#include "App.h"
-#include "Game.h"
+#ifndef __Explosion_H_
+#define __Explosion_H_
 
-#undef main
+class Texture;
+class AnimatedTexture;
+class DrawableGroup;
+class PointLight;
+class Sample;
 
-int main(int argc, const char * argv[])
-{
-    App::initialize();
+#include "Point.h"
 
-    Game* game = Game::getInstance();
-    game->initialize();
+class Explosion {
 
-    try {
-        game->launch();
-        delete game;
-	}
-    catch (std::exception e) {
-        std::cout << "Something went wrong!";
-        return -1;
-    }
+    friend class AnimatedTexture_Stopped;
 
-    App::free();
+public:
+    Explosion(Point point, double radius);
 
-	return 0;
-}
+private:
+    ~Explosion();
+
+    AnimatedTexture* explosionAnimation_;
+    DrawableGroup * spriteContainer_;
+
+    static int sampleChannel_;
+
+    class AnimatedTexture_Stopped;
+};
+
+#endif //__Explosion_H_

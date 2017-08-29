@@ -54,6 +54,8 @@ Body::Body(double mass) :
     angularVelocity_ = 0.0;
     torque_ = 0.0;
 
+    mass_ = mass;
+
     entityCollisionDetectionIsIgnored_ = false;
     stepIsIgnored_ = false;
     physicsWorld_ = nullptr;

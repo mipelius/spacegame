@@ -61,6 +61,7 @@ public:
 private:
     static const int DEFAULT_BLOCK_SIZE_W = 8;
     static const int DEFAULT_BLOCK_SIZE_H = 8;
+    static const int MAX_COLLISION_BOUNDING_BOX_AREA = 40000;
     int blockSizeW;
     int blockSizeH;
 

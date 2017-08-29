@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,29 +14,36 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "precompile.h"
-#include "App.h"
-#include "Game.h"
+#ifndef __Missile_H_
+#define __Missile_H_
 
-#undef main
+class Body;
+class DrawableGroup;
+class AnimatedTexture;
+class Sample;
 
-int main(int argc, const char * argv[])
-{
-    App::initialize();
+template <typename T> class Property;
 
-    Game* game = Game::getInstance();
-    game->initialize();
+#include "Point.h"
 
-    try {
-        game->launch();
-        delete game;
-	}
-    catch (std::exception e) {
-        std::cout << "Something went wrong!";
-        return -1;
-    }
+class Missile {
+    friend class MissileBody;
+    friend class Body_MapCollisionEventHandler;
 
-    App::free();
+public:
+    Missile(Point initialLocation, Vector force);
+    ~Missile();
 
-	return 0;
-}
+    Body* const body;
+    DrawableGroup * const spriteContainer;
+
+private:
+    class MissileBody;
+
+    class Body_MapCollisionEventHandler;
+    class Body_BodyCollisionEventHandler;
+
+    static int sampleChannel_;
+};
+
+#endif //__Missile_H_

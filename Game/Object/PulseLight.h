@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2014 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,29 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "precompile.h"
-#include "App.h"
-#include "Game.h"
 
-#undef main
+#ifndef __PulseLight_H_
+#define __PulseLight_H_
 
-int main(int argc, const char * argv[])
-{
-    App::initialize();
+class PointLight;
 
-    Game* game = Game::getInstance();
-    game->initialize();
+#include "Point.h"
 
-    try {
-        game->launch();
-        delete game;
-	}
-    catch (std::exception e) {
-        std::cout << "Something went wrong!";
-        return -1;
-    }
+class PulseLight {
+    friend class Animation;
 
-    App::free();
+public:
+    PulseLight(Point point, double radius);
 
-	return 0;
-}
+private:
+    class Animation;
+
+    ~PulseLight();
+
+    Animation* animation_;
+    PointLight* pointLight_;
+
+    double initialRadius_;
+};
+
+#endif //__PulseLight_H_
