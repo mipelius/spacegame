@@ -45,8 +45,8 @@ class Spaceship::Body_MapCollisionEventHandler : public IEventHandler<Body, Even
 
 class Spaceship::Body_BodyCollisionEventHandler : public IEventHandler<Body, BodyCollisionEventArgs> {
     void handle(Body* body, BodyCollisionEventArgs args) {
-        body->location.set(body->location.get() - body->velocity.get());
-        body->speed.set(Vector(0, 0));
+        //body->location.set(body->location.get() - body->velocity.get());
+        //body->speed.set(Vector(0, 0));
     }
 };
 
