@@ -14,45 +14,34 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <iostream>
 #include "Spaceship.h"
-#include "IEventHandler.h"
-#include "EventArgs.h"
-#include "Event.h"
 #include "CollisionShape.h"
-#include "DrawableGroup.h"
-#include "Texture.h"
-#include "Sprite.h"
-#include "Property.h"
-#include "Body.h"
 #include "BodyCollisionEventArgs.h"
-#include "AnimatedTexture.h"
 #include "App.h"
 #include "AnimationManager.h"
 #include "PhysicsWorld.h"
 #include "WorldMap.h"
 #include "Missile.h"
-#include "Sample.h"
 #include "SamplePlayer.h"
-#include "Text.h"
 
 class Spaceship::Body_MapCollisionEventHandler : public IEventHandler<Body, EventArgs> {
-    void handle(Body* body, EventArgs args) {
+    void handle(Body* body, EventArgs args) override {
         body->location.set(body->location.get() - body->velocity.get());
         body->speed.set(Vector(0, 0));
     }
 };
 
 class Spaceship::Body_BodyCollisionEventHandler : public IEventHandler<Body, BodyCollisionEventArgs> {
-    void handle(Body* body, BodyCollisionEventArgs args) {
+    void handle(Body* body, BodyCollisionEventArgs args) override {
         //body->location.set(body->location.get() - body->velocity.get());
         //body->speed.set(Vector(0, 0));
     }
 };
 
 Spaceship::Spaceship() :
-    body            (   new Body(100.0)                             ),
-    spriteContainer (   new DrawableGroup()                       )
+    body                    (   new Body(100.0)                                                                 ),
+    spriteContainer         (   new DrawableGroup()                                                             ),
+    accelerationAnimation_  (   AnimatedTexture(60, 8, false, App::getResources()->textures->animRocketFire)    )
 {
     // body
 
@@ -65,7 +54,7 @@ Spaceship::Spaceship() :
         Point(-20, 20),
     };
 
-    CollisionShape* shape = new CollisionShape(points, 3);
+    auto shape = new CollisionShape(points, 3);
 
     body->setCollisionShape(shape);
 
@@ -75,11 +64,11 @@ Spaceship::Spaceship() :
             App::getResources()->textures->spaceship,
             Rect(-20, -20, 20, 20)
     );
-    accelerationAnimation_ = new AnimatedTexture(60, 8, false, App::getResources()->textures->animRocketFire);
+
     App::getAnimationManager()->add(accelerationAnimation_);
 
-    Sprite* spriteAccelerationLeft = new Sprite(accelerationAnimation_, Rect(-40, -23, -20, -10));
-    Sprite* spriteAccelerationRight = new Sprite(accelerationAnimation_, Rect(-40, 10, -20, 23));
+    Sprite* spriteAccelerationLeft = new Sprite(&accelerationAnimation_, Rect(-40, -23, -20, -10));
+    Sprite* spriteAccelerationRight = new Sprite(&accelerationAnimation_, Rect(-40, 10, -20, 23));
 
     spriteContainer->addDrawable(spriteAccelerationLeft);
     spriteContainer->addDrawable(spriteAccelerationRight);
@@ -102,7 +91,7 @@ Spaceship::~Spaceship() {
 void Spaceship::accelerate() {
     double angle = body->angle.get();
     body->applyForce(Vector::byAngle(angle, 5000));
-    accelerationAnimation_->play();
+    accelerationAnimation_.play();
 }
 
 void Spaceship::shoot() {

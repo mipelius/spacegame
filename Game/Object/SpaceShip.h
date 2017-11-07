@@ -25,6 +25,7 @@ class AnimatedTexture;
 class Sample;
 template <typename T> class Property;
 
+#include "AnimatedTexture.h"
 #include <Tile2D/Physics/Body.h>
 #include <Tile2D/GUI/Canvas/Drawable/DrawableGroup.h>
 #include "Point.h"
@@ -43,7 +44,7 @@ public:
     void shoot();
 
 private:
-    AnimatedTexture* accelerationAnimation_;
+    AnimatedTexture accelerationAnimation_;
 
     class Body_MapCollisionEventHandler;
     class Body_BodyCollisionEventHandler;

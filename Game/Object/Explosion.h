@@ -17,12 +17,8 @@
 #ifndef __Explosion_H_
 #define __Explosion_H_
 
-class Texture;
-class AnimatedTexture;
-class DrawableGroup;
-class PointLight;
-class Sample;
-
+#include "DrawableGroup.h"
+#include "AnimatedTexture.h"
 #include "Point.h"
 
 class Explosion {
@@ -35,8 +31,8 @@ public:
 private:
     ~Explosion();
 
-    AnimatedTexture* explosionAnimation_;
-    DrawableGroup * spriteContainer_;
+    AnimatedTexture explosionAnimation_;
+    DrawableGroup* spriteContainer_;
 
     static int sampleChannel_;
 

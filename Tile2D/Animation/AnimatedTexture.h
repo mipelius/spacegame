@@ -27,15 +27,15 @@ private:
 
 public:
     AnimatedTexture(unsigned int framesPerSecond, unsigned int frameAmount, bool enableLoop, Texture* texture);
-    void updateActual();
+    void updateActual() override;
 
-    void glBind();
-    void glTexCorner(Corner corner);
-    void glUnbind();
+    void glBind() override ;
+    void glTexCorner(Corner corner) override;
+    void glUnbind() override;
 
-    Event<AnimatedTexture, EventArgs>* const stopped;
+    Event<AnimatedTexture, EventArgs> const stopped;
 
-    void stop();
+    void stop() override ;
 };
 
 #endif //__AnimatedTexture_H_

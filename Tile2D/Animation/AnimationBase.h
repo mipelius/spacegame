@@ -25,19 +25,14 @@ class AnimationBase : public IAnimation {
 
 public:
     AnimationBase(unsigned int framesPerSecond, unsigned int frameAmount, bool enableLoop);
-    virtual ~AnimationBase();
 
     void play();
     virtual void stop();
     void pause();
 
-    void die();
-
 protected:
-    void update(double seconds);
+    void update(double seconds) override;
     virtual void updateActual() = 0;
-
-    void virtual onDie();
 
     double timeElapsedAfterPreviousFrame_;
     unsigned int currentFrame_;
@@ -48,11 +43,6 @@ protected:
     bool isStopped_;
 
     bool loopEnabled_;
-
-    bool isDead();
-
-private:
-    bool isDead_;
 };
 
 

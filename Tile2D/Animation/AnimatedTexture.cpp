@@ -16,19 +16,18 @@
 
 #include "precompile.h"
 #include "AnimatedTexture.h"
-#import "ITexture.h"
 
 AnimatedTexture::AnimatedTexture(unsigned int framesPerSecond, unsigned int frameAmount, bool enableLoop, Texture* texture) :
     AnimationBase(framesPerSecond, frameAmount, enableLoop),
-    stopped   (   new Event<AnimatedTexture, EventArgs>(this) )
+    stopped   (   Event<AnimatedTexture, EventArgs>(this) )
 {
     texture_ = texture;
 }
 
 void AnimatedTexture::glTexCorner(ITexture::Corner corner) {
-    GLfloat w = 1.0 / frameAmount_;
-    GLfloat left = currentFrame_ * w + 0.01;
-    GLfloat right = (currentFrame_ + 1) * w - 0.01;
+    GLfloat w = 1.0f / frameAmount_;
+    GLfloat left = currentFrame_ * w + 0.01f;
+    GLfloat right = (currentFrame_ + 1) * w - 0.01f;
 
     switch (corner) {
         case (TOP_LEFT):
@@ -60,5 +59,5 @@ void AnimatedTexture::updateActual() {
 
 void AnimatedTexture::stop() {
     AnimationBase::stop();
-    stopped->raise(EventArgs());
+    stopped.raise(EventArgs());
 }

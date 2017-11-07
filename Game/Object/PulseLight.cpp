@@ -15,54 +15,37 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include "PulseLight.h"
-#include "Point.h"
-#include "AnimationBase.h"
-#include "PointLight.h"
 #include "Game.h"
 #include "ShadowMask.h"
 #include "App.h"
 #include "AnimationManager.h"
 
-class PulseLight::Animation : public AnimationBase {
-
-private:
-    PulseLight* light_;
-
-protected:
-    virtual void updateActual() {
+void PulseLight::Animation::updateActual()  {
         double value = sin((M_PI / 2.0) + (currentFrame_ / 35.0) * (M_PI / 2.0));
-        light_->pointLight_->intensity.set(value);
+        light_->pointLight_.intensity.set(value);
     };
 
-public:
-    Animation(PulseLight *light_) :
+PulseLight::Animation::Animation(PulseLight *light_) :
     AnimationBase(60, 35, false),
     light_(light_) { }
 
-    void stop() {
-        AnimationBase::stop();
-        Game::getInstance()->getShadowMask()->removeLight(light_->pointLight_);
-        light_->animation_->die();
-    }
+void PulseLight::Animation::stop() {
+    AnimationBase::stop();
+    Game::getInstance()->getShadowMask()->removeLight(&light_->pointLight_);
+    App::getAnimationManager()->remove(light_->animation_);
+    // delete light_;
+}
 
-    void onDie() {
-        delete light_;
-    }
-};
+PulseLight::PulseLight(Point point, double radius) :
+        animation_(Animation(this)),
+        pointLight_(PointLight(point, radius)) {
 
-PulseLight::PulseLight(Point point, double radius) {
     initialRadius_ = radius;
 
-    pointLight_ = new PointLight(point, radius);
-    Game::getInstance()->getShadowMask()->addLight(pointLight_);
-
-    animation_ = new Animation(this);
+    Game::getInstance()->getShadowMask()->addLight(&pointLight_);
     App::getAnimationManager()->add(animation_);
-    animation_->play();
+    animation_.play();
 }
 
-PulseLight::~PulseLight() {
-    delete pointLight_;
-}

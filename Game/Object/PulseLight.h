@@ -20,6 +20,8 @@
 
 class PointLight;
 
+#include "AnimationBase.h"
+#include "PointLight.h"
 #include "Point.h"
 
 class PulseLight {
@@ -29,12 +31,20 @@ public:
     PulseLight(Point point, double radius);
 
 private:
-    class Animation;
+    class Animation : public AnimationBase {
+    private:
+        PulseLight* light_;
 
-    ~PulseLight();
+    protected:
+        void updateActual() override;
 
-    Animation* animation_;
-    PointLight* pointLight_;
+    public:
+        explicit Animation(PulseLight *light_);
+        void stop() override;
+    };
+
+    Animation animation_;
+    PointLight pointLight_;
 
     double initialRadius_;
 };

@@ -24,17 +24,15 @@ class IAnimation;
 class AnimationManager {
 
 public:
-    AnimationManager();
-    ~AnimationManager();
+    AnimationManager() = default;
 
-    void add(IAnimation* animation);
-    void remove(IAnimation* animation);
-
+    void remove(IAnimation& animation);
+    void add(IAnimation& animation);
     void update(double seconds);
 
 private:
     std::list<IAnimation*> animations_;
-
+    std::list<IAnimation*> animationsToRemove_;
 };
 
 

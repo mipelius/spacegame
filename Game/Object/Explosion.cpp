@@ -15,18 +15,13 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Explosion.h"
-#include "Texture.h"
-#include "AnimatedTexture.h"
 #include "Game.h"
-#include "Canvas.h"
 #include "App.h"
 #include "AnimationManager.h"
-#include "DrawableGroup.h"
 #include "Sprite.h"
 #include "PointLight.h"
 #include "ShadowMask.h"
 #include "PulseLight.h"
-#include "Sample.h"
 #include "SamplePlayer.h"
 
 class Explosion::AnimatedTexture_Stopped : public IEventHandler<AnimatedTexture, EventArgs> {
@@ -35,29 +30,30 @@ private:
     Explosion* explosion_;
 
 public:
-    AnimatedTexture_Stopped(Explosion* explosion) {
+    explicit AnimatedTexture_Stopped(Explosion* explosion) {
         explosion_ = explosion;
     }
 
-    virtual void handle(AnimatedTexture *owner, EventArgs args) {
-        delete explosion_;
+    void handle(AnimatedTexture *owner, EventArgs args) override {
+        Game::getInstance()->getExternalCanvas()->removeDrawable(explosion_->spriteContainer_);
     }
 };
 
 int Explosion::sampleChannel_ = 0;
 
-Explosion::Explosion(Point point, double radius) {
+Explosion::Explosion(Point point, double radius) :
+        explosionAnimation_(AnimatedTexture(32, 8, false, App::getResources()->textures->animExplosion))
+{
     sampleChannel_ = 0;
 
-    explosionAnimation_ = new AnimatedTexture(32, 8, false, App::getResources()->textures->animExplosion);
     App::getAnimationManager()->add(explosionAnimation_);
-    explosionAnimation_->play();
+    explosionAnimation_.play();
 
-    AnimatedTexture_Stopped* handler = new AnimatedTexture_Stopped(this);
-    explosionAnimation_->stopped->add(handler);
+    auto handler = new AnimatedTexture_Stopped(this);
+    explosionAnimation_.stopped.add(handler);
 
     Sprite* explosionSprite = new Sprite(
-            explosionAnimation_,
+            &explosionAnimation_,
             Rect(
                     -radius,
                     -radius,
@@ -81,5 +77,4 @@ Explosion::Explosion(Point point, double radius) {
 
 Explosion::~Explosion() {
     Game::getInstance()->getExternalCanvas()->removeDrawable(spriteContainer_);
-    explosionAnimation_->die();
 }

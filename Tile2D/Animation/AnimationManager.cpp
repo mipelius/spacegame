@@ -17,39 +17,22 @@
 #include "AnimationManager.h"
 #include "IAnimation.h"
 
-AnimationManager::AnimationManager() {
-
+void AnimationManager::remove(IAnimation &animation) {
+    animationsToRemove_.push_back(&animation);
 }
 
-AnimationManager::~AnimationManager() {
-
+void AnimationManager::add(IAnimation& animation) {
+    animations_.push_back(&animation);
 }
-
-void AnimationManager::add(IAnimation *animation) {
-    animations_.push_back(animation);
-}
-
-
 
 void AnimationManager::update(double seconds) {
-    std::list<IAnimation*> animationsToRemove;
-
-    for (std::list<IAnimation*>::iterator i = animations_.begin(); i != animations_.end(); i++) {
-        if ((*i)->isDead()) {
-            animationsToRemove.push_back((*i));
-        }
-        else {
-            (*i)->update(seconds);
-        }
+    for (auto anim : animationsToRemove_) {
+        animations_.remove(anim);
     }
+    animationsToRemove_.clear();
 
-    for (std::list<IAnimation*>::iterator i = animationsToRemove.begin(); i != animationsToRemove.end(); i++) {
-        (*i)->onDie();
-        remove((*i));
-        delete (*i);
+    for (auto anim : animations_) {
+        anim->update(seconds);
     }
 }
 
-void AnimationManager::remove(IAnimation *animation) {
-    animations_.remove(animation);
-}

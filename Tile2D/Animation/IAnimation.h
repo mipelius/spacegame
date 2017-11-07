@@ -18,17 +18,10 @@
 #define __IAnimation_H_
 
 class IAnimation {
-
     friend class AnimationManager;
-
-public:
-    IAnimation() { }
-    virtual ~IAnimation() { }
 
 protected:
     virtual void update(double seconds) = 0;
-    virtual bool isDead() = 0;
-    virtual void onDie() = 0;
 };
 
 

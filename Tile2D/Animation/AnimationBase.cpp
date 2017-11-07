@@ -22,13 +22,7 @@ AnimationBase::AnimationBase(unsigned int framesPerSecond, unsigned int frameAmo
     frameAmount_ = frameAmount;
     loopEnabled_ = enableLoop;
 
-    isDead_ = false;
-
     AnimationBase::stop();
-}
-
-AnimationBase::~AnimationBase() {
-
 }
 
 void AnimationBase::update(double seconds) {
@@ -66,17 +60,4 @@ void AnimationBase::play() {
 
 void AnimationBase::pause() {
     isPlaying_ = false;
-}
-
-
-bool AnimationBase::isDead() {
-    return isDead_;
-}
-
-void AnimationBase::die() {
-    isDead_ = true;
-}
-
-void AnimationBase::onDie() {
-
 }
