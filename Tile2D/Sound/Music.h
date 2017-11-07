@@ -26,7 +26,7 @@ class Music {
 private:
     Mix_Music* music;
 public:
-    Music(std::string filename);
+    explicit Music(std::string filename);
     ~Music();
 };
 
