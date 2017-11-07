@@ -31,7 +31,7 @@ int main(int argc, const char * argv[])
         game->launch();
         delete game;
 	}
-    catch (std::exception e) {
+    catch (std::exception& e) {
         std::cout << "Something went wrong!";
         return -1;
     }
