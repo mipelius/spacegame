@@ -22,6 +22,7 @@ class Rect;
 #include "Vector.h"
 
 class Point {
+
 public:
     double x, y;
     Point(double x, double y);
@@ -31,9 +32,9 @@ public:
 
     Point operator + (const Vector& vector);
     Point operator - (const Vector& vector);
-    double distance(Point otherPoint) const;
+    double distance(const Point &otherPoint) const;
 
-    bool isIn(Rect& rect);
+    bool isIn(const Rect& rect);
 };
 
 

@@ -17,8 +17,6 @@
 #ifndef __Array2d_H_
 #define __Array2d_H_
 
-#include <iostream>
-
 template <typename T> class Array2d {
 public:
     Array2d<T>(int w, int h) {
@@ -40,14 +38,8 @@ public:
     }
 
     bool isInsideBounds(int x, int y) {
-        if (x < 0 || x >= w_) {
-            return false;
-        }
-        if (y < 0 || y >= h_) {
-            return false;
-        }
+        return !(x < 0 || x >= w_) && !(y < 0 || y >= h_);
 
-        return true;
     }
 
     int getW() {

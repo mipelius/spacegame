@@ -17,20 +17,72 @@
 #ifndef __Vector_H_
 #define __Vector_H_
 
+#include "precompile.h"
+
 class Vector {
 public:
     double x;
     double y;
     Vector(double x, double y);
-    static Vector byAngle(double angleDegrees, double amount);
-    Vector operator + (const Vector& otherVector);
-    Vector operator - (const Vector& otherVector);
-    Vector operator -= (const Vector& otherVector);
-    Vector operator += (const Vector& otherVector);
-    Vector operator *(double const &amount);
-    double length();
-    double angle();
+    inline static Vector byAngle(const double &angleDegrees, const double &amount);
+    inline Vector operator + (const Vector& otherVector);
+    inline Vector operator - (const Vector& otherVector);
+    inline Vector operator -= (const Vector& otherVector);
+    inline Vector operator += (const Vector& otherVector);
+    inline Vector operator *(double const &amount);
+    inline double length();
+    inline double angle();
 };
 
+// inline functions
+
+inline Vector Vector::operator + (const Vector &otherVector) {
+    return {x + otherVector.x, y + otherVector.y};
+}
+
+inline Vector Vector::operator - (const Vector &otherVector) {
+    return {x - otherVector.x, y - otherVector.y};
+}
+
+inline Vector Vector::operator -= (Vector const &otherVector) {
+    x = x - otherVector.x;
+    y = y - otherVector.y;
+    return Vector(x, y);
+}
+
+inline Vector Vector::operator += (const Vector &otherVector) {
+    x = x + otherVector.x;
+    y = y + otherVector.y;
+    return {x, y};
+}
+
+inline Vector Vector::operator * (const double &amount) {
+    return {x * amount, y * amount};
+}
+
+inline Vector Vector::byAngle(const double &angleDegrees, const double &amount) {
+    double angle = angleDegrees / 360 * 2 * M_PI;
+    return {
+            cos(angle) * amount,
+            sin(angle) * amount
+    };
+}
+
+inline double Vector::length() {
+    return sqrt(x * x + y * y);
+}
+
+inline double Vector::angle() {
+    if (y == 0) {
+        return 0;
+    }
+
+    if (x == 0) {
+        if (y > 0) return -90.0;
+        if (y < 0) return 90.0;
+    }
+
+    return atan2(y, x) * 180 / M_PI;
+}
 
 #endif //__Vector_H_

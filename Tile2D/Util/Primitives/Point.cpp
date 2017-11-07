@@ -35,24 +35,19 @@ Point Point::operator -(const Vector &vector) {
     return Point(x - vector.x, y - vector.y);
 }
 
-double Point::distance(Point otherPoint) const {
+double Point::distance(const Point &otherPoint) const {
     return sqrt(
             (otherPoint.x - this->x) * (otherPoint.x - this->x) +
             (otherPoint.y - this->y) * (otherPoint.y - this->y)
     );
 }
 
-bool Point::isIn(Rect& rect) {
-    if (
-        x >= rect.x1 &&
-        x <= rect.x2 &&
-        y >= rect.y1 &&
-        y <= rect.y2
-    ) {
-        return true;
-    }
-
-    return false;
+bool Point::isIn(const Rect& rect) {
+    return
+            x >= rect.x1 &&
+            x <= rect.x2 &&
+            y >= rect.y1 &&
+            y <= rect.y2;
 }
 
 bool Point::equals(Point otherPoint) {
