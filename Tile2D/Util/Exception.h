@@ -23,10 +23,10 @@
 class Exception : std::exception {
 
 public:
-    Exception(std::string msg);
-    ~Exception();
+    explicit Exception(std::string msg);
+    ~Exception() override = default;
 
-    virtual const char* what() const throw();
+    const char* what() const throw() override;
 private:
     std::string msg_;
 };

@@ -20,9 +20,6 @@
 template <typename TOwner, typename TArgs> class IEventHandler {
 
 public:
-    IEventHandler() { }
-    virtual ~IEventHandler() { };
-
     virtual void handle(TOwner* owner, TArgs args) = 0;
 };
 

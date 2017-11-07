@@ -26,7 +26,7 @@ class ReadableProperty {
 
 public:
     ReadableProperty(void* owner, T (*getter)(void*));
-    ReadableProperty(T* actualValue);
+    explicit ReadableProperty(T* actualValue);
 
     void updateDependentProperties() const;
 

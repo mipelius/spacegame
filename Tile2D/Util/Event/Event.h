@@ -24,8 +24,7 @@ template <typename TOwner, typename TArgs> class IEventHandler;
 template <typename TOwner, typename TArgs> class Event {
 
 public:
-    Event(TOwner* eventOwner);
-    ~Event();
+    explicit Event(TOwner* eventOwner);
 
     void raise(TArgs eventArgs) const;
     void add(IEventHandler<TOwner, TArgs> * eventHandler) const;
@@ -43,16 +42,9 @@ Event<TOwner, TArgs>::Event(TOwner *eventOwner) {
 }
 
 template <typename TOwner, typename TArgs>
-Event<TOwner, TArgs>::~Event() {
-    for (typename std::list<IEventHandler<TOwner, TArgs> *>::iterator i = eventHandlers_.begin(); i != eventHandlers_.end(); i++) {
-        delete (*i);
-    }
-}
-
-template <typename TOwner, typename TArgs>
 void Event<TOwner, TArgs>::raise(TArgs eventArgs) const {
-    for (typename std::list<IEventHandler<TOwner, TArgs> *>::iterator i = eventHandlers_.begin(); i != eventHandlers_.end(); i++) {
-        (*i)->handle(eventOwner_, eventArgs);
+    for (auto eventHandler : eventHandlers_) {
+        eventHandler->handle(eventOwner_, eventArgs);
     }
 }
 

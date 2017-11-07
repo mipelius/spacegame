@@ -25,7 +25,7 @@ class Property : public ReadableProperty<T> {
 
 public:
     Property(void *owner, T (*getter)(void *), void (*setter)(void*, const T&));
-    Property(T* actualValue);
+    explicit Property(T* actualValue);
 
     void set(const T& value) const;
 

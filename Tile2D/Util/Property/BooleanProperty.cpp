@@ -16,17 +16,11 @@
 
 #include "BooleanProperty.h"
 
-BooleanProperty::BooleanProperty(bool *actualValue) : Property<bool>(actualValue) {
-
-}
+BooleanProperty::BooleanProperty(bool *actualValue) : Property<bool>(actualValue) { }
 
 void BooleanProperty::toggle() {
     set(!get());
 }
 
 BooleanProperty::BooleanProperty(void *owner, bool (*getter)(void *), void (*setter)(void *, const bool&)) :
-Property<bool>(owner, getter, setter)
-
-{
-
-}
+Property<bool>(owner, getter, setter) { }
