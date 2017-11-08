@@ -26,14 +26,11 @@ Canvas::Canvas() {
     camera_ = nullptr;
 }
 
-Canvas::~Canvas() { }
-
-
 void Canvas::renderActual() {
-    if (!camera_) return;
+    if (camera_ == nullptr) return;
 
-    for (std::list<IShadowMask *>::iterator i = shadowMasks_.begin(); i != shadowMasks_.end(); i++) {
-        (*i)->update(this);
+    for (auto& shadowMask : shadowMasks_) {
+        shadowMask->update(this);
     }
 
     glMatrixMode(GL_PROJECTION);
@@ -49,12 +46,12 @@ void Canvas::renderActual() {
 
     glMatrixMode(GL_MODELVIEW);
 
-    for (std::list<IDrawable *>::iterator i = drawables_.begin(); i != drawables_.end(); i++) {
-        (*i)->draw(this);
+    for (auto& drawable : drawables_) {
+        drawable->draw(this);
     }
 
-    for (std::list<IShadowMask *>::iterator i = shadowMasks_.begin(); i != shadowMasks_.end(); i++) {
-        (*i)->draw(this);
+    for (auto& shadowMask : shadowMasks_) {
+        shadowMask->draw(this);
     }
 }
 
@@ -62,12 +59,12 @@ void Canvas::addDrawable(IDrawable *drawable) {
     drawables_.push_back(drawable);
 }
 
-void Canvas::setCamera(Camera *camera) {
-    camera_ = camera;
+void Canvas::setCamera(Camera& camera) {
+    camera_ = &camera;
 }
 
-Camera *Canvas::getCamera() {
-    return camera_;
+Camera& Canvas::getCamera() {
+    return *camera_;
 }
 
 void Canvas::addShadowMask(IShadowMask *shadowMask) {

@@ -29,12 +29,8 @@ Plot::Plot() :
 
 }
 
-Plot::~Plot() {
-
-}
-
 void Plot::draw(Canvas *canvas) {
-    Rect cameraRect = canvas->getCamera()->areaRect.get();
+    Rect cameraRect = canvas->getCamera().areaRect.get();
     Rect renderingAreaRect = canvas->getRenderingAreaRect();
 
     double pixelWidth = cameraRect.getWidth() / renderingAreaRect.getWidth();

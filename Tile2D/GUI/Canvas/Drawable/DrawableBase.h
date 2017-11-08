@@ -26,7 +26,6 @@ class DrawableBase : public IDrawable{
 
 public:
     DrawableBase();
-    ~DrawableBase();
 
     Property<Point>     const location;
     Property<double>    const angle;

@@ -29,10 +29,10 @@ private:
 public:
     int getW();
     int getH();
-    Texture(std::string filename);
-    void glBind();
-    void glUnbind();
-    void glTexCorner(Corner corner);
+    explicit Texture(std::string filename);
+    void glBind() override;
+    void glUnbind() override ;
+    void glTexCorner(Corner corner) override ;
 };
 
 

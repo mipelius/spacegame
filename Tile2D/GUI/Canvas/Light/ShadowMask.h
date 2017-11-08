@@ -42,8 +42,8 @@ public:
 
     Property<double> const ambientLight;
 
-    void update(Canvas* canvas);
-    void draw(Canvas* canvas);
+    void update(Canvas* canvas) override;
+    void draw(Canvas* canvas) override;
 
     void addLight(PointLight *light);
 

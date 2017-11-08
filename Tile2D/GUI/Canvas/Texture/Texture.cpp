@@ -28,12 +28,13 @@ Texture::Texture(std::string filename) {
 	{
 		std::string error = "Could not load texture file: ";
 		error=error.append(SDL_GetError());
-		throw new std::exception();
+		throw std::exception();
 	}
 
 	this->w = surface->w;
     this->h = surface->h;
 
+#ifdef DEBUG
     // Check that the image's width is a power of 2
     if ((surface->w & (surface->w - 1)) != 0) {
         fprintf(stderr, "warning: %s 's width is not a power of 2\n", filename.data());
@@ -43,6 +44,7 @@ Texture::Texture(std::string filename) {
     if ((surface->h & (surface->h - 1)) != 0) {
         fprintf(stderr, "warning: %s 's heigth is not a power of 2\n", filename.data());
     }
+#endif
 
     // get the number of channels in the SDL surface
     nOfColors = surface->format->BytesPerPixel;

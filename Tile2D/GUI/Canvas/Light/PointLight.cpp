@@ -50,7 +50,7 @@ PointLight::~PointLight() {
 }
 
 void PointLight::draw(Canvas *canvas) {
-    Rect rect = canvas->getCamera()->areaRect.get();
+    Rect rect = canvas->getCamera().areaRect.get();
 
     double x = location_.x - rect.x1 - radius_;
     double y = location_.y - rect.y1 - radius_;

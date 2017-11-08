@@ -25,9 +25,6 @@ class IDrawable {
 
 public:
     virtual void draw(Canvas* canvas) = 0;
-
-    IDrawable() { };
-    virtual ~IDrawable() { };
 };
 
 #endif //__IDrawable_H_

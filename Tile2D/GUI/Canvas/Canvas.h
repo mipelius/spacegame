@@ -27,16 +27,15 @@ class Canvas : public GuiComponentBase {
 
 public:
     Canvas();
-    ~Canvas();
 
-    void renderActual();
+    void renderActual() override;
     void addDrawable(IDrawable *drawable);
     void removeDrawable(IDrawable* drawable);
 
     void addShadowMask(IShadowMask *shadowMask);
 
-    void setCamera(Camera* camera);
-    Camera* getCamera();
+    void setCamera(Camera& camera);
+    Camera& getCamera();
 
 private:
     std::list<IDrawable*> drawables_;

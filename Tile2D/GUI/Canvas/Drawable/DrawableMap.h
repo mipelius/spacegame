@@ -25,12 +25,11 @@ class MapTexture;
 class DrawableMap : public IDrawable {
 public:
     DrawableMap();
-    ~DrawableMap();
 
     void setMap(WorldMap * map);
     void setMapTexture(MapTexture* mapTexture);
 
-    void draw(Canvas* canvas);
+    void draw(Canvas* canvas) override;
 
 private:
     MapTexture* mapTexture_;

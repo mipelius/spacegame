@@ -43,7 +43,7 @@ public:
 
     void setSize(double w, double h);
 
-    void addComponent(GuiComponentBase* guiComponent);
+    void addComponent(GuiComponentBase &guiComponent);
 
 private:
     Window();

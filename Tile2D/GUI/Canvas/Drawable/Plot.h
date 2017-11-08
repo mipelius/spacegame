@@ -27,12 +27,11 @@ class Plot : public IDrawable {
 
 public:
     Plot();
-    ~Plot();
 
     Property<Point> const location;
     Property<double> const size;
 
-    virtual void draw(Canvas *canvas);
+    virtual void draw(Canvas *canvas) override;
 
 private:
     Point location_;

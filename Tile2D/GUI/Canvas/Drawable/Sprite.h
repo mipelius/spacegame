@@ -18,11 +18,10 @@
 #define __Sprite_H_
 
 #include "DrawableBase.h"
+#include "Rect.h"
 
 class CollisionShape;
 class ITexture;
-
-#include "Rect.h"
 
 class Sprite : public DrawableBase {
 
@@ -34,7 +33,7 @@ public:
     Rect getActualRect();
 
 protected:
-    void drawActual(Canvas* canvas);
+    void drawActual(Canvas* canvas) override;
 
 private:
 

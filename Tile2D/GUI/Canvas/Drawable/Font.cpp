@@ -20,8 +20,9 @@
 #include "JsonFileManager.h"
 
 Font::Font(std::string filename) {
-    JsonFileManager* jsonFileManager = new JsonFileManager();
-    json::Object object = jsonFileManager->load(filename);
+    JsonFileManager jsonFileManager;
+
+    json::Object object = jsonFileManager.load(std::move(filename));
 
     std::string fontTextureFilename = object["imgFile"];
 
@@ -32,7 +33,7 @@ Font::Font(std::string filename) {
     for (int i = 0; i < mappingsArray.size(); i++) {
         json::Object mapping = mappingsArray[i].ToObject();
 
-        Letter* letter = new Letter(
+        auto letter = new Letter(
                 mapping["x"].ToFloat(),
                 mapping["y"].ToFloat(),
                 mapping["w"].ToFloat(),
@@ -42,7 +43,7 @@ Font::Font(std::string filename) {
         std::string letters = mapping["letters"].ToString();
 
         for (int j=0; j < letters.length(); j++) {
-            unsigned char ch = letters.data()[j];
+            auto ch = (unsigned char)letters.data()[j];
             std::pair<unsigned char, Letter*> pair = std::pair<unsigned char, Letter*>(ch, letter);
             mappings.insert(pair);
         }
@@ -51,8 +52,7 @@ Font::Font(std::string filename) {
 }
 
 Font::~Font() {
-    for (std::map<unsigned char, Letter*>::iterator i = mappings.begin(); i != mappings.end(); i++) {
-        std::pair<unsigned char, Letter*> pair = (*i);
+    for (auto& pair : mappings) {
         Letter* letter = pair.second;
         delete letter;
     }

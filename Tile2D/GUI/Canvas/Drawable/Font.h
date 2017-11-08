@@ -27,8 +27,9 @@ class Font {
 friend class Text;
 
 public:
-    Font(std::string filename);
+    explicit Font(std::string filename);
     ~Font();
+
 private:
     class Letter {
     public:

@@ -17,7 +17,6 @@
 #include "precompile.h"
 #include "Sprite.h"
 #include "Texture.h"
-#include "AnimatedTexture.h"
 
 Sprite::Sprite(ITexture *texture, Rect rect) : DrawableBase(), rect_(rect) {
     texture_ = texture;

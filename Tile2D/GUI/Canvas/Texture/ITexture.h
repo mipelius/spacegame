@@ -23,9 +23,6 @@ public:
         TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT
     };
 
-    ITexture() { };
-    ~ITexture() { };
-
     virtual void glBind() = 0;
     virtual void glTexCorner(Corner corner) = 0;
     virtual void glUnbind() = 0;

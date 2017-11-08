@@ -15,9 +15,6 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "DrawableBase.h"
-#include "Canvas.h"
-#include "Camera.h"
-#include <SDL2/SDL_opengl.h>
 
 DrawableBase::DrawableBase() :
 
@@ -36,10 +33,6 @@ opacity_    (1.0        ),
 color_      (Color(1.0, 1.0, 1.0))
 
 {
-
-}
-
-DrawableBase::~DrawableBase() {
 
 }
 

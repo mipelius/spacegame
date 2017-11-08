@@ -33,7 +33,6 @@ public:
     static const int SIZE_MAX_HEIGHT = -1;
 
     GuiComponentBase();
-    ~GuiComponentBase();
 
     Property<double> const marginTop;
     Property<double> const marginRight;

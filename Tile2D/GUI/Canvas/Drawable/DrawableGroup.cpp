@@ -17,20 +17,9 @@
 #include "precompile.h"
 #include "DrawableGroup.h"
 
-DrawableGroup::DrawableGroup() : DrawableBase()
-{
-
-}
-
-DrawableGroup::~DrawableGroup() {
-    for (std::list<IDrawable*>::iterator i = drawables_.begin(); i != drawables_.end(); i++) {
-        delete (*i);
-    }
-}
-
 void DrawableGroup::drawActual(Canvas* canvas) {
-    for (std::list<IDrawable*>::iterator i = drawables_.begin(); i != drawables_.end(); i++) {
-        (*i)->draw(canvas);
+    for (auto& drawable : drawables_) {
+        drawable->draw(canvas);
     }
 }
 

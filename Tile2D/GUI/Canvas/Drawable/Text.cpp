@@ -17,9 +17,6 @@
 #include <iostream>
 #include "Text.h"
 #include "Font.h"
-#include "Property.h"
-#include "Canvas.h"
-#include "Camera.h"
 #include "Texture.h"
 
 Text::Text(Font *font) :
@@ -30,10 +27,6 @@ Text::Text(Font *font) :
 {
     font_ = font;
     size_ = 1.0;
-}
-
-Text::~Text() {
-
 }
 
 void Text::drawActual(Canvas *canvas) {

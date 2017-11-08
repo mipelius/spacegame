@@ -26,11 +26,10 @@ class Background : public IDrawable {
 
 public:
     Background();
-    ~Background();
 
     Property<double> const ratio;
 
-    void draw(Canvas* canvas);
+    void draw(Canvas* canvas) override;
 
     void setRatio(double ratio);
     void setTexture(Texture *texture);

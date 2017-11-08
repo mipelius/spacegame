@@ -55,10 +55,6 @@ GuiComponentBase::GuiComponentBase() :
     isBoundsVisible_ = false;
 }
 
-GuiComponentBase::~GuiComponentBase() {
-
-}
-
 void GuiComponentBase::setMargin(double top, double right, double bottom, double left) {
     marginTop.set(top);
     marginRight.set(right);
@@ -82,7 +78,7 @@ void GuiComponentBase::setParent(GuiComponentBase *guiComponent) {
 Rect GuiComponentBase::getRenderingAreaRect() {
     Rect parentRect = Rect(0, 0, 0, 0);
 
-    if (parentGuiComponent_) {
+    if (parentGuiComponent_ != nullptr) {
         parentRect.copy(parentGuiComponent_->getRenderingAreaRect());
     }
     else {
@@ -125,12 +121,12 @@ Rect GuiComponentBase::getRenderingAreaRect() {
     double x2 = x1 + w;
     double y2 = y1 + h;
 
-    return Rect(x1, y1, x2, y2);
+    return {x1, y1, x2, y2};
 
 }
 
 Window *GuiComponentBase::getWindow() {
-    if (window_) return window_;
+    if (window_ != nullptr) return window_;
     return parentGuiComponent_->getWindow();
 }
 
@@ -149,17 +145,17 @@ void GuiComponentBase::render() {
 
     Rect rect = getRenderingAreaRect();
 
-    GLint x = (GLint)(rect.x1);
-    GLint y = (GLint)(getWindow()->h.get() - rect.y2);
-    GLint w = (GLint)(rect.getWidth());
-    GLint h = (GLint)(rect.getHeight());
+    auto x = (GLint)(rect.x1);
+    auto y = (GLint)(getWindow()->h.get() - rect.y2);
+    auto w = (GLint)(rect.getWidth());
+    auto h = (GLint)(rect.getHeight());
 
     glViewport(x, y, w, h);
 
     renderActual();
 
-    for (std::list<GuiComponentBase*>::iterator i = children_.begin(); i != children_.end(); i++) {
-        (*i)->render();
+    for (auto child : children_) {
+        child->render();
     }
 
     if (isBoundsVisible_) {

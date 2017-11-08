@@ -277,7 +277,7 @@ void Game::initialize() {
 
     canvas_->addDrawable(background);
 
-    App::getWindow()->addComponent(canvas_);
+    App::getWindow()->addComponent(*canvas_);
 
     // --- WORLD & MAP ---
 
@@ -303,8 +303,8 @@ void Game::initialize() {
     camera_->boundsRect.set(Rect(0, 0, 20000, 20000));
     camera_->areaRect.set(Rect(0, 0, App::getWindow()->w.get(), App::getWindow()->h.get()));
 
-    canvas_->setCamera(camera_);
-    externalCanvas_->setCamera(camera_);
+    canvas_->setCamera(*camera_);
+    externalCanvas_->setCamera(*camera_);
 
     // --- PLAYER ---
 
@@ -314,7 +314,7 @@ void Game::initialize() {
     world_->add(*spaceship_->body);
     canvas_->addDrawable(spaceship_->spriteContainer);
 
-    camera_->location.bind(spaceship_->body->position);
+    camera_->position.bind(spaceship_->body->position);
 
     Ears* ears = new Ears();
     ears->maxDistance.set(1400);
@@ -345,7 +345,7 @@ void Game::initialize() {
     smallMapCamera_ = new Camera();
     smallMapCamera_->boundsRect.set(Rect(0, 0, 20000, 20000));
     smallMapCamera_->areaRect.set(Rect(0, 0, 4000, 3000));
-    smallMapCanvas_->setCamera(smallMapCamera_);
+    smallMapCanvas_->setCamera(*smallMapCamera_);
 
     smallMapCanvas_->addDrawable(drawableMap);
     Plot* plot = new Plot();
@@ -380,9 +380,9 @@ void Game::initialize() {
             )
     );
 
-    GUICanvas_->setCamera(GUICanvasCamera);
+    GUICanvas_->setCamera(*GUICanvasCamera);
 
-    App::getWindow()->addComponent(GUICanvas_);
+    App::getWindow()->addComponent(*GUICanvas_);
 
     // --- INVENTORY ---
 

@@ -28,12 +28,11 @@ class Renderer;
 class Camera {
 
 public:
-    Property<Point> const location;
+    Property<Point> const position;
     Property<Rect> const areaRect;
     Property<Rect> const boundsRect;
 
     Camera();
-    ~Camera();
 
     void zoom(double amount);
 
@@ -41,8 +40,8 @@ private:
     Rect areaRect_;
     Rect boundsRect_;
 
-    static Point getLocation_(void* owner);
-    static void setLocation_(void *owner, const Point &value);
+    static Point getPosition_(void *owner);
+    static void setPosition_(void *owner, const Point &value);
 
     class LocationProperty;
 };

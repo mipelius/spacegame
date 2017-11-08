@@ -233,7 +233,7 @@ void ShadowMask::draw(Canvas *canvas) {
 
     glColor4d(1, 1, 1, 1.0 - ambientLight_);
 
-    Rect rect = canvas->getCamera()->areaRect.get();
+    Rect rect = canvas->getCamera().areaRect.get();
 
     glBegin(GL_QUADS);
     glTexCoord2d(0, 0);
@@ -336,7 +336,7 @@ void ShadowMask::handleNextUpdate() {
 }
 
 void ShadowMask::drawShadowMap(Canvas* canvas) {
-    Rect rect = canvas->getCamera()->areaRect.get();
+    Rect rect = canvas->getCamera().areaRect.get();
     updateDynamicScene(&rect);
 
     int xStart = 0;
