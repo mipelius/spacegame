@@ -24,6 +24,7 @@ class Sample;
 
 template <typename T> class Property;
 
+#include <Tile2D/Physics/Body.h>
 #include "Point.h"
 
 class Missile {
@@ -34,7 +35,7 @@ public:
     Missile(Point initialLocation, Vector force);
     ~Missile();
 
-    Body* const body;
+    Body body;
     DrawableGroup * const spriteContainer;
 
 private:

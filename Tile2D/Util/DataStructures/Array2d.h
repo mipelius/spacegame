@@ -33,7 +33,7 @@ public:
         return data_[x + y * w_];
     }
 
-    virtual void setValue(int x, int y, T value) {
+    virtual void setValue(int x, int y, const T& value) {
         data_[x + y * w_] = value;
     }
 

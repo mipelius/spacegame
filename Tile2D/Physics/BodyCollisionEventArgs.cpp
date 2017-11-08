@@ -17,4 +17,4 @@
 #include "BodyCollisionEventArgs.h"
 #include "Body.h"
 
-BodyCollisionEventArgs::BodyCollisionEventArgs(Body *otherBody) : otherBody(otherBody) { }
+BodyCollisionEventArgs::BodyCollisionEventArgs(Body& otherBody) : otherBody(&otherBody) { }

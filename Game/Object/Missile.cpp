@@ -46,12 +46,12 @@ private:
 
 public:
     MissileBody(double mass, Point initialLocation, Missile* owner) : Body(mass), initialLocation_(initialLocation) {
-        location.set(initialLocation_);
+        position.set(initialLocation_);
         owner_ = owner;
     }
 
     void afterStep() {
-        if (initialLocation_.distance(location.get()) > 1000) {
+        if (initialLocation_.distance(position.get()) > 1000) {
             die();
         }
     }
@@ -63,11 +63,11 @@ public:
 
 class Missile::Body_MapCollisionEventHandler : public IEventHandler<Body, EventArgs> {
     void handle(Body* body, EventArgs args) {
-        new PulseLight(body->location.get(), 100.0);
+        new PulseLight(body->position.get(), 100.0);
 
         Point* point = new Point(0, 0);
-        point->x = body->location.get().x;
-        point->y = body->location.get().y;
+        point->x = body->position.get().x;
+        point->y = body->position.get().y;
         App::getSamplePlayer()->play(App::getResources()->samples->missileCollision, sampleChannel_, point);
 
         sampleChannel_++;
@@ -81,9 +81,9 @@ class Missile::Body_MapCollisionEventHandler : public IEventHandler<Body, EventA
                 double distanceFromCenter = sqrt(i*i + j*j);
 
                 if (distanceFromCenter < 15) {
-                    body->getWorld()->getMap()->setValueScaled(
-                            body->location.get() + Vector(i, j),
-                            Block::getEmptyBlock()
+                    body->getWorld()->getMap().setValueScaled(
+                            body->position.get() + Vector(i, j),
+                            App::getResources()->other->blockMapping->getEmptyBlock()
                     );
                 }
             }
@@ -101,16 +101,16 @@ class Missile::Body_BodyCollisionEventHandler : public IEventHandler<Body, BodyC
 };
 
 Missile::Missile(Point initialLocation, Vector force) :
-body            (   new MissileBody(10.0, initialLocation, this)    ),
+body            (   MissileBody(10.0, initialLocation, this)    ),
 spriteContainer (   new DrawableGroup()                           )
 
 {
     // body
 
-    body->mapCollision.add(new Body_MapCollisionEventHandler());
-    body->bodyCollision.add(new Body_BodyCollisionEventHandler());
+    body.mapCollision.add(new Body_MapCollisionEventHandler());
+    body.bodyCollision.add(new Body_BodyCollisionEventHandler());
 
-    body->angle.set(force.angle());
+    body.angle.set(force.angle());
 
     Point points[] = {
             Point(-10, -3),
@@ -120,10 +120,10 @@ spriteContainer (   new DrawableGroup()                           )
 
     CollisionShape* shape = new CollisionShape(points, 3);
 
-    body->setCollisionShape(shape);
+    body.setCollisionShape(shape);
     Game::getInstance()->getWorld()->add(body);
 
-    body->force.set(force);
+    body.force.set(force);
 
     // sprite container
 
@@ -137,13 +137,11 @@ spriteContainer (   new DrawableGroup()                           )
 
     // bindings
 
-    spriteContainer->location.bind(body->location);
-    spriteContainer->angle.bind(body->angle);
+    spriteContainer->location.bind(body.position);
+    spriteContainer->angle.bind(body.angle);
 }
 
 Missile::~Missile() {
     Game::getInstance()->getExternalCanvas()->removeDrawable(spriteContainer);
     delete spriteContainer;
-
-    delete body;
 }

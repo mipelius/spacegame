@@ -37,13 +37,9 @@ PhysicsWorld::PhysicsWorld(
     this->map_ = nullptr;
 }
 
-PhysicsWorld::~PhysicsWorld() {
-
-}
-
-void PhysicsWorld::add(Body *body) {
-    bodies_.push_back(body);
-    body->setWorld_(this);
+void PhysicsWorld::add(Body &body) {
+    bodies_.push_back(&body);
+    body.setWorld_(*this);
 }
 
 void PhysicsWorld::step(double timeSeconds) {
@@ -52,39 +48,39 @@ void PhysicsWorld::step(double timeSeconds) {
     std::list<Body*> deadBodies;
 
     // update velocities and new locations
-    for(std::list<Body *>::iterator it = bodies_.begin(); it != bodies_.end(); it++) {
-        if ((*it)->isDead_) {
-            deadBodies.push_back((*it));
+    for(auto& body : bodies_) {
+        if (body->isDead_) {
+            deadBodies.push_back(body);
         }
         else {
-            (*it)->step_(timeSeconds);
+            body->step_(timeSeconds);
         }
     }
 
-    for(std::list<Body *>::iterator it = deadBodies.begin(); it != deadBodies.end(); it++) {
-        bodies_.remove((*it));
-        (*it)->onDie();
+    for(auto& deadBody : deadBodies) {
+        bodies_.remove(deadBody);
+        deadBody->onDie();
     }
 
-    // now all the new locations are updated -> detect collision
-    for(std::list<Body *>::iterator it = bodies_.begin(); it != bodies_.end(); it++) {
-        detectCollision_((*it));
-    }
-}
-
-void PhysicsWorld::detectCollision_(Body *entity) {
-    entity->detectMapCollision_();
-
-    for (std::list<Body *>::iterator it = bodies_.begin(); it != bodies_.end(); it++) {
-        if ((*it) == entity) continue;
-        entity->detectCollisionWith_(*it);
+    // now all the new positions are updated -> detect collision
+    for(auto& body : bodies_) {
+        detectCollision_(*body);
     }
 }
 
-void PhysicsWorld::setMap(WorldMap * map) {
-    this->map_ = map;
+void PhysicsWorld::detectCollision_(Body &body) {
+    body.detectMapCollision_();
+
+    for (auto& bodyCur : bodies_) {
+        if (bodyCur == &body) continue;
+        body.detectCollisionWith_(*bodyCur);
+    }
 }
 
-WorldMap *PhysicsWorld::getMap() {
-    return this->map_;
+void PhysicsWorld::setMap(WorldMap &map) {
+    this->map_ = &map;
+}
+
+WorldMap & PhysicsWorld::getMap() {
+    return *map_;
 }

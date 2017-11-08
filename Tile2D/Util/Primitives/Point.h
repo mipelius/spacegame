@@ -30,8 +30,8 @@ public:
 
     bool equals(Point otherPoint);
 
-    Point operator + (const Vector& vector);
-    Point operator - (const Vector& vector);
+    Point operator + (const Vector& vector) const;
+    Point operator - (const Vector& vector) const;
     double distance(const Point &otherPoint) const;
 
     bool isIn(const Rect& rect);

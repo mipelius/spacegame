@@ -23,7 +23,7 @@ class Body;
 
 class BodyCollisionEventArgs : public EventArgs {
 public:
-    BodyCollisionEventArgs(Body* otherBody);
+    explicit BodyCollisionEventArgs(Body& otherBody);
 
     Body* const otherBody;
 };

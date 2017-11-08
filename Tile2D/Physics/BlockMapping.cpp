@@ -16,17 +16,21 @@
 
 #include <iostream>
 #include "BlockMapping.h"
-#include "Block.h"
 #include "MapTexture.h"
 #include "JsonFileManager.h"
+#include "Block.h"
 
-BlockMapping::BlockMapping(std::string jsonFilename) : blocks_(std::vector<Block*>(255)) {
-    for (int i = 0; i < 255; i++) {
+BlockMapping::BlockMapping(std::string jsonFilename) :
+        blocks_(std::vector<Block*>(255))
+{
+    emptyBlock_ = new Block("empty block", 0.0, 1.0, 1.0, nullptr, -1);
+
+    for (int i = 0; i < 256; i++) {
         blocks_[i] = nullptr;
     }
 
     JsonFileManager manager;
-    json::Object obj = manager.load(jsonFilename);
+    json::Object obj = manager.load(std::move(jsonFilename));
 
     json::Object commonProperties = obj["commonProperties"].ToObject();
 
@@ -37,17 +41,28 @@ BlockMapping::BlockMapping(std::string jsonFilename) : blocks_(std::vector<Block
 
     json::Array blocksJson = obj["blocks"].ToArray();
 
-    for (int i = 0; i < blocksJson.size(); i++) {
-        json::Object blockJson = blocksJson[i].ToObject();
-        Block* block = new Block(blockJson, mapTexture_);
-        blocks_[blockJson["id"].ToInt()] = block;
+    for (const auto &jsonObj : blocksJson) {
+        auto blockJson = jsonObj.ToObject();
+        blocks_[blockJson["id"].ToInt()] = new Block(blockJson, mapTexture_);
     }
 }
 
-Block *BlockMapping::getBlock(unsigned char id) {
+Block* BlockMapping::getBlock(unsigned char id) {
     return blocks_[id];
 }
 
-MapTexture *BlockMapping::getMapTexture() {
+MapTexture * BlockMapping::getMapTexture() {
     return mapTexture_;
+}
+
+BlockMapping::~BlockMapping() {
+    delete emptyBlock_;
+    delete mapTexture_;
+    for (auto block : blocks_) {
+        if (block != nullptr) delete block;
+    }
+}
+
+Block* BlockMapping::getEmptyBlock() {
+    return emptyBlock_;
 }

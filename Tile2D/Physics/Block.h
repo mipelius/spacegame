@@ -34,12 +34,12 @@ private:
     MapTexture* mapTexture_;
     int mapTextureId_;
 
-    void initialize(std::string name, double density, double translucency, double opacity, MapTexture* mapTexture, int mapTextureId);
+    void initialize_(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture,
+                     int mapTextureId);
 
 public:
     Block(std::string name, double density, double translucency, double opacity, MapTexture* mapTexture, int mapTextureId);
     Block(json::Object object, MapTexture* mapTexture);
-    ~Block();
 
     ReadableProperty<std::string> const name;
     ReadableProperty<double> const density;
@@ -47,9 +47,6 @@ public:
     ReadableProperty<double> const opacity;
 
     int getMapTextureId();
-
-    static Block* getEmptyBlock();
-    static Block emptyBlock_;
 };
 
 

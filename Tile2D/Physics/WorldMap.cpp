@@ -16,8 +16,6 @@
 
 #include "precompile.h"
 #include "WorldMap.h"
-#include "Rect.h"
-#include "MapTexture.h"
 #include "Body.h"
 #include "CollisionShape.h"
 #include "BlockMapping.h"
@@ -25,13 +23,13 @@
 
 WorldMap::WorldMap(
         std::string path,
-        BlockMapping* mapping,
+        BlockMapping &mapping,
         int blockSizeW,
         int blockSizeH
 ) :
     modification(new Event<WorldMap, WorldMapModifiedEventArgs>(this))
 {
-    mapping_ = mapping;
+    mapping_ = &mapping;
 
     this->blockSizeW = blockSizeW;
     this->blockSizeH = blockSizeH;
@@ -51,7 +49,7 @@ WorldMap::WorldMap(
     for (int i=0; i<surface->w; i++) {
         for (int j=0; j<surface->h; j++) {
             unsigned char id = *(pixels + j * surface->w + i);
-            Block* value = mapping->getBlock(id);
+            Block* value = mapping.getBlock(id);
             blocks_->setValue(i, j, value);
         }
     }
@@ -122,25 +120,24 @@ long WorldMap::getActualH() {
     return blocks_->getH() * blockSizeH;
 }
 
-bool WorldMap::detectCollisionWith(Body *body) {
-    if (!body->getCollisionShape()) return false;
+bool WorldMap::detectCollisionWith(Body& body) {
+    Block* block = this->getValueScaled(body.position.get());
 
-    Block* block = this->getValueScaled(body->location.get());
-    if (block && block->density.get() > 0.0) return true;
+    if (block != nullptr && block->density.get() > 0.0) return true;
 
-    Point* points = body->getCollisionShape()->getRotatedPoints();
+    const Point* points = body.getCollisionShape().getRotatedPoints();
 
-    for (int i=0; i< body->getCollisionShape()->getCount(); i++) {
+    for (int i=0; i< body.getCollisionShape().getCount(); i++) {
         Point point(
-                points[i].x + body->location.get().x,
-                points[i].y + body->location.get().y
+                points[i].x + body.position.get().x,
+                points[i].y + body.position.get().y
         );
 
         block = this->getValueScaled(point);
-        if (block && block->density.get() > 0.0) return true;
+        if (block != nullptr && block->density.get() > 0.0) return true;
     }
 
-    Rect boundingBox = body->getCollisionShape()->getBoundingBox();
+    Rect boundingBox = body.getCollisionShape().getBoundingBox();
 
     int iBegin = (int)boundingBox.x1 - ((int)boundingBox.x1) % blockSizeW;
     int iEnd = (int)boundingBox.x2 + (int)boundingBox.x2 % blockSizeW;
@@ -150,9 +147,9 @@ bool WorldMap::detectCollisionWith(Body *body) {
     for (int i=iBegin; i <= iEnd; i += blockSizeW) {
         for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
             block = this->getValueScaled(Point(i, j));
-            if (block && block->density.get() > 0.0) {
-                Rect* rect = new Rect(i, j, i + blockSizeW, j + blockSizeH);
-                if (body->getCollisionShape()->intersectsWith(rect)) {
+            if (block != nullptr && block->density.get() > 0.0) {
+                Rect rect = Rect(i, j, i + blockSizeW, j + blockSizeH);
+                if (body.getCollisionShape().intersectsWith(rect)) {
                     return true;
                 }
             }

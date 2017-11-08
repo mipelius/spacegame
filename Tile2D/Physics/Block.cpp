@@ -18,15 +18,13 @@
 #include "MapTexture.h"
 #include "ReadableProperty.h"
 
-Block Block::emptyBlock_ = Block("empty block", 0.0, 1.0, 1.0, nullptr, -1);
-
 Block::Block(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture, int mapTextureId) :
     name(           ReadableProperty<std::string> (   &name_          )   ),
     density(        ReadableProperty<double>      (   &density_       )   ),
     translucency(   ReadableProperty<double>      (   &translucency_  )   ),
     opacity(        ReadableProperty<double>      (   &opacity_       )   )
 {
-    initialize(name, density, translucency, opacity, mapTexture, mapTextureId);
+    initialize_(std::move(name), density, translucency, opacity, mapTexture, mapTextureId);
 }
 
 Block::Block(json::Object object, MapTexture* mapTexture)  :
@@ -48,7 +46,7 @@ opacity(        ReadableProperty<double>      (   &opacity_       )   )
         );
     }
 
-    initialize(
+    initialize_(
             object["name"].ToString(),
             object["density"].ToFloat(),
             object["translucency"].ToFloat(),
@@ -58,12 +56,9 @@ opacity(        ReadableProperty<double>      (   &opacity_       )   )
     );
 }
 
-Block::~Block() {
-
-}
-
-void Block::initialize(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture, int mapTextureId) {
-    name_ = name;
+void Block::initialize_(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture,
+                        int mapTextureId) {
+    name_ = std::move(name);
     density_ = density;
     translucency_ = translucency;
     opacity_ = opacity;
@@ -73,8 +68,4 @@ void Block::initialize(std::string name, double density, double translucency, do
 
 int Block::getMapTextureId() {
     return mapTextureId_;
-}
-
-Block *Block::getEmptyBlock() {
-    return &emptyBlock_;
 }

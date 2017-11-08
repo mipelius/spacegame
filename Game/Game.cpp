@@ -144,13 +144,13 @@ void Game::launch() {
             if (timePassedAfterLastLightAdd > lightAddingInterval) {
                 timePassedAfterLastLightAdd = 0;
 
-                LightObject * light = new LightObject(spaceship_->body->location.get(), 400);
+                LightObject * light = new LightObject(spaceship_->body->position.get(), 400);
 
                 canvas_->addDrawable(light->spriteContainer);
                 shadowMask_->addLight(light->pointLight);
 
                 Plot* plot = new Plot();
-                plot->location.set(spaceship_->body->location.get());
+                plot->location.set(spaceship_->body->position.get());
                 plot->size.set(1.0);
 
                 smallMapCanvas_->addDrawable(plot);
@@ -162,8 +162,8 @@ void Game::launch() {
                 timePassedAfterLastBomb = 0;
 
                 Bomb* bomp = new Bomb();
-                bomp->body->location.set(
-                    spaceship_->body->location.get() + Vector::byAngle(
+                bomp->body->position.set(
+                    spaceship_->body->position.get() + Vector::byAngle(
                         spaceship_->body->angle.get(), -20.0
                     )
                 );
@@ -182,18 +182,18 @@ void Game::launch() {
 
                 bomp->body->speed.set(speed);
 
-                world_->add(bomp->body);
+                world_->add(*bomp->body);
                 canvas_->addDrawable(bomp->spriteContainer);
             }
         }
 
         if (keys[SDL_SCANCODE_C]) {
-            int xx = (int)spaceship_->body->location.get().x;
-            int yy = (int)spaceship_->body->location.get().y;
+            int xx = (int)spaceship_->body->position.get().x;
+            int yy = (int)spaceship_->body->position.get().y;
 
             for (int i = -10; i<=10; i++) {
                 for (int j = -10; j<=10; j++) {
-                    map_->setValueScaled(Point(xx + 10 * i, yy + 10 * j), App::getResources()->other->blockMapping->getBlock(0));
+                    //map_->setValueScaled(Point(xx + 10 * i, yy + 10 * j), App::getResources()->other->blockMapping->getBlock(0));
                 }
             }
         }
@@ -283,13 +283,13 @@ void Game::initialize() {
 
     map_ = new WorldMap(
             "images/map.bmp",
-            App::getResources()->other->blockMapping,
+            *App::getResources()->other->blockMapping,
             10,
             10
     );
 
     world_ = new PhysicsWorld(Vector(0, 9.81), 0.20, 0.0001);
-    world_->setMap(map_);
+    world_->setMap(*map_);
 
     DrawableMap* drawableMap = new DrawableMap();
     drawableMap->setMap(map_);
@@ -309,16 +309,16 @@ void Game::initialize() {
     // --- PLAYER ---
 
     spaceship_ = new Spaceship();
-    spaceship_->body->location.set(Point(4000, 8000));
+    spaceship_->body->position.set(Point(4000, 8000));
 
-    world_->add(spaceship_->body);
+    world_->add(*spaceship_->body);
     canvas_->addDrawable(spaceship_->spriteContainer);
 
-    camera_->location.bind(spaceship_->body->location);
+    camera_->location.bind(spaceship_->body->position);
 
     Ears* ears = new Ears();
     ears->maxDistance.set(1400);
-    ears->location.bind(spaceship_->body->location);
+    ears->location.bind(spaceship_->body->position);
     App::getSamplePlayer()->setEars(ears);
 
     // --- SHADOW MASK  ---

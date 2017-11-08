@@ -26,7 +26,7 @@
 
 class Spaceship::Body_MapCollisionEventHandler : public IEventHandler<Body, EventArgs> {
     void handle(Body* body, EventArgs args) override {
-        body->location.set(body->location.get() - body->velocity.get());
+        body->position.set(body->position.get() - body->velocity.get());
         body->speed.set(Vector(0, 0));
     }
 };
@@ -79,7 +79,7 @@ Spaceship::Spaceship() :
 
     //this->location.bind(body->location);
 
-    spriteContainer->location.bind(body->location);
+    spriteContainer->location.bind(body->position);
     spriteContainer->angle.bind(body->angle);
 }
 
@@ -96,17 +96,17 @@ void Spaceship::accelerate() {
 
 void Spaceship::shoot() {
     Missile* missileMiddle = new Missile(
-            body->location.get(),
+            body->position.get(),
             Vector::byAngle(body->angle.get(), 100000)
     );
 
     Missile* missileLeft = new Missile(
-            body->location.get() + Vector::byAngle(body->angle.get() - 120, 15),
+            body->position.get() + Vector::byAngle(body->angle.get() - 120, 15),
             Vector::byAngle(body->angle.get(), 100000)
     );
 
     Missile* missileRight = new Missile(
-            body->location.get() + Vector::byAngle(body->angle.get() + 120, 15),
+            body->position.get() + Vector::byAngle(body->angle.get() + 120, 15),
             Vector::byAngle(body->angle.get(), 100000)
     );
 

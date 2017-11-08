@@ -28,13 +28,12 @@ class PhysicsWorld {
 
 public:
     PhysicsWorld(Vector gForce, double metersPerPixel, double airDensity);
-    ~PhysicsWorld();
 
     void step(double timeSeconds);
-    void add(Body *body);
+    void add(Body &body);
 
-    void setMap(WorldMap * map);
-    WorldMap * getMap();
+    void setMap(WorldMap &map);
+    WorldMap & getMap();
 
     Property<Vector> const gForce;
     Property<double> const metersPerPixel;
@@ -47,7 +46,7 @@ private:
 
     std::list<Body *> bodies_;
     WorldMap * map_;
-    void detectCollision_(Body *entity);
+    void detectCollision_(Body &body);
 };
 
 #endif //__PhysicsWorld_H_

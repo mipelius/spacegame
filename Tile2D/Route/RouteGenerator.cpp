@@ -55,10 +55,10 @@ int RouteGenerator::heuristicFunction(Node *startNode, Node *goalNode) {
 }
 
 RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
-    WorldMap * map = world->getMap();
+    WorldMap& map = world->getMap();
 
-    int minSpaceX = (int)(request->minSpace.getWidth() / map->getBlockW() / 2);
-    int minSpaceY = (int)(request->minSpace.getHeight() / map->getBlockH() / 2);
+    int minSpaceX = (int)(request->minSpace.getWidth() / map.getBlockW() / 2);
+    int minSpaceY = (int)(request->minSpace.getHeight() / map.getBlockH() / 2);
     bool timeOut = false;
 
     // if there is block at the start point or goal point, it's not possible to generate route -> return nullptr
@@ -75,8 +75,8 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
     std::list<Node*> openList = std::list<Node*>();
     std::list<Node*> closedList = std::list<Node*>();
 
-    Node* startNode = Node::byPoint(request->sender->getLocation(), map);
-    Node* goalNode = Node::byPoint(request->goalPoint, map);
+    Node* startNode = Node::byPoint(request->sender->getLocation(), &map);
+    Node* goalNode = Node::byPoint(request->goalPoint, &map);
 
     Node* currentNode = nullptr;
     bool goalNodeHasBeenReached = false;
@@ -111,7 +111,7 @@ RouteResponse *RouteGenerator::generateRoute(RouteRequest* request) {
             int xCenter = currentNode->x + ADJACENT_NODES_RELATIVE_LOCATIONS[i][0] * request->step;
             int yCenter = currentNode->y + ADJACENT_NODES_RELATIVE_LOCATIONS[i][1] * request->step;
 
-            Node* adjacentNode = new Node(xCenter, yCenter, map);
+            Node* adjacentNode = new Node(xCenter, yCenter, &map);
 
             // if the current adjacent node is (approximately) same as goalNode the goal node has been reached
 

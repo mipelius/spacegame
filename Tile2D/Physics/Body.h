@@ -39,7 +39,7 @@ public:
     Property<double> const angularVelocity;
     Property<double> const torque;
 
-    Property<Point> const location;
+    Property<Point> const position;
     Property<Vector> const velocity;
     Property<Vector> const speed;
     Property<Vector> const force;
@@ -51,14 +51,13 @@ public:
 
     // methods
 
-    Body(double mass);
-    ~Body();
+    explicit Body(double mass);
 
     void applyForce(Vector force);
     void applyTorque(double angle);
 
     PhysicsWorld* getWorld();
-    CollisionShape* getCollisionShape();
+    CollisionShape& getCollisionShape();
 
     void setCollisionShape(CollisionShape* collisionShape);
 
@@ -89,9 +88,9 @@ private:
 
     bool stepIsIgnored_;
     bool entityCollisionDetectionIsIgnored_;
-    bool detectCollisionWith_(Body *otherBody);
+    bool detectCollisionWith_(Body &otherBody);
     bool detectMapCollision_();
-    void setWorld_(PhysicsWorld *gameWorld);
+    void setWorld_(PhysicsWorld &gameWorld);
     void step_(double timeElapsedSec);
 
     bool isDead_;

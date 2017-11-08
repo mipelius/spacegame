@@ -26,14 +26,18 @@ class Block;
 class BlockMapping {
 
 public:
-    BlockMapping(std::string jsonFilename);
+    explicit BlockMapping(std::string jsonFilename);
+    ~BlockMapping();
 
     Block* getBlock(unsigned char id);
-    MapTexture* getMapTexture();
+    MapTexture * getMapTexture();
+
+    Block* getEmptyBlock();
 
 private:
     std::vector<Block*> blocks_;
     MapTexture* mapTexture_;
+    Block* emptyBlock_;
 };
 
 #endif //__BlockMapping_H_

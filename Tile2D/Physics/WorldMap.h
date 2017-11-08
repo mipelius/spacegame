@@ -35,7 +35,7 @@ class WorldMap {
 public:
     WorldMap(
             std::string path,
-            BlockMapping* mapping,
+            BlockMapping &mapping,
             int blockSizeW = WorldMap::DEFAULT_BLOCK_SIZE_W,
             int blockSizeH = WorldMap::DEFAULT_BLOCK_SIZE_H
     );
@@ -56,7 +56,7 @@ public:
     long getActualW();
     long getActualH();
 
-    bool detectCollisionWith(Body *body);
+    bool detectCollisionWith(Body& body);
 
 private:
     static const int DEFAULT_BLOCK_SIZE_W = 8;

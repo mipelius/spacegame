@@ -29,7 +29,7 @@ private:
     Point *points;
     Body *owner;
     int count;
-    bool intersectsWithHalfLine(Point linePoint1, Point linePoint2, Point offset);
+    bool intersectsWithHalfLine(Point linePoint1, Point linePoint2, Point offset) const;
 public:
     /**
      * Constructor that initializes the collision shape. Note: use only convex shapes.
@@ -45,7 +45,7 @@ public:
      * @param shape     the other shape
      * @return bool     true if this shape intersects with the other shape, false otherwise
      */
-    bool intersectsWith(CollisionShape *shape);
+    bool intersectsWith(const CollisionShape& shape) const;
 
     /**
      * Checks if the shape intersects with the given rectangle
@@ -54,7 +54,7 @@ public:
      * @return bool     true if this shape intersects with the given rectangle, false otherwise
      */
 
-    bool intersectsWith(Rect* rectangle);
+    bool intersectsWith(const Rect& rectangle) const;
 
     /**
      * Gets the points of the CollisionShape
@@ -68,21 +68,21 @@ public:
      *
      * @return the count of the points
      */
-    int getCount();
+    int getCount() const;
 
     /**
      * Gets the rotated points of the CollisionShape
      *
      * @return the points
      */
-    Point *getRotatedPoints();
+    const Point * getRotatedPoints() const;
 
     /**
      * Gets the bounding box which. Note: the location is already summed to points in this rectangle
      *
      * @return the bounding box
      */
-    Rect getBoundingBox();
+    Rect getBoundingBox() const;
 };
 
 

@@ -33,7 +33,7 @@ Body::Body(double mass) :
     angularVelocity (   Property<double>  (&angularVelocity_  )   ),
     torque          (   Property<double>  (&torque_           )   ),
 
-    location        (   Property<Point>   (&location_         )   ),
+    position        (   Property<Point>   (&location_         )   ),
     speed           (   Property<Vector>  (&speed_            )   ),
     velocity        (   Property<Vector>  (&velocity_         )   ),
     force           (   Property<Vector>  (&force_            )   ),
@@ -62,10 +62,6 @@ Body::Body(double mass) :
     collisionShape_ = nullptr;
 
     isDead_ = false;
-}
-
-Body::~Body() {
-
 }
 
 void Body::step_(double timeElapsedSec) {
@@ -106,7 +102,7 @@ void Body::step_(double timeElapsedSec) {
         this->angularVelocity.updateDependentProperties();
         this->torque.updateDependentProperties();
 
-        this->location.updateDependentProperties();
+        this->position.updateDependentProperties();
         this->velocity.updateDependentProperties();
         this->speed.updateDependentProperties();
         this->force.updateDependentProperties();
@@ -119,8 +115,8 @@ void Body::step_(double timeElapsedSec) {
 
 
 bool Body::detectMapCollision_() {
-    WorldMap * map = this->getWorld()->getMap();
-    if (map && map->detectCollisionWith(this)) {
+    WorldMap& map = this->getWorld()->getMap();
+    if (map.detectCollisionWith(*this)) {
 
         mapCollision.raise(EventArgs());
 
@@ -130,11 +126,11 @@ bool Body::detectMapCollision_() {
 }
 
 
-bool Body::detectCollisionWith_(Body *otherBody) {
+bool Body::detectCollisionWith_(Body &otherBody) {
     if (!entityCollisionDetectionIsIgnored_) {
-        if (this->collisionShape_ == nullptr || otherBody->collisionShape_ == nullptr) return false;
-        if (this->collisionShape_->intersectsWith(otherBody->getCollisionShape()) ||
-                otherBody->getCollisionShape()->intersectsWith(this->collisionShape_)) {
+        if (this->collisionShape_ == nullptr || otherBody.collisionShape_ == nullptr) return false;
+        if (this->collisionShape_->intersectsWith(otherBody.getCollisionShape()) ||
+                otherBody.getCollisionShape().intersectsWith(*collisionShape_)) {
 
             bodyCollision.raise(BodyCollisionEventArgs(otherBody));
 
@@ -160,16 +156,16 @@ void Body::applyForce(Vector force) {
     this->force.set(forceBefore + force);
 }
 
-void Body::setWorld_(PhysicsWorld *gameWorld) {
-    this->physicsWorld_ = gameWorld;
+void Body::setWorld_(PhysicsWorld &gameWorld) {
+    this->physicsWorld_ = &gameWorld;
 }
 
 PhysicsWorld *Body::getWorld() {
     return this->physicsWorld_;
 }
 
-CollisionShape *Body::getCollisionShape() {
-    return this->collisionShape_;
+CollisionShape& Body::getCollisionShape() {
+    return *this->collisionShape_;
 }
 
 void Body::setCollisionShape(CollisionShape* collisionShape) {

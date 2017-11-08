@@ -50,22 +50,22 @@ public:
 
     void handle(Body* body, EventArgs args) {
 
-        new Explosion(body->location.get(), 300);
+        new Explosion(body->position.get(), 300);
 
-        body->location.set(body->location.get() - body->velocity.get());
+        body->position.set(body->position.get() - body->velocity.get());
         body->speed.set(Vector(0, 0));
 
-        int blockW = body->getWorld()->getMap()->getBlockW();
-        int blockH = body->getWorld()->getMap()->getBlockH();
+        int blockW = body->getWorld()->getMap().getBlockW();
+        int blockH = body->getWorld()->getMap().getBlockH();
 
         for (int i = -150; i < 150; i += blockW) {
             for (int j = -150; j < 150; j += blockH) {
                 double distanceFromCenter = sqrt(i*i + j*j);
 
                 if (distanceFromCenter + rand() % 15 < 150) {
-                    body->getWorld()->getMap()->setValueScaled(
-                            body->location.get() + Vector(i, j),
-                            Block::getEmptyBlock()
+                    body->getWorld()->getMap().setValueScaled(
+                            body->position.get() + Vector(i, j),
+                            App::getResources()->other->blockMapping->getEmptyBlock()
                     );
                 }
             }
@@ -76,7 +76,7 @@ public:
 };
 
 class Bomb::Body_BodyCollisionEventHandler : public IEventHandler<Body, BodyCollisionEventArgs> {
-    void handle(Body* body, BodyCollisionEventArgs args) {
+    void handle(Body* body, BodyCollisionEventArgs args) override {
         //
     }
 };
@@ -84,9 +84,9 @@ class Bomb::Body_BodyCollisionEventHandler : public IEventHandler<Body, BodyColl
 class Bomb::BombBody : public Body {
 
 public:
-    BombBody(double mass) : Body(mass) { }
+    explicit BombBody(double mass) : Body(mass) { }
 
-    void afterStep() {
+    void afterStep() override {
         double newAngle = velocity.get().angle();
         angle.set(newAngle);
     }
@@ -126,9 +126,9 @@ spriteContainer (   new DrawableGroup()                       )
 
     // bindings
 
-    this->location->bind(body->location);
+    this->location->bind(body->position);
 
-    spriteContainer->location.bind(body->location);
+    spriteContainer->location.bind(body->position);
     spriteContainer->angle.bind(body->angle);
 }
 

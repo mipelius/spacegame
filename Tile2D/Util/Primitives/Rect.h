@@ -30,24 +30,24 @@ public:
 
     inline void setPosition(const Point &point);
 
-    inline double getWidth();
-    inline double getHeight();
+    inline double getWidth() const;
+    inline double getHeight() const;
 
-    inline bool hasPointInside(const Point &point);
+    inline bool hasPointInside(const Point &point) const;
 
-    inline bool intersectsWith(const Rect &otherRectangle);
-    inline bool intersectsWithLine(const double &x1, const double &y1, const double &x2, const double &y2);
+    inline bool intersectsWith(const Rect &otherRectangle) const;
+    inline bool intersectsWithLine(const double &x1, const double &y1, const double &x2, const double &y2) const;
 
     inline void copy(Rect rect);
 };
 
 // inline functions
 
-inline bool Rect::intersectsWith(const Rect &otherRectangle) {
-    double& rectAx1 = x1;
-    double& rectAy1 = y2;
-    double& rectAx2 = x1;
-    double& rectAy2 = y2;
+inline bool Rect::intersectsWith(const Rect &otherRectangle) const {
+    const double& rectAx1 = x1;
+    const double& rectAy1 = y2;
+    const double& rectAx2 = x1;
+    const double& rectAy2 = y2;
 
     const double& rectBx1 = otherRectangle.x1;
     const double& rectBy1 = otherRectangle.y1;
@@ -57,7 +57,7 @@ inline bool Rect::intersectsWith(const Rect &otherRectangle) {
     return rectAx1 <= rectBx2 && rectAx2 >= rectBx1 && rectAy1 <= rectBy2 && rectAy2 >= rectBy1;
 }
 
-inline bool Rect::intersectsWithLine(const double &x1, const double &y1, const double &x2, const double &y2) {
+inline bool Rect::intersectsWithLine(const double &x1, const double &y1, const double &x2, const double &y2) const {
     // if one of the points is inside the rectangle
     if (
             (x1 >= this->x1 && x1 <= this->x2) && (y1 >= this->y1 && y1 <= this->y2)
@@ -121,11 +121,11 @@ inline void Rect::setPosition(const Point &point) {
     y2 = point.y + h;
 }
 
-inline double Rect::getWidth() {
+inline double Rect::getWidth() const {
     return x2 - x1;
 }
 
-inline double Rect::getHeight() {
+inline double Rect::getHeight() const {
     return y2 - y1;
 }
 
@@ -136,7 +136,7 @@ inline void Rect::copy(Rect rect) {
     this->y2 = rect.y2;
 }
 
-inline bool Rect::hasPointInside(const Point &point) {
+inline bool Rect::hasPointInside(const Point &point) const {
     return (point.x >= this->x1 && point.x <= this->x2) &&
            (point.y >= this->y1 && point.y <= this->y2);
 }

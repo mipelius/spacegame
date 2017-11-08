@@ -27,8 +27,8 @@
 #include "WorldMap.h"
 
 class DynamicLightObject::Body_MapCollisionEventHandler : public IEventHandler<Body, EventArgs> {
-    void handle(Body* body, EventArgs args) {
-        WorldMap * map = body->getWorld()->getMap();
+    void handle(Body* body, EventArgs args) override {
+        WorldMap& map = body->getWorld()->getMap();
 
 //        for (int i=-2; i <= 2; i++) {
 //            for (int j=-2; j <= 2; j++) {
@@ -40,7 +40,7 @@ class DynamicLightObject::Body_MapCollisionEventHandler : public IEventHandler<B
 
         if (body->speed.get().length() < 100.0) {
             body->speed.set(Vector(0, 0));
-            body->location.set(body->location.get() - body->velocity.get());
+            body->position.set(body->position.get() - body->velocity.get());
         }
         else {
             body->speed.set(body->speed.get() * 0.5);
@@ -52,9 +52,9 @@ DynamicLightObject::DynamicLightObject(Point const &location, double radius) :
     LightObject(location, radius),
     body(new Body(10.0))
 {
-    this->pointLight->location.bind(body->location);
-    this->spriteContainer->location.bind(body->location);
-    body->location.set(location);
+    this->pointLight->location.bind(body->position);
+    this->spriteContainer->location.bind(body->position);
+    body->position.set(location);
     body->mapCollision.add(new DynamicLightObject::Body_MapCollisionEventHandler());
 
     Point points[] = {
