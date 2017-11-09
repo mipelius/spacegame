@@ -374,7 +374,7 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
 
-    double padding = 1.5;
+    float padding = 1.5;
 
     glBegin(GL_QUADS);
 
@@ -391,8 +391,8 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
                 lightAmount = dynamicLightAmount;
             }
 
-            double xActual = x * worldMap_->getBlockW() - rect.x1;
-            double yActual = y * worldMap_->getBlockH() - rect.y1;
+            float xActual = x * worldMap_->getBlockW() - (float)rect.x1;
+            float yActual = y * worldMap_->getBlockH() - (float)rect.y1;
 
             float x1 = xActual;
             float y1 = yActual;
@@ -404,13 +404,13 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
 
                 float texMargin = 0.4999;
 
-                glTexCoord2f(0.0 + texMargin, 0.0 + texMargin); glVertex2f(x1, y1);
-                glTexCoord2f(1.0 - texMargin, 0.0 + texMargin); glVertex2f(x2, y1);
-                glTexCoord2f(1.0 - texMargin, 1.0 - texMargin); glVertex2f(x2, y2);
-                glTexCoord2f(0.0 + texMargin, 1.0 - texMargin); glVertex2f(x1, y2);
+                glTexCoord2f(0.0f + texMargin, 0.0f + texMargin); glVertex2f(x1, y1);
+                glTexCoord2f(1.0f - texMargin, 0.0f + texMargin); glVertex2f(x2, y1);
+                glTexCoord2f(1.0f - texMargin, 1.0f - texMargin); glVertex2f(x2, y2);
+                glTexCoord2f(0.0f + texMargin, 1.0f - texMargin); glVertex2f(x1, y2);
             }
             else if (lightAmount > 0) {
-                float value = (float)(1.0 - pow(1.0 - lightAmount / 255.0, 0.25));
+                auto value = (float)(1.0 - pow(1.0 - lightAmount / 255.0, 0.25));
 
                 glColor4f(0.0, 0.0, 0.0, value);
 
