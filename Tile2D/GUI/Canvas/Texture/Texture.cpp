@@ -16,7 +16,6 @@
 
 #include "precompile.h"
 #include "Texture.h"
-#import "ITexture.h"
 
 Texture::Texture(std::string filename) {
     SDL_Surface *surface;    // This surface will tell us the details of the image

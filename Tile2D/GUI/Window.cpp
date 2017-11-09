@@ -21,20 +21,24 @@
 Window* Window::instance_ = nullptr;
 
 Window::Window() :
-    location        (   Property<Point>           (this, getLocation_, setLocation_         )   ),
-    isFullScreen    (   BooleanProperty           (this, getIsFullScreen_, setIsFullScreen_ )   ),
-    w               (   ReadableProperty<double>  (&w_    )   ),
-    h               (   ReadableProperty<double>  (&h_    )   )
+    position        (   Property<Point>           (this, getPosition_, setPosition_         )),
+    isFullScreen    (   BooleanProperty           (this, getIsFullScreen_, setIsFullScreen_ )),
+    w               (   ReadableProperty<double>  (&w_                                      )),
+    h               (   ReadableProperty<double>  (&h_                                      ))
 {
     isInitialized_ = false;
 }
 
 Window::~Window() {
-    if (window_) SDL_DestroyWindow(window_);
+    if (window_ == nullptr) {
+        SDL_DestroyWindow(window_);
+    }
 }
 
 Window* Window::getInstance() {
-    if (!instance_) instance_ = new Window();
+    if (instance_ == nullptr) {
+        instance_ = new Window();
+    }
     return instance_;
 }
 
@@ -81,8 +85,8 @@ void Window::update() {
     glClear(GL_COLOR_BUFFER_BIT);
     glViewport(0, 0, (GLsizei)w_, (GLsizei)h_);
 
-    for (std::list<GuiComponentBase*>::iterator i = guiComponents_.begin(); i != guiComponents_.end(); i++) {
-        (*i)->render();
+    for (auto& guiComponent : guiComponents_) {
+        guiComponent->render();
     }
 
     // swap
@@ -103,13 +107,13 @@ void Window::setSize(double w, double h) {
     this->h.updateDependentProperties();
 }
 
-Point Window::getLocation_(void *owner) {
-    Window* window = (Window*)owner;
+Point Window::getPosition_(void *owner) {
+    auto window = (Window*)owner;
     return Point(window->x_, window->y_);
 }
 
-void Window::setLocation_(void *owner, const Point &value) {
-    Window* window = (Window*)owner;
+void Window::setPosition_(void *owner, const Point &value) {
+    auto window = (Window*)owner;
     SDL_SetWindowPosition(window->window_, (int)value.x, (int)value.y);
     window->x_ = value.x;
     window->y_ = value.y;
@@ -120,7 +124,7 @@ bool Window::getIsFullScreen_(void *owner) {
     return ((Window*)owner)->isFullScreen_;
 }
 void Window::setIsFullScreen_(void *owner, const bool &value) {
-    Window* window = (Window*)owner;
+    auto window = (Window*)owner;
 
     int retValue;
 

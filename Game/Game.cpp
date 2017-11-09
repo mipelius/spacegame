@@ -60,7 +60,7 @@ Game::Game() {
 }
 
 void Game::launch() {
-    Text* text = new Text(App::getResources()->other->smallFont);
+    Text* text = new Text(*App::getResources()->other->smallFont);
     text->location.set(Point(4000, 8000));
     text->string.set("Welcome to Space Game!");
     text->size.set(3);
@@ -89,33 +89,6 @@ void Game::launch() {
         keys = SDL_GetKeyboardState(0);
 
         spaceship_->body->torque.set(0);
-
-        if (keys[SDL_SCANCODE_TAB]) {
-            if (timePassedAfterLastInventoryToggle > inventoryInterval) {
-                inventory_->toggleBigInventoryVisibility();
-                timePassedAfterLastInventoryToggle = 0;
-            }
-        }
-
-        if (keys[SDL_SCANCODE_1]) {
-            inventory_->selectSlot(1);
-        }
-
-        if (keys[SDL_SCANCODE_2]) {
-            inventory_->selectSlot(2);
-        }
-
-        if (keys[SDL_SCANCODE_3]) {
-            inventory_->selectSlot(3);
-        }
-
-        if (keys[SDL_SCANCODE_4]) {
-            inventory_->selectSlot(4);
-        }
-
-        if (keys[SDL_SCANCODE_5]) {
-            inventory_->selectSlot(5);
-        }
 
         if (keys[SDL_SCANCODE_LEFT]) {
             if (spaceship_->body->angularVelocity.get() > -10) {
@@ -201,8 +174,6 @@ void Game::launch() {
         if (keys[SDL_SCANCODE_RETURN]) {
             //smallMapCanvas_->isVisible.toggle();
         }
-
-        inventory_->checkMouseActions();
 
         /// --- PHYSICS ---
 
@@ -383,12 +354,6 @@ void Game::initialize() {
     GUICanvas_->setCamera(*GUICanvasCamera);
 
     App::getWindow()->addComponent(*GUICanvas_);
-
-    // --- INVENTORY ---
-
-    inventory_ = new Inventory();
-    inventory_->location.set(Point(20, 20));
-    GUICanvas_->addDrawable(inventory_);
 
     isInitialized_ = true;
 }

@@ -22,7 +22,7 @@ Sprite::Sprite(ITexture *texture, Rect rect) : DrawableBase(), rect_(rect) {
     texture_ = texture;
 }
 
-void Sprite::drawActual(Canvas* canvas) {
+void Sprite::drawActual(const Canvas &canvas) {
     texture_->glBind();
 
     glBegin(GL_QUADS);
@@ -52,12 +52,12 @@ Rect Sprite::getActualRect() {
     double x = location.get().x;
     double y = location.get().y;
 
-    return Rect(
+    return {
             rect_.x1 + x,
             rect_.y1 + y,
             rect_.x2 + x,
             rect_.y2 + y
-    );
+    };
 }
 
 Sprite::Sprite() : rect_(Rect(0, 0, 0, 0)) {

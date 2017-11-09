@@ -23,9 +23,9 @@
 Camera::Camera() :
     // properties
 
-    position(Property<Point>(this, getPosition_, setPosition_)   ),
-    areaRect(       Property<Rect>  (&areaRect_     )   ),
-    boundsRect(     Property<Rect>  (&boundsRect_   )   ),
+    position(       Property<Point> (this, getPosition_, setPosition_   )),
+    areaRect(       Property<Rect>  (&areaRect_                         )),
+    boundsRect(     Property<Rect>  (&boundsRect_                       )),
 
     // member objects
     areaRect_(      Rect(0, 0, 0, 0)    ),

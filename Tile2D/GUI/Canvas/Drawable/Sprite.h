@@ -33,7 +33,7 @@ public:
     Rect getActualRect();
 
 protected:
-    void drawActual(Canvas* canvas) override;
+    void drawActual(const Canvas &canvas) override;
 
 private:
 

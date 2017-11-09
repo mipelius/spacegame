@@ -30,7 +30,7 @@ class PartialLightMap;
 
 class PointLight {
     friend class ShadowMask;
-    friend class LocationProperty;
+    friend class positionProperty;
 
 public:
     virtual void draw(Canvas *canvas);
@@ -61,7 +61,7 @@ private:
     static Point getLocation_(void* owner);
     static void setLocation_(void* owner, const Point& value);
 
-    class LocationProperty;
+    class positionProperty;
 };
 
 

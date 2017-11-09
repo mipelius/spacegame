@@ -27,17 +27,17 @@ DrawableMap::DrawableMap() {
 }
 
 
-void DrawableMap::draw(Canvas* canvas) {
+void DrawableMap::draw(const Canvas &canvas) {
     if (map_ == nullptr) return;
 
     double blockSizeW =
-            canvas->getRenderingAreaRect().getWidth() /
-            canvas->getCamera().areaRect.get().getWidth() *
+            canvas.getRenderingAreaRect().getWidth() /
+            canvas.getCamera().areaRect.get().getWidth() *
             map_->getBlockW();
 
     double blockSizeH =
-            canvas->getRenderingAreaRect().getHeight() /
-            canvas->getCamera().areaRect.get().getHeight() *
+            canvas.getRenderingAreaRect().getHeight() /
+            canvas.getCamera().areaRect.get().getHeight() *
             map_->getBlockH();
 
     if (blockSizeW > 1.0 && blockSizeH > 1.0) {
@@ -56,8 +56,8 @@ void DrawableMap::setMapTexture(MapTexture *mapTexture) {
     mapTexture_ = mapTexture;
 }
 
-void DrawableMap::drawMap(Canvas *canvas) {
-    Rect rect = canvas->getCamera().areaRect.get();
+void DrawableMap::drawMap(const Canvas &canvas) {
+    Rect rect = canvas.getCamera().areaRect.get();
 
     double x = rect.x1;
     double y = rect.y1;
@@ -113,9 +113,9 @@ void DrawableMap::drawMap(Canvas *canvas) {
     mapTexture_->glUnbind();
 }
 
-void DrawableMap::drawSmallMap(Canvas *canvas) {
-    Rect cameraRect = canvas->getCamera().areaRect.get();
-    Rect renderingAreaRect = canvas->getRenderingAreaRect();
+void DrawableMap::drawSmallMap(const Canvas& canvas) {
+    Rect cameraRect = canvas.getCamera().areaRect.get();
+    Rect renderingAreaRect = canvas.getRenderingAreaRect();
 
     double stepX = cameraRect.getWidth() / renderingAreaRect.getWidth();
     double stepY = cameraRect.getHeight() / renderingAreaRect.getHeight();

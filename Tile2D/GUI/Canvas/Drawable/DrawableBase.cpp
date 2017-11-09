@@ -36,7 +36,7 @@ color_      (Color(1.0, 1.0, 1.0))
 
 }
 
-void DrawableBase::draw(Canvas *canvas) {
+void DrawableBase::draw(const Canvas& canvas) {
     if (!isVisible_) {
         return;
     }

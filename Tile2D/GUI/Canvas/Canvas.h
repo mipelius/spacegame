@@ -35,7 +35,7 @@ public:
     void addShadowMask(IShadowMask *shadowMask);
 
     void setCamera(Camera& camera);
-    Camera& getCamera();
+    Camera& getCamera() const;
 
 private:
     std::list<IDrawable*> drawables_;

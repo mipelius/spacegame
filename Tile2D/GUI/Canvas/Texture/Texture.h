@@ -26,6 +26,7 @@ private:
     GLuint texture;
     int w;
     int h;
+
 public:
     int getW();
     int getH();

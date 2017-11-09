@@ -16,7 +16,6 @@
 
 #include "precompile.h"
 #include "Canvas.h"
-#include "App.h"
 #include "Window.h"
 #include "IDrawable.h"
 #include "Camera.h"
@@ -47,7 +46,7 @@ void Canvas::renderActual() {
     glMatrixMode(GL_MODELVIEW);
 
     for (auto& drawable : drawables_) {
-        drawable->draw(this);
+        drawable->draw(*this);
     }
 
     for (auto& shadowMask : shadowMasks_) {
@@ -63,7 +62,7 @@ void Canvas::setCamera(Camera& camera) {
     camera_ = &camera;
 }
 
-Camera& Canvas::getCamera() {
+Camera& Canvas::getCamera() const {
     return *camera_;
 }
 

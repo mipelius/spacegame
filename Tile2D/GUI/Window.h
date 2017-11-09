@@ -36,7 +36,7 @@ public:
 
     void update();
 
-    Property<Point>             const location;
+    Property<Point>             const position;
     BooleanProperty             const isFullScreen;
     ReadableProperty<double>    const w;
     ReadableProperty<double>    const h;
@@ -64,8 +64,8 @@ private:
 
     bool isInitialized_;
 
-    static Point getLocation_(void* owner);
-    static void setLocation_(void* owner, const Point& value);
+    static Point getPosition_(void *owner);
+    static void setPosition_(void *owner, const Point &value);
 
     static bool getIsFullScreen_(void *owner);
     static void setIsFullScreen_(void *owner, const bool &value);

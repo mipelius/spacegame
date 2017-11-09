@@ -17,7 +17,7 @@
 #include "precompile.h"
 #include "DrawableGroup.h"
 
-void DrawableGroup::drawActual(Canvas* canvas) {
+void DrawableGroup::drawActual(const Canvas &canvas) {
     for (auto& drawable : drawables_) {
         drawable->draw(canvas);
     }

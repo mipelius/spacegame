@@ -29,9 +29,9 @@ Plot::Plot() :
 
 }
 
-void Plot::draw(Canvas *canvas) {
-    Rect cameraRect = canvas->getCamera().areaRect.get();
-    Rect renderingAreaRect = canvas->getRenderingAreaRect();
+void Plot::draw(const Canvas &canvas) {
+    Rect cameraRect = canvas.getCamera().areaRect.get();
+    Rect renderingAreaRect = canvas.getRenderingAreaRect();
 
     double pixelWidth = cameraRect.getWidth() / renderingAreaRect.getWidth();
     double pixelHeight = cameraRect.getHeight() / renderingAreaRect.getHeight();
@@ -50,7 +50,7 @@ void Plot::draw(Canvas *canvas) {
     double x2 = x1 + pixelWidth + addition * pixelWidth * 2;
     double y2 = y1 + pixelHeight + addition * pixelHeight * 2;
 
-    canvas->glColor(1, 1, 1);
+    canvas.glColor(1, 1, 1);
 
     glBegin(GL_QUADS);
     glVertex2d(x1, y1);

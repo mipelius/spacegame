@@ -23,7 +23,7 @@
 class DrawableGroup : public DrawableBase {
 
 public:
-    void drawActual (Canvas* canvas) override;
+    void drawActual(const Canvas& canvas) override;
     void addDrawable(IDrawable *drawable);
     void removeDrawable(IDrawable *drawable);
 

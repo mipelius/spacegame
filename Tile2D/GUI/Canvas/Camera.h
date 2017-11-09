@@ -42,8 +42,6 @@ private:
 
     static Point getPosition_(void *owner);
     static void setPosition_(void *owner, const Point &value);
-
-    class LocationProperty;
 };
 
 #endif //__Camera_H_

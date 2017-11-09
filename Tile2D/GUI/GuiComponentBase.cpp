@@ -75,7 +75,7 @@ void GuiComponentBase::setParent(GuiComponentBase *guiComponent) {
     parentGuiComponent_ = guiComponent;
 }
 
-Rect GuiComponentBase::getRenderingAreaRect() {
+Rect GuiComponentBase::getRenderingAreaRect() const {
     Rect parentRect = Rect(0, 0, 0, 0);
 
     if (parentGuiComponent_ != nullptr) {
@@ -178,6 +178,6 @@ void GuiComponentBase::render() {
     }
 }
 
-void GuiComponentBase::glColor(double red, double green, double blue) {
+void GuiComponentBase::glColor(double red, double green, double blue) const {
     glColor4d(red, green, blue, opacity_);
 }

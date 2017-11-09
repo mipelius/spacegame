@@ -35,7 +35,6 @@ include_directories(
         ./
         3rdParty
         Game
-        Game/Inventory
         Game/Object
         Tile2D/Animation
         Tile2D/GUI/Canvas/Drawable
@@ -56,12 +55,6 @@ include_directories(
 set(SOURCE_FILES
         3rdParty/json.cpp
         3rdParty/json.h
-        Game/Inventory/Inventory.cpp
-        Game/Inventory/Inventory.h
-        Game/Inventory/Item.cpp
-        Game/Inventory/Item.h
-        Game/Inventory/Slot.cpp
-        Game/Inventory/Slot.h
         Game/Object/Bomb.cpp
         Game/Object/Bomb.h
         Game/Object/DynamicLightObject.cpp

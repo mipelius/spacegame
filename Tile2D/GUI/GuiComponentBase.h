@@ -27,6 +27,7 @@ class Window;
 class GuiComponentBase {
     friend class Window;
     friend class GuiComponentBase;
+
 public:
     enum Anchor {TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT};
     static const int SIZE_MAX_WIDTH = -1;
@@ -53,7 +54,7 @@ public:
 
     void render();
 
-    Rect getRenderingAreaRect();
+    Rect getRenderingAreaRect() const;
 
     void setMargin(double top, double right, double bottom, double left);
 
@@ -61,7 +62,7 @@ public:
 
     Window* getWindow();
 
-    void glColor(double red, double green, double blue);
+    void glColor(double red, double green, double blue) const;
 
 protected:
     std::list<GuiComponentBase*> children_;

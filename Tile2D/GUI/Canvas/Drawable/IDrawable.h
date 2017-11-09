@@ -24,7 +24,7 @@ class Canvas;
 class IDrawable {
 
 public:
-    virtual void draw(Canvas* canvas) = 0;
+    virtual void draw(const Canvas& canvas) = 0;
 };
 
 #endif //__IDrawable_H_

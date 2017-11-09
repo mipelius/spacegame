@@ -33,10 +33,10 @@ public:
     Property<double>    const opacity;
     Property<Color>     const color;
 
-    virtual void draw(Canvas *canvas);
+    void draw(const Canvas& canvas) override;
 
 protected:
-    virtual void drawActual(Canvas* canvas) = 0;
+    virtual void drawActual(const Canvas& canvas) = 0;
 
 private:
     Point location_;

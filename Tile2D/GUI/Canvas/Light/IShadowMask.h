@@ -21,9 +21,6 @@ class Canvas;
 
 class IShadowMask {
 public:
-    IShadowMask() { }
-    virtual ~IShadowMask() { };
-
     virtual void update(Canvas* canvas) = 0;
     virtual void draw(Canvas* canvas) = 0;
 };

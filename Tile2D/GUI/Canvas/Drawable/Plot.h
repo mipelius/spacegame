@@ -31,7 +31,7 @@ public:
     Property<Point> const location;
     Property<double> const size;
 
-    virtual void draw(Canvas *canvas) override;
+    void draw(const Canvas &canvas) override;
 
 private:
     Point location_;

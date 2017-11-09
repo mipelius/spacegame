@@ -29,14 +29,14 @@ public:
     void setMap(WorldMap * map);
     void setMapTexture(MapTexture* mapTexture);
 
-    void draw(Canvas* canvas) override;
+    void draw(const Canvas &canvas) override;
 
 private:
     MapTexture* mapTexture_;
     WorldMap * map_;
 
-    void drawMap(Canvas* canvas);
-    void drawSmallMap(Canvas* canvas);
+    void drawMap(const Canvas& canvas);
+    void drawSmallMap(const Canvas& canvas);
 
 };
 

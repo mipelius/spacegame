@@ -19,17 +19,16 @@
 #include "Font.h"
 #include "Texture.h"
 
-Text::Text(Font *font) :
+Text::Text(Font &font) :
 
     size(       Property<float>       (&size_   )     ),
     string(     Property<std::string> (&string_)   )
-
 {
-    font_ = font;
+    font_ = &font;
     size_ = 1.0;
 }
 
-void Text::drawActual(Canvas *canvas) {
+void Text::drawActual(const Canvas &canvas) {
     font_->fontTexture_->glBind();
 
     float textureW = font_->fontTexture_->getW();

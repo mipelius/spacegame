@@ -29,7 +29,7 @@ public:
 
     Property<double> const ratio;
 
-    void draw(Canvas* canvas) override;
+    void draw(const Canvas& canvas) override;
 
     void setRatio(double ratio);
     void setTexture(Texture *texture);

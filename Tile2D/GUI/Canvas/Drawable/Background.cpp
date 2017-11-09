@@ -33,15 +33,15 @@ void Background::setRatio(double ratio) {
     ratio_ = ratio;
 }
 
-void Background::draw(Canvas* canvas) {
-    Rect rect = canvas->getCamera().areaRect.get();
+void Background::draw(const Canvas& canvas) {
+    Rect rect = canvas.getCamera().areaRect.get();
 
     glColor3d(1.0, 1.0, 1.0);
 
     if (texture_ != nullptr) {
         texture_->glBind();
 
-        Point location = canvas->getCamera().position.get();
+        Point location = canvas.getCamera().position.get();
 
         GLdouble x = (location.x * ratio_) / texture_->getW();
         GLdouble y = (location.y * ratio_) / texture_->getH();
