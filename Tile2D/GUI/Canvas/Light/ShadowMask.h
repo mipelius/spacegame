@@ -42,8 +42,8 @@ public:
 
     Property<double> const ambientLight;
 
-    void update(Canvas* canvas) override;
-    void draw(Canvas* canvas) override;
+    void update(const Canvas& canvas) override;
+    void draw(const Canvas& canvas) override;
 
     void addLight(PointLight *light);
 
@@ -74,7 +74,7 @@ private:
 
     static const int MAX_PARTIAL_LIGHT_MAP_UPDATE_TIME = 5;
 
-    void drawShadowMap(Canvas *canvas);
+    void drawShadowMap(const Canvas& canvas);
 
     static void createShadowTexture();
     static const int SHADOW_TEXTURE_SIZE = 32;

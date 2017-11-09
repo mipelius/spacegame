@@ -21,8 +21,8 @@ class Canvas;
 
 class IShadowMask {
 public:
-    virtual void update(Canvas* canvas) = 0;
-    virtual void draw(Canvas* canvas) = 0;
+    virtual void update(const Canvas& canvas) = 0;
+    virtual void draw(const Canvas& canvas) = 0;
 };
 
 

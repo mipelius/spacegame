@@ -33,9 +33,9 @@ class PointLight {
     friend class positionProperty;
 
 public:
-    virtual void draw(Canvas *canvas);
+    virtual void draw(const Canvas &canvas);
 
-    PointLight(Point location, double radius, bool isDynamic = false);
+    PointLight(Point position, double radius, bool isDynamic = false);
     ~PointLight();
 
     Property<Point> const location;
@@ -47,7 +47,7 @@ public:
     static GLuint glTextureId_;
 
 private:
-    Point location_;
+    Point position_;
     double radius_;
     double intensity_;
 
@@ -58,8 +58,8 @@ private:
     static const int TEXTURE_SIZE = 128;
     static void createLightTexture();
 
-    static Point getLocation_(void* owner);
-    static void setLocation_(void* owner, const Point& value);
+    static Point getPosition_(void *owner);
+    static void setPosition_(void *owner, const Point &value);
 
     class positionProperty;
 };

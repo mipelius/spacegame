@@ -24,12 +24,12 @@
 
 GLuint PointLight::glTextureId_ = 0;
 
-PointLight::PointLight(Point location, double radius, bool isDynamic) :
-    location    (   Property<Point>   (this, getLocation_, setLocation_)  ),
+PointLight::PointLight(Point position, double radius, bool isDynamic) :
+    location    (Property<Point>(this, getPosition_, setPosition_)  ),
     radius      (   Property<double>  (&radius_           )  ),
     intensity   (   Property<double>  (&intensity_        )  ),
 
-    location_   (   location    ),
+    position_   (   position    ),
     radius_     (   radius      ),
     intensity_  (   1.0         ),
 
@@ -49,11 +49,11 @@ PointLight::~PointLight() {
     delete movement;
 }
 
-void PointLight::draw(Canvas *canvas) {
-    Rect rect = canvas->getCamera().areaRect.get();
+void PointLight::draw(const Canvas &canvas) {
+    Rect rect = canvas.getCamera().areaRect.get();
 
-    double x = location_.x - rect.x1 - radius_;
-    double y = location_.y - rect.y1 - radius_;
+    double x = position_.x - rect.x1 - radius_;
+    double y = position_.y - rect.y1 - radius_;
     double w = radius_ * 2;
     double h = radius_ * 2;
 
@@ -118,18 +118,18 @@ void PointLight::createLightTexture() {
 }
 
 
-Point PointLight::getLocation_(void *owner) {
-    return ((PointLight*)owner)->location_;
+Point PointLight::getPosition_(void *owner) {
+    return ((PointLight*)owner)->position_;
 }
 
-void PointLight::setLocation_(void *owner, const Point &value) {
+void PointLight::setPosition_(void *owner, const Point &value) {
     PointLight* pointLight = (PointLight*)owner;
 
-    Point oldLocation = pointLight->location_;
+    Point oldLocation = pointLight->position_;
 
-    pointLight->location_ = value;
+    pointLight->position_ = value;
 
-    Point newLocation = pointLight->location_;
+    Point newLocation = pointLight->position_;
 
     pointLight->movement->raise(PointLightMovedEventArgs(oldLocation, newLocation));
 }

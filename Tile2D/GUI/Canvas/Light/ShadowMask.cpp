@@ -16,10 +16,7 @@
 
 #include "precompile.h"
 #include "ShadowMask.h"
-#include "Canvas.h"
-#include "Camera.h"
 #include "WorldMap.h"
-#include "PointLight.h"
 #include "LightMap.h"
 #include "PartialLightMap.h"
 #include "PartialLightMapUpdate.h"
@@ -29,12 +26,12 @@ class ShadowMask::PointLight_MovementEventHandler : public IEventHandler<PointLi
 
 public:
 
-    PointLight_MovementEventHandler(ShadowMask* mask) {
+    explicit PointLight_MovementEventHandler(ShadowMask* mask) {
         mask_ = mask;
         updatePhase_ = 0;
     }
 
-    virtual void handle(PointLight *owner, PointLightMovedEventArgs args) {
+    void handle(PointLight *owner, PointLightMovedEventArgs args) override {
         if (!owner->isDynamic_) {
             return;
         }
@@ -75,22 +72,22 @@ class ShadowMask::WorldMap_ModificationEventHandler : public IEventHandler<World
 
 public:
 
-    WorldMap_ModificationEventHandler(ShadowMask* mask) {
+    explicit WorldMap_ModificationEventHandler(ShadowMask* mask) {
         mask_ = mask;
     }
 
-    virtual void handle(WorldMap *owner, WorldMapModifiedEventArgs args) {
+    void handle(WorldMap *owner, WorldMapModifiedEventArgs args) override {
         if (args.oldValue && args.newValue && args.oldValue->translucency.get() == args.newValue->translucency.get()) {
             return;
         }
 
         std::list<PartialLightMap*>* list = mask_->lightMap_->getPartialLightMaps(args.x, args.y);
 
-        if (list && !list->empty()) {
-            for (std::list<PartialLightMap*>::iterator i = list->begin(); i != list->end(); i++) {
-                PartialLightMapUpdate* update = new PartialLightMapUpdate();
+        if (list != nullptr && !list->empty()) {
+            for (auto& partialLightMap : *list) {
+                auto update = new PartialLightMapUpdate();
                 update->isBlockUpdate = true;
-                update->map = (*i);
+                update->map = partialLightMap;
                 update->map->needsUpdate = true;
                 mask_->partialLightMapUpdatesQueue.push(update);
             }
@@ -136,7 +133,7 @@ ShadowMask::~ShadowMask() {
     delete dynamicLightScene_;
 }
 
-void ShadowMask::update(Canvas *canvas) {
+void ShadowMask::update(const Canvas& canvas) {
     Uint32 time = SDL_GetTicks();
     while (SDL_GetTicks() - time < MAX_PARTIAL_LIGHT_MAP_UPDATE_TIME) {
         handleNextUpdate();
@@ -173,12 +170,12 @@ void ShadowMask::update(Canvas *canvas) {
 
     glBegin(GL_QUADS);
 
-    for (std::list<PointLight*>::iterator i = staticLights_.begin(); i != staticLights_.end(); i++) {
-        (*i)->draw(canvas);
+    for (auto& staticLight : staticLights_) {
+        staticLight->draw(canvas);
     }
 
-    for (std::list<PointLight*>::iterator i = dynamicLights_.begin(); i != dynamicLights_.end(); i++) {
-        (*i)->draw(canvas);
+    for (auto& dynamicLight : dynamicLights_) {
+        dynamicLight->draw(canvas);
     }
 
     glEnd();
@@ -224,7 +221,7 @@ void ShadowMask::update(Canvas *canvas) {
     glMatrixMode(GL_MODELVIEW);
 }
 
-void ShadowMask::draw(Canvas *canvas) {
+void ShadowMask::draw(const Canvas& canvas) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -233,7 +230,7 @@ void ShadowMask::draw(Canvas *canvas) {
 
     glColor4d(1, 1, 1, 1.0 - ambientLight_);
 
-    Rect rect = canvas->getCamera().areaRect.get();
+    Rect rect = canvas.getCamera().areaRect.get();
 
     glBegin(GL_QUADS);
     glTexCoord2d(0, 0);
@@ -252,11 +249,11 @@ void ShadowMask::draw(Canvas *canvas) {
 }
 
 void ShadowMask::addLight(PointLight *light) {
-    if (!light) {
+    if (light == nullptr) {
         return;
     }
 
-    PartialLightMap* partialLightMap = new PartialLightMap(
+    auto partialLightMap = new PartialLightMap(
             (int)(light->radius_ * 2 / worldMap_->getBlockW()),
             (int)(light->radius_ * 2 / worldMap_->getBlockH())
     );
@@ -275,7 +272,7 @@ void ShadowMask::addLight(PointLight *light) {
     else {
         staticLights_.push_back(light);
 
-        PartialLightMapUpdate* update = new PartialLightMapUpdate();
+        auto update = new PartialLightMapUpdate();
         update->x = (int)(light->location.get().x / worldMap_->getBlockW());
         update->y = (int)(light->location.get().y / worldMap_->getBlockH());
         update->map = partialLightMap;
@@ -290,7 +287,7 @@ void ShadowMask::initialize() {
     GLenum texture_format = GL_BGRA;
     GLint nOfColors = 4;
 
-    Uint32* pixels = new Uint32[(int)w_ * (int)h_];
+    auto pixels = new Uint32[(int)w_ * (int)h_];
 
     // Have OpenGL generate a texture object handle for us
     glGenTextures(1, &glTextureId_);
@@ -335,8 +332,8 @@ void ShadowMask::handleNextUpdate() {
     }
 }
 
-void ShadowMask::drawShadowMap(Canvas* canvas) {
-    Rect rect = canvas->getCamera().areaRect.get();
+void ShadowMask::drawShadowMap(const Canvas& canvas) {
+    Rect rect = canvas.getCamera().areaRect.get();
     updateDynamicScene(&rect);
 
     int xStart = 0;
@@ -508,8 +505,8 @@ void ShadowMask::updateDynamicScene(Rect *areaRect) {
 
     dynamicLightScene_->clear();
 
-    for (std::list<PointLight*>::iterator i = dynamicLights_.begin(); i != dynamicLights_.end(); i++) {
-        PartialLightMap* partialLightMap = (*i)->partialLightMap_;
+    for (auto& dynamicLight : dynamicLights_) {
+        PartialLightMap* partialLightMap = dynamicLight->partialLightMap_;
 
         for (int x = 0; x < partialLightMap->getW(); x++) {
             for (int y = 0; y < partialLightMap->getH(); y++) {

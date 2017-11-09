@@ -29,7 +29,7 @@ void Canvas::renderActual() {
     if (camera_ == nullptr) return;
 
     for (auto& shadowMask : shadowMasks_) {
-        shadowMask->update(this);
+        shadowMask->update(*this);
     }
 
     glMatrixMode(GL_PROJECTION);
@@ -50,7 +50,7 @@ void Canvas::renderActual() {
     }
 
     for (auto& shadowMask : shadowMasks_) {
-        shadowMask->draw(this);
+        shadowMask->draw(*this);
     }
 }
 
