@@ -50,6 +50,7 @@ include_directories(
         Tile2D/Util/Primitives
         Tile2D/Util/Property
         Tile2D/Util
+        Tile2D/Core
 )
 
 set(SOURCE_FILES
@@ -187,12 +188,17 @@ set(SOURCE_FILES
         Tile2D/Util/Exception.h
         Tile2D/Util/JsonFileManager.cpp
         Tile2D/Util/JsonFileManager.h
+        Tile2D/Core/Tile2D.cpp
+        Tile2D/Core/Tile2D.h
+        Tile2D/Core/SceneManager.cpp
+        Tile2D/Core/SceneManager.h
         App.cpp
         App.h
         main.cpp
         precompile.h
         Resources.cpp
-        Resources.h)
+        Resources.h
+        )
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

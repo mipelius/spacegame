@@ -14,29 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "precompile.h"
-#include "App.h"
-#include "Game.h"
+#include "Tile2D.h"
 
 #undef main
 
 int main(int argc, const char * argv[])
 {
-    App::initialize();
-
-    Game* game = Game::getInstance();
-    game->initialize();
-
-    try {
-        game->launch();
-        delete game;
-	}
-    catch (std::exception& e) {
-        std::cout << "Something went wrong!";
-        return -1;
-    }
-
-    App::free();
-
+    Tile2D::sceneManager().loadScene("main");
 	return 0;
 }
