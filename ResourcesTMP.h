@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Resources_H_
-#define __Resources_H_
+#ifndef __ResourcesTMP_H_
+#define __ResourcesTMP_H_
 
 #include "BlockMapping.h"
 #include "Music.h"
@@ -23,12 +23,12 @@
 #include "Texture.h"
 #include "Font.h"
 
-class Resources {
+class ResourcesTMP {
     friend class App;
 
 public:
     class Samples {
-        friend class Resources;
+        friend class ResourcesTMP;
 
     public:
         Sample* const explosion;
@@ -44,7 +44,7 @@ public:
     };
 
     class Tunes {
-        friend class Resources;
+        friend class ResourcesTMP;
 
     public:
         Music* const spacegame;
@@ -55,7 +55,7 @@ public:
     };
 
     class Textures {
-        friend class Resources;
+        friend class ResourcesTMP;
 
     public:
         Texture* const animExplosion;
@@ -78,7 +78,7 @@ public:
     };
 
     class Other {
-        friend class Resources;
+        friend class ResourcesTMP;
 
     public:
         BlockMapping* const blockMapping;
@@ -95,8 +95,8 @@ public:
     Other* const other;
 
 private:
-    Resources();
-    ~Resources();
+    ResourcesTMP();
+    ~ResourcesTMP();
 };
 
-#endif //__Resources_H_
+#endif //__ResourcesTMP_H_

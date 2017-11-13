@@ -41,7 +41,7 @@ App::App() {
     musicPlayer_ = MusicPlayer::getInstance();
     samplePlayer_ = new SamplePlayer();
     animationManager_ = new AnimationManager();
-    resources_ = new Resources();
+    resources_ = new ResourcesTMP();
 }
 
 App::~App() {
@@ -74,7 +74,7 @@ AnimationManager *App::getAnimationManager() {
     return instance_->animationManager_;
 }
 
-Resources *App::getResources() {
+ResourcesTMP *App::getResources() {
     return instance_->resources_;
 }
 

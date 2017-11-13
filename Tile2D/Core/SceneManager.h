@@ -5,16 +5,18 @@
 #ifndef __SCENEMANAGER_H
 #define __SCENEMANAGER_H
 
-#include <iostream>
+#include "IScene.h"
 
 class SceneManager {
 
 public:
-    void loadScene(std::string sceneStr);
+    void loadScene(int scene);
 
 private:
     SceneManager();
     ~SceneManager();
+
+    std::map<int, IScene*> scenes_;
 
     friend class Tile2D;
 

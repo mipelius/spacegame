@@ -15,8 +15,8 @@ SceneManager::~SceneManager() {
     std::cout << "SceneManager -> shutDown\n";
 }
 
-void SceneManager::loadScene(std::string sceneStr) {
-    std::cout << "Scene " << sceneStr << " loaded.\n";
+void SceneManager::loadScene(int scene) {
+    std::cout << "Scene " << scene << " loaded.\n";
 
     // ------> just a placeholder -> this is going to be modified soon!
 

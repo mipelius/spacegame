@@ -14,12 +14,33 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "Resources.h"
+#include "SceneInGame.h"
+#include "SceneTitleScreen.h"
+#include "SceneGameOver.h"
+#include "Scenes.h"
 #include "Tile2D.h"
 
 #undef main
 
 int main(int argc, const char * argv[])
 {
-    Tile2D::sceneManager().loadScene("main");
+    SceneTitleScreen    sceneTitleScreen    = SceneTitleScreen();
+    SceneInGame         sceneInGame         = SceneInGame();
+    SceneGameOver       sceneGameOver       = SceneGameOver();
+
+    Config config("config.json");
+    Resources resources("resources.json");
+
+    Tile2D::load(
+            config,
+            resources,
+            {
+                    { titleScreen,    &sceneTitleScreen },
+                    { inGame,         &sceneInGame      },
+                    { gameOverScreen, &sceneGameOver    }
+            }
+    );
+
 	return 0;
 }

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Resources.h"
+#include "ResourcesTMP.h"
 
 #ifndef __App_H_
 #define __App_H_
@@ -33,7 +33,7 @@ private:
     SamplePlayer* samplePlayer_;
     Window* window_;
     AnimationManager* animationManager_;
-    Resources* resources_;
+    ResourcesTMP* resources_;
 
     App();
     ~App();
@@ -47,7 +47,7 @@ public:
     static SamplePlayer* getSamplePlayer();
     static Window* getWindow();
 
-    static Resources* getResources();
+    static ResourcesTMP* getResources();
 };
 
 

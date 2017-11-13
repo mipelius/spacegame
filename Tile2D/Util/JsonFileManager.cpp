@@ -16,7 +16,6 @@
 
 #include "precompile.h"
 #include "JsonFileManager.h"
-#include "Exception.h"
 
 json::Object JsonFileManager::load(std::string filename) {
     json::Object obj;
@@ -29,16 +28,17 @@ json::Object JsonFileManager::load(std::string filename) {
         try {
             obj = json::Deserialize(buffer.str());
         }
-        catch(std::exception ex) {
-            throw new Exception("Broken json file : " + filename);
+        catch(std::exception& ex) {
+            std::string error = "Broken json file : \" + filename";
+            throw std::runtime_error(error);
         }
 
         file.close();
     }
     else {
-        std::string msg = "file not found: ";
-        msg.append(filename.data());
-        throw Exception(msg.data());
+        std::string error = "file not found: ";
+        error.append(filename.data());
+        throw std::runtime_error(error);
     }
 
     return obj;

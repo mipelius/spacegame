@@ -184,8 +184,6 @@ set(SOURCE_FILES
         Tile2D/Util/Property/BooleanProperty.h
         Tile2D/Util/Property/Property.h
         Tile2D/Util/Property/ReadableProperty.h
-        Tile2D/Util/Exception.cpp
-        Tile2D/Util/Exception.h
         Tile2D/Util/JsonFileManager.cpp
         Tile2D/Util/JsonFileManager.h
         Tile2D/Core/Tile2D.cpp
@@ -196,9 +194,9 @@ set(SOURCE_FILES
         App.h
         main.cpp
         precompile.h
-        Resources.cpp
-        Resources.h
-        )
+        ResourcesTMP.cpp
+        ResourcesTMP.h
+        Tile2D/Core/Config.cpp Tile2D/Core/Config.h Tile2D/Core/IScene.h Tile2D/Core/Resources.cpp Tile2D/Core/Resources.h Game/SceneInGame.cpp Game/SceneInGame.h Game/SceneTitleScreen.cpp Game/SceneTitleScreen.h Game/SceneGameOver.cpp Game/SceneGameOver.h Game/Scenes.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

@@ -14,11 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Resources.h"
+#include "ResourcesTMP.h"
 
 /* ----------- SAMPLES ----------- */
 
-Resources::Samples::Samples() :
+ResourcesTMP::Samples::Samples() :
 explosion               (   new Sample("soundfx/explosion.wav",               127)  ),
 missileCollision        (   new Sample("soundfx/missile_collision.wav",       30)   ),
 spaceshipAcceleration   (   new Sample("soundfx/spaceship_acceleration.wav",  127)  ),
@@ -29,7 +29,7 @@ spaceshipShoot          (   new Sample("soundfx/spaceship_shoot.wav",         30
 
 }
 
-Resources::Samples::~Samples() {
+ResourcesTMP::Samples::~Samples() {
     delete explosion;
     delete missileCollision;
     delete spaceshipAcceleration;
@@ -40,19 +40,19 @@ Resources::Samples::~Samples() {
 
 /* ----------- TUNES ----------- */
 
-Resources::Tunes::Tunes() :
+ResourcesTMP::Tunes::Tunes() :
 spacegame   (   new Music("music/spacegame.mp3")    )
 {
 
 }
 
-Resources::Tunes::~Tunes() {
+ResourcesTMP::Tunes::~Tunes() {
     delete spacegame;
 }
 
 /* ----------- TEXTURES ----------- */
 
-Resources::Textures::Textures() :
+ResourcesTMP::Textures::Textures() :
 animExplosion           ( new Texture("images/anim_explosion.png"           )   ),
 animRocketFire          ( new Texture("images/anim_rocket_fire.png"         )   ),
 bg1                     ( new Texture("images/bg1.jpg"                      )   ),
@@ -70,7 +70,7 @@ plasmaCannon            ( new Texture("images/plasma_cannon.png"            )   
 
 }
 
-Resources::Textures::~Textures() {
+ResourcesTMP::Textures::~Textures() {
     delete animExplosion;
     delete animRocketFire;
     delete bg1;
@@ -83,20 +83,20 @@ Resources::Textures::~Textures() {
 
 /* ----------- OTHER ----------- */
 
-Resources::Other::Other() :
+ResourcesTMP::Other::Other() :
 blockMapping(   new BlockMapping("json/blockMappings.json") ),
 smallFont(      new Font("json/smallfont.json"))
 {
 
 }
 
-Resources::Other::~Other() {
+ResourcesTMP::Other::~Other() {
     delete blockMapping;
 }
 
 /* ----------- RESOURCES COMMON ----------- */
 
-Resources::Resources() :
+ResourcesTMP::ResourcesTMP() :
 samples(    new Samples()   ),
 tunes(      new Tunes()     ),
 textures(   new Textures()  ),
@@ -105,7 +105,7 @@ other(      new Other()     )
 
 }
 
-Resources::~Resources() {
+ResourcesTMP::~ResourcesTMP() {
     delete samples;
     delete tunes;
     delete textures;
