@@ -56,28 +56,6 @@ include_directories(
 set(SOURCE_FILES
         3rdParty/json.cpp
         3rdParty/json.h
-        Game/Object/Bomb.cpp
-        Game/Object/Bomb.h
-        Game/Object/DynamicLightObject.cpp
-        Game/Object/DynamicLightObject.h
-        Game/Object/Explosion.cpp
-        Game/Object/Explosion.h
-        Game/Object/GameObjectBase.cpp
-        Game/Object/GameObjectBase.h
-        Game/Object/LightObject.cpp
-        Game/Object/LightObject.h
-        Game/Object/Missile.cpp
-        Game/Object/Missile.h
-        Game/Object/PulseLight.cpp
-        Game/Object/PulseLight.h
-        Game/Object/SpaceShip.cpp
-        Game/Object/SpaceShip.h
-        Game/Object/Team.cpp
-        Game/Object/Team.h
-        Game/Game.cpp
-        Game/Game.h
-        Game/GameArea.cpp
-        Game/GameArea.h
         Tile2D/Animation/AnimatedTexture.cpp
         Tile2D/Animation/AnimatedTexture.h
         Tile2D/Animation/AnimationBase.cpp
@@ -190,13 +168,20 @@ set(SOURCE_FILES
         Tile2D/Core/Tile2D.h
         Tile2D/Core/SceneManager.cpp
         Tile2D/Core/SceneManager.h
-        App.cpp
-        App.h
+        Tile2D/Core/Config.cpp
+        Tile2D/Core/Config.h
+        Tile2D/Core/IScene.h
+        Tile2D/Core/Resources.cpp
+        Tile2D/Core/Resources.h
         main.cpp
         precompile.h
-        ResourcesTMP.cpp
-        ResourcesTMP.h
-        Tile2D/Core/Config.cpp Tile2D/Core/Config.h Tile2D/Core/IScene.h Tile2D/Core/Resources.cpp Tile2D/Core/Resources.h Game/SceneInGame.cpp Game/SceneInGame.h Game/SceneTitleScreen.cpp Game/SceneTitleScreen.h Game/SceneGameOver.cpp Game/SceneGameOver.h Game/Scenes.h)
+        Game/SceneInGame.cpp
+        Game/SceneInGame.h
+        Game/SceneTitleScreen.cpp
+        Game/SceneTitleScreen.h
+        Game/SceneGameOver.cpp
+        Game/SceneGameOver.h
+        Game/Scenes.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

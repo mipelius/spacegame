@@ -9,6 +9,7 @@
 #include "SceneManager.h"
 #include "Resources.h"
 #include "Config.h"
+#include "Window.h"
 
 class Tile2D {
 
@@ -19,9 +20,15 @@ public:
     void static load(Config &config, Resources &resources, std::map<int, IScene*> scenes);
 
     static SceneManager &sceneManager();
+    static Window &window();
 
 private:
     SceneManager *sceneManager_;
+    Window *window_;
+
+    void mainLoop_();
+
+    Config* config_;
 
     Tile2D();
     ~Tile2D();

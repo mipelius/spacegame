@@ -5,5 +5,9 @@
 #include "Config.h"
 
 Config::Config(std::string configJsonFile) {
-    // TODO
+    window_x = 0;
+    window_y = 0;
+    window_w = 1280;
+    window_h = 800;
+    window_enableFullScreen = false;
 }

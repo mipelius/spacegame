@@ -18,8 +18,6 @@
 #include "Window.h"
 #include "GuiComponentBase.h"
 
-Window* Window::instance_ = nullptr;
-
 Window::Window() :
     position        (   Property<Point>           (this, getPosition_, setPosition_         )),
     isFullScreen    (   BooleanProperty           (this, getIsFullScreen_, setIsFullScreen_ )),
@@ -35,14 +33,7 @@ Window::~Window() {
     }
 }
 
-Window* Window::getInstance() {
-    if (instance_ == nullptr) {
-        instance_ = new Window();
-    }
-    return instance_;
-}
-
-void Window::initialize(int x, int y, int w, int h, bool enableFullScreen) {
+void Window::init(int x, int y, int w, int h, bool enableFullScreen) {
     if (isInitialized_) return;
 
     x_ = x;

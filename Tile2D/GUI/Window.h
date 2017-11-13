@@ -27,13 +27,8 @@ class GuiComponentBase;
 #include "BooleanProperty.h"
 
 class Window {
-
+    friend class Tile2D;
 public:
-
-    static Window* getInstance();
-    void initialize(int x, int y, int w, int h, bool enableFullScreen);
-    ~Window();
-
     void update();
 
     Property<Point>             const position;
@@ -46,11 +41,11 @@ public:
     void addComponent(GuiComponentBase &guiComponent);
 
 private:
+    ~Window();
     Window();
+    void init(int x, int y, int w, int h, bool enableFullScreen);
 
     std::list<GuiComponentBase*> guiComponents_;
-
-    static Window* instance_;
 
     SDL_Window* window_;
     SDL_GLContext context_;

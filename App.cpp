@@ -35,9 +35,6 @@ App::App() {
 
     bool enableFullScreen = false;
 
-    window_ = Window::getInstance();
-    window_->initialize(x, y, w, h, enableFullScreen);
-
     musicPlayer_ = MusicPlayer::getInstance();
     samplePlayer_ = new SamplePlayer();
     animationManager_ = new AnimationManager();
@@ -47,7 +44,6 @@ App::App() {
 App::~App() {
     delete musicPlayer_;
     delete samplePlayer_;
-    delete window_;
     delete animationManager_;
     delete resources_;
 }

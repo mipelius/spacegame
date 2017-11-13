@@ -5,5 +5,5 @@
 #include "Resources.h"
 
 Resources::Resources(std::string configJsonFile) {
-    //TODO!
+
 }

@@ -12,6 +12,11 @@ class Config {
 
 public:
     explicit Config(std::string configJsonFile);
+    int window_x;
+    int window_y;
+    int window_w;
+    int window_h;
+    bool window_enableFullScreen;
 };
 
 #endif //__CONFIG_H
