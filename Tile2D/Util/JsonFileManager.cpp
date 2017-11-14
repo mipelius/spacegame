@@ -29,6 +29,7 @@ json::Object JsonFileManager::load(std::string filename) {
             obj = json::Deserialize(buffer.str());
         }
         catch(std::exception& ex) {
+            file.close();
             std::string error = "Broken json file : \" + filename";
             throw std::runtime_error(error);
         }
@@ -37,7 +38,7 @@ json::Object JsonFileManager::load(std::string filename) {
     }
     else {
         std::string error = "file not found: ";
-        error.append(filename.data());
+        error.append(filename);
         throw std::runtime_error(error);
     }
 

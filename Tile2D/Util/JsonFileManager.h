@@ -22,9 +22,11 @@
 class JsonFileManager {
 
 public:
-    json::Object load(std::string filename);
-    void save(json::Object object, std::string filename);
+    static json::Object load(std::string filename);
+    static void save(json::Object object, std::string filename);
 
+    JsonFileManager() = delete;
+    ~JsonFileManager() = delete;
 };
 
 

@@ -29,8 +29,7 @@ BlockMapping::BlockMapping(std::string jsonFilename) :
         blocks_[i] = nullptr;
     }
 
-    JsonFileManager manager;
-    json::Object obj = manager.load(std::move(jsonFilename));
+    json::Object obj = JsonFileManager::load(std::move(jsonFilename));
 
     json::Object commonProperties = obj["commonProperties"].ToObject();
 

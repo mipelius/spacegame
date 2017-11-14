@@ -8,6 +8,7 @@
 bool Tile2D::isLoaded_ = false;
 
 Tile2D::Tile2D() {
+    SDL_Init(SDL_INIT_EVERYTHING);
     sceneManager_ = new SceneManager();
     window_ = new Window();
 }
@@ -15,6 +16,7 @@ Tile2D::Tile2D() {
 Tile2D::~Tile2D() {
     delete sceneManager_;
     delete window_;
+    SDL_Quit();
 }
 
 Tile2D &Tile2D::instance_() {
@@ -60,5 +62,4 @@ void Tile2D::mainLoop_() {
     while(!SDL_QuitRequested()) {
 
     }
-    SDL_Quit();
 }

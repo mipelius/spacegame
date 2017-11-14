@@ -20,9 +20,7 @@
 #include "JsonFileManager.h"
 
 Font::Font(std::string filename) {
-    JsonFileManager jsonFileManager;
-
-    json::Object object = jsonFileManager.load(std::move(filename));
+    json::Object object = JsonFileManager::load(std::move(filename));
 
     std::string fontTextureFilename = object["imgFile"];
 

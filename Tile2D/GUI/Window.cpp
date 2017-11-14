@@ -41,9 +41,6 @@ void Window::init(int x, int y, int w, int h, bool enableFullScreen) {
     w_ = w;
     h_ = h;
 
-    // Window initialization
-    SDL_Init(SDL_INIT_VIDEO);
-
     window_ = SDL_CreateWindow(
             "",
             x,
