@@ -6,8 +6,11 @@
 #define __ISCENE_H
 
 class IScene {
-    virtual void Init() = 0;
-    virtual void Destroy() = 0;
+    friend class SceneManager;
+
+private:
+    virtual void init() = 0;
+    virtual void destroy() = 0;
 };
 
 #endif //__ISCENE_H

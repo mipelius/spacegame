@@ -4,6 +4,13 @@
 
 #include "Resources.h"
 
-Resources::Resources(std::string configJsonFile) {
-
+void Resources::init(
+        std::map<std::string, std::string>& resTextures,
+        std::map<std::string, std::string>& resSfx,
+        std::map<std::string, std::string>& resMusic,
+        std::map<std::string, std::string>& resFonts,
+        std::map<std::string, std::string>& resBlockMappings
+) {
+ // ...
 }
+

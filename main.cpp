@@ -23,24 +23,52 @@
 
 #undef main
 
-int main(int argc, const char * argv[])
-{
-    SceneTitleScreen    sceneTitleScreen    = SceneTitleScreen();
-    SceneInGame         sceneInGame         = SceneInGame();
-    SceneGameOver       sceneGameOver       = SceneGameOver();
-
-    Config config("config.json");
-    Resources resources("resources.json");
+int main(int argc, const char *argv[]) {
+    SceneTitleScreen sceneTitleScreen = SceneTitleScreen();
+    SceneInGame sceneInGame = SceneInGame();
+    SceneGameOver sceneGameOver = SceneGameOver();
 
     Tile2D::load(
-            config,
-            resources,
+            // CONFIGURATION
+            "json/config.json",
+
+            // RESOURCES / TEXTURE
             {
-                    { titleScreen,    &sceneTitleScreen },
-                    { inGame,         &sceneInGame      },
-                    { gameOverScreen, &sceneGameOver    }
+                    {"", ""},
+                    {"", ""}
+            },
+
+            // RESOURCES / SFX
+            {
+                    {"", ""},
+                    {"", ""}
+            },
+
+            // RESOURCES / MUSIC
+            {
+                    {"", ""},
+                    {"", ""}
+            },
+
+            // RESOURCES / FONTS
+            {
+                    {"", ""},
+                    {"", ""}
+            },
+
+            // RESOURCES / BLOCKMAPPINGS
+            {
+                    {"", ""},
+                    {"", ""}
+            },
+
+            // SCENES
+            {
+                    {titleScreen,    &sceneTitleScreen},
+                    {inGame,         &sceneInGame},
+                    {gameOverScreen, &sceneGameOver}
             }
     );
 
-	return 0;
+    return 0;
 }

@@ -27,6 +27,12 @@ public:
 
     JsonFileManager() = delete;
     ~JsonFileManager() = delete;
+
+    JsonFileManager(const JsonFileManager& other) = delete;
+    JsonFileManager& operator=(const JsonFileManager& other) = delete;
+
+    JsonFileManager(JsonFileManager&& other) = delete;
+    JsonFileManager& operator=(JsonFileManager&& ) = delete;
 };
 
 

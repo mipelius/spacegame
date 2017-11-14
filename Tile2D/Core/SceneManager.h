@@ -8,6 +8,7 @@
 #include "IScene.h"
 
 class SceneManager {
+    friend class Tile2D;
 
 public:
     void loadScene(int scene);
@@ -16,10 +17,9 @@ private:
     SceneManager();
     ~SceneManager();
 
+    void init(std::map<int, IScene*>& scenes);
+
     std::map<int, IScene*> scenes_;
-
-    friend class Tile2D;
-
 };
 
 

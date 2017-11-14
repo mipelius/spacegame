@@ -8,9 +8,9 @@
 #include <Tile2D/Core/IScene.h>
 
 class SceneTitleScreen : public IScene {
-    void Init() override;
+    void init() override;
 
-    void Destroy() override;
+    void destroy() override;
 
 };
 

@@ -28,7 +28,17 @@ Tile2D &Tile2D::instance_() {
     return tile2D;
 }
 
-void Tile2D::load(Config &config, Resources &resources, std::map<int, IScene*> scenes) {
+void Tile2D::load(
+        const std::string& configFile,
+        std::map<std::string, std::string> resTextures,
+        std::map<std::string, std::string> resSfx,
+        std::map<std::string, std::string> resMusic,
+        std::map<std::string, std::string> resFonts,
+        std::map<std::string, std::string> resBlockMappings,
+        std::map<int, IScene*> scenes
+) {
+    // LOAD
+
     if (isLoaded_) {
         std::string error = "Tile2D is already loaded!";
         throw std::runtime_error(error);
@@ -36,30 +46,31 @@ void Tile2D::load(Config &config, Resources &resources, std::map<int, IScene*> s
     isLoaded_ = true;
     instance_();
 
-    Tile2D::window().init(
-            config.window_x,
-            config.window_y,
-            config.window_w,
-            config.window_h,
-            config.window_enableFullScreen
-    );
+    // INIT
 
-    Tile2D::sceneManager().scenes_ = std::move(scenes);
-    Tile2D::sceneManager().loadScene(0);
+    Tile2D::window().init(configFile);
+    Tile2D::resources().init(resTextures, resSfx, resMusic, resFonts, resBlockMappings);
+    Tile2D::sceneManager().init(scenes);
+
+    // START LOOP
 
     Tile2D::instance_().mainLoop_();
-}
-
-Window &Tile2D::window() {
-    return *instance_().window_;
-}
-
-SceneManager &Tile2D::sceneManager() {
-    return *instance_().sceneManager_;
 }
 
 void Tile2D::mainLoop_() {
     while(!SDL_QuitRequested()) {
 
     }
+}
+
+Window &Tile2D::window() {
+    return *instance_().window_;
+}
+
+Resources &Tile2D::resources() {
+    return *instance_().resources_;
+}
+
+SceneManager &Tile2D::sceneManager() {
+    return *instance_().sceneManager_;
 }

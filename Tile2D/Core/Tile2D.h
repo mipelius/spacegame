@@ -8,7 +8,6 @@
 #include <map>
 #include "SceneManager.h"
 #include "Resources.h"
-#include "Config.h"
 #include "Window.h"
 
 class Tile2D {
@@ -17,18 +16,26 @@ public:
     Tile2D(Tile2D const &) = delete;
     void operator=(Tile2D const &)  = delete;
 
-    void static load(Config &config, Resources &resources, std::map<int, IScene*> scenes);
+    void static load(
+            const std::string& configFile,
+            std::map<std::string, std::string> resTextures,
+            std::map<std::string, std::string> resSfx,
+            std::map<std::string, std::string> resMusic,
+            std::map<std::string, std::string> resFonts,
+            std::map<std::string, std::string> resBlockMappings,
+            std::map<int, IScene*> scenes
+    );
 
-    static SceneManager &sceneManager();
     static Window &window();
+    static Resources &resources();
+    static SceneManager &sceneManager();
 
 private:
-    SceneManager *sceneManager_;
     Window *window_;
+    Resources *resources_;
+    SceneManager *sceneManager_;
 
     void mainLoop_();
-
-    Config* config_;
 
     Tile2D();
     ~Tile2D();

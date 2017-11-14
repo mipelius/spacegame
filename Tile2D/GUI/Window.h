@@ -33,27 +33,27 @@ public:
 
     Property<Point>             const position;
     BooleanProperty             const isFullScreen;
-    ReadableProperty<double>    const w;
-    ReadableProperty<double>    const h;
+    ReadableProperty<unsigned>  const w;
+    ReadableProperty<unsigned>  const h;
 
-    void setSize(double w, double h);
+    void setSize(unsigned w, unsigned h);
 
     void addComponent(GuiComponentBase &guiComponent);
 
 private:
     ~Window();
     Window();
-    void init(int x, int y, int w, int h, bool enableFullScreen);
+    void init(const std::string& configJson);
 
     std::list<GuiComponentBase*> guiComponents_;
 
     SDL_Window* window_;
     SDL_GLContext context_;
 
-    double w_;
-    double h_;
-    double x_;
-    double y_;
+    unsigned x_;
+    unsigned y_;
+    unsigned w_;
+    unsigned h_;
 
     bool isFullScreen_;
 

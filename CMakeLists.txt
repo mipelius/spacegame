@@ -168,8 +168,6 @@ set(SOURCE_FILES
         Tile2D/Core/Tile2D.h
         Tile2D/Core/SceneManager.cpp
         Tile2D/Core/SceneManager.h
-        Tile2D/Core/Config.cpp
-        Tile2D/Core/Config.h
         Tile2D/Core/IScene.h
         Tile2D/Core/Resources.cpp
         Tile2D/Core/Resources.h

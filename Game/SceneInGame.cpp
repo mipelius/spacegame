@@ -4,10 +4,10 @@
 
 #include "SceneInGame.h"
 
-void SceneInGame::Init() {
+void SceneInGame::init() {
 
 }
 
-void SceneInGame::Destroy() {
+void SceneInGame::destroy() {
 
 }

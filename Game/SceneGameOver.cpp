@@ -4,10 +4,10 @@
 
 #include "SceneGameOver.h"
 
-void SceneGameOver::Init() {
+void SceneGameOver::init() {
 
 }
 
-void SceneGameOver::Destroy() {
+void SceneGameOver::destroy() {
 
 }

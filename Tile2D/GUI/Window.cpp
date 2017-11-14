@@ -14,15 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <Tile2D/Util/JsonFileManager.h>
 #include "precompile.h"
 #include "Window.h"
 #include "GuiComponentBase.h"
 
 Window::Window() :
-    position        (   Property<Point>           (this, getPosition_, setPosition_         )),
-    isFullScreen    (   BooleanProperty           (this, getIsFullScreen_, setIsFullScreen_ )),
-    w               (   ReadableProperty<double>  (&w_                                      )),
-    h               (   ReadableProperty<double>  (&h_                                      ))
+    position        (   Property<Point>            (this, getPosition_, setPosition_         )),
+    isFullScreen    (   BooleanProperty            (this, getIsFullScreen_, setIsFullScreen_ )),
+    w               (   ReadableProperty<unsigned> (&w_                                      )),
+    h               (   ReadableProperty<unsigned> (&h_                                      ))
 {
     isInitialized_ = false;
 }
@@ -33,21 +34,26 @@ Window::~Window() {
     }
 }
 
-void Window::init(int x, int y, int w, int h, bool enableFullScreen) {
+void Window::init(const std::string& configJson) {
     if (isInitialized_) return;
 
-    x_ = x;
-    y_ = y;
-    w_ = w;
-    h_ = h;
+    json::Object obj = JsonFileManager::load(configJson);
+    json::Object windowJson = obj["window"];
+
+    x_ = (unsigned)windowJson["x"].ToInt();
+    y_ = (unsigned)windowJson["y"].ToInt();
+    w_ = (unsigned)windowJson["w"].ToInt();
+    h_ = (unsigned)windowJson["h"].ToInt();
+
+    isFullScreen_ = windowJson["fullscreen"].ToBool();
 
     window_ = SDL_CreateWindow(
             "",
-            x,
-            y,
-            w,
-            h,
-            SDL_WINDOW_OPENGL | (enableFullScreen ? SDL_WINDOW_FULLSCREEN : 0)
+            x_,
+            y_,
+            w_,
+            h_,
+            SDL_WINDOW_OPENGL | (isFullScreen_ ? SDL_WINDOW_FULLSCREEN : 0)
     );
 
     if (!window_) {
@@ -62,7 +68,6 @@ void Window::init(int x, int y, int w, int h, bool enableFullScreen) {
         return;
     }
 
-    isFullScreen_ = enableFullScreen;
     isFullScreen.updateDependentProperties();
 
     isInitialized_ = true;
@@ -86,8 +91,8 @@ void Window::addComponent(GuiComponentBase& guiComponent) {
     guiComponent.setWindow(this);
 }
 
-void Window::setSize(double w, double h) {
-    SDL_SetWindowSize(window_, (int)w, (int)h);
+void Window::setSize(unsigned w, unsigned h) {
+    SDL_SetWindowSize(window_, w, h);
     w_ = w;
     h_ = h;
 

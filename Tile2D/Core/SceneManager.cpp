@@ -16,5 +16,10 @@ SceneManager::~SceneManager() {
 }
 
 void SceneManager::loadScene(int scene) {
-    std::cout << "Scene " << scene << " loaded.\n";
+    scenes_[scene]->init();
+}
+
+void SceneManager::init(std::map<int, IScene *> &scenes) {
+    scenes_ = scenes;
+    loadScene(0);
 }
