@@ -179,7 +179,7 @@ set(SOURCE_FILES
         Game/SceneTitleScreen.h
         Game/SceneGameOver.cpp
         Game/SceneGameOver.h
-        Game/Scenes.h Tile2D/Core/ResourceContainer.h)
+        Game/Scenes.h Tile2D/Core/ResourceContainer.h Tile2D/Test.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 
