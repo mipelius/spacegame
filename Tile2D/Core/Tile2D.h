@@ -18,6 +18,7 @@
 #define __TILE2D_H
 
 #include <map>
+#include "PhysicsWorld.h"
 #include "SceneManager.h"
 #include "Resources.h"
 #include "Window.h"
@@ -41,11 +42,13 @@ public:
     static Window &window();
     static Resources &resources();
     static SceneManager &sceneManager();
+    static PhysicsWorld &physicsWorld();
 
 private:
     Window *window_;
     Resources *resources_;
     SceneManager *sceneManager_;
+    PhysicsWorld *physicsWorld_;
 
     void mainLoop_();
 

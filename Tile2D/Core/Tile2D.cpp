@@ -24,11 +24,13 @@ Tile2D::Tile2D() {
     SDL_Init(SDL_INIT_EVERYTHING);
     window_ = new Window();
     resources_ = new Resources();
+    physicsWorld_ = new PhysicsWorld();
     sceneManager_ = new SceneManager();
 }
 
 Tile2D::~Tile2D() {
     delete sceneManager_;
+    delete physicsWorld_;
     delete resources_;
     delete window_;
 
@@ -89,4 +91,8 @@ Resources &Tile2D::resources() {
 
 SceneManager &Tile2D::sceneManager() {
     return *instance_().sceneManager_;
+}
+
+PhysicsWorld &Tile2D::physicsWorld() {
+    return *instance_().physicsWorld_;
 }

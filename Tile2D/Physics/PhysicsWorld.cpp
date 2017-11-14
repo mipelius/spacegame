@@ -18,7 +18,6 @@
 #include "PhysicsWorld.h"
 #include "Body.h"
 #include "WorldMap.h"
-#include "Property.h"
 
 PhysicsWorld::PhysicsWorld(
         Vector gForce,
@@ -84,3 +83,5 @@ void PhysicsWorld::setMap(WorldMap &map) {
 WorldMap & PhysicsWorld::getMap() {
     return *map_;
 }
+
+PhysicsWorld::PhysicsWorld() : PhysicsWorld(defaultGForce, defaultMetersPerPixel, defaultAirDensity) { }

@@ -25,10 +25,8 @@ class Body;
 #include "Property.h"
 
 class PhysicsWorld {
-
+    friend class Tile2D;
 public:
-    PhysicsWorld(Vector gForce, double metersPerPixel, double airDensity);
-
     void step(double timeSeconds);
     void add(Body &body);
 
@@ -39,7 +37,15 @@ public:
     Property<double> const metersPerPixel;
     Property<double> const airDensity;
 
+    const double defaultAirDensity = 0.001;
+    const double defaultMetersPerPixel = 0.001;
+    const Vector defaultGForce = Vector(0.0, -9.81);
+
 private:
+    PhysicsWorld();
+    PhysicsWorld(Vector gForce, double metersPerPixel, double airDensity);
+    ~PhysicsWorld() = default;
+
     Vector gForce_;
     double metersPerPixel_;
     double airDensity_;
