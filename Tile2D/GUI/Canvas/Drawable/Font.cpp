@@ -15,6 +15,7 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iostream>
+#include <set>
 #include "Font.h"
 #include "Texture.h"
 #include "JsonFileManager.h"
@@ -50,8 +51,15 @@ Font::Font(std::string filename) {
 }
 
 Font::~Font() {
+    std::set<Letter*> lettersToDelete;
+
     for (auto& pair : mappings) {
-        Letter* letter = pair.second;
+        if (lettersToDelete.find(pair.second) == lettersToDelete.end()) {
+            lettersToDelete.insert(pair.second);
+        }
+    }
+
+    for (auto& letter : lettersToDelete) {
         delete letter;
     }
 }

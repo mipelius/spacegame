@@ -22,7 +22,7 @@
 class Body;
 class DrawableGroup;
 class AnimatedTexture;
-class Sample;
+class AudioClip;
 template <typename T> class Property;
 
 #include "AnimatedTexture.h"

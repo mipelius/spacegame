@@ -3,19 +3,23 @@
 //
 
 #include <map>
+#include <vector>
 #include "Tile2D.h"
 
 bool Tile2D::isLoaded_ = false;
 
 Tile2D::Tile2D() {
     SDL_Init(SDL_INIT_EVERYTHING);
-    sceneManager_ = new SceneManager();
     window_ = new Window();
+    resources_ = new Resources();
+    sceneManager_ = new SceneManager();
 }
 
 Tile2D::~Tile2D() {
     delete sceneManager_;
+    delete resources_;
     delete window_;
+
     SDL_Quit();
 }
 
@@ -30,11 +34,11 @@ Tile2D &Tile2D::instance_() {
 
 void Tile2D::load(
         const std::string& configFile,
-        std::map<std::string, std::string> resTextures,
-        std::map<std::string, std::string> resSfx,
-        std::map<std::string, std::string> resMusic,
-        std::map<std::string, std::string> resFonts,
-        std::map<std::string, std::string> resBlockMappings,
+        std::vector<std::string> resTextures,
+        std::vector<std::string> resSfx,
+        std::vector<std::string> resMusic,
+        std::vector<std::string> resFonts,
+        std::vector<std::string> resBlockMappings,
         std::map<int, IScene*> scenes
 ) {
     // LOAD

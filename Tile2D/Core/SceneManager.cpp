@@ -3,7 +3,6 @@
 //
 
 #include <iostream>
-#include <App.h>
 #include <Game/Game.h>
 #include "SceneManager.h"
 

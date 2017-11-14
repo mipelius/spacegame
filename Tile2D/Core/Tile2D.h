@@ -18,11 +18,11 @@ public:
 
     void static load(
             const std::string& configFile,
-            std::map<std::string, std::string> resTextures,
-            std::map<std::string, std::string> resSfx,
-            std::map<std::string, std::string> resMusic,
-            std::map<std::string, std::string> resFonts,
-            std::map<std::string, std::string> resBlockMappings,
+            std::vector<std::string> resTextures,
+            std::vector<std::string> resSfx,
+            std::vector<std::string> resMusic,
+            std::vector<std::string> resFonts,
+            std::vector<std::string> resBlockMappings,
             std::map<int, IScene*> scenes
     );
 

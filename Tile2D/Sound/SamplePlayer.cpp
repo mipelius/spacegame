@@ -16,14 +16,14 @@
 
 #include "precompile.h"
 #include "SamplePlayer.h"
-#include "Sample.h"
+#include "AudioClip.h"
 #include "Ears.h"
 
 SamplePlayer::SamplePlayer() : Player() {
     ears_ = nullptr;
 }
 
-void SamplePlayer::play(Sample *sample, int channel, const Point* location) {
+void SamplePlayer::play(AudioClip *sample, int channel, const Point* location) {
     if (!ears_ || location == nullptr) {
         Mix_SetPanning(channel, 255, 255);
     }

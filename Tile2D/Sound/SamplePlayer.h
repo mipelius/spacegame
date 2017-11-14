@@ -17,7 +17,7 @@
 #ifndef __SamplePlayer_H_
 #define __SamplePlayer_H_
 
-class Sample;
+class AudioClip;
 class Ears;
 class Point;
 
@@ -26,7 +26,7 @@ class Point;
 class SamplePlayer : public Player {
 public:
     SamplePlayer();
-    void play(Sample* sample, int channel = -1, const Point* location = nullptr);
+    void play(AudioClip* sample, int channel = -1, const Point* location = nullptr);
 
     void setEars(Ears* ears);
 

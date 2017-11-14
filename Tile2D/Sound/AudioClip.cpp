@@ -15,18 +15,12 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "precompile.h"
-#include "Sample.h"
+#include "AudioClip.h"
 
-Sample::Sample(std::string filename, unsigned char volume) {
+AudioClip::AudioClip(std::string filename) {
     chunk_ = Mix_LoadWAV(filename.data());
-
-    if (volume > 128) {
-        volume = 128;
-    }
-
-    Mix_VolumeChunk(chunk_, volume);
 }
 
-Sample::~Sample() {
+AudioClip::~AudioClip() {
     Mix_FreeChunk(this->chunk_);
 }

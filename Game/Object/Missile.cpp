@@ -32,7 +32,7 @@
 #include "Block.h"
 #include "WorldMap.h"
 #include "PulseLight.h"
-#include "Sample.h"
+#include "AudioClip.h"
 #include "App.h"
 #include "SamplePlayer.h"
 

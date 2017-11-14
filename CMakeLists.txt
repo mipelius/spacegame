@@ -142,8 +142,8 @@ set(SOURCE_FILES
         Tile2D/Sound/MusicPlayer.h
         Tile2D/Sound/Player.cpp
         Tile2D/Sound/Player.h
-        Tile2D/Sound/Sample.cpp
-        Tile2D/Sound/Sample.h
+        Tile2D/Sound/AudioClip.cpp
+        Tile2D/Sound/AudioClip.h
         Tile2D/Sound/SamplePlayer.cpp
         Tile2D/Sound/SamplePlayer.h
         Tile2D/Util/DataStructures/Array2d.h
@@ -179,7 +179,7 @@ set(SOURCE_FILES
         Game/SceneTitleScreen.h
         Game/SceneGameOver.cpp
         Game/SceneGameOver.h
-        Game/Scenes.h)
+        Game/Scenes.h Tile2D/Core/ResourceContainer.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

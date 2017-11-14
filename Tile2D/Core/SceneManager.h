@@ -6,6 +6,7 @@
 #define __SCENEMANAGER_H
 
 #include "IScene.h"
+#include <map>
 
 class SceneManager {
     friend class Tile2D;
