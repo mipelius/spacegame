@@ -171,6 +171,9 @@ set(SOURCE_FILES
         Tile2D/Core/IScene.h
         Tile2D/Core/Resources.cpp
         Tile2D/Core/Resources.h
+        Tile2D/Core/ResourceContainer.h
+        Tile2D/Core/Tile2DObject.cpp
+        Tile2D/Core/Tile2DObject.h
         main.cpp
         precompile.h
         Game/SceneInGame.cpp
@@ -179,7 +182,7 @@ set(SOURCE_FILES
         Game/SceneTitleScreen.h
         Game/SceneGameOver.cpp
         Game/SceneGameOver.h
-        Game/Scenes.h Tile2D/Core/ResourceContainer.h Tile2D/Test.h)
+        Game/Scenes.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

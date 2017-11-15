@@ -18,16 +18,21 @@
 #define __TILE2D_H
 
 #include <map>
+#include <assert.h>
+#include <set>
 #include "PhysicsWorld.h"
 #include "SceneManager.h"
 #include "Resources.h"
 #include "Window.h"
+#include "Tile2DObject.h"
 
 class Tile2D {
-
+    friend class Tile2DObject;
 public:
-    Tile2D(Tile2D const &) = delete;
-    void operator=(Tile2D const &)  = delete;
+    Tile2D(Tile2D const &)              = delete;
+    Tile2D& operator=(Tile2D const &)   = delete;
+    Tile2D(Tile2D &&)                   = delete;
+    Tile2D& operator=(Tile2D &&)        = delete;
 
     void static load(
             const std::string& configFile,
@@ -44,6 +49,8 @@ public:
     static SceneManager &sceneManager();
     static PhysicsWorld &physicsWorld();
 
+    template <class T> static T* create();
+
 private:
     Window *window_;
     Resources *resources_;
@@ -51,12 +58,37 @@ private:
     PhysicsWorld *physicsWorld_;
 
     void mainLoop_();
+    void cleanUp_();
 
     Tile2D();
     ~Tile2D();
 
     static Tile2D &instance_();
     static bool isLoaded_;
+
+    std::set<Tile2DObject*> objects_;
+
+    template <class T> static void destroy_(T* obj);
 };
+
+// template function definition
+
+template <class T>
+T* Tile2D::create() {
+    static_assert(std::is_base_of<Tile2DObject, T>(), "Can't create object: not inherited from Tile2DObject.");
+    T* obj = new T();
+    instance_().objects_.insert(obj);
+    return obj;
+    // we could use more sophisticated memory allocator here... (e.g. dynamic object pool)
+}
+
+template <class T>
+void Tile2D::destroy_(T* obj) {
+    auto it = instance_().objects_.find(obj);
+    assert((*it) != nullptr && "Can't destroy object since it was not created by Tile2D");
+    instance_().objects_.erase(it);
+    delete obj;
+    // we could use more sophisticated memory deallocator here... (e.g. dynamic object pool)
+}
 
 #endif //__TILE2D_H

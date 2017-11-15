@@ -34,6 +34,8 @@ Tile2D::~Tile2D() {
     delete resources_;
     delete window_;
 
+    cleanUp_();
+
     SDL_Quit();
 }
 
@@ -77,8 +79,14 @@ void Tile2D::load(
 
 void Tile2D::mainLoop_() {
     while(!SDL_QuitRequested()) {
-
     }
+}
+
+void Tile2D::cleanUp_() {
+    for (auto& obj : objects_) {
+        delete obj;
+    }
+    objects_.clear();
 }
 
 Window &Tile2D::window() {
@@ -96,3 +104,4 @@ SceneManager &Tile2D::sceneManager() {
 PhysicsWorld &Tile2D::physicsWorld() {
     return *instance_().physicsWorld_;
 }
+
