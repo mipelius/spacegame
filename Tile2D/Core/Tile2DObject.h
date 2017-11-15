@@ -17,8 +17,11 @@
 #ifndef __Tile2DObject_H
 #define __Tile2DObject_H
 
-
 class Tile2DObject {
+    friend class Tile2D;
+private:
+    bool createdByTile2D_ = false;
+
 public:
     Tile2DObject()                                      = default;
     ~Tile2DObject()                                     = default;

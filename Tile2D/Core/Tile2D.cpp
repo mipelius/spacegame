@@ -79,6 +79,10 @@ void Tile2D::load(
 
 void Tile2D::mainLoop_() {
     while(!SDL_QuitRequested()) {
+        // physics update ...
+        // renderer update ...
+
+        removeDestroyedObjects_(); // this must be the last one!
     }
 }
 
@@ -103,5 +107,12 @@ SceneManager &Tile2D::sceneManager() {
 
 PhysicsWorld &Tile2D::physicsWorld() {
     return *instance_().physicsWorld_;
+}
+
+void Tile2D::removeDestroyedObjects_() {
+    for (auto& obj : objectsToDestroy_) {
+        delete obj;
+    }
+    objectsToDestroy_.clear();
 }
 

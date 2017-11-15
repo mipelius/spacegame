@@ -59,6 +59,7 @@ private:
 
     void mainLoop_();
     void cleanUp_();
+    void removeDestroyedObjects_();
 
     Tile2D();
     ~Tile2D();
@@ -67,16 +68,18 @@ private:
     static bool isLoaded_;
 
     std::set<Tile2DObject*> objects_;
+    std::list<Tile2DObject*> objectsToDestroy_;
 
     template <class T> static void destroy_(T* obj);
 };
 
-// template function definition
+// template function definitions
 
 template <class T>
 T* Tile2D::create() {
-    static_assert(std::is_base_of<Tile2DObject, T>(), "Can't create object: not inherited from Tile2DObject.");
+    static_assert(std::is_base_of<Tile2DObject, T>(), "Can't create object since it is not inherited from Tile2DObject.");
     T* obj = new T();
+    ((Tile2DObject*)obj)->createdByTile2D_ = true;
     instance_().objects_.insert(obj);
     return obj;
     // we could use more sophisticated memory allocator here... (e.g. dynamic object pool)
@@ -85,10 +88,11 @@ T* Tile2D::create() {
 template <class T>
 void Tile2D::destroy_(T* obj) {
     auto it = instance_().objects_.find(obj);
-    assert((*it) != nullptr && "Can't destroy object since it was not created by Tile2D");
-    instance_().objects_.erase(it);
-    delete obj;
-    // we could use more sophisticated memory deallocator here... (e.g. dynamic object pool)
+    assert((*it)->createdByTile2D_ && "Can't destroy object since it was not created by Tile2D.");
+    if ((*it) != nullptr) {
+        instance_().objects_.erase((*it));
+    }
+    instance_().objectsToDestroy_.push_back(obj);
 }
 
 #endif //__TILE2D_H
