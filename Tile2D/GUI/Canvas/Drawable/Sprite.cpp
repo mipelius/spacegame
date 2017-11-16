@@ -16,50 +16,41 @@
 
 #include "precompile.h"
 #include "Sprite.h"
-#include "Texture.h"
-
-Sprite::Sprite(ITexture *texture, Rect rect) : DrawableBase(), rect_(rect) {
-    texture_ = texture;
-}
 
 void Sprite::drawActual(const Canvas &canvas) {
-    texture_->glBind();
+    if (texturePtr_ == nullptr) {
+        return;
+    }
+
+    texturePtr_->glBind();
 
     glBegin(GL_QUADS);
 
-    texture_->glTexCorner(Texture::Corner::TOP_LEFT);
+    texturePtr_->glTexCorner(Texture::Corner::TOP_LEFT);
     glVertex3f(rect_.x1, rect_.y1, 0.0);
 
-    texture_->glTexCorner(Texture::Corner::TOP_RIGHT);
+    texturePtr_->glTexCorner(Texture::Corner::TOP_RIGHT);
     glVertex3f(rect_.x2, rect_.y1, 0.0);
 
-    texture_->glTexCorner(Texture::Corner::BOTTOM_RIGHT);
+    texturePtr_->glTexCorner(Texture::Corner::BOTTOM_RIGHT);
     glVertex3f(rect_.x2, rect_.y2, 0.0);
 
-    texture_->glTexCorner(Texture::Corner::BOTTOM_LEFT);
+    texturePtr_->glTexCorner(Texture::Corner::BOTTOM_LEFT);
     glVertex3f(rect_.x1, rect_.y2, 0.0);
 
     glEnd();
 
-    texture_->glUnbind();
+    texturePtr_->glUnbind();
 }
 
-Rect Sprite::getRect() {
-    return rect_;
-}
+Sprite::Sprite() :
+        // properties
+        rect(           Property<Rect>        (&rect_)        ),
+        texturePtr(     Property<ITexture*>   (&texturePtr_)  ),
 
-Rect Sprite::getActualRect() {
-    double x = location.get().x;
-    double y = location.get().y;
-
-    return {
-            rect_.x1 + x,
-            rect_.y1 + y,
-            rect_.x2 + x,
-            rect_.y2 + y
-    };
-}
-
-Sprite::Sprite() : rect_(Rect(0, 0, 0, 0)) {
+        // values
+        rect_({0, 0, 0, 0}),
+        texturePtr_(nullptr)
+{
 
 }

@@ -17,25 +17,24 @@
 #ifndef __Background_H_
 #define __Background_H_
 
+#include "Tile2DObject.h"
 #include "IDrawable.h"
 #include "Property.h"
 
 class Texture;
 
-class Background : public IDrawable {
+class Background : public IDrawable, public Tile2DObject {
 
 public:
     Background();
 
-    Property<double> const ratio;
+    Property<double> const      ratio;
+    Property<Texture*> const    texturePtr;
 
     void draw(const Canvas& canvas) override;
 
-    void setRatio(double ratio);
-    void setTexture(Texture *texture);
-
 private:
-    Texture* texture_;
+    Texture* texturePtr_;
 
     double ratio_;
 

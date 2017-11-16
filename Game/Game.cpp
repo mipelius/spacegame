@@ -17,7 +17,6 @@
 #include <Game/Object/SpaceShip.h>
 #include "precompile.h"
 #include "Game.h"
-#include "App.h"
 #include "Window.h"
 #include "Canvas.h"
 
@@ -61,7 +60,7 @@ Game::Game() {
 
 void Game::launch() {
     Text* text = new Text(*App::getResources()->other->smallFont);
-    text->location.set(Point(4000, 8000));
+    text->position.set(Point(4000, 8000));
     text->string.set("Welcome to Space Game!");
     text->size.set(3);
     text->color.set(Color(0.5, 0.7, 1));
@@ -123,7 +122,7 @@ void Game::launch() {
                 shadowMask_->addLight(light->pointLight);
 
                 Plot* plot = new Plot();
-                plot->location.set(spaceship_->body->position.get());
+                plot->position.set(spaceship_->body->position.get());
                 plot->size.set(1.0);
 
                 smallMapCanvas_->addDrawable(plot);

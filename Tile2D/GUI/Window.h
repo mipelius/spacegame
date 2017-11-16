@@ -29,8 +29,6 @@ class GuiComponentBase;
 class Window {
     friend class Tile2D;
 public:
-    void update();
-
     Property<Point>             const position;
     BooleanProperty             const isFullScreen;
     ReadableProperty<unsigned>  const w;
@@ -41,6 +39,8 @@ public:
     void addComponent(GuiComponentBase &guiComponent);
 
 private:
+    void update_();
+
     ~Window();
     Window();
     void init(const std::string& configJson);

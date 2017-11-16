@@ -28,5 +28,5 @@ LightObject::LightObject(Point location, double radius) :
     Sprite* sprite = new Sprite(App::getResources()->textures->light, Rect(-64, -64, 64, 64));
 
     spriteContainer->addDrawable(sprite);
-    spriteContainer->location.set(location);
+    spriteContainer->position.set(location);
 }

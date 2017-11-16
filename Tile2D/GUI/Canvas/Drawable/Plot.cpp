@@ -20,10 +20,10 @@
 #include "Camera.h"
 
 Plot::Plot() :
-    location(   Property<Point>   (&location_)    ),
+    position(   Property<Point>   (&position_)    ),
     size(       Property<double>  (&size_   )     ),
 
-    location_(  Point(0, 0) ),
+    position_(  Point(0, 0) ),
     size_(      1.0         )
 {
 
@@ -45,8 +45,8 @@ void Plot::draw(const Canvas &canvas) {
         addition = size_ / 2;
     }
 
-    double x1 = location_.x - addition * pixelWidth;
-    double y1 = location_.y - addition * pixelHeight;
+    double x1 = position_.x - addition * pixelWidth;
+    double y1 = position_.y - addition * pixelHeight;
     double x2 = x1 + pixelWidth + addition * pixelWidth * 2;
     double y2 = y1 + pixelHeight + addition * pixelHeight * 2;
 

@@ -35,7 +35,10 @@ int main(int argc, const char *argv[]) {
             // RESOURCES / TEXTURE
             {
                     {"images/anim_explosion.png"},
-                    {"images/anim_rocket_fire.png"}
+                    {"images/anim_rocket_fire.png"},
+                    {"images/spaceship.png"},
+                    {"images/bg1.jpg"},
+                    {"images/bg2.jpg"}
             },
 
             // RESOURCES / SFX

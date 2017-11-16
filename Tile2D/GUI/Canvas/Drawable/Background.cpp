@@ -20,17 +20,16 @@
 #include "Camera.h"
 #include "Canvas.h"
 
-Background::Background() : ratio( Property<double> (&ratio_) ) {
-    texture_ = nullptr;
-    ratio_ = 1.0;
-}
+Background::Background() :
+        // properties
+        ratio(          Property<double>   (&ratio_)            ),
+        texturePtr(     Property<Texture*> (&texturePtr_)       ),
 
-void Background::setTexture(Texture *texture) {
-    texture_ = texture;
-}
+        // values
+        texturePtr_(nullptr),
+        ratio_(1.0)
+{
 
-void Background::setRatio(double ratio) {
-    ratio_ = ratio;
 }
 
 void Background::draw(const Canvas& canvas) {
@@ -38,15 +37,15 @@ void Background::draw(const Canvas& canvas) {
 
     glColor3d(1.0, 1.0, 1.0);
 
-    if (texture_ != nullptr) {
-        texture_->glBind();
+    if (texturePtr_ != nullptr) {
+        texturePtr_->glBind();
 
         Point location = canvas.getCamera().position.get();
 
-        GLdouble x = (location.x * ratio_) / texture_->getW();
-        GLdouble y = (location.y * ratio_) / texture_->getH();
-        GLdouble w = rect.getWidth() / texture_->getW();
-        GLdouble h = rect.getHeight() / texture_->getH();
+        GLdouble x = (location.x * ratio_) / texturePtr_->getW();
+        GLdouble y = (location.y * ratio_) / texturePtr_->getH();
+        GLdouble w = rect.getWidth() / texturePtr_->getW();
+        GLdouble h = rect.getHeight() / texturePtr_->getH();
 
         glBegin(GL_QUADS);
         glTexCoord2d(x - w / 2, y - h / 2);
@@ -59,7 +58,7 @@ void Background::draw(const Canvas& canvas) {
         glVertex2d(rect.x1, rect.y2);
         glEnd();
 
-        texture_->glUnbind();
+        texturePtr_->glUnbind();
     }
     else {
         glBegin(GL_QUADS);

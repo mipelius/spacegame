@@ -22,12 +22,12 @@
 #include "Property.h"
 #include "Color.h"
 
-class DrawableBase : public IDrawable{
+class DrawableBase : public IDrawable, public Tile2DObject {
 
 public:
     DrawableBase();
 
-    Property<Point>     const location;
+    Property<Point>     const position;
     Property<double>    const angle;
     BooleanProperty     const isVisible;
     Property<double>    const opacity;
@@ -39,7 +39,7 @@ protected:
     virtual void drawActual(const Canvas& canvas) = 0;
 
 private:
-    Point location_;
+    Point position_;
     double angle_;
     bool isVisible_;
     double opacity_;

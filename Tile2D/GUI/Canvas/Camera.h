@@ -20,12 +20,13 @@
 class Body;
 class Renderer;
 
+#include "Tile2DObject.h"
 #include "Rect.h"
 #include "Point.h"
 
 #include "Property.h"
 
-class Camera {
+class Camera : public Tile2DObject {
 
 public:
     Property<Point> const position;

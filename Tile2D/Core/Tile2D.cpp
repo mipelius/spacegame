@@ -80,7 +80,7 @@ void Tile2D::load(
 void Tile2D::mainLoop_() {
     while(!SDL_QuitRequested()) {
         // physics update ...
-        // renderer update ...
+        window().update_();
 
         removeDestroyedObjects_(); // this must be the last one!
     }

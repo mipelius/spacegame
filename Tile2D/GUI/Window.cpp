@@ -73,7 +73,7 @@ void Window::init(const std::string& configJson) {
     isInitialized_ = true;
 }
 
-void Window::update() {
+void Window::update_() {
     // render
     glClear(GL_COLOR_BUFFER_BIT);
     glViewport(0, 0, (GLsizei)w_, (GLsizei)h_);

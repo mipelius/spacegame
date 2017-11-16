@@ -137,7 +137,7 @@ spriteContainer (   new DrawableGroup()                           )
 
     // bindings
 
-    spriteContainer->location.bind(body.position);
+    spriteContainer->position.bind(body.position);
     spriteContainer->angle.bind(body.angle);
 }
 

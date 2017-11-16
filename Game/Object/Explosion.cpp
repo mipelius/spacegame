@@ -68,7 +68,7 @@ Explosion::Explosion(Point point, double radius) :
 
     spriteContainer_ = new DrawableGroup();
     spriteContainer_->addDrawable(explosionSprite);
-    spriteContainer_->location.set(point);
+    spriteContainer_->position.set(point);
 
     PulseLight* pulseLight = new PulseLight(point, radius * 2.5);
 

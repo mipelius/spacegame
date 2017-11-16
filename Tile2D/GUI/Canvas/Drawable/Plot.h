@@ -19,22 +19,23 @@
 
 class Canvas;
 
+#include "Tile2DObject.h"
 #include "Point.h"
 #include "IDrawable.h"
 #include "Property.h"
 
-class Plot : public IDrawable {
+class Plot : public IDrawable, Tile2DObject {
 
 public:
     Plot();
 
-    Property<Point> const location;
+    Property<Point> const position;
     Property<double> const size;
 
     void draw(const Canvas &canvas) override;
 
 private:
-    Point location_;
+    Point position_;
     double size_;
 
 };

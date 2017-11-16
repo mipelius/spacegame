@@ -17,6 +17,7 @@
 #ifndef __Sprite_H_
 #define __Sprite_H_
 
+#include <Tile2D/GUI/Canvas/Texture/Texture.h>
 #include "DrawableBase.h"
 #include "Rect.h"
 
@@ -27,18 +28,16 @@ class Sprite : public DrawableBase {
 
 public:
     Sprite();
-    Sprite(ITexture* texture, Rect rect);
 
-    Rect getRect();
-    Rect getActualRect();
+    Property<Rect>     const rect;
+    Property<ITexture*> const texturePtr;
 
 protected:
     void drawActual(const Canvas &canvas) override;
 
 private:
-
-    ITexture* texture_;
     Rect rect_;
+    ITexture* texturePtr_;
 };
 
 

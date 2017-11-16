@@ -55,8 +55,12 @@ private:
     }
 
 public:
-    T& operator[](std::string str) {
-        return *resourceMap_[str];
+    T* operator[](std::string str) {
+        auto result = resourceMap_[str];
+        if (result == nullptr) {
+            throw std::runtime_error("no such resource" + str);
+        }
+        return result;
     }
 };
 

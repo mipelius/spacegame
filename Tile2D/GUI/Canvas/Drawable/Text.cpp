@@ -19,20 +19,29 @@
 #include "Font.h"
 #include "Texture.h"
 
-Text::Text(Font &font) :
+Text::Text() :
+        // properties
+        size(       Property<float>       (&size_   )   ),
+        string(     Property<std::string> (&string_)    ),
+        fontPtr(    Property<Font*>       (&fontPtr_)   ),
 
-    size(       Property<float>       (&size_   )     ),
-    string(     Property<std::string> (&string_)   )
+        // values
+        fontPtr_(nullptr),
+        size_(1.0)
 {
-    font_ = &font;
-    size_ = 1.0;
+
 }
 
-void Text::drawActual(const Canvas &canvas) {
-    font_->fontTexture_->glBind();
 
-    float textureW = font_->fontTexture_->getW();
-    float textureH = font_->fontTexture_->getH();
+void Text::drawActual(const Canvas &canvas) {
+    if (fontPtr_ == nullptr) {
+        return;
+    }
+
+    fontPtr_->fontTexture_->glBind();
+
+    float textureW = fontPtr_->fontTexture_->getW();
+    float textureH = fontPtr_->fontTexture_->getH();
 
     float offsetX = 0;
     float offsetY = 0;
@@ -41,7 +50,7 @@ void Text::drawActual(const Canvas &canvas) {
 
     for (int i = 0; i < string_.length(); i++) {
         unsigned char ch = string_.data()[i];
-        Font::Letter* letter = font_->getLetter(ch);
+        Font::Letter* letter = fontPtr_->getLetter(ch);
 
         if (letter) {
             float texX1 = (1.0 / textureW) * letter->x;
@@ -80,5 +89,6 @@ void Text::drawActual(const Canvas &canvas) {
 
     glEnd();
 
-    font_->fontTexture_->glUnbind();
+    fontPtr_->fontTexture_->glUnbind();
 }
+

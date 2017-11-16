@@ -27,17 +27,18 @@ class Font;
 
 class Text : public DrawableBase {
 public:
-    explicit Text(Font &font);
+    Text();
 
     // properties
 
     Property<float> const size;
     Property<std::string> const string;
+    Property<Font*> const fontPtr;
 
     void drawActual(const Canvas &canvas) override;
 
 private:
-    Font* font_;
+    Font* fontPtr_;
 
     float size_;
     std::string string_;

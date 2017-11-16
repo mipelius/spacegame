@@ -19,14 +19,14 @@
 DrawableBase::DrawableBase() :
 
 // properties
-location    (   Property<Point>   (&location_)    ),
+position    (   Property<Point>   (&position_)    ),
 angle       (   Property<double>  (&angle_)       ),
 isVisible   (   BooleanProperty   (&isVisible_)   ),
 opacity     (   Property<double>  (&opacity_)     ),
 color       (   Property<Color>   (&color_)       ),
 
 // private attributes initialization
-location_   (Point(0, 0)),
+position_   (Point(0, 0)),
 angle_      (0          ),
 isVisible_  (true       ),
 opacity_    (1.0        ),
@@ -50,13 +50,13 @@ void DrawableBase::draw(const Canvas& canvas) {
         glColor4d(color_.red, color_.green, color_.blue, 1.0);
     }
 
-    glTranslated(location_.x, location_.y, 0);
+    glTranslated(position_.x, position_.y, 0);
     glRotatef((GLfloat)angle_, 0.0f, 0.0f, 1.0f);
 
     drawActual(canvas);
 
     glRotatef((GLfloat)-angle_, 0.0f, 0.0f, 1.0f);
-    glTranslated(-location_.x, -location_.y, 0);
+    glTranslated(-position_.x, -position_.y, 0);
 
     if (opacity_ > 0.0 && opacity_ < 1.0) {
         glDisable(GL_BLEND);

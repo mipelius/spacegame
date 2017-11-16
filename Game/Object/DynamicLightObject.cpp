@@ -53,7 +53,7 @@ DynamicLightObject::DynamicLightObject(Point const &location, double radius) :
     body(new Body(10.0))
 {
     this->pointLight->location.bind(body->position);
-    this->spriteContainer->location.bind(body->position);
+    this->spriteContainer->position.bind(body->position);
     body->position.set(location);
     body->mapCollision.add(new DynamicLightObject::Body_MapCollisionEventHandler());
 

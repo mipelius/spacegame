@@ -79,7 +79,7 @@ Spaceship::Spaceship() :
 
     //this->location.bind(body->location);
 
-    spriteContainer->location.bind(body->position);
+    spriteContainer->position.bind(body->position);
     spriteContainer->angle.bind(body->angle);
 }
 
