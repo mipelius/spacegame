@@ -116,3 +116,15 @@ void Tile2D::removeDestroyedObjects_() {
     objectsToDestroy_.clear();
 }
 
+void Tile2D::destroy_(Tile2DObject* obj) {
+    void* actualObj = obj->derivedClassPtr;
+    assert(actualObj != nullptr && "Can't destroy object since it was not created by Tile2D.");
+
+    auto it = instance_().objects_.find(actualObj);
+
+    if ((*it) != nullptr) {
+        instance_().objects_.erase((*it));
+    }
+
+    instance_().objectsToDestroy_.push_back(actualObj);
+}

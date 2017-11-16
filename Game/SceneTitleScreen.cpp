@@ -14,11 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <iostream>
 #include "SceneTitleScreen.h"
 
+#include "Tile2D.h"
+#include "Canvas.h"
+
 void SceneTitleScreen::init() {
+    // just testing the engine...
     std::cout << "Title Screen loaded\n";
+    auto canvas = Tile2D::create<Canvas>();
+    Tile2D::window().addComponent(*canvas);
+
+    Canvas* canvas2 = new Canvas();
 }
 
 void SceneTitleScreen::destroy() {

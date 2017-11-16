@@ -20,7 +20,7 @@
 class Tile2DObject {
     friend class Tile2D;
 private:
-    bool createdByTile2D_ = false;
+    void* derivedClassPtr = nullptr;
 
 public:
     Tile2DObject()                                      = default;

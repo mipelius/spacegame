@@ -20,11 +20,12 @@
 class Window;
 
 #include <list>
+#include "Tile2DObject.h"
 #include "Rect.h"
 #include "BooleanProperty.h"
 #include "Property.h"
 
-class GuiComponentBase {
+class GuiComponentBase : public Tile2DObject {
     friend class Window;
     friend class GuiComponentBase;
 
