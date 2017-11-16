@@ -15,7 +15,6 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iostream>
-#include <Game/Game.h>
 #include "SceneManager.h"
 
 SceneManager::SceneManager() {

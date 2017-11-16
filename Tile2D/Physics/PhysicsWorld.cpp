@@ -19,21 +19,17 @@
 #include "Body.h"
 #include "WorldMap.h"
 
-PhysicsWorld::PhysicsWorld(
-        Vector gForce,
-        double metersPerPixel,
-        double airDensity
-):
+PhysicsWorld::PhysicsWorld():
     gForce(             Property<Vector>    (&gForce_)           ),
     metersPerPixel(     Property<double>    (&metersPerPixel_)   ),
     airDensity(         Property<double>    (&airDensity_)       ),
 
-    gForce_(gForce)
+    map_(nullptr),
+    gForce_({0, 0})
 {
-    metersPerPixel_ = metersPerPixel;
-    airDensity_ = airDensity;
-
-    this->map_ = nullptr;
+    gForce_ = defaultGForce;
+    metersPerPixel_ = defaultMetersPerPixel;
+    airDensity_ = defaultAirDensity;
 }
 
 void PhysicsWorld::add(Body &body) {
@@ -80,8 +76,6 @@ void PhysicsWorld::setMap(WorldMap &map) {
     this->map_ = &map;
 }
 
-WorldMap & PhysicsWorld::getMap() {
-    return *map_;
+WorldMap* PhysicsWorld::getMap() {
+    return map_;
 }
-
-PhysicsWorld::PhysicsWorld() : PhysicsWorld(defaultGForce, defaultMetersPerPixel, defaultAirDensity) { }

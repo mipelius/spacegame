@@ -21,9 +21,7 @@
 
 class SceneGameOver : public IScene {
     void init() override;
-
     void destroy() override;
-
 };
 
 #endif //__SceneGameOver_H

@@ -78,11 +78,20 @@ void Tile2D::load(
 }
 
 void Tile2D::mainLoop_() {
-    while(!SDL_QuitRequested()) {
-        // physics update ...
-        window().update_();
+    Uint32 timestamp = SDL_GetTicks();
 
+    // TODO: remove
+    while (SDL_GetTicks() - timestamp > 2000);
+
+    while(!SDL_QuitRequested()) {
+        Uint32 deltaTime = SDL_GetTicks() - timestamp;
+        timestamp = SDL_GetTicks();
+
+        // ---
+        physicsWorld_->step(deltaTime / 1000.0);
+        window().update_();
         removeDestroyedObjects_(); // this must be the last one!
+
     }
 }
 

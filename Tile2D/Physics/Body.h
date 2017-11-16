@@ -17,6 +17,7 @@
 #ifndef __Body_H_
 #define __Body_H_
 
+#include "Tile2DObject.h"
 #include "Vector.h"
 #include "Property.h"
 #include "Event.h"
@@ -26,7 +27,7 @@ class CollisionShape;
 class BodyCollisionEventArgs;
 class EventArgs;
 
-class Body {
+class Body : public Tile2DObject {
     friend class PhysicsWorld;
 
 public:
@@ -50,7 +51,7 @@ public:
 
     // methods
 
-    explicit Body(double mass);
+    Body();
 
     void applyForce(Vector force);
     void applyTorque(double angle);

@@ -30,19 +30,18 @@ public:
     void add(Body &body);
 
     void setMap(WorldMap &map);
-    WorldMap & getMap();
+    WorldMap * getMap();
 
     Property<Vector> const gForce;
     Property<double> const metersPerPixel;
     Property<double> const airDensity;
 
     const double defaultAirDensity = 0.001;
-    const double defaultMetersPerPixel = 0.001;
-    const Vector defaultGForce = Vector(0.0, -9.81);
+    const double defaultMetersPerPixel = 0.1;
+    const Vector defaultGForce = Vector(0.0, 9.81);
 
 private:
     PhysicsWorld();
-    PhysicsWorld(Vector gForce, double metersPerPixel, double airDensity);
     ~PhysicsWorld() = default;
 
     Vector gForce_;

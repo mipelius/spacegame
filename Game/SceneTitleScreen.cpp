@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "Body.h"
 #include "DrawableGroup.h"
 #include "Text.h"
 #include "Plot.h"
@@ -80,13 +81,20 @@ void SceneTitleScreen::init() {
     for (auto i = 0u; i < 200; i++) {
         auto plot = Tile2D::create<Plot>();
         double x = 100 + i * 5;
-        double y = 200 + cos((double)i / 10.0) * 100;
+        double y = 100 + cos((double)i / 10.0) * 100;
         plot->position.set({x, y});
         plot->size.set(10.0);
 
         canvas->addDrawable(plot);
-    }
 
+        auto body = Tile2D::create<Body>();
+        body->position.set({x, y});
+        plot->position.bind(body->position);
+
+        body->mass.set(100.0 + (rand() % 300));
+
+        Tile2D::physicsWorld().add(*body);
+    }
 }
 
 void SceneTitleScreen::destroy() {

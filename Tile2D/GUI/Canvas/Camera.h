@@ -17,9 +17,6 @@
 #ifndef __Camera_H_
 #define __Camera_H_
 
-class Body;
-class Renderer;
-
 #include "Tile2DObject.h"
 #include "Rect.h"
 #include "Vector.h"

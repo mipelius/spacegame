@@ -22,7 +22,7 @@
 #include "WorldMap.h"
 #include "BodyCollisionEventArgs.h"
 
-Body::Body(double mass) :
+Body::Body() :
     // properties
 
     mass            (   Property<double>  (&mass_             )   ),
@@ -41,25 +41,24 @@ Body::Body(double mass) :
     bodyCollision   (   Event<Body, BodyCollisionEventArgs>(this) ),
     mapCollision    (   Event<Body, EventArgs>(this) ),
 
-    // private member objects
+    // private member variables
 
     position_       (   Vector(0,0) ),
     speed_          (   Vector(0,0) ),
     velocity_       (   Vector(0,0) ),
-    force_          (   Vector(0,0) )
+    force_          (   Vector(0,0) ),
+    angle_          (   0.0         ),
+    angularVelocity_(   0.0         ),
+    torque_         (   0.0         ),
+    mass_           (   1.0         ),
+
+    entityCollisionDetectionIsIgnored_  (false),
+    stepIsIgnored_                      (false),
+    physicsWorld_                       (nullptr),
+    collisionShape_                     (nullptr),
+    isDead_                             (false)
 {
-    angle_ = 0.0;
-    angularVelocity_ = 0.0;
-    torque_ = 0.0;
 
-    mass_ = mass;
-
-    entityCollisionDetectionIsIgnored_ = false;
-    stepIsIgnored_ = false;
-    physicsWorld_ = nullptr;
-    collisionShape_ = nullptr;
-
-    isDead_ = false;
 }
 
 void Body::step_(double timeElapsedSec) {
@@ -113,8 +112,12 @@ void Body::step_(double timeElapsedSec) {
 
 
 bool Body::detectMapCollision_() {
-    WorldMap& map = this->getWorld()->getMap();
-    if (map.detectCollisionWith(*this)) {
+    WorldMap* map = this->getWorld()->getMap();
+    if (map == nullptr) {
+        return false;
+    }
+
+    if (map->detectCollisionWith(*this)) {
 
         mapCollision.raise(EventArgs());
 
