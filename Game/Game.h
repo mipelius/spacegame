@@ -27,8 +27,6 @@ class BlockMapping;
 
 class Spaceship;
 
-#include "Point.h"
-
 class Game {
 
 private:

@@ -20,7 +20,7 @@
 #include "GuiComponentBase.h"
 
 Window::Window() :
-    position        (   Property<Point>            (this, getPosition_, setPosition_         )),
+    position        (   Property<Vector>           (this, getPosition_, setPosition_         )),
     isFullScreen    (   BooleanProperty            (this, getIsFullScreen_, setIsFullScreen_ )),
     w               (   ReadableProperty<unsigned> (&w_                                      )),
     h               (   ReadableProperty<unsigned> (&h_                                      ))
@@ -100,12 +100,12 @@ void Window::setSize(unsigned w, unsigned h) {
     this->h.updateDependentProperties();
 }
 
-Point Window::getPosition_(void *owner) {
+Vector Window::getPosition_(void *owner) {
     auto window = (Window*)owner;
-    return Point(window->x_, window->y_);
+    return Vector(window->x_, window->y_);
 }
 
-void Window::setPosition_(void *owner, const Point &value) {
+void Window::setPosition_(void *owner, const Vector &value) {
     auto window = (Window*)owner;
     SDL_SetWindowPosition(window->window_, (int)value.x, (int)value.y);
     window->x_ = value.x;

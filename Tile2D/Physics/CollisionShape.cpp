@@ -18,12 +18,12 @@
 #include "CollisionShape.h"
 #include "Body.h"
 
-CollisionShape::CollisionShape(Point points[], int count): boundingBox(Rect(-1, -1, 1, 1))
+CollisionShape::CollisionShape(Vector points[], int count): boundingBox(Rect(-1, -1, 1, 1))
 {
-    this->points = (Point*)malloc(count * sizeof(Point));
+    this->points = (Vector*)malloc(count * sizeof(Vector));
     this->count = count;
 
-    Point farMost = Point(0, 0);
+    Vector farMost = Vector(0, 0);
 
     for (int i=0; i<count; i++) {
         this->points[i] = points[i];
@@ -40,10 +40,10 @@ CollisionShape::CollisionShape(Point points[], int count): boundingBox(Rect(-1, 
 bool CollisionShape::intersectsWith(const CollisionShape& otherShape) const {
     if (!this->getBoundingBox().intersectsWith(otherShape.getBoundingBox())) return false;
 
-    Point location = owner->position.get();
+    Vector location = owner->position.get();
 
-    const Point *otherShapePoints = otherShape.getRotatedPoints();
-    const Point *thisPoints = this->getRotatedPoints();
+    const Vector *otherShapePoints = otherShape.getRotatedPoints();
+    const Vector *thisPoints = this->getRotatedPoints();
 
     // if one of the corners (points) of the other collision shape is inner side of this shape, collision has happened
     for (int i=0; i<otherShape.getCount(); i++) {
@@ -78,7 +78,7 @@ bool CollisionShape::intersectsWith(const CollisionShape& otherShape) const {
     return false;
 }
 
-Point* CollisionShape::getPoints() {
+Vector* CollisionShape::getPoints() {
     return this->points;
 }
 
@@ -86,7 +86,7 @@ int CollisionShape::getCount() const {
     return count;
 }
 
-bool CollisionShape::intersectsWithHalfLine(Point linePoint1, Point linePoint2, Point offset) const {
+bool CollisionShape::intersectsWithHalfLine(Vector linePoint1, Vector linePoint2, Vector offset) const {
     if (!(
             (linePoint1.y <= offset.y && linePoint2.y >= offset.y) ||
                     (linePoint1.y >= offset.y && linePoint2.y <= offset.y)
@@ -102,10 +102,10 @@ bool CollisionShape::intersectsWithHalfLine(Point linePoint1, Point linePoint2, 
     return collisionX >= offset.x;
 }
 
-const Point * CollisionShape::getRotatedPoints() const {
+const Vector * CollisionShape::getRotatedPoints() const {
     double angleRad = this->owner->angle.get() / 360 * 2 * M_PI * -1;
 
-    Point* rotatedPoints = (Point*)malloc(count * sizeof(Point));
+    Vector* rotatedPoints = (Vector*)malloc(count * sizeof(Vector));
 
     for (int i=0; i<count; i++) {
         rotatedPoints[i].x = this->points[i].x * cos(angleRad) + this->points[i].y * sin(angleRad);
@@ -115,7 +115,7 @@ const Point * CollisionShape::getRotatedPoints() const {
 }
 
 Rect CollisionShape::getBoundingBox() const {
-    Point location = owner->position.get();
+    Vector location = owner->position.get();
 
     return Rect(
         this->boundingBox.x1 + location.x,
@@ -126,9 +126,9 @@ Rect CollisionShape::getBoundingBox() const {
 }
 
 bool CollisionShape::intersectsWith(const Rect& rectangle) const {
-    Point location = owner->position.get();
+    Vector location = owner->position.get();
 
-    const Point* points = getRotatedPoints();
+    const Vector* points = getRotatedPoints();
 
     for (int i=0; i<count-1; i++) {
         if (rectangle.intersectsWithLine(

@@ -19,14 +19,14 @@
 
 class AudioClip;
 class Ears;
-class Point;
 
+#include "Vector.h"
 #include "Player.h"
 
 class SamplePlayer : public Player {
 public:
     SamplePlayer();
-    void play(AudioClip* sample, int channel = -1, const Point* location = nullptr);
+    void play(AudioClip* sample, const Vector& position, int channel = -1);
 
     void setEars(Ears* ears);
 

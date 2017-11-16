@@ -20,7 +20,6 @@
 class WorldMap;
 class Body;
 
-#include "Point.h"
 #include "Vector.h"
 #include "Property.h"
 

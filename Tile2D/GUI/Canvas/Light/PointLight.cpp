@@ -16,16 +16,13 @@
 
 #include "precompile.h"
 #include "PointLight.h"
-#include "Property.h"
 #include "Canvas.h"
 #include "Camera.h"
-#include "WorldMap.h"
-#include "PartialLightMap.h"
 
 GLuint PointLight::glTextureId_ = 0;
 
-PointLight::PointLight(Point position, double radius, bool isDynamic) :
-    location    (Property<Point>(this, getPosition_, setPosition_)  ),
+PointLight::PointLight(Vector position, double radius, bool isDynamic) :
+    location    (Property<Vector>(this, getPosition_, setPosition_)  ),
     radius      (   Property<double>  (&radius_           )  ),
     intensity   (   Property<double>  (&intensity_        )  ),
 
@@ -118,18 +115,18 @@ void PointLight::createLightTexture() {
 }
 
 
-Point PointLight::getPosition_(void *owner) {
+Vector PointLight::getPosition_(void *owner) {
     return ((PointLight*)owner)->position_;
 }
 
-void PointLight::setPosition_(void *owner, const Point &value) {
+void PointLight::setPosition_(void *owner, const Vector &value) {
     PointLight* pointLight = (PointLight*)owner;
 
-    Point oldLocation = pointLight->position_;
+    Vector oldLocation = pointLight->position_;
 
     pointLight->position_ = value;
 
-    Point newLocation = pointLight->position_;
+    Vector newLocation = pointLight->position_;
 
     pointLight->movement->raise(PointLightMovedEventArgs(oldLocation, newLocation));
 }

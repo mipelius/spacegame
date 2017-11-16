@@ -40,10 +40,10 @@ void Background::draw(const Canvas& canvas) {
     if (texturePtr_ != nullptr) {
         texturePtr_->glBind();
 
-        Point location = canvas.getCamera().position.get();
+        Vector position = canvas.getCamera().position.get();
 
-        GLdouble x = (location.x * ratio_) / texturePtr_->getW();
-        GLdouble y = (location.y * ratio_) / texturePtr_->getH();
+        GLdouble x = (position.x * ratio_) / texturePtr_->getW();
+        GLdouble y = (position.y * ratio_) / texturePtr_->getH();
         GLdouble w = rect.getWidth() / texturePtr_->getW();
         GLdouble h = rect.getHeight() / texturePtr_->getH();
 

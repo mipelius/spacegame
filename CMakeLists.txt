@@ -152,8 +152,6 @@ set(SOURCE_FILES
         Tile2D/Util/Event/EventArgs.h
         Tile2D/Util/Event/EventHandler.h
         Tile2D/Util/Event/IEventHandler.h
-        Tile2D/Util/Primitives/Point.cpp
-        Tile2D/Util/Primitives/Point.h
         Tile2D/Util/Primitives/Rect.cpp
         Tile2D/Util/Primitives/Rect.h
         Tile2D/Util/Primitives/Vector.cpp

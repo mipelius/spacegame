@@ -19,8 +19,6 @@
 
 class Canvas;
 
-#include "Rect.h"
-
 class IDrawable {
 
 public:

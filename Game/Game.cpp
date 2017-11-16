@@ -288,7 +288,7 @@ void Game::initialize() {
 
     Ears* ears = new Ears();
     ears->maxDistance.set(1400);
-    ears->location.bind(spaceship_->body->position);
+    ears->position.bind(spaceship_->body->position);
     App::getSamplePlayer()->setEars(ears);
 
     // --- SHADOW MASK  ---

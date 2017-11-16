@@ -22,14 +22,14 @@ class Renderer;
 
 #include "Tile2DObject.h"
 #include "Rect.h"
-#include "Point.h"
+#include "Vector.h"
 
 #include "Property.h"
 
 class Camera : public Tile2DObject {
 
 public:
-    Property<Point> const position;
+    Property<Vector> const position;
     Property<Rect> const areaRect;
     Property<Rect> const boundsRect;
 
@@ -41,8 +41,8 @@ private:
     Rect areaRect_;
     Rect boundsRect_;
 
-    static Point getPosition_(void *owner);
-    static void setPosition_(void *owner, const Point &value);
+    static Vector getPosition_(void *owner);
+    static void setPosition_(void *owner, const Vector &value);
 };
 
 #endif //__Camera_H_

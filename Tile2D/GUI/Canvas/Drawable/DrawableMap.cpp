@@ -124,7 +124,7 @@ void DrawableMap::drawSmallMap(const Canvas& canvas) {
     for (double x = cameraRect.x1; x < cameraRect.x2; x += stepX) {
         for (double y = cameraRect.y1; y < cameraRect.y2; y += stepY) {
             Block* block = map_->getValueScaled(
-                    Point(x, y)
+                    Vector(x, y)
             );
 
             if (block == nullptr || block->getMapTextureId() == -1) continue;

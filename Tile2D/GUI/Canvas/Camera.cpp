@@ -19,9 +19,9 @@
 Camera::Camera() :
     // properties
 
-    position(       Property<Point> (this, getPosition_, setPosition_   )),
-    areaRect(       Property<Rect>  (&areaRect_                         )),
-    boundsRect(     Property<Rect>  (&boundsRect_                       )),
+    position(       Property<Vector> (this, getPosition_, setPosition_   )),
+    areaRect(       Property<Rect>   (&areaRect_                         )),
+    boundsRect(     Property<Rect>   (&boundsRect_                       )),
 
     // member objects
     areaRect_(      Rect(0, 0, 0, 0)    ),
@@ -41,16 +41,16 @@ void Camera::zoom(double amount) {
     areaRect.updateDependentProperties();
 }
 
-Point Camera::getPosition_(void *owner) {
+Vector Camera::getPosition_(void *owner) {
     Rect rect = ((Camera*)owner)->areaRect.get();
 
     double x = rect.x1 + rect.getWidth() / 2;
     double y = rect.y1 + rect.getHeight() / 2;
 
-    return Point(x, y);
+    return Vector(x, y);
 }
 
-void Camera::setPosition_(void *owner, const Point &value) {
+void Camera::setPosition_(void *owner, const Vector &value) {
     Rect areaRect = ((Camera*)owner)->areaRect.get();
     Rect boundsRect = ((Camera*)owner)->boundsRect.get();
 

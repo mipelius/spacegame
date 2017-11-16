@@ -25,29 +25,30 @@ public:
     double y;
     Vector(double x, double y);
     inline static Vector byAngle(const double &angleDegrees, const double &amount);
-    inline Vector operator + (const Vector& otherVector);
-    inline Vector operator - (const Vector& otherVector);
+    inline Vector operator + (const Vector& otherVector) const;
+    inline Vector operator - (const Vector& otherVector) const;
     inline Vector operator -= (const Vector& otherVector);
     inline Vector operator += (const Vector& otherVector);
-    inline Vector operator *(double const &amount);
-    inline double length();
-    inline double angle();
+    inline Vector operator *(double const &amount) const;
+    inline double length() const;
+    inline double lengthSqr() const;
+    inline double angle() const;
 };
 
 // inline functions
 
-inline Vector Vector::operator + (const Vector &otherVector) {
+inline Vector Vector::operator + (const Vector &otherVector) const {
     return {x + otherVector.x, y + otherVector.y};
 }
 
-inline Vector Vector::operator - (const Vector &otherVector) {
+inline Vector Vector::operator - (const Vector &otherVector) const {
     return {x - otherVector.x, y - otherVector.y};
 }
 
 inline Vector Vector::operator -= (Vector const &otherVector) {
     x = x - otherVector.x;
     y = y - otherVector.y;
-    return Vector(x, y);
+    return {x, y};
 }
 
 inline Vector Vector::operator += (const Vector &otherVector) {
@@ -56,7 +57,7 @@ inline Vector Vector::operator += (const Vector &otherVector) {
     return {x, y};
 }
 
-inline Vector Vector::operator * (const double &amount) {
+inline Vector Vector::operator * (const double &amount) const {
     return {x * amount, y * amount};
 }
 
@@ -68,11 +69,15 @@ inline Vector Vector::byAngle(const double &angleDegrees, const double &amount) 
     };
 }
 
-inline double Vector::length() {
+inline double Vector::length() const {
     return sqrt(x * x + y * y);
 }
 
-inline double Vector::angle() {
+inline double Vector::lengthSqr() const {
+    return x * x + y * y;
+}
+
+inline double Vector::angle() const {
     if (y == 0) {
         return 0;
     }

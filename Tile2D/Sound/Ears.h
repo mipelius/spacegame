@@ -17,7 +17,7 @@
 #ifndef __Ears_H_
 #define __Ears_H_
 
-#include "Point.h"
+#include "Vector.h"
 #include "Property.h"
 
 class Ears {
@@ -26,11 +26,11 @@ public:
     Ears();
     ~Ears();
 
-    Property<Point> const location;
+    Property<Vector> const position;
     Property<double> const maxDistance;
 
 private:
-    Point location_;
+    Vector position_;
     double maxDistance_;
 };
 

@@ -20,16 +20,16 @@
 class Body;
 
 #include "Rect.h"
-#include "Point.h"
+#include "Vector.h"
 
 class CollisionShape {
 friend class Body;
 private:
     Rect boundingBox;
-    Point *points;
+    Vector *points;
     Body *owner;
     int count;
-    bool intersectsWithHalfLine(Point linePoint1, Point linePoint2, Point offset) const;
+    bool intersectsWithHalfLine(Vector linePoint1, Vector linePoint2, Vector offset) const;
 public:
     /**
      * Constructor that initializes the collision shape. Note: use only convex shapes.
@@ -37,7 +37,7 @@ public:
      * @param points[]  the points that defines the shape
      * @param count     the count of the points
      */
-    CollisionShape(Point points[], int count);
+    CollisionShape(Vector points[], int count);
 
     /**
      * Checks if the shape intersects with the other shape
@@ -61,7 +61,7 @@ public:
      *
      * @return the points
      */
-    Point* getPoints();
+    Vector* getPoints();
 
     /**
      * Gets the count of the points of the CollisionShape
@@ -75,7 +75,7 @@ public:
      *
      * @return the points
      */
-    const Point * getRotatedPoints() const;
+    const Vector * getRotatedPoints() const;
 
     /**
      * Gets the bounding box which. Note: the location is already summed to points in this rectangle

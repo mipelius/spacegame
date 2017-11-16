@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "Vector.h"
 #include "Ears.h"
-#include "Property.h"
 
 Ears::Ears() :
-    location    (   Property<Point>   (&location_)    ),
+    position    (   Property<Vector>  (&position_)    ),
     maxDistance (   Property<double>  (&maxDistance_) ),
 
-    location_       (   Point(0, 0) ),
-    maxDistance_    (   0.0         )
+    position_       (   Vector(0, 0) ),
+    maxDistance_    (   0.0          )
 {
 
 }

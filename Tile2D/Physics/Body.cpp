@@ -18,11 +18,9 @@
 #include "Body.h"
 
 #include "CollisionShape.h"
-#include "Event.h"
 #include "PhysicsWorld.h"
 #include "WorldMap.h"
 #include "BodyCollisionEventArgs.h"
-#include "Property.h"
 
 Body::Body(double mass) :
     // properties
@@ -33,7 +31,7 @@ Body::Body(double mass) :
     angularVelocity (   Property<double>  (&angularVelocity_  )   ),
     torque          (   Property<double>  (&torque_           )   ),
 
-    position        (   Property<Point>   (&location_         )   ),
+    position        (   Property<Vector>  (&position_         )   ),
     speed           (   Property<Vector>  (&speed_            )   ),
     velocity        (   Property<Vector>  (&velocity_         )   ),
     force           (   Property<Vector>  (&force_            )   ),
@@ -45,7 +43,7 @@ Body::Body(double mass) :
 
     // private member objects
 
-    location_       (   Point(0,0)  ),
+    position_       (   Vector(0,0) ),
     speed_          (   Vector(0,0) ),
     velocity_       (   Vector(0,0) ),
     force_          (   Vector(0,0) )
@@ -84,7 +82,7 @@ void Body::step_(double timeElapsedSec) {
         acceleration += physicsWorld_->gForce.get();
         speed_ += acceleration;
         velocity_ = speed_ * timeElapsedSec * physicsWorld_->metersPerPixel.get();
-        location_ = location_ + velocity_;
+        position_ = position_ + velocity_;
 
         // apply torque (not very nicely implemented, but good enough)
 

@@ -17,7 +17,7 @@
 #ifndef __Rect_H_
 #define __Rect_H_
 
-#include "Point.h"
+#include "Vector.h"
 
 class Rect {
 public:
@@ -28,12 +28,12 @@ public:
 
     Rect(double x1, double y1, double x2, double y2);
 
-    inline void setPosition(const Point &point);
+    inline void setPosition(const Vector &point);
 
     inline double getWidth() const;
     inline double getHeight() const;
 
-    inline bool hasPointInside(const Point &point) const;
+    inline bool hasPointInside(const Vector &point) const;
 
     inline bool intersectsWith(const Rect &otherRectangle) const;
     inline bool intersectsWithLine(const double &x1, const double &y1, const double &x2, const double &y2) const;
@@ -112,7 +112,7 @@ inline bool Rect::intersectsWithLine(const double &x1, const double &y1, const d
     return false;
 }
 
-inline void Rect::setPosition(const Point &point) {
+inline void Rect::setPosition(const Vector &point) {
     double w = this->getWidth();
     double h = this->getHeight();
     x1 = point.x;
@@ -136,7 +136,7 @@ inline void Rect::copy(Rect rect) {
     this->y2 = rect.y2;
 }
 
-inline bool Rect::hasPointInside(const Point &point) const {
+inline bool Rect::hasPointInside(const Vector &point) const {
     return (point.x >= this->x1 && point.x <= this->x2) &&
            (point.y >= this->y1 && point.y <= this->y2);
 }

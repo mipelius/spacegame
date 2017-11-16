@@ -30,7 +30,7 @@ Node::Node(int x, int y, WorldMap * map) {
     this->map = map;
 }
 
-Node *Node::byPoint(Point point, WorldMap * map) {
+Node *Node::byPoint(Vector point, WorldMap * map) {
     int x = (int)point.x;
     x /= map->getBlockW();
     int y = (int)point.y;
@@ -38,10 +38,10 @@ Node *Node::byPoint(Point point, WorldMap * map) {
     return new Node(x, y, map);
 }
 
-Point Node::getLocation() {
+Vector Node::getLocation() {
     int w = map->getBlockW();
     int h = map->getBlockH();
-    return Point(x * w + w / 2, y * h + h / 2);
+    return Vector(x * w + w / 2, y * h + h / 2);
 }
 
 bool Node::equals(Node *anotherNode, unsigned int rounding) {

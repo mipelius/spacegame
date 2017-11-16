@@ -17,7 +17,6 @@
 #ifndef __Body_H_
 #define __Body_H_
 
-#include "Point.h"
 #include "Vector.h"
 #include "Property.h"
 #include "Event.h"
@@ -39,7 +38,7 @@ public:
     Property<double> const angularVelocity;
     Property<double> const torque;
 
-    Property<Point> const position;
+    Property<Vector> const position;
     Property<Vector> const velocity;
     Property<Vector> const speed;
     Property<Vector> const force;
@@ -81,7 +80,7 @@ private:
     double angularVelocity_;
     double torque_;
 
-    Point location_;
+    Vector position_;
     Vector speed_;
     Vector velocity_;
     Vector force_;

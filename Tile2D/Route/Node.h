@@ -17,7 +17,7 @@
 #ifndef __Node_H_
 #define __Node_H_
 
-#include "Point.h"
+#include "Vector.h"
 
 class WorldMap;
 
@@ -34,10 +34,10 @@ private:
     int hCost;
     int gCost;
     Node(int x, int y, WorldMap * map);
-    static Node* byPoint(Point point, WorldMap * map);
+    static Node* byPoint(Vector point, WorldMap * map);
 public:
     bool equals(Node* anotherNode, unsigned int rounding = 1);
-    Point getLocation();
+    Vector getLocation();
     Node* getPreviousNode();
     Node* getNextNode();
 
