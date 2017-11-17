@@ -14,11 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#ifndef __IComponent_H
+#define __IComponent_H
+
 #include "Tile2DObject.h"
-#include "Tile2D.h"
 
-void Tile2DObject::destroy() {
-    Tile2D::instance_().destroy_(this);
-}
+class IComponent : public Tile2DObject {
+    friend class GameObject;
+protected:
+    virtual void init() = 0;
+    virtual void update() = 0;
+};
 
-void Tile2DObject::onDestroy() { }
+#endif //__IComponent_H

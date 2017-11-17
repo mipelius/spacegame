@@ -16,6 +16,7 @@
 
 #include <map>
 #include <vector>
+#include <Tile2D/GUI/Canvas/Canvas.h>
 #include "Tile2D.h"
 
 bool Tile2D::isLoaded_ = false;

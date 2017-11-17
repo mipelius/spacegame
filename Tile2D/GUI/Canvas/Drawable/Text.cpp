@@ -84,7 +84,6 @@ void Text::drawActual(const Canvas &canvas) {
             offsetX += (letter->w) * size_;
             // offsetY = ???
         }
-
     }
 
     glEnd();

@@ -87,7 +87,7 @@ void SceneTitleScreen::init() {
 
     // plots
 
-    for (auto i = 0u; i < 200; i++) {
+    for (auto i = 0u; i < 100; i++) {
         auto plot = Tile2D::create<Plot>();
         double x = 100 + i * 5;
         double y = 100 + cos((double)i / 10.0) * 100;
@@ -100,7 +100,7 @@ void SceneTitleScreen::init() {
         body->position.set({x, y});
         plot->position.bind(body->position);
 
-        body->mass.set(100.0 + (rand() % 300));
+        body->mass.set(100.0 + rand() % 300);
 
         Tile2D::physicsWorld().add(*body);
 
@@ -117,6 +117,9 @@ void SceneTitleScreen::init() {
         static MyCollisionEventHandler handler;
         body->bodyCollision.add(&handler);
     }
+
+    auto player = Tile2D::create<GameObject>();
+    auto playerBody = Tile2D::create<Body>();
 }
 
 void SceneTitleScreen::destroy() {

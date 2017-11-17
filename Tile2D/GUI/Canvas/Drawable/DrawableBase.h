@@ -27,7 +27,7 @@ class DrawableBase : public IDrawable, public Tile2DObject {
 public:
     DrawableBase();
 
-    Property<Vec>    const position;
+    Property<Vec>       const position;
     Property<double>    const angle;
     BooleanProperty     const isVisible;
     Property<double>    const opacity;

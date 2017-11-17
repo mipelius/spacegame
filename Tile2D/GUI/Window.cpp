@@ -20,7 +20,7 @@
 #include "GuiComponentBase.h"
 
 Window::Window() :
-    position        (   Property<Vec>           (this, getPosition_, setPosition_         )),
+    position        (   Property<Vec>              (this, getPosition_, setPosition_         )),
     isFullScreen    (   BooleanProperty            (this, getIsFullScreen_, setIsFullScreen_ )),
     w               (   ReadableProperty<unsigned> (&w_                                      )),
     h               (   ReadableProperty<unsigned> (&h_                                      ))
