@@ -21,8 +21,8 @@
 
 GLuint PointLight::glTextureId_ = 0;
 
-PointLight::PointLight(Vector position, double radius, bool isDynamic) :
-    location    (Property<Vector>(this, getPosition_, setPosition_)  ),
+PointLight::PointLight(Vec position, double radius, bool isDynamic) :
+    location    (Property<Vec>(this, getPosition_, setPosition_)  ),
     radius      (   Property<double>  (&radius_           )  ),
     intensity   (   Property<double>  (&intensity_        )  ),
 
@@ -115,18 +115,18 @@ void PointLight::createLightTexture() {
 }
 
 
-Vector PointLight::getPosition_(void *owner) {
+Vec PointLight::getPosition_(void *owner) {
     return ((PointLight*)owner)->position_;
 }
 
-void PointLight::setPosition_(void *owner, const Vector &value) {
+void PointLight::setPosition_(void *owner, const Vec &value) {
     PointLight* pointLight = (PointLight*)owner;
 
-    Vector oldLocation = pointLight->position_;
+    Vec oldLocation = pointLight->position_;
 
     pointLight->position_ = value;
 
-    Vector newLocation = pointLight->position_;
+    Vec newLocation = pointLight->position_;
 
     pointLight->movement->raise(PointLightMovedEventArgs(oldLocation, newLocation));
 }

@@ -25,7 +25,7 @@ class PartialLightMap;
 #include "Event.h"
 #include <SDL2/SDL_opengl.h>
 #include "Property.h"
-#include "Vector.h"
+#include "Vec.h"
 #include "PointLightMovedEventArgs.h"
 
 class PointLight {
@@ -35,10 +35,10 @@ class PointLight {
 public:
     virtual void draw(const Canvas &canvas);
 
-    PointLight(Vector position, double radius, bool isDynamic = false);
+    PointLight(Vec position, double radius, bool isDynamic = false);
     ~PointLight();
 
-    Property<Vector> const location;
+    Property<Vec> const location;
     Property<double> const radius;
     Property<double> const intensity;
 
@@ -47,7 +47,7 @@ public:
     static GLuint glTextureId_;
 
 private:
-    Vector position_;
+    Vec position_;
     double radius_;
     double intensity_;
 
@@ -58,8 +58,8 @@ private:
     static const int TEXTURE_SIZE = 128;
     static void createLightTexture();
 
-    static Vector getPosition_(void *owner);
-    static void setPosition_(void *owner, const Vector &value);
+    static Vec getPosition_(void *owner);
+    static void setPosition_(void *owner, const Vec &value);
 
     class positionProperty;
 };

@@ -19,25 +19,31 @@
 
 class Body;
 
+#include "Tile2DObject.h"
 #include "Rect.h"
-#include "Vector.h"
+#include "Vec.h"
+#include <vector>
+#include "Property.h"
+#include "Body.h"
 
-class CollisionShape {
+class CollisionShape : public Tile2DObject {
 friend class Body;
 private:
-    Rect boundingBox;
-    Vector *points;
-    Body *owner;
-    int count;
-    bool intersectsWithHalfLine(Vector linePoint1, Vector linePoint2, Vector offset) const;
+    Rect boundingBox_;
+    std::vector<Vec> points_;
+    Body *owner_;
+    bool intersectsWithHalfLine(const Vec &linePoint1, const Vec &linePoint2, const Vec &offset) const;
+
 public:
+    const Property<std::vector<Vec> > points;
+
     /**
      * Constructor that initializes the collision shape. Note: use only convex shapes.
      *
      * @param points[]  the points that defines the shape
      * @param count     the count of the points
      */
-    CollisionShape(Vector points[], int count);
+    CollisionShape();
 
     /**
      * Checks if the shape intersects with the other shape
@@ -57,25 +63,11 @@ public:
     bool intersectsWith(const Rect& rectangle) const;
 
     /**
-     * Gets the points of the CollisionShape
-     *
-     * @return the points
-     */
-    Vector* getPoints();
-
-    /**
-     * Gets the count of the points of the CollisionShape
-     *
-     * @return the count of the points
-     */
-    int getCount() const;
-
-    /**
      * Gets the rotated points of the CollisionShape
      *
      * @return the points
      */
-    const Vector * getRotatedPoints() const;
+    inline std::vector<Vec> getRotatedPoints() const;
 
     /**
      * Gets the bounding box which. Note: the location is already summed to points in this rectangle
@@ -83,7 +75,24 @@ public:
      * @return the bounding box
      */
     Rect getBoundingBox() const;
+
+    static std::vector<Vec> getPoints_(void *owner);
+    static void setPoints_(void *owner, const std::vector<Vec>& value);
 };
+
+// inline functions
+
+inline std::vector<Vec> CollisionShape::getRotatedPoints() const {
+    double angleRad = owner_->angle.get() / 360 * 2 * M_PI * -1;
+
+    std::vector<Vec> rotatedPoints(points_.size());
+
+    for (int i=0; i<points_.size(); i++) {
+        rotatedPoints[i].x = this->points_[i].x * cos(angleRad) + this->points_[i].y * sin(angleRad);
+        rotatedPoints[i].y = -this->points_[i].x * sin(angleRad) + this->points_[i].y * cos(angleRad);
+    }
+    return rotatedPoints;
+}
 
 
 #endif //__CollisionShape_H_

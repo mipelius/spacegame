@@ -15,10 +15,12 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "precompile.h"
-#include "Vector.h"
+#include "Vec.h"
 
-Vector::Vector(double x, double y) {
+Vec::Vec(double x, double y) {
     this->x = x;
     this->y = y;
 }
+
+Vec::Vec() : Vec(0, 0) {}
 

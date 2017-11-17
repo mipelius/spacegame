@@ -18,7 +18,7 @@
 #define __Body_H_
 
 #include "Tile2DObject.h"
-#include "Vector.h"
+#include "Vec.h"
 #include "Property.h"
 #include "Event.h"
 
@@ -39,10 +39,10 @@ public:
     Property<double> const angularVelocity;
     Property<double> const torque;
 
-    Property<Vector> const position;
-    Property<Vector> const velocity;
-    Property<Vector> const speed;
-    Property<Vector> const force;
+    Property<Vec> const position;
+    Property<Vec> const velocity;
+    Property<Vec> const speed;
+    Property<Vec> const force;
 
     // events
 
@@ -53,7 +53,7 @@ public:
 
     Body();
 
-    void applyForce(Vector force);
+    void applyForce(Vec force);
     void applyTorque(double angle);
 
     PhysicsWorld* getWorld();
@@ -81,10 +81,10 @@ private:
     double angularVelocity_;
     double torque_;
 
-    Vector position_;
-    Vector speed_;
-    Vector velocity_;
-    Vector force_;
+    Vec position_;
+    Vec speed_;
+    Vec velocity_;
+    Vec force_;
 
     bool stepIsIgnored_;
     bool entityCollisionDetectionIsIgnored_;

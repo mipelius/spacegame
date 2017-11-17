@@ -89,7 +89,7 @@ Block* WorldMap::getValue(int x, int y) {
     return nullptr;
 }
 
-void WorldMap::setValueScaled(Vector point, Block *value) {
+void WorldMap::setValueScaled(Vec point, Block *value) {
     setValue(
             (int)(point.x / blockSizeW),
             (int)(point.y / blockSizeH),
@@ -97,7 +97,7 @@ void WorldMap::setValueScaled(Vector point, Block *value) {
     );
 }
 
-Block *WorldMap::getValueScaled(Vector point) {
+Block *WorldMap::getValueScaled(Vec point) {
     return getValue(
             (int)(point.x / blockSizeW),
             (int)(point.y / blockSizeH)
@@ -125,10 +125,10 @@ bool WorldMap::detectCollisionWith(Body& body) {
 
     if (block != nullptr && block->density.get() > 0.0) return true;
 
-    const Vector* points = body.getCollisionShape().getRotatedPoints();
+    std::vector<Vec> points = body.getCollisionShape().getRotatedPoints();
 
-    for (int i=0; i< body.getCollisionShape().getCount(); i++) {
-        Vector point(
+    for (int i=0; i< body.getCollisionShape().points.get().size(); i++) {
+        Vec point(
                 points[i].x + body.position.get().x,
                 points[i].y + body.position.get().y
         );
@@ -146,7 +146,7 @@ bool WorldMap::detectCollisionWith(Body& body) {
 
     for (int i=iBegin; i <= iEnd; i += blockSizeW) {
         for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
-            block = this->getValueScaled(Vector(i, j));
+            block = this->getValueScaled(Vec(i, j));
             if (block != nullptr && block->density.get() > 0.0) {
                 Rect rect = Rect(i, j, i + blockSizeW, j + blockSizeH);
                 if (body.getCollisionShape().intersectsWith(rect)) {

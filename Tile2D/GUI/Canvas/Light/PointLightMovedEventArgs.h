@@ -17,16 +17,16 @@
 #ifndef __PointLightMovedEventArgs_H_
 #define __PointLightMovedEventArgs_H_
 
-#include "Vector.h"
+#include "Vec.h"
 
 class PointLightMovedEventArgs {
 
 public:
-    PointLightMovedEventArgs(Vector oldLocation, Vector newLocation) :
+    PointLightMovedEventArgs(Vec oldLocation, Vec newLocation) :
         oldLocation(oldLocation), newLocation(newLocation) { }
 
-    Vector oldLocation;
-    Vector newLocation;
+    Vec oldLocation;
+    Vec newLocation;
 };
 
 

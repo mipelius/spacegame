@@ -18,7 +18,7 @@
 #define __RouteGenerator_H_
 
 #include <queue>
-#include "Vector.h"
+#include "Vec.h"
 
 class PhysicsWorld;
 class Node;

@@ -45,9 +45,9 @@ public:
     Event<WorldMap, WorldMapModifiedEventArgs>* const modification;
 
     Block* getValue(int x, int y);
-    Block* getValueScaled(Vector point);
+    Block* getValueScaled(Vec point);
     void setValue(int x, int y, Block* value);
-    void setValueScaled(Vector point, Block* value);
+    void setValueScaled(Vec point, Block* value);
 
     int getW();
     int getH();

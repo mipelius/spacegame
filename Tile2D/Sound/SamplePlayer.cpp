@@ -23,7 +23,7 @@ SamplePlayer::SamplePlayer() : Player() {
     ears_ = nullptr;
 }
 
-void SamplePlayer::play(AudioClip *sample, const Vector& position, int channel) {
+void SamplePlayer::play(AudioClip *sample, const Vec& position, int channel) {
     if (ears_ == nullptr) {
         Mix_SetPanning(channel, 255, 255);
     }

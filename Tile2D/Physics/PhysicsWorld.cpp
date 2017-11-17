@@ -20,7 +20,7 @@
 #include "WorldMap.h"
 
 PhysicsWorld::PhysicsWorld():
-    gForce(             Property<Vector>    (&gForce_)           ),
+    gForce(             Property<Vec>    (&gForce_)           ),
     metersPerPixel(     Property<double>    (&metersPerPixel_)   ),
     airDensity(         Property<double>    (&airDensity_)       ),
 

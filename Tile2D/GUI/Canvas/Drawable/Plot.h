@@ -20,7 +20,7 @@
 class Canvas;
 
 #include "Tile2DObject.h"
-#include "Vector.h"
+#include "Vec.h"
 #include "IDrawable.h"
 #include "Property.h"
 
@@ -29,13 +29,13 @@ class Plot : public IDrawable, Tile2DObject {
 public:
     Plot();
 
-    Property<Vector> const position;
+    Property<Vec> const position;
     Property<double> const size;
 
     void draw(const Canvas &canvas) override;
 
 private:
-    Vector position_;
+    Vec position_;
     double size_;
 
 };

@@ -20,13 +20,13 @@
 class AudioClip;
 class Ears;
 
-#include "Vector.h"
+#include "Vec.h"
 #include "Player.h"
 
 class SamplePlayer : public Player {
 public:
     SamplePlayer();
-    void play(AudioClip* sample, const Vector& position, int channel = -1);
+    void play(AudioClip* sample, const Vec& position, int channel = -1);
 
     void setEars(Ears* ears);
 

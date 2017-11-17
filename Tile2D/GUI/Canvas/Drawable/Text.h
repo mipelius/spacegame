@@ -20,7 +20,7 @@
 #include <string>
 #include "IDrawable.h"
 #include "Property.h"
-#include "Vector.h"
+#include "Vec.h"
 #include "DrawableBase.h"
 
 class Font;

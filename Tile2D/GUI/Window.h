@@ -23,13 +23,13 @@ class GuiComponentBase;
 #include <list>
 #include "Property.h"
 #include "ReadableProperty.h"
-#include "Vector.h"
+#include "Vec.h"
 #include "BooleanProperty.h"
 
 class Window {
     friend class Tile2D;
 public:
-    Property<Vector>            const position;
+    Property<Vec>            const position;
     BooleanProperty             const isFullScreen;
     ReadableProperty<unsigned>  const w;
     ReadableProperty<unsigned>  const h;
@@ -59,8 +59,8 @@ private:
 
     bool isInitialized_;
 
-    static Vector getPosition_(void *owner);
-    static void setPosition_(void *owner, const Vector &value);
+    static Vec getPosition_(void *owner);
+    static void setPosition_(void *owner, const Vec &value);
 
     static bool getIsFullScreen_(void *owner);
     static void setIsFullScreen_(void *owner, const bool &value);

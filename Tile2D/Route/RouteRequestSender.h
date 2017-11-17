@@ -21,7 +21,7 @@ class RouteResponse;
 class RouteGenerator;
 class RouteRequest;
 
-#include "Vector.h"
+#include "Vec.h"
 
 class RouteRequestSender {
     friend class RouteGenerator;
@@ -29,7 +29,7 @@ private:
     RouteGenerator* generator;
 protected:
     virtual void handleResponse(RouteResponse *response) = 0;
-    virtual Vector getLocation() = 0;
+    virtual Vec getLocation() = 0;
 public:
     RouteRequestSender();
     void setRecipient(RouteGenerator* generator);

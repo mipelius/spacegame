@@ -19,14 +19,14 @@
 
 #include "Tile2DObject.h"
 #include "Rect.h"
-#include "Vector.h"
+#include "Vec.h"
 
 #include "Property.h"
 
 class Camera : public Tile2DObject {
 
 public:
-    Property<Vector> const position;
+    Property<Vec> const position;
     Property<Rect> const areaRect;
     Property<Rect> const boundsRect;
 
@@ -38,8 +38,8 @@ private:
     Rect areaRect_;
     Rect boundsRect_;
 
-    static Vector getPosition_(void *owner);
-    static void setPosition_(void *owner, const Vector &value);
+    static Vec getPosition_(void *owner);
+    static void setPosition_(void *owner, const Vec &value);
 };
 
 #endif //__Camera_H_

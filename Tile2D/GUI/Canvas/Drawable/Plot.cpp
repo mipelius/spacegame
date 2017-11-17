@@ -20,10 +20,10 @@
 #include "Camera.h"
 
 Plot::Plot() :
-    position(   Property<Vector>  (&position_)    ),
+    position(   Property<Vec>  (&position_)    ),
     size(       Property<double>  (&size_   )     ),
 
-    position_(  Vector(0, 0) ),
+    position_(  Vec(0, 0) ),
     size_(      1.0          )
 {
 

@@ -19,17 +19,18 @@
 
 #include "precompile.h"
 
-class Vector {
+class Vec {
 public:
     double x;
     double y;
-    Vector(double x, double y);
-    inline static Vector byAngle(const double &angleDegrees, const double &amount);
-    inline Vector operator + (const Vector& otherVector) const;
-    inline Vector operator - (const Vector& otherVector) const;
-    inline Vector operator -= (const Vector& otherVector);
-    inline Vector operator += (const Vector& otherVector);
-    inline Vector operator *(double const &amount) const;
+    Vec(double x, double y);
+    Vec();
+    inline static Vec byAngle(const double &angleDegrees, const double &amount);
+    inline Vec operator + (const Vec& otherVector) const;
+    inline Vec operator - (const Vec& otherVector) const;
+    inline Vec operator -= (const Vec& otherVector);
+    inline Vec operator += (const Vec& otherVector);
+    inline Vec operator *(double const &amount) const;
     inline double length() const;
     inline double lengthSqr() const;
     inline double angle() const;
@@ -37,31 +38,31 @@ public:
 
 // inline functions
 
-inline Vector Vector::operator + (const Vector &otherVector) const {
+inline Vec Vec::operator + (const Vec &otherVector) const {
     return {x + otherVector.x, y + otherVector.y};
 }
 
-inline Vector Vector::operator - (const Vector &otherVector) const {
+inline Vec Vec::operator - (const Vec &otherVector) const {
     return {x - otherVector.x, y - otherVector.y};
 }
 
-inline Vector Vector::operator -= (Vector const &otherVector) {
+inline Vec Vec::operator -= (Vec const &otherVector) {
     x = x - otherVector.x;
     y = y - otherVector.y;
     return {x, y};
 }
 
-inline Vector Vector::operator += (const Vector &otherVector) {
+inline Vec Vec::operator += (const Vec &otherVector) {
     x = x + otherVector.x;
     y = y + otherVector.y;
     return {x, y};
 }
 
-inline Vector Vector::operator * (const double &amount) const {
+inline Vec Vec::operator * (const double &amount) const {
     return {x * amount, y * amount};
 }
 
-inline Vector Vector::byAngle(const double &angleDegrees, const double &amount) {
+inline Vec Vec::byAngle(const double &angleDegrees, const double &amount) {
     double angle = angleDegrees / 360 * 2 * M_PI;
     return {
             cos(angle) * amount,
@@ -69,15 +70,15 @@ inline Vector Vector::byAngle(const double &angleDegrees, const double &amount) 
     };
 }
 
-inline double Vector::length() const {
+inline double Vec::length() const {
     return sqrt(x * x + y * y);
 }
 
-inline double Vector::lengthSqr() const {
+inline double Vec::lengthSqr() const {
     return x * x + y * y;
 }
 
-inline double Vector::angle() const {
+inline double Vec::angle() const {
     if (y == 0) {
         return 0;
     }

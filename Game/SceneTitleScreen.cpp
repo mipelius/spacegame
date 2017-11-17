@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <Tile2D/Physics/BodyCollisionEventArgs.h>
 #include "Body.h"
 #include "DrawableGroup.h"
 #include "Text.h"
@@ -21,9 +22,17 @@
 #include "Background.h"
 #include "Sprite.h"
 #include "SceneTitleScreen.h"
+#include "CollisionShape.h"
 
 #include "Tile2D.h"
 #include "Camera.h"
+
+class MyCollisionEventHandler : public IEventHandler<Body, BodyCollisionEventArgs> {
+public:
+    void handle(Body *owner, BodyCollisionEventArgs args) override {
+        std::cout << "oh my gosh!\n";
+    }
+};
 
 void SceneTitleScreen::init() {
     // just testing the engine...
@@ -94,6 +103,19 @@ void SceneTitleScreen::init() {
         body->mass.set(100.0 + (rand() % 300));
 
         Tile2D::physicsWorld().add(*body);
+
+        auto colShape = Tile2D::create<CollisionShape>();
+        colShape->points.set
+                ({
+                        Vec(-1, -1) * 5,
+                        Vec(-1,  1) * 5,
+                        Vec( 1,  1) * 5,
+                        Vec( 1, -1) * 5
+                 });
+
+        body->setCollisionShape(colShape);
+        static MyCollisionEventHandler handler;
+        body->bodyCollision.add(&handler);
     }
 }
 

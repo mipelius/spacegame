@@ -21,19 +21,19 @@ class Node;
 class RouteResponse;
 class RouteRequestSender;
 
-#include "Vector.h"
+#include "Vec.h"
 #include "Rect.h"
 
 class RouteRequest {
     friend class RouteRequestSender;
     friend class RouteGenerator;
 private:
-    Vector goalPoint;
+    Vec goalPoint;
     unsigned int step;
     Rect minSpace;
     RouteRequestSender* sender;
 public:
-    RouteRequest(Vector goalPoint, unsigned int step, Rect minSpace);
+    RouteRequest(Vec goalPoint, unsigned int step, Rect minSpace);
 };
 
 

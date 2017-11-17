@@ -154,8 +154,8 @@ set(SOURCE_FILES
         Tile2D/Util/Event/IEventHandler.h
         Tile2D/Util/Primitives/Rect.cpp
         Tile2D/Util/Primitives/Rect.h
-        Tile2D/Util/Primitives/Vector.cpp
-        Tile2D/Util/Primitives/Vector.h
+        Tile2D/Util/Primitives/Vec.cpp
+        Tile2D/Util/Primitives/Vec.h
         Tile2D/Util/Property/BooleanProperty.cpp
         Tile2D/Util/Property/BooleanProperty.h
         Tile2D/Util/Property/Property.h

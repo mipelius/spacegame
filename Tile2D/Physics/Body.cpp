@@ -31,10 +31,10 @@ Body::Body() :
     angularVelocity (   Property<double>  (&angularVelocity_  )   ),
     torque          (   Property<double>  (&torque_           )   ),
 
-    position        (   Property<Vector>  (&position_         )   ),
-    speed           (   Property<Vector>  (&speed_            )   ),
-    velocity        (   Property<Vector>  (&velocity_         )   ),
-    force           (   Property<Vector>  (&force_            )   ),
+    position        (   Property<Vec>  (&position_         )   ),
+    speed           (   Property<Vec>  (&speed_            )   ),
+    velocity        (   Property<Vec>  (&velocity_         )   ),
+    force           (   Property<Vec>  (&force_            )   ),
 
     // events
 
@@ -43,10 +43,10 @@ Body::Body() :
 
     // private member variables
 
-    position_       (   Vector(0,0) ),
-    speed_          (   Vector(0,0) ),
-    velocity_       (   Vector(0,0) ),
-    force_          (   Vector(0,0) ),
+    position_       (   Vec(0,0) ),
+    speed_          (   Vec(0,0) ),
+    velocity_       (   Vec(0,0) ),
+    force_          (   Vec(0,0) ),
     angle_          (   0.0         ),
     angularVelocity_(   0.0         ),
     torque_         (   0.0         ),
@@ -65,19 +65,19 @@ void Body::step_(double timeElapsedSec) {
     if (!stepIsIgnored_) {
         // calculate air resistance
 
-        Vector airResistance = Vector(0, 0);
+        Vec airResistance = Vec(0, 0);
 
         if (speed_.x != 0 || speed_.y != 0) {
             double speedLengthPow2 = speed_.x * speed_.x + speed_.y * speed_.y;
-            Vector airResistanceUnitVector = (speed_ * -1) * (1 / sqrt(speed_.x * speed_.x + speed_.y * speed_.y));
+            Vec airResistanceUnitVector = (speed_ * -1) * (1 / sqrt(speed_.x * speed_.x + speed_.y * speed_.y));
             airResistance = airResistanceUnitVector * speedLengthPow2 * (0.5 * physicsWorld_->airDensity.get());
         }
 
-        Vector totalForce = force_ + airResistance;
+        Vec totalForce = force_ + airResistance;
 
         // use acceleration for updating speed --> velocity --> location
 
-        Vector acceleration = totalForce * (1 / this->mass.get());
+        Vec acceleration = totalForce * (1 / this->mass.get());
         acceleration += physicsWorld_->gForce.get();
         speed_ += acceleration;
         velocity_ = speed_ * timeElapsedSec * physicsWorld_->metersPerPixel.get();
@@ -90,7 +90,7 @@ void Body::step_(double timeElapsedSec) {
 
         // remove all applied forces
 
-        force_ = Vector(0, 0);
+        force_ = Vec(0, 0);
         torque_ = torque_ / (this->mass.get() * timeElapsedSec);
 
         // update dependent properties
@@ -152,8 +152,8 @@ void Body::ignoreCollisionDetection() {
     this->entityCollisionDetectionIsIgnored_ = true;
 }
 
-void Body::applyForce(Vector force) {
-    Vector forceBefore = this->force.get();
+void Body::applyForce(Vec force) {
+    Vec forceBefore = this->force.get();
     this->force.set(forceBefore + force);
 }
 
@@ -171,7 +171,7 @@ CollisionShape& Body::getCollisionShape() {
 
 void Body::setCollisionShape(CollisionShape* collisionShape) {
     this->collisionShape_ = collisionShape;
-    collisionShape->owner = this;
+    collisionShape->owner_ = this;
 }
 
 void Body::applyTorque(double angle) {

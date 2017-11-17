@@ -27,7 +27,7 @@ class DrawableBase : public IDrawable, public Tile2DObject {
 public:
     DrawableBase();
 
-    Property<Vector>    const position;
+    Property<Vec>    const position;
     Property<double>    const angle;
     BooleanProperty     const isVisible;
     Property<double>    const opacity;
@@ -39,7 +39,7 @@ protected:
     virtual void drawActual(const Canvas& canvas) = 0;
 
 private:
-    Vector position_;
+    Vec position_;
     double angle_;
     bool isVisible_;
     double opacity_;

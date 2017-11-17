@@ -20,7 +20,7 @@
 class WorldMap;
 class Body;
 
-#include "Vector.h"
+#include "Vec.h"
 #include "Property.h"
 
 class PhysicsWorld {
@@ -32,19 +32,19 @@ public:
     void setMap(WorldMap &map);
     WorldMap * getMap();
 
-    Property<Vector> const gForce;
+    Property<Vec> const gForce;
     Property<double> const metersPerPixel;
     Property<double> const airDensity;
 
     const double defaultAirDensity = 0.001;
     const double defaultMetersPerPixel = 0.1;
-    const Vector defaultGForce = Vector(0.0, 9.81);
+    const Vec defaultGForce = Vec(0.0, 9.81);
 
 private:
     PhysicsWorld();
     ~PhysicsWorld() = default;
 
-    Vector gForce_;
+    Vec gForce_;
     double metersPerPixel_;
     double airDensity_;
 
