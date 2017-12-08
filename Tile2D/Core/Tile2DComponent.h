@@ -22,8 +22,15 @@
 class Tile2DComponent : public Tile2DObject {
     friend class GameObject;
 
+public:
+    GameObject* gameObject() { return gameObject_; }
+
 protected:
     virtual void init() = 0;
+
+private:
+    GameObject* gameObject_ = nullptr;
+
 };
 
 #endif //__IComponent_H

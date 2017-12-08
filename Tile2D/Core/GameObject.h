@@ -26,6 +26,9 @@ class GameObject : public Tile2DObject {
 public:
     void addComponent(Tile2DComponent* component);
 
+    template <class T>
+    T* getComponent<T>();
+
 protected:
     void onDestroy() final;
     void onCreate() final;
@@ -37,5 +40,25 @@ private:
     void initializeComponents_();
 };
 
+// template function
+
+template <class T>
+T* GameObject::getComponent<T>() {
+    for (auto& component : uninitializedComponents_) {
+        auto currentComponent = dynamic_cast<T>(component);
+        if (currentComponent != nullptr) {
+            return currentComponent;
+        }
+    }
+
+    for (auto& component : components_) {
+        auto currentComponent = dynamic_cast<T>(component);
+        if (currentComponent != nullptr) {
+            return currentComponent;
+        }
+    }
+
+    return nullptr;
+}
 
 #endif //__GameObject_H

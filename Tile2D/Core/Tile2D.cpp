@@ -152,3 +152,9 @@ PhysicsWorld &Tile2D::physicsWorld() {
 Canvas &Tile2D::canvas() {
     return *instance_().canvas_;
 }
+
+void Tile2D::updateBehaviours_() {
+    for (auto& obj: behaviours_) {
+        obj->update();
+    }
+}

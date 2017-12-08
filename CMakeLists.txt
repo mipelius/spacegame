@@ -167,7 +167,7 @@ set(SOURCE_FILES
         Game/SceneTitleScreen.h
         Game/SceneGameOver.cpp
         Game/SceneGameOver.h
-        Game/Scenes.h Tile2D/Core/GameObject.cpp Tile2D/Core/GameObject.h Tile2D/Core/Tile2DComponent.h Tile2D/GUI/Canvas/Drawable/DrawableBase.cpp)
+        Game/Scenes.h Tile2D/Core/GameObject.cpp Tile2D/Core/GameObject.h Tile2D/Core/Tile2DComponent.h Tile2D/GUI/Canvas/Drawable/DrawableBase.cpp Tile2D/Core/Tile2DBehaviour.cpp Tile2D/Core/Tile2DBehaviour.h Game/PlayerController.cpp Game/PlayerController.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

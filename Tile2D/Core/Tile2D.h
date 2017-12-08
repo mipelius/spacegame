@@ -27,10 +27,12 @@
 #include "Tile2DObject.h"
 #include "Canvas.h"
 #include "GameObject.h"
+#include "Tile2DBehaviour.h"
 
 class Tile2D {
     friend class Tile2DObject;
     friend class GameObject;
+    friend class Tile2DBehaviour;
 
 public:
     Tile2D(Tile2D const &)              = delete;
@@ -67,6 +69,7 @@ private:
     void cleanUp_();
     void removeDestroyedObjects_();
     void initGameObjects_();
+    void updateBehaviours_();
 
     Tile2D();
     ~Tile2D();
@@ -78,6 +81,7 @@ private:
     std::set<void*> objects_;
     std::list<void*> objectsToDestroy_;
     std::list<GameObject*> gameObjectsToInit_;
+    std::list<Tile2DBehaviour*> behaviours_;
 
     void destroy_(Tile2DObject* obj);
 };
