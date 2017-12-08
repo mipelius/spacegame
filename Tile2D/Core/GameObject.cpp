@@ -16,7 +16,7 @@
 
 #include "GameObject.h"
 
-void GameObject::addComponent(IComponent *component) {
+void GameObject::addComponent(ComponentBase *component) {
     uninitializedComponents_.push_back(component);
 }
 

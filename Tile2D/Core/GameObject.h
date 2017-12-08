@@ -18,20 +18,20 @@
 #define __GameObject_H
 
 #include <list>
-#include "IComponent.h"
+#include "ComponentBase.h"
 #include "Tile2DObject.h"
 
 class GameObject : public Tile2DObject {
     friend class Tile2D;
 public:
-    void addComponent(IComponent* component);
+    void addComponent(ComponentBase* component);
 
 protected:
     void onDestroy() final;
 
 private:
-    std::list<IComponent*> uninitializedComponents_;
-    std::list<IComponent*> components_;
+    std::list<ComponentBase*> uninitializedComponents_;
+    std::list<ComponentBase*> components_;
 
     void initializeComponents_();
 };

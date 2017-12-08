@@ -18,6 +18,7 @@
 #include "Tile2D.h"
 
 void Tile2DObject::destroy() {
+    onDestroy();
     Tile2D::instance_().destroy_(this);
 }
 

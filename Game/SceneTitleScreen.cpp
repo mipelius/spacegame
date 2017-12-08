@@ -15,6 +15,7 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <Tile2D/Physics/BodyCollisionEventArgs.h>
+#include <Tile2D/Core/GameObject.h>
 #include "Body.h"
 #include "DrawableGroup.h"
 #include "Text.h"

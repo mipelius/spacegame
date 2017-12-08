@@ -91,8 +91,7 @@ void Tile2D::mainLoop_() {
         // ---
         physicsWorld_->step(deltaTime / 1000.0);
         window().update_();
-        removeDestroyedObjects_(); // this must be the last one!
-
+        removeDestroyedObjects_();
     }
 }
 

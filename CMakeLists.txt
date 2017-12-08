@@ -180,7 +180,7 @@ set(SOURCE_FILES
         Game/SceneTitleScreen.h
         Game/SceneGameOver.cpp
         Game/SceneGameOver.h
-        Game/Scenes.h Tile2D/Core/GameObject.cpp Tile2D/Core/GameObject.h Tile2D/Core/IComponent.h)
+        Game/Scenes.h Tile2D/Core/GameObject.cpp Tile2D/Core/GameObject.h Tile2D/Core/ComponentBase.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

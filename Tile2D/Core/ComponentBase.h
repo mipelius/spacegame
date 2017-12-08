@@ -19,7 +19,7 @@
 
 #include "Tile2DObject.h"
 
-class IComponent : public Tile2DObject {
+class ComponentBase : public Tile2DObject {
     friend class GameObject;
 protected:
     virtual void init() = 0;
