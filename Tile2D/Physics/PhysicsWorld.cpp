@@ -32,9 +32,9 @@ PhysicsWorld::PhysicsWorld():
     airDensity_ = defaultAirDensity;
 }
 
-void PhysicsWorld::add(Body &body) {
-    bodies_.push_back(&body);
-    body.setWorld_(*this);
+void PhysicsWorld::add(Body *body) {
+    bodies_.push_back(body);
+    body->setWorld_(this);
 }
 
 void PhysicsWorld::step(double timeSeconds) {

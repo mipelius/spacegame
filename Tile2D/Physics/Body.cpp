@@ -157,8 +157,8 @@ void Body::applyForce(Vec force) {
     this->force.set(forceBefore + force);
 }
 
-void Body::setWorld_(PhysicsWorld &gameWorld) {
-    this->physicsWorld_ = &gameWorld;
+void Body::setWorld_(PhysicsWorld *gameWorld) {
+    this->physicsWorld_ = gameWorld;
 }
 
 PhysicsWorld *Body::getWorld() {

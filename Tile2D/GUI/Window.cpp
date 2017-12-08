@@ -86,9 +86,9 @@ void Window::update_() {
     SDL_GL_SwapWindow(window_);
 }
 
-void Window::addComponent(GuiComponentBase& guiComponent) {
-    guiComponents_.push_back(&guiComponent);
-    guiComponent.setWindow(this);
+void Window::addComponent(GuiComponentBase* guiComponent) {
+    guiComponents_.push_back(guiComponent);
+    guiComponent->setWindow(this);
 }
 
 void Window::setSize(unsigned w, unsigned h) {

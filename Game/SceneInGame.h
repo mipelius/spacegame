@@ -17,7 +17,6 @@
 #ifndef __SceneInGame_H
 #define __SceneInGame_H
 
-
 #include <Tile2D/Core/IScene.h>
 
 class SceneInGame : public IScene {

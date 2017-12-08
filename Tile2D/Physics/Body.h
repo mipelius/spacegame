@@ -90,7 +90,7 @@ private:
     bool entityCollisionDetectionIsIgnored_;
     bool detectCollisionWith_(Body &otherBody);
     bool detectMapCollision_();
-    void setWorld_(PhysicsWorld &gameWorld);
+    void setWorld_(PhysicsWorld *gameWorld);
     void step_(double timeElapsedSec);
 
     bool isDead_;

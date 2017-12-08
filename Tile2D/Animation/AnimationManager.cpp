@@ -17,12 +17,12 @@
 #include "AnimationManager.h"
 #include "IAnimation.h"
 
-void AnimationManager::remove(IAnimation &animation) {
-    animationsToRemove_.push_back(&animation);
+void AnimationManager::remove(IAnimation* animation) {
+    animationsToRemove_.push_back(animation);
 }
 
-void AnimationManager::add(IAnimation& animation) {
-    animations_.push_back(&animation);
+void AnimationManager::add(IAnimation* animation) {
+    animations_.push_back(animation);
 }
 
 void AnimationManager::update(double seconds) {

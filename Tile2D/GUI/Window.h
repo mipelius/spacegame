@@ -36,7 +36,7 @@ public:
 
     void setSize(unsigned w, unsigned h);
 
-    void addComponent(GuiComponentBase &guiComponent);
+    void addComponent(GuiComponentBase *guiComponent);
 
 private:
     void update_();

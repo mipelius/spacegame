@@ -27,7 +27,7 @@ class PhysicsWorld {
     friend class Tile2D;
 public:
     void step(double timeSeconds);
-    void add(Body &body);
+    void add(Body *body);
 
     void setMap(WorldMap &map);
     WorldMap * getMap();

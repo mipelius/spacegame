@@ -26,8 +26,8 @@ class AnimationManager {
 public:
     AnimationManager() = default;
 
-    void remove(IAnimation& animation);
-    void add(IAnimation& animation);
+    void remove(IAnimation* animation);
+    void add(IAnimation* animation);
     void update(double seconds);
 
 private:

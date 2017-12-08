@@ -42,7 +42,7 @@ void SceneTitleScreen::init() {
     // setup canvas and camera
 
     auto canvas = Tile2D::create<Canvas>();
-    Tile2D::window().addComponent(*canvas);
+    Tile2D::window().addComponent(canvas);
 
     auto camera = Tile2D::create<Camera>();
     camera->areaRect.set({0, 0, (double)Tile2D::window().w.get(), (double)Tile2D::window().h.get()});
@@ -103,7 +103,7 @@ void SceneTitleScreen::init() {
 
         body->mass.set(100.0 + rand() % 300);
 
-        Tile2D::physicsWorld().add(*body);
+        Tile2D::physicsWorld().add(body);
 
         auto colShape = Tile2D::create<CollisionShape>();
         colShape->points.set
