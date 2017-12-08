@@ -22,4 +22,10 @@ void Tile2DObject::destroy() {
     Tile2D::instance_().destroy_(this);
 }
 
-void Tile2DObject::onDestroy() { }
+void Tile2DObject::onCreate() {
+
+}
+
+void Tile2DObject::onDestroy() {
+
+}

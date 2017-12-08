@@ -17,7 +17,7 @@
 #ifndef __Body_H_
 #define __Body_H_
 
-#include "Tile2DObject.h"
+#include "Tile2DComponent.h"
 #include "Vec.h"
 #include "Property.h"
 #include "Event.h"
@@ -27,7 +27,7 @@ class CollisionShape;
 class BodyCollisionEventArgs;
 class EventArgs;
 
-class Body : public Tile2DObject {
+class Body : public Tile2DComponent {
     friend class PhysicsWorld;
 
 public:
@@ -64,17 +64,14 @@ public:
     void ignoreCollisionDetection();
     void ignoreStep();
 
-    virtual void afterStep();
-
-    void die();
-
 protected:
     PhysicsWorld *physicsWorld_;
     CollisionShape* collisionShape_;
 
-    virtual void onDie();
-
 private:
+    void init() override;
+    void onDestroy() override;
+
     double mass_;
 
     double angle_;

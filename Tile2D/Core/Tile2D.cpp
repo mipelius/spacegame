@@ -27,9 +27,11 @@ Tile2D::Tile2D() {
     resources_ = new Resources();
     physicsWorld_ = new PhysicsWorld();
     sceneManager_ = new SceneManager();
+    canvas_ = new Canvas(); window_->addComponent(canvas_);
 }
 
 Tile2D::~Tile2D() {
+    delete canvas_;
     delete sceneManager_;
     delete physicsWorld_;
     delete resources_;
@@ -91,6 +93,7 @@ void Tile2D::mainLoop_() {
         // ---
         physicsWorld_->step(deltaTime / 1000.0);
         window().update_();
+        initGameObjects_();
         removeDestroyedObjects_();
     }
 }
@@ -101,6 +104,34 @@ void Tile2D::cleanUp_() {
     }
     objects_.clear();
 }
+
+void Tile2D::removeDestroyedObjects_() {
+    for (auto& obj : objectsToDestroy_) {
+        delete obj;
+    }
+    objectsToDestroy_.clear();
+}
+
+void Tile2D::initGameObjects_() {
+    for (auto& obj: gameObjectsToInit_) {
+        obj->initializeComponents_();
+    }
+    gameObjectsToInit_.clear();
+}
+
+void Tile2D::destroy_(Tile2DObject* obj) {
+    void* actualObj = obj->derivedClassPtr;
+    assert(actualObj != nullptr && "Can't destroy object since it was not created by Tile2D.");
+
+    auto it = instance_().objects_.find(actualObj);
+
+    if ((*it) != nullptr) {
+        instance_().objects_.erase((*it));
+    }
+
+    instance_().objectsToDestroy_.push_back(actualObj);
+}
+
 
 Window &Tile2D::window() {
     return *instance_().window_;
@@ -118,22 +149,6 @@ PhysicsWorld &Tile2D::physicsWorld() {
     return *instance_().physicsWorld_;
 }
 
-void Tile2D::removeDestroyedObjects_() {
-    for (auto& obj : objectsToDestroy_) {
-        delete obj;
-    }
-    objectsToDestroy_.clear();
-}
-
-void Tile2D::destroy_(Tile2DObject* obj) {
-    void* actualObj = obj->derivedClassPtr;
-    assert(actualObj != nullptr && "Can't destroy object since it was not created by Tile2D.");
-
-    auto it = instance_().objects_.find(actualObj);
-
-    if ((*it) != nullptr) {
-        instance_().objects_.erase((*it));
-    }
-
-    instance_().objectsToDestroy_.push_back(actualObj);
+Canvas &Tile2D::canvas() {
+    return *instance_().canvas_;
 }

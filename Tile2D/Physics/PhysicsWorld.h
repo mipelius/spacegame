@@ -25,13 +25,10 @@ class Body;
 
 class PhysicsWorld {
     friend class Tile2D;
+    friend class Body;
+    friend class WorldMap;
+
 public:
-    void step(double timeSeconds);
-    void add(Body *body);
-
-    void setMap(WorldMap &map);
-    WorldMap * getMap();
-
     Property<Vec> const gForce;
     Property<double> const metersPerPixel;
     Property<double> const airDensity;
@@ -43,6 +40,10 @@ public:
 private:
     PhysicsWorld();
     ~PhysicsWorld() = default;
+
+    void step(double timeSeconds);
+    void add(Body *body);
+    void remove(Body *body);
 
     Vec gForce_;
     double metersPerPixel_;

@@ -17,28 +17,30 @@
 #ifndef __Canvas_H_
 #define __Canvas_H_
 
-class IDrawable;
+class DrawableBase;
 class IShadowMask;
 class Camera;
 
 #include "GuiComponentBase.h"
 
 class Canvas : public GuiComponentBase {
+    friend class Tile2D;
+    friend class DrawableBase;
 
 public:
-    Canvas();
-
-    void renderActual() override;
-    void addDrawable(IDrawable *drawable);
-    void removeDrawable(IDrawable* drawable);
-
-    void addShadowMask(IShadowMask *shadowMask);
-
-    void setCamera(Camera& camera);
+    void setCamera(Camera* camera);
     Camera& getCamera() const;
 
 private:
-    std::list<IDrawable*> drawables_;
+    Canvas();
+
+    void renderActual() override;
+    void addDrawable(DrawableBase *drawable);
+    void removeDrawable(DrawableBase* drawable);
+
+    void addShadowMask(IShadowMask *shadowMask);
+
+    std::list<DrawableBase*> drawables_;
     std::list<IShadowMask*> shadowMasks_;
     Camera* camera_;
 };

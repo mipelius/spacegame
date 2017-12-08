@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// Copyright (C) 2017 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,33 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Node_H_
-#define __Node_H_
+#ifndef __IComponent_H
+#define __IComponent_H
 
-#include "Vec.h"
+#include "Tile2DObject.h"
 
-class WorldMap;
+class Tile2DComponent : public Tile2DObject {
+    friend class GameObject;
 
-class Node {
-    friend class RouteGenerator;
-    friend class Node;
-private:
-    Node* previousNode;
-    Node* nextNode;
-    WorldMap * map;
-    int x;
-    int y;
-    int fCost;
-    int hCost;
-    int gCost;
-    Node(int x, int y, WorldMap * map);
-    static Node* byPoint(Vec point, WorldMap * map);
-public:
-    bool equals(Node* anotherNode, unsigned int rounding = 1);
-    Vec getLocation();
-    Node* getPreviousNode();
-    Node* getNextNode();
-
+protected:
+    virtual void init() = 0;
 };
 
-#endif //__Node_H_
+#endif //__IComponent_H

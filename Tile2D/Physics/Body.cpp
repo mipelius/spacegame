@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <Tile2D/Core/Tile2D.h>
 #include "precompile.h"
 #include "Body.h"
 
@@ -61,6 +62,14 @@ Body::Body() :
 
 }
 
+void Body::init() {
+    Tile2D::physicsWorld().add(this);
+}
+
+void Body::onDestroy() {
+    Tile2D::physicsWorld().remove(this);
+}
+
 void Body::step_(double timeElapsedSec) {
     if (!stepIsIgnored_) {
         // calculate air resistance
@@ -103,16 +112,13 @@ void Body::step_(double timeElapsedSec) {
         this->velocity.updateDependentProperties();
         this->speed.updateDependentProperties();
         this->force.updateDependentProperties();
-
-        afterStep();
     }
 
     stepIsIgnored_ = false;
 }
 
-
 bool Body::detectMapCollision_() {
-    WorldMap* map = this->getWorld()->getMap();
+    WorldMap* map = this->physicsWorld_->map_;
     if (map == nullptr) {
         return false;
     }
@@ -177,16 +183,4 @@ void Body::setCollisionShape(CollisionShape* collisionShape) {
 void Body::applyTorque(double angle) {
     double torqueBefore = this->torque.get();
     this->torque.set(torqueBefore + angle);
-}
-
-void Body::afterStep() {
-
-}
-
-void Body::die() {
-    isDead_ = true;
-}
-
-void Body::onDie() {
-
 }

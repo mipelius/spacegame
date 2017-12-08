@@ -30,9 +30,10 @@ public:
     Tile2DObject(const Tile2DObject&& other)            = delete;
     Tile2DObject& operator=(const Tile2DObject&& other) = delete;
 
-    void destroy();
+    virtual void destroy();
 
 protected:
+    virtual void onCreate();
     virtual void onDestroy();
 };
 

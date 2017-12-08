@@ -20,9 +20,9 @@
 class WorldMap;
 class MapTexture;
 
-#include "IDrawable.h"
+#include "DrawableBase.h"
 
-class DrawableMap : public IDrawable {
+class DrawableMap : public DrawableBase {
 public:
     DrawableMap();
 

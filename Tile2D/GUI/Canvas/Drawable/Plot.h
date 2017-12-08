@@ -21,10 +21,10 @@ class Canvas;
 
 #include "Tile2DObject.h"
 #include "Vec.h"
-#include "IDrawable.h"
+#include "DrawableBase.h"
 #include "Property.h"
 
-class Plot : public IDrawable, Tile2DObject {
+class Plot : public DrawableBase {
 
 public:
     Plot();

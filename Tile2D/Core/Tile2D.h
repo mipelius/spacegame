@@ -25,9 +25,13 @@
 #include "Resources.h"
 #include "Window.h"
 #include "Tile2DObject.h"
+#include "Canvas.h"
+#include "GameObject.h"
 
 class Tile2D {
     friend class Tile2DObject;
+    friend class GameObject;
+
 public:
     Tile2D(Tile2D const &)              = delete;
     Tile2D& operator=(Tile2D const &)   = delete;
@@ -48,6 +52,7 @@ public:
     static Resources &resources();
     static SceneManager &sceneManager();
     static PhysicsWorld &physicsWorld();
+    static Canvas &canvas();
 
     template <class T> static T* create();
 
@@ -56,10 +61,12 @@ private:
     Resources *resources_;
     SceneManager *sceneManager_;
     PhysicsWorld *physicsWorld_;
+    Canvas* canvas_;
 
     void mainLoop_();
     void cleanUp_();
     void removeDestroyedObjects_();
+    void initGameObjects_();
 
     Tile2D();
     ~Tile2D();
@@ -70,6 +77,7 @@ private:
 
     std::set<void*> objects_;
     std::list<void*> objectsToDestroy_;
+    std::list<GameObject*> gameObjectsToInit_;
 
     void destroy_(Tile2DObject* obj);
 };
@@ -82,6 +90,7 @@ T* Tile2D::create() {
     T* obj = new T();
     ((Tile2DObject*)obj)->derivedClassPtr = obj;
     auto result = instance_().objects_.insert(obj);
+    obj->onCreate();
     return obj;
 }
 

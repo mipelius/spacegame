@@ -40,21 +40,9 @@ void PhysicsWorld::add(Body *body) {
 void PhysicsWorld::step(double timeSeconds) {
     if (timeSeconds == 0.0) return;
 
-    std::list<Body*> deadBodies;
-
     // update velocities and new locations
     for(auto& body : bodies_) {
-        if (body->isDead_) {
-            deadBodies.push_back(body);
-        }
-        else {
-            body->step_(timeSeconds);
-        }
-    }
-
-    for(auto& deadBody : deadBodies) {
-        bodies_.remove(deadBody);
-        deadBody->onDie();
+        body->step_(timeSeconds);
     }
 
     // now all the new positions are updated -> detect collision
@@ -72,10 +60,7 @@ void PhysicsWorld::detectCollision_(Body &body) {
     }
 }
 
-void PhysicsWorld::setMap(WorldMap &map) {
-    this->map_ = &map;
-}
-
-WorldMap* PhysicsWorld::getMap() {
-    return map_;
+void PhysicsWorld::remove(Body *body) {
+    bodies_.remove(body);
+    body->setWorld_(nullptr);
 }

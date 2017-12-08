@@ -23,10 +23,10 @@ void DrawableGroup::drawActual(const Canvas &canvas) {
     }
 }
 
-void DrawableGroup::addDrawable(IDrawable *drawable) {
+void DrawableGroup::addDrawable(DrawableBase *drawable) {
     drawables_.push_back(drawable);
 }
 
-void DrawableGroup::removeDrawable(IDrawable *drawable) {
+void DrawableGroup::removeDrawable(DrawableBase *drawable) {
     drawables_.remove(drawable);
 }

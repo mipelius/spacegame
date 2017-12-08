@@ -41,20 +41,20 @@ void SceneTitleScreen::init() {
 
     // setup canvas and camera
 
-    auto canvas = Tile2D::create<Canvas>();
-    Tile2D::window().addComponent(canvas);
-
     auto camera = Tile2D::create<Camera>();
     camera->areaRect.set({0, 0, (double)Tile2D::window().w.get(), (double)Tile2D::window().h.get()});
-    canvas->setCamera(*camera);
+    Tile2D::canvas().setCamera(camera);
 
     // background
 
+    auto background = Tile2D::create<GameObject>();
     auto bg = Tile2D::create<Background>();
     bg->texturePtr.set(Tile2D::resources().textures["bg2"]);
-    canvas->addDrawable(bg);
+    background->addComponent(bg);
 
     // collection of sprites
+
+    auto collectionOfSprites = Tile2D::create<GameObject>();
 
     auto sprite1 = Tile2D::create<Sprite>();
     sprite1->position.set({0, 0});
@@ -73,9 +73,11 @@ void SceneTitleScreen::init() {
     spriteCollection->angle.set(10.0);
     spriteCollection->position.set({200, 100});
 
-    canvas->addDrawable(spriteCollection);
+    collectionOfSprites->addComponent(spriteCollection);
 
     // text
+
+    auto textObj = Tile2D::create<GameObject>();
 
     auto text = Tile2D::create<Text>();
     text->string.set("Hello World!");
@@ -84,7 +86,7 @@ void SceneTitleScreen::init() {
     text->color.set(Color(1.0, 0.0, 0.0));
     text->size.set(3.0);
 
-    canvas->addDrawable(text);
+    textObj->addComponent(text);
 
     // plots
 
@@ -95,15 +97,11 @@ void SceneTitleScreen::init() {
         plot->position.set({x, y});
         plot->size.set(10.0);
 
-        canvas->addDrawable(plot);
-
         auto body = Tile2D::create<Body>();
         body->position.set({x, y});
         plot->position.bind(body->position);
 
         body->mass.set(100.0 + rand() % 300);
-
-        Tile2D::physicsWorld().add(body);
 
         auto colShape = Tile2D::create<CollisionShape>();
         colShape->points.set
@@ -117,10 +115,12 @@ void SceneTitleScreen::init() {
         body->setCollisionShape(colShape);
         static MyCollisionEventHandler handler;
         body->bodyCollision.add(&handler);
-    }
 
-    auto player = Tile2D::create<GameObject>();
-    auto playerBody = Tile2D::create<Body>();
+        auto gameObj = Tile2D::create<GameObject>();
+
+        gameObj->addComponent(body);
+        gameObj->addComponent(plot);
+    }
 }
 
 void SceneTitleScreen::destroy() {

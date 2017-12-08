@@ -18,12 +18,12 @@
 #define __Background_H_
 
 #include "Tile2DObject.h"
-#include "IDrawable.h"
+#include "DrawableBase.h"
 #include "Property.h"
 
 class Texture;
 
-class Background : public IDrawable, public Tile2DObject {
+class Background : public DrawableBase {
 
 public:
     Background();

@@ -18,17 +18,17 @@
 #define __DrawableGroup_H_
 
 #include <list>
-#include "DrawableBase.h"
+#include "BasicDrawableBase.h"
 
-class DrawableGroup : public DrawableBase {
+class DrawableGroup : public BasicDrawableBase {
 
 public:
     void drawActual(const Canvas& canvas) override;
-    void addDrawable(IDrawable *drawable);
-    void removeDrawable(IDrawable *drawable);
+    void addDrawable(DrawableBase *drawable);
+    void removeDrawable(DrawableBase *drawable);
 
 private:
-    std::list<IDrawable*> drawables_;
+    std::list<DrawableBase*> drawables_;
 };
 
 

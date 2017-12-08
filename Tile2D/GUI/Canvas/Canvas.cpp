@@ -17,7 +17,7 @@
 #include "precompile.h"
 #include "Canvas.h"
 #include "Window.h"
-#include "IDrawable.h"
+#include "DrawableBase.h"
 #include "Camera.h"
 #include "IShadowMask.h"
 
@@ -54,12 +54,12 @@ void Canvas::renderActual() {
     }
 }
 
-void Canvas::addDrawable(IDrawable *drawable) {
+void Canvas::addDrawable(DrawableBase *drawable) {
     drawables_.push_back(drawable);
 }
 
-void Canvas::setCamera(Camera& camera) {
-    camera_ = &camera;
+void Canvas::setCamera(Camera* camera) {
+    camera_ = camera;
 }
 
 Camera& Canvas::getCamera() const {
@@ -70,6 +70,6 @@ void Canvas::addShadowMask(IShadowMask *shadowMask) {
     shadowMasks_.push_back(shadowMask);
 }
 
-void Canvas::removeDrawable(IDrawable *drawable) {
+void Canvas::removeDrawable(DrawableBase *drawable) {
     drawables_.remove(drawable);
 }

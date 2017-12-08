@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2015 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,31 +14,38 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Sprite_H_
-#define __Sprite_H_
+#ifndef __DrawableBase_H_
+#define __DrawableBase_H_
 
-#include <Tile2D/GUI/Canvas/Texture/Texture.h>
-#include "BasicDrawableBase.h"
-#include "Rect.h"
+#include "Tile2DComponent.h"
+#include "DrawableBase.h"
+#include "Canvas.h"
+#include "Property.h"
+#include "Color.h"
 
-class CollisionShape;
-class ITexture;
-
-class Sprite : public BasicDrawableBase {
+class BasicDrawableBase : public DrawableBase {
 
 public:
-    Sprite();
+    BasicDrawableBase();
 
-    Property<Rect>     const rect;
-    Property<ITexture*> const texturePtr;
+    Property<Vec>       const position;
+    Property<double>    const angle;
+    BooleanProperty     const isVisible;
+    Property<double>    const opacity;
+    Property<Color>     const color;
+
+    void draw(const Canvas& canvas) override;
 
 protected:
-    void drawActual(const Canvas &canvas) override;
+    virtual void drawActual(const Canvas& canvas) = 0;
 
 private:
-    Rect rect_;
-    ITexture* texturePtr_;
+    Vec position_;
+    double angle_;
+    bool isVisible_;
+    double opacity_;
+    Color color_;
 };
 
 
-#endif //__Sprite_H_
+#endif //__DrawableBase_H_

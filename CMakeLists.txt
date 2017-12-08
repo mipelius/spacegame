@@ -43,7 +43,6 @@ include_directories(
         Tile2D/GUI/Canvas
         Tile2D/GUI
         Tile2D/Physics
-        Tile2D/Route
         Tile2D/Sound
         Tile2D/Util/DataStructures
         Tile2D/Util/Event
@@ -67,15 +66,15 @@ set(SOURCE_FILES
         Tile2D/GUI/Canvas/Drawable/Background.h
         Tile2D/GUI/Canvas/Drawable/Color.cpp
         Tile2D/GUI/Canvas/Drawable/Color.h
-        Tile2D/GUI/Canvas/Drawable/DrawableBase.cpp
-        Tile2D/GUI/Canvas/Drawable/DrawableBase.h
+        Tile2D/GUI/Canvas/Drawable/BasicDrawableBase.cpp
+        Tile2D/GUI/Canvas/Drawable/BasicDrawableBase.h
         Tile2D/GUI/Canvas/Drawable/DrawableGroup.cpp
         Tile2D/GUI/Canvas/Drawable/DrawableGroup.h
         Tile2D/GUI/Canvas/Drawable/DrawableMap.cpp
         Tile2D/GUI/Canvas/Drawable/DrawableMap.h
         Tile2D/GUI/Canvas/Drawable/Font.cpp
         Tile2D/GUI/Canvas/Drawable/Font.h
-        Tile2D/GUI/Canvas/Drawable/IDrawable.h
+        Tile2D/GUI/Canvas/Drawable/DrawableBase.h
         Tile2D/GUI/Canvas/Drawable/Plot.cpp
         Tile2D/GUI/Canvas/Drawable/Plot.h
         Tile2D/GUI/Canvas/Drawable/Sprite.cpp
@@ -122,18 +121,6 @@ set(SOURCE_FILES
         Tile2D/Physics/WorldMap.cpp
         Tile2D/Physics/WorldMap.h
         Tile2D/Physics/WorldMapModifiedEventArgs.h
-        Tile2D/Route/Node.cpp
-        Tile2D/Route/Node.h
-        Tile2D/Route/Route.cpp
-        Tile2D/Route/Route.h
-        Tile2D/Route/RouteGenerator.cpp
-        Tile2D/Route/RouteGenerator.h
-        Tile2D/Route/RouteRequest.cpp
-        Tile2D/Route/RouteRequest.h
-        Tile2D/Route/RouteRequestSender.cpp
-        Tile2D/Route/RouteRequestSender.h
-        Tile2D/Route/RouteResponse.cpp
-        Tile2D/Route/RouteResponse.h
         Tile2D/Sound/Ears.cpp
         Tile2D/Sound/Ears.h
         Tile2D/Sound/Music.cpp
@@ -180,7 +167,7 @@ set(SOURCE_FILES
         Game/SceneTitleScreen.h
         Game/SceneGameOver.cpp
         Game/SceneGameOver.h
-        Game/Scenes.h Tile2D/Core/GameObject.cpp Tile2D/Core/GameObject.h Tile2D/Core/ComponentBase.h)
+        Game/Scenes.h Tile2D/Core/GameObject.cpp Tile2D/Core/GameObject.h Tile2D/Core/Tile2DComponent.h Tile2D/GUI/Canvas/Drawable/DrawableBase.cpp)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

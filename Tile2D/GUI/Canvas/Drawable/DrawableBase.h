@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2015 Miika Pelkonen
+// Copyright (C) 2014  Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,37 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __DrawableBase_H_
-#define __DrawableBase_H_
+#ifndef __IDrawable_H_
+#define __IDrawable_H_
 
-#include "IDrawable.h"
-#include "Canvas.h"
-#include "Property.h"
-#include "Color.h"
+#include "Tile2DComponent.h"
 
-class DrawableBase : public IDrawable, public Tile2DObject {
+class Canvas;
+
+class DrawableBase : public Tile2DComponent {
 
 public:
-    DrawableBase();
-
-    Property<Vec>       const position;
-    Property<double>    const angle;
-    BooleanProperty     const isVisible;
-    Property<double>    const opacity;
-    Property<Color>     const color;
-
-    void draw(const Canvas& canvas) override;
-
-protected:
-    virtual void drawActual(const Canvas& canvas) = 0;
+    virtual void draw(const Canvas& canvas) = 0;
 
 private:
-    Vec position_;
-    double angle_;
-    bool isVisible_;
-    double opacity_;
-    Color color_;
+    void init() override;
+    void onDestroy() override;
 };
 
-
-#endif //__DrawableBase_H_
+#endif //__IDrawable_H_

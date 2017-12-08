@@ -21,9 +21,7 @@
 
 class SceneInGame : public IScene {
     void init() override;
-
     void destroy() override;
-
 };
 
 
