@@ -16,7 +16,7 @@
 
 #include <map>
 #include <vector>
-#include <Tile2D/GUI/Canvas/Canvas.h>
+#include "Canvas.h"
 #include "Tile2D.h"
 
 bool Tile2D::isLoaded_ = false;
@@ -90,9 +90,10 @@ void Tile2D::mainLoop_() {
         Uint32 deltaTime = SDL_GetTicks() - timestamp;
         timestamp = SDL_GetTicks();
 
-        // ---
+        updateBehaviours_();
         physicsWorld_->step(deltaTime / 1000.0);
         window().update_();
+
         initGameObjects_();
         removeDestroyedObjects_();
     }
@@ -117,6 +118,12 @@ void Tile2D::initGameObjects_() {
         obj->initializeComponents_();
     }
     gameObjectsToInit_.clear();
+}
+
+void Tile2D::updateBehaviours_() {
+    for (auto& obj: behaviours_) {
+        obj->update();
+    }
 }
 
 void Tile2D::destroy_(Tile2DObject* obj) {
@@ -151,10 +158,4 @@ PhysicsWorld &Tile2D::physicsWorld() {
 
 Canvas &Tile2D::canvas() {
     return *instance_().canvas_;
-}
-
-void Tile2D::updateBehaviours_() {
-    for (auto& obj: behaviours_) {
-        obj->update();
-    }
 }

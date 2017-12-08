@@ -17,11 +17,22 @@
 #ifndef __PlayerController_H
 #define __PlayerController_H
 
+#include "Body.h"
+#include "Sprite.h"
+#include "Tile2DBehaviour.h"
 
 class PlayerController : public Tile2DBehaviour {
 
+public:
+    float moveForce;
 
+protected:
+    void awake() override;
+    void update() override;
+
+private:
+    Body* body;
+    Sprite* sprite;
 };
-
 
 #endif //__PlayerController_H

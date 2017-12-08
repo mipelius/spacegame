@@ -18,8 +18,9 @@
 #define __GameObject_H
 
 #include <list>
-#include "Tile2DComponent.h"
 #include "Tile2DObject.h"
+
+class Tile2DComponent;
 
 class GameObject : public Tile2DObject {
     friend class Tile2D;
@@ -27,7 +28,7 @@ public:
     void addComponent(Tile2DComponent* component);
 
     template <class T>
-    T* getComponent<T>();
+    T* getComponent();
 
 protected:
     void onDestroy() final;
@@ -43,16 +44,16 @@ private:
 // template function
 
 template <class T>
-T* GameObject::getComponent<T>() {
-    for (auto& component : uninitializedComponents_) {
-        auto currentComponent = dynamic_cast<T>(component);
+T* GameObject::getComponent() {
+    for (auto component : uninitializedComponents_) {
+        auto currentComponent = dynamic_cast<T*>(component);
         if (currentComponent != nullptr) {
             return currentComponent;
         }
     }
 
-    for (auto& component : components_) {
-        auto currentComponent = dynamic_cast<T>(component);
+    for (auto component : components_) {
+        auto currentComponent = dynamic_cast<T*>(component);
         if (currentComponent != nullptr) {
             return currentComponent;
         }

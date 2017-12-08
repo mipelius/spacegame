@@ -15,3 +15,23 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "PlayerController.h"
+
+void PlayerController::awake() {
+    body = gameObject()->getComponent<Body>();
+    sprite = gameObject()->getComponent<Sprite>();
+}
+
+void PlayerController::update() {
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+    if (state[SDL_SCANCODE_UP]) {
+        body->force.set(Vec::byAngle(body->angle.get(), moveForce));
+    }
+    if (state[SDL_SCANCODE_LEFT]) {
+        body->angle.set(body->angle.get() - 10);
+    }
+    if (state[SDL_SCANCODE_RIGHT]) {
+        body->angle.set(body->angle.get() + 10);
+    }
+
+}

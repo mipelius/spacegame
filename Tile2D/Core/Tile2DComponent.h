@@ -18,6 +18,7 @@
 #define __IComponent_H
 
 #include "Tile2DObject.h"
+#include "GameObject.h"
 
 class Tile2DComponent : public Tile2DObject {
     friend class GameObject;
