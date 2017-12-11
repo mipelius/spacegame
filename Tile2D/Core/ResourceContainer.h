@@ -20,6 +20,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "json.h"
 
 template <class T>
 class ResourceContainer {
@@ -35,8 +36,12 @@ private:
 
     ResourceContainer() = default;
 
-    void init(std::vector<std::string> resPaths) {
-        for (const auto &resPath : resPaths) {
+    void init(json::Value resourcesJson) {
+        auto resArray = resourcesJson.ToArray();
+
+        for (const auto &resValue : resArray) {
+            std::string resPath = resValue.ToString();
+
             auto res = new T(resPath);
 
             unsigned long first = resPath.find_last_of('/') + 1;

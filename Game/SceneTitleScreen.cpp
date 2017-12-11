@@ -74,21 +74,9 @@ void SceneTitleScreen::init() {
     camera->areaRect.set({0, 0, (double)Tile2D::window().w.get(), (double)Tile2D::window().h.get()});
     camera->boundsRect.set({0, 0, 10000, 10000});
     camera->position.bind(spaceshipBody->position);
-    //camera->position.bind(spaceshipBody->position);
     Tile2D::canvas().setCamera(camera);
 
-    // text
-
-    auto textObj = Tile2D::create<GameObject>();
-
-    auto text = Tile2D::create<Text>();
-    text->string.set("Hello World!");
-    text->position.set({100, 600});
-    text->fontPtr.set(Tile2D::resources().fonts["smallfont"]);
-    text->color.set(Color(1.0, 0.0, 0.0));
-    text->size.set(3.0);
-
-    textObj->addComponent(text);
+    //
 
 }
 

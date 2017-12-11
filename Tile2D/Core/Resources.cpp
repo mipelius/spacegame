@@ -14,19 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "JsonFileManager.h"
 #include "Resources.h"
 
-void Resources::init(
-        std::vector<std::string> &resTextures,
-        std::vector<std::string> &resSfx,
-        std::vector<std::string> &resMusic,
-        std::vector<std::string> &resFonts,
-        std::vector<std::string> &resBlockMappings
-) {
-    textures.init(resTextures);
-    sfx.init(resSfx);
-    fonts.init(resFonts);
-    blockMappings.init(resBlockMappings);
-    music.init(resMusic);
+void Resources::init(const std::string& resourcesFile) {
+    auto obj = JsonFileManager::load(resourcesFile);
+    textures.init(        obj["textures"]       );
+    sfx.init(             obj["sfx"]            );
+    music.init(           obj["music"]          );
+    fonts.init(           obj["fonts"]          );
+    blockMappings.init(   obj["blockmappings"]  );
+    //maps.init(            obj["maps"]           );
 }
 

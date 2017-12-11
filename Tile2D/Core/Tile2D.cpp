@@ -53,11 +53,7 @@ Tile2D &Tile2D::instance_() {
 
 void Tile2D::load(
         const std::string& configFile,
-        std::vector<std::string> resTextures,
-        std::vector<std::string> resSfx,
-        std::vector<std::string> resMusic,
-        std::vector<std::string> resFonts,
-        std::vector<std::string> resBlockMappings,
+        const std::string& resourcesFile,
         std::map<int, IScene*> scenes
 ) {
     // LOAD
@@ -72,7 +68,7 @@ void Tile2D::load(
     // INIT
 
     Tile2D::window().init(configFile);
-    Tile2D::resources().init(resTextures, resSfx, resMusic, resFonts, resBlockMappings);
+    Tile2D::resources().init(resourcesFile);
     Tile2D::sceneManager().init(scenes);
 
     // START LOOP
@@ -82,9 +78,6 @@ void Tile2D::load(
 
 void Tile2D::mainLoop_() {
     Uint32 timestamp = SDL_GetTicks();
-
-    // TODO: remove
-    while (SDL_GetTicks() - timestamp > 2000);
 
     while(!SDL_QuitRequested()) {
         Uint32 deltaTime = SDL_GetTicks() - timestamp;

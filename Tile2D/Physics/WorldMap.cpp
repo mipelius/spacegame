@@ -34,8 +34,6 @@ WorldMap::WorldMap(
     this->blockSizeW = blockSizeW;
     this->blockSizeH = blockSizeH;
 
-    using namespace std;
-
     SDL_Surface* surface = IMG_Load(path.data());
     if (!surface) {
         std::fprintf(stderr, "Error during loading map: %s\n", SDL_GetError());

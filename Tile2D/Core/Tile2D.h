@@ -42,11 +42,7 @@ public:
 
     void static load(
             const std::string& configFile,
-            std::vector<std::string> resTextures,
-            std::vector<std::string> resSfx,
-            std::vector<std::string> resMusic,
-            std::vector<std::string> resFonts,
-            std::vector<std::string> resBlockMappings,
+            const std::string& resourcesFile,
             std::map<int, IScene*> scenes
     );
 

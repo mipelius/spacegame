@@ -29,41 +29,8 @@ int main(int argc, const char *argv[]) {
     SceneGameOver sceneGameOver = SceneGameOver();
 
     Tile2D::load(
-            // CONFIGURATION
             "json/config.json",
-
-            // RESOURCES / TEXTURE
-            {
-                    {"images/anim_explosion.png"},
-                    {"images/anim_rocket_fire.png"},
-                    {"images/spaceship.png"},
-                    {"images/bg1.jpg"},
-                    {"images/bg2.jpg"}
-            },
-
-            // RESOURCES / SFX
-            {
-                    {"soundfx/explosion.wav"},
-                    {"soundfx/missile_collision.wav"}
-            },
-
-            // RESOURCES / MUSIC
-            {
-                    {"music/spacegame.mp3"},
-                    {"music/testing.mp3"}
-            },
-
-            // RESOURCES / FONTS
-            {
-                    {"json/smallfont.json"},
-            },
-
-            // RESOURCES / BLOCKMAPPINGS
-            {
-                    {"json/blockMappings.json"},
-            },
-
-            // SCENES
+            "json/resources.json",
             {
                     {titleScreen,    &sceneTitleScreen},
                     {inGame,         &sceneInGame},

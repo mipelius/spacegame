@@ -18,6 +18,7 @@
 #define __RESOURCES_H
 
 #include <map>
+#include "WorldMap.h"
 #include "AudioClip.h"
 #include "Music.h"
 #include "BlockMapping.h"
@@ -32,13 +33,7 @@ private:
     Resources() = default;
     ~Resources() = default;
 
-    void init(
-            std::vector<std::string>& resTextures,
-            std::vector<std::string>& resSfx,
-            std::vector<std::string>& resMusic,
-            std::vector<std::string>& resFonts,
-            std::vector<std::string>& resBlockMappings
-    );
+    void init(const std::string& resourcesFile);
 
 public:
     ResourceContainer<Texture> textures;
@@ -46,6 +41,9 @@ public:
     ResourceContainer<BlockMapping> blockMappings;
     ResourceContainer<AudioClip> sfx;
     ResourceContainer<Music> music;
+
+    //ResourceContainer<WorldMap> maps;
+
 };
 
 #endif //__RESOURCES_H
