@@ -114,8 +114,8 @@ set(SOURCE_FILES
         Tile2D/Physics/Body.h
         Tile2D/Physics/BodyCollisionEventArgs.cpp
         Tile2D/Physics/BodyCollisionEventArgs.h
-        Tile2D/Physics/CollisionShape.cpp
-        Tile2D/Physics/CollisionShape.h
+        Tile2D/Physics/ColliderShape.cpp
+        Tile2D/Physics/ColliderShape.h
         Tile2D/Physics/PhysicsWorld.cpp
         Tile2D/Physics/PhysicsWorld.h
         Tile2D/Physics/TileMap.cpp

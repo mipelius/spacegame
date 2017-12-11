@@ -14,22 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "DrawableMap.h"
 #include "SceneInGame.h"
 #include "BodyCollisionEventArgs.h"
-#include "GameObject.h"
-#include "Body.h"
 #include "DrawableGroup.h"
-#include "Text.h"
 #include "Plot.h"
 #include "Background.h"
 #include "Sprite.h"
-#include "CollisionShape.h"
+#include "ColliderShape.h"
 
 #include "Tile2D.h"
 #include "Camera.h"
 #include "PlayerController.h"
 
 void SceneInGame::init() {
+
+    Tile2D::physicsWorld().airDensity.set(0.0001);
+
     std::cout << "\"In game\" scene loaded\n";
 
     // background
@@ -45,12 +46,20 @@ void SceneInGame::init() {
 
     auto spaceshipBody = Tile2D::create<Body>();
     spaceshipBody->mass.set(100.0);
-    spaceshipBody->position.set(Vec(100.0, 100.0));
+    spaceshipBody->position.set(Vec(4000.0, 8000.0));
+    auto colliderShape = Tile2D::create<ColliderShape>();
+    colliderShape->points.set({
+          {0, -20},
+          {-20, -20},
+          {20, 20}
+    });
+    spaceshipBody->setColliderShape(colliderShape);
+    spaceshipBody->mapCollision.add(&body_mapCollisionEventHandler);
     player->addComponent(spaceshipBody);
 
     auto spaceshipSprite = Tile2D::create<Sprite>();
     spaceshipSprite->position.set({0, 0});
-    spaceshipSprite->rect.set({-10, -10, 10, 10});
+    spaceshipSprite->rect.set({-20, -20, 20, 20});
     spaceshipSprite->texturePtr.set(Tile2D::resources().textures["spaceship"]);
     spaceshipSprite->position.bind(spaceshipBody->position);
     spaceshipSprite->angle.bind(spaceshipBody->angle);
@@ -64,23 +73,26 @@ void SceneInGame::init() {
 
     auto camera = Tile2D::create<Camera>();
     camera->areaRect.set({0, 0, (double)Tile2D::window().w.get(), (double)Tile2D::window().h.get()});
-    camera->boundsRect.set({0, 0, 10000, 10000});
     camera->position.bind(spaceshipBody->position);
     Tile2D::canvas().setCamera(camera);
 
     // tile map
 
-    auto tileMapObj = Tile2D::create<GameObject>();
+    auto tileMap = Tile2D::create<GameObject>();
 
-    auto tileMap = Tile2D::create<TileMap>();
-    tileMap->load(
+    auto map = Tile2D::create<TileMap>();
+    map->load(
             "maps/map.bmp",
             Tile2D::resources().tileSets["tileset"],
             10,
             10
     );
+    tileMap->addComponent(map);
 
-    tileMapObj->addComponent(tileMap);
+    auto drawableMap = Tile2D::create<DrawableMap>();
+    drawableMap->setMap(map);
+    drawableMap->setMapTexture(Tile2D::resources().tileSets["tileset"]->getMapTexture());
+    tileMap->addComponent(drawableMap);
 }
 
 void SceneInGame::destroy() {

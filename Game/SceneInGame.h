@@ -18,10 +18,22 @@
 #define __SceneInGame_H
 
 #include <Tile2D/Core/IScene.h>
+#include <Tile2D/Util/Primitives/Vec.h>
+#include <Tile2D/Util/Event/EventArgs.h>
+#include <Tile2D/Physics/Body.h>
 
 class SceneInGame : public IScene {
     void init() override;
     void destroy() override;
+
+    class Body_MapCollisionEventHandler : public IEventHandler<Body, EventArgs> {
+        void handle(Body* body, EventArgs args) {
+            body->position.set(body->position.get() - body->velocity.get());
+            body->speed.set(Vec(0, 0));
+        }
+    };
+
+    Body_MapCollisionEventHandler body_mapCollisionEventHandler;
 };
 
 

@@ -21,11 +21,9 @@ Camera::Camera() :
 
     position(       Property<Vec>    (this, getPosition_, setPosition_   )),
     areaRect(       Property<Rect>   (&areaRect_                         )),
-    boundsRect(     Property<Rect>   (&boundsRect_                       )),
 
     // member objects
-    areaRect_(      Rect(0, 0, 0, 0)    ),
-    boundsRect_(    Rect(0, 0, 0, 0)    )
+    areaRect_(      Rect(0, 0, 0, 0)    )
 {
 
 }
@@ -52,22 +50,11 @@ Vec Camera::getPosition_(void *owner) {
 
 void Camera::setPosition_(void *owner, const Vec &value) {
     Rect areaRect = ((Camera*)owner)->areaRect.get();
-    Rect boundsRect = ((Camera*)owner)->boundsRect.get();
 
     double x = value.x - areaRect.getWidth() / 2;
     double y = value.y - areaRect.getHeight() / 2;
     double w = areaRect.getWidth();
     double h = areaRect.getHeight();
-
-    double x1 = boundsRect.x1;
-    double y1 = boundsRect.y1;
-    double x2 = boundsRect.x2;
-    double y2 = boundsRect.y2;
-
-    if (x < x1)     x = x1;
-    if (x + w > x2) x = x2 - w;
-    if (y < y1)     y = y1;
-    if (y + h > y2) y = y2 - h;
 
     ((Camera*)owner)->areaRect.set(
             Rect(

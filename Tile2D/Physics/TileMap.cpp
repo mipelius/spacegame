@@ -18,7 +18,7 @@
 #include "precompile.h"
 #include "TileMap.h"
 #include "Body.h"
-#include "CollisionShape.h"
+#include "ColliderShape.h"
 #include "TileSet.h"
 #include "WorldMapModifiedEventArgs.h"
 
@@ -93,7 +93,7 @@ long TileMap::getActualH() {
 }
 
 bool TileMap::detectCollisionWith(Body* body) {
-    if (body->getCollisionShape() == nullptr) {
+    if (body->getColliderShape() == nullptr) {
         return false;
     }
 
@@ -101,9 +101,9 @@ bool TileMap::detectCollisionWith(Body* body) {
 
     if (tile != nullptr && tile->density.get() > 0.0) return true;
 
-    std::vector<Vec> points = body->getCollisionShape()->getRotatedPoints();
+    std::vector<Vec> points = body->getColliderShape()->getRotatedPoints();
 
-    for (int i=0; i< body->getCollisionShape()->points.get().size(); i++) {
+    for (int i=0; i< body->getColliderShape()->points.get().size(); i++) {
         Vec point(
                 points[i].x + body->position.get().x,
                 points[i].y + body->position.get().y
@@ -113,7 +113,7 @@ bool TileMap::detectCollisionWith(Body* body) {
         if (tile != nullptr && tile->density.get() > 0.0) return true;
     }
 
-    Rect boundingBox = body->getCollisionShape()->getBoundingBox();
+    Rect boundingBox = body->getColliderShape()->getBoundingBox();
 
     int iBegin = (int)boundingBox.x1 - ((int)boundingBox.x1) % blockSizeW;
     int iEnd = (int)boundingBox.x2 + (int)boundingBox.x2 % blockSizeW;
@@ -125,7 +125,7 @@ bool TileMap::detectCollisionWith(Body* body) {
             tile = this->getValueScaled(Vec(i, j));
             if (tile != nullptr && tile->density.get() > 0.0) {
                 Rect rect = Rect(i, j, i + blockSizeW, j + blockSizeH);
-                if (body->getCollisionShape()->intersectsWith(rect)) {
+                if (body->getColliderShape()->intersectsWith(rect)) {
                     return true;
                 }
             }

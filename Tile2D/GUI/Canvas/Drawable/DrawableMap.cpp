@@ -26,7 +26,6 @@ DrawableMap::DrawableMap() {
     map_ = nullptr;
 }
 
-
 void DrawableMap::draw(const Canvas &canvas) {
     if (map_ == nullptr) return;
 

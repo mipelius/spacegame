@@ -18,7 +18,7 @@
 #include "precompile.h"
 #include "Body.h"
 
-#include "CollisionShape.h"
+#include "ColliderShape.h"
 #include "PhysicsWorld.h"
 #include "TileMap.h"
 #include "BodyCollisionEventArgs.h"
@@ -56,7 +56,7 @@ Body::Body() :
     entityCollisionDetectionIsIgnored_  (false),
     stepIsIgnored_                      (false),
     physicsWorld_                       (nullptr),
-    collisionShape_                     (nullptr),
+    colliderShape                       (nullptr),
     isDead_                             (false)
 {
 
@@ -135,9 +135,9 @@ bool Body::detectMapCollision_() {
 
 bool Body::detectCollisionWith_(Body &otherBody) {
     if (!entityCollisionDetectionIsIgnored_) {
-        if (this->collisionShape_ == nullptr || otherBody.collisionShape_ == nullptr) return false;
-        if (this->collisionShape_->intersectsWith(otherBody.getCollisionShape()) ||
-                otherBody.getCollisionShape()->intersectsWith(collisionShape_)) {
+        if (this->colliderShape == nullptr || otherBody.colliderShape == nullptr) return false;
+        if (this->colliderShape->intersectsWith(otherBody.getColliderShape()) ||
+                otherBody.getColliderShape()->intersectsWith(colliderShape)) {
 
             bodyCollision.raise(BodyCollisionEventArgs(otherBody));
 
@@ -171,12 +171,12 @@ PhysicsWorld *Body::getWorld() {
     return this->physicsWorld_;
 }
 
-CollisionShape* Body::getCollisionShape() {
-    return collisionShape_;
+ColliderShape* Body::getColliderShape() {
+    return colliderShape;
 }
 
-void Body::setCollisionShape(CollisionShape* collisionShape) {
-    this->collisionShape_ = collisionShape;
+void Body::setColliderShape(ColliderShape *collisionShape) {
+    this->colliderShape = collisionShape;
     collisionShape->owner_ = this;
 }
 

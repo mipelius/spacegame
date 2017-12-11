@@ -23,7 +23,7 @@
 #include "Event.h"
 
 class PhysicsWorld;
-class CollisionShape;
+class ColliderShape;
 class BodyCollisionEventArgs;
 class EventArgs;
 
@@ -57,16 +57,16 @@ public:
     void applyTorque(double angle);
 
     PhysicsWorld* getWorld();
-    CollisionShape* getCollisionShape();
+    ColliderShape* getColliderShape();
 
-    void setCollisionShape(CollisionShape* collisionShape);
+    void setColliderShape(ColliderShape *collisionShape);
 
     void ignoreCollisionDetection();
     void ignoreStep();
 
 protected:
     PhysicsWorld *physicsWorld_;
-    CollisionShape* collisionShape_;
+    ColliderShape* colliderShape;
 
 private:
     void init() override;

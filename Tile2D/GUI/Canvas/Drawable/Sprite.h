@@ -21,7 +21,7 @@
 #include "BasicDrawableBase.h"
 #include "Rect.h"
 
-class CollisionShape;
+class ColliderShape;
 class ITexture;
 
 class Sprite : public BasicDrawableBase {

@@ -28,10 +28,10 @@ void PlayerController::update() {
         body->force.set(Vec::byAngle(body->angle.get(), moveForce));
     }
     if (state[SDL_SCANCODE_LEFT]) {
-        body->angle.set(body->angle.get() - 10);
+        body->angle.set(body->angle.get() - 5);
     }
     if (state[SDL_SCANCODE_RIGHT]) {
-        body->angle.set(body->angle.get() + 10);
+        body->angle.set(body->angle.get() + 5);
     }
 
 }

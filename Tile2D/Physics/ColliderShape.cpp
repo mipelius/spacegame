@@ -15,15 +15,15 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "precompile.h"
-#include "CollisionShape.h"
+#include "ColliderShape.h"
 
-CollisionShape::CollisionShape():
+ColliderShape::ColliderShape():
         points( Property<std::vector<Vec> >(this, getPoints_, setPoints_   )),
         boundingBox_(Rect(-1, -1, 1, 1))
 {
 }
 
-bool CollisionShape::intersectsWith(const CollisionShape* otherShape) const {
+bool ColliderShape::intersectsWith(const ColliderShape* otherShape) const {
     if (!this->getBoundingBox().intersectsWith(otherShape->getBoundingBox())) return false;
 
     Vec location = owner_->position.get();
@@ -64,7 +64,7 @@ bool CollisionShape::intersectsWith(const CollisionShape* otherShape) const {
     return false;
 }
 
-bool CollisionShape::intersectsWithHalfLine(const Vec &linePoint1, const Vec &linePoint2, const Vec &offset) const {
+bool ColliderShape::intersectsWithHalfLine(const Vec &linePoint1, const Vec &linePoint2, const Vec &offset) const {
     if (!(
             (linePoint1.y <= offset.y && linePoint2.y >= offset.y) ||
                     (linePoint1.y >= offset.y && linePoint2.y <= offset.y)
@@ -80,7 +80,7 @@ bool CollisionShape::intersectsWithHalfLine(const Vec &linePoint1, const Vec &li
     return collisionX >= offset.x;
 }
 
-Rect CollisionShape::getBoundingBox() const {
+Rect ColliderShape::getBoundingBox() const {
     Vec location = owner_->position.get();
 
     return {
@@ -91,7 +91,7 @@ Rect CollisionShape::getBoundingBox() const {
     };
 }
 
-bool CollisionShape::intersectsWith(const Rect& rectangle) const {
+bool ColliderShape::intersectsWith(const Rect& rectangle) const {
     Vec location = owner_->position.get();
 
     std::vector<Vec> points = getRotatedPoints();
@@ -115,12 +115,12 @@ bool CollisionShape::intersectsWith(const Rect& rectangle) const {
 
 }
 
-std::vector<Vec> CollisionShape::getPoints_(void *owner) {
-    return ((CollisionShape*)owner)->points_;
+std::vector<Vec> ColliderShape::getPoints_(void *owner) {
+    return ((ColliderShape*)owner)->points_;
 }
 
-void CollisionShape::setPoints_(void *owner, const std::vector<Vec>& value) {
-    auto shape = (CollisionShape*)owner;
+void ColliderShape::setPoints_(void *owner, const std::vector<Vec>& value) {
+    auto shape = (ColliderShape*)owner;
     shape->points_ = value;
 
     Vec farMost = Vec(0, 0);

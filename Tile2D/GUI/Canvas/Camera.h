@@ -28,7 +28,6 @@ class Camera : public Tile2DObject {
 public:
     Property<Vec> const position;
     Property<Rect> const areaRect;
-    Property<Rect> const boundsRect;
 
     Camera();
 
@@ -36,7 +35,6 @@ public:
 
 private:
     Rect areaRect_;
-    Rect boundsRect_;
 
     static Vec getPosition_(void *owner);
     static void setPosition_(void *owner, const Vec &value);

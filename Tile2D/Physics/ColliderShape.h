@@ -26,7 +26,7 @@ class Body;
 #include "Property.h"
 #include "Body.h"
 
-class CollisionShape : public Tile2DObject {
+class ColliderShape : public Tile2DObject {
 friend class Body;
 private:
     Rect boundingBox_;
@@ -43,7 +43,7 @@ public:
      * @param points[]  the points that defines the shape
      * @param count     the count of the points
      */
-    CollisionShape();
+    ColliderShape();
 
     /**
      * Checks if the shape intersects with the other shape
@@ -51,7 +51,7 @@ public:
      * @param shape     the other shape
      * @return bool     true if this shape intersects with the other shape, false otherwise
      */
-    bool intersectsWith(const CollisionShape* shape) const;
+    bool intersectsWith(const ColliderShape* shape) const;
 
     /**
      * Checks if the shape intersects with the given rectangle
@@ -82,7 +82,7 @@ public:
 
 // inline functions
 
-inline std::vector<Vec> CollisionShape::getRotatedPoints() const {
+inline std::vector<Vec> ColliderShape::getRotatedPoints() const {
     double angleRad = owner_->angle.get() / 360 * 2 * M_PI * -1;
 
     std::vector<Vec> rotatedPoints(points_.size());
