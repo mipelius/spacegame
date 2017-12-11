@@ -17,7 +17,7 @@
 #include "precompile.h"
 #include "DrawableMap.h"
 #include "MapTexture.h"
-#include "WorldMap.h"
+#include "TileMap.h"
 #include "Camera.h"
 #include "Canvas.h"
 
@@ -48,7 +48,7 @@ void DrawableMap::draw(const Canvas &canvas) {
     }
 }
 
-void DrawableMap::setMap(WorldMap *map) {
+void DrawableMap::setMap(TileMap *map) {
     map_ = map;
 }
 
@@ -93,7 +93,7 @@ void DrawableMap::drawMap(const Canvas &canvas) {
 
     for (int i = iStart; i < iEnd; i++) {
         for (int j = jStart; j < jEnd; j++) {
-            Block* block = map_->getValue(i, j);
+            Tile* block = map_->getValue(i, j);
 
             if (block == nullptr || block->getMapTextureId() == -1) continue;
 
@@ -123,7 +123,7 @@ void DrawableMap::drawSmallMap(const Canvas& canvas) {
     glBegin(GL_QUADS);
     for (double x = cameraRect.x1; x < cameraRect.x2; x += stepX) {
         for (double y = cameraRect.y1; y < cameraRect.y2; y += stepY) {
-            Block* block = map_->getValueScaled(
+            Tile* block = map_->getValueScaled(
                     Vec(x, y)
             );
 

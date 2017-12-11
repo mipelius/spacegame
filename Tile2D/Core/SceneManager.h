@@ -24,15 +24,16 @@ class SceneManager {
     friend class Tile2D;
 
 public:
-    void loadScene(int scene);
+    void loadScene(unsigned scene);
 
 private:
     SceneManager();
     ~SceneManager();
 
-    void init(std::map<int, IScene*>& scenes);
+    void init(std::map<unsigned, IScene*>& scenes);
 
-    std::map<int, IScene*> scenes_;
+    int currentScene_;
+    std::map<unsigned, IScene*> scenes_;
 };
 
 

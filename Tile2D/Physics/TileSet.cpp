@@ -15,15 +15,15 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iostream>
-#include "BlockMapping.h"
+#include "TileSet.h"
 #include "MapTexture.h"
 #include "JsonFileManager.h"
-#include "Block.h"
+#include "Tile.h"
 
-BlockMapping::BlockMapping(std::string jsonFilename) :
-        blocks_(std::vector<Block*>(255))
+TileSet::TileSet(std::string jsonFilename) :
+        blocks_(std::vector<Tile*>(255))
 {
-    emptyBlock_ = new Block("empty block", 0.0, 1.0, 1.0, nullptr, -1);
+    emptyBlock_ = new Tile("empty block", 0.0, 1.0, 1.0, nullptr, -1);
 
     for (int i = 0; i < 256; i++) {
         blocks_[i] = nullptr;
@@ -42,19 +42,19 @@ BlockMapping::BlockMapping(std::string jsonFilename) :
 
     for (const auto &jsonObj : blocksJson) {
         auto blockJson = jsonObj.ToObject();
-        blocks_[blockJson["id"].ToInt()] = new Block(blockJson, mapTexture_);
+        blocks_[blockJson["id"].ToInt()] = new Tile(blockJson, mapTexture_);
     }
 }
 
-Block* BlockMapping::getBlock(unsigned char id) {
+Tile* TileSet::getTile(unsigned char id) {
     return blocks_[id];
 }
 
-MapTexture * BlockMapping::getMapTexture() {
+MapTexture * TileSet::getMapTexture() {
     return mapTexture_;
 }
 
-BlockMapping::~BlockMapping() {
+TileSet::~TileSet() {
     delete emptyBlock_;
     delete mapTexture_;
     for (auto block : blocks_) {
@@ -62,6 +62,6 @@ BlockMapping::~BlockMapping() {
     }
 }
 
-Block* BlockMapping::getEmptyBlock() {
+Tile* TileSet::getEmptyBlock() {
     return emptyBlock_;
 }

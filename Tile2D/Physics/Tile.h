@@ -23,7 +23,7 @@ class MapTexture;
 #include "json.h"
 #include "ReadableProperty.h"
 
-class Block {
+class Tile {
 
 private:
     std::string name_;
@@ -38,8 +38,8 @@ private:
                      int mapTextureId);
 
 public:
-    Block(std::string name, double density, double translucency, double opacity, MapTexture* mapTexture, int mapTextureId);
-    Block(json::Object object, MapTexture* mapTexture);
+    Tile(std::string name, double density, double translucency, double opacity, MapTexture* mapTexture, int mapTextureId);
+    Tile(json::Object object, MapTexture* mapTexture);
 
     ReadableProperty<std::string> const name;
     ReadableProperty<double> const density;

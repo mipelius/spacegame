@@ -19,7 +19,7 @@
 
 class Canvas;
 class LightMap;
-class WorldMap;
+class TileMap;
 class PartialLightMap;
 
 #include "Event.h"

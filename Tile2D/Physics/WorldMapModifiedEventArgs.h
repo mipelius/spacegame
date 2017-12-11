@@ -17,15 +17,15 @@
 #ifndef __WorldMapModifiedEventArgs_H_
 #define __WorldMapModifiedEventArgs_H_
 
-class Block;
+class Tile;
 
 class WorldMapModifiedEventArgs {
 
 public:
     int x;
     int y;
-    Block* oldValue;
-    Block* newValue;
+    Tile* oldValue;
+    Tile* newValue;
 };
 
 

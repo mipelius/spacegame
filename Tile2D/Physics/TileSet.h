@@ -21,23 +21,23 @@
 #include <string>
 
 class MapTexture;
-class Block;
+class Tile;
 
-class BlockMapping {
+class TileSet {
 
 public:
-    explicit BlockMapping(std::string jsonFilename);
-    ~BlockMapping();
+    explicit TileSet(std::string jsonFilename);
+    ~TileSet();
 
-    Block* getBlock(unsigned char id);
+    Tile* getTile(unsigned char id);
     MapTexture * getMapTexture();
 
-    Block* getEmptyBlock();
+    Tile* getEmptyBlock();
 
 private:
-    std::vector<Block*> blocks_;
+    std::vector<Tile*> blocks_;
     MapTexture* mapTexture_;
-    Block* emptyBlock_;
+    Tile* emptyBlock_;
 };
 
 #endif //__BlockMapping_H_

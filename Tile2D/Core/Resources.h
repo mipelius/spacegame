@@ -18,10 +18,10 @@
 #define __RESOURCES_H
 
 #include <map>
-#include "WorldMap.h"
+#include "TileMap.h"
 #include "AudioClip.h"
 #include "Music.h"
-#include "BlockMapping.h"
+#include "TileSet.h"
 #include "Font.h"
 #include "ResourceContainer.h"
 #include "Texture.h"
@@ -38,12 +38,9 @@ private:
 public:
     ResourceContainer<Texture> textures;
     ResourceContainer<Font> fonts;
-    ResourceContainer<BlockMapping> blockMappings;
+    ResourceContainer<TileSet> tileSets;
     ResourceContainer<AudioClip> sfx;
     ResourceContainer<Music> music;
-
-    //ResourceContainer<WorldMap> maps;
-
 };
 
 #endif //__RESOURCES_H

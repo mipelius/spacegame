@@ -27,7 +27,7 @@
 #include "Camera.h"
 
 class PointLight;
-class WorldMap;
+class TileMap;
 class LightMap;
 class PartialLightMapUpdate;
 
@@ -37,7 +37,7 @@ class ShadowMask : public IShadowMask {
     friend class PointLight_MovementEventHandler;
 
 public:
-    ShadowMask(double w, double h, WorldMap * map);
+    ShadowMask(double w, double h, TileMap * map);
     ~ShadowMask();
 
     Property<double> const ambientLight;
@@ -59,7 +59,7 @@ private:
     double w_;
     double h_;
 
-    WorldMap* worldMap_;
+    TileMap* worldMap_;
     LightMap* lightMap_;
 
     void initialize();

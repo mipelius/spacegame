@@ -106,10 +106,10 @@ set(SOURCE_FILES
         Tile2D/GUI/GuiComponentBase.h
         Tile2D/GUI/Window.cpp
         Tile2D/GUI/Window.h
-        Tile2D/Physics/Block.cpp
-        Tile2D/Physics/Block.h
-        Tile2D/Physics/BlockMapping.cpp
-        Tile2D/Physics/BlockMapping.h
+        Tile2D/Physics/Tile.cpp
+        Tile2D/Physics/Tile.h
+        Tile2D/Physics/TileSet.cpp
+        Tile2D/Physics/TileSet.h
         Tile2D/Physics/Body.cpp
         Tile2D/Physics/Body.h
         Tile2D/Physics/BodyCollisionEventArgs.cpp
@@ -118,8 +118,8 @@ set(SOURCE_FILES
         Tile2D/Physics/CollisionShape.h
         Tile2D/Physics/PhysicsWorld.cpp
         Tile2D/Physics/PhysicsWorld.h
-        Tile2D/Physics/WorldMap.cpp
-        Tile2D/Physics/WorldMap.h
+        Tile2D/Physics/TileMap.cpp
+        Tile2D/Physics/TileMap.h
         Tile2D/Physics/WorldMapModifiedEventArgs.h
         Tile2D/Sound/Ears.cpp
         Tile2D/Sound/Ears.h

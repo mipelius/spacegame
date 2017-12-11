@@ -21,33 +21,33 @@
 
 class MapTexture;
 class Body;
-class BlockMapping;
-class Block;
+class TileSet;
+class Tile;
 class WorldMapModifiedEventArgs;
 
 #include "Rect.h"
 #include "Array2d.h"
-#include "Block.h"
+#include "Tile.h"
 #include "Event.h"
 
-class WorldMap {
+class TileMap {
 
 public:
-    WorldMap(
+    TileMap(
             std::string path,
-            BlockMapping &mapping,
-            int blockSizeW = WorldMap::DEFAULT_BLOCK_SIZE_W,
-            int blockSizeH = WorldMap::DEFAULT_BLOCK_SIZE_H
+            TileSet &tileSet,
+            int blockSizeW = TileMap::DEFAULT_BLOCK_SIZE_W,
+            int blockSizeH = TileMap::DEFAULT_BLOCK_SIZE_H
     );
 
-    ~WorldMap();
+    ~TileMap();
 
-    Event<WorldMap, WorldMapModifiedEventArgs>* const modification;
+    Event<TileMap, WorldMapModifiedEventArgs>* const modification;
 
-    Block* getValue(int x, int y);
-    Block* getValueScaled(Vec point);
-    void setValue(int x, int y, Block* value);
-    void setValueScaled(Vec point, Block* value);
+    Tile* getValue(int x, int y);
+    Tile* getValueScaled(Vec point);
+    void setValue(int x, int y, Tile* value);
+    void setValueScaled(Vec point, Tile* value);
 
     int getW();
     int getH();
@@ -65,8 +65,8 @@ private:
     int blockSizeW;
     int blockSizeH;
 
-    Array2d<Block*> *blocks_;
-    BlockMapping* mapping_;
+    Array2d<Tile*> *blocks_;
+    TileSet* mapping_;
 };
 
 #endif //__WorldMap_H_

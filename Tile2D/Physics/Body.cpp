@@ -20,7 +20,7 @@
 
 #include "CollisionShape.h"
 #include "PhysicsWorld.h"
-#include "WorldMap.h"
+#include "TileMap.h"
 #include "BodyCollisionEventArgs.h"
 
 Body::Body() :
@@ -118,7 +118,7 @@ void Body::step_(double timeElapsedSec) {
 }
 
 bool Body::detectMapCollision_() {
-    WorldMap* map = this->physicsWorld_->map_;
+    TileMap* map = this->physicsWorld_->map_;
     if (map == nullptr) {
         return false;
     }

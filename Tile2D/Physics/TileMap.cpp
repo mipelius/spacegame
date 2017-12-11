@@ -15,21 +15,21 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "precompile.h"
-#include "WorldMap.h"
+#include "TileMap.h"
 #include "Body.h"
 #include "CollisionShape.h"
-#include "BlockMapping.h"
+#include "TileSet.h"
 #include "WorldMapModifiedEventArgs.h"
 
-WorldMap::WorldMap(
+TileMap::TileMap(
         std::string path,
-        BlockMapping &mapping,
+        TileSet &tileSet,
         int blockSizeW,
         int blockSizeH
 ) :
-    modification(new Event<WorldMap, WorldMapModifiedEventArgs>(this))
+    modification(new Event<TileMap, WorldMapModifiedEventArgs>(this))
 {
-    mapping_ = &mapping;
+    mapping_ = &tileSet;
 
     this->blockSizeW = blockSizeW;
     this->blockSizeH = blockSizeH;
@@ -42,12 +42,12 @@ WorldMap::WorldMap(
 
     Uint8* pixels = (Uint8*)surface->pixels;
 
-    blocks_ = new Array2d<Block*>(surface->w, surface->h);
+    blocks_ = new Array2d<Tile*>(surface->w, surface->h);
 
     for (int i=0; i<surface->w; i++) {
         for (int j=0; j<surface->h; j++) {
             unsigned char id = *(pixels + j * surface->w + i);
-            Block* value = mapping.getBlock(id);
+            Tile* value = tileSet.getTile(id);
             blocks_->setValue(i, j, value);
         }
     }
@@ -55,14 +55,14 @@ WorldMap::WorldMap(
     SDL_FreeSurface(surface);
 }
 
-WorldMap::~WorldMap() {
+TileMap::~TileMap() {
     delete blocks_;
     delete modification;
 }
 
-void WorldMap::setValue(int x, int y, Block* value) {
+void TileMap::setValue(int x, int y, Tile* value) {
     if (blocks_->isInsideBounds(x, y)) {
-        Block* oldValue = blocks_->getValue(x, y);
+        Tile* oldValue = blocks_->getValue(x, y);
 
         if (oldValue != value) {
             blocks_->setValue(x, y, value);
@@ -79,7 +79,7 @@ void WorldMap::setValue(int x, int y, Block* value) {
 }
 
 
-Block* WorldMap::getValue(int x, int y) {
+Tile* TileMap::getValue(int x, int y) {
     if (blocks_->isInsideBounds(x, y)) {
         return blocks_->getValue(x, y);
     }
@@ -87,7 +87,7 @@ Block* WorldMap::getValue(int x, int y) {
     return nullptr;
 }
 
-void WorldMap::setValueScaled(Vec point, Block *value) {
+void TileMap::setValueScaled(Vec point, Tile *value) {
     setValue(
             (int)(point.x / blockSizeW),
             (int)(point.y / blockSizeH),
@@ -95,31 +95,31 @@ void WorldMap::setValueScaled(Vec point, Block *value) {
     );
 }
 
-Block *WorldMap::getValueScaled(Vec point) {
+Tile *TileMap::getValueScaled(Vec point) {
     return getValue(
             (int)(point.x / blockSizeW),
             (int)(point.y / blockSizeH)
     );
 }
 
-int WorldMap::getW() {
+int TileMap::getW() {
     return blocks_->getW();
 }
 
-int WorldMap::getH() {
+int TileMap::getH() {
     return blocks_->getH();
 }
 
-long WorldMap::getActualW() {
+long TileMap::getActualW() {
     return blocks_->getW() * blockSizeW;
 }
 
-long WorldMap::getActualH() {
+long TileMap::getActualH() {
     return blocks_->getH() * blockSizeH;
 }
 
-bool WorldMap::detectCollisionWith(Body& body) {
-    Block* block = this->getValueScaled(body.position.get());
+bool TileMap::detectCollisionWith(Body& body) {
+    Tile* block = this->getValueScaled(body.position.get());
 
     if (block != nullptr && block->density.get() > 0.0) return true;
 
@@ -157,11 +157,11 @@ bool WorldMap::detectCollisionWith(Body& body) {
     return false;
 }
 
-int WorldMap::getBlockW() {
+int TileMap::getBlockW() {
     return this->blockSizeW;
 }
 
 
-int WorldMap::getBlockH() {
+int TileMap::getBlockH() {
     return this->blockSizeH;
 }

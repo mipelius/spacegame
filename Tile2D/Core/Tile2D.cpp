@@ -54,7 +54,7 @@ Tile2D &Tile2D::instance_() {
 void Tile2D::load(
         const std::string& configFile,
         const std::string& resourcesFile,
-        std::map<int, IScene*> scenes
+        std::map<unsigned, IScene*> scenes
 ) {
     // LOAD
 

@@ -14,11 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Block.h"
+#include "Tile.h"
 #include "MapTexture.h"
 #include "ReadableProperty.h"
 
-Block::Block(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture, int mapTextureId) :
+Tile::Tile(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture, int mapTextureId) :
     name(           ReadableProperty<std::string> (   &name_          )   ),
     density(        ReadableProperty<double>      (   &density_       )   ),
     translucency(   ReadableProperty<double>      (   &translucency_  )   ),
@@ -27,7 +27,7 @@ Block::Block(std::string name, double density, double translucency, double opaci
     initialize_(std::move(name), density, translucency, opacity, mapTexture, mapTextureId);
 }
 
-Block::Block(json::Object object, MapTexture* mapTexture)  :
+Tile::Tile(json::Object object, MapTexture* mapTexture)  :
 name(           ReadableProperty<std::string> (   &name_          )   ),
 density(        ReadableProperty<double>      (   &density_       )   ),
 translucency(   ReadableProperty<double>      (   &translucency_  )   ),
@@ -56,7 +56,7 @@ opacity(        ReadableProperty<double>      (   &opacity_       )   )
     );
 }
 
-void Block::initialize_(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture,
+void Tile::initialize_(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture,
                         int mapTextureId) {
     name_ = std::move(name);
     density_ = density;
@@ -66,6 +66,6 @@ void Block::initialize_(std::string name, double density, double translucency, d
     mapTextureId_ = mapTextureId;
 }
 
-int Block::getMapTextureId() {
+int Tile::getMapTextureId() {
     return mapTextureId_;
 }

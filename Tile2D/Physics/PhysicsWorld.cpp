@@ -17,7 +17,7 @@
 #include "precompile.h"
 #include "PhysicsWorld.h"
 #include "Body.h"
-#include "WorldMap.h"
+#include "TileMap.h"
 
 PhysicsWorld::PhysicsWorld():
     gForce(             Property<Vec>    (&gForce_)           ),

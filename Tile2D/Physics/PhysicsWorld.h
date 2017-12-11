@@ -17,7 +17,7 @@
 #ifndef __PhysicsWorld_H_
 #define __PhysicsWorld_H_
 
-class WorldMap;
+class TileMap;
 class Body;
 
 #include "Vec.h"
@@ -26,7 +26,7 @@ class Body;
 class PhysicsWorld {
     friend class Tile2D;
     friend class Body;
-    friend class WorldMap;
+    friend class TileMap;
 
 public:
     Property<Vec> const gForce;
@@ -50,7 +50,7 @@ private:
     double airDensity_;
 
     std::list<Body *> bodies_;
-    WorldMap * map_;
+    TileMap * map_;
     void detectCollision_(Body &body);
 };
 

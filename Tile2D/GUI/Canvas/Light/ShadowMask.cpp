@@ -16,7 +16,7 @@
 
 #include "precompile.h"
 #include "ShadowMask.h"
-#include "WorldMap.h"
+#include "TileMap.h"
 #include "LightMap.h"
 #include "PartialLightMap.h"
 #include "PartialLightMapUpdate.h"
@@ -68,7 +68,7 @@ private:
     static const unsigned int UPDATE_INTERVAL = 10;
 };
 
-class ShadowMask::WorldMap_ModificationEventHandler : public IEventHandler<WorldMap, WorldMapModifiedEventArgs> {
+class ShadowMask::WorldMap_ModificationEventHandler : public IEventHandler<TileMap, WorldMapModifiedEventArgs> {
 
 public:
 
@@ -76,7 +76,7 @@ public:
         mask_ = mask;
     }
 
-    void handle(WorldMap *owner, WorldMapModifiedEventArgs args) override {
+    void handle(TileMap *owner, WorldMapModifiedEventArgs args) override {
         if (args.oldValue && args.newValue && args.oldValue->translucency.get() == args.newValue->translucency.get()) {
             return;
         }
@@ -102,7 +102,7 @@ private:
 
 GLuint ShadowMask::glShadowTextureId_ = 0;
 
-ShadowMask::ShadowMask(double w, double h, WorldMap * map) :
+ShadowMask::ShadowMask(double w, double h, TileMap * map) :
 
 ambientLight    (   Property<double>( &ambientLight_ )    ),
 ambientLight_   (   1.0 )

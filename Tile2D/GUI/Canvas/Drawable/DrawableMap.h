@@ -17,7 +17,7 @@
 #ifndef __DrawableMap_H_
 #define __DrawableMap_H_
 
-class WorldMap;
+class TileMap;
 class MapTexture;
 
 #include "DrawableBase.h"
@@ -26,14 +26,14 @@ class DrawableMap : public DrawableBase {
 public:
     DrawableMap();
 
-    void setMap(WorldMap * map);
+    void setMap(TileMap * map);
     void setMapTexture(MapTexture* mapTexture);
 
     void draw(const Canvas &canvas) override;
 
 private:
     MapTexture* mapTexture_;
-    WorldMap * map_;
+    TileMap * map_;
 
     void drawMap(const Canvas& canvas);
     void drawSmallMap(const Canvas& canvas);

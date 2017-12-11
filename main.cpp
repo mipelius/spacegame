@@ -24,17 +24,13 @@
 #undef main
 
 int main(int argc, const char *argv[]) {
-    SceneTitleScreen sceneTitleScreen = SceneTitleScreen();
-    SceneInGame sceneInGame = SceneInGame();
-    SceneGameOver sceneGameOver = SceneGameOver();
-
     Tile2D::load(
             "json/config.json",
             "json/resources.json",
             {
-                    {titleScreen,    &sceneTitleScreen},
-                    {inGame,         &sceneInGame},
-                    {gameOverScreen, &sceneGameOver}
+                    {titleScreen,    new SceneTitleScreen},
+                    {inGame,         new SceneInGame},
+                    {gameOverScreen, new SceneGameOver}
             }
     );
 

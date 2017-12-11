@@ -15,7 +15,7 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "PartialLightMap.h"
-#include "WorldMap.h"
+#include "TileMap.h"
 
 PartialLightMap::PartialLightMap(int w, int h) : Array2d<unsigned char>(w, h) {
 
@@ -26,11 +26,11 @@ void PartialLightMap::setCenterLocation(int x, int y) {
     y_ = y - (h_ / 2);
 }
 
-void PartialLightMap::update(WorldMap* map) {
+void PartialLightMap::update(TileMap* map) {
     updateInternal(255, w_ / 2, h_ / 2, map);
 }
 
-void PartialLightMap::updateInternal(unsigned char lastLight, int currentX, int currentY, WorldMap* map) {
+void PartialLightMap::updateInternal(unsigned char lastLight, int currentX, int currentY, TileMap* map) {
     if (!isInsideBounds(currentX, currentY)) {
         return;
     }
@@ -38,7 +38,7 @@ void PartialLightMap::updateInternal(unsigned char lastLight, int currentX, int 
     int actualX = currentX + x_;
     int actualY = currentY + y_;
 
-    Block* currentBlock = map->getValue(actualX, actualY);
+    Tile* currentBlock = map->getValue(actualX, actualY);
     if (!currentBlock) return;
 
     double translucency = currentBlock->translucency.get();

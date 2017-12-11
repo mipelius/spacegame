@@ -19,17 +19,28 @@
 
 SceneManager::SceneManager() {
     std::cout << "SceneManager -> startUp\n";
+    currentScene_ = -1;
 }
 
 SceneManager::~SceneManager() {
     std::cout << "SceneManager -> shutDown\n";
+    if (currentScene_ != -1) {
+        scenes_[currentScene_]->destroy();
+    }
+    for (auto& scene : scenes_) {
+        delete scene.second;
+    }
 }
 
-void SceneManager::loadScene(int scene) {
+void SceneManager::loadScene(unsigned scene) {
+    if (currentScene_ != -1) {
+        scenes_[currentScene_]->destroy();
+    }
+    currentScene_ = scene;
     scenes_[scene]->init();
 }
 
-void SceneManager::init(std::map<int, IScene *> &scenes) {
+void SceneManager::init(std::map<unsigned, IScene *> &scenes) {
     scenes_ = scenes;
     loadScene(0);
 }

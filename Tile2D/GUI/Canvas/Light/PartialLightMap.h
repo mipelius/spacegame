@@ -17,7 +17,7 @@
 #ifndef __PartialLightMap_H_
 #define __PartialLightMap_H_
 
-class WorldMap;
+class TileMap;
 
 #include "Array2d.h"
 
@@ -29,7 +29,7 @@ public:
     PartialLightMap(int w, int h);
 
     void setCenterLocation(int x, int y);
-    void update(WorldMap* map);
+    void update(TileMap* map);
 
     int getX() const;
     int getY() const;
@@ -39,7 +39,7 @@ private:
     int x_;
     int y_;
 
-    void updateInternal(unsigned char lastLight, int currentX, int currentY, WorldMap* map);
+    void updateInternal(unsigned char lastLight, int currentX, int currentY, TileMap* map);
 
 };
 #endif //__PartialLightMap_H_

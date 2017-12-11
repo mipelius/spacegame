@@ -15,7 +15,7 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "LightMap.h"
-#include "WorldMap.h"
+#include "TileMap.h"
 #include "PartialLightMap.h"
 
 LightMap::LightMap(int w, int h) :
