@@ -119,7 +119,7 @@ ambientLight_   (   1.0 )
     lightMap_ = new LightMap(map->getW(), map->getH());
     worldMap_ = map;
 
-    worldMap_->modification->add(new WorldMap_ModificationEventHandler(this));
+    worldMap_->modification.add(new WorldMap_ModificationEventHandler(this));
 
     if (glShadowTextureId_ == 0) {
         createShadowTexture();

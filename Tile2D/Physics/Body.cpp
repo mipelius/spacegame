@@ -123,7 +123,7 @@ bool Body::detectMapCollision_() {
         return false;
     }
 
-    if (map->detectCollisionWith(*this)) {
+    if (map->detectCollisionWith(this)) {
 
         mapCollision.raise(EventArgs());
 
@@ -137,7 +137,7 @@ bool Body::detectCollisionWith_(Body &otherBody) {
     if (!entityCollisionDetectionIsIgnored_) {
         if (this->collisionShape_ == nullptr || otherBody.collisionShape_ == nullptr) return false;
         if (this->collisionShape_->intersectsWith(otherBody.getCollisionShape()) ||
-                otherBody.getCollisionShape().intersectsWith(*collisionShape_)) {
+                otherBody.getCollisionShape()->intersectsWith(collisionShape_)) {
 
             bodyCollision.raise(BodyCollisionEventArgs(otherBody));
 
@@ -171,8 +171,8 @@ PhysicsWorld *Body::getWorld() {
     return this->physicsWorld_;
 }
 
-CollisionShape& Body::getCollisionShape() {
-    return *this->collisionShape_;
+CollisionShape* Body::getCollisionShape() {
+    return collisionShape_;
 }
 
 void Body::setCollisionShape(CollisionShape* collisionShape) {

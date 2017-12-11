@@ -31,6 +31,7 @@
 
 void SceneInGame::init() {
     std::cout << "\"In game\" scene loaded\n";
+
     // background
 
     auto background = Tile2D::create<GameObject>();
@@ -59,7 +60,7 @@ void SceneInGame::init() {
     playerController->moveForce = 10000.0f;
     player->addComponent(playerController);
 
-    // setup camera
+    // camera
 
     auto camera = Tile2D::create<Camera>();
     camera->areaRect.set({0, 0, (double)Tile2D::window().w.get(), (double)Tile2D::window().h.get()});
@@ -67,7 +68,19 @@ void SceneInGame::init() {
     camera->position.bind(spaceshipBody->position);
     Tile2D::canvas().setCamera(camera);
 
-    //
+    // tile map
+
+    auto tileMapObj = Tile2D::create<GameObject>();
+
+    auto tileMap = Tile2D::create<TileMap>();
+    tileMap->load(
+            "maps/map.bmp",
+            Tile2D::resources().tileSets["tileset"],
+            10,
+            10
+    );
+
+    tileMapObj->addComponent(tileMap);
 }
 
 void SceneInGame::destroy() {

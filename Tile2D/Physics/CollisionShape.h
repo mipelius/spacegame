@@ -51,7 +51,7 @@ public:
      * @param shape     the other shape
      * @return bool     true if this shape intersects with the other shape, false otherwise
      */
-    bool intersectsWith(const CollisionShape& shape) const;
+    bool intersectsWith(const CollisionShape* shape) const;
 
     /**
      * Checks if the shape intersects with the given rectangle

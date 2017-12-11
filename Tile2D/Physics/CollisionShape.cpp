@@ -23,16 +23,16 @@ CollisionShape::CollisionShape():
 {
 }
 
-bool CollisionShape::intersectsWith(const CollisionShape& otherShape) const {
-    if (!this->getBoundingBox().intersectsWith(otherShape.getBoundingBox())) return false;
+bool CollisionShape::intersectsWith(const CollisionShape* otherShape) const {
+    if (!this->getBoundingBox().intersectsWith(otherShape->getBoundingBox())) return false;
 
     Vec location = owner_->position.get();
 
-    std::vector<Vec> otherShapePoints = otherShape.getRotatedPoints();
+    std::vector<Vec> otherShapePoints = otherShape->getRotatedPoints();
     std::vector<Vec> thisPoints       = this->getRotatedPoints();
 
     // if one of the corners (points) of the other collision shape is inner side of this shape, collision has happened
-    for (int i=0; i<otherShape.points.get().size(); i++) {
+    for (int i=0; i<otherShape->points.get().size(); i++) {
         // go trough all the points in this shape
         int intersectionCount = 0;
         for (int j=0; j<points_.size()-1; j++) {
@@ -40,7 +40,7 @@ bool CollisionShape::intersectsWith(const CollisionShape& otherShape) const {
                     intersectsWithHalfLine(
                             thisPoints[j] + Vec(location.x, location.y),
                             thisPoints[j+1] + Vec(location.x, location.y),
-                            otherShapePoints[i] + Vec(otherShape.owner_->position.get().x, otherShape.owner_->position.get().y))
+                            otherShapePoints[i] + Vec(otherShape->owner_->position.get().x, otherShape->owner_->position.get().y))
                     ) {
 
                 intersectionCount++;
@@ -51,7 +51,7 @@ bool CollisionShape::intersectsWith(const CollisionShape& otherShape) const {
                 intersectsWithHalfLine(
                         thisPoints[points_.size()-1] + Vec(location.x, location.y),
                         thisPoints[0] + Vec(location.x, location.y),
-                        otherShapePoints[i] + Vec(otherShape.owner_->position.get().x, otherShape.owner_->position.get().y))
+                        otherShapePoints[i] + Vec(otherShape->owner_->position.get().x, otherShape->owner_->position.get().y))
                 ) {
 
             intersectionCount++;

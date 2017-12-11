@@ -57,7 +57,7 @@ public:
     void applyTorque(double angle);
 
     PhysicsWorld* getWorld();
-    CollisionShape& getCollisionShape();
+    CollisionShape* getCollisionShape();
 
     void setCollisionShape(CollisionShape* collisionShape);
 

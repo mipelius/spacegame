@@ -18,6 +18,7 @@
 #define __WorldMap_H_
 
 #include <string>
+#include <Tile2D/Core/Tile2DComponent.h>
 
 class MapTexture;
 class Body;
@@ -30,19 +31,10 @@ class WorldMapModifiedEventArgs;
 #include "Tile.h"
 #include "Event.h"
 
-class TileMap {
+class TileMap : public Tile2DComponent {
 
 public:
-    TileMap(
-            std::string path,
-            TileSet &tileSet,
-            int blockSizeW = TileMap::DEFAULT_BLOCK_SIZE_W,
-            int blockSizeH = TileMap::DEFAULT_BLOCK_SIZE_H
-    );
-
-    ~TileMap();
-
-    Event<TileMap, WorldMapModifiedEventArgs>* const modification;
+    Event<TileMap, WorldMapModifiedEventArgs> const modification;
 
     Tile* getValue(int x, int y);
     Tile* getValueScaled(Vec point);
@@ -56,7 +48,22 @@ public:
     long getActualW();
     long getActualH();
 
-    bool detectCollisionWith(Body& body);
+    bool detectCollisionWith(Body* body);
+
+    void load(
+            std::string path,
+            TileSet* tileSet,
+            int blockSizeW = TileMap::DEFAULT_BLOCK_SIZE_W,
+            int blockSizeH = TileMap::DEFAULT_BLOCK_SIZE_H
+    );
+
+    TileMap();
+    ~TileMap();
+
+protected:
+    void init() override;
+
+    void onDestroy() override;
 
 private:
     static const int DEFAULT_BLOCK_SIZE_W = 8;

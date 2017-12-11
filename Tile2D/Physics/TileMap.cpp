@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <Tile2D/Core/Tile2D.h>
 #include "precompile.h"
 #include "TileMap.h"
 #include "Body.h"
@@ -21,43 +22,16 @@
 #include "TileSet.h"
 #include "WorldMapModifiedEventArgs.h"
 
-TileMap::TileMap(
-        std::string path,
-        TileSet &tileSet,
-        int blockSizeW,
-        int blockSizeH
-) :
-    modification(new Event<TileMap, WorldMapModifiedEventArgs>(this))
-{
-    mapping_ = &tileSet;
 
-    this->blockSizeW = blockSizeW;
-    this->blockSizeH = blockSizeH;
-
-    SDL_Surface* surface = IMG_Load(path.data());
-    if (!surface) {
-        std::fprintf(stderr, "Error during loading map: %s\n", SDL_GetError());
-        exit(1);
-    }
-
-    Uint8* pixels = (Uint8*)surface->pixels;
-
-    blocks_ = new Array2d<Tile*>(surface->w, surface->h);
-
-    for (int i=0; i<surface->w; i++) {
-        for (int j=0; j<surface->h; j++) {
-            unsigned char id = *(pixels + j * surface->w + i);
-            Tile* value = tileSet.getTile(id);
-            blocks_->setValue(i, j, value);
-        }
-    }
-
-    SDL_FreeSurface(surface);
-}
+TileMap::TileMap() :
+    modification(this),
+    blocks_(nullptr)
+{ }
 
 TileMap::~TileMap() {
-    delete blocks_;
-    delete modification;
+    if (blocks_ != nullptr) {
+        delete blocks_;
+    }
 }
 
 void TileMap::setValue(int x, int y, Tile* value) {
@@ -73,7 +47,7 @@ void TileMap::setValue(int x, int y, Tile* value) {
             args.oldValue = oldValue;
             args.newValue = value;
 
-            modification->raise(args);
+            modification.raise(args);
         }
     }
 }
@@ -118,24 +92,28 @@ long TileMap::getActualH() {
     return blocks_->getH() * blockSizeH;
 }
 
-bool TileMap::detectCollisionWith(Body& body) {
-    Tile* block = this->getValueScaled(body.position.get());
-
-    if (block != nullptr && block->density.get() > 0.0) return true;
-
-    std::vector<Vec> points = body.getCollisionShape().getRotatedPoints();
-
-    for (int i=0; i< body.getCollisionShape().points.get().size(); i++) {
-        Vec point(
-                points[i].x + body.position.get().x,
-                points[i].y + body.position.get().y
-        );
-
-        block = this->getValueScaled(point);
-        if (block != nullptr && block->density.get() > 0.0) return true;
+bool TileMap::detectCollisionWith(Body* body) {
+    if (body->getCollisionShape() == nullptr) {
+        return false;
     }
 
-    Rect boundingBox = body.getCollisionShape().getBoundingBox();
+    Tile* tile = this->getValueScaled(body->position.get());
+
+    if (tile != nullptr && tile->density.get() > 0.0) return true;
+
+    std::vector<Vec> points = body->getCollisionShape()->getRotatedPoints();
+
+    for (int i=0; i< body->getCollisionShape()->points.get().size(); i++) {
+        Vec point(
+                points[i].x + body->position.get().x,
+                points[i].y + body->position.get().y
+        );
+
+        tile = this->getValueScaled(point);
+        if (tile != nullptr && tile->density.get() > 0.0) return true;
+    }
+
+    Rect boundingBox = body->getCollisionShape()->getBoundingBox();
 
     int iBegin = (int)boundingBox.x1 - ((int)boundingBox.x1) % blockSizeW;
     int iEnd = (int)boundingBox.x2 + (int)boundingBox.x2 % blockSizeW;
@@ -144,10 +122,10 @@ bool TileMap::detectCollisionWith(Body& body) {
 
     for (int i=iBegin; i <= iEnd; i += blockSizeW) {
         for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
-            block = this->getValueScaled(Vec(i, j));
-            if (block != nullptr && block->density.get() > 0.0) {
+            tile = this->getValueScaled(Vec(i, j));
+            if (tile != nullptr && tile->density.get() > 0.0) {
                 Rect rect = Rect(i, j, i + blockSizeW, j + blockSizeH);
-                if (body.getCollisionShape().intersectsWith(rect)) {
+                if (body->getCollisionShape()->intersectsWith(rect)) {
                     return true;
                 }
             }
@@ -164,4 +142,43 @@ int TileMap::getBlockW() {
 
 int TileMap::getBlockH() {
     return this->blockSizeH;
+}
+
+void TileMap::load(std::string path, TileSet* tileSet, int blockSizeW, int blockSizeH) {
+    mapping_ = tileSet;
+
+    this->blockSizeW = blockSizeW;
+    this->blockSizeH = blockSizeH;
+
+    SDL_Surface* surface = IMG_Load(path.data());
+    if (!surface) {
+        std::fprintf(stderr, "Error during loading map: %s\n", SDL_GetError());
+        exit(1);
+    }
+
+    Uint8* pixels = (Uint8*)surface->pixels;
+
+    blocks_ = new Array2d<Tile*>(surface->w, surface->h);
+
+    for (int i=0; i<surface->w; i++) {
+        for (int j=0; j<surface->h; j++) {
+            unsigned char id = *(pixels + j * surface->w + i);
+            Tile* value = tileSet->getTile(id);
+            blocks_->setValue(i, j, value);
+        }
+    }
+
+    SDL_FreeSurface(surface);
+}
+
+void TileMap::init() {
+    if (Tile2D::physicsWorld().map_ != nullptr) {
+        throw std::runtime_error("Tile2D doesn't support multiple maps!");
+    }
+    Tile2D::physicsWorld().map_ = this;
+}
+
+void TileMap::onDestroy() {
+    Tile2D::physicsWorld().map_ = nullptr;
+    Tile2DObject::onDestroy();
 }
