@@ -82,13 +82,12 @@ void Tile2D::mainLoop_() {
     while(!SDL_QuitRequested()) {
         Uint32 deltaTime = SDL_GetTicks() - timestamp;
         timestamp = SDL_GetTicks();
-
+        sceneManager_->update_();
+        initGameObjects_();
+        removeDestroyedObjects_();
         updateBehaviours_();
         physicsWorld_->step(deltaTime / 1000.0);
         window().update_();
-
-        initGameObjects_();
-        removeDestroyedObjects_();
     }
 }
 

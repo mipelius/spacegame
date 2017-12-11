@@ -30,9 +30,13 @@ private:
     SceneManager();
     ~SceneManager();
 
+    void update_();
+
     void init(std::map<unsigned, IScene*>& scenes);
 
     int currentScene_;
+    int sceneToLoad_;
+
     std::map<unsigned, IScene*> scenes_;
 };
 

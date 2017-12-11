@@ -16,9 +16,11 @@
 
 #include <iostream>
 #include "SceneManager.h"
+#include "Tile2D.h"
 
 SceneManager::SceneManager() {
     std::cout << "SceneManager -> startUp\n";
+    sceneToLoad_ = -1;
     currentScene_ = -1;
 }
 
@@ -33,14 +35,26 @@ SceneManager::~SceneManager() {
 }
 
 void SceneManager::loadScene(unsigned scene) {
-    if (currentScene_ != -1) {
-        scenes_[currentScene_]->destroy();
-    }
-    currentScene_ = scene;
-    scenes_[scene]->init();
+    sceneToLoad_ = scene;
 }
 
 void SceneManager::init(std::map<unsigned, IScene *> &scenes) {
     scenes_ = scenes;
     loadScene(0);
+}
+
+void SceneManager::update_() {
+    if (sceneToLoad_ == -1) {
+        return;
+    }
+
+    Tile2D::instance_().cleanUp_();
+
+    if (currentScene_ != -1) {
+        scenes_[currentScene_]->destroy();
+    }
+    currentScene_ = sceneToLoad_;
+    int tmp = sceneToLoad_;
+    sceneToLoad_ = -1;
+    scenes_[tmp]->init();
 }

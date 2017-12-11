@@ -33,6 +33,7 @@ class Tile2D {
     friend class Tile2DObject;
     friend class GameObject;
     friend class Tile2DBehaviour;
+    friend class SceneManager;
 
 public:
     Tile2D(Tile2D const &)              = delete;
