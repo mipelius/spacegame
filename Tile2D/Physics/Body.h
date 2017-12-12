@@ -41,7 +41,6 @@ public:
 
     Property<Vec> const position;
     Property<Vec> const velocity;
-    Property<Vec> const speed;
     Property<Vec> const force;
 
     // events
@@ -79,7 +78,6 @@ private:
     double torque_;
 
     Vec position_;
-    Vec speed_;
     Vec velocity_;
     Vec force_;
 

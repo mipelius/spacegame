@@ -26,7 +26,7 @@ ColliderShape::ColliderShape():
 bool ColliderShape::intersectsWith(const ColliderShape* otherShape) const {
     if (!this->getBoundingBox().intersectsWith(otherShape->getBoundingBox())) return false;
 
-    Vec location = owner_->position.get();
+    Vec position = owner_->position.get();
 
     std::vector<Vec> otherShapePoints = otherShape->getRotatedPoints();
     std::vector<Vec> thisPoints       = this->getRotatedPoints();
@@ -38,9 +38,9 @@ bool ColliderShape::intersectsWith(const ColliderShape* otherShape) const {
         for (int j=0; j<points_.size()-1; j++) {
             if (
                     intersectsWithHalfLine(
-                            thisPoints[j] + Vec(location.x, location.y),
-                            thisPoints[j+1] + Vec(location.x, location.y),
-                            otherShapePoints[i] + Vec(otherShape->owner_->position.get().x, otherShape->owner_->position.get().y))
+                            thisPoints[j] + position,
+                            thisPoints[j+1] + position,
+                            otherShapePoints[i] + otherShape->owner_->position.get() )
                     ) {
 
                 intersectionCount++;
@@ -49,9 +49,9 @@ bool ColliderShape::intersectsWith(const ColliderShape* otherShape) const {
         // check also the line between the last and the first point
         if (
                 intersectsWithHalfLine(
-                        thisPoints[points_.size()-1] + Vec(location.x, location.y),
-                        thisPoints[0] + Vec(location.x, location.y),
-                        otherShapePoints[i] + Vec(otherShape->owner_->position.get().x, otherShape->owner_->position.get().y))
+                        thisPoints[points_.size()-1] + position,
+                        thisPoints[0] + position,
+                        otherShapePoints[i] + otherShape->owner_->position.get() )
                 ) {
 
             intersectionCount++;
@@ -67,7 +67,7 @@ bool ColliderShape::intersectsWith(const ColliderShape* otherShape) const {
 bool ColliderShape::intersectsWithHalfLine(const Vec &linePoint1, const Vec &linePoint2, const Vec &offset) const {
     if (!(
             (linePoint1.y <= offset.y && linePoint2.y >= offset.y) ||
-                    (linePoint1.y >= offset.y && linePoint2.y <= offset.y)
+            (linePoint1.y >= offset.y && linePoint2.y <= offset.y)
     )) return false;
 
     double collisionX;

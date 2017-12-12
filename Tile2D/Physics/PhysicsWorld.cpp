@@ -51,16 +51,16 @@ void PhysicsWorld::step(double timeSeconds) {
 
     // now all the new positions are updated -> detect collision
     for(auto& body : bodies_) {
-        detectCollision_(*body);
+        detectCollision_(body);
     }
 }
 
-void PhysicsWorld::detectCollision_(Body &body) {
-    body.detectMapCollision_();
+void PhysicsWorld::detectCollision_(Body* body) {
+    body->detectMapCollision_();
 
     for (auto& bodyCur : bodies_) {
-        if (bodyCur == &body) continue;
-        body.detectCollisionWith_(*bodyCur);
+        if (bodyCur == body) continue;
+        body->detectCollisionWith_(*bodyCur);
     }
 }
 

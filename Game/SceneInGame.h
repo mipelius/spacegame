@@ -28,8 +28,7 @@ class SceneInGame : public IScene {
 
     class Body_MapCollisionEventHandler : public IEventHandler<Body, EventArgs> {
         void handle(Body* body, EventArgs args) {
-            body->position.set(body->position.get() - body->velocity.get());
-            body->speed.set(Vec(0, 0));
+            body->velocity.set(body->velocity.get() * -0.0001f);
         }
     };
 

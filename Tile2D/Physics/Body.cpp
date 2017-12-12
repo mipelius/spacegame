@@ -33,7 +33,6 @@ Body::Body() :
     torque          (   Property<double>  (&torque_           )   ),
 
     position        (   Property<Vec>  (&position_         )   ),
-    speed           (   Property<Vec>  (&speed_            )   ),
     velocity        (   Property<Vec>  (&velocity_         )   ),
     force           (   Property<Vec>  (&force_            )   ),
 
@@ -45,7 +44,6 @@ Body::Body() :
     // private member variables
 
     position_       (   Vec(0,0) ),
-    speed_          (   Vec(0,0) ),
     velocity_       (   Vec(0,0) ),
     force_          (   Vec(0,0) ),
     angle_          (   0.0         ),
@@ -76,9 +74,9 @@ void Body::step_(double timeElapsedSec) {
 
         Vec airResistance = Vec(0, 0);
 
-        if (speed_.x != 0 || speed_.y != 0) {
-            double speedLengthPow2 = speed_.x * speed_.x + speed_.y * speed_.y;
-            Vec airResistanceUnitVector = (speed_ * -1) * (1 / sqrt(speed_.x * speed_.x + speed_.y * speed_.y));
+        if (velocity_.x != 0 || velocity_.y != 0) {
+            double speedLengthPow2 = velocity_.x * velocity_.x + velocity_.y * velocity_.y;
+            Vec airResistanceUnitVector = (velocity_ * -1) * (1 / sqrt(velocity_.x * velocity_.x + velocity_.y * velocity_.y));
             airResistance = airResistanceUnitVector * speedLengthPow2 * (0.5 * physicsWorld_->airDensity.get());
         }
 
@@ -88,9 +86,8 @@ void Body::step_(double timeElapsedSec) {
 
         Vec acceleration = totalForce * (1 / this->mass.get());
         acceleration += physicsWorld_->gForce.get();
-        speed_ += acceleration;
-        velocity_ = speed_ * timeElapsedSec * physicsWorld_->metersPerPixel.get();
-        position_ = position_ + velocity_;
+        velocity_ += acceleration;
+        position_ = position_ + (velocity_ * timeElapsedSec * physicsWorld_->metersPerPixel.get());
 
         // apply torque (not very nicely implemented, but good enough)
 
@@ -110,7 +107,6 @@ void Body::step_(double timeElapsedSec) {
 
         this->position.updateDependentProperties();
         this->velocity.updateDependentProperties();
-        this->speed.updateDependentProperties();
         this->force.updateDependentProperties();
     }
 

@@ -53,7 +53,7 @@ private:
 
     std::list<Body *> bodies_;
     TileMap * map_;
-    void detectCollision_(Body &body);
+    void detectCollision_(Body* body);
 };
 
 #endif //__PhysicsWorld_H_
