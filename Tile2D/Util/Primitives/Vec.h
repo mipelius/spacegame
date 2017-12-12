@@ -31,9 +31,12 @@ public:
     inline Vec operator -= (const Vec& otherVector);
     inline Vec operator += (const Vec& otherVector);
     inline Vec operator *(double const &amount) const;
+    inline Vec operator /(double const &amount) const;
     inline double length() const;
     inline double lengthSqr() const;
     inline double angle() const;
+    inline double dot(const Vec& otherVector) const;
+    inline Vec normalized();
 };
 
 // inline functions
@@ -60,6 +63,10 @@ inline Vec Vec::operator += (const Vec &otherVector) {
 
 inline Vec Vec::operator * (const double &amount) const {
     return {x * amount, y * amount};
+}
+
+inline Vec Vec::operator /(double const &amount) const {
+    return {x / amount, y / amount};
 }
 
 inline Vec Vec::byAngle(const double &angleDegrees, const double &amount) {
@@ -89,6 +96,18 @@ inline double Vec::angle() const {
     }
 
     return atan2(y, x) * 180 / M_PI;
+}
+
+inline double Vec::dot(const Vec& otherVector) const {
+    return this->x * otherVector.x + this->y * otherVector.y;
+}
+
+inline Vec Vec::normalized() {
+    double length = this->length();
+    if (length == 0.0) {
+        return {1, 0};
+    }
+    return *this / length;
 }
 
 #endif //__Vector_H_

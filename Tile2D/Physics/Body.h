@@ -21,6 +21,7 @@
 #include "Vec.h"
 #include "Property.h"
 #include "Event.h"
+#include "MapCollisionEventArgs.h"
 
 class PhysicsWorld;
 class ColliderShape;
@@ -46,7 +47,7 @@ public:
     // events
 
     Event<Body, BodyCollisionEventArgs> const bodyCollision;
-    Event<Body, EventArgs> const mapCollision;
+    Event<Body, MapCollisionEventArgs> const mapCollision;
 
     // methods
 

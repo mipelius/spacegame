@@ -39,7 +39,7 @@ Body::Body() :
     // events
 
     bodyCollision   (   Event<Body, BodyCollisionEventArgs>(this) ),
-    mapCollision    (   Event<Body, EventArgs>(this) ),
+    mapCollision    (   Event<Body, MapCollisionEventArgs>(this) ),
 
     // private member variables
 
@@ -120,8 +120,7 @@ bool Body::detectMapCollision_() {
     }
 
     if (map->detectCollisionWith(this)) {
-
-        mapCollision.raise(EventArgs());
+        mapCollision.raise(MapCollisionEventArgs(Vec(0.0, -1.0))); // TODO: calculate the real contact normal
 
         return true;
     }
@@ -135,7 +134,7 @@ bool Body::detectCollisionWith_(Body &otherBody) {
         if (this->colliderShape->intersectsWith(otherBody.getColliderShape()) ||
                 otherBody.getColliderShape()->intersectsWith(colliderShape)) {
 
-            bodyCollision.raise(BodyCollisionEventArgs(otherBody));
+            bodyCollision.raise(BodyCollisionEventArgs(&otherBody));
 
             return true;
         }
