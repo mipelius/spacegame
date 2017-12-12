@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <Tile2D/Core/Tile2D.h>
 #include "PlayerController.h"
 
 void PlayerController::awake() {
@@ -32,6 +33,20 @@ void PlayerController::update() {
     }
     if (state[SDL_SCANCODE_RIGHT]) {
         body->angle.set(body->angle.get() + 5);
+    }
+
+    SDL_Event event;
+    while(SDL_PollEvent(&event)) {
+        if (event.type == SDL_KEYDOWN) {
+            if (event.key.keysym.sym == SDLK_RETURN) {
+                Tile2D::isDebugMode = !Tile2D::isDebugMode;
+                if (Tile2D::isDebugMode) {
+                    sprite->opacity.set(0.5);
+                } else {
+                    sprite->opacity.set(1.0);
+                }
+            }
+        }
     }
 
 }

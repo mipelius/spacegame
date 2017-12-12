@@ -20,6 +20,7 @@
 #include "Tile2D.h"
 
 bool Tile2D::isLoaded_ = false;
+bool Tile2D::isDebugMode = false;
 
 Tile2D::Tile2D() {
     SDL_Init(SDL_INIT_EVERYTHING);

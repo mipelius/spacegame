@@ -14,7 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <Tile2D/Util/JsonFileManager.h>
+#include "Camera.h"
+#include "JsonFileManager.h"
+#include "Tile2D.h"
 #include "precompile.h"
 #include "Window.h"
 #include "GuiComponentBase.h"
@@ -80,6 +82,10 @@ void Window::update_() {
 
     for (auto& guiComponent : guiComponents_) {
         guiComponent->render();
+    }
+
+    if (Tile2D::isDebugMode) {
+        Tile2D::physicsWorld().debugDraw();
     }
 
     // swap

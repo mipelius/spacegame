@@ -36,6 +36,8 @@ class Tile2D {
     friend class SceneManager;
 
 public:
+    static bool isDebugMode;
+
     Tile2D(Tile2D const &)              = delete;
     Tile2D& operator=(Tile2D const &)   = delete;
     Tile2D(Tile2D &&)                   = delete;

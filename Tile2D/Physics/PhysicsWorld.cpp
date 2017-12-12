@@ -14,9 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "Tile2D.h"
+#include "Canvas.h"
+#include "Camera.h"
 #include "precompile.h"
 #include "PhysicsWorld.h"
 #include "Body.h"
+#include "ColliderShape.h"
 #include "TileMap.h"
 
 PhysicsWorld::PhysicsWorld():
@@ -63,4 +67,44 @@ void PhysicsWorld::detectCollision_(Body &body) {
 void PhysicsWorld::remove(Body *body) {
     bodies_.remove(body);
     body->setWorld_(nullptr);
+}
+
+void PhysicsWorld::debugDraw() {
+    Canvas& canvas = Tile2D::canvas();
+    auto& camera = Tile2D::canvas().getCamera();
+    Rect rect = canvas.getRenderingAreaRect();
+
+    auto x = (GLint)(rect.x1);
+    auto y = (GLint)(Tile2D::window().h.get() - rect.y2);
+    auto w = (GLint)(rect.getWidth());
+    auto h = (GLint)(rect.getHeight());
+
+    glViewport(x, y, w, h);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(
+            camera.areaRect.get().x1,
+            camera.areaRect.get().x2,
+            camera.areaRect.get().y2,
+            camera.areaRect.get().y1,
+            -1.0,
+            1.0
+    );
+    glMatrixMode(GL_MODELVIEW);
+
+    glColor3f(0.3f, 1.0f, 0.3f);
+
+    for (auto& body : bodies_) {
+        if (body->colliderShape == nullptr) {
+            continue;
+        }
+        auto points = body->colliderShape->getRotatedPoints();
+        glBegin(GL_LINE_STRIP);
+        for (auto& point : points) {
+            glVertex2f(point.x + body->position_.x, point.y + body->position_.y);
+        }
+        glVertex2f(points[0].x + body->position_.x, points[0].y + body->position_.y);
+        glEnd();
+    }
 }

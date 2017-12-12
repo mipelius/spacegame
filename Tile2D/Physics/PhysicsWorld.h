@@ -37,6 +37,8 @@ public:
     const double defaultMetersPerPixel = 0.1;
     const Vec defaultGForce = Vec(0.0, 9.81);
 
+    void debugDraw();
+
 private:
     PhysicsWorld();
     ~PhysicsWorld() = default;
