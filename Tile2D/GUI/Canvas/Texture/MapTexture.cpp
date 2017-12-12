@@ -61,7 +61,7 @@ void MapTexture::glVertices(double x, double y, double w, double h, int textureN
     double texX2 = texX1 + textureW;
     double texY2 = texY1 + textureH;
 
-    double margin = 0.0001;
+    double margin = 0.00000001;
 
     texX1 += margin;
     texY1 += margin;

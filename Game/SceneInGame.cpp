@@ -34,6 +34,7 @@ void SceneInGame::init() {
 
     auto background = Tile2D::create<GameObject>();
     auto bg = Tile2D::create<Background>();
+    bg->ratio.set(0.5f);
     bg->texturePtr.set(Tile2D::resources().textures["bg2"]);
     background->addComponent(bg);
 
@@ -66,6 +67,17 @@ void SceneInGame::init() {
     auto playerController = Tile2D::create<PlayerController>();
     playerController->moveForce = 10000.0f;
     player->addComponent(playerController);
+
+    // testObj
+
+    auto testObj = Tile2D::create<GameObject>();
+
+    auto testSprite = Tile2D::create<Sprite>();
+    testSprite->position.set({4000, 8100});
+    testSprite->rect.set({-20, -20, 20, 20});
+    testSprite->texturePtr.set(Tile2D::resources().textures["spaceship"]);
+    testSprite->color.set(Color(1.0, 0.0, 0.0));
+    testObj->addComponent(testSprite);
 
     // camera
 
