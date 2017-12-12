@@ -20,10 +20,8 @@
 #include "Scenes.h"
 
 void SceneTitleScreen::init() {
-    std::cout << "Title Screen loaded\n";
+    // we are just loading the in game scene for now
     Tile2D::sceneManager().loadScene(Scenes::inGame);
 }
 
-void SceneTitleScreen::destroy() {
-    std::cout << "Title screen unloaded\n";
-}
+void SceneTitleScreen::destroy() { }

@@ -28,10 +28,7 @@
 #include "PlayerController.h"
 
 void SceneInGame::init() {
-
     Tile2D::physicsWorld().airDensity.set(0.0001);
-
-    std::cout << "\"In game\" scene loaded\n";
 
     // background
 
@@ -46,7 +43,7 @@ void SceneInGame::init() {
 
     auto spaceshipBody = Tile2D::create<Body>();
     spaceshipBody->mass.set(100.0);
-    spaceshipBody->position.set(Vec(0.0, 0.0));
+    spaceshipBody->position.set(Vec(4000.0, 8000.0));
     auto colliderShape = Tile2D::create<ColliderShape>();
     colliderShape->points.set({
           {20, 0},
@@ -96,6 +93,4 @@ void SceneInGame::init() {
     tileMap->addComponent(drawableMap);
 }
 
-void SceneInGame::destroy() {
-    std::cout << "\"In game\" scene unloaded\n";
-}
+void SceneInGame::destroy() { }

@@ -17,7 +17,7 @@
 #ifndef __SceneGameOver_H
 #define __SceneGameOver_H
 
-#include <Tile2D/Core/IScene.h>
+#include "IScene.h"
 
 class SceneGameOver : public IScene {
     void init() override;

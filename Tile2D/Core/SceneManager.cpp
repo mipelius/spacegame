@@ -19,13 +19,11 @@
 #include "Tile2D.h"
 
 SceneManager::SceneManager() {
-    std::cout << "SceneManager -> startUp\n";
     sceneToLoad_ = -1;
     currentScene_ = -1;
 }
 
 SceneManager::~SceneManager() {
-    std::cout << "SceneManager -> shutDown\n";
     if (currentScene_ != -1) {
         scenes_[currentScene_]->destroy();
     }
