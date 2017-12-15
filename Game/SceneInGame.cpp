@@ -45,14 +45,13 @@ void SceneInGame::init() {
     auto spaceshipBody = Tile2D::create<Body>();
     spaceshipBody->mass.set(100.0);
     spaceshipBody->position.set(Vec(4000.0, 8000.0));
-    auto colliderShape = Tile2D::create<ColliderShape>();
-    colliderShape->points.set({
+    auto polygonCollider = new PolygonCollider({
           {20, 0},
           {-20, 20},
           {0, 0},
           {-20, -20}
     });
-    spaceshipBody->setColliderShape(colliderShape);
+    spaceshipBody->setCollider(polygonCollider);
     spaceshipBody->mapCollision.add(&body_mapCollisionEventHandler);
     player->addComponent(spaceshipBody);
 

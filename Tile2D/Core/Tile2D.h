@@ -28,6 +28,7 @@
 #include "Canvas.h"
 #include "GameObject.h"
 #include "Tile2DBehaviour.h"
+#include "precompile.h"
 
 class Tile2D {
     friend class Tile2DObject;

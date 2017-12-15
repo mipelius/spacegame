@@ -96,15 +96,15 @@ void PhysicsWorld::debugDraw() {
     glColor3f(0.3f, 1.0f, 0.3f);
 
     for (auto& body : bodies_) {
-        if (body->colliderShape == nullptr) {
+        if (body->collider == nullptr) {
             continue;
         }
-        auto points = body->colliderShape->getRotatedPoints();
-        glBegin(GL_LINE_STRIP);
-        for (auto& point : points) {
-            glVertex2f(point.x + body->position_.x, point.y + body->position_.y);
-        }
-        glVertex2f(points[0].x + body->position_.x, points[0].y + body->position_.y);
-        glEnd();
+//        auto points = body->collider->getRotatedPoints();
+//        glBegin(GL_LINE_STRIP);
+//        for (auto& point : points) {
+//            glVertex2f(point.x + body->position_.x, point.y + body->position_.y);
+//        }
+//        glVertex2f(points[0].x + body->position_.x, points[0].y + body->position_.y);
+//        glEnd();
     }
 }

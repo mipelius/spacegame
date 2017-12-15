@@ -29,7 +29,7 @@ class SceneInGame : public IScene {
     class Body_MapCollisionEventHandler : public IEventHandler<Body, MapCollisionEventArgs> {
         void handle(Body* body, MapCollisionEventArgs args) {
             Vec velNormalized = body->velocity.get().normalized();
-            Vec proj_n_v = args.tileNormal * velNormalized.dot(args.tileNormal);
+            Vec proj_n_v = args.manifold.contactNormal * velNormalized.dot(args.manifold.contactNormal);
             Vec reflVel = velNormalized - proj_n_v * 2.0;
             body->velocity.set(reflVel * body->velocity.get().length() / 3);
             if (body->velocity.get().lengthSqr() < 1.0) {

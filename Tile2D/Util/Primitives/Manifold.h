@@ -14,16 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MapCollisionEventArgs_H
-#define __MapCollisionEventArgs_H
+#ifndef __Manifold_H
+#define __Manifold_H
 
-#include "Manifold.h"
 #include "Vec.h"
 
-class MapCollisionEventArgs {
+class Manifold {
+
 public:
-    explicit MapCollisionEventArgs(Manifold manifold);
-    Manifold manifold;
+    Manifold();
+    Manifold(Vec contactNormal, double penetration);
+    Vec contactNormal;
+    double penetration;
+
 };
 
-#endif //__MapCollisionEventArgs_H
+
+#endif //__Manifold_H

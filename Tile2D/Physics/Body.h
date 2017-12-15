@@ -22,6 +22,7 @@
 #include "Property.h"
 #include "Event.h"
 #include "MapCollisionEventArgs.h"
+#include "PolygonCollider.h"
 
 class PhysicsWorld;
 class ColliderShape;
@@ -57,16 +58,16 @@ public:
     void applyTorque(double angle);
 
     PhysicsWorld* getWorld();
-    ColliderShape* getColliderShape();
+    PolygonCollider* getCollider();
 
-    void setColliderShape(ColliderShape *collisionShape);
+    void setCollider(PolygonCollider* collider);
 
     void ignoreCollisionDetection();
     void ignoreStep();
 
 protected:
     PhysicsWorld *physicsWorld_;
-    ColliderShape* colliderShape;
+    PolygonCollider* collider;
 
 private:
     void init() override;

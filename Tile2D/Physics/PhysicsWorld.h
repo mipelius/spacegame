@@ -20,6 +20,7 @@
 class TileMap;
 class Body;
 
+#include <list>
 #include "Vec.h"
 #include "Property.h"
 

@@ -14,7 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <Tile2D/Core/Tile2D.h>
+#include "Tile2D.h"
+#include "Manifold.h"
 #include "precompile.h"
 #include "Body.h"
 
@@ -22,6 +23,7 @@
 #include "PhysicsWorld.h"
 #include "TileMap.h"
 #include "BodyCollisionEventArgs.h"
+#include "PolygonCollider.h"
 
 Body::Body() :
     // properties
@@ -54,7 +56,7 @@ Body::Body() :
     entityCollisionDetectionIsIgnored_  (false),
     stepIsIgnored_                      (false),
     physicsWorld_                       (nullptr),
-    colliderShape                       (nullptr),
+    collider                       (nullptr),
     isDead_                             (false)
 {
 
@@ -119,10 +121,12 @@ bool Body::detectMapCollision_() {
         return false;
     }
 
-    if (map->detectCollisionWith(this)) {
+    Manifold manifold;
+
+    if (map->detectCollisionWith(this, manifold)) {
         Vec tileNormal(0.0, -1.0);
 
-        mapCollision.raise(MapCollisionEventArgs(tileNormal));
+        mapCollision.raise(MapCollisionEventArgs(manifold));
 
         return true;
     }
@@ -131,16 +135,16 @@ bool Body::detectMapCollision_() {
 
 
 bool Body::detectCollisionWith_(Body &otherBody) {
-    if (!entityCollisionDetectionIsIgnored_) {
-        if (this->colliderShape == nullptr || otherBody.colliderShape == nullptr) return false;
-        if (this->colliderShape->intersectsWith(otherBody.getColliderShape()) ||
-                otherBody.getColliderShape()->intersectsWith(colliderShape)) {
-
-            bodyCollision.raise(BodyCollisionEventArgs(&otherBody));
-
-            return true;
-        }
-    }
+//    if (!entityCollisionDetectionIsIgnored_) {
+//        if (this->collider == nullptr || otherBody.collider == nullptr) return false;
+//        if (this->collider->intersectsWith(otherBody.getColliderShape()) ||
+//                otherBody.getColliderShape()->intersectsWith(collider)) {
+//
+//            bodyCollision.raise(BodyCollisionEventArgs(&otherBody));
+//
+//            return true;
+//        }
+//    }
 
     entityCollisionDetectionIsIgnored_ = false;
 
@@ -168,13 +172,12 @@ PhysicsWorld *Body::getWorld() {
     return this->physicsWorld_;
 }
 
-ColliderShape* Body::getColliderShape() {
-    return colliderShape;
+PolygonCollider* Body::getCollider() {
+    return collider;
 }
 
-void Body::setColliderShape(ColliderShape *collisionShape) {
-    this->colliderShape = collisionShape;
-    collisionShape->owner_ = this;
+void Body::setCollider(PolygonCollider *collider) {
+    this->collider = collider;
 }
 
 void Body::applyTorque(double angle) {

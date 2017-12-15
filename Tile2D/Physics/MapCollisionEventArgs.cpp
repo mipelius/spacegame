@@ -16,6 +16,6 @@
 
 #include "MapCollisionEventArgs.h"
 
-MapCollisionEventArgs::MapCollisionEventArgs(Vec tileNormal) {
-    this->tileNormal = tileNormal;
+MapCollisionEventArgs::MapCollisionEventArgs(Manifold manifold) {
+    this->manifold = manifold;
 }

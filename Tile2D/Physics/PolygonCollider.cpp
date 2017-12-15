@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include "Manifold.h"
 #include "PolygonCollider.h"
 #include "LineSegment.h"
 
@@ -11,11 +12,11 @@ bool PolygonCollider::castOneWay_(
         const PolygonCollider &collider,
         const PolygonCollider &otherCollider,
         Vec &contactNormal,
-        Vec &penetration
+        Vec &toCollision
 ) {
     bool collided = false;
 
-    penetration = {10000.0, 10000.0};
+    toCollision = {10000.0, 10000.0};
 
     const PolygonCollider& c1 = collider;
     const PolygonCollider& c2 = otherCollider;
@@ -45,7 +46,7 @@ bool PolygonCollider::castOneWay_(
                 curDistanceSqr = curVec.lengthSqr();
                 if (minDistanceSqr > curDistanceSqr) {
                     minDistanceSqr = curDistanceSqr;
-                    penetration = curVec;
+                    toCollision = curVec;
                     Vec tmp = startPoint - endPoint;
                     contactNormal = {tmp.y, -tmp.x};
                 }
@@ -59,40 +60,59 @@ bool PolygonCollider::castOneWay_(
 bool PolygonCollider::cast(
         const Vec &direction,
         const PolygonCollider& otherCollider,
-        Vec &contactNormal,
-        Vec &penetration
-) {
-    Vec contactNormalTmp, penetrationTmp;
 
-    bool collided1 = castOneWay_(direction, *this, otherCollider, contactNormal, penetration);
-    bool collided2 = castOneWay_(direction * -1, otherCollider, *this, contactNormalTmp, penetrationTmp);
+        Manifold& manifold
+) {
+    Vec contactNormal, toCollision;
+    Vec contactNormalTmp, toCollisionTmp;
+
+    bool collided1 = castOneWay_(direction, *this, otherCollider, contactNormal, toCollision);
+    bool collided2 = castOneWay_(direction * -1, otherCollider, *this, contactNormalTmp, toCollisionTmp);
 
     if (!collided1 && !collided2) {
         return false;
     }
 
-    penetrationTmp *= -1.0;
+    toCollisionTmp *= -1.0;
 
     if (
-            penetrationTmp.lengthSqr() < penetration.lengthSqr()
+            toCollisionTmp.lengthSqr() < toCollision.lengthSqr()
     ) {
-        penetration = penetrationTmp;
+        toCollision = toCollisionTmp;
         contactNormal = contactNormalTmp;
     }
 
-    contactNormal.normalized();
-    if (contactNormal.dot(penetration) > 0) { // flip (is necessary)
+    contactNormal = contactNormal.normalized();
+    if (contactNormal.dot(toCollision) > 0) { // flip (is necessary)
         contactNormal = contactNormal * -1;
     }
+
+    double penetration = (direction - toCollision).length();
+    manifold = Manifold(contactNormal, penetration);
 
     return true;
 }
 
-PolygonCollider::PolygonCollider(std::vector<Vec> points) {
+PolygonCollider::PolygonCollider(std::vector<Vec> points) : boundingBox_({-1, -1, 1, 1}) {
     points_ = std::move(points);
+
+    Vec farMost = Vec(0, 0);
+
+    for (const auto& vec : points) {
+        double length = vec.length();
+        double farMostLength = Vec(farMost.x, farMost.y).length();
+        if (length > farMostLength) farMost = vec;
+    }
+
+    double length = Vec(farMost.x, farMost.y).length();
+    boundingBox_ = Rect(-length, -length, length, length);
 }
 
 std::vector<Vec> PolygonCollider::points() const {
     return points_;
+}
+
+const Rect &PolygonCollider::boundingBox() const {
+    return boundingBox_;
 }
 

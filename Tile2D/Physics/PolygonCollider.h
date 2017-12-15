@@ -7,6 +7,8 @@
 
 #include <vector>
 #include "Vec.h"
+#include "Manifold.h"
+#include "Rect.h"
 
 class PolygonCollider {
     friend class PolygonCollider;
@@ -16,8 +18,7 @@ public:
     bool cast(
             const Vec&              direction,
             const PolygonCollider&  otherCollider,
-            Vec&                    contactNormal,
-            Vec&                    penetration
+            Manifold&               manifold
     );
 
     Vec pos;
@@ -25,14 +26,18 @@ public:
 
     std::vector<Vec> points() const;
 
+    const Rect& boundingBox() const;
+
 private:
     bool castOneWay_(
             const Vec &direction,
             const PolygonCollider &collider,
             const PolygonCollider &otherCollider,
             Vec &contactNormal,
-            Vec &penetration
+            Vec &toCollision
     );
+
+    Rect boundingBox_;
 
     std::vector<Vec> points_;
 };

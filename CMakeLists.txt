@@ -75,6 +75,7 @@ set(SOURCE_FILES
         Tile2D/GUI/Canvas/Drawable/Font.cpp
         Tile2D/GUI/Canvas/Drawable/Font.h
         Tile2D/GUI/Canvas/Drawable/DrawableBase.h
+        Tile2D/GUI/Canvas/Drawable/DrawableBase.cpp
         Tile2D/GUI/Canvas/Drawable/Plot.cpp
         Tile2D/GUI/Canvas/Drawable/Plot.h
         Tile2D/GUI/Canvas/Drawable/Sprite.cpp
@@ -121,6 +122,10 @@ set(SOURCE_FILES
         Tile2D/Physics/TileMap.cpp
         Tile2D/Physics/TileMap.h
         Tile2D/Physics/WorldMapModifiedEventArgs.h
+        Tile2D/Physics/MapCollisionEventArgs.cpp
+        Tile2D/Physics/MapCollisionEventArgs.h
+        Tile2D/Physics/PolygonCollider.cpp
+        Tile2D/Physics/PolygonCollider.h
         Tile2D/Sound/Ears.cpp
         Tile2D/Sound/Ears.h
         Tile2D/Sound/Music.cpp
@@ -143,6 +148,10 @@ set(SOURCE_FILES
         Tile2D/Util/Primitives/Rect.h
         Tile2D/Util/Primitives/Vec.cpp
         Tile2D/Util/Primitives/Vec.h
+        Tile2D/Util/Primitives/Manifold.cpp
+        Tile2D/Util/Primitives/Manifold.h
+        Tile2D/Util/Primitives/LineSegment.cpp
+        Tile2D/Util/Primitives/LineSegment.h
         Tile2D/Util/Property/BooleanProperty.cpp
         Tile2D/Util/Property/BooleanProperty.h
         Tile2D/Util/Property/Property.h
@@ -159,6 +168,12 @@ set(SOURCE_FILES
         Tile2D/Core/ResourceContainer.h
         Tile2D/Core/Tile2DObject.cpp
         Tile2D/Core/Tile2DObject.h
+        Tile2D/Core/GameObject.cpp
+        Tile2D/Core/GameObject.h
+        Tile2D/Core/Tile2DComponent.h
+        Tile2D/Core/Tile2DBehaviour.cpp
+        Tile2D/Core/Tile2DBehaviour.h
+
         main.cpp
         precompile.h
         Game/SceneInGame.cpp
@@ -167,7 +182,11 @@ set(SOURCE_FILES
         Game/SceneTitleScreen.h
         Game/SceneGameOver.cpp
         Game/SceneGameOver.h
-        Game/Scenes.h Tile2D/Core/GameObject.cpp Tile2D/Core/GameObject.h Tile2D/Core/Tile2DComponent.h Tile2D/GUI/Canvas/Drawable/DrawableBase.cpp Tile2D/Core/Tile2DBehaviour.cpp Tile2D/Core/Tile2DBehaviour.h Game/PlayerController.cpp Game/PlayerController.h Tile2D/Physics/MapCollisionEventArgs.cpp Tile2D/Physics/MapCollisionEventArgs.h)
+        Game/Scenes.h
+
+        Game/PlayerController.cpp
+        Game/PlayerController.h
+        )
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

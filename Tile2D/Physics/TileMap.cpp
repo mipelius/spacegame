@@ -92,47 +92,53 @@ long TileMap::getActualH() {
     return blocks_->getH() * blockSizeH;
 }
 
-bool TileMap::detectCollisionWith(Body* body) {
-    if (body->getColliderShape() == nullptr) {
+bool TileMap::detectCollisionWith(Body* body, Manifold& manifold) {
+    auto collider = body->getCollider();
+    if (collider == nullptr) {
         return false;
     }
 
-    Tile* tile = this->getValueScaled(body->position.get());
+    // for collision detection we cast from the start point
+    collider->pos = body->position.get() - body->velocity.get();
 
-    if (tile != nullptr && tile->density.get() > 0.0) return true;
+    Rect boundingBox = collider->boundingBox();
+    boundingBox.x1 += body->position.get().x;
+    boundingBox.x2 += body->position.get().x;
+    boundingBox.y1 += body->position.get().y;
+    boundingBox.y2 += body->position.get().y;
 
-    std::vector<Vec> points = body->getColliderShape()->getRotatedPoints();
-
-    for (int i=0; i< body->getColliderShape()->points.get().size(); i++) {
-        Vec point(
-                points[i].x + body->position.get().x,
-                points[i].y + body->position.get().y
-        );
-
-        tile = this->getValueScaled(point);
-        if (tile != nullptr && tile->density.get() > 0.0) return true;
-    }
-
-    Rect boundingBox = body->getColliderShape()->getBoundingBox();
+    // TODO: you should take some other tiles into account
 
     int iBegin = (int)boundingBox.x1 - ((int)boundingBox.x1) % blockSizeW;
     int iEnd = (int)boundingBox.x2 + (int)boundingBox.x2 % blockSizeW;
     int jBegin = (int)boundingBox.y1 - ((int)boundingBox.y1) % blockSizeH;
     int jEnd = (int)boundingBox.y2 + (int)boundingBox.y2 % blockSizeH;
 
+    Tile* tile;
+
+    manifold.penetration = 100000.0;
+    Manifold tmpManifold;
+    bool collided = false;
+
     for (int i=iBegin; i <= iEnd; i += blockSizeW) {
         for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
             tile = this->getValueScaled(Vec(i, j));
             if (tile != nullptr && tile->density.get() > 0.0) {
-                Rect rect = Rect(i, j, i + blockSizeW, j + blockSizeH);
-                if (body->getColliderShape()->intersectsWith(rect)) {
-                    return true;
+                double x1 = i, y1 = j, x2 = x1 + blockSizeW, y2 = y1 + blockSizeH;
+
+                PolygonCollider tileCollider({{x1, y1}, {x2, y1},{x2, y2}, {x1, y2}});
+
+                if (collider->cast(body->velocity.get(), tileCollider, tmpManifold)) {
+                    collided = true;
+                    if (tmpManifold.penetration < manifold.penetration) {
+                        manifold = tmpManifold;
+                    }
                 }
             }
         }
     }
 
-    return false;
+    return collided;
 }
 
 int TileMap::getBlockW() {
