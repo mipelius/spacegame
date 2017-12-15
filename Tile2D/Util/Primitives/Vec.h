@@ -17,7 +17,7 @@
 #ifndef __Vector_H_
 #define __Vector_H_
 
-#include "precompile.h"
+#include <cmath>
 
 class Vec {
 public:
@@ -25,13 +25,21 @@ public:
     double y;
     Vec(double x, double y);
     Vec();
+
+    inline void rotate(double degrees);
+    inline Vec rotated(double degrees) const;
     inline static Vec byAngle(const double &angleDegrees, const double &amount);
+
     inline Vec operator + (const Vec& otherVector) const;
     inline Vec operator - (const Vec& otherVector) const;
+    inline Vec operator * (double const &amount) const;
+    inline Vec operator / (double const &amount) const;
+
     inline Vec operator -= (const Vec& otherVector);
     inline Vec operator += (const Vec& otherVector);
-    inline Vec operator *(double const &amount) const;
-    inline Vec operator /(double const &amount) const;
+    inline Vec operator *= (double const &amount);
+    inline Vec operator /= (double const &amount);
+
     inline double length() const;
     inline double lengthSqr() const;
     inline double angle() const;
@@ -41,12 +49,28 @@ public:
 
 // inline functions
 
+inline void Vec::rotate(double degrees) {
+    *this = this->rotated(degrees);
+}
+
+inline Vec Vec::rotated(double degrees) const {
+    return {Vec(cos(degrees), -sin(degrees)).dot(*this), Vec(sin(degrees), cos(degrees)).dot(*this)};
+}
+
 inline Vec Vec::operator + (const Vec &otherVector) const {
     return {x + otherVector.x, y + otherVector.y};
 }
 
 inline Vec Vec::operator - (const Vec &otherVector) const {
     return {x - otherVector.x, y - otherVector.y};
+}
+
+inline Vec Vec::operator * (const double &amount) const {
+    return {x * amount, y * amount};
+}
+
+inline Vec Vec::operator /(double const &amount) const {
+    return {x / amount, y / amount};
 }
 
 inline Vec Vec::operator -= (Vec const &otherVector) {
@@ -61,12 +85,16 @@ inline Vec Vec::operator += (const Vec &otherVector) {
     return {x, y};
 }
 
-inline Vec Vec::operator * (const double &amount) const {
-    return {x * amount, y * amount};
+inline Vec Vec::operator *=(double const &amount) {
+    x *= amount;
+    y *= amount;
+    return {x, y};
 }
 
-inline Vec Vec::operator /(double const &amount) const {
-    return {x / amount, y / amount};
+inline Vec Vec::operator /=(double const &amount) {
+    x /= amount;
+    y /= amount;
+    return {x, y};
 }
 
 inline Vec Vec::byAngle(const double &angleDegrees, const double &amount) {

@@ -16,6 +16,6 @@
 
 #include "MapCollisionEventArgs.h"
 
-MapCollisionEventArgs::MapCollisionEventArgs(Vec contactNormal) {
-    this->contactNormal = contactNormal;
+MapCollisionEventArgs::MapCollisionEventArgs(Vec tileNormal) {
+    this->tileNormal = tileNormal;
 }

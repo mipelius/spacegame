@@ -21,8 +21,8 @@
 
 class MapCollisionEventArgs {
 public:
-    explicit MapCollisionEventArgs(Vec contactNormal);
-    Vec contactNormal;
+    explicit MapCollisionEventArgs(Vec tileNormal);
+    Vec tileNormal;
 };
 
 #endif //__MapCollisionEventArgs_H

@@ -17,6 +17,8 @@
 #include "precompile.h"
 #include "ColliderShape.h"
 
+// TODO: THIS IS SOMEWHAT LEGACY STUFF, GET RID OF IT!
+
 ColliderShape::ColliderShape():
         points( Property<std::vector<Vec> >(this, getPoints_, setPoints_   )),
         boundingBox_(Rect(-1, -1, 1, 1))
@@ -91,7 +93,7 @@ Rect ColliderShape::getBoundingBox() const {
     };
 }
 
-bool ColliderShape::intersectsWith(const Rect& rectangle) const {
+bool ColliderShape::intersectsWith(const Rect &rectangle) const {
     Vec location = owner_->position.get();
 
     std::vector<Vec> points = getRotatedPoints();

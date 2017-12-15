@@ -120,7 +120,9 @@ bool Body::detectMapCollision_() {
     }
 
     if (map->detectCollisionWith(this)) {
-        mapCollision.raise(MapCollisionEventArgs(Vec(0.0, -1.0))); // TODO: calculate the real contact normal
+        Vec tileNormal(0.0, -1.0);
+
+        mapCollision.raise(MapCollisionEventArgs(tileNormal));
 
         return true;
     }
