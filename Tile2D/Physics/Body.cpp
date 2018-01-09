@@ -116,17 +116,120 @@ void Body::step_(double timeElapsedSec) {
 
 bool Body::detectMapCollision_(double deltaTime) {
     TileMap* map = this->physicsWorld_->map_;
-    if (map == nullptr) {
+
+    if (map == nullptr || collider == nullptr) {
         return false;
     }
 
+    bool collided = false;
 
-    if (map->detectCollisionWith(this, deltaTime)) {
-        mapCollision.raise(MapCollisionEventArgs(deltaTime));
+    collider->pos = position_;
+    collider->rot = angle_;
 
-        return true;
+    Rect boundingBox = collider->boundingBox();
+    boundingBox.x1 += position_.x;
+    boundingBox.x2 += position_.x;
+    boundingBox.y1 += position_.y;
+    boundingBox.y2 += position_.y;
+
+    int blockSizeW = map->getBlockW();
+    int blockSizeH = map->getBlockH();
+
+    int iBegin = (int)boundingBox.x1 - ((int)boundingBox.x1) % blockSizeW;
+    int iEnd = (int)boundingBox.x2 + (int)boundingBox.x2 % blockSizeW;
+    int jBegin = (int)boundingBox.y1 - ((int)boundingBox.y1) % blockSizeH;
+    int jEnd = (int)boundingBox.y2 + (int)boundingBox.y2 % blockSizeH;
+
+    Vec direction = velocity_ * deltaTime * Tile2D::physicsWorld().metersPerPixel_;
+    Tile* tile;
+
+    if (direction.length() < sqrt(blockSizeW * blockSizeH) / 4.0) {
+        Vec contactNormal;
+        double penetration;
+
+        for (int i=iBegin; i <= iEnd; i += blockSizeW) {
+            for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
+                tile = map->getValueScaled(Vec(i, j));
+                if (tile != nullptr && tile->density.get() > 0.0) {
+                    double x = i;
+                    double y = j;
+                    double w = blockSizeW;
+                    double h = blockSizeH;
+
+                    PolygonCollider tileCollider({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
+                    tileCollider.rot = 0.0;
+                    tileCollider.pos = {x, y};
+
+                    if (collider->overlap(tileCollider, contactNormal, penetration)) {
+                        // TODO: move collider instead
+                        position.set(position.get() + (contactNormal * (penetration + 0.05)));
+                        collided = true;
+                        velocity.set({0,0});
+                    }
+                }
+                // TODO
+                //position_ = collider_.pos
+            }
+        }
+
+    } else {
+        Vec contactNormal;
+        Vec currentContactNormal;
+
+        Vec toCollision = {0, 0};
+        Vec currentToCollision;
+
+        for (int i=iBegin; i <= iEnd; i += blockSizeW) {
+            for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
+                tile = map->getValueScaled(Vec(i, j));
+                if (tile != nullptr && tile->density.get() > 0.0) {
+                    double x = i;
+                    double y = j;
+                    double w = blockSizeW;
+                    double h = blockSizeH;
+
+                    PolygonCollider tileCollider({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
+                    tileCollider.rot = 0.0;
+                    tileCollider.pos = {x, y};
+
+                    if (collider->cast(direction * -1.0, tileCollider, currentContactNormal, currentToCollision))
+                    {
+                        collided = true;
+
+                        if (currentToCollision.lengthSqr() > toCollision.lengthSqr()) {
+                            toCollision = currentToCollision;
+                            contactNormal = currentContactNormal;
+                        }
+                    }
+
+                }
+            }
+        }
+
+        if (collided) {
+            Vec v = velocity.get();
+            double v_dot_n = v.dot(contactNormal.normalized());
+            Vec proj_n_v = contactNormal * v_dot_n;
+            Vec reflVel = v + proj_n_v * -2.0;
+
+            velocity.set(reflVel * 0.2);
+            position.set(
+                    position.get() +
+                    toCollision * (1.01)
+            );
+        }
     }
-    return false;
+
+    return collided;
+
+//    Vec contactNormal;
+//
+//    if (map->detectCollisionWith(this, contactNormal, deltaTime)) {
+//        mapCollision.raise(MapCollisionEventArgs(deltaTime));
+//
+//        return true;
+//    }
+//    return false;
 }
 
 

@@ -14,14 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Tile2D.h"
-#include "Canvas.h"
-#include "Camera.h"
-#include "precompile.h"
-#include "PhysicsWorld.h"
+#include "gl_utils.h"
 #include "Body.h"
 #include "ColliderShape.h"
-#include "TileMap.h"
 
 PhysicsWorld::PhysicsWorld():
     gForce(             Property<Vec>    (&gForce_)           ),
@@ -70,56 +65,41 @@ void PhysicsWorld::remove(Body *body) {
 }
 
 void PhysicsWorld::debugDraw() {
-    Canvas& canvas = Tile2D::canvas();
-    auto& camera = Tile2D::canvas().getCamera();
-    Rect rect = canvas.getRenderingAreaRect();
-
-    auto x = (GLint)(rect.x1);
-    auto y = (GLint)(Tile2D::window().h.get() - rect.y2);
-    auto w = (GLint)(rect.getWidth());
-    auto h = (GLint)(rect.getHeight());
-
-    glViewport(x, y, w, h);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(
-            camera.areaRect.get().x1,
-            camera.areaRect.get().x2,
-            camera.areaRect.get().y2,
-            camera.areaRect.get().y1,
-            -1.0,
-            1.0
-    );
-    glMatrixMode(GL_MODELVIEW);
-
-    glColor3f(0.3f, 1.0f, 0.3f);
+    prepareRendering();
 
     for (auto& body : bodies_) {
         if (body->collider == nullptr) {
             continue;
         }
+
+        // COLLIDER
+
+        glColor3f(0.3f, 1.0f, 0.3f);
+
         auto points = body->collider->points;
-        glBegin(GL_LINE_STRIP);
+
+        glBegin(GL_LINE_LOOP);
         for (auto& pointOrig : points) {
-            auto point = pointOrig.rotated(body->angle.get());
-            glVertex2f(point.x + body->position_.x, point.y + body->position_.y);
+            auto point = pointOrig.rotated(body->angle.get()) + body->position.get();
+            glVertex2d(point.x, point.y);
         }
-        auto point = points[0].rotated(body->angle.get());
-        glVertex2f(point.x + body->position_.x, point.y + body->position_.y);
+        glEnd();
+
+        // BOUNDING BOX
+
+        glColor3f(0.0f, 0.3f, 0.0f);
 
         Rect rect = body->collider->boundingBox();
+        rect.x1 += body->position.get().x;
+        rect.y1 += body->position.get().y;
+        rect.x2 += body->position.get().x;
+        rect.y2 += body->position.get().y;
 
+        glBegin(GL_LINE_LOOP);
+            glVertex2d(rect.x1, rect.y1);
+            glVertex2d(rect.x2, rect.y1);
+            glVertex2d(rect.x2, rect.y2);
+            glVertex2d(rect.x1, rect.y2);
         glEnd();
-
-        glBegin(GL_LINE_STRIP);
-        glVertex2f(rect.x1 + body->position.get().x, rect.y1 + body->position.get().y);
-        glVertex2f(rect.x2 + body->position.get().x, rect.y1 + body->position.get().y);
-        glVertex2f(rect.x2 + body->position.get().x, rect.y2 + body->position.get().y);
-        glVertex2f(rect.x1 + body->position.get().x, rect.y2 + body->position.get().y);
-
-        glEnd();
-
-
     }
 }

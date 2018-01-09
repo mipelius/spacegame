@@ -48,8 +48,6 @@ public:
     long getActualW();
     long getActualH();
 
-    bool detectCollisionWith(Body* body, double deltaTime);
-
     void load(
             std::string path,
             TileSet* tileSet,

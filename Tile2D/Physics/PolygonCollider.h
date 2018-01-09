@@ -11,6 +11,9 @@
 
 class PolygonCollider {
     friend class PolygonCollider;
+    friend class Body;
+    friend class Projection;
+
 public:
     explicit PolygonCollider(std::vector<Vec> points);
 
@@ -21,9 +24,6 @@ public:
             Vec&                    toCollision
     );
 
-    Vec pos;
-    double rot;
-
     const Rect& boundingBox() const;
 
     std::vector<Vec> points;
@@ -33,6 +33,9 @@ public:
     std::vector<Vec> getAxes() const;
 
 private:
+    Vec pos;
+    double rot;
+
     bool castOneWay_(
             const Vec &direction,
             const PolygonCollider &collider,
