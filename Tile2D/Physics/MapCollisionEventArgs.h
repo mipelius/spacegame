@@ -18,11 +18,17 @@
 #define __MapCollisionEventArgs_H
 
 #include "Vec.h"
+#include "Tile.h"
 
 class MapCollisionEventArgs {
+
 public:
-    explicit MapCollisionEventArgs(double deltaTime);
+    explicit MapCollisionEventArgs(double deltaTime, Vec contactNormal, Vec tileCoordinates, Tile* tile);
+
     double deltaTime;
+    Vec contactNormal;
+    Vec tileCoordinates;
+    Tile* tile;
 };
 
 #endif //__MapCollisionEventArgs_H

@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2017 Miika Pelkonen
+// Copyright (C) 2018 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,32 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __PlayerController_H
-#define __PlayerController_H
+#ifndef __SparkleBehaviour_H
+#define __SparkleBehaviour_H
 
-#include "Body.h"
+
+#include <SDL_quit.h>
 #include "Sprite.h"
 #include "Tile2DBehaviour.h"
 
-class PlayerController : public Tile2DBehaviour {
-
-public:
-    float moveForce;
-    void shoot();
-
+class SparkleBehaviour : public Tile2DBehaviour {
 protected:
     void awake() override;
     void update() override;
 
-private:
-    void shootOnce(Vec offset);
-
-    const Uint32 shootingInterval = 40;
-    Uint32 lastShotTimestamp;
-
-    Body* body;
+    Uint32 awakeTimestamp;
+    const Uint32 TTL = 1000;
     Sprite* sprite;
-
 };
 
-#endif //__PlayerController_H
+
+#endif //__SparkleBehaviour_H

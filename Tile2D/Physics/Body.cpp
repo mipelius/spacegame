@@ -60,8 +60,12 @@ void Body::init() {
 }
 
 void Body::onDestroy() {
-    collider_->destroy();
-    physicsWorld_->remove(this);
+    if (collider_ != nullptr) {
+        collider_->destroy();
+    }
+    if (physicsWorld_ != nullptr) {
+        physicsWorld_->remove(this);
+    }
 }
 
 void Body::step_(double timeElapsedSec) {
@@ -132,13 +136,11 @@ bool Body::detectMapCollision_(double deltaTime) {
 
     double w = blockSizeW;
     double h = blockSizeH;
-
     PolygonCollider tileCollider;
     tileCollider.rot_ = 0.0;
-
     tileCollider.setPoints({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
 
-    if (direction.length() < sqrt(blockSizeW * blockSizeH) / 4.0) {
+    if (direction.length() < sqrt(blockSizeW * blockSizeH) / 4.0) { // if slowly moving object -> use SAT strategy
         Vec contactNormal;
         double penetration;
 
@@ -151,6 +153,8 @@ bool Body::detectMapCollision_(double deltaTime) {
                     if (collider_->overlap(tileCollider, contactNormal, penetration)) {
                         collider_->pos_ += contactNormal * (penetration + 0.05);
                         collided = true;
+
+                        mapCollision.raise(MapCollisionEventArgs(deltaTime, contactNormal, tileCollider.pos_, tile));
                     }
                 }
             }
@@ -161,12 +165,15 @@ bool Body::detectMapCollision_(double deltaTime) {
             position_ = collider_->pos_;
         }
 
-    } else {
+    } else { // if fast object -> use polygon casting/sweeping
         Vec contactNormal;
         Vec currentContactNormal;
 
         Vec toCollision = {0, 0};
         Vec currentToCollision;
+
+        Tile* collisionTile = nullptr;
+        Vec collisionTileCoord;
 
         for (int i=iBegin; i <= iEnd; i += blockSizeW) {
             for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
@@ -179,31 +186,35 @@ bool Body::detectMapCollision_(double deltaTime) {
                         collided = true;
 
                         if (currentToCollision.lengthSqr() > toCollision.lengthSqr()) {
+                            collisionTile = tile;
+                            collisionTileCoord = tileCollider.pos_;
+
                             toCollision = currentToCollision;
                             contactNormal = currentContactNormal;
                         }
                     }
-
                 }
             }
         }
 
         if (collided) {
             const Vec& v = velocity_;
-            const Vec n = contactNormal.normalized();
+            const Vec& n = contactNormal;
 
-            Vec proj_n_v = n * v.dot(n);;
+            Vec proj_n_v = n * v.dot(n);
             Vec reflVel = v + proj_n_v * -2.0;
 
             velocity_ = reflVel * 0.2;
             position_ += toCollision * (1.01);
+
+            mapCollision.raise(MapCollisionEventArgs(deltaTime, n, collisionTileCoord, collisionTile));
         }
     }
 
+    // regardless of the collision detection/resolving method --> update dependent properties
     if (collided) {
         velocity.updateDependentProperties();
         position.updateDependentProperties();
-        mapCollision.raise(MapCollisionEventArgs(deltaTime));
     }
 
     return collided;

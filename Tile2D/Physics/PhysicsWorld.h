@@ -38,6 +38,8 @@ public:
     const double defaultMetersPerPixel = 0.1;
     const Vec defaultGForce = Vec(0.0, 9.81);
 
+    TileMap* getMap();
+
     void debugDraw();
 
 private:

@@ -108,3 +108,7 @@ void PhysicsWorld::debugDraw() {
         glEnd();
     }
 }
+
+TileMap *PhysicsWorld::getMap() {
+    return map_;
+}

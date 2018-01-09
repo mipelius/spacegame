@@ -28,6 +28,7 @@ protected:
     void update() override;
 
     class Body_MapCollisionEventHandler : public IEventHandler<Body, MapCollisionEventArgs> {
+        void createSparkle(Vec position, Vec velocity);
         void handle(Body* body, MapCollisionEventArgs args) override;
     };
 

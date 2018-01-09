@@ -16,6 +16,9 @@
 
 #include "MapCollisionEventArgs.h"
 
-MapCollisionEventArgs::MapCollisionEventArgs(double deltaTime) {
+MapCollisionEventArgs::MapCollisionEventArgs(double deltaTime, Vec contactNormal, Vec tileCoordinates, Tile *tile) {
     this->deltaTime = deltaTime;
+    this->contactNormal = contactNormal;
+    this->tileCoordinates = tileCoordinates;
+    this->tile = tile;
 }

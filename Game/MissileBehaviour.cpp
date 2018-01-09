@@ -14,10 +14,43 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "Tile2D.h"
 #include "MissileBehaviour.h"
+#include "SparkleBehaviour.h"
 
 void MissileBehaviour::Body_MapCollisionEventHandler::handle(Body* body, MapCollisionEventArgs args) {
     body->gameObject()->destroy();
+    Tile2D::physicsWorld().getMap()->setValueScaled(args.tileCoordinates, nullptr);
+
+    // funny sparkle effect
+
+    Vec& n = args.contactNormal;
+    Vec perp = Vec(n.y, -n.x);
+
+    createSparkle(args.tileCoordinates, perp * 10000);
+    createSparkle(args.tileCoordinates, perp * -10000);
+}
+
+void MissileBehaviour::Body_MapCollisionEventHandler::createSparkle(Vec position, Vec velocity) {
+    auto sparkle = Tile2D::create<GameObject>();
+
+    auto sparkleBody = Tile2D::create<Body>();
+    sparkleBody->mass.set(10.0);
+    sparkleBody->position.set(position);
+    sparkleBody->velocity.set(velocity);
+    sparkleBody->angle.set(velocity.angle());
+    sparkle->addComponent(sparkleBody);
+
+    auto sparkleSprite = Tile2D::create<Sprite>();
+    sparkleSprite->rect.set({-4,-4,4,4});
+    sparkleSprite->color.set({1, 0, 0});
+    sparkleSprite->position.bind(sparkleBody->position);
+    sparkleSprite->angle.bind(sparkleBody->angle);
+    sparkleSprite->texturePtr.set(Tile2D::resources().textures["missile"]);
+    sparkle->addComponent(sparkleSprite);
+
+    auto sparkleBehaviour = Tile2D::create<SparkleBehaviour>();
+    sparkle->addComponent(sparkleBehaviour);
 }
 
 void MissileBehaviour::awake() {
