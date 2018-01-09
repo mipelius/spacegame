@@ -54,7 +54,7 @@ private:
 
     std::list<Body *> bodies_;
     TileMap * map_;
-    void detectCollision_(Body* body);
+    void detectCollision_(Body* body, double deltaTime);
 };
 
 #endif //__PhysicsWorld_H_

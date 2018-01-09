@@ -19,7 +19,6 @@
 
 #include <string>
 #include <Tile2D/Core/Tile2DComponent.h>
-#include "Manifold.h"
 
 class MapTexture;
 class Body;
@@ -49,8 +48,7 @@ public:
     long getActualW();
     long getActualH();
 
-    Vec penetration, contactNormal;
-    bool detectCollisionWith(Body* body, Manifold& manifold);
+    bool detectCollisionWith(Body* body, double deltaTime);
 
     void load(
             std::string path,

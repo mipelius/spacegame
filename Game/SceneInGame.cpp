@@ -36,6 +36,7 @@ void SceneInGame::init() {
     auto bg = Tile2D::create<Background>();
     bg->ratio.set(0.5f);
     bg->texturePtr.set(Tile2D::resources().textures["bg2"]);
+
     background->addComponent(bg);
 
     // player
@@ -46,11 +47,13 @@ void SceneInGame::init() {
     spaceshipBody->mass.set(100.0);
     spaceshipBody->position.set(Vec(4000.0, 8000.0));
     auto polygonCollider = new PolygonCollider({
-          {20, 0},
-          {-20, 20},
-          {0, 0},
-          {-20, -20}
+          {-20, -18},
+          {-5, -18},
+          {18, 0},
+          {-5, 18},
+          {-20, 18}
     });
+
     spaceshipBody->setCollider(polygonCollider);
     spaceshipBody->mapCollision.add(&body_mapCollisionEventHandler);
     player->addComponent(spaceshipBody);
@@ -61,6 +64,7 @@ void SceneInGame::init() {
     spaceshipSprite->texturePtr.set(Tile2D::resources().textures["spaceship"]);
     spaceshipSprite->position.bind(spaceshipBody->position);
     spaceshipSprite->angle.bind(spaceshipBody->angle);
+    //spaceshipSprite->opacity.set(0.1);
     player->addComponent(spaceshipSprite);
 
     auto playerController = Tile2D::create<PlayerController>();

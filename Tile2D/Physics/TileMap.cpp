@@ -20,7 +20,9 @@
 #include "Body.h"
 #include "ColliderShape.h"
 #include "TileSet.h"
+#include "Camera.h"
 #include "WorldMapModifiedEventArgs.h"
+#include "gl_utils.h"
 
 
 TileMap::TileMap() :
@@ -92,50 +94,108 @@ long TileMap::getActualH() {
     return blocks_->getH() * blockSizeH;
 }
 
-bool TileMap::detectCollisionWith(Body* body, Manifold& manifold) {
+bool TileMap::detectCollisionWith(Body* body, double deltaTime) {
     auto collider = body->getCollider();
     if (collider == nullptr) {
         return false;
     }
+    prepareRendering();
 
-    // for collision detection we cast from the start point
-    collider->pos = body->position.get() - body->velocity.get();
+    // -----------
 
+    bool collided = false;
+
+    collider->pos = body->position.get();
+    collider->rot = body->angle.get();
     Rect boundingBox = collider->boundingBox();
     boundingBox.x1 += body->position.get().x;
     boundingBox.x2 += body->position.get().x;
     boundingBox.y1 += body->position.get().y;
     boundingBox.y2 += body->position.get().y;
 
-    // TODO: you should take some other tiles into account
-
     int iBegin = (int)boundingBox.x1 - ((int)boundingBox.x1) % blockSizeW;
     int iEnd = (int)boundingBox.x2 + (int)boundingBox.x2 % blockSizeW;
     int jBegin = (int)boundingBox.y1 - ((int)boundingBox.y1) % blockSizeH;
     int jEnd = (int)boundingBox.y2 + (int)boundingBox.y2 % blockSizeH;
 
+    Vec direction = body->velocity.get() * deltaTime * Tile2D::physicsWorld().metersPerPixel.get();
     Tile* tile;
 
-    manifold.penetration = 100000.0;
-    Manifold tmpManifold;
-    bool collided = false;
+    if (direction.length() < sqrt(blockSizeW * blockSizeH) / 4.0) {
+        Vec contactNormal;
+        double penetration;
 
-    for (int i=iBegin; i <= iEnd; i += blockSizeW) {
-        for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
-            tile = this->getValueScaled(Vec(i, j));
-            if (tile != nullptr && tile->density.get() > 0.0) {
-                double x1 = i, y1 = j, x2 = x1 + blockSizeW, y2 = y1 + blockSizeH;
+        for (int i=iBegin; i <= iEnd; i += blockSizeW) {
+            for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
+                tile = this->getValueScaled(Vec(i, j));
+                if (tile != nullptr && tile->density.get() > 0.0) {
+                    double x = i;
+                    double y = j;
+                    double w = blockSizeW;
+                    double h = blockSizeH;
 
-                PolygonCollider tileCollider({{x1, y1}, {x2, y1},{x2, y2}, {x1, y2}});
+                    PolygonCollider tileCollider({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
+                    tileCollider.rot = 0.0;
+                    tileCollider.pos = {x, y};
 
-                if (collider->cast(body->velocity.get(), tileCollider, tmpManifold)) {
-                    collided = true;
-                    if (tmpManifold.penetration < manifold.penetration) {
-                        manifold = tmpManifold;
+                    if (collider->overlap(tileCollider, contactNormal, penetration)) {
+                        body->position.set(body->position.get() + (contactNormal * (penetration + 0.05)));
+                        collided = true;
+                        body->velocity.set({0,0});
                     }
                 }
             }
         }
+
+    } else {
+        Vec contactNormal;
+        Vec currentContactNormal;
+
+        Vec toCollision = {0, 0};
+        Vec currentToCollision;
+
+        for (int i=iBegin; i <= iEnd; i += blockSizeW) {
+            for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
+                tile = this->getValueScaled(Vec(i, j));
+                if (tile != nullptr && tile->density.get() > 0.0) {
+                    double x = i;
+                    double y = j;
+                    double w = blockSizeW;
+                    double h = blockSizeH;
+
+                    PolygonCollider tileCollider({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
+                    tileCollider.rot = 0.0;
+                    tileCollider.pos = {x, y};
+
+                    if (collider->cast(direction * -1.0, tileCollider, currentContactNormal, currentToCollision))
+                    {
+                        collided = true;
+
+                        if (currentToCollision.lengthSqr() > toCollision.lengthSqr()) {
+                            toCollision = currentToCollision;
+                            contactNormal = currentContactNormal;
+                        }
+                    }
+
+                }
+            }
+        }
+
+        // HANDLE COLLISION
+
+        if (collided) {
+            Vec v = body->velocity.get();
+            double v_dot_n = v.dot(contactNormal.normalized());
+            Vec proj_n_v = contactNormal * v_dot_n;
+            Vec reflVel = v + proj_n_v * -2.0;
+
+            body->velocity.set(reflVel * 0.2);
+            body->position.set(
+                    body->position.get() +
+                    toCollision * (1.01)
+            );
+        }
+
     }
 
     return collided;

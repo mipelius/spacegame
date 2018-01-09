@@ -86,7 +86,7 @@ private:
     bool stepIsIgnored_;
     bool entityCollisionDetectionIsIgnored_;
     bool detectCollisionWith_(Body &otherBody);
-    bool detectMapCollision_();
+    bool detectMapCollision_(double deltaTime);
     void setWorld_(PhysicsWorld *gameWorld);
     void step_(double timeElapsedSec);
 

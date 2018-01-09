@@ -7,7 +7,6 @@
 
 #include <vector>
 #include "Vec.h"
-#include "Manifold.h"
 #include "Rect.h"
 
 class PolygonCollider {
@@ -18,15 +17,20 @@ public:
     bool cast(
             const Vec&              direction,
             const PolygonCollider&  otherCollider,
-            Manifold&               manifold
+            Vec&                    contactNormal,
+            Vec&                    toCollision
     );
 
     Vec pos;
     double rot;
 
-    std::vector<Vec> points() const;
-
     const Rect& boundingBox() const;
+
+    std::vector<Vec> points;
+
+    bool overlap(const PolygonCollider &otherCollider, Vec& contactNormal, double& penetration) const;
+
+    std::vector<Vec> getAxes() const;
 
 private:
     bool castOneWay_(
@@ -39,7 +43,6 @@ private:
 
     Rect boundingBox_;
 
-    std::vector<Vec> points_;
 };
 
 #endif //__PolygonCollider_H

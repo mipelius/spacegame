@@ -81,6 +81,7 @@ void Tile2D::mainLoop_() {
     Uint32 timestamp = SDL_GetTicks();
 
     while(!SDL_QuitRequested()) {
+        glClear(GL_COLOR_BUFFER_BIT);
         Uint32 deltaTime = SDL_GetTicks() - timestamp;
         timestamp = SDL_GetTicks();
         sceneManager_->update_();

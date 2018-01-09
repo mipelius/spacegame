@@ -148,8 +148,6 @@ set(SOURCE_FILES
         Tile2D/Util/Primitives/Rect.h
         Tile2D/Util/Primitives/Vec.cpp
         Tile2D/Util/Primitives/Vec.h
-        Tile2D/Util/Primitives/Manifold.cpp
-        Tile2D/Util/Primitives/Manifold.h
         Tile2D/Util/Primitives/LineSegment.cpp
         Tile2D/Util/Primitives/LineSegment.h
         Tile2D/Util/Property/BooleanProperty.cpp

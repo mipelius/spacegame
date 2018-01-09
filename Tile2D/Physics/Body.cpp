@@ -15,7 +15,6 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Tile2D.h"
-#include "Manifold.h"
 #include "precompile.h"
 #include "Body.h"
 
@@ -93,7 +92,7 @@ void Body::step_(double timeElapsedSec) {
 
         // apply torque (not very nicely implemented, but good enough)
 
-        angularVelocity_ = torque_ * timeElapsedSec;
+        //angularVelocity_ = torque_ * timeElapsedSec;
         angle_ = angle_ + angularVelocity_;
 
         // remove all applied forces
@@ -115,18 +114,15 @@ void Body::step_(double timeElapsedSec) {
     stepIsIgnored_ = false;
 }
 
-bool Body::detectMapCollision_() {
+bool Body::detectMapCollision_(double deltaTime) {
     TileMap* map = this->physicsWorld_->map_;
     if (map == nullptr) {
         return false;
     }
 
-    Manifold manifold;
 
-    if (map->detectCollisionWith(this, manifold)) {
-        Vec tileNormal(0.0, -1.0);
-
-        mapCollision.raise(MapCollisionEventArgs(manifold));
+    if (map->detectCollisionWith(this, deltaTime)) {
+        mapCollision.raise(MapCollisionEventArgs(deltaTime));
 
         return true;
     }

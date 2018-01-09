@@ -16,6 +16,6 @@
 
 #include "MapCollisionEventArgs.h"
 
-MapCollisionEventArgs::MapCollisionEventArgs(Manifold manifold) {
-    this->manifold = manifold;
+MapCollisionEventArgs::MapCollisionEventArgs(double deltaTime) {
+    this->deltaTime = deltaTime;
 }

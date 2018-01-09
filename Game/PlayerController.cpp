@@ -20,20 +20,25 @@
 void PlayerController::awake() {
     body = gameObject()->getComponent<Body>();
     sprite = gameObject()->getComponent<Sprite>();
+    lastShotTimestamp = SDL_GetTicks();
 }
 
 void PlayerController::update() {
     const Uint8 *state = SDL_GetKeyboardState(NULL);
 
+    double angularVelocity = 0;
+
     if (state[SDL_SCANCODE_UP]) {
         body->force.set(Vec::byAngle(body->angle.get(), moveForce));
     }
     if (state[SDL_SCANCODE_LEFT]) {
-        body->angle.set(body->angle.get() - 5);
+        angularVelocity -= 5;
     }
     if (state[SDL_SCANCODE_RIGHT]) {
-        body->angle.set(body->angle.get() + 5);
+        angularVelocity += 5;
     }
+
+    body->angularVelocity.set(angularVelocity);
 
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
@@ -49,4 +54,36 @@ void PlayerController::update() {
         }
     }
 
+    if (state[SDL_SCANCODE_SPACE]) {
+        shoot();
+    }
+}
+
+void PlayerController::shoot() {
+    if (SDL_GetTicks() - lastShotTimestamp >= shootingInterval) {
+        auto missile = Tile2D::create<GameObject>();
+
+        auto missileBody = Tile2D::create<Body>();
+        missileBody->mass.set(10.0);
+        missileBody->position.set(body->position.get());
+        missileBody->velocity.set(Vec::byAngle(body->angle.get(), 10000.0));
+        missileBody->angle.set(body->angle.get());
+        auto collider = new PolygonCollider({
+            {-18, -5},
+            {18,  -5},
+            {18,  5},
+            {-18, 5}
+        });
+        missileBody->setCollider(collider);
+        missile->addComponent(missileBody);
+
+        auto missileSprite = Tile2D::create<Sprite>();
+        missileSprite->rect.set({-20,-5,20,5});
+        missileSprite->position.bind(missileBody->position);
+        missileSprite->angle.bind(missileBody->angle);
+        missileSprite->texturePtr.set(Tile2D::resources().textures["missile"]);
+        missile->addComponent(missileSprite);
+
+        lastShotTimestamp = SDL_GetTicks();
+    }
 }

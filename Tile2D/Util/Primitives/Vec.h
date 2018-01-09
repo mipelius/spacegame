@@ -54,6 +54,7 @@ inline void Vec::rotate(double degrees) {
 }
 
 inline Vec Vec::rotated(double degrees) const {
+    degrees = (degrees / 180.0) * M_PI;
     return {Vec(cos(degrees), -sin(degrees)).dot(*this), Vec(sin(degrees), cos(degrees)).dot(*this)};
 }
 

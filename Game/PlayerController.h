@@ -25,14 +25,19 @@ class PlayerController : public Tile2DBehaviour {
 
 public:
     float moveForce;
+    void shoot();
 
 protected:
     void awake() override;
     void update() override;
 
 private:
+    const Uint32 shootingInterval = 100;
+    Uint32 lastShotTimestamp;
+
     Body* body;
     Sprite* sprite;
+
 };
 
 #endif //__PlayerController_H

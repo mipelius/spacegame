@@ -51,12 +51,12 @@ void PhysicsWorld::step(double timeSeconds) {
 
     // now all the new positions are updated -> detect collision
     for(auto& body : bodies_) {
-        detectCollision_(body);
+        detectCollision_(body, timeSeconds);
     }
 }
 
-void PhysicsWorld::detectCollision_(Body* body) {
-    body->detectMapCollision_();
+void PhysicsWorld::detectCollision_(Body* body, double deltaTime) {
+    body->detectMapCollision_(deltaTime);
 
     for (auto& bodyCur : bodies_) {
         if (bodyCur == body) continue;
@@ -99,12 +99,27 @@ void PhysicsWorld::debugDraw() {
         if (body->collider == nullptr) {
             continue;
         }
-//        auto points = body->collider->getRotatedPoints();
-//        glBegin(GL_LINE_STRIP);
-//        for (auto& point : points) {
-//            glVertex2f(point.x + body->position_.x, point.y + body->position_.y);
-//        }
-//        glVertex2f(points[0].x + body->position_.x, points[0].y + body->position_.y);
-//        glEnd();
+        auto points = body->collider->points;
+        glBegin(GL_LINE_STRIP);
+        for (auto& pointOrig : points) {
+            auto point = pointOrig.rotated(body->angle.get());
+            glVertex2f(point.x + body->position_.x, point.y + body->position_.y);
+        }
+        auto point = points[0].rotated(body->angle.get());
+        glVertex2f(point.x + body->position_.x, point.y + body->position_.y);
+
+        Rect rect = body->collider->boundingBox();
+
+        glEnd();
+
+        glBegin(GL_LINE_STRIP);
+        glVertex2f(rect.x1 + body->position.get().x, rect.y1 + body->position.get().y);
+        glVertex2f(rect.x2 + body->position.get().x, rect.y1 + body->position.get().y);
+        glVertex2f(rect.x2 + body->position.get().x, rect.y2 + body->position.get().y);
+        glVertex2f(rect.x1 + body->position.get().x, rect.y2 + body->position.get().y);
+
+        glEnd();
+
+
     }
 }

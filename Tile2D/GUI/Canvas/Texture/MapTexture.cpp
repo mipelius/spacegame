@@ -52,16 +52,16 @@ void MapTexture::glUnbind() {
     glDisable(GL_TEXTURE_2D);
 }
 
-void MapTexture::glVertices(double x, double y, double w, double h, int textureNumber, int cornerRounding) {
-    double textureW = blockW_ / (double)GL_TEXTURE_SIZE;
-    double textureH = blockH_ / (double)GL_TEXTURE_SIZE;
+void MapTexture::glVertices(float x, float y, float w, float h, int textureNumber, int cornerRounding) {
+    float textureW = blockW_ / (float)GL_TEXTURE_SIZE;
+    float textureH = blockH_ / (float)GL_TEXTURE_SIZE;
 
-    double texX1 = ((textureNumber * blockInternalSize_) % GL_TEXTURE_SIZE) / (double)GL_TEXTURE_SIZE;
-    double texY1 = ((textureNumber * blockInternalSize_) / GL_TEXTURE_SIZE) / (double)GL_TEXTURE_SIZE;
-    double texX2 = texX1 + textureW;
-    double texY2 = texY1 + textureH;
+    float texX1 = ((textureNumber * blockInternalSize_) % GL_TEXTURE_SIZE) / (float)GL_TEXTURE_SIZE;
+    float texY1 = ((textureNumber * blockInternalSize_) / GL_TEXTURE_SIZE) / (float)GL_TEXTURE_SIZE;
+    float texX2 = texX1 + textureW;
+    float texY2 = texY1 + textureH;
 
-    double margin = 0.00000001;
+    float margin = 0.00000001;
 
     texX1 += margin;
     texY1 += margin;

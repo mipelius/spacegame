@@ -17,13 +17,12 @@
 #ifndef __MapCollisionEventArgs_H
 #define __MapCollisionEventArgs_H
 
-#include "Manifold.h"
 #include "Vec.h"
 
 class MapCollisionEventArgs {
 public:
-    explicit MapCollisionEventArgs(Manifold manifold);
-    Manifold manifold;
+    explicit MapCollisionEventArgs(double deltaTime);
+    double deltaTime;
 };
 
 #endif //__MapCollisionEventArgs_H

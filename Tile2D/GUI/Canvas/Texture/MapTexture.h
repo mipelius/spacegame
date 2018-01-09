@@ -44,7 +44,7 @@ public:
 
     int addTexture(std::string filename);
 
-    void glVertices(double x, double y, double w, double h, int textureNumber, int cornerRounding);
+    void glVertices(float x, float y, float w, float h, int textureNumber, int cornerRounding);
 
     void glUnbind();
 

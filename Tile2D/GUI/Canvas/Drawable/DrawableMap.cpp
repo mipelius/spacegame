@@ -56,12 +56,12 @@ void DrawableMap::setMapTexture(MapTexture *mapTexture) {
 }
 
 void DrawableMap::drawMap(const Canvas &canvas) {
-    Rect rect = canvas.getCamera().areaRect.get();
+    const Rect& rect = canvas.getCamera().areaRect.get();
 
-    double x = rect.x1;
-    double y = rect.y1;
-    double w = rect.getWidth();
-    double h = rect.getHeight();
+    const double& x = rect.x1;
+    const double& y = rect.y1;
+    const double& w = rect.getWidth();
+    const double& h = rect.getHeight();
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();

@@ -17,6 +17,7 @@
 #ifndef __SceneInGame_H
 #define __SceneInGame_H
 
+#include "Tile2D.h"
 #include "IScene.h"
 #include "Vec.h"
 #include "EventArgs.h"
@@ -28,17 +29,22 @@ class SceneInGame : public IScene {
 
     class Body_MapCollisionEventHandler : public IEventHandler<Body, MapCollisionEventArgs> {
         void handle(Body* body, MapCollisionEventArgs args) {
-            Vec velNormalized = body->velocity.get().normalized();
-            Vec proj_n_v = args.manifold.contactNormal * velNormalized.dot(args.manifold.contactNormal);
-            Vec reflVel = velNormalized - proj_n_v * 2.0;
-            body->velocity.set(reflVel * body->velocity.get().length() / 3);
-            if (body->velocity.get().lengthSqr() < 1.0) {
-                body->velocity.set(Vec(0, 0));
-            } else {
+//
+//            Vec velNormalized = body->velocity.get().normalized();
+//            double v_dot_n = velNormalized.dot(args.manifold.contactNormal);
+//            Vec proj_n_v = args.manifold.contactNormal * v_dot_n;
+//            Vec reflVel = velNormalized - proj_n_v * 2.0;
+//            body->position.set(
+//                    body->position.get() -
+//                    velNormalized *
+//                    (args.manifold.penetration + 1.0)
+//            );
+////            if (-0.4 < body->velocity.get().y && body->velocity.get().y < 0.0) {
+////                body->velocity.set(Vec(body->velocity.get().x, 0));
+////            } else {
+//                body->velocity.set(reflVel * (body->velocity.get().length() * (0.2 + 0.2 * (1.0 - abs(v_dot_n)) /* margin */)));
+////            }
 
-                body->position.set(body->position.get() + reflVel);
-
-            }
         }
     };
 
