@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2017 Miika Pelkonen
+// Copyright (C) 2018 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,19 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __SceneInGame_H
-#define __SceneInGame_H
+#ifndef __MissileBehaviour_H
+#define __MissileBehaviour_H
 
-#include "Tile2D.h"
-#include "IScene.h"
-#include "Vec.h"
-#include "EventArgs.h"
+#include "Sprite.h"
 #include "Body.h"
+#include "Tile2DBehaviour.h"
 
-class SceneInGame : public IScene {
-    void init() override;
-    void destroy() override;
+class MissileBehaviour : public Tile2DBehaviour {
+
+protected:
+    void awake() override;
+    void update() override;
+
+    class Body_MapCollisionEventHandler : public IEventHandler<Body, MapCollisionEventArgs> {
+        void handle(Body* body, MapCollisionEventArgs args) override {
+            body->gameObject()->getComponent<Sprite>()->rect.set({-30,-30,30,30});
+        }
+    };
+
+    Body_MapCollisionEventHandler body_mapCollisionEventHandler;
+
 };
 
 
-#endif //__SceneInGame_H
+#endif //__MissileBehaviour_H

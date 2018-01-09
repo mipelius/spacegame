@@ -39,7 +39,6 @@ public:
 
     Property<double> const angle;
     Property<double> const angularVelocity;
-    Property<double> const torque;
 
     Property<Vec> const position;
     Property<Vec> const velocity;
@@ -53,21 +52,18 @@ public:
     // methods
 
     Body();
+    ~Body();
 
     void applyForce(Vec force);
-    void applyTorque(double angle);
 
     PhysicsWorld* getWorld();
     PolygonCollider* getCollider();
 
     void setCollider(PolygonCollider* collider);
 
-    void ignoreCollisionDetection();
-    void ignoreStep();
-
 protected:
     PhysicsWorld *physicsWorld_;
-    PolygonCollider* collider;
+    PolygonCollider* collider_;
 
 private:
     void init() override;
@@ -77,20 +73,15 @@ private:
 
     double angle_;
     double angularVelocity_;
-    double torque_;
 
     Vec position_;
     Vec velocity_;
     Vec force_;
 
-    bool stepIsIgnored_;
-    bool entityCollisionDetectionIsIgnored_;
     bool detectCollisionWith_(Body &otherBody);
     bool detectMapCollision_(double deltaTime);
     void setWorld_(PhysicsWorld *gameWorld);
     void step_(double timeElapsedSec);
-
-    bool isDead_;
 };
 
 #endif //__Body_H_

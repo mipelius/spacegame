@@ -101,8 +101,8 @@ void Tile2D::cleanUp_() {
 }
 
 void Tile2D::removeDestroyedObjects_() {
-    for (auto& obj : objectsToDestroy_) {
-        delete obj;
+    for (auto obj : objectsToDestroy_) {
+        // TODO doesn't work: delete obj;
     }
     objectsToDestroy_.clear();
 }

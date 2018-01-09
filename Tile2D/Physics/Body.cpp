@@ -31,7 +31,6 @@ Body::Body() :
 
     angle           (   Property<double>  (&angle_            )   ),
     angularVelocity (   Property<double>  (&angularVelocity_  )   ),
-    torque          (   Property<double>  (&torque_           )   ),
 
     position        (   Property<Vec>  (&position_         )   ),
     velocity        (   Property<Vec>  (&velocity_         )   ),
@@ -49,14 +48,10 @@ Body::Body() :
     force_          (   Vec(0,0) ),
     angle_          (   0.0         ),
     angularVelocity_(   0.0         ),
-    torque_         (   0.0         ),
     mass_           (   1.0         ),
 
-    entityCollisionDetectionIsIgnored_  (false),
-    stepIsIgnored_                      (false),
     physicsWorld_                       (nullptr),
-    collider                       (nullptr),
-    isDead_                             (false)
+    collider_                           (nullptr)
 {
 
 }
@@ -66,67 +61,59 @@ void Body::init() {
 }
 
 void Body::onDestroy() {
-    Tile2D::physicsWorld().remove(this);
+    collider_->destroy();
 }
 
 void Body::step_(double timeElapsedSec) {
-    if (!stepIsIgnored_) {
-        // calculate air resistance
+    // calculate drag
 
-        Vec airResistance = Vec(0, 0);
+    Vec drag = Vec(0, 0);
 
-        if (velocity_.x != 0 || velocity_.y != 0) {
-            double speedLengthPow2 = velocity_.x * velocity_.x + velocity_.y * velocity_.y;
-            Vec airResistanceUnitVector = (velocity_ * -1) * (1 / sqrt(velocity_.x * velocity_.x + velocity_.y * velocity_.y));
-            airResistance = airResistanceUnitVector * speedLengthPow2 * (0.5 * physicsWorld_->airDensity.get());
-        }
-
-        Vec totalForce = force_ + airResistance;
-
-        // use acceleration for updating speed --> velocity --> location
-
-        Vec acceleration = totalForce * (1 / this->mass.get());
-        acceleration += physicsWorld_->gForce.get();
-        velocity_ += acceleration;
-        position_ = position_ + (velocity_ * timeElapsedSec * physicsWorld_->metersPerPixel.get());
-
-        // apply torque (not very nicely implemented, but good enough)
-
-        //angularVelocity_ = torque_ * timeElapsedSec;
-        angle_ = angle_ + angularVelocity_;
-
-        // remove all applied forces
-
-        force_ = Vec(0, 0);
-        torque_ = torque_ / (this->mass.get() * timeElapsedSec);
-
-        // update dependent properties
-
-        this->angle.updateDependentProperties();
-        this->angularVelocity.updateDependentProperties();
-        this->torque.updateDependentProperties();
-
-        this->position.updateDependentProperties();
-        this->velocity.updateDependentProperties();
-        this->force.updateDependentProperties();
+    if (velocity_.x != 0 || velocity_.y != 0) {
+        double speedLengthPow2 = velocity_.x * velocity_.x + velocity_.y * velocity_.y;
+        Vec dragUnitVector = (velocity_ * -1) * (1 / sqrt(velocity_.x * velocity_.x + velocity_.y * velocity_.y));
+        drag = dragUnitVector * speedLengthPow2 * (0.5 * physicsWorld_->airDensity.get());
     }
 
-    stepIsIgnored_ = false;
+    Vec totalForce = force_ + drag;
+
+    // use acceleration for updating velocity --> position
+
+    Vec acceleration = totalForce / mass_;
+    acceleration += physicsWorld_->gForce_;
+    velocity_ += acceleration;
+    position_ = position_ + (velocity_ * timeElapsedSec * physicsWorld_->metersPerPixel.get());
+
+    // apply angle change
+
+    angle_ = angle_ + angularVelocity_;
+
+    // remove all applied forces
+
+    force_ = Vec(0, 0);
+
+    // update dependent properties
+
+    this->angle.updateDependentProperties();
+    this->angularVelocity.updateDependentProperties();
+    this->position.updateDependentProperties();
+    this->velocity.updateDependentProperties();
+    this->force.updateDependentProperties();
 }
 
 bool Body::detectMapCollision_(double deltaTime) {
     TileMap* map = this->physicsWorld_->map_;
 
-    if (map == nullptr || collider == nullptr) {
+    if (map == nullptr || collider_ == nullptr) {
         return false;
     }
 
     bool collided = false;
 
-    collider->pos = position_;
-    collider->rot = angle_;
+    collider_->pos_ = position_;
+    collider_->rot_ = angle_;
 
-    Rect boundingBox = collider->boundingBox();
+    Rect boundingBox = collider_->boundingBox();
     boundingBox.x1 += position_.x;
     boundingBox.x2 += position_.x;
     boundingBox.y1 += position_.y;
@@ -156,20 +143,22 @@ bool Body::detectMapCollision_(double deltaTime) {
                     double w = blockSizeW;
                     double h = blockSizeH;
 
-                    PolygonCollider tileCollider({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
-                    tileCollider.rot = 0.0;
-                    tileCollider.pos = {x, y};
+                    PolygonCollider tileCollider;
+                    tileCollider.setPoints({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
+                    tileCollider.rot_ = 0.0;
+                    tileCollider.pos_ = {x, y};
 
-                    if (collider->overlap(tileCollider, contactNormal, penetration)) {
-                        // TODO: move collider instead
-                        position.set(position.get() + (contactNormal * (penetration + 0.05)));
+                    if (collider_->overlap(tileCollider, contactNormal, penetration)) {
+                        collider_->pos_ += contactNormal * (penetration + 0.05);
                         collided = true;
-                        velocity.set({0,0});
                     }
                 }
-                // TODO
-                //position_ = collider_.pos
             }
+        }
+
+        if (collided) {
+            velocity_ = {0, 0};
+            position_ = collider_->pos_;
         }
 
     } else {
@@ -188,11 +177,12 @@ bool Body::detectMapCollision_(double deltaTime) {
                     double w = blockSizeW;
                     double h = blockSizeH;
 
-                    PolygonCollider tileCollider({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
-                    tileCollider.rot = 0.0;
-                    tileCollider.pos = {x, y};
+                    PolygonCollider tileCollider;
+                    tileCollider.setPoints({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
+                    tileCollider.rot_ = 0.0;
+                    tileCollider.pos_ = {x, y};
 
-                    if (collider->cast(direction * -1.0, tileCollider, currentContactNormal, currentToCollision))
+                    if (collider_->cast(direction * -1.0, tileCollider, currentContactNormal, currentToCollision))
                     {
                         collided = true;
 
@@ -207,29 +197,24 @@ bool Body::detectMapCollision_(double deltaTime) {
         }
 
         if (collided) {
-            Vec v = velocity.get();
-            double v_dot_n = v.dot(contactNormal.normalized());
-            Vec proj_n_v = contactNormal * v_dot_n;
+            const Vec& v = velocity_;
+            const Vec n = contactNormal.normalized();
+
+            Vec proj_n_v = n * v.dot(n);;
             Vec reflVel = v + proj_n_v * -2.0;
 
-            velocity.set(reflVel * 0.2);
-            position.set(
-                    position.get() +
-                    toCollision * (1.01)
-            );
+            velocity_ = reflVel * 0.2;
+            position_ += toCollision * (1.01);
         }
     }
 
-    return collided;
+    if (collided) {
+        velocity.updateDependentProperties();
+        position.updateDependentProperties();
+        mapCollision.raise(MapCollisionEventArgs(deltaTime));
+    }
 
-//    Vec contactNormal;
-//
-//    if (map->detectCollisionWith(this, contactNormal, deltaTime)) {
-//        mapCollision.raise(MapCollisionEventArgs(deltaTime));
-//
-//        return true;
-//    }
-//    return false;
+    return collided;
 }
 
 
@@ -245,17 +230,7 @@ bool Body::detectCollisionWith_(Body &otherBody) {
 //        }
 //    }
 
-    entityCollisionDetectionIsIgnored_ = false;
-
     return false;
-}
-
-void Body::ignoreStep() {
-    this->stepIsIgnored_ = true;
-}
-
-void Body::ignoreCollisionDetection() {
-    this->entityCollisionDetectionIsIgnored_ = true;
 }
 
 void Body::applyForce(Vec force) {
@@ -272,14 +247,13 @@ PhysicsWorld *Body::getWorld() {
 }
 
 PolygonCollider* Body::getCollider() {
-    return collider;
+    return collider_;
 }
 
 void Body::setCollider(PolygonCollider *collider) {
-    this->collider = collider;
+    this->collider_ = collider;
 }
 
-void Body::applyTorque(double angle) {
-    double torqueBefore = this->torque.get();
-    this->torque.set(torqueBefore + angle);
+Body::~Body() {
+    Tile2D::physicsWorld().remove(this);
 }

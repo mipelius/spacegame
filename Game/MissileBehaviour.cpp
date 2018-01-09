@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2017 Miika Pelkonen
+// Copyright (C) 2018 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,19 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __SceneInGame_H
-#define __SceneInGame_H
+#include "MissileBehaviour.h"
 
-#include "Tile2D.h"
-#include "IScene.h"
-#include "Vec.h"
-#include "EventArgs.h"
-#include "Body.h"
+void MissileBehaviour::awake() {
+    gameObject()->getComponent<Body>()->mapCollision.add(&body_mapCollisionEventHandler);
+}
 
-class SceneInGame : public IScene {
-    void init() override;
-    void destroy() override;
-};
+void MissileBehaviour::update() {
 
-
-#endif //__SceneInGame_H
+}

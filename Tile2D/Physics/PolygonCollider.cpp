@@ -11,10 +11,10 @@ class Projection {
 
 public:
     Projection(const Vec& axis, const PolygonCollider& collider) {
-        min = axis.dot(collider.points[0].rotated(collider.rot) + collider.pos);
+        min = axis.dot(collider.points_[0].rotated(collider.rot_) + collider.pos_);
         max = min;
-        for (auto i = 1u; i < collider.points.size(); ++i) {
-            double p = axis.dot(collider.points[i].rotated(collider.rot) + collider.pos);
+        for (auto i = 1u; i < collider.points_.size(); ++i) {
+            double p = axis.dot(collider.points_[i].rotated(collider.rot_) + collider.pos_);
             if (p < min) {
                 min = p;
             } else if (p > max) {
@@ -59,23 +59,23 @@ bool PolygonCollider::castOneWay_(
     const PolygonCollider& c1 = collider;
     const PolygonCollider& c2 = otherCollider;
 
-    const Vec& c1pos = collider.pos;
-    const double& c1rot = collider.rot;
-    const Vec& c2pos = otherCollider.pos;
-    const double& c2rot = otherCollider.rot;
+    const Vec& c1pos = collider.pos_;
+    const double& c1rot = collider.rot_;
+    const Vec& c2pos = otherCollider.pos_;
+    const double& c2rot = otherCollider.rot_;
 
     Vec intersectionPoint;
     double maxDistanceSqr = 0.0f;
     double curDistanceSqr;
     Vec curVec;
 
-    for (const auto& pointOrig : c1.points) {
+    for (const auto& pointOrig : c1.points_) {
         Vec castingPoint = pointOrig.rotated(c1rot) + c1pos;
         LineSegment castingLine(castingPoint, castingPoint + direction);
 
-        for (auto i = 0u; i < otherCollider.points.size(); i++) {
-            Vec startPoint = c2.points[i].rotated(c2rot) + c2pos;
-            Vec endPoint = c2.points[(i+1) % c2.points.size()].rotated(c2rot) + c2pos;
+        for (auto i = 0u; i < otherCollider.points_.size(); i++) {
+            Vec startPoint = c2.points_[i].rotated(c2rot) + c2pos;
+            Vec endPoint = c2.points_[(i+1) % c2.points_.size()].rotated(c2rot) + c2pos;
             LineSegment polygonLine(startPoint, endPoint);
 
             if (castingLine.intersection(polygonLine, intersectionPoint)) {
@@ -127,20 +127,7 @@ bool PolygonCollider::cast(
     return true;
 }
 
-PolygonCollider::PolygonCollider(std::vector<Vec> points) : boundingBox_({-1, -1, 1, 1}) {
-    this->points = std::move(points);
-
-    Vec farMost = Vec(0, 0);
-
-    for (const auto& vec : this->points) {
-        double length = vec.length();
-        double farMostLength = Vec(farMost.x, farMost.y).length();
-        if (length > farMostLength) farMost = vec;
-    }
-
-    double length = Vec(farMost.x, farMost.y).length();
-    boundingBox_ = Rect(-length, -length, length, length);
-}
+PolygonCollider::PolygonCollider() : boundingBox_({-1, -1, 1, 1}) { }
 
 const Rect &PolygonCollider::boundingBox() const {
     return boundingBox_;
@@ -152,8 +139,8 @@ bool PolygonCollider::overlap(const PolygonCollider &otherCollider, Vec& contact
     double currentPenetration;
     Vec currentContactNormal;
 
-    std::vector<Vec> axes1 = getAxes();
-    std::vector<Vec> axes2 = otherCollider.getAxes();
+    const std::vector<Vec>& axes1 = getAxes();
+    const std::vector<Vec>& axes2 = otherCollider.getAxes();
 
     for (const auto& axis : axes1) {
         Projection p1(axis, *this);
@@ -185,13 +172,32 @@ bool PolygonCollider::overlap(const PolygonCollider &otherCollider, Vec& contact
 std::vector<Vec> PolygonCollider::getAxes() const {
     std::vector<Vec> axes;
 
-    for (auto i = 0u; i < points.size(); i++) {
-        const Vec& p1 = points[i];
-        const Vec& p2 = points[(i+1) % points.size()];
-        Vec direction = (p2 - p1).rotated(rot);
+    for (auto i = 0u; i < points_.size(); i++) {
+        const Vec& p1 = points_[i];
+        const Vec& p2 = points_[(i+1) % points_.size()];
+        Vec direction = (p2 - p1).rotated(rot_);
         Vec vec = Vec(direction.y, -direction.x).normalized();
         axes.push_back(vec);
     }
 
     return axes;
+}
+
+void PolygonCollider::setPoints(std::vector<Vec> points) {
+    points_ = std::move(points);
+
+    Vec farMost = Vec(0, 0);
+
+    for (const auto& vec : this->points_) {
+        double length = vec.length();
+        double farMostLength = Vec(farMost.x, farMost.y).length();
+        if (length > farMostLength) farMost = vec;
+    }
+
+    double length = Vec(farMost.x, farMost.y).length();
+    boundingBox_ = Rect(-length, -length, length, length);
+}
+
+const std::vector<Vec> &PolygonCollider::points() const {
+    return points_;
 }

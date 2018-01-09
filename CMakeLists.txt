@@ -184,7 +184,7 @@ set(SOURCE_FILES
 
         Game/PlayerController.cpp
         Game/PlayerController.h
-        )
+        Game/MissileBehaviour.cpp Game/MissileBehaviour.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

@@ -22,8 +22,6 @@
 #include "Background.h"
 #include "Sprite.h"
 #include "ColliderShape.h"
-
-#include "Tile2D.h"
 #include "Camera.h"
 #include "PlayerController.h"
 
@@ -46,7 +44,9 @@ void SceneInGame::init() {
     auto spaceshipBody = Tile2D::create<Body>();
     spaceshipBody->mass.set(100.0);
     spaceshipBody->position.set(Vec(4000.0, 8000.0));
-    auto polygonCollider = new PolygonCollider({
+
+    auto polygonCollider = Tile2D::create<PolygonCollider>();
+    polygonCollider->setPoints({
           {-20, -18},
           {-5, -18},
           {18, 0},
@@ -55,7 +55,6 @@ void SceneInGame::init() {
     });
 
     spaceshipBody->setCollider(polygonCollider);
-    spaceshipBody->mapCollision.add(&body_mapCollisionEventHandler);
     player->addComponent(spaceshipBody);
 
     auto spaceshipSprite = Tile2D::create<Sprite>();

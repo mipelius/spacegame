@@ -14,8 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <Tile2D/Core/Tile2D.h>
+#include "Tile2D.h"
 #include "PlayerController.h"
+#include "MissileBehaviour.h"
 
 void PlayerController::awake() {
     body = gameObject()->getComponent<Body>();
@@ -68,7 +69,8 @@ void PlayerController::shoot() {
         missileBody->position.set(body->position.get());
         missileBody->velocity.set(Vec::byAngle(body->angle.get(), 10000.0));
         missileBody->angle.set(body->angle.get());
-        auto collider = new PolygonCollider({
+        auto collider = Tile2D::create<PolygonCollider>();
+        collider->setPoints({
             {-18, -5},
             {18,  -5},
             {18,  5},
@@ -83,6 +85,9 @@ void PlayerController::shoot() {
         missileSprite->angle.bind(missileBody->angle);
         missileSprite->texturePtr.set(Tile2D::resources().textures["missile"]);
         missile->addComponent(missileSprite);
+
+        auto missileBehaviour = Tile2D::create<MissileBehaviour>();
+        missile->addComponent(missileBehaviour);
 
         lastShotTimestamp = SDL_GetTicks();
     }

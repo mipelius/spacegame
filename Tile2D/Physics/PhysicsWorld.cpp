@@ -68,7 +68,7 @@ void PhysicsWorld::debugDraw() {
     prepareRendering();
 
     for (auto& body : bodies_) {
-        if (body->collider == nullptr) {
+        if (body->collider_ == nullptr) {
             continue;
         }
 
@@ -76,7 +76,7 @@ void PhysicsWorld::debugDraw() {
 
         glColor3f(0.3f, 1.0f, 0.3f);
 
-        auto points = body->collider->points;
+        auto& points = body->collider_->points();
 
         glBegin(GL_LINE_LOOP);
         for (auto& pointOrig : points) {
@@ -89,7 +89,7 @@ void PhysicsWorld::debugDraw() {
 
         glColor3f(0.0f, 0.3f, 0.0f);
 
-        Rect rect = body->collider->boundingBox();
+        Rect rect = body->collider_->boundingBox();
         rect.x1 += body->position.get().x;
         rect.y1 += body->position.get().y;
         rect.x2 += body->position.get().x;
