@@ -18,7 +18,6 @@
 #include "precompile.h"
 #include "Body.h"
 
-#include "ColliderShape.h"
 #include "PhysicsWorld.h"
 #include "TileMap.h"
 #include "BodyCollisionEventArgs.h"
@@ -131,6 +130,14 @@ bool Body::detectMapCollision_(double deltaTime) {
     Vec direction = velocity_ * deltaTime * Tile2D::physicsWorld().metersPerPixel_;
     Tile* tile;
 
+    double w = blockSizeW;
+    double h = blockSizeH;
+
+    PolygonCollider tileCollider;
+    tileCollider.rot_ = 0.0;
+
+    tileCollider.setPoints({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
+
     if (direction.length() < sqrt(blockSizeW * blockSizeH) / 4.0) {
         Vec contactNormal;
         double penetration;
@@ -139,15 +146,7 @@ bool Body::detectMapCollision_(double deltaTime) {
             for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
                 tile = map->getValueScaled(Vec(i, j));
                 if (tile != nullptr && tile->density.get() > 0.0) {
-                    double x = i;
-                    double y = j;
-                    double w = blockSizeW;
-                    double h = blockSizeH;
-
-                    PolygonCollider tileCollider;
-                    tileCollider.setPoints({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
-                    tileCollider.rot_ = 0.0;
-                    tileCollider.pos_ = {x, y};
+                    tileCollider.pos_ = {(double)i, (double)j};
 
                     if (collider_->overlap(tileCollider, contactNormal, penetration)) {
                         collider_->pos_ += contactNormal * (penetration + 0.05);
@@ -173,15 +172,7 @@ bool Body::detectMapCollision_(double deltaTime) {
             for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
                 tile = map->getValueScaled(Vec(i, j));
                 if (tile != nullptr && tile->density.get() > 0.0) {
-                    double x = i;
-                    double y = j;
-                    double w = blockSizeW;
-                    double h = blockSizeH;
-
-                    PolygonCollider tileCollider;
-                    tileCollider.setPoints({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
-                    tileCollider.rot_ = 0.0;
-                    tileCollider.pos_ = {x, y};
+                    tileCollider.pos_ = {(double)i, (double)j};
 
                     if (collider_->cast(direction * -1.0, tileCollider, currentContactNormal, currentToCollision))
                     {

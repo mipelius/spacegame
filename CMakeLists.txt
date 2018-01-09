@@ -115,8 +115,6 @@ set(SOURCE_FILES
         Tile2D/Physics/Body.h
         Tile2D/Physics/BodyCollisionEventArgs.cpp
         Tile2D/Physics/BodyCollisionEventArgs.h
-        Tile2D/Physics/ColliderShape.cpp
-        Tile2D/Physics/ColliderShape.h
         Tile2D/Physics/PhysicsWorld.cpp
         Tile2D/Physics/PhysicsWorld.h
         Tile2D/Physics/TileMap.cpp
@@ -184,7 +182,9 @@ set(SOURCE_FILES
 
         Game/PlayerController.cpp
         Game/PlayerController.h
-        Game/MissileBehaviour.cpp Game/MissileBehaviour.h)
+        Game/MissileBehaviour.cpp
+        Game/MissileBehaviour.h
+        )
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

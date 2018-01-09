@@ -18,7 +18,6 @@
 #include "precompile.h"
 #include "TileMap.h"
 #include "Body.h"
-#include "ColliderShape.h"
 #include "TileSet.h"
 #include "Camera.h"
 #include "WorldMapModifiedEventArgs.h"

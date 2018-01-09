@@ -16,7 +16,6 @@
 
 #include "gl_utils.h"
 #include "Body.h"
-#include "ColliderShape.h"
 
 PhysicsWorld::PhysicsWorld():
     gForce(             Property<Vec>    (&gForce_)           ),
