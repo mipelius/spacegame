@@ -28,13 +28,10 @@ protected:
     void update() override;
 
     class Body_MapCollisionEventHandler : public IEventHandler<Body, MapCollisionEventArgs> {
-        void handle(Body* body, MapCollisionEventArgs args) override {
-            body->gameObject()->getComponent<Sprite>()->rect.set({-30,-30,30,30});
-        }
+        void handle(Body* body, MapCollisionEventArgs args) override;
     };
 
     Body_MapCollisionEventHandler body_mapCollisionEventHandler;
-
 };
 
 

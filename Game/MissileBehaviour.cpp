@@ -16,6 +16,10 @@
 
 #include "MissileBehaviour.h"
 
+void MissileBehaviour::Body_MapCollisionEventHandler::handle(Body* body, MapCollisionEventArgs args) {
+    body->gameObject()->destroy();
+}
+
 void MissileBehaviour::awake() {
     gameObject()->getComponent<Body>()->mapCollision.add(&body_mapCollisionEventHandler);
 }

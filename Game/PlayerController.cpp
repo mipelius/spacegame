@@ -67,7 +67,7 @@ void PlayerController::shoot() {
         auto missileBody = Tile2D::create<Body>();
         missileBody->mass.set(10.0);
         missileBody->position.set(body->position.get());
-        missileBody->velocity.set(Vec::byAngle(body->angle.get(), 10000.0));
+        missileBody->velocity.set(Vec::byAngle(body->angle.get(), 30000.0) + body->velocity.get());
         missileBody->angle.set(body->angle.get());
         auto collider = Tile2D::create<PolygonCollider>();
         collider->setPoints({

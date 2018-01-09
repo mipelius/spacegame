@@ -37,6 +37,12 @@ void PhysicsWorld::add(Body *body) {
 }
 
 void PhysicsWorld::step(double timeSeconds) {
+    // remove removed bodies from the list
+    for (auto* body : bodiesToRemove_) {
+        bodies_.remove(body);
+    }
+    bodiesToRemove_.clear();
+
     if (timeSeconds == 0.0) return;
 
     // update velocities and new locations
@@ -60,7 +66,7 @@ void PhysicsWorld::detectCollision_(Body* body, double deltaTime) {
 }
 
 void PhysicsWorld::remove(Body *body) {
-    bodies_.remove(body);
+    bodiesToRemove_.push_back(body);
     body->setWorld_(nullptr);
 }
 

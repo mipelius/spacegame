@@ -53,6 +53,8 @@ private:
     double airDensity_;
 
     std::list<Body *> bodies_;
+    std::list<Body *> bodiesToRemove_;
+
     TileMap * map_;
     void detectCollision_(Body* body, double deltaTime);
 };

@@ -52,7 +52,6 @@ public:
     // methods
 
     Body();
-    ~Body();
 
     void applyForce(Vec force);
 

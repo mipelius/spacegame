@@ -62,6 +62,7 @@ void Body::init() {
 
 void Body::onDestroy() {
     collider_->destroy();
+    physicsWorld_->remove(this);
 }
 
 void Body::step_(double timeElapsedSec) {
@@ -252,8 +253,4 @@ PolygonCollider* Body::getCollider() {
 
 void Body::setCollider(PolygonCollider *collider) {
     this->collider_ = collider;
-}
-
-Body::~Body() {
-    Tile2D::physicsWorld().remove(this);
 }
