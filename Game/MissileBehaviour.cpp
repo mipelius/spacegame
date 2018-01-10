@@ -32,7 +32,6 @@ void MissileBehaviour::Body_MapCollisionEventHandler::handle(Body* body, MapColl
     createSparkle(args.tileCoordinates, ((perp * -1) + n) * 1000);
     createSparkle(args.tileCoordinates, (perp) * 1000);
     createSparkle(args.tileCoordinates, (perp) * -1000);
-
 }
 
 void MissileBehaviour::Body_MapCollisionEventHandler::createSparkle(Vec position, Vec velocity) {
@@ -56,8 +55,11 @@ void MissileBehaviour::Body_MapCollisionEventHandler::createSparkle(Vec position
 
 void MissileBehaviour::awake() {
     gameObject()->getComponent<Body>()->mapCollision.add(&body_mapCollisionEventHandler);
+    awakeTimestamp = SDL_GetTicks();
 }
 
 void MissileBehaviour::update() {
-
+    if (SDL_GetTicks() - awakeTimestamp > TTL) {
+        gameObject()->destroy();
+    }
 }

@@ -33,6 +33,9 @@ protected:
     };
 
     Body_MapCollisionEventHandler body_mapCollisionEventHandler;
+
+    Uint32 awakeTimestamp;
+    const Uint32 TTL = 1000;
 };
 
 

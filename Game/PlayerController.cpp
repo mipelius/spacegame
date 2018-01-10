@@ -77,14 +77,13 @@ void PlayerController::shootOnce(Vec offset) {
     missileBody->position.set(body->position.get() + offset);
     missileBody->velocity.set(Vec::byAngle(body->angle.get(), 30000.0) + body->velocity.get());
     missileBody->angle.set(body->angle.get());
-    auto collider = new PolygonCollider(); // TODO NO NEW !
+    auto collider = missile->attachComponent<PolygonCollider>();
     collider->setPoints({
                                 {-18, -5},
                                 {18,  -5},
                                 {18,  5},
                                 {-18, 5}
                         });
-    missileBody->setCollider(collider);
 
     auto missileSprite = missile->attachComponent<Sprite>();
     missileSprite->rect.set({-20,-5,20,5});

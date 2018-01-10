@@ -31,6 +31,7 @@ class EventArgs;
 
 class Body : public Tile2DComponent {
     friend class PhysicsWorld;
+    friend class PolygonCollider;
 
 public:
     // properties
@@ -57,8 +58,6 @@ public:
 
     PhysicsWorld* getWorld();
     PolygonCollider* getCollider();
-
-    void setCollider(PolygonCollider* collider);
 
 protected:
     PhysicsWorld *physicsWorld_;

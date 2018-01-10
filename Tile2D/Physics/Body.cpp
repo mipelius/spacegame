@@ -60,9 +60,6 @@ void Body::init() {
 }
 
 void Body::onDestroy() {
-    if (collider_ != nullptr) {
-        delete collider_; // TODO
-    }
     if (physicsWorld_ != nullptr) {
         physicsWorld_->remove(this);
     }
@@ -251,8 +248,4 @@ PhysicsWorld *Body::getWorld() {
 
 PolygonCollider* Body::getCollider() {
     return collider_;
-}
-
-void Body::setCollider(PolygonCollider *collider) {
-    this->collider_ = collider;
 }

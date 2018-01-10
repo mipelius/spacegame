@@ -42,7 +42,7 @@ void SceneInGame::init() {
     spaceshipBody->mass.set(100.0);
     spaceshipBody->position.set(Vec(4000.0, 8000.0));
 
-    auto polygonCollider = new PolygonCollider(); // TODO: PolygonCollider : Tile2DComponent
+    auto polygonCollider = player->attachComponent<PolygonCollider>(); // TODO: PolygonCollider : Tile2DComponent
     polygonCollider->setPoints({
           {-20, -18},
           {-5, -18},
@@ -50,8 +50,6 @@ void SceneInGame::init() {
           {-5, 18},
           {-20, 18}
     });
-
-    spaceshipBody->setCollider(polygonCollider);
 
     auto spaceshipSprite = player->attachComponent<Sprite>();
     spaceshipSprite->position.set({0, 0});
