@@ -25,6 +25,8 @@ class GameObject {
     friend class Tile2D;
 
 public:
+    int tag = -1;
+
     template <class T>
     T* getComponent();
 

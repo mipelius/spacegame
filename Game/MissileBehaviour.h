@@ -17,6 +17,7 @@
 #ifndef __MissileBehaviour_H
 #define __MissileBehaviour_H
 
+#include "BodyCollisionEventArgs.h"
 #include "Sprite.h"
 #include "Body.h"
 #include "Tile2DBehaviour.h"
@@ -28,11 +29,15 @@ protected:
     void update() override;
 
     class Body_MapCollisionEventHandler : public IEventHandler<Body, MapCollisionEventArgs> {
-        void createSparkle(Vec position, Vec velocity);
         void handle(Body* body, MapCollisionEventArgs args) override;
     };
 
+    class Body_BodyCollisionEventHandler : public IEventHandler<Body, BodyCollisionEventArgs> {
+        void handle(Body* body, BodyCollisionEventArgs args) override;
+    };
+
     Body_MapCollisionEventHandler body_mapCollisionEventHandler;
+    Body_BodyCollisionEventHandler body_bodyCollisionEventHandler;
 
     Uint32 awakeTimestamp;
     const Uint32 TTL = 1000;

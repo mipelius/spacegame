@@ -19,12 +19,14 @@
 
 class Body;
 
+#include "Vec.h"
 #include "EventArgs.h"
 
 class BodyCollisionEventArgs : public EventArgs {
 public:
-    explicit BodyCollisionEventArgs(Body* otherBody);
+    explicit BodyCollisionEventArgs(Body* otherBody, Vec contactNormal);
 
+    Vec contactNormal;
     Body* const otherBody;
 };
 

@@ -17,24 +17,9 @@
 #include "Tile2D.h"
 #include "MissileBehaviour.h"
 #include "SparkleBehaviour.h"
+#include "Tags.h"
 
-void MissileBehaviour::Body_MapCollisionEventHandler::handle(Body* body, MapCollisionEventArgs args) {
-    body->gameObject()->destroy();
-    Tile2D::physicsWorld().getMap()->setValueScaled(args.tileCoordinates, nullptr);
-
-    // funny sparkle effect
-
-    Vec& n = args.contactNormal;
-    Vec perp = Vec(n.y, -n.x);
-
-    createSparkle(args.tileCoordinates, (n) * 1000);
-    createSparkle(args.tileCoordinates, (perp + n) * 1000);
-    createSparkle(args.tileCoordinates, ((perp * -1) + n) * 1000);
-    createSparkle(args.tileCoordinates, (perp) * 1000);
-    createSparkle(args.tileCoordinates, (perp) * -1000);
-}
-
-void MissileBehaviour::Body_MapCollisionEventHandler::createSparkle(Vec position, Vec velocity) {
+static void createSparkle(Vec position, Vec velocity, Color color) {
     auto sparkle = Tile2D::createGameObject();
 
     auto sparkleBody = sparkle->attachComponent<Body>();
@@ -45,7 +30,7 @@ void MissileBehaviour::Body_MapCollisionEventHandler::createSparkle(Vec position
 
     auto sparkleSprite = sparkle->attachComponent<Sprite>();
     sparkleSprite->rect.set({-2, -2, 2, 2});
-    sparkleSprite->color.set({1, 1, 1});
+    sparkleSprite->color.set(color);
     sparkleSprite->position.bind(sparkleBody->position);
     sparkleSprite->angle.bind(sparkleBody->angle);
     sparkleSprite->texturePtr.set(Tile2D::resources().textures["missile"]);
@@ -53,8 +38,41 @@ void MissileBehaviour::Body_MapCollisionEventHandler::createSparkle(Vec position
     auto sparkleBehaviour = sparkle->attachComponent<SparkleBehaviour>();
 }
 
+static void createSparkles(Vec position, Vec normal, Color color) {
+    Vec& n = normal;
+    Vec perp = Vec(n.y, -n.x);
+
+    createSparkle(position, (n) * 1000, color);
+    createSparkle(position, (perp + n) * 1000, color);
+    createSparkle(position, ((perp * -1) + n) * 1000, color);
+    createSparkle(position, (perp) * 1000, color);
+    createSparkle(position, (perp) * -1000, color);
+}
+void MissileBehaviour::Body_MapCollisionEventHandler::handle(Body* body, MapCollisionEventArgs args) {
+    body->gameObject()->destroy();
+    Tile2D::physicsWorld().getMap()->setValueScaled(args.tileCoordinates, nullptr);
+    createSparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
+}
+
+void MissileBehaviour::Body_BodyCollisionEventHandler::handle(Body* body, BodyCollisionEventArgs args) {
+    if (args.otherBody->gameObject()->tag == Tags::enemy) {
+        auto otherBody = args.otherBody->gameObject()->getComponent<Body>();
+        otherBody->velocity.set(otherBody->velocity.get() + body->velocity.get() / 100.0);
+        auto sprite = args.otherBody->gameObject()->getComponent<Sprite>();
+        if (sprite->color.get().red > 0.9) {
+            sprite->color.set({0, 1, 0});
+        } else {
+            sprite->color.set({1, 0, 0});
+        }
+
+        createSparkles(body->position.get(), args.contactNormal, {1, 0, 0});
+        body->gameObject()->destroy();
+    }
+};
+
 void MissileBehaviour::awake() {
     gameObject()->getComponent<Body>()->mapCollision.add(&body_mapCollisionEventHandler);
+    gameObject()->getComponent<Body>()->bodyCollision.add(&body_bodyCollisionEventHandler);
     awakeTimestamp = SDL_GetTicks();
 }
 

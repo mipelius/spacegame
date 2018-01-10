@@ -23,6 +23,35 @@
 #include "Sprite.h"
 #include "Camera.h"
 #include "PlayerController.h"
+#include "Tags.h"
+
+static GameObject* spawnEnemy(Vec pos) {
+    auto enemy = Tile2D::createGameObject();
+    enemy->tag = Tags::enemy;
+
+    auto spaceshipBody = enemy->attachComponent<Body>();
+    spaceshipBody->mass.set(100.0);
+    spaceshipBody->position.set(pos);
+
+    auto polygonCollider = enemy->attachComponent<PolygonCollider>();
+    polygonCollider->setPoints({
+                                       {-20, -18},
+                                       {-5, -18},
+                                       {18, 0},
+                                       {-5, 18},
+                                       {-20, 18}
+                               });
+
+    auto spaceshipSprite = enemy->attachComponent<Sprite>();
+    spaceshipSprite->position.set({0, 0});
+    spaceshipSprite->rect.set({-20, -20, 20, 20});
+    spaceshipSprite->texturePtr.set(Tile2D::resources().textures["spaceship"]);
+    spaceshipSprite->position.bind(spaceshipBody->position);
+    spaceshipSprite->angle.bind(spaceshipBody->angle);
+    spaceshipSprite->color.set({1, 0, 0});
+
+    return enemy;
+}
 
 void SceneInGame::init() {
     Tile2D::physicsWorld().airDensity.set(0.0001);
@@ -37,6 +66,7 @@ void SceneInGame::init() {
     // player
 
     auto player = Tile2D::createGameObject();
+    player->tag = Tags::player;
 
     auto spaceshipBody = player->attachComponent<Body>();
     spaceshipBody->mass.set(100.0);
@@ -83,6 +113,12 @@ void SceneInGame::init() {
     auto drawableMap = tileMap->attachComponent<DrawableMap>();
     drawableMap->setMap(map);
     drawableMap->setMapTexture(Tile2D::resources().tileSets["tileset"]->getMapTexture());
+
+    // dummy enemies
+
+    spawnEnemy(spaceshipBody->position.get() + Vec(100.0, 0.0));
+    spawnEnemy(spaceshipBody->position.get() + Vec(200.0, 0.0));
+    spawnEnemy(spaceshipBody->position.get() + Vec(300.0, 0.0));
 }
 
 void SceneInGame::destroy() {

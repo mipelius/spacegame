@@ -219,16 +219,16 @@ bool Body::detectMapCollision_(double deltaTime) {
 
 
 bool Body::detectCollisionWith_(Body &otherBody) {
-//    if (!entityCollisionDetectionIsIgnored_) {
-//        if (this->collider == nullptr || otherBody.collider == nullptr) return false;
-//        if (this->collider->intersectsWith(otherBody.getColliderShape()) ||
-//                otherBody.getColliderShape()->intersectsWith(collider)) {
-//
-//            bodyCollision.raise(BodyCollisionEventArgs(&otherBody));
-//
-//            return true;
-//        }
-//    }
+    if (collider_ == nullptr || otherBody.collider_ == nullptr) return false;
+    if (!collider_->boundingBox_.intersectsWith(otherBody.collider_->boundingBox_)) return false;
+
+    Vec contactNormal;
+    double penetration;
+
+    if (collider_->overlap(*otherBody.collider_, contactNormal, penetration)) {
+        bodyCollision.raise(BodyCollisionEventArgs(&otherBody, contactNormal));
+        return true;
+    }
 
     return false;
 }

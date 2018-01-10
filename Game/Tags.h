@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// Copyright (C) 2018 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,8 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "BodyCollisionEventArgs.h"
-#include "Body.h"
+#ifndef __Tags_H
+#define __Tags_H
 
-BodyCollisionEventArgs::BodyCollisionEventArgs(Body* otherBody, Vec contactNormal)
-        : otherBody(otherBody), contactNormal(contactNormal) { }
+enum Tags {
+    enemy,
+    player
+};
+
+#endif //__Tags_H
