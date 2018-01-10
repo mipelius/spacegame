@@ -42,7 +42,7 @@ void SceneInGame::init() {
     spaceshipBody->mass.set(100.0);
     spaceshipBody->position.set(Vec(4000.0, 8000.0));
 
-    auto polygonCollider = player->attachComponent<PolygonCollider>(); // TODO: PolygonCollider : Tile2DComponent
+    auto polygonCollider = player->attachComponent<PolygonCollider>();
     polygonCollider->setPoints({
           {-20, -18},
           {-5, -18},
@@ -63,7 +63,7 @@ void SceneInGame::init() {
 
     // camera
 
-    auto camera = new Camera(); // TODO: don't use new! --> maybe only one camera?
+    camera = new Camera;
     camera->areaRect.set({0, 0, (double)Tile2D::window().w.get(), (double)Tile2D::window().h.get()});
     camera->position.bind(spaceshipBody->position);
     Tile2D::canvas().setCamera(camera);
@@ -85,4 +85,6 @@ void SceneInGame::init() {
     drawableMap->setMapTexture(Tile2D::resources().tileSets["tileset"]->getMapTexture());
 }
 
-void SceneInGame::destroy() { }
+void SceneInGame::destroy() {
+    delete camera;
+}
