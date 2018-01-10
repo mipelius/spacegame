@@ -70,14 +70,14 @@ void PlayerController::shoot() {
 }
 
 void PlayerController::shootOnce(Vec offset) {
-    auto missile = Tile2D::create<GameObject>();
+    auto missile = Tile2D::createGameObject();
 
-    auto missileBody = Tile2D::create<Body>();
+    auto missileBody = missile->attachComponent<Body>();
     missileBody->mass.set(10.0);
     missileBody->position.set(body->position.get() + offset);
     missileBody->velocity.set(Vec::byAngle(body->angle.get(), 30000.0) + body->velocity.get());
     missileBody->angle.set(body->angle.get());
-    auto collider = Tile2D::create<PolygonCollider>();
+    auto collider = new PolygonCollider(); // TODO NO NEW !
     collider->setPoints({
                                 {-18, -5},
                                 {18,  -5},
@@ -85,16 +85,12 @@ void PlayerController::shootOnce(Vec offset) {
                                 {-18, 5}
                         });
     missileBody->setCollider(collider);
-    missile->addComponent(missileBody);
 
-    auto missileSprite = Tile2D::create<Sprite>();
+    auto missileSprite = missile->attachComponent<Sprite>();
     missileSprite->rect.set({-20,-5,20,5});
     missileSprite->position.bind(missileBody->position);
     missileSprite->angle.bind(missileBody->angle);
     missileSprite->texturePtr.set(Tile2D::resources().textures["missile"]);
-    missile->addComponent(missileSprite);
 
-    auto missileBehaviour = Tile2D::create<MissileBehaviour>();
-    missile->addComponent(missileBehaviour);
-
+    auto missileBehaviour = missile->attachComponent<MissileBehaviour>();
 }

@@ -36,25 +36,22 @@ void MissileBehaviour::Body_MapCollisionEventHandler::handle(Body* body, MapColl
 }
 
 void MissileBehaviour::Body_MapCollisionEventHandler::createSparkle(Vec position, Vec velocity) {
-    auto sparkle = Tile2D::create<GameObject>();
+    auto sparkle = Tile2D::createGameObject();
 
-    auto sparkleBody = Tile2D::create<Body>();
+    auto sparkleBody = sparkle->attachComponent<Body>();
     sparkleBody->mass.set(10.0);
     sparkleBody->position.set(position);
     sparkleBody->velocity.set(velocity);
     sparkleBody->angle.set(velocity.angle());
-    sparkle->addComponent(sparkleBody);
 
-    auto sparkleSprite = Tile2D::create<Sprite>();
+    auto sparkleSprite = sparkle->attachComponent<Sprite>();
     sparkleSprite->rect.set({-2, -2, 2, 2});
     sparkleSprite->color.set({1, 1, 1});
     sparkleSprite->position.bind(sparkleBody->position);
     sparkleSprite->angle.bind(sparkleBody->angle);
     sparkleSprite->texturePtr.set(Tile2D::resources().textures["missile"]);
-    sparkle->addComponent(sparkleSprite);
 
-    auto sparkleBehaviour = Tile2D::create<SparkleBehaviour>();
-    sparkle->addComponent(sparkleBehaviour);
+    auto sparkleBehaviour = sparkle->attachComponent<SparkleBehaviour>();
 }
 
 void MissileBehaviour::awake() {

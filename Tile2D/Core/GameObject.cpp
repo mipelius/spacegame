@@ -17,11 +17,6 @@
 #include "GameObject.h"
 #include "Tile2D.h"
 
-void GameObject::addComponent(Tile2DComponent *component) {
-    uninitializedComponents_.push_back(component);
-    component->gameObject_ = this;
-}
-
 void GameObject::initializeComponents_() {
     for (auto& component : uninitializedComponents_) {
         component->init();
@@ -30,12 +25,25 @@ void GameObject::initializeComponents_() {
     uninitializedComponents_.clear();
 }
 
-void GameObject::onDestroy() {
-    for (auto& component : components_) {
-        component->destroy();
-    }
+
+void GameObject::destroy() {
+    Tile2D::instance_().destroy_(this);
 }
 
-void GameObject::onCreate() {
-    Tile2D::instance_().gameObjectsToInit_.push_back(this);
+
+GameObject::GameObject() {
+    Tile2D::instance_().objectsToInit_.push_back(this);
+}
+
+
+GameObject::~GameObject() {
+    for (auto& component : uninitializedComponents_) {
+        delete component;
+    }
+    for (auto& component : components_) {
+        component->onDestroy();
+    }
+    for (auto& component : components_) {
+        delete component;
+    }
 }

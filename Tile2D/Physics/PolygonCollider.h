@@ -6,11 +6,10 @@
 #define __PolygonCollider_H
 
 #include <vector>
-#include "Tile2DObject.h"
 #include "Vec.h"
 #include "Rect.h"
 
-class PolygonCollider : public Tile2DObject {
+class PolygonCollider {
     friend class PolygonCollider;
     friend class Body;
     friend class Projection;

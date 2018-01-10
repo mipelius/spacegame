@@ -24,5 +24,4 @@ void Tile2DBehaviour::init() {
 
 void Tile2DBehaviour::onDestroy() {
     Tile2D::instance_().behaviours_.remove(this);
-    Tile2DObject::onDestroy();
 }

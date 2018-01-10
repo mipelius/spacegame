@@ -135,5 +135,4 @@ void TileMap::init() {
 
 void TileMap::onDestroy() {
     Tile2D::physicsWorld().map_ = nullptr;
-    Tile2DObject::onDestroy();
 }

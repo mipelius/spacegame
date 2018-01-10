@@ -61,7 +61,7 @@ void Body::init() {
 
 void Body::onDestroy() {
     if (collider_ != nullptr) {
-        collider_->destroy();
+        delete collider_; // TODO
     }
     if (physicsWorld_ != nullptr) {
         physicsWorld_->remove(this);

@@ -21,11 +21,13 @@
 
 class Tile2DBehaviour : public Tile2DComponent {
     friend class Tile2D;
+
 protected:
-    void init() override;
+    void init() final;
+    void onDestroy() final;
+
     virtual void awake() = 0;
     virtual void update() = 0;
-    void onDestroy() override;
 };
 
 

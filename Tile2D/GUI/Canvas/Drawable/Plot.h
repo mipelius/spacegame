@@ -19,7 +19,6 @@
 
 class Canvas;
 
-#include "Tile2DObject.h"
 #include "Vec.h"
 #include "DrawableBase.h"
 #include "Property.h"

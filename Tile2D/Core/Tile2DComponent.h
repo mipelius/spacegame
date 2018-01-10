@@ -17,10 +17,9 @@
 #ifndef __IComponent_H
 #define __IComponent_H
 
-#include "Tile2DObject.h"
 #include "GameObject.h"
 
-class Tile2DComponent : public Tile2DObject {
+class Tile2DComponent {
     friend class GameObject;
 
 public:
@@ -28,6 +27,7 @@ public:
 
 protected:
     virtual void init() = 0;
+    virtual void onDestroy() = 0;
 
 private:
     GameObject* gameObject_ = nullptr;

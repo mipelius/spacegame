@@ -18,23 +18,25 @@
 #define __GameObject_H
 
 #include <list>
-#include "Tile2DObject.h"
 
 class Tile2DComponent;
 
-class GameObject : public Tile2DObject {
+class GameObject {
     friend class Tile2D;
-public:
-    void addComponent(Tile2DComponent* component);
 
+public:
     template <class T>
     T* getComponent();
 
-protected:
-    void onDestroy() final;
-    void onCreate() final;
+    template <class T>
+    T* attachComponent();
+
+    void destroy();
 
 private:
+    GameObject();
+    ~GameObject();
+
     std::list<Tile2DComponent*> uninitializedComponents_;
     std::list<Tile2DComponent*> components_;
 
@@ -60,6 +62,14 @@ T* GameObject::getComponent() {
     }
 
     return nullptr;
+}
+
+template<class T>
+T *GameObject::attachComponent() {
+    auto component = new T();
+    component->gameObject_ = this;
+    uninitializedComponents_.push_back(component);
+    return component;
 }
 
 #endif //__GameObject_H

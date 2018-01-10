@@ -17,13 +17,12 @@
 #ifndef __Camera_H_
 #define __Camera_H_
 
-#include "Tile2DObject.h"
 #include "Rect.h"
 #include "Vec.h"
 
 #include "Property.h"
 
-class Camera : public Tile2DObject {
+class Camera {
 
 public:
     Property<Vec> const position;

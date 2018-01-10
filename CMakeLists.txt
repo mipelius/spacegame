@@ -162,8 +162,6 @@ set(SOURCE_FILES
         Tile2D/Core/Resources.cpp
         Tile2D/Core/Resources.h
         Tile2D/Core/ResourceContainer.h
-        Tile2D/Core/Tile2DObject.cpp
-        Tile2D/Core/Tile2DObject.h
         Tile2D/Core/GameObject.cpp
         Tile2D/Core/GameObject.h
         Tile2D/Core/Tile2DComponent.h

@@ -17,7 +17,6 @@
 #ifndef __Background_H_
 #define __Background_H_
 
-#include "Tile2DObject.h"
 #include "DrawableBase.h"
 #include "Property.h"
 

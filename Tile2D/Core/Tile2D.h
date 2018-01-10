@@ -24,7 +24,6 @@
 #include "SceneManager.h"
 #include "Resources.h"
 #include "Window.h"
-#include "Tile2DObject.h"
 #include "Canvas.h"
 #include "GameObject.h"
 #include "Tile2DBehaviour.h"
@@ -56,7 +55,7 @@ public:
     static PhysicsWorld &physicsWorld();
     static Canvas &canvas();
 
-    template <class T> static T* create();
+    static GameObject* createGameObject();
 
 private:
     Window *window_;
@@ -78,25 +77,13 @@ private:
 
     static bool isLoaded_;
 
-    std::set<void*> objects_;
-    std::list<std::pair<void*, Tile2DObject*> > objectsToDestroy_;
-    std::list<GameObject*> gameObjectsToInit_;
+    std::set<GameObject*> objects_;
+    std::set<GameObject*> objectsToDestroy_;
+    std::list<GameObject*> objectsToInit_;
+
     std::list<Tile2DBehaviour*> behaviours_;
 
-    void destroy_(Tile2DObject* obj);
+    void destroy_(GameObject* obj);
 };
-
-// template function definition
-
-template <class T>
-T* Tile2D::create() {
-    static_assert(std::is_base_of<Tile2DObject, T>(), "Can't create object since it is not inherited from Tile2DObject.");
-    T* obj = new T();
-    ((Tile2DObject*)obj)->derivedClassPtr = obj;
-    auto result = instance_().objects_.insert(obj);
-    obj->onCreate();
-    return obj;
-}
-
 
 #endif //__TILE2D_H

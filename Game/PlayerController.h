@@ -34,7 +34,7 @@ protected:
 private:
     void shootOnce(Vec offset);
 
-    const Uint32 shootingInterval = 40;
+    const Uint32 shootingInterval = 15;
     Uint32 lastShotTimestamp;
 
     Body* body;

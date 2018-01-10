@@ -101,32 +101,17 @@ void Tile2D::cleanUp_() {
 }
 
 void Tile2D::removeDestroyedObjects_() {
-    std::list<std::pair<void*, Tile2DObject*> > objectsReadyToDie;
     for (auto obj : objectsToDestroy_) {
-        objectsReadyToDie.push_back(obj);
+        delete obj;
     }
     objectsToDestroy_.clear();
-
-    for (auto obj : objectsReadyToDie) {
-        obj.second->onDestroy();
-    }
-
-    for (auto obj : objectsToDestroy_) {
-        objectsReadyToDie.push_back(obj);
-        obj.second->onDestroy();
-    }
-    objectsToDestroy_.clear();
-
-    for (auto obj : objectsReadyToDie) {
-        delete obj.first;
-    }
 }
 
 void Tile2D::initGameObjects_() {
-    for (auto& obj: gameObjectsToInit_) {
+    for (auto& obj: objectsToInit_) {
         obj->initializeComponents_();
     }
-    gameObjectsToInit_.clear();
+    objectsToInit_.clear();
 }
 
 void Tile2D::updateBehaviours_() {
@@ -135,17 +120,14 @@ void Tile2D::updateBehaviours_() {
     }
 }
 
-void Tile2D::destroy_(Tile2DObject* obj) {
-    void* actualObj = obj->derivedClassPtr;
-    assert(actualObj != nullptr && "Can't destroy object since it was not created by Tile2D.");
-
-    auto it = instance_().objects_.find(actualObj);
+void Tile2D::destroy_(GameObject* obj) {
+    auto it = instance_().objects_.find(obj);
 
     if ((*it) != nullptr) {
         instance_().objects_.erase((*it));
     }
 
-    instance_().objectsToDestroy_.push_back(std::pair<void*, Tile2DObject*>(actualObj, obj));
+    instance_().objectsToDestroy_.insert(obj);
 }
 
 
@@ -167,4 +149,10 @@ PhysicsWorld &Tile2D::physicsWorld() {
 
 Canvas &Tile2D::canvas() {
     return *instance_().canvas_;
+}
+
+GameObject *Tile2D::createGameObject() {
+    auto gameObject = new GameObject();
+    instance_().objects_.insert(gameObject);
+    return gameObject;
 }

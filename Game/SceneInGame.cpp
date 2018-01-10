@@ -29,22 +29,20 @@ void SceneInGame::init() {
 
     // background
 
-    auto background = Tile2D::create<GameObject>();
-    auto bg = Tile2D::create<Background>();
+    auto background = Tile2D::createGameObject();
+    auto bg = background->attachComponent<Background>();
     bg->ratio.set(0.5f);
     bg->texturePtr.set(Tile2D::resources().textures["bg2"]);
 
-    background->addComponent(bg);
-
     // player
 
-    auto player = Tile2D::create<GameObject>();
+    auto player = Tile2D::createGameObject();
 
-    auto spaceshipBody = Tile2D::create<Body>();
+    auto spaceshipBody = player->attachComponent<Body>();
     spaceshipBody->mass.set(100.0);
     spaceshipBody->position.set(Vec(4000.0, 8000.0));
 
-    auto polygonCollider = Tile2D::create<PolygonCollider>();
+    auto polygonCollider = new PolygonCollider(); // TODO: PolygonCollider : Tile2DComponent
     polygonCollider->setPoints({
           {-20, -18},
           {-5, -18},
@@ -54,56 +52,39 @@ void SceneInGame::init() {
     });
 
     spaceshipBody->setCollider(polygonCollider);
-    player->addComponent(spaceshipBody);
 
-    auto spaceshipSprite = Tile2D::create<Sprite>();
+    auto spaceshipSprite = player->attachComponent<Sprite>();
     spaceshipSprite->position.set({0, 0});
     spaceshipSprite->rect.set({-20, -20, 20, 20});
     spaceshipSprite->texturePtr.set(Tile2D::resources().textures["spaceship"]);
     spaceshipSprite->position.bind(spaceshipBody->position);
     spaceshipSprite->angle.bind(spaceshipBody->angle);
-    //spaceshipSprite->opacity.set(0.1);
-    player->addComponent(spaceshipSprite);
 
-    auto playerController = Tile2D::create<PlayerController>();
+    auto playerController = player->attachComponent<PlayerController>();
     playerController->moveForce = 10000.0f;
-    player->addComponent(playerController);
-
-    // testObj
-
-    auto testObj = Tile2D::create<GameObject>();
-
-    auto testSprite = Tile2D::create<Sprite>();
-    testSprite->position.set({4000, 8100});
-    testSprite->rect.set({-20, -20, 20, 20});
-    testSprite->texturePtr.set(Tile2D::resources().textures["spaceship"]);
-    testSprite->color.set(Color(1.0, 0.0, 0.0));
-    testObj->addComponent(testSprite);
 
     // camera
 
-    auto camera = Tile2D::create<Camera>();
+    auto camera = new Camera(); // TODO: don't use new! --> maybe only one camera?
     camera->areaRect.set({0, 0, (double)Tile2D::window().w.get(), (double)Tile2D::window().h.get()});
     camera->position.bind(spaceshipBody->position);
     Tile2D::canvas().setCamera(camera);
 
     // tile map
 
-    auto tileMap = Tile2D::create<GameObject>();
+    auto tileMap = Tile2D::createGameObject();
 
-    auto map = Tile2D::create<TileMap>();
+    auto map = tileMap->attachComponent<TileMap>();
     map->load(
             "maps/map.bmp",
             Tile2D::resources().tileSets["tileset"],
             10,
             10
     );
-    tileMap->addComponent(map);
 
-    auto drawableMap = Tile2D::create<DrawableMap>();
+    auto drawableMap = tileMap->attachComponent<DrawableMap>();
     drawableMap->setMap(map);
     drawableMap->setMapTexture(Tile2D::resources().tileSets["tileset"]->getMapTexture());
-    tileMap->addComponent(drawableMap);
 }
 
 void SceneInGame::destroy() { }
