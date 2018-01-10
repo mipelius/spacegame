@@ -28,10 +28,6 @@ Canvas::Canvas() {
 void Canvas::renderActual() {
     if (camera_ == nullptr) return;
 
-    for (auto& shadowMask : shadowMasks_) {
-        shadowMask->update(*this);
-    }
-
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(
@@ -48,10 +44,6 @@ void Canvas::renderActual() {
     for (auto& drawable : drawables_) {
         drawable->draw(*this);
     }
-
-    for (auto& shadowMask : shadowMasks_) {
-        shadowMask->draw(*this);
-    }
 }
 
 void Canvas::addDrawable(DrawableBase *drawable) {
@@ -62,12 +54,8 @@ void Canvas::setCamera(Camera* camera) {
     camera_ = camera;
 }
 
-Camera& Canvas::getCamera() const {
-    return *camera_;
-}
-
-void Canvas::addShadowMask(IShadowMask *shadowMask) {
-    shadowMasks_.push_back(shadowMask);
+Camera* Canvas::getCamera() const {
+    return camera_;
 }
 
 void Canvas::removeDrawable(DrawableBase *drawable) {

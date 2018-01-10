@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "Tile2D.h"
 #include "precompile.h"
 #include "PointLight.h"
 #include "Canvas.h"
@@ -21,33 +22,22 @@
 
 GLuint PointLight::glTextureId_ = 0;
 
-PointLight::PointLight(Vec position, double radius, bool isDynamic) :
-    location    (Property<Vec>(this, getPosition_, setPosition_)  ),
-    radius      (   Property<double>  (&radius_           )  ),
-    intensity   (   Property<double>  (&intensity_        )  ),
+PointLight::PointLight() :
+    position    (   Property<Vec>     (this, getPosition_, setPosition_)  ),
+    radius      (   Property<double>  (&radius_                        )  ),
+    intensity   (   Property<double>  (&intensity_                     )  ),
 
-    position_   (   position    ),
-    radius_     (   radius      ),
-    intensity_  (   1.0         ),
-
-    movement    (   new Event<PointLight, PointLightMovedEventArgs>(this)   )
+    position_   (   {0, 0}    ),
+    radius_     (   0         ),
+    intensity_  (   1.0       )
 {
-    isDynamic_ = isDynamic;
-
     if (glTextureId_ == 0) {
         createLightTexture();
     }
-
-    int w = (int)(radius_ * 2 / 10);
-    int h = (int)(radius_ * 2 / 10);
-}
-
-PointLight::~PointLight() {
-    delete movement;
 }
 
 void PointLight::draw(const Canvas &canvas) {
-    Rect rect = canvas.getCamera().areaRect.get();
+    Rect rect = canvas.getCamera()->areaRect.get();
 
     double x = position_.x - rect.x1 - radius_;
     double y = position_.y - rect.y1 - radius_;
@@ -128,5 +118,13 @@ void PointLight::setPosition_(void *owner, const Vec &value) {
 
     Vec newLocation = pointLight->position_;
 
-    pointLight->movement->raise(PointLightMovedEventArgs(oldLocation, newLocation));
+    //pointLight->movement->raise(PointLightMovedEventArgs(oldLocation, newLocation));
+}
+
+void PointLight::init() {
+    Tile2D::shadowMask().addLight(this);
+}
+
+void PointLight::onDestroy() {
+    Tile2D::shadowMask().removeLight(this);
 }

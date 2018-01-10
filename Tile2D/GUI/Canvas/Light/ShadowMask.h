@@ -19,12 +19,12 @@
 
 #include <list>
 #include <queue>
-#include "IShadowMask.h"
 #include "Property.h"
 #include "Canvas.h"
 #include "PointLight.h"
 #include "Array2d.h"
 #include "Camera.h"
+#include "IShadowMask.h"
 
 class PointLight;
 class TileMap;
@@ -32,13 +32,12 @@ class LightMap;
 class PartialLightMapUpdate;
 
 class ShadowMask : public IShadowMask {
-
     friend class WorldMap_ModificationEventHandler;
     friend class PointLight_MovementEventHandler;
 
 public:
-    ShadowMask(double w, double h, TileMap * map);
-    ~ShadowMask();
+    ShadowMask();
+    ~ShadowMask() = default;
 
     Property<double> const ambientLight;
 
@@ -46,7 +45,6 @@ public:
     void draw(const Canvas& canvas) override;
 
     void addLight(PointLight *light);
-
     void removeLight(PointLight *light);
 
 private:
@@ -56,17 +54,10 @@ private:
     Array2d<unsigned char>* dynamicLightScene_;
 
     double ambientLight_;
-    double w_;
-    double h_;
-
-    TileMap* worldMap_;
-    LightMap* lightMap_;
+    double w;
+    double h;
 
     void initialize();
-
-    void handleNextUpdate();
-
-    std::queue<PartialLightMapUpdate*> partialLightMapUpdatesQueue;
 
     GLuint glTextureId_;
 
@@ -79,11 +70,7 @@ private:
     static void createShadowTexture();
     static const int SHADOW_TEXTURE_SIZE = 32;
 
-    class WorldMap_ModificationEventHandler;
-    class PointLight_MovementEventHandler;
-
     void updateDynamicScene(Rect *areaRect);
 };
-
 
 #endif //__ShadowMask_H_

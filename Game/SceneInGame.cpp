@@ -54,6 +54,7 @@ static GameObject* spawnEnemy(Vec pos) {
 }
 
 void SceneInGame::init() {
+    Tile2D::shadowMask().ambientLight.set(0.5);
     Tile2D::physicsWorld().airDensity.set(0.0001);
 
     // background
@@ -87,6 +88,11 @@ void SceneInGame::init() {
     spaceshipSprite->texturePtr.set(Tile2D::resources().textures["spaceship"]);
     spaceshipSprite->position.bind(spaceshipBody->position);
     spaceshipSprite->angle.bind(spaceshipBody->angle);
+
+    auto light = player->attachComponent<PointLight>();
+    light->position.bind(spaceshipBody->position);
+    light->intensity.set(1.0);
+    light->radius.set(100.0);
 
     auto playerController = player->attachComponent<PlayerController>();
     playerController->moveForce = 10000.0f;

@@ -33,14 +33,14 @@ Background::Background() :
 }
 
 void Background::draw(const Canvas& canvas) {
-    Rect rect = canvas.getCamera().areaRect.get();
+    Rect rect = canvas.getCamera()->areaRect.get();
 
     glColor3d(1.0, 1.0, 1.0);
 
     if (texturePtr_ != nullptr) {
         texturePtr_->glBind();
 
-        Vec position = canvas.getCamera().position.get();
+        Vec position = canvas.getCamera()->position.get();
 
         GLdouble x = (position.x * ratio_) / texturePtr_->getW();
         GLdouble y = (position.y * ratio_) / texturePtr_->getH();

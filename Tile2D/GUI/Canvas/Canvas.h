@@ -18,7 +18,6 @@
 #define __Canvas_H_
 
 class DrawableBase;
-class IShadowMask;
 class Camera;
 
 #include "GuiComponentBase.h"
@@ -29,7 +28,7 @@ class Canvas : public GuiComponentBase {
 
 public:
     void setCamera(Camera* camera);
-    Camera& getCamera() const;
+    Camera* getCamera() const;
 
 private:
     Canvas();
@@ -38,10 +37,7 @@ private:
     void addDrawable(DrawableBase *drawable);
     void removeDrawable(DrawableBase* drawable);
 
-    void addShadowMask(IShadowMask *shadowMask);
-
     std::list<DrawableBase*> drawables_;
-    std::list<IShadowMask*> shadowMasks_;
     Camera* camera_;
 };
 

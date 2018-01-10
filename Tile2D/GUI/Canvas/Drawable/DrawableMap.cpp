@@ -31,12 +31,12 @@ void DrawableMap::draw(const Canvas &canvas) {
 
     double blockSizeW =
             canvas.getRenderingAreaRect().getWidth() /
-            canvas.getCamera().areaRect.get().getWidth() *
+            canvas.getCamera()->areaRect.get().getWidth() *
             map_->getBlockW();
 
     double blockSizeH =
             canvas.getRenderingAreaRect().getHeight() /
-            canvas.getCamera().areaRect.get().getHeight() *
+            canvas.getCamera()->areaRect.get().getHeight() *
             map_->getBlockH();
 
     if (blockSizeW > 1.0 && blockSizeH > 1.0) {
@@ -56,7 +56,7 @@ void DrawableMap::setMapTexture(MapTexture *mapTexture) {
 }
 
 void DrawableMap::drawMap(const Canvas &canvas) {
-    const Rect& rect = canvas.getCamera().areaRect.get();
+    const Rect& rect = canvas.getCamera()->areaRect.get();
 
     const double& x = rect.x1;
     const double& y = rect.y1;
@@ -113,7 +113,7 @@ void DrawableMap::drawMap(const Canvas &canvas) {
 }
 
 void DrawableMap::drawSmallMap(const Canvas& canvas) {
-    Rect cameraRect = canvas.getCamera().areaRect.get();
+    Rect cameraRect = canvas.getCamera()->areaRect.get();
     Rect renderingAreaRect = canvas.getRenderingAreaRect();
 
     double stepX = cameraRect.getWidth() / renderingAreaRect.getWidth();

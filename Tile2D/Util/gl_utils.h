@@ -31,7 +31,7 @@ static void drawLine(const LineSegment& lineSegment) {
 
 static void prepareRendering() {
     Canvas& canvas = Tile2D::canvas();
-    auto& camera = Tile2D::canvas().getCamera();
+    auto camera = Tile2D::canvas().getCamera();
     Rect rect = canvas.getRenderingAreaRect();
 
     auto x = (GLint)(rect.x1);
@@ -43,10 +43,10 @@ static void prepareRendering() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(
-            camera.areaRect.get().x1,
-            camera.areaRect.get().x2,
-            camera.areaRect.get().y2,
-            camera.areaRect.get().y1,
+            camera->areaRect.get().x1,
+            camera->areaRect.get().x2,
+            camera->areaRect.get().y2,
+            camera->areaRect.get().y1,
             -1.0,
             1.0
     );

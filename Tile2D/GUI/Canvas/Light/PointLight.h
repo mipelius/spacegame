@@ -24,34 +24,35 @@ class PartialLightMap;
 
 #include "Event.h"
 #include <SDL2/SDL_opengl.h>
+#include "Tile2DComponent.h"
 #include "Property.h"
 #include "Vec.h"
 #include "PointLightMovedEventArgs.h"
 
-class PointLight {
+class PointLight : public Tile2DComponent {
     friend class ShadowMask;
     friend class positionProperty;
 
 public:
     virtual void draw(const Canvas &canvas);
 
-    PointLight(Vec position, double radius, bool isDynamic = false);
-    ~PointLight();
+    PointLight();
+    ~PointLight() = default;
 
-    Property<Vec> const location;
+    Property<Vec> const position;
     Property<double> const radius;
     Property<double> const intensity;
 
-    Event<PointLight, PointLightMovedEventArgs>* const movement;
-
     static GLuint glTextureId_;
+
+protected:
+    void init() override;
+    void onDestroy() override;
 
 private:
     Vec position_;
     double radius_;
     double intensity_;
-
-    bool isDynamic_;
 
     PartialLightMap* partialLightMap_;
 

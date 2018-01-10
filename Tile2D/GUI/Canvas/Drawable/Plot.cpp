@@ -30,7 +30,7 @@ Plot::Plot() :
 }
 
 void Plot::draw(const Canvas &canvas) {
-    Rect cameraRect = canvas.getCamera().areaRect.get();
+    Rect cameraRect = canvas.getCamera()->areaRect.get();
     Rect renderingAreaRect = canvas.getRenderingAreaRect();
 
     double pixelWidth = cameraRect.getWidth() / renderingAreaRect.getWidth();
