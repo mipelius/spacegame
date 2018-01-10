@@ -28,7 +28,7 @@ protected:
     void update() override;
 
     Uint32 awakeTimestamp;
-    const Uint32 TTL = 1000;
+    const Uint32 TTL = 500;
     Sprite* sprite;
 };
 

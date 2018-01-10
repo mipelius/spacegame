@@ -101,10 +101,25 @@ void Tile2D::cleanUp_() {
 }
 
 void Tile2D::removeDestroyedObjects_() {
+    std::list<std::pair<void*, Tile2DObject*> > objectsReadyToDie;
     for (auto obj : objectsToDestroy_) {
-        // TODO doesn't work: delete obj;
+        objectsReadyToDie.push_back(obj);
     }
     objectsToDestroy_.clear();
+
+    for (auto obj : objectsReadyToDie) {
+        obj.second->onDestroy();
+    }
+
+    for (auto obj : objectsToDestroy_) {
+        objectsReadyToDie.push_back(obj);
+        obj.second->onDestroy();
+    }
+    objectsToDestroy_.clear();
+
+    for (auto obj : objectsReadyToDie) {
+        delete obj.first;
+    }
 }
 
 void Tile2D::initGameObjects_() {
@@ -115,7 +130,7 @@ void Tile2D::initGameObjects_() {
 }
 
 void Tile2D::updateBehaviours_() {
-    for (auto& obj: behaviours_) {
+    for (auto obj: behaviours_) {
         obj->update();
     }
 }
@@ -130,7 +145,7 @@ void Tile2D::destroy_(Tile2DObject* obj) {
         instance_().objects_.erase((*it));
     }
 
-    instance_().objectsToDestroy_.push_back(actualObj);
+    instance_().objectsToDestroy_.push_back(std::pair<void*, Tile2DObject*>(actualObj, obj));
 }
 
 

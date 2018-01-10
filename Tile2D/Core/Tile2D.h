@@ -79,7 +79,7 @@ private:
     static bool isLoaded_;
 
     std::set<void*> objects_;
-    std::list<void*> objectsToDestroy_;
+    std::list<std::pair<void*, Tile2DObject*> > objectsToDestroy_;
     std::list<GameObject*> gameObjectsToInit_;
     std::list<Tile2DBehaviour*> behaviours_;
 

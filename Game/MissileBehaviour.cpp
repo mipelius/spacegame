@@ -27,8 +27,12 @@ void MissileBehaviour::Body_MapCollisionEventHandler::handle(Body* body, MapColl
     Vec& n = args.contactNormal;
     Vec perp = Vec(n.y, -n.x);
 
-    createSparkle(args.tileCoordinates, perp * 10000);
-    createSparkle(args.tileCoordinates, perp * -10000);
+    createSparkle(args.tileCoordinates, (n) * 1000);
+    createSparkle(args.tileCoordinates, (perp + n) * 1000);
+    createSparkle(args.tileCoordinates, ((perp * -1) + n) * 1000);
+    createSparkle(args.tileCoordinates, (perp) * 1000);
+    createSparkle(args.tileCoordinates, (perp) * -1000);
+
 }
 
 void MissileBehaviour::Body_MapCollisionEventHandler::createSparkle(Vec position, Vec velocity) {
@@ -42,8 +46,8 @@ void MissileBehaviour::Body_MapCollisionEventHandler::createSparkle(Vec position
     sparkle->addComponent(sparkleBody);
 
     auto sparkleSprite = Tile2D::create<Sprite>();
-    sparkleSprite->rect.set({-4,-4,4,4});
-    sparkleSprite->color.set({1, 0, 0});
+    sparkleSprite->rect.set({-2, -2, 2, 2});
+    sparkleSprite->color.set({1, 1, 1});
     sparkleSprite->position.bind(sparkleBody->position);
     sparkleSprite->angle.bind(sparkleBody->angle);
     sparkleSprite->texturePtr.set(Tile2D::resources().textures["missile"]);

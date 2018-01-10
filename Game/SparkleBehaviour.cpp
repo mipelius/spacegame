@@ -24,10 +24,13 @@ void SparkleBehaviour::awake() {
 
 void SparkleBehaviour::update() {
     if (SDL_GetTicks() - awakeTimestamp > TTL) {
-        sprite->opacity.set(0.01);
-        // TODO gameObject()->destroy();
+        sprite->opacity.set(0.0);
+        gameObject()->destroy();
     } else {
         double opacity = 1.0 - (SDL_GetTicks() - awakeTimestamp) / (double)TTL;
+        if (opacity < 0.0) {
+            opacity = 0.0;
+        }
         sprite->opacity.set(opacity);
     }
 }
