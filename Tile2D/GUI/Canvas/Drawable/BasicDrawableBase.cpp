@@ -42,7 +42,7 @@ void BasicDrawableBase::draw(const Canvas& canvas) {
         return;
     }
 
-    if (opacity_ >= 0.0 && opacity_ < 1.0) {
+    if (opacity_ < 1.0) {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glColor4d(color_.red, color_.green, color_.blue, opacity_);

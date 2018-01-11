@@ -18,6 +18,25 @@
 #include "MissileBehaviour.h"
 #include "SparkleBehaviour.h"
 #include "Tags.h"
+#include "PulseLightBehaviour.h"
+
+static void createPulseLight(Vec position) {
+    auto obj = Tile2D::createGameObject();
+
+    auto light = obj->attachComponent<PointLight>();
+    light->radius.set(80.0);
+    light->intensity.set(1.0);
+    light->position.set(position);
+
+//    auto sparkleSprite = obj->attachComponent<Sprite>();
+//    sparkleSprite->rect.set({-20, -20, 20, 20});
+//    sparkleSprite->color.set({1,1,1});
+//    sparkleSprite->position.bind(light->position);
+//    sparkleSprite->texturePtr.set(Tile2D::resources().textures["missile"]);
+
+    auto pulseLightBehaviour = obj->attachComponent<PulseLightBehaviour>();
+    pulseLightBehaviour->TTL = 1.0f;
+}
 
 static void createSparkle(Vec position, Vec velocity, Color color) {
     auto sparkle = Tile2D::createGameObject();
@@ -50,8 +69,10 @@ static void createSparkles(Vec position, Vec normal, Color color) {
 }
 void MissileBehaviour::Body_MapCollisionEventHandler::handle(Body* body, MapCollisionEventArgs args) {
     body->gameObject()->destroy();
-    Tile2D::physicsWorld().getMap()->setValueScaled(args.tileCoordinates, nullptr);
+    Tile2D::physicsWorld().getMap()->setValueScaled(args.tileCoordinates, Tile2D::resources().tileSets["tileset"]->getEmptyBlock());
+
     createSparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
+    createPulseLight(body->position.get());
 }
 
 void MissileBehaviour::Body_BodyCollisionEventHandler::handle(Body* body, BodyCollisionEventArgs args) {
@@ -71,13 +92,12 @@ void MissileBehaviour::Body_BodyCollisionEventHandler::handle(Body* body, BodyCo
 };
 
 void MissileBehaviour::awake() {
+    LimitedAgeBehaviour::awake();
     gameObject()->getComponent<Body>()->mapCollision.add(&body_mapCollisionEventHandler);
     gameObject()->getComponent<Body>()->bodyCollision.add(&body_bodyCollisionEventHandler);
-    awakeTimestamp = SDL_GetTicks();
+    TTL = 1.0;
 }
 
 void MissileBehaviour::update() {
-    if (SDL_GetTicks() - awakeTimestamp > TTL) {
-        gameObject()->destroy();
-    }
+    LimitedAgeBehaviour::update();
 }

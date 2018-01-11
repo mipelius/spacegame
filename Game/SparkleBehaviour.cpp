@@ -18,19 +18,12 @@
 #include "SparkleBehaviour.h"
 
 void SparkleBehaviour::awake() {
-    awakeTimestamp = SDL_GetTicks();
+    LimitedAgeBehaviour::awake();
     sprite = gameObject()->getComponent<Sprite>();
+    TTL = 0.5;
 }
 
 void SparkleBehaviour::update() {
-    if (SDL_GetTicks() - awakeTimestamp > TTL) {
-        sprite->opacity.set(0.0);
-        gameObject()->destroy();
-    } else {
-        double opacity = 1.0 - (SDL_GetTicks() - awakeTimestamp) / (double)TTL;
-        if (opacity < 0.0) {
-            opacity = 0.0;
-        }
-        sprite->opacity.set(opacity);
-    }
+    LimitedAgeBehaviour::update();
+    sprite->opacity.set(1.0 - age() / TTL);
 }

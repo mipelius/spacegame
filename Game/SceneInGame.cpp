@@ -54,7 +54,7 @@ static GameObject* spawnEnemy(Vec pos) {
 }
 
 void SceneInGame::init() {
-    Tile2D::shadowMask().ambientLight.set(0.5);
+    Tile2D::shadowMask().ambientLight.set(0.0);
     Tile2D::physicsWorld().airDensity.set(0.0001);
 
     // background
@@ -63,46 +63,6 @@ void SceneInGame::init() {
     auto bg = background->attachComponent<Background>();
     bg->ratio.set(0.5f);
     bg->texturePtr.set(Tile2D::resources().textures["bg2"]);
-
-    // player
-
-    auto player = Tile2D::createGameObject();
-    player->tag = Tags::player;
-
-    auto spaceshipBody = player->attachComponent<Body>();
-    spaceshipBody->mass.set(100.0);
-    spaceshipBody->position.set(Vec(4000.0, 8000.0));
-
-    auto polygonCollider = player->attachComponent<PolygonCollider>();
-    polygonCollider->setPoints({
-          {-20, -18},
-          {-5, -18},
-          {18, 0},
-          {-5, 18},
-          {-20, 18}
-    });
-
-    auto spaceshipSprite = player->attachComponent<Sprite>();
-    spaceshipSprite->position.set({0, 0});
-    spaceshipSprite->rect.set({-20, -20, 20, 20});
-    spaceshipSprite->texturePtr.set(Tile2D::resources().textures["spaceship"]);
-    spaceshipSprite->position.bind(spaceshipBody->position);
-    spaceshipSprite->angle.bind(spaceshipBody->angle);
-
-    auto light = player->attachComponent<PointLight>();
-    light->position.bind(spaceshipBody->position);
-    light->intensity.set(1.0);
-    light->radius.set(100.0);
-
-    auto playerController = player->attachComponent<PlayerController>();
-    playerController->moveForce = 10000.0f;
-
-    // camera
-
-    camera = new Camera;
-    camera->areaRect.set({0, 0, (double)Tile2D::window().w.get(), (double)Tile2D::window().h.get()});
-    camera->position.bind(spaceshipBody->position);
-    Tile2D::canvas().setCamera(camera);
 
     // tile map
 
@@ -119,6 +79,46 @@ void SceneInGame::init() {
     auto drawableMap = tileMap->attachComponent<DrawableMap>();
     drawableMap->setMap(map);
     drawableMap->setMapTexture(Tile2D::resources().tileSets["tileset"]->getMapTexture());
+
+    // player
+
+    auto player = Tile2D::createGameObject();
+    player->tag = Tags::player;
+
+    auto spaceshipBody = player->attachComponent<Body>();
+    spaceshipBody->mass.set(100.0);
+    spaceshipBody->position.set(Vec(4000.0, 8000.0));
+
+    auto polygonCollider = player->attachComponent<PolygonCollider>();
+    polygonCollider->setPoints({
+                                       {-20, -18},
+                                       {-5, -18},
+                                       {18, 0},
+                                       {-5, 18},
+                                       {-20, 18}
+                               });
+
+    auto spaceshipSprite = player->attachComponent<Sprite>();
+    spaceshipSprite->position.set({0, 0});
+    spaceshipSprite->rect.set({-20, -20, 20, 20});
+    spaceshipSprite->texturePtr.set(Tile2D::resources().textures["spaceship"]);
+    spaceshipSprite->position.bind(spaceshipBody->position);
+    spaceshipSprite->angle.bind(spaceshipBody->angle);
+
+    auto light = player->attachComponent<PointLight>();
+    light->position.bind(spaceshipBody->position);
+    light->intensity.set(1.0);
+    light->radius.set(350.0);
+
+    auto playerController = player->attachComponent<PlayerController>();
+    playerController->moveForce = 10000.0f;
+
+    // camera
+
+    camera = new Camera;
+    camera->areaRect.set({0, 0, (double)Tile2D::window().w.get(), (double)Tile2D::window().h.get()});
+    camera->position.bind(spaceshipBody->position);
+    Tile2D::canvas().setCamera(camera);
 
     // dummy enemies
 

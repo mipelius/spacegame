@@ -73,6 +73,7 @@ void Tile2D::load(
     Tile2D::window().init(configFile);
     Tile2D::resources().init(resourcesFile);
     Tile2D::sceneManager().init(scenes);
+    Tile2D::shadowMask().init();
 
     // START LOOP
 

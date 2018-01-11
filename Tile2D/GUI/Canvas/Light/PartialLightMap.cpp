@@ -21,9 +21,16 @@ PartialLightMap::PartialLightMap(int w, int h) : Array2d<unsigned char>(w, h) {
 
 }
 
-void PartialLightMap::setCenterLocation(int x, int y) {
-    x_ = x - (w_ / 2);
-    y_ = y - (h_ / 2);
+bool PartialLightMap::setCenterLocation(int x, int y) {
+    int newX = x - (w_ / 2);
+    int newY = y - (h_ / 2);
+    if (newX == x_ && newY == y_) {
+        return false;
+    } else {
+        x_ = x - (w_ / 2);
+        y_ = y - (h_ / 2);
+        return true;
+    }
 }
 
 void PartialLightMap::update(TileMap* map) {

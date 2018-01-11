@@ -182,7 +182,7 @@ set(SOURCE_FILES
         Game/PlayerController.h
         Game/MissileBehaviour.cpp
         Game/MissileBehaviour.h
-        Game/SparkleBehaviour.cpp Game/SparkleBehaviour.h Game/Tags.h)
+        Game/SparkleBehaviour.cpp Game/SparkleBehaviour.h Game/Tags.h Game/PulseLightBehaviour.cpp Game/PulseLightBehaviour.h Game/LimitedAgeBehaviour.cpp Game/LimitedAgeBehaviour.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

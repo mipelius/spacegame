@@ -52,6 +52,40 @@ void PlayerController::update() {
                     sprite->opacity.set(1.0);
                 }
             }
+            if (event.key.keysym.sym == SDLK_TAB) {
+                if (Tile2D::isDebugMode) {
+                    sprite->opacity.set(0.5);
+                } else {
+                    sprite->opacity.set(1.0);
+                }
+
+                auto light = Tile2D::createGameObject();
+
+                auto lightBody = light->attachComponent<Body>();
+                lightBody->mass.set(10.0);
+                lightBody->position.set(body->position.get());
+                lightBody->velocity.set(Vec(0, 0));
+                lightBody->angle.set(0.0);
+
+                auto collider = light->attachComponent<PolygonCollider>();
+                collider->setPoints({
+                                            {-10, -10},
+                                            {10,  -10},
+                                            {10,  10},
+                                            {-10, 10}
+                                    });
+
+                auto lightSprite = light->attachComponent<Sprite>();
+                lightSprite->rect.set({-10,-10,10,10});
+                lightSprite->position.bind(lightBody->position);
+                lightSprite->angle.bind(lightBody->angle);
+                lightSprite->texturePtr.set(Tile2D::resources().textures["light"]);
+
+                auto lightLight = light->attachComponent<PointLight>();
+                lightLight->radius.set(100.0);
+                lightLight->intensity.set(1.0);
+                lightLight->position.bind(lightBody->position);
+            }
         }
     }
 
@@ -92,4 +126,9 @@ void PlayerController::shootOnce(Vec offset) {
     missileSprite->texturePtr.set(Tile2D::resources().textures["missile"]);
 
     auto missileBehaviour = missile->attachComponent<MissileBehaviour>();
+
+    auto missileLight = missile->attachComponent<PointLight>();
+    missileLight->radius.set(40.0);
+    missileLight->intensity.set(1.0);
+    missileLight->position.bind(missileBody->position);
 }

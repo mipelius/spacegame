@@ -32,8 +32,7 @@ class LightMap;
 class PartialLightMapUpdate;
 
 class ShadowMask : public IShadowMask {
-    friend class WorldMap_ModificationEventHandler;
-    friend class PointLight_MovementEventHandler;
+    friend class Tile2D;
 
 public:
     ShadowMask();
@@ -57,7 +56,7 @@ private:
     double w;
     double h;
 
-    void initialize();
+    void init();
 
     GLuint glTextureId_;
 

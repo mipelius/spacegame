@@ -21,8 +21,9 @@
 #include "Sprite.h"
 #include "Body.h"
 #include "Tile2DBehaviour.h"
+#include "LimitedAgeBehaviour.h"
 
-class MissileBehaviour : public Tile2DBehaviour {
+class MissileBehaviour : public LimitedAgeBehaviour {
 
 protected:
     void awake() override;
@@ -38,9 +39,6 @@ protected:
 
     Body_MapCollisionEventHandler body_mapCollisionEventHandler;
     Body_BodyCollisionEventHandler body_bodyCollisionEventHandler;
-
-    Uint32 awakeTimestamp;
-    const Uint32 TTL = 1000;
 };
 
 

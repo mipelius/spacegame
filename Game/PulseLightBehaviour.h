@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014 Miika Pelkonen
+// Copyright (C) 2018 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,33 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __PartialLightMap_H_
-#define __PartialLightMap_H_
+#ifndef __PulseLightBehaviour_H
+#define __PulseLightBehaviour_H
 
-class TileMap;
+#include "PointLight.h"
+#include "LimitedAgeBehaviour.h"
 
-#include "Array2d.h"
+class PulseLightBehaviour : public LimitedAgeBehaviour {
 
-class PartialLightMap : public Array2d<unsigned char> {
+protected:
+    void awake() override;
+    void update() override;
 
-public:
-    bool needsUpdate;
-
-    PartialLightMap(int w, int h);
-
-    bool setCenterLocation(int x, int y);
-
-    void update(TileMap* map);
-
-    int getX() const;
-    int getY() const;
-
-private:
-
-    int x_;
-    int y_;
-
-    void updateInternal(unsigned char lastLight, int currentX, int currentY, TileMap* map);
-
+    PointLight* light = nullptr;
+    double radiusOnAwake = 0.0;
 };
-#endif //__PartialLightMap_H_
+
+#endif //__PulseLightBehaviour_H

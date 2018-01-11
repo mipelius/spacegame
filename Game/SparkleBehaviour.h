@@ -17,19 +17,18 @@
 #ifndef __SparkleBehaviour_H
 #define __SparkleBehaviour_H
 
-
 #include <SDL_quit.h>
 #include "Sprite.h"
 #include "Tile2DBehaviour.h"
+#include "LimitedAgeBehaviour.h"
 
-class SparkleBehaviour : public Tile2DBehaviour {
+class SparkleBehaviour : public LimitedAgeBehaviour {
+
 protected:
     void awake() override;
     void update() override;
 
-    Uint32 awakeTimestamp;
-    const Uint32 TTL = 500;
-    Sprite* sprite;
+    Sprite* sprite = nullptr;
 };
 
 
