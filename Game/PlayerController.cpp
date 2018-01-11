@@ -69,14 +69,14 @@ void PlayerController::update() {
 
                 auto collider = light->attachComponent<PolygonCollider>();
                 collider->setPoints({
-                                            {-10, -10},
-                                            {10,  -10},
-                                            {10,  10},
-                                            {-10, 10}
+                                            {-6, -6},
+                                            {6,  -6},
+                                            {6,  6},
+                                            {-6, 6}
                                     });
 
                 auto lightSprite = light->attachComponent<Sprite>();
-                lightSprite->rect.set({-10,-10,10,10});
+                lightSprite->rect.set({-40, -40, 40, 40});
                 lightSprite->position.bind(lightBody->position);
                 lightSprite->angle.bind(lightBody->angle);
                 lightSprite->texturePtr.set(Tile2D::resources().textures["light"]);
@@ -128,7 +128,7 @@ void PlayerController::shootOnce(Vec offset) {
     auto missileBehaviour = missile->attachComponent<MissileBehaviour>();
 
     auto missileLight = missile->attachComponent<PointLight>();
-    missileLight->radius.set(40.0);
+    missileLight->radius.set(80.0);
     missileLight->intensity.set(1.0);
     missileLight->position.bind(missileBody->position);
 }

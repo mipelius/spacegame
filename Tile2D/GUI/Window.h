@@ -40,7 +40,6 @@ public:
 
 private:
     void update_();
-    void debugDraw_();
 
     ~Window();
     Window();

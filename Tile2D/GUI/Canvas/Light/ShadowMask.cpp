@@ -161,7 +161,6 @@ void ShadowMask::addLight(PointLight *light) {
 
 void ShadowMask::removeLight(PointLight *light) {
     dynamicLights_.remove(light);
-    std::cout << dynamicLights_.size() << "\n";
 }
 
 void ShadowMask::init() {
