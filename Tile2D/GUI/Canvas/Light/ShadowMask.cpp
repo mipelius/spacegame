@@ -99,15 +99,6 @@ void ShadowMask::update(const Canvas& canvas) {
 
     glBindTexture(GL_TEXTURE_2D, glTextureId_);
     glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, (int)w, (int)h);
-    glBindTexture(GL_TEXTURE_2D, NULL);
-
-    // set "normal" projection
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0, w, h, 0, -1, 1);
-
-    glMatrixMode(GL_MODELVIEW);
 }
 
 void ShadowMask::draw(const Canvas& canvas) {
@@ -161,6 +152,7 @@ void ShadowMask::addLight(PointLight *light) {
 
 void ShadowMask::removeLight(PointLight *light) {
     dynamicLights_.remove(light);
+    delete light->partialLightMap_;
 }
 
 void ShadowMask::init() {
@@ -250,8 +242,7 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
 
-    float padding = 1.5;
-
+    float padding = 1.2;
     glBegin(GL_QUADS);
 
     int dynX = 0;
@@ -281,7 +272,7 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
                 glTexCoord2f(0.0f + texMargin, 1.0f - texMargin); glVertex2f(x1, y2);
             }
             else if (lightAmount > 0) {
-                auto value = (float)(1.0 - pow(1.0 - lightAmount / 255.0, 0.25));
+                auto value = lightAmount / 255.0f; //(float)(1.0 - pow(1.0 - lightAmount / 255.0, 0.25));
 
                 glColor4f(0.0, 0.0, 0.0, value);
 

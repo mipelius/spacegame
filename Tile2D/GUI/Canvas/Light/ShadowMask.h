@@ -67,7 +67,7 @@ private:
     void drawShadowMap(const Canvas& canvas);
 
     static void createShadowTexture();
-    static const int SHADOW_TEXTURE_SIZE = 32;
+    static const int SHADOW_TEXTURE_SIZE = 16;
 
     void updateDynamicScene(Rect *areaRect);
 };
