@@ -28,12 +28,6 @@ static void createPulseLight(Vec position) {
     light->intensity.set(1.0);
     light->position.set(position);
 
-//    auto sparkleSprite = obj->attachComponent<Sprite>();
-//    sparkleSprite->rect.set({-20, -20, 20, 20});
-//    sparkleSprite->color.set({1,1,1});
-//    sparkleSprite->position.bind(light->position);
-//    sparkleSprite->texturePtr.set(Tile2D::resources().textures["missile"]);
-
     auto pulseLightBehaviour = obj->attachComponent<PulseLightBehaviour>();
     pulseLightBehaviour->TTL = 1.0f;
 }
@@ -48,11 +42,11 @@ static void createSparkle(Vec position, Vec velocity, Color color) {
     sparkleBody->angle.set(velocity.angle());
 
     auto sparkleSprite = sparkle->attachComponent<Sprite>();
-    sparkleSprite->rect.set({-2, -2, 2, 2});
+    sparkleSprite->rect.set({-20, -20, 20, 20});
     sparkleSprite->color.set(color);
     sparkleSprite->position.bind(sparkleBody->position);
     sparkleSprite->angle.bind(sparkleBody->angle);
-    sparkleSprite->texturePtr.set(Tile2D::resources().textures["missile"]);
+    sparkleSprite->texturePtr.set(Tile2D::resources().textures["light"]);
 
     auto sparkleBehaviour = sparkle->attachComponent<SparkleBehaviour>();
 }
@@ -61,11 +55,18 @@ static void createSparkles(Vec position, Vec normal, Color color) {
     Vec& n = normal;
     Vec perp = Vec(n.y, -n.x);
 
-    createSparkle(position, (n) * 1000, color);
-    createSparkle(position, (perp + n) * 1000, color);
-    createSparkle(position, ((perp * -1) + n) * 1000, color);
-    createSparkle(position, (perp) * 1000, color);
-    createSparkle(position, (perp) * -1000, color);
+    float div = 100.0;
+
+    Vec random = Vec(rand() % 100, rand() % 100) / div;
+    createSparkle(position, (n + random) * 1000, color);
+    random = Vec(rand() % 100, rand() % 100) / div;
+    createSparkle(position, (perp + n + random) * 1000, color);
+    random = Vec(rand() % 100, rand() % 100) / div;
+    createSparkle(position, ((perp * -1 + random) + n) * 1000, color);
+    random = Vec(rand() % 100, rand() % 100) / div;
+    createSparkle(position, (perp + random) * 1000, color);
+    random = Vec(rand() % 100, rand() % 100) / div;
+    createSparkle(position, (perp + random) * -1000, color);
 }
 void MissileBehaviour::Body_MapCollisionEventHandler::handle(Body* body, MapCollisionEventArgs args) {
     body->gameObject()->destroy();
