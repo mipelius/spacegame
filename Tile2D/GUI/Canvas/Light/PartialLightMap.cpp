@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <Tile2D/Util/MathUtils.h>
 #include "PartialLightMap.h"
 #include "TileMap.h"
 
@@ -38,7 +39,11 @@ void PartialLightMap::update(TileMap* map) {
 }
 
 void PartialLightMap::updateInternal(unsigned char lastLight, int currentX, int currentY, TileMap* map) {
-    if (!isInsideBounds(currentX, currentY)) {
+    int center = w_ / 2;
+    int x = currentX - center;
+    int y = currentY - center;
+
+    if (MathUtils::getLength(x, y) > center - 1) {
         return;
     }
 

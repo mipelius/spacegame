@@ -16,6 +16,7 @@
 
 #include <map>
 #include <vector>
+#include "MathUtils.h"
 #include "Canvas.h"
 #include "Tile2D.h"
 
