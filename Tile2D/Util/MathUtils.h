@@ -18,6 +18,7 @@
 #define __math_utils_H
 
 #include <cmath>
+#include <climits>
 
 class MathUtils {
 
@@ -35,7 +36,7 @@ private:
     }
 
 public:
-    static unsigned int getLength(int x, int y) {
+    static inline unsigned int getLength(int x, int y) {
         static MathUtils instance = MathUtils();
 
         if (x < 0) {
@@ -43,6 +44,10 @@ public:
         }
         if (y < 0) {
             y = -y;
+        }
+
+        if (x >= SIZE || y >= SIZE) {
+            return INT_MAX;
         }
 
         return instance.distances[x][y];

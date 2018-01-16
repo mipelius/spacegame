@@ -24,18 +24,20 @@ class TileMap;
 class PartialLightMap : public Array2d<unsigned char> {
 
 public:
-    bool needsUpdate;
-
     PartialLightMap(int w, int h);
 
-    bool setCenterLocation(int x, int y);
+    void setCenterLocation(int x, int y);
 
     void update(TileMap* map);
 
     int getX() const;
     int getY() const;
 
+    bool needsUpdate();
+
 private:
+
+    bool needsUpdate_;
 
     int x_;
     int y_;

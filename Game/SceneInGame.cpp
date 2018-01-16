@@ -50,6 +50,11 @@ static GameObject* spawnEnemy(Vec pos) {
     spaceshipSprite->angle.bind(spaceshipBody->angle);
     spaceshipSprite->color.set({1, 0, 0});
 
+    auto light = enemy->attachComponent<PointLight>();
+    light->position.bind(spaceshipBody->position);
+    light->intensity.set(1.0);
+    light->radius.set(800.0);
+
     return enemy;
 }
 

@@ -22,20 +22,19 @@ PartialLightMap::PartialLightMap(int w, int h) : Array2d<unsigned char>(w, h) {
 
 }
 
-bool PartialLightMap::setCenterLocation(int x, int y) {
+void PartialLightMap::setCenterLocation(int x, int y) {
     int newX = x - (w_ / 2);
     int newY = y - (h_ / 2);
-    if (newX == x_ && newY == y_) {
-        return false;
-    } else {
+    if (newX != x_ || newY != y_) {
         x_ = x - (w_ / 2);
         y_ = y - (h_ / 2);
-        return true;
+        needsUpdate_ = true;
     }
 }
 
 void PartialLightMap::update(TileMap* map) {
     updateInternal(255, w_ / 2, h_ / 2, map);
+    needsUpdate_ = false;
 }
 
 void PartialLightMap::updateInternal(unsigned char lastLight, int currentX, int currentY, TileMap* map) {
@@ -55,7 +54,7 @@ void PartialLightMap::updateInternal(unsigned char lastLight, int currentX, int 
 
     double translucency = currentBlock->translucency.get();
 
-    unsigned int newLight = lastLight;
+    int newLight = lastLight;
 
     auto reduction = (unsigned char)(256 - translucency * 256.0);
 
@@ -79,4 +78,8 @@ int PartialLightMap::getX() const {
 
 int PartialLightMap::getY() const {
     return y_;
+}
+
+bool PartialLightMap::needsUpdate() {
+    return needsUpdate_;
 }

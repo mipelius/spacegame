@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "MathUtils.h"
 #include "Tile2D.h"
 #include "PartialLightMap.h"
 
@@ -350,20 +351,33 @@ void ShadowMask::updateDynamicScene(Rect *areaRect) {
     int cameraX = (int)(areaRect->x1 / tileMap->getBlockW());
     int cameraY = (int)(areaRect->y1 / tileMap->getBlockH());
 
+    int centerX = cameraX + dynamicLightScene_->getW() / 2;
+    int centerY = cameraY + dynamicLightScene_->getH() / 2;
+
+    int maxDistance = dynamicLightScene_->getW();
+
     dynamicLightScene_->clear();
 
     for (auto dynamicLight : dynamicLights_) {
         PartialLightMap* partialLightMap = dynamicLight->partialLightMap_;
 
-        bool changed = partialLightMap->setCenterLocation(
-                (int)(dynamicLight->position.get().x / tileMap->getBlockW()),
-                (int)(dynamicLight->position.get().y / tileMap->getBlockH())
+        int partialLightMapCenterX = (int)(dynamicLight->position.get().x / tileMap->getBlockW());
+        int partialLightMapCenterY = (int)(dynamicLight->position.get().y / tileMap->getBlockH());
+
+        partialLightMap->setCenterLocation(
+                partialLightMapCenterX,
+                partialLightMapCenterY
         );
 
-        if (changed) {
+        if (MathUtils::getLength(centerX - partialLightMapCenterX, centerY - partialLightMapCenterY) > maxDistance) {
+            continue;
+        }
+
+        if (partialLightMap->needsUpdate()) {
             partialLightMap->clear();
             partialLightMap->update(tileMap);
         }
+
         for (int x = 0; x < partialLightMap->getW(); x++) {
             for (int y = 0; y < partialLightMap->getH(); y++) {
                 int dynX = x + partialLightMap->getX() - cameraX;
