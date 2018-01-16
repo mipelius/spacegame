@@ -38,7 +38,6 @@ void ShadowMask::update(const Canvas& canvas) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0, w, 0, h, -1, 1);
-    glMatrixMode(GL_MODELVIEW);
 
     // draw shadow map to texture
 
@@ -51,15 +50,18 @@ void ShadowMask::update(const Canvas& canvas) {
     glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, (int)w, (int)h);
 
     // ------- draw lights -------
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_BLEND);
 
     glColor4d(0, 0, 0, 1.0);
     glRectd(0, 0, w, h);
 
+    glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
+
     glBlendFunc(GL_DST_ALPHA, GL_ZERO);
     glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
 
-    glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, PointLight::glTextureId_);
 
     glBegin(GL_QUADS);
@@ -70,15 +72,10 @@ void ShadowMask::update(const Canvas& canvas) {
 
     glEnd();
 
-    glDisable(GL_BLEND);
-
     // blend it with map shadows
-
-    glEnable(GL_BLEND);
 
     glColor4f(0, 0, 0, 1.0);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-
     glBindTexture(GL_TEXTURE_2D, glTextureId_);
 
     glBegin(GL_QUADS);
@@ -95,8 +92,6 @@ void ShadowMask::update(const Canvas& canvas) {
     glDisable(GL_BLEND);
 
     // update mask texture
-
-    glDisable(GL_TEXTURE_2D);
 
     glBindTexture(GL_TEXTURE_2D, glTextureId_);
     glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, (int)w, (int)h);
@@ -199,9 +194,11 @@ void ShadowMask::init() {
 
 void ShadowMask::drawShadowMap(const Canvas& canvas) {
     TileMap* tileMap = Tile2D::physicsWorld().getMap();
+
     if (tileMap == nullptr) {
         return;
     }
+
     Rect rect = canvas.getCamera()->areaRect.get();
     updateDynamicScene(&rect);
 
@@ -215,6 +212,7 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
     if (rect.x2 > tileMap->getActualW()) {
         xEnd = tileMap->getW();
     }
+
     else {
         xEnd = xStart + (int)(rect.getWidth() / tileMap->getBlockW()) + 2;
     }
@@ -229,23 +227,21 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
     if (rect.y2 > tileMap->getActualW()) {
         yEnd = tileMap->getW();
     }
+
     else {
         yEnd = yStart + (int)(rect.getHeight() / tileMap->getBlockH()) + 2;
     }
 
-    // bind shadowTexture
+    // NOTE: Texture is disabled for now, since we're going to rewrite the whole rendering later:
+    //       We are going to use VBO and shaders to make rendering much faster!
 
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, glShadowTextureId_);
+    glDisable(GL_TEXTURE_2D);
 
     // set blending function
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
 
-//    glDisable(GL_TEXTURE_2D);
-
-    float padding = 1.2;
     glBegin(GL_QUADS);
 
     int dynX = 0;
@@ -264,41 +260,23 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
             float x2 = xActual + tileMap->getBlockW();
             float y2 = yActual + tileMap->getBlockH();
 
-            if (lightAmount == 255) {
-                glColor4f(0, 0, 0, 1.0);
+            auto value = lightAmount / 255.0f;
 
-                float texMargin = 0.4999;
-
-                glTexCoord2f(0.0f + texMargin, 0.0f + texMargin); glVertex2f(x1, y1);
-                glTexCoord2f(1.0f - texMargin, 0.0f + texMargin); glVertex2f(x2, y1);
-                glTexCoord2f(1.0f - texMargin, 1.0f - texMargin); glVertex2f(x2, y2);
-                glTexCoord2f(0.0f + texMargin, 1.0f - texMargin); glVertex2f(x1, y2);
-            }
-            else if (lightAmount > 0) {
-                auto value = lightAmount / 255.0f;
-
+            if (value > 0) {
                 glColor4f(0.0, 0.0, 0.0, value);
 
-                x1 -= padding * tileMap->getBlockW();
-                y1 -= padding * tileMap->getBlockH();
-                x2 += padding * tileMap->getBlockW();
-                y2 += padding * tileMap->getBlockH();
-
-                glTexCoord2f(0.0, 0.0); glVertex2f(x1, y1);
-                glTexCoord2f(1.0, 0.0); glVertex2f(x2, y1);
-                glTexCoord2f(1.0, 1.0); glVertex2f(x2, y2);
-                glTexCoord2f(0.0, 1.0); glVertex2f(x1, y2);
-
+                glVertex2f(x1, y1);
+                glVertex2f(x2, y1);
+                glVertex2f(x2, y2);
+                glVertex2f(x1, y2);
             }
+
             dynY++;
         }
         dynX++;
     }
 
     glEnd();
-
-    glDisable(GL_BLEND);
-    glDisable(GL_TEXTURE_2D);
 
 }
 
