@@ -242,6 +242,8 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
 
+//    glDisable(GL_TEXTURE_2D);
+
     float padding = 1.2;
     glBegin(GL_QUADS);
 
@@ -272,7 +274,7 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
                 glTexCoord2f(0.0f + texMargin, 1.0f - texMargin); glVertex2f(x1, y2);
             }
             else if (lightAmount > 0) {
-                auto value = lightAmount / 255.0f; //(float)(1.0 - pow(1.0 - lightAmount / 255.0, 0.25));
+                auto value = lightAmount / 255.0f;
 
                 glColor4f(0.0, 0.0, 0.0, value);
 

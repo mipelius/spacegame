@@ -55,22 +55,15 @@ void PartialLightMap::updateInternal(unsigned char lastLight, int currentX, int 
 
     double translucency = currentBlock->translucency.get();
 
-    unsigned newLight = lastLight;
+    unsigned int newLight = lastLight;
 
-    unsigned char reduction = (unsigned char)(128 - translucency * 128.0);
+    auto reduction = (unsigned char)(256 - translucency * 256.0);
 
-    if (reduction > 0) {
-        if (lastLight == 255) {
-            newLight -= 1;
-        }
-        else {
-            newLight -= reduction;
-        }
-    }
+    newLight -= reduction;
 
     if (newLight <= this->getValue(currentX, currentY)) return;
 
-    if (newLight < 64) return;
+    if (newLight < 0) return;
 
     this->setValue(currentX, currentY, newLight);
 
