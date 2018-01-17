@@ -39,6 +39,8 @@ public:
     ~ShadowMask() = default;
 
     Property<double> const ambientLight;
+    BooleanProperty const softShadowsEnabled;
+    BooleanProperty const blendedShadowsEnabled;
 
     void update(const Canvas& canvas) override;
     void draw(const Canvas& canvas) override;
@@ -55,6 +57,9 @@ private:
     double ambientLight_;
     double w;
     double h;
+
+    bool softShadowsEnabled_;
+    bool blendedShadowsEnabled_;
 
     void init();
 

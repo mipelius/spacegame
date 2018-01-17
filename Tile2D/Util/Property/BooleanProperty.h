@@ -25,7 +25,7 @@ public:
     explicit BooleanProperty(bool *actualValue);
     BooleanProperty(void* owner, bool (*getter)(void* owner), void (*setter)(void* owner, const bool& value));
 
-    void toggle();
+    void toggle() const;
 
 };
 

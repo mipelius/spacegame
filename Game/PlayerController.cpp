@@ -52,6 +52,12 @@ void PlayerController::update() {
                     sprite->opacity.set(1.0);
                 }
             }
+            if (event.key.keysym.sym == SDLK_s) {
+                Tile2D::shadowMask().blendedShadowsEnabled.toggle();
+            }
+            if (event.key.keysym.sym == SDLK_d) {
+                Tile2D::shadowMask().softShadowsEnabled.toggle();
+            }
             if (event.key.keysym.sym == SDLK_TAB) {
                 if (Tile2D::isDebugMode) {
                     sprite->opacity.set(0.5);
@@ -87,6 +93,7 @@ void PlayerController::update() {
                 lightLight->position.bind(lightBody->position);
             }
         }
+
     }
 
     if (state[SDL_SCANCODE_SPACE]) {

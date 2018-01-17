@@ -18,7 +18,7 @@
 
 BooleanProperty::BooleanProperty(bool *actualValue) : Property<bool>(actualValue) { }
 
-void BooleanProperty::toggle() {
+void BooleanProperty::toggle() const {
     set(!get());
 }
 
