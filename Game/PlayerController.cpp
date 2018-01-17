@@ -52,6 +52,9 @@ void PlayerController::update() {
                     sprite->opacity.set(1.0);
                 }
             }
+            if (event.key.keysym.sym == SDLK_q) {
+                body->position.set({500.0, 250.0});
+            }
             if (event.key.keysym.sym == SDLK_r) {
                 // reload map
                 Tile2D::tileMap().load("maps/map.bmp", "json/tileset.json");

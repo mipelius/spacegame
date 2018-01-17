@@ -79,7 +79,7 @@ void SceneInGame::init() {
 
     auto spaceshipBody = player->attachComponent<Body>();
     spaceshipBody->mass.set(100.0);
-    spaceshipBody->position.set(Vec(4000.0, 8000.0));
+    spaceshipBody->position.set({500.0, 250.0});
 
     auto polygonCollider = player->attachComponent<PolygonCollider>();
     polygonCollider->setPoints({
