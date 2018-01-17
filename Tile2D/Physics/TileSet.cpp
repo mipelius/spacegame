@@ -33,6 +33,9 @@ TileSet::TileSet(std::string jsonFilename) :
 
     json::Object commonProperties = obj["commonProperties"].ToObject();
 
+    tileW_ = commonProperties["width"].ToInt();
+    tileH_ = commonProperties["height"].ToInt();
+
     mapTexture_ = new MapTexture(
         commonProperties["width"].ToInt(),
         commonProperties["height"].ToInt()
@@ -64,4 +67,12 @@ TileSet::~TileSet() {
 
 Tile* TileSet::getEmptyBlock() {
     return emptyBlock_;
+}
+
+int TileSet::getTileW() {
+    return tileW_;
+}
+
+int TileSet::getTileH() {
+    return tileH_;
 }

@@ -133,9 +133,9 @@ void PointLight::setPosition_(void *owner, const Vec &value) {
 }
 
 void PointLight::init() {
-    Tile2D::shadowMask().addLight(this);
+    Tile2D::lightSystem().addLight(this);
 }
 
 void PointLight::onDestroy() {
-    Tile2D::shadowMask().removeLight(this);
+    Tile2D::lightSystem().removeLight(this);
 }

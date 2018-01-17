@@ -16,11 +16,10 @@
 
 #include "MathUtils.h"
 #include "Tile2D.h"
-#include "PartialLightMap.h"
 
-GLuint ShadowMask::glShadowTextureId_ = 0;
+GLuint LightSystem::glShadowTextureId_ = 0;
 
-ShadowMask::ShadowMask() :
+LightSystem::LightSystem() :
 
 ambientLight            (   Property<double> ( &ambientLight_            )    ),
 softShadowsEnabled      (   BooleanProperty  ( &softShadowsEnabled_      )    ),
@@ -36,20 +35,9 @@ blendedShadowsEnabled_  (   true )
     }
 }
 
-void ShadowMask::init() {
+void LightSystem::init() {
     w = Tile2D::window().w.get();
     h = Tile2D::window().h.get();
-
-    // TODO create dynamicLightScene_ when map is loaded!
-    // --- get mapBlockW and mapBlockH from map! ---
-
-    int mapBlockW = 10;
-    int mapBlockH = 10;
-
-    lightMap_ = new Array2d<unsigned char>(
-            (int)(w / mapBlockW + 2),
-            (int)(h / mapBlockW + 2)
-    );
 
     if (glShadowTextureId_ == 0) {
         createShadowTexture();
@@ -78,20 +66,35 @@ void ShadowMask::init() {
 }
 
 
-void ShadowMask::addLight(PointLight *light) {
+void LightSystem::makeLightMap_() {
+    int tileW = Tile2D::tileMap().getTileSet()->getTileW();
+    int tileH = Tile2D::tileMap().getTileSet()->getTileH();
+
+    if (lightMap_ != nullptr) {
+        delete lightMap_;
+    }
+
+    lightMap_ = new Array2d<unsigned char>(
+            (int)(w / tileW + 2),
+            (int)(h / tileW + 2)
+    );
+}
+
+
+void LightSystem::addLight(PointLight *light) {
     if (light == nullptr) {
         return;
     }
     lights_.push_back(light);
 }
 
-void ShadowMask::removeLight(PointLight *light) {
+void LightSystem::removeLight(PointLight *light) {
     lights_.remove(light);
 }
 
 // ------------------------ RENDERING --------------------------
 
-void ShadowMask::update(const Canvas& canvas) {
+void LightSystem::update(const Canvas& canvas) {
     // turn projection upside down
 
     glMatrixMode(GL_PROJECTION);
@@ -103,7 +106,7 @@ void ShadowMask::update(const Canvas& canvas) {
     glColor4d(0, 0, 0, 1.0);
     glRectd(0, 0, w, h);
 
-    drawShadowMap(canvas);
+    drawLightMap(canvas);
 
     glBindTexture(GL_TEXTURE_2D, glTextureId_);
     glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, (int)w, (int)h);
@@ -157,7 +160,7 @@ void ShadowMask::update(const Canvas& canvas) {
     }
 }
 
-void ShadowMask::draw(const Canvas& canvas) {
+void LightSystem::draw(const Canvas& canvas) {
     if (canvas.getCamera() == nullptr) {
         return;
     }
@@ -188,7 +191,7 @@ void ShadowMask::draw(const Canvas& canvas) {
     glDisable(GL_BLEND);
 }
 
-void ShadowMask::drawShadowMap(const Canvas& canvas) {
+void LightSystem::drawLightMap(const Canvas &canvas) {
     TileMap* tileMap = Tile2D::physicsWorld().getMap();
 
     if (tileMap == nullptr) {
@@ -196,13 +199,13 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
     }
 
     Rect rect = canvas.getCamera()->areaRect.get();
-    updateShadowMap(&rect);
+    updateLightMap(&rect);
 
     int xStart = 0;
     int xEnd = 0;
 
     if (rect.x1 > 0) {
-        xStart = (int)(rect.x1 / tileMap->getBlockW());
+        xStart = (int)(rect.x1 / tileMap->getTileSet()->getTileW());
     }
 
     if (rect.x2 > tileMap->getActualW()) {
@@ -210,14 +213,14 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
     }
 
     else {
-        xEnd = xStart + (int)(rect.getWidth() / tileMap->getBlockW()) + 2;
+        xEnd = xStart + (int)(rect.getWidth() / tileMap->getTileSet()->getTileW()) + 2;
     }
 
     int yStart = 0;
     int yEnd = 0;
 
     if (rect.y1 > 0) {
-        yStart = (int)(rect.y1 / tileMap->getBlockH());
+        yStart = (int)(rect.y1 / tileMap->getTileSet()->getTileH());
     }
 
     if (rect.y2 > tileMap->getActualW()) {
@@ -225,7 +228,7 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
     }
 
     else {
-        yEnd = yStart + (int)(rect.getHeight() / tileMap->getBlockH()) + 2;
+        yEnd = yStart + (int)(rect.getHeight() / tileMap->getTileSet()->getTileH()) + 2;
     }
 
     // set blending function
@@ -247,13 +250,13 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
             for (int y = yStart; y < yEnd; y++) {
                 unsigned char lightAmount = lightMap_->getValue(dynX, dynY);
 
-                float xActual = x * tileMap->getBlockW() - (float)rect.x1;
-                float yActual = y * tileMap->getBlockH() - (float)rect.y1;
+                float xActual = x * tileMap->getTileSet()->getTileW() - (float)rect.x1;
+                float yActual = y * tileMap->getTileSet()->getTileH() - (float)rect.y1;
 
                 float x1 = xActual;
                 float y1 = yActual;
-                float x2 = xActual + tileMap->getBlockW();
-                float y2 = yActual + tileMap->getBlockH();
+                float x2 = xActual + tileMap->getTileSet()->getTileW();
+                float y2 = yActual + tileMap->getTileSet()->getTileH();
 
 
 
@@ -310,13 +313,13 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
             for (int y = yStart; y < yEnd; y++) {
                 unsigned char lightAmount = lightMap_->getValue(dynX, dynY);
 
-                float xActual = x * tileMap->getBlockW() - (float)rect.x1;
-                float yActual = y * tileMap->getBlockH() - (float)rect.y1;
+                float xActual = x * tileMap->getTileSet()->getTileW() - (float)rect.x1;
+                float yActual = y * tileMap->getTileSet()->getTileH()- (float)rect.y1;
 
                 float x1 = xActual;
                 float y1 = yActual;
-                float x2 = xActual + tileMap->getBlockW();
-                float y2 = yActual + tileMap->getBlockH();
+                float x2 = xActual + tileMap->getTileSet()->getTileW();
+                float y2 = yActual + tileMap->getTileSet()->getTileH();
 
                 if (lightAmount > 0) {
                     auto value = lightAmount / 255.0f;
@@ -341,26 +344,26 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
     }
 }
 
-void ShadowMask::createShadowTexture() {
+void LightSystem::createShadowTexture() {
     Uint8 alphaValue;
     double temp;
 
-    Uint32* pixels = new Uint32[SHADOW_TEXTURE_SIZE * SHADOW_TEXTURE_SIZE];
+    Uint32* pixels = new Uint32[LIGHT_TEXTURE_SIZE * LIGHT_TEXTURE_SIZE];
 
-    for (int i = 0; i < SHADOW_TEXTURE_SIZE; i++) {
-        for (int j = 0; j < SHADOW_TEXTURE_SIZE; j++) {
-            double deltaX = SHADOW_TEXTURE_SIZE/2 - i;
-            double deltaY = SHADOW_TEXTURE_SIZE/2 - j;
+    for (int i = 0; i < LIGHT_TEXTURE_SIZE; i++) {
+        for (int j = 0; j < LIGHT_TEXTURE_SIZE; j++) {
+            double deltaX = LIGHT_TEXTURE_SIZE/2 - i;
+            double deltaY = LIGHT_TEXTURE_SIZE/2 - j;
 
             double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 
-            temp = distance / (SHADOW_TEXTURE_SIZE / 2);
+            temp = distance / (LIGHT_TEXTURE_SIZE / 2);
             if (temp > 1.0) {
                 temp = 1.0;
             }
 
             alphaValue = (Uint8)(temp * 255);
-            pixels[j * SHADOW_TEXTURE_SIZE + i] = (0x000000FF - alphaValue) << 24;
+            pixels[j * LIGHT_TEXTURE_SIZE + i] = (0x000000FF - alphaValue) << 24;
         }
     }
 
@@ -378,7 +381,7 @@ void ShadowMask::createShadowTexture() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     // Edit the texture object's image data
-    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, SHADOW_TEXTURE_SIZE, SHADOW_TEXTURE_SIZE, 0,
+    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, LIGHT_TEXTURE_SIZE, LIGHT_TEXTURE_SIZE, 0,
             texture_format, GL_UNSIGNED_BYTE, pixels);
 
     delete[] pixels;
@@ -386,26 +389,22 @@ void ShadowMask::createShadowTexture() {
 
 // --------------------- COMPUTE THE SHADOW MAP -------------------------
 
-void ShadowMask::updateShadowMap(Rect *areaRect) {
+void LightSystem::updateLightMap(Rect *areaRect) {
     auto tileMap = Tile2D::physicsWorld().getMap();
 
     lightMap_->clear();
 
-    // use tile map coordinate system for updating the shadow map
-    // ---> divide all x values by blockW and
-    //             all y values by blockY
-
-    int offsetX = (int)(areaRect->x1 / tileMap->getBlockW());
-    int offsetY = (int)(areaRect->y1 / tileMap->getBlockH());
+    int offsetX = (int)(areaRect->x1 / tileMap->getTileSet()->getTileW());
+    int offsetY = (int)(areaRect->y1 / tileMap->getTileSet()->getTileH());
 
     for (auto light : lights_) {
-        int currentLightCenterX = (int)(light->position.get().x / tileMap->getBlockW());
-        int currentLightCenterY = (int)(light->position.get().y / tileMap->getBlockH());
-        int radius              = (int)(light->radius.get()     / tileMap->getBlockH());
+        int currentLightCenterX = (int)(light->position.get().x / tileMap->getTileSet()->getTileW());
+        int currentLightCenterY = (int)(light->position.get().y / tileMap->getTileSet()->getTileH());
+        int radius              = (int)(light->radius.get()     / tileMap->getTileSet()->getTileW());
 
         // TODO: light source that has its center outside the view will be ignored -> FIX THAT
 
-        updateInternal(
+        updateLightMapRecursive(
                 255,
                 currentLightCenterX,
                 currentLightCenterY,
@@ -420,17 +419,17 @@ void ShadowMask::updateShadowMap(Rect *areaRect) {
     }
 }
 
-void ShadowMask::updateInternal(
+void LightSystem::updateLightMapRecursive(
         unsigned char lastLight,
         int currentX,
         int currentY,
-        const int& centerX,
-        const int& centerY,
-        const int& offsetX,
-        const int& offsetY,
-        const int& radius,
-        Array2d<unsigned char>* lightMap,
-        const TileMap* map
+        const int &centerX,
+        const int &centerY,
+        const int &offsetX,
+        const int &offsetY,
+        const int &radius,
+        Array2d<unsigned char> *lightMap,
+        const TileMap *map
 ) {
     if (    // outside the tile map
             currentX < 0                ||
@@ -471,9 +470,9 @@ void ShadowMask::updateInternal(
 
     lightMap->setValue(lightMapX, lightMapY, newLight);
 
-    updateInternal(newLight, currentX - 1, currentY    , centerX, centerY, offsetX, offsetY, radius, lightMap, map);
-    updateInternal(newLight, currentX + 1, currentY    , centerX, centerY, offsetX, offsetY, radius, lightMap, map);
-    updateInternal(newLight, currentX    , currentY - 1, centerX, centerY, offsetX, offsetY, radius, lightMap, map);
-    updateInternal(newLight, currentX    , currentY + 1, centerX, centerY, offsetX, offsetY, radius, lightMap, map);
+    updateLightMapRecursive(newLight, currentX - 1, currentY, centerX, centerY, offsetX, offsetY, radius, lightMap, map);
+    updateLightMapRecursive(newLight, currentX + 1, currentY, centerX, centerY, offsetX, offsetY, radius, lightMap, map);
+    updateLightMapRecursive(newLight, currentX, currentY - 1, centerX, centerY, offsetX, offsetY, radius, lightMap, map);
+    updateLightMapRecursive(newLight, currentX, currentY + 1, centerX, centerY, offsetX, offsetY, radius, lightMap, map);
 }
 

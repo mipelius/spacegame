@@ -14,31 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Tile2D.h"
-#include "precompile.h"
+#include <Tile2D/GUI/Canvas/Drawable/DrawableMap.h>
 #include "TileMap.h"
+#include "Tile2D.h"
 #include "Body.h"
-#include "TileSet.h"
-#include "Camera.h"
 #include "WorldMapModifiedEventArgs.h"
 
 TileMap::TileMap() :
     modification(this),
-    blocks_(nullptr)
+    tiles_(nullptr)
 { }
 
 TileMap::~TileMap() {
-    if (blocks_ != nullptr) {
-        delete blocks_;
+    if (tiles_ != nullptr) {
+        delete tiles_;
     }
 }
 
 void TileMap::setValue(int x, int y, Tile* value) {
-    if (blocks_->isInsideBounds(x, y)) {
-        Tile* oldValue = blocks_->getValue(x, y);
+    if (tiles_->isInsideBounds(x, y)) {
+        Tile* oldValue = tiles_->getValue(x, y);
 
         if (oldValue != value) {
-            blocks_->setValue(x, y, value);
+            tiles_->setValue(x, y, value);
 
             WorldMapModifiedEventArgs args;
             args.x = x;
@@ -53,8 +51,8 @@ void TileMap::setValue(int x, int y, Tile* value) {
 
 
 Tile* TileMap::getValue(int x, int y) const {
-    if (blocks_->isInsideBounds(x, y)) {
-        return blocks_->getValue(x, y);
+    if (tiles_->isInsideBounds(x, y)) {
+        return tiles_->getValue(x, y);
     }
 
     return nullptr;
@@ -62,48 +60,38 @@ Tile* TileMap::getValue(int x, int y) const {
 
 void TileMap::setValueScaled(Vec point, Tile *value) {
     setValue(
-            (int)(point.x / blockSizeW),
-            (int)(point.y / blockSizeH),
+            (int)(point.x / tileSet_->getTileW()),
+            (int)(point.y / tileSet_->getTileH()),
             value
     );
 }
 
 Tile *TileMap::getValueScaled(Vec point) const {
     return getValue(
-            (int)(point.x / blockSizeW),
-            (int)(point.y / blockSizeH)
+            (int)(point.x / tileSet_->getTileW()),
+            (int)(point.y / tileSet_->getTileH())
     );
 }
 
 int TileMap::getW() const {
-    return blocks_->getW();
+    return tiles_->getW();
 }
 
 int TileMap::getH() const {
-    return blocks_->getH();
+    return tiles_->getH();
 }
 
 long TileMap::getActualW() const {
-    return blocks_->getW() * blockSizeW;
+    return tiles_->getW() * tileSet_->getTileW();
 }
 
 long TileMap::getActualH() const {
-    return blocks_->getH() * blockSizeH;
+    return tiles_->getH() * tileSet_->getTileH();
 }
 
-int TileMap::getBlockW() const {
-    return this->blockSizeW;
-}
-
-int TileMap::getBlockH() const {
-    return this->blockSizeH;
-}
-
-void TileMap::load(std::string path, TileSet* tileSet, int blockSizeW, int blockSizeH) {
-    mapping_ = tileSet;
-
-    this->blockSizeW = blockSizeW;
-    this->blockSizeH = blockSizeH;
+void TileMap::load(std::string path, std::string tileSet) {
+    unload();
+    tileSet_ = new TileSet(tileSet);
 
     SDL_Surface* surface = IMG_Load(path.data());
     if (!surface) {
@@ -113,26 +101,39 @@ void TileMap::load(std::string path, TileSet* tileSet, int blockSizeW, int block
 
     Uint8* pixels = (Uint8*)surface->pixels;
 
-    blocks_ = new Array2d<Tile*>(surface->w, surface->h);
+    tiles_ = new Array2d<Tile*>(surface->w, surface->h);
 
     for (int i=0; i<surface->w; i++) {
         for (int j=0; j<surface->h; j++) {
             unsigned char id = *(pixels + j * surface->w + i);
-            Tile* value = tileSet->getTile(id);
-            blocks_->setValue(i, j, value);
+            Tile* value = tileSet_->getTile(id);
+            tiles_->setValue(i, j, value);
         }
     }
 
     SDL_FreeSurface(surface);
-}
 
-void TileMap::init() {
-    if (Tile2D::physicsWorld().map_ != nullptr) {
-        throw std::runtime_error("Tile2D doesn't support multiple maps!");
-    }
+    drawableMap_ = new DrawableMap();
+    drawableMap_->setMap(this);
+    drawableMap_->setMapTexture(tileSet_->getMapTexture());
     Tile2D::physicsWorld().map_ = this;
+    Tile2D::lightSystem().makeLightMap_();
 }
 
-void TileMap::onDestroy() {
+void TileMap::unload() {
+    if (!isLoaded()) {
+        return;
+    }
+    delete drawableMap_;
+    delete tileSet_;
+    delete tiles_;
     Tile2D::physicsWorld().map_ = nullptr;
+}
+
+bool TileMap::isLoaded() {
+    return tiles_ != nullptr;
+}
+
+TileSet *TileMap::getTileSet() {
+    return tileSet_;
 }

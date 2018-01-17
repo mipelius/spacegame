@@ -82,18 +82,10 @@ set(SOURCE_FILES
         Tile2D/GUI/Canvas/Drawable/Sprite.h
         Tile2D/GUI/Canvas/Drawable/Text.cpp
         Tile2D/GUI/Canvas/Drawable/Text.h
-        Tile2D/GUI/Canvas/Light/IShadowMask.cpp
-        Tile2D/GUI/Canvas/Light/IShadowMask.h
-        Tile2D/GUI/Canvas/Light/LightMap.cpp
-        Tile2D/GUI/Canvas/Light/LightMap.h
-        Tile2D/GUI/Canvas/Light/PartialLightMap.cpp
-        Tile2D/GUI/Canvas/Light/PartialLightMap.h
-        Tile2D/GUI/Canvas/Light/PartialLightMapUpdate.h
         Tile2D/GUI/Canvas/Light/PointLight.cpp
         Tile2D/GUI/Canvas/Light/PointLight.h
-        Tile2D/GUI/Canvas/Light/PointLightMovedEventArgs.h
-        Tile2D/GUI/Canvas/Light/ShadowMask.cpp
-        Tile2D/GUI/Canvas/Light/ShadowMask.h
+        Tile2D/GUI/Canvas/Light/LightSystem.cpp
+        Tile2D/GUI/Canvas/Light/LightSystem.h
         Tile2D/GUI/Canvas/Texture/ITexture.h
         Tile2D/GUI/Canvas/Texture/MapTexture.cpp
         Tile2D/GUI/Canvas/Texture/MapTexture.h
@@ -182,7 +174,15 @@ set(SOURCE_FILES
         Game/PlayerController.h
         Game/MissileBehaviour.cpp
         Game/MissileBehaviour.h
-        Game/SparkleBehaviour.cpp Game/SparkleBehaviour.h Game/Tags.h Game/PulseLightBehaviour.cpp Game/PulseLightBehaviour.h Game/LimitedAgeBehaviour.cpp Game/LimitedAgeBehaviour.h Tile2D/Util/MathUtils.h)
+        Game/SparkleBehaviour.cpp
+        Game/SparkleBehaviour.h
+        Game/Tags.h
+        Game/PulseLightBehaviour.cpp
+        Game/PulseLightBehaviour.h
+        Game/LimitedAgeBehaviour.cpp
+        Game/LimitedAgeBehaviour.h
+        Tile2D/Util/MathUtils.h
+        )
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

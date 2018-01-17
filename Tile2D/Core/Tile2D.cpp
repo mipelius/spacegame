@@ -30,7 +30,8 @@ Tile2D::Tile2D() {
     physicsWorld_ = new PhysicsWorld();
     sceneManager_ = new SceneManager();
     canvas_ = new Canvas(); window_->addComponent(canvas_);
-    shadowMask_ = new ShadowMask();
+    tileMap_ = new TileMap();
+    lightSystem_ = new LightSystem();
 }
 
 Tile2D::~Tile2D() {
@@ -39,7 +40,7 @@ Tile2D::~Tile2D() {
     delete physicsWorld_;
     delete resources_;
     delete window_;
-    delete shadowMask_;
+    delete lightSystem_;
 
     cleanUp_();
 
@@ -74,7 +75,7 @@ void Tile2D::load(
     Tile2D::window().init(configFile);
     Tile2D::resources().init(resourcesFile);
     Tile2D::sceneManager().init(scenes);
-    Tile2D::shadowMask().init();
+    Tile2D::lightSystem().init();
 
     // START LOOP
 
@@ -155,9 +156,13 @@ Canvas &Tile2D::canvas() {
     return *instance_().canvas_;
 }
 
-ShadowMask &Tile2D::shadowMask() {
-    return *instance_().shadowMask_;
+LightSystem &Tile2D::lightSystem() {
+    return *instance_().lightSystem_;
 };
+
+TileMap &Tile2D::tileMap() {
+    return *instance_().tileMap_;
+}
 
 GameObject *Tile2D::createGameObject() {
     auto gameObject = new GameObject();

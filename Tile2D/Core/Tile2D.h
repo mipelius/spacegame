@@ -20,7 +20,7 @@
 #include <map>
 #include <assert.h>
 #include <set>
-#include "ShadowMask.h"
+#include "LightSystem.h"
 #include "PhysicsWorld.h"
 #include "SceneManager.h"
 #include "Resources.h"
@@ -55,7 +55,8 @@ public:
     static SceneManager &sceneManager();
     static PhysicsWorld &physicsWorld();
     static Canvas &canvas();
-    static ShadowMask &shadowMask();
+    static LightSystem &lightSystem();
+    static TileMap &tileMap();
 
     static GameObject* createGameObject();
 
@@ -65,7 +66,8 @@ private:
     SceneManager *sceneManager_;
     PhysicsWorld *physicsWorld_;
     Canvas* canvas_;
-    ShadowMask* shadowMask_;
+    LightSystem* lightSystem_;
+    TileMap* tileMap_;
 
     void mainLoop_();
     void cleanUp_();

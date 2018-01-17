@@ -27,10 +27,9 @@ class PartialLightMap;
 #include "Tile2DComponent.h"
 #include "Property.h"
 #include "Vec.h"
-#include "PointLightMovedEventArgs.h"
 
 class PointLight : public Tile2DComponent {
-    friend class ShadowMask;
+    friend class LightSystem;
     friend class positionProperty;
 
 public:

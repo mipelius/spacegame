@@ -38,7 +38,6 @@ private:
 public:
     ResourceContainer<Texture> textures;
     ResourceContainer<Font> fonts;
-    ResourceContainer<TileSet> tileSets;
     ResourceContainer<AudioClip> sfx;
     ResourceContainer<Music> music;
 };

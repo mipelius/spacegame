@@ -52,11 +52,15 @@ void PlayerController::update() {
                     sprite->opacity.set(1.0);
                 }
             }
+            if (event.key.keysym.sym == SDLK_r) {
+                // reload map
+                Tile2D::tileMap().load("maps/map.bmp", "json/tileset.json");
+            }
             if (event.key.keysym.sym == SDLK_s) {
-                Tile2D::shadowMask().blendedShadowsEnabled.toggle();
+                Tile2D::lightSystem().blendedShadowsEnabled.toggle();
             }
             if (event.key.keysym.sym == SDLK_d) {
-                Tile2D::shadowMask().softShadowsEnabled.toggle();
+                Tile2D::lightSystem().softShadowsEnabled.toggle();
             }
             if (event.key.keysym.sym == SDLK_TAB) {
                 if (Tile2D::isDebugMode) {

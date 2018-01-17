@@ -120,8 +120,8 @@ bool Body::detectMapCollision_(double deltaTime) {
     boundingBox.y1 += position_.y;
     boundingBox.y2 += position_.y;
 
-    int blockSizeW = map->getBlockW();
-    int blockSizeH = map->getBlockH();
+    int blockSizeW = map->getTileSet()->getTileW();
+    int blockSizeH = map->getTileSet()->getTileH();
 
     int iBegin = (int)boundingBox.x1 - ((int)boundingBox.x1) % blockSizeW;
     int iEnd = (int)boundingBox.x2 + (int)boundingBox.x2 % blockSizeW;

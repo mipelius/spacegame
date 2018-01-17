@@ -18,6 +18,7 @@
 #include "DrawableMap.h"
 #include "MapTexture.h"
 #include "TileMap.h"
+#include "TileSet.h"
 #include "Camera.h"
 #include "Canvas.h"
 
@@ -29,33 +30,6 @@ DrawableMap::DrawableMap() {
 void DrawableMap::draw(const Canvas &canvas) {
     if (map_ == nullptr) return;
 
-    double blockSizeW =
-            canvas.getRenderingAreaRect().getWidth() /
-            canvas.getCamera()->areaRect.get().getWidth() *
-            map_->getBlockW();
-
-    double blockSizeH =
-            canvas.getRenderingAreaRect().getHeight() /
-            canvas.getCamera()->areaRect.get().getHeight() *
-            map_->getBlockH();
-
-    if (blockSizeW > 1.0 && blockSizeH > 1.0) {
-        drawMap(canvas);
-    }
-    else {
-        drawSmallMap(canvas);
-    }
-}
-
-void DrawableMap::setMap(TileMap *map) {
-    map_ = map;
-}
-
-void DrawableMap::setMapTexture(MapTexture *mapTexture) {
-    mapTexture_ = mapTexture;
-}
-
-void DrawableMap::drawMap(const Canvas &canvas) {
     const Rect& rect = canvas.getCamera()->areaRect.get();
 
     const double& x = rect.x1;
@@ -69,8 +43,8 @@ void DrawableMap::drawMap(const Canvas &canvas) {
     int iStart = 0;
     int jStart = 0;
 
-    if (x > 0) iStart = int(x / map_->getBlockW());
-    if (y > 0) jStart = int(y / map_->getBlockH());
+    if (x > 0) iStart = int(x / map_->getTileSet()->getTileW());
+    if (y > 0) jStart = int(y / map_->getTileSet()->getTileH());
 
     if (iStart < 0) iStart = 0;
     if (jStart < 0) jStart = 0;
@@ -78,8 +52,8 @@ void DrawableMap::drawMap(const Canvas &canvas) {
     int iEnd = map_->getW();
     int jEnd = map_->getH();
 
-    if (x + w < map_->getW() * map_->getBlockW()) iEnd = int((x + w) / map_->getBlockW() + 1);
-    if (y + h < map_->getH() * map_->getBlockH()) jEnd = int((y + h) / map_->getBlockH() + 1);
+    if (x + w < map_->getW() * map_->getTileSet()->getTileW()) iEnd = int((x + w) / map_->getTileSet()->getTileW() + 1);
+    if (y + h < map_->getH() * map_->getTileSet()->getTileH()) jEnd = int((y + h) / map_->getTileSet()->getTileH() + 1);
 
     // NOTE: the textureNumber that is used for the current block is return value from getValue(i, j) - 1;
     // Maybe you should use more sophisticated way to indicate the correspondence between mapValues and textureNumbers
@@ -97,10 +71,10 @@ void DrawableMap::drawMap(const Canvas &canvas) {
             if (block == nullptr || block->getMapTextureId() == -1) continue;
 
             mapTexture_->glVertices(
-                    i * map_->getBlockW(),
-                    j * map_->getBlockH(),
-                    map_->getBlockW(),
-                    map_->getBlockH(),
+                    i * map_->getTileSet()->getTileW(),
+                    j * map_->getTileSet()->getTileH(),
+                    map_->getTileSet()->getTileW(),
+                    map_->getTileSet()->getTileH(),
                     block->getMapTextureId(),
                     MapTexture::CORNER_ROUNDING_NONE
             );
@@ -112,29 +86,14 @@ void DrawableMap::drawMap(const Canvas &canvas) {
     mapTexture_->glUnbind();
 }
 
-void DrawableMap::drawSmallMap(const Canvas& canvas) {
-    Rect cameraRect = canvas.getCamera()->areaRect.get();
-    Rect renderingAreaRect = canvas.getRenderingAreaRect();
+void DrawableMap::setMap(TileMap *map) {
+    map_ = map;
+}
 
-    double stepX = cameraRect.getWidth() / renderingAreaRect.getWidth();
-    double stepY = cameraRect.getHeight() / renderingAreaRect.getHeight();
+void DrawableMap::setMapTexture(MapTexture *mapTexture) {
+    mapTexture_ = mapTexture;
+}
 
-    glBegin(GL_QUADS);
-    for (double x = cameraRect.x1; x < cameraRect.x2; x += stepX) {
-        for (double y = cameraRect.y1; y < cameraRect.y2; y += stepY) {
-            Tile* block = map_->getValueScaled(
-                    Vec(x, y)
-            );
-
-            if (block == nullptr || block->getMapTextureId() == -1) continue;
-
-            glVertex2d(x, y);
-            glVertex2d(x + stepX, y);
-            glVertex2d(x + stepX, y + stepY);
-            glVertex2d(x, y + stepY);
-
-        }
-    }
-    glEnd();
+void DrawableMap::drawMap(const Canvas &canvas) {
 
 }

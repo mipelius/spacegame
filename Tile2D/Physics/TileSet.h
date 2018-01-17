@@ -34,10 +34,16 @@ public:
 
     Tile* getEmptyBlock();
 
+    int getTileW();
+    int getTileH();
+
 private:
     std::vector<Tile*> blocks_;
     MapTexture* mapTexture_;
     Tile* emptyBlock_;
+
+    int tileW_;
+    int tileH_;
 };
 
 #endif //__BlockMapping_H_

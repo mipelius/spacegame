@@ -24,35 +24,34 @@
 #include "PointLight.h"
 #include "Array2d.h"
 #include "Camera.h"
-#include "IShadowMask.h"
 
 class PointLight;
-class TileMap;
 class LightMap;
 class PartialLightMapUpdate;
 
-class ShadowMask : public IShadowMask {
+class LightSystem {
     friend class Tile2D;
+    friend class TileMap;
 
 public:
-    ShadowMask();
-    ~ShadowMask() = default;
+    LightSystem();
+    ~LightSystem() = default;
 
     Property<double> const ambientLight;
     BooleanProperty const softShadowsEnabled;
     BooleanProperty const blendedShadowsEnabled;
 
-    void update(const Canvas& canvas) override;
-    void draw(const Canvas& canvas) override;
+    void update(const Canvas& canvas);
+    void draw(const Canvas& canvas);
 
     void addLight(PointLight *light);
     void removeLight(PointLight *light);
 
 private:
     std::list<PointLight*> lights_;
-    std::list<PointLight*> staticLights_;
+    Array2d<unsigned char>* lightMap_ = nullptr;
 
-    Array2d<unsigned char>* lightMap_;
+    void makeLightMap_();
 
     double ambientLight_;
     double w;
@@ -64,29 +63,26 @@ private:
     void init();
 
     GLuint glTextureId_;
-
     static GLuint glShadowTextureId_;
 
-    static const int MAX_PARTIAL_LIGHT_MAP_UPDATE_TIME = 5;
-
-    void drawShadowMap(const Canvas& canvas);
+    void drawLightMap(const Canvas &canvas);
 
     static void createShadowTexture();
-    static const int SHADOW_TEXTURE_SIZE = 8;
+    static const int LIGHT_TEXTURE_SIZE = 8;
 
-    void updateShadowMap(Rect *areaRect);
+    void updateLightMap(Rect *areaRect);
 
-    void updateInternal(
+    void updateLightMapRecursive(
             unsigned char lastLight,
             int currentX,
             int currentY,
-            const int& centerX,
-            const int& centerY,
-            const int& offsetX,
-            const int& offsetY,
-            const int& radius,
-            Array2d<unsigned char>* lightMap,
-            const TileMap* map
+            const int &centerX,
+            const int &centerY,
+            const int &offsetX,
+            const int &offsetY,
+            const int &radius,
+            Array2d<unsigned char> *lightMap,
+            const TileMap *map
     );
 };
 

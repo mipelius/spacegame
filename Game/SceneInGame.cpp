@@ -59,7 +59,10 @@ static GameObject* spawnEnemy(Vec pos) {
 }
 
 void SceneInGame::init() {
-    Tile2D::shadowMask().ambientLight.set(0.0);
+    // Scene setup: tile map, physics, light system
+
+    Tile2D::tileMap().load("maps/map.bmp", "json/tileset.json");
+    Tile2D::lightSystem().ambientLight.set(0.0);
     Tile2D::physicsWorld().airDensity.set(0.0001);
 
     // background
@@ -68,22 +71,6 @@ void SceneInGame::init() {
     auto bg = background->attachComponent<Background>();
     bg->ratio.set(0.5f);
     bg->texturePtr.set(Tile2D::resources().textures["bg2"]);
-
-    // tile map
-
-    auto tileMap = Tile2D::createGameObject();
-
-    auto map = tileMap->attachComponent<TileMap>();
-    map->load(
-            "maps/map.bmp",
-            Tile2D::resources().tileSets["tileset"],
-            10,
-            10
-    );
-
-    auto drawableMap = tileMap->attachComponent<DrawableMap>();
-    drawableMap->setMap(map);
-    drawableMap->setMapTexture(Tile2D::resources().tileSets["tileset"]->getMapTexture());
 
     // player
 

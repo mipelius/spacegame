@@ -70,7 +70,7 @@ static void createSparkles(Vec position, Vec normal, Color color) {
 }
 void MissileBehaviour::Body_MapCollisionEventHandler::handle(Body* body, MapCollisionEventArgs args) {
     body->gameObject()->destroy();
-    Tile2D::physicsWorld().getMap()->setValueScaled(args.tileCoordinates, Tile2D::resources().tileSets["tileset"]->getEmptyBlock());
+    Tile2D::tileMap().setValueScaled(args.tileCoordinates, Tile2D::tileMap().getTileSet()->getEmptyBlock());
 
     createSparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
     createPulseLight(body->position.get());

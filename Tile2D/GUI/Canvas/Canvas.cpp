@@ -19,7 +19,6 @@
 #include "Window.h"
 #include "DrawableBase.h"
 #include "Camera.h"
-#include "IShadowMask.h"
 
 Canvas::Canvas() {
     camera_ = nullptr;

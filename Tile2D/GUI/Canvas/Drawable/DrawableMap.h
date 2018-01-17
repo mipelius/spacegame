@@ -22,22 +22,21 @@ class MapTexture;
 
 #include "DrawableBase.h"
 
-class DrawableMap : public DrawableBase {
+class DrawableMap {
+
 public:
     DrawableMap();
 
     void setMap(TileMap * map);
     void setMapTexture(MapTexture* mapTexture);
 
-    void draw(const Canvas &canvas) override;
+    void draw(const Canvas &canvas);
 
 private:
     MapTexture* mapTexture_;
     TileMap * map_;
 
     void drawMap(const Canvas& canvas);
-    void drawSmallMap(const Canvas& canvas);
-
 };
 
 #endif //__DrawableMap_H_

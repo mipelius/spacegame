@@ -23,6 +23,5 @@ void Resources::init(const std::string& resourcesFile) {
     sfx.init(             obj["sfx"]            );
     music.init(           obj["music"]          );
     fonts.init(           obj["fonts"]          );
-    tileSets.init(        obj["tilesets"]       );
 }
 

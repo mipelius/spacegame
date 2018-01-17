@@ -18,7 +18,7 @@
 #define __WorldMap_H_
 
 #include <string>
-#include <Tile2D/Core/Tile2DComponent.h>
+#include "DrawableMap.h"
 
 class MapTexture;
 class Body;
@@ -31,7 +31,8 @@ class WorldMapModifiedEventArgs;
 #include "Tile.h"
 #include "Event.h"
 
-class TileMap : public Tile2DComponent {
+class TileMap {
+    friend class Window;
 
 public:
     Event<TileMap, WorldMapModifiedEventArgs> const modification;
@@ -43,35 +44,30 @@ public:
 
     int getW() const;
     int getH() const;
-    int getBlockW() const;
-    int getBlockH() const;
     long getActualW() const;
     long getActualH() const;
 
     void load(
             std::string path,
-            TileSet* tileSet,
-            int blockSizeW = TileMap::DEFAULT_BLOCK_SIZE_W,
-            int blockSizeH = TileMap::DEFAULT_BLOCK_SIZE_H
+            std::string tileSet
     );
+
+    void unload();
+    bool isLoaded();
+
+    TileSet* getTileSet();
 
     TileMap();
     ~TileMap();
-
-protected:
-    void init() override;
-
-    void onDestroy() override;
 
 private:
     static const int DEFAULT_BLOCK_SIZE_W = 8;
     static const int DEFAULT_BLOCK_SIZE_H = 8;
     static const int MAX_COLLISION_BOUNDING_BOX_AREA = 40000;
-    int blockSizeW;
-    int blockSizeH;
 
-    Array2d<Tile*> *blocks_;
-    TileSet* mapping_;
+    DrawableMap* drawableMap_ = nullptr;
+    Array2d<Tile*> *tiles_ = nullptr;
+    TileSet* tileSet_ = nullptr;
 };
 
 #endif //__WorldMap_H_
