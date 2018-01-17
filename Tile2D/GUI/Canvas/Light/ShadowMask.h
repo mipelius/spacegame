@@ -49,10 +49,10 @@ public:
     void removeLight(PointLight *light);
 
 private:
-    std::list<PointLight*> dynamicLights_;
+    std::list<PointLight*> lights_;
     std::list<PointLight*> staticLights_;
 
-    Array2d<unsigned char>* dynamicLightScene_;
+    Array2d<unsigned char>* lightMap_;
 
     double ambientLight_;
     double w;
@@ -74,7 +74,20 @@ private:
     static void createShadowTexture();
     static const int SHADOW_TEXTURE_SIZE = 8;
 
-    void updateDynamicScene(Rect *areaRect);
+    void updateShadowMap(Rect *areaRect);
+
+    void updateInternal(
+            unsigned char lastLight,
+            int currentX,
+            int currentY,
+            const int& centerX,
+            const int& centerY,
+            const int& offsetX,
+            const int& offsetY,
+            const int& radius,
+            Array2d<unsigned char>* lightMap,
+            const TileMap* map
+    );
 };
 
 #endif //__ShadowMask_H_

@@ -36,17 +36,17 @@ class TileMap : public Tile2DComponent {
 public:
     Event<TileMap, WorldMapModifiedEventArgs> const modification;
 
-    Tile* getValue(int x, int y);
-    Tile* getValueScaled(Vec point);
+    Tile* getValue(int x, int y) const;
+    Tile* getValueScaled(Vec point) const;
     void setValue(int x, int y, Tile* value);
     void setValueScaled(Vec point, Tile* value);
 
-    int getW();
-    int getH();
-    int getBlockW();
-    int getBlockH();
-    long getActualW();
-    long getActualH();
+    int getW() const;
+    int getH() const;
+    int getBlockW() const;
+    int getBlockH() const;
+    long getActualW() const;
+    long getActualH() const;
 
     void load(
             std::string path,

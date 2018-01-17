@@ -130,7 +130,6 @@ void PointLight::setPosition_(void *owner, const Vec &value) {
 
     Vec newLocation = pointLight->position_;
 
-    //pointLight->movement->raise(PointLightMovedEventArgs(oldLocation, newLocation));
 }
 
 void PointLight::init() {

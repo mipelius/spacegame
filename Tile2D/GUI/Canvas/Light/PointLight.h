@@ -54,8 +54,6 @@ private:
     double radius_;
     double intensity_;
 
-    PartialLightMap* partialLightMap_ = nullptr;
-
     static const int TEXTURE_SIZE = 32;
     static void createLightTexture();
 

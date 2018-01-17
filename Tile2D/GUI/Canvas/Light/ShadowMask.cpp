@@ -36,6 +36,60 @@ blendedShadowsEnabled_  (   true )
     }
 }
 
+void ShadowMask::init() {
+    w = Tile2D::window().w.get();
+    h = Tile2D::window().h.get();
+
+    // TODO create dynamicLightScene_ when map is loaded!
+    // --- get mapBlockW and mapBlockH from map! ---
+
+    int mapBlockW = 10;
+    int mapBlockH = 10;
+
+    lightMap_ = new Array2d<unsigned char>(
+            (int)(w / mapBlockW + 2),
+            (int)(h / mapBlockW + 2)
+    );
+
+    if (glShadowTextureId_ == 0) {
+        createShadowTexture();
+    }
+
+    GLenum texture_format = GL_BGRA;
+    GLint nOfColors = 4;
+
+    auto pixels = new Uint32[(int)w * (int)h];
+
+    // Have OpenGL generate a texture object handle for us
+    glGenTextures(1, &glTextureId_);
+
+    // Bind the texture object
+    glBindTexture(GL_TEXTURE_2D, glTextureId_);
+
+    // Set the texture's stretching properties
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    // Edit the texture object's image data using the information SDL_Surface gives us
+    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, (int)w, (int)h, 0,
+                 texture_format, GL_UNSIGNED_BYTE, pixels);
+
+    delete[] pixels;
+}
+
+
+void ShadowMask::addLight(PointLight *light) {
+    if (light == nullptr) {
+        return;
+    }
+    lights_.push_back(light);
+}
+
+void ShadowMask::removeLight(PointLight *light) {
+    lights_.remove(light);
+}
+
+// ------------------------ RENDERING --------------------------
 
 void ShadowMask::update(const Canvas& canvas) {
     // turn projection upside down
@@ -73,7 +127,7 @@ void ShadowMask::update(const Canvas& canvas) {
 
         glBegin(GL_QUADS);
 
-        for (auto& dynamicLight : dynamicLights_) {
+        for (auto& dynamicLight : lights_) {
             dynamicLight->draw(canvas);
         }
 
@@ -134,70 +188,6 @@ void ShadowMask::draw(const Canvas& canvas) {
     glDisable(GL_BLEND);
 }
 
-void ShadowMask::addLight(PointLight *light) {
-    if (light == nullptr) {
-        return;
-    }
-
-    // TODO: should get these values from current map
-    int blockW = 10; int blockH = 10;
-
-    auto partialLightMap = new PartialLightMap(
-            (int)(light->radius_ * 2 / blockW),
-            (int)(light->radius_ * 2 / blockH)
-    );
-
-    light->partialLightMap_ = partialLightMap;
-
-    dynamicLights_.push_back(light);
-}
-
-void ShadowMask::removeLight(PointLight *light) {
-    dynamicLights_.remove(light);
-    delete light->partialLightMap_;
-}
-
-void ShadowMask::init() {
-    w = Tile2D::window().w.get();
-    h = Tile2D::window().h.get();
-
-    // TODO create dynamicLightScene_ when map is loaded!
-    // --- get mapBlockW and mapBlockH from map! ---
-
-    int mapBlockW = 10;
-    int mapBlockH = 10;
-
-    dynamicLightScene_ = new Array2d<unsigned char>(
-        (int)(w / mapBlockW + 2),
-        (int)(h / mapBlockW + 2)
-    );
-
-    if (glShadowTextureId_ == 0) {
-        createShadowTexture();
-    }
-
-    GLenum texture_format = GL_BGRA;
-    GLint nOfColors = 4;
-
-    auto pixels = new Uint32[(int)w * (int)h];
-
-    // Have OpenGL generate a texture object handle for us
-    glGenTextures(1, &glTextureId_);
-
-    // Bind the texture object
-    glBindTexture(GL_TEXTURE_2D, glTextureId_);
-
-    // Set the texture's stretching properties
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    // Edit the texture object's image data using the information SDL_Surface gives us
-    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, (int)w, (int)h, 0,
-            texture_format, GL_UNSIGNED_BYTE, pixels);
-
-    delete[] pixels;
-}
-
 void ShadowMask::drawShadowMap(const Canvas& canvas) {
     TileMap* tileMap = Tile2D::physicsWorld().getMap();
 
@@ -206,7 +196,7 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
     }
 
     Rect rect = canvas.getCamera()->areaRect.get();
-    updateDynamicScene(&rect);
+    updateShadowMap(&rect);
 
     int xStart = 0;
     int xEnd = 0;
@@ -255,7 +245,7 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
             int dynY = 0;
 
             for (int y = yStart; y < yEnd; y++) {
-                unsigned char lightAmount = dynamicLightScene_->getValue(dynX, dynY);
+                unsigned char lightAmount = lightMap_->getValue(dynX, dynY);
 
                 float xActual = x * tileMap->getBlockW() - (float)rect.x1;
                 float yActual = y * tileMap->getBlockH() - (float)rect.y1;
@@ -318,7 +308,7 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
             int dynY = 0;
 
             for (int y = yStart; y < yEnd; y++) {
-                unsigned char lightAmount = dynamicLightScene_->getValue(dynX, dynY);
+                unsigned char lightAmount = lightMap_->getValue(dynX, dynY);
 
                 float xActual = x * tileMap->getBlockW() - (float)rect.x1;
                 float yActual = y * tileMap->getBlockH() - (float)rect.y1;
@@ -394,52 +384,96 @@ void ShadowMask::createShadowTexture() {
     delete[] pixels;
 }
 
-void ShadowMask::updateDynamicScene(Rect *areaRect) {
+// --------------------- COMPUTE THE SHADOW MAP -------------------------
+
+void ShadowMask::updateShadowMap(Rect *areaRect) {
     auto tileMap = Tile2D::physicsWorld().getMap();
 
-    int cameraX = (int)(areaRect->x1 / tileMap->getBlockW());
-    int cameraY = (int)(areaRect->y1 / tileMap->getBlockH());
+    lightMap_->clear();
 
-    int centerX = cameraX + dynamicLightScene_->getW() / 2;
-    int centerY = cameraY + dynamicLightScene_->getH() / 2;
+    // use tile map coordinate system for updating the shadow map
+    // ---> divide all x values by blockW and
+    //             all y values by blockY
 
-    int maxDistance = dynamicLightScene_->getW();
+    int offsetX = (int)(areaRect->x1 / tileMap->getBlockW());
+    int offsetY = (int)(areaRect->y1 / tileMap->getBlockH());
 
-    dynamicLightScene_->clear();
+    for (auto light : lights_) {
+        int currentLightCenterX = (int)(light->position.get().x / tileMap->getBlockW());
+        int currentLightCenterY = (int)(light->position.get().y / tileMap->getBlockH());
+        int radius              = (int)(light->radius.get()     / tileMap->getBlockH());
 
-    for (auto dynamicLight : dynamicLights_) {
-        PartialLightMap* partialLightMap = dynamicLight->partialLightMap_;
+        // TODO: light source that has its center outside the view will be ignored -> FIX THAT
 
-        int partialLightMapCenterX = (int)(dynamicLight->position.get().x / tileMap->getBlockW());
-        int partialLightMapCenterY = (int)(dynamicLight->position.get().y / tileMap->getBlockH());
-
-        partialLightMap->setCenterLocation(
-                partialLightMapCenterX,
-                partialLightMapCenterY
+        updateInternal(
+                255,
+                currentLightCenterX,
+                currentLightCenterY,
+                currentLightCenterX,
+                currentLightCenterY,
+                offsetX,
+                offsetY,
+                radius,
+                lightMap_,
+                tileMap
         );
-
-        if (MathUtils::getLength(centerX - partialLightMapCenterX, centerY - partialLightMapCenterY) > maxDistance) {
-            continue;
-        }
-
-        if (partialLightMap->needsUpdate()) {
-            partialLightMap->clear();
-            partialLightMap->update(tileMap);
-        }
-
-        for (int x = 0; x < partialLightMap->getW(); x++) {
-            for (int y = 0; y < partialLightMap->getH(); y++) {
-                int dynX = x + partialLightMap->getX() - cameraX;
-                int dynY = y + partialLightMap->getY() - cameraY;
-
-                if (dynamicLightScene_->isInsideBounds(dynX, dynY)) {
-                    unsigned char newValue = partialLightMap->getValue(x, y);
-
-                    if (dynamicLightScene_->getValue(dynX, dynY) < newValue) {
-                        dynamicLightScene_->setValue(dynX, dynY, newValue);
-                    }
-                }
-            }
-        }
     }
 }
+
+void ShadowMask::updateInternal(
+        unsigned char lastLight,
+        int currentX,
+        int currentY,
+        const int& centerX,
+        const int& centerY,
+        const int& offsetX,
+        const int& offsetY,
+        const int& radius,
+        Array2d<unsigned char>* lightMap,
+        const TileMap* map
+) {
+    if (    // outside the tile map
+            currentX < 0                ||
+            currentX > map->getW()      ||
+            currentY < 0                ||
+            currentY > map->getH()
+    ) {
+        return;
+    }
+
+    int lightMapX = currentX - offsetX;
+    int lightMapY = currentY - offsetY;
+
+    if (!lightMap->isInsideBounds(lightMapX, lightMapY)) { // outside the shadow map
+        return;
+    }
+
+    int lightX = currentX - centerX;
+    int lightY = currentY - centerY;
+
+    int length = MathUtils::getLength(lightX, lightY);
+    int distanceToBorder = radius - length;
+
+    if (distanceToBorder < 1) { // light can't spread further
+        return;
+    }
+
+    Tile* currentBlock = map->getValue(currentX, currentY);
+    if (!currentBlock) return;
+
+    double translucency = currentBlock->translucency.get();
+    auto tileReduction = 256 - translucency * 256.0;
+
+    int newLight = lastLight - tileReduction;
+
+    if (newLight <= lightMap->getValue(lightMapX, lightMapY)) return;
+    if (newLight < 0) return;
+
+    lightMap->setValue(lightMapX, lightMapY, newLight);
+
+    updateInternal(newLight, currentX - 1, currentY    , centerX, centerY, offsetX, offsetY, radius, lightMap, map);
+    updateInternal(newLight, currentX + 1, currentY    , centerX, centerY, offsetX, offsetY, radius, lightMap, map);
+    updateInternal(newLight, currentX    , currentY - 1, centerX, centerY, offsetX, offsetY, radius, lightMap, map);
+    updateInternal(newLight, currentX    , currentY + 1, centerX, centerY, offsetX, offsetY, radius, lightMap, map);
+}
+

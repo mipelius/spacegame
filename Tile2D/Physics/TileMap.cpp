@@ -52,7 +52,7 @@ void TileMap::setValue(int x, int y, Tile* value) {
 }
 
 
-Tile* TileMap::getValue(int x, int y) {
+Tile* TileMap::getValue(int x, int y) const {
     if (blocks_->isInsideBounds(x, y)) {
         return blocks_->getValue(x, y);
     }
@@ -68,34 +68,34 @@ void TileMap::setValueScaled(Vec point, Tile *value) {
     );
 }
 
-Tile *TileMap::getValueScaled(Vec point) {
+Tile *TileMap::getValueScaled(Vec point) const {
     return getValue(
             (int)(point.x / blockSizeW),
             (int)(point.y / blockSizeH)
     );
 }
 
-int TileMap::getW() {
+int TileMap::getW() const {
     return blocks_->getW();
 }
 
-int TileMap::getH() {
+int TileMap::getH() const {
     return blocks_->getH();
 }
 
-long TileMap::getActualW() {
+long TileMap::getActualW() const {
     return blocks_->getW() * blockSizeW;
 }
 
-long TileMap::getActualH() {
+long TileMap::getActualH() const {
     return blocks_->getH() * blockSizeH;
 }
 
-int TileMap::getBlockW() {
+int TileMap::getBlockW() const {
     return this->blockSizeW;
 }
 
-int TileMap::getBlockH() {
+int TileMap::getBlockH() const {
     return this->blockSizeH;
 }
 
