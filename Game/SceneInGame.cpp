@@ -53,7 +53,7 @@ static GameObject* spawnEnemy(Vec pos) {
     auto light = enemy->attachComponent<PointLight>();
     light->position.bind(spaceshipBody->position);
     light->intensity.set(1.0);
-    light->radius.set(800.0);
+    light->radius.set(100.0);
 
     return enemy;
 }
@@ -113,7 +113,7 @@ void SceneInGame::init() {
     auto light = player->attachComponent<PointLight>();
     light->position.bind(spaceshipBody->position);
     light->intensity.set(1.0);
-    light->radius.set(500.0);
+    light->radius.set(400.0);
 
     auto playerController = player->attachComponent<PlayerController>();
     playerController->moveForce = 10000.0f;

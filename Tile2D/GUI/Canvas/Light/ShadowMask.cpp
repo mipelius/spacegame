@@ -232,10 +232,8 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
         yEnd = yStart + (int)(rect.getHeight() / tileMap->getBlockH()) + 2;
     }
 
-    // NOTE: Texture is disabled for now, since we're going to rewrite the whole rendering later:
-    //       We are going to use VBO and shaders to make rendering much faster!
-
-    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, glShadowTextureId_);
 
     // set blending function
 
@@ -260,14 +258,36 @@ void ShadowMask::drawShadowMap(const Canvas& canvas) {
             float x2 = xActual + tileMap->getBlockW();
             float y2 = yActual + tileMap->getBlockH();
 
-            auto value = lightAmount / 255.0f;
 
-            if (value > 0) {
+
+            if (lightAmount == 255) {
+                glColor4f(0.0, 0.0, 0.0, 1.0);
+
+                glTexCoord2f(0.49, 0.49);
+                glVertex2f(x1, y1);
+                glTexCoord2f(0.51, 0.49);
+                glVertex2f(x2, y1);
+                glTexCoord2f(0.51, 0.49);
+                glVertex2f(x2, y2);
+                glTexCoord2f(0.49, 0.51);
+                glVertex2f(x1, y2);
+            }
+            else if (lightAmount > 0) {
+                auto value = lightAmount / 255.0f;
                 glColor4f(0.0, 0.0, 0.0, value);
 
+                x1 -= 10;
+                y1 -= 10;
+                x2 += 10;
+                y2 += 10;
+
+                glTexCoord2f(0.0, 0.0);
                 glVertex2f(x1, y1);
+                glTexCoord2f(1.0, 0.0);
                 glVertex2f(x2, y1);
+                glTexCoord2f(1.0, 1.0);
                 glVertex2f(x2, y2);
+                glTexCoord2f(0.0, 1.0);
                 glVertex2f(x1, y2);
             }
 

@@ -38,11 +38,14 @@ void PartialLightMap::update(TileMap* map) {
 }
 
 void PartialLightMap::updateInternal(unsigned char lastLight, int currentX, int currentY, TileMap* map) {
-    int center = w_ / 2;
-    int x = currentX - center;
-    int y = currentY - center;
+    int radius = w_ / 2;
+    int x = currentX - radius;
+    int y = currentY - radius;
 
-    if (MathUtils::getLength(x, y) > center - 1) {
+    int length = MathUtils::getLength(x, y);
+    int distanceToBorder = radius - length;
+
+    if (distanceToBorder < 1) {
         return;
     }
 
@@ -53,15 +56,11 @@ void PartialLightMap::updateInternal(unsigned char lastLight, int currentX, int 
     if (!currentBlock) return;
 
     double translucency = currentBlock->translucency.get();
+    auto tileReduction = 256 - translucency * 256.0;
 
-    int newLight = lastLight;
-
-    auto reduction = (unsigned char)(256 - translucency * 256.0);
-
-    newLight -= reduction;
+    int newLight = lastLight - tileReduction;
 
     if (newLight <= this->getValue(currentX, currentY)) return;
-
     if (newLight < 0) return;
 
     this->setValue(currentX, currentY, newLight);

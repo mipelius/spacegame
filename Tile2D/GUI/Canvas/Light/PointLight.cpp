@@ -75,9 +75,21 @@ void PointLight::createLightTexture() {
             double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 
             temp = distance / (w / 2);
+
+            temp *= 1.2;
+            temp -= 0.2;
+
+            // clamp
+
+            if (temp < 0.0) {
+                temp = 0.0;
+            }
+
             if (temp > 1.0) {
                 temp = 1.0;
             }
+
+            //temp = temp * temp; // temp ^= 3
 
             alphaValue = (Uint8)(temp * 255);
             lightPixels[j * w + i] = (0x000000FF - alphaValue) << 24;

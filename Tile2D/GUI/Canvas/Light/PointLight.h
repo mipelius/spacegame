@@ -56,7 +56,7 @@ private:
 
     PartialLightMap* partialLightMap_ = nullptr;
 
-    static const int TEXTURE_SIZE = 128;
+    static const int TEXTURE_SIZE = 32;
     static void createLightTexture();
 
     static Vec getPosition_(void *owner);
