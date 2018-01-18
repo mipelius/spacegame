@@ -385,9 +385,7 @@ void LightSystem::updateLightMap(Rect *areaRect) {
                 currentLightCenterY,
                 offsetX,
                 offsetY,
-                radius,
-                lightMap_,
-                tileMap
+                radius
         );
     }
 }
@@ -400,14 +398,12 @@ void LightSystem::updateLightMapRecursive(
         const int &centerY,
         const int &offsetX,
         const int &offsetY,
-        const int &radius,
-        Array2d<unsigned char> *lightMap,
-        const TileMap *map
+        const int &radius
 ) {
     int lightMapX = currentX - offsetX;
     int lightMapY = currentY - offsetY;
 
-    if (!lightMap->isInsideBounds(lightMapX, lightMapY)) { // outside the shadow map
+    if (!lightMap_->isInsideBounds(lightMapX, lightMapY)) { // outside the shadow map
         return;
     }
 
@@ -423,7 +419,7 @@ void LightSystem::updateLightMapRecursive(
 
     double translucency = 1.0;
 
-    Tile* currentBlock = map->getValue(currentX, currentY);
+    Tile* currentBlock = Tile2D::tileMap().getValue(currentX, currentY);
     if (currentBlock != nullptr) {
         translucency = currentBlock->translucency.get();
     }
@@ -432,14 +428,14 @@ void LightSystem::updateLightMapRecursive(
 
     int newLight = lastLight - tileReduction;
 
-    if (newLight <= lightMap->getValue(lightMapX, lightMapY)) return;
+    if (newLight <= lightMap_->getValue(lightMapX, lightMapY)) return;
     if (newLight < 0) return;
 
-    lightMap->setValue(lightMapX, lightMapY, newLight);
+    lightMap_->setValue(lightMapX, lightMapY, newLight);
 
-    updateLightMapRecursive(newLight, currentX - 1, currentY, centerX, centerY, offsetX, offsetY, radius, lightMap, map);
-    updateLightMapRecursive(newLight, currentX + 1, currentY, centerX, centerY, offsetX, offsetY, radius, lightMap, map);
-    updateLightMapRecursive(newLight, currentX, currentY - 1, centerX, centerY, offsetX, offsetY, radius, lightMap, map);
-    updateLightMapRecursive(newLight, currentX, currentY + 1, centerX, centerY, offsetX, offsetY, radius, lightMap, map);
+    updateLightMapRecursive(newLight, currentX - 1, currentY, centerX, centerY, offsetX, offsetY, radius);
+    updateLightMapRecursive(newLight, currentX + 1, currentY, centerX, centerY, offsetX, offsetY, radius);
+    updateLightMapRecursive(newLight, currentX, currentY - 1, centerX, centerY, offsetX, offsetY, radius);
+    updateLightMapRecursive(newLight, currentX, currentY + 1, centerX, centerY, offsetX, offsetY, radius);
 }
 

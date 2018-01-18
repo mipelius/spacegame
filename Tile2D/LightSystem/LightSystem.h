@@ -80,9 +80,7 @@ private:
             const int &centerY,
             const int &offsetX,
             const int &offsetY,
-            const int &radius,
-            Array2d<unsigned char> *lightMap,
-            const TileMap *map
+            const int &radius
     );
 };
 
