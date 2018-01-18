@@ -38,7 +38,7 @@ include_directories(
         Game/Object
         Tile2D/Animation
         Tile2D/GUI/Canvas/Drawable
-        Tile2D/GUI/Canvas/Light
+        Tile2D/LightSystem
         Tile2D/GUI/Canvas/Texture
         Tile2D/GUI/Canvas
         Tile2D/GUI
@@ -82,10 +82,10 @@ set(SOURCE_FILES
         Tile2D/GUI/Canvas/Drawable/Sprite.h
         Tile2D/GUI/Canvas/Drawable/Text.cpp
         Tile2D/GUI/Canvas/Drawable/Text.h
-        Tile2D/GUI/Canvas/Light/PointLight.cpp
-        Tile2D/GUI/Canvas/Light/PointLight.h
-        Tile2D/GUI/Canvas/Light/LightSystem.cpp
-        Tile2D/GUI/Canvas/Light/LightSystem.h
+        Tile2D/LightSystem/PointLight.cpp
+        Tile2D/LightSystem/PointLight.h
+        Tile2D/LightSystem/LightSystem.cpp
+        Tile2D/LightSystem/LightSystem.h
         Tile2D/GUI/Canvas/Texture/ITexture.h
         Tile2D/GUI/Canvas/Texture/MapTexture.cpp
         Tile2D/GUI/Canvas/Texture/MapTexture.h

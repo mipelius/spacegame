@@ -201,35 +201,10 @@ void LightSystem::drawLightMap(const Canvas &canvas) {
     Rect rect = canvas.getCamera()->areaRect.get();
     updateLightMap(&rect);
 
-    int xStart = 0;
-    int xEnd = 0;
-
-    if (rect.x1 > 0) {
-        xStart = (int)(rect.x1 / tileMap->getTileSet()->getTileW());
-    }
-
-    if (rect.x2 > tileMap->getActualW()) {
-        xEnd = tileMap->getW();
-    }
-
-    else {
-        xEnd = xStart + (int)(rect.getWidth() / tileMap->getTileSet()->getTileW()) + 2;
-    }
-
-    int yStart = 0;
-    int yEnd = 0;
-
-    if (rect.y1 > 0) {
-        yStart = (int)(rect.y1 / tileMap->getTileSet()->getTileH());
-    }
-
-    if (rect.y2 > tileMap->getActualW()) {
-        yEnd = tileMap->getW();
-    }
-
-    else {
-        yEnd = yStart + (int)(rect.getHeight() / tileMap->getTileSet()->getTileH()) + 2;
-    }
+    int xStart = (int)(rect.x1 / tileMap->getTileSet()->getTileW());
+    int xEnd = xStart + lightMap_->getW();
+    int yStart = (int)(rect.y1 / tileMap->getTileSet()->getTileH());;
+    int yEnd = yStart + lightMap_->getH();
 
     // set blending function
 
@@ -257,8 +232,6 @@ void LightSystem::drawLightMap(const Canvas &canvas) {
                 float y1 = yActual;
                 float x2 = xActual + tileMap->getTileSet()->getTileW();
                 float y2 = yActual + tileMap->getTileSet()->getTileH();
-
-
 
                 if (lightAmount == 255) {
                     glColor4f(0.0, 0.0, 0.0, 1.0);
@@ -431,15 +404,6 @@ void LightSystem::updateLightMapRecursive(
         Array2d<unsigned char> *lightMap,
         const TileMap *map
 ) {
-    if (    // outside the tile map
-            currentX < 0                ||
-            currentX > map->getW()      ||
-            currentY < 0                ||
-            currentY > map->getH()
-    ) {
-        return;
-    }
-
     int lightMapX = currentX - offsetX;
     int lightMapY = currentY - offsetY;
 
@@ -457,10 +421,13 @@ void LightSystem::updateLightMapRecursive(
         return;
     }
 
-    Tile* currentBlock = map->getValue(currentX, currentY);
-    if (!currentBlock) return;
+    double translucency = 1.0;
 
-    double translucency = currentBlock->translucency.get();
+    Tile* currentBlock = map->getValue(currentX, currentY);
+    if (currentBlock != nullptr) {
+        translucency = currentBlock->translucency.get();
+    }
+
     auto tileReduction = 256 - translucency * 256.0;
 
     int newLight = lastLight - tileReduction;

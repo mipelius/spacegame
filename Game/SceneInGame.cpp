@@ -21,7 +21,6 @@
 #include "Plot.h"
 #include "Background.h"
 #include "Sprite.h"
-#include "Camera.h"
 #include "PlayerController.h"
 #include "Tags.h"
 
