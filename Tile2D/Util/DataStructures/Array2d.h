@@ -36,7 +36,7 @@ public:
     }
 
     inline bool isInsideBounds(int x, int y) {
-        return !(x < 0 || x >= w) && !(y < 0 || y >= h);
+        return x >= 0 && x < w && y >= 0 && y < h;
     }
 
     inline void fill(T value) {
