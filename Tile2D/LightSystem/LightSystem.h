@@ -73,14 +73,14 @@ private:
     void updateLightMap(Rect *areaRect);
 
     void updateLightMapRecursive(
-            unsigned char lastLight,
             int currentX,
             int currentY,
             const int &centerX,
             const int &centerY,
             const int &offsetX,
             const int &offsetY,
-            const int &radius
+            const int &radius,
+            unsigned int encounteredWallness
     );
 };
 
