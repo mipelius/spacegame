@@ -74,19 +74,19 @@ Tile *TileMap::getValueScaled(Vec point) const {
 }
 
 int TileMap::getW() const {
-    return tiles_->getW();
+    return tiles_->w;
 }
 
 int TileMap::getH() const {
-    return tiles_->getH();
+    return tiles_->h;
 }
 
 long TileMap::getActualW() const {
-    return tiles_->getW() * tileSet_->getTileW();
+    return tiles_->w * tileSet_->getTileW();
 }
 
 long TileMap::getActualH() const {
-    return tiles_->getH() * tileSet_->getTileH();
+    return tiles_->h * tileSet_->getTileH();
 }
 
 void TileMap::load(std::string path, std::string tileSet) {

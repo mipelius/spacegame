@@ -202,9 +202,9 @@ void LightSystem::drawLightMap(const Canvas &canvas) {
     updateLightMap(&rect);
 
     int xStart = (int)(rect.x1 / tileMap->getTileSet()->getTileW());
-    int xEnd = xStart + lightMap_->getW();
+    int xEnd = xStart + lightMap_->w;
     int yStart = (int)(rect.y1 / tileMap->getTileSet()->getTileH());;
-    int yEnd = yStart + lightMap_->getH();
+    int yEnd = yStart + lightMap_->h;
 
     // set blending function
 
@@ -365,7 +365,7 @@ void LightSystem::createShadowTexture() {
 void LightSystem::updateLightMap(Rect *areaRect) {
     auto tileMap = Tile2D::physicsWorld().getMap();
 
-    lightMap_->clear();
+    lightMap_->fill(0);
 
     int offsetX = (int)(areaRect->x1 / tileMap->getTileSet()->getTileW());
     int offsetY = (int)(areaRect->y1 / tileMap->getTileSet()->getTileH());

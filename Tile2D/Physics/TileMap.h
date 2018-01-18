@@ -18,6 +18,7 @@
 #define __WorldMap_H_
 
 #include <string>
+#include "Array2d.h"
 #include "DrawableMap.h"
 
 class MapTexture;
@@ -27,7 +28,6 @@ class Tile;
 class WorldMapModifiedEventArgs;
 
 #include "Rect.h"
-#include "Array2d.h"
 #include "Tile.h"
 #include "Event.h"
 

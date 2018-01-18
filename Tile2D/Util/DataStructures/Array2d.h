@@ -19,46 +19,35 @@
 
 template <typename T> class Array2d {
 public:
-    Array2d<T>(int w, int h) {
-        w_ = w;
-        h_ = h;
-        data_ = new T[w * h];
+    Array2d<T>(int w, int h) : w(w), h(h) {
+        data = new T[w * h];
     }
 
     ~Array2d<T>() {
-        delete[] data_;
+        delete[] data;
     }
 
-    virtual T getValue(int x, int y) const {
-        return data_[x + y * w_];
+    inline virtual T getValue(int x, int y) const {
+        return data[x + y * w];
     }
 
-    virtual void setValue(int x, int y, const T& value) {
-        data_[x + y * w_] = value;
+    inline virtual void setValue(int x, int y, const T& value) {
+        data[x + y * w] = value;
     }
 
-    bool isInsideBounds(int x, int y) {
-        return !(x < 0 || x >= w_) && !(y < 0 || y >= h_);
-
+    inline bool isInsideBounds(int x, int y) {
+        return !(x < 0 || x >= w) && !(y < 0 || y >= h);
     }
 
-    int getW() {
-        return w_;
+    inline void fill(T value) {
+        for (auto x=0; x<w; ++x)
+            for (auto y=0; y<h; ++y)
+                setValue(x, y, value);
     }
 
-    int getH() {
-        return h_;
-    }
-
-    void clear() {
-        memset(data_, '\0', sizeof(unsigned char) * w_ * h_);
-    }
-
-protected:
-
-    int w_;
-    int h_;
-    T* data_;
+    const int w;
+    const int h;
+    T* data;
 };
 
 
