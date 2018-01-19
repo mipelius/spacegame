@@ -224,35 +224,19 @@ void LightSystem::drawLightMap(const Canvas &canvas) {
 
             for (int y = yStart; y < yEnd; y++) {
                 unsigned char lightAmount = lightMap_->getValue(dynX, dynY);
+                float x1 = x * tileMap->getTileSet()->getTileW() - (float)rect.x1;
+                float y1 = y * tileMap->getTileSet()->getTileH() - (float)rect.y1;
+                float x2 = x1 + tileMap->getTileSet()->getTileW();
+                float y2 = y1 + tileMap->getTileSet()->getTileH();
 
-                float xActual = x * tileMap->getTileSet()->getTileW() - (float)rect.x1;
-                float yActual = y * tileMap->getTileSet()->getTileH() - (float)rect.y1;
-
-                float x1 = xActual;
-                float y1 = yActual;
-                float x2 = xActual + tileMap->getTileSet()->getTileW();
-                float y2 = yActual + tileMap->getTileSet()->getTileH();
-
-                if (lightAmount == 255) {
-                    glColor4f(0.0, 0.0, 0.0, 1.0);
-
-                    glTexCoord2f(0.49, 0.49);
-                    glVertex2f(x1, y1);
-                    glTexCoord2f(0.51, 0.49);
-                    glVertex2f(x2, y1);
-                    glTexCoord2f(0.51, 0.49);
-                    glVertex2f(x2, y2);
-                    glTexCoord2f(0.49, 0.51);
-                    glVertex2f(x1, y2);
-                }
-                else if (lightAmount > 0) {
+                if (lightAmount > 0) {
                     auto value = lightAmount / 255.0f;
                     glColor4f(0.0, 0.0, 0.0, value);
 
-                    x1 -= 10;
-                    y1 -= 10;
-                    x2 += 10;
-                    y2 += 10;
+                    x1 -= tileMap->getTileSet()->getTileW() * 0.75;
+                    y1 -= tileMap->getTileSet()->getTileH() * 0.75;
+                    x2 += tileMap->getTileSet()->getTileW() * 0.75;
+                    y2 += tileMap->getTileSet()->getTileH() * 0.75;
 
                     glTexCoord2f(0.0, 0.0);
                     glVertex2f(x1, y1);
@@ -286,13 +270,10 @@ void LightSystem::drawLightMap(const Canvas &canvas) {
             for (int y = yStart; y < yEnd; y++) {
                 unsigned char lightAmount = lightMap_->getValue(dynX, dynY);
 
-                float xActual = x * tileMap->getTileSet()->getTileW() - (float)rect.x1;
-                float yActual = y * tileMap->getTileSet()->getTileH()- (float)rect.y1;
-
-                float x1 = xActual;
-                float y1 = yActual;
-                float x2 = xActual + tileMap->getTileSet()->getTileW();
-                float y2 = yActual + tileMap->getTileSet()->getTileH();
+                float x1 = x * tileMap->getTileSet()->getTileW() - (float)rect.x1;
+                float y1 = y * tileMap->getTileSet()->getTileH() - (float)rect.y1;
+                float x2 = x1 + tileMap->getTileSet()->getTileW();
+                float y2 = y1 + tileMap->getTileSet()->getTileH();
 
                 if (lightAmount > 0) {
                     auto value = lightAmount / 255.0f;
@@ -323,6 +304,8 @@ void LightSystem::createShadowTexture() {
 
     Uint32* pixels = new Uint32[LIGHT_TEXTURE_SIZE * LIGHT_TEXTURE_SIZE];
 
+    double fullLightThreshold = LIGHT_TEXTURE_SIZE / (2 * sqrt(2));
+
     for (int i = 0; i < LIGHT_TEXTURE_SIZE; i++) {
         for (int j = 0; j < LIGHT_TEXTURE_SIZE; j++) {
             double deltaX = LIGHT_TEXTURE_SIZE/2 - i;
@@ -331,6 +314,15 @@ void LightSystem::createShadowTexture() {
             double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 
             temp = distance / (LIGHT_TEXTURE_SIZE / 2);
+            temp *= 8;
+            temp -= 7;
+
+            // clamp
+
+            if (temp < 0.0) {
+                temp = 0.0;
+            }
+
             if (temp > 1.0) {
                 temp = 1.0;
             }
