@@ -99,7 +99,7 @@ void SceneInGame::init() {
     auto light = player->attachComponent<PointLight>();
     light->position.bind(spaceshipBody->position);
     light->intensity.set(1.0);
-    light->radius.set(600.0);
+    light->radius.set(500.0);
 
     auto playerController = player->attachComponent<PlayerController>();
     playerController->moveForce = 10000.0f;
@@ -116,6 +116,18 @@ void SceneInGame::init() {
     spawnEnemy(spaceshipBody->position.get() + Vec(100.0, 0.0));
     spawnEnemy(spaceshipBody->position.get() + Vec(200.0, 0.0));
     spawnEnemy(spaceshipBody->position.get() + Vec(300.0, 0.0));
+
+    // light test
+    auto lightObj = Tile2D::createGameObject();
+
+    auto light2 = lightObj->attachComponent<PointLight>();
+    light2->radius.set(500);
+    light2->position.set({500, 500});
+
+    auto light1 = lightObj->attachComponent<PointLight>();
+    light1->radius.set(20);
+    light1->position.set({500, 500});
+
 }
 
 void SceneInGame::destroy() {
