@@ -21,39 +21,39 @@
 
 class Vec {
 public:
-    double x;
-    double y;
-    Vec(double x, double y);
+    float x;
+    float y;
+    Vec(float x, float y);
     Vec();
 
-    inline void rotate(double degrees);
-    inline Vec rotated(double degrees) const;
-    inline static Vec byAngle(const double &angleDegrees, const double &amount);
+    inline void rotate(float degrees);
+    inline Vec rotated(float degrees) const;
+    inline static Vec byAngle(const float &angleDegrees, const float &amount);
 
     inline Vec operator + (const Vec& otherVector) const;
     inline Vec operator - (const Vec& otherVector) const;
-    inline Vec operator * (double const &amount) const;
-    inline Vec operator / (double const &amount) const;
+    inline Vec operator * (float const &amount) const;
+    inline Vec operator / (float const &amount) const;
 
     inline Vec operator -= (const Vec& otherVector);
     inline Vec operator += (const Vec& otherVector);
-    inline Vec operator *= (double const &amount);
-    inline Vec operator /= (double const &amount);
+    inline Vec operator *= (float const &amount);
+    inline Vec operator /= (float const &amount);
 
-    inline double length() const;
-    inline double lengthSqr() const;
-    inline double angle() const;
-    inline double dot(const Vec& otherVector) const;
+    inline float length() const;
+    inline float lengthSqr() const;
+    inline float angle() const;
+    inline float dot(const Vec& otherVector) const;
     inline Vec normalized();
 };
 
 // inline functions
 
-inline void Vec::rotate(double degrees) {
+inline void Vec::rotate(float degrees) {
     *this = this->rotated(degrees);
 }
 
-inline Vec Vec::rotated(double degrees) const {
+inline Vec Vec::rotated(float degrees) const {
     degrees = (degrees / 180.0) * M_PI;
     return {Vec(cos(degrees), -sin(degrees)).dot(*this), Vec(sin(degrees), cos(degrees)).dot(*this)};
 }
@@ -66,11 +66,11 @@ inline Vec Vec::operator - (const Vec &otherVector) const {
     return {x - otherVector.x, y - otherVector.y};
 }
 
-inline Vec Vec::operator * (const double &amount) const {
+inline Vec Vec::operator * (const float &amount) const {
     return {x * amount, y * amount};
 }
 
-inline Vec Vec::operator /(double const &amount) const {
+inline Vec Vec::operator /(float const &amount) const {
     return {x / amount, y / amount};
 }
 
@@ -86,35 +86,35 @@ inline Vec Vec::operator += (const Vec &otherVector) {
     return {x, y};
 }
 
-inline Vec Vec::operator *=(double const &amount) {
+inline Vec Vec::operator *=(float const &amount) {
     x *= amount;
     y *= amount;
     return {x, y};
 }
 
-inline Vec Vec::operator /=(double const &amount) {
+inline Vec Vec::operator /=(float const &amount) {
     x /= amount;
     y /= amount;
     return {x, y};
 }
 
-inline Vec Vec::byAngle(const double &angleDegrees, const double &amount) {
-    double angle = angleDegrees / 360 * 2 * M_PI;
+inline Vec Vec::byAngle(const float &angleDegrees, const float &amount) {
+    float angle = angleDegrees / 360 * 2 * M_PI;
     return {
             cos(angle) * amount,
             sin(angle) * amount
     };
 }
 
-inline double Vec::length() const {
+inline float Vec::length() const {
     return sqrt(x * x + y * y);
 }
 
-inline double Vec::lengthSqr() const {
+inline float Vec::lengthSqr() const {
     return x * x + y * y;
 }
 
-inline double Vec::angle() const {
+inline float Vec::angle() const {
     if (y == 0) {
         return 0;
     }
@@ -127,12 +127,12 @@ inline double Vec::angle() const {
     return atan2(y, x) * 180 / M_PI;
 }
 
-inline double Vec::dot(const Vec& otherVector) const {
+inline float Vec::dot(const Vec& otherVector) const {
     return this->x * otherVector.x + this->y * otherVector.y;
 }
 
 inline Vec Vec::normalized() {
-    double length = this->length();
+    float length = this->length();
     if (length == 0.0) {
         return {1, 0};
     }

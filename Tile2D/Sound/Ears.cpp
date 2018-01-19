@@ -19,7 +19,7 @@
 
 Ears::Ears() :
     position    (   Property<Vec>  (&position_)    ),
-    maxDistance (   Property<double>  (&maxDistance_) ),
+    maxDistance (   Property<float>  (&maxDistance_) ),
 
     position_       (   Vec(0, 0) ),
     maxDistance_    (   0.0          )

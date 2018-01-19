@@ -24,8 +24,8 @@ GLuint PointLight::glTextureId_ = 0;
 
 PointLight::PointLight() :
     position    (   Property<Vec>     (this, getPosition_, setPosition_)  ),
-    radius      (   Property<double>  (&radius_                        )  ),
-    intensity   (   Property<double>  (&intensity_                     )  ),
+    radius      (   Property<float>  (&radius_                        )  ),
+    intensity   (   Property<float>  (&intensity_                     )  ),
 
     position_   (   {0, 0}    ),
     radius_     (   0         ),
@@ -39,12 +39,12 @@ PointLight::PointLight() :
 void PointLight::draw(const Canvas &canvas) {
     Rect rect = canvas.getCamera()->areaRect.get();
 
-    double x = position_.x - rect.x1 - radius_;
-    double y = position_.y - rect.y1 - radius_;
-    double w = radius_ * 2;
-    double h = radius_ * 2;
+    float x = position_.x - rect.x1 - radius_;
+    float y = position_.y - rect.y1 - radius_;
+    float w = radius_ * 2;
+    float h = radius_ * 2;
 
-    double margin = 0.0;
+    float margin = 0.0;
 
     glColor4f(0.0, 0.0, 0.0, (GLfloat)intensity_);
 
@@ -63,16 +63,16 @@ void PointLight::createLightTexture() {
     int h = TEXTURE_SIZE;
 
     Uint8 alphaValue;
-    double temp = 0.0;
+    float temp = 0.0;
 
     Uint32* lightPixels = new Uint32[w * h];
 
     for (int i = 0; i < w; i++) {
         for (int j = 0; j < h; j++) {
-            double deltaX = w/2 - i;
-            double deltaY = h/2 - j;
+            float deltaX = w/2 - i;
+            float deltaY = h/2 - j;
 
-            double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
+            float distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 
             temp = distance / (w / 2);
 

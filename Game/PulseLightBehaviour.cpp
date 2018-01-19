@@ -24,7 +24,7 @@ void PulseLightBehaviour::awake() {
 
 void PulseLightBehaviour::update() {
     LimitedAgeBehaviour::update();
-    double scale = 1.0 - age() / TTL;
+    float scale = 1.0 - age() / TTL;
     light->intensity.set(scale);
     light->radius.set(scale * radiusOnAwake);
 }

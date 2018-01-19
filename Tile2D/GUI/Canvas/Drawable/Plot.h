@@ -29,13 +29,13 @@ public:
     Plot();
 
     Property<Vec> const position;
-    Property<double> const size;
+    Property<float> const size;
 
     void draw(const Canvas &canvas) override;
 
 private:
     Vec position_;
-    double size_;
+    float size_;
 
 };
 

@@ -27,24 +27,24 @@ class Tile {
 
 private:
     std::string name_;
-    double density_;
-    double translucency_;
-    double opacity_;
+    float density_;
+    float translucency_;
+    float opacity_;
 
     MapTexture* mapTexture_;
     int mapTextureId_;
 
-    void initialize_(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture,
+    void initialize_(std::string name, float density, float translucency, float opacity, MapTexture *mapTexture,
                      int mapTextureId);
 
 public:
-    Tile(std::string name, double density, double translucency, double opacity, MapTexture* mapTexture, int mapTextureId);
+    Tile(std::string name, float density, float translucency, float opacity, MapTexture* mapTexture, int mapTextureId);
     Tile(json::Object object, MapTexture* mapTexture);
 
     ReadableProperty<std::string> const name;
-    ReadableProperty<double> const density;
-    ReadableProperty<double> const translucency;
-    ReadableProperty<double> const opacity;
+    ReadableProperty<float> const density;
+    ReadableProperty<float> const translucency;
+    ReadableProperty<float> const opacity;
 
     int getMapTextureId();
 };

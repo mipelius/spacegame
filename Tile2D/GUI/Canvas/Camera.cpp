@@ -29,8 +29,8 @@ Camera::Camera() :
 }
 
 
-void Camera::zoom(double amount) {
-    double ratio = areaRect_.getHeight() / areaRect_.getWidth();
+void Camera::zoom(float amount) {
+    float ratio = areaRect_.getHeight() / areaRect_.getWidth();
 
     areaRect_.x1 += amount;
     areaRect_.y1 += amount * ratio;
@@ -42,8 +42,8 @@ void Camera::zoom(double amount) {
 Vec Camera::getPosition_(void *owner) {
     Rect rect = ((Camera*)owner)->areaRect.get();
 
-    double x = rect.x1 + rect.getWidth() / 2;
-    double y = rect.y1 + rect.getHeight() / 2;
+    float x = rect.x1 + rect.getWidth() / 2;
+    float y = rect.y1 + rect.getHeight() / 2;
 
     return Vec(x, y);
 }
@@ -51,10 +51,10 @@ Vec Camera::getPosition_(void *owner) {
 void Camera::setPosition_(void *owner, const Vec &value) {
     Rect areaRect = ((Camera*)owner)->areaRect.get();
 
-    double x = value.x - areaRect.getWidth() / 2;
-    double y = value.y - areaRect.getHeight() / 2;
-    double w = areaRect.getWidth();
-    double h = areaRect.getHeight();
+    float x = value.x - areaRect.getWidth() / 2;
+    float y = value.y - areaRect.getHeight() / 2;
+    float w = areaRect.getWidth();
+    float h = areaRect.getHeight();
 
     ((Camera*)owner)->areaRect.set(
             Rect(

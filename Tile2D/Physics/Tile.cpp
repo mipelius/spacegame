@@ -18,20 +18,20 @@
 #include "MapTexture.h"
 #include "ReadableProperty.h"
 
-Tile::Tile(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture, int mapTextureId) :
+Tile::Tile(std::string name, float density, float translucency, float opacity, MapTexture *mapTexture, int mapTextureId) :
     name(           ReadableProperty<std::string> (   &name_          )   ),
-    density(        ReadableProperty<double>      (   &density_       )   ),
-    translucency(   ReadableProperty<double>      (   &translucency_  )   ),
-    opacity(        ReadableProperty<double>      (   &opacity_       )   )
+    density(        ReadableProperty<float>      (   &density_       )   ),
+    translucency(   ReadableProperty<float>      (   &translucency_  )   ),
+    opacity(        ReadableProperty<float>      (   &opacity_       )   )
 {
     initialize_(std::move(name), density, translucency, opacity, mapTexture, mapTextureId);
 }
 
 Tile::Tile(json::Object object, MapTexture* mapTexture)  :
 name(           ReadableProperty<std::string> (   &name_          )   ),
-density(        ReadableProperty<double>      (   &density_       )   ),
-translucency(   ReadableProperty<double>      (   &translucency_  )   ),
-opacity(        ReadableProperty<double>      (   &opacity_       )   )
+density(        ReadableProperty<float>      (   &density_       )   ),
+translucency(   ReadableProperty<float>      (   &translucency_  )   ),
+opacity(        ReadableProperty<float>      (   &opacity_       )   )
 {
     MapTexture* mapTextureToUse = nullptr;
     int mapTextureId = -1;
@@ -56,7 +56,7 @@ opacity(        ReadableProperty<double>      (   &opacity_       )   )
     );
 }
 
-void Tile::initialize_(std::string name, double density, double translucency, double opacity, MapTexture *mapTexture,
+void Tile::initialize_(std::string name, float density, float translucency, float opacity, MapTexture *mapTexture,
                         int mapTextureId) {
     name_ = std::move(name);
     density_ = density;

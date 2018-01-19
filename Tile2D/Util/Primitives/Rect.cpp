@@ -17,7 +17,7 @@
 #include "precompile.h"
 #include "Rect.h"
 
-Rect::Rect(double x1, double y1, double x2, double y2) {
+Rect::Rect(float x1, float y1, float x2, float y2) {
     this->x1 = x1;
     this->y1 = y1;
     this->x2 = x2;

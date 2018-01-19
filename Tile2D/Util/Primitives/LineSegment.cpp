@@ -10,7 +10,7 @@ LineSegment::LineSegment(Vec point1, Vec point2) {
     this->point2 = point2;
 }
 
-void LineSegment::rotate(double angle) {
+void LineSegment::rotate(float angle) {
     Vec middlePoint = point1 + (point2 - point1) / 2.0;
     point1 = point1 - middlePoint;
     point1.rotate(angle);
@@ -29,7 +29,7 @@ bool LineSegment::intersection(const LineSegment& other, Vec& result) const {
 
     // --- vertical cases ---
 
-    const double epsilon = 0.0000001;
+    const float epsilon = 0.0000001;
 
     bool a_is_vert = abs(ax2 - ax1) < epsilon;
     bool b_is_vert = abs(bx2 - bx1) < epsilon;
@@ -38,20 +38,20 @@ bool LineSegment::intersection(const LineSegment& other, Vec& result) const {
         return false;
     } else if (a_is_vert) {
         x = ax1;
-        double slope_b = (by2 - by1) / (bx2 - bx1);
+        float slope_b = (by2 - by1) / (bx2 - bx1);
         y = slope_b * (x - bx1) + by1;
     } else if (b_is_vert) {
         x = bx1;
-        double slope_a = (ay2 - ay1) / (ax2 - ax1);
+        float slope_a = (ay2 - ay1) / (ax2 - ax1);
         y = slope_a * (x - ax1) + ay1;
     } else {
         // --- non-vertical cases ---
 
-        double slope_a = (ay2 - ay1) / (ax2 - ax1);
-        double slope_b = (by2 - by1) / (bx2 - bx1);
+        float slope_a = (ay2 - ay1) / (ax2 - ax1);
+        float slope_b = (by2 - by1) / (bx2 - bx1);
 
-        double tmp_a = ay1 - slope_a * ax1;
-        double tmp_b = by1 - slope_b * bx1;
+        float tmp_a = ay1 - slope_a * ax1;
+        float tmp_b = by1 - slope_b * bx1;
 
         x = (tmp_b - tmp_a) / (slope_a - slope_b);
         y = tmp_a + slope_a * x;

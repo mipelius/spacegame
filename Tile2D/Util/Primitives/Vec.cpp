@@ -17,7 +17,7 @@
 #include "precompile.h"
 #include "Vec.h"
 
-Vec::Vec(double x, double y) {
+Vec::Vec(float x, float y) {
     this->x = x;
     this->y = y;
 }

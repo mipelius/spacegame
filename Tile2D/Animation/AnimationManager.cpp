@@ -25,7 +25,7 @@ void AnimationManager::add(IAnimation* animation) {
     animations_.push_back(animation);
 }
 
-void AnimationManager::update(double seconds) {
+void AnimationManager::update(float seconds) {
     for (auto anim : animationsToRemove_) {
         animations_.remove(anim);
     }

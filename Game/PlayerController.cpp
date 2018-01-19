@@ -82,7 +82,7 @@ void PlayerController::update() {
     // read input -> actions
     const Uint8 *state = SDL_GetKeyboardState(NULL);
 
-    double angularVelocity = 0;
+    float angularVelocity = 0;
 
     if (state[SDL_SCANCODE_UP]) {
         body->force.set(Vec::byAngle(body->angle.get(), moveForce));

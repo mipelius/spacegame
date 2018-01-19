@@ -32,10 +32,10 @@ void DrawableMap::draw(const Canvas &canvas) {
 
     const Rect& rect = canvas.getCamera()->areaRect.get();
 
-    const double& x = rect.x1;
-    const double& y = rect.y1;
-    const double& w = rect.getWidth();
-    const double& h = rect.getHeight();
+    const float& x = rect.x1;
+    const float& y = rect.y1;
+    const float& w = rect.getWidth();
+    const float& h = rect.getHeight();
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -60,7 +60,7 @@ void DrawableMap::draw(const Canvas &canvas) {
 
     mapTexture_->glBind();
 
-    glColor3d(1.0, 1.0, 1.0);
+    glColor3f(1.0, 1.0, 1.0);
 
     glBegin(GL_QUADS);
 

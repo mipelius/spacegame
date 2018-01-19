@@ -30,7 +30,7 @@ public:
 
     Camera();
 
-    void zoom(double amount);
+    void zoom(float amount);
 
 private:
     Rect areaRect_;

@@ -21,7 +21,7 @@ class IAnimation {
     friend class AnimationManager;
 
 protected:
-    virtual void update(double seconds) = 0;
+    virtual void update(float seconds) = 0;
 };
 
 

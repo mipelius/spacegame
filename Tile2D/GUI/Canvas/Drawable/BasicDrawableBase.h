@@ -29,9 +29,9 @@ public:
     BasicDrawableBase();
 
     Property<Vec>       const position;
-    Property<double>    const angle;
+    Property<float>    const angle;
     BooleanProperty     const isVisible;
-    Property<double>    const opacity;
+    Property<float>    const opacity;
     Property<Color>     const color;
 
     void draw(const Canvas& canvas) override;
@@ -41,9 +41,9 @@ protected:
 
 private:
     Vec position_;
-    double angle_;
+    float angle_;
     bool isVisible_;
-    double opacity_;
+    float opacity_;
     Color color_;
 };
 

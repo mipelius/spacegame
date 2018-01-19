@@ -27,7 +27,7 @@ class Background : public DrawableBase {
 public:
     Background();
 
-    Property<double> const      ratio;
+    Property<float> const      ratio;
     Property<Texture*> const    texturePtr;
 
     void draw(const Canvas& canvas) override;
@@ -35,7 +35,7 @@ public:
 private:
     Texture* texturePtr_;
 
-    double ratio_;
+    float ratio_;
 
 };
 

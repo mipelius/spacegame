@@ -26,10 +26,10 @@
 Body::Body() :
     // properties
 
-    mass            (   Property<double>  (&mass_             )   ),
+    mass            (   Property<float>  (&mass_             )   ),
 
-    angle           (   Property<double>  (&angle_            )   ),
-    angularVelocity (   Property<double>  (&angularVelocity_  )   ),
+    angle           (   Property<float>  (&angle_            )   ),
+    angularVelocity (   Property<float>  (&angularVelocity_  )   ),
 
     position        (   Property<Vec>  (&position_         )   ),
     velocity        (   Property<Vec>  (&velocity_         )   ),
@@ -65,13 +65,13 @@ void Body::onDestroy() {
     }
 }
 
-void Body::step_(double timeElapsedSec) {
+void Body::step_(float timeElapsedSec) {
     // calculate drag
 
     Vec drag = Vec(0, 0);
 
     if (velocity_.x != 0 || velocity_.y != 0) {
-        double speedLengthPow2 = velocity_.x * velocity_.x + velocity_.y * velocity_.y;
+        float speedLengthPow2 = velocity_.x * velocity_.x + velocity_.y * velocity_.y;
         Vec dragUnitVector = (velocity_ * -1) * (1 / sqrt(velocity_.x * velocity_.x + velocity_.y * velocity_.y));
         drag = dragUnitVector * speedLengthPow2 * (0.5 * physicsWorld_->airDensity.get());
     }
@@ -102,7 +102,7 @@ void Body::step_(double timeElapsedSec) {
     this->force.updateDependentProperties();
 }
 
-bool Body::detectMapCollision_(double deltaTime) {
+bool Body::detectMapCollision_(float deltaTime) {
     TileMap* map = this->physicsWorld_->map_;
 
     if (map == nullptr || collider_ == nullptr) {
@@ -131,21 +131,21 @@ bool Body::detectMapCollision_(double deltaTime) {
     Vec direction = velocity_ * deltaTime * Tile2D::physicsWorld().metersPerPixel_;
     Tile* tile;
 
-    double w = blockSizeW;
-    double h = blockSizeH;
+    float w = blockSizeW;
+    float h = blockSizeH;
     PolygonCollider tileCollider;
     tileCollider.rot_ = 0.0;
     tileCollider.setPoints({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
 
     if (direction.length() < sqrt(blockSizeW * blockSizeH) / 4.0) { // if slowly moving object -> use SAT strategy
         Vec contactNormal;
-        double penetration;
+        float penetration;
 
         for (int i=iBegin; i <= iEnd; i += blockSizeW) {
             for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
                 tile = map->getValueScaled(Vec(i, j));
                 if (tile != nullptr && tile->density.get() > 0.0) {
-                    tileCollider.pos_ = {(double)i, (double)j};
+                    tileCollider.pos_ = {(float)i, (float)j};
 
                     if (collider_->overlap(tileCollider, contactNormal, penetration)) {
                         collider_->pos_ += contactNormal * (penetration + 0.05);
@@ -176,7 +176,7 @@ bool Body::detectMapCollision_(double deltaTime) {
             for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
                 tile = map->getValueScaled(Vec(i, j));
                 if (tile != nullptr && tile->density.get() > 0.0) {
-                    tileCollider.pos_ = {(double)i, (double)j};
+                    tileCollider.pos_ = {(float)i, (float)j};
 
                     if (collider_->cast(direction * -1.0, tileCollider, currentContactNormal, currentToCollision))
                     {
@@ -223,7 +223,7 @@ bool Body::detectCollisionWith_(Body &otherBody) {
     if (!collider_->boundingBox_.intersectsWith(otherBody.collider_->boundingBox_)) return false;
 
     Vec contactNormal;
-    double penetration;
+    float penetration;
 
     if (collider_->overlap(*otherBody.collider_, contactNormal, penetration)) {
         bodyCollision.raise(BodyCollisionEventArgs(&otherBody, contactNormal));

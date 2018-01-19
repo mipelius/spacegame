@@ -28,7 +28,7 @@ public:
 
     void remove(IAnimation* animation);
     void add(IAnimation* animation);
-    void update(double seconds);
+    void update(float seconds);
 
 private:
     std::list<IAnimation*> animations_;

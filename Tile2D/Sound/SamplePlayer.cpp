@@ -28,16 +28,16 @@ void SamplePlayer::play(AudioClip *sample, const Vec& position, int channel) {
         Mix_SetPanning(channel, 255, 255);
     }
     else {
-        double distance = (position - ears_->position.get()).length();
+        float distance = (position - ears_->position.get()).length();
 
         if (distance < ears_->maxDistance.get()) {
-            double amount = 1.0 - (distance / ears_->maxDistance.get());
+            float amount = 1.0 - (distance / ears_->maxDistance.get());
 
             if (amount < 0) {
                 amount = 0;
             }
 
-            double deltaX = position.x - ears_->position.get().x;
+            float deltaX = position.x - ears_->position.get().x;
 
             Uint8 left;
             Uint8 right;

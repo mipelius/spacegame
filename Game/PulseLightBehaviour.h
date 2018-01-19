@@ -27,7 +27,7 @@ protected:
     void update() override;
 
     PointLight* light = nullptr;
-    double radiusOnAwake = 0.0;
+    float radiusOnAwake = 0.0;
 };
 
 #endif //__PulseLightBehaviour_H

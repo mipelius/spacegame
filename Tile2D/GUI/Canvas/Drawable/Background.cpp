@@ -22,7 +22,7 @@
 
 Background::Background() :
         // properties
-        ratio(          Property<double>   (&ratio_)            ),
+        ratio(          Property<float>   (&ratio_)            ),
         texturePtr(     Property<Texture*> (&texturePtr_)       ),
 
         // values
@@ -35,37 +35,37 @@ Background::Background() :
 void Background::draw(const Canvas& canvas) {
     Rect rect = canvas.getCamera()->areaRect.get();
 
-    glColor3d(1.0, 1.0, 1.0);
+    glColor3f(1.0, 1.0, 1.0);
 
     if (texturePtr_ != nullptr) {
         texturePtr_->glBind();
 
         Vec position = canvas.getCamera()->position.get();
 
-        GLdouble x = (position.x * ratio_) / texturePtr_->getW();
-        GLdouble y = (position.y * ratio_) / texturePtr_->getH();
-        GLdouble w = rect.getWidth() / texturePtr_->getW();
-        GLdouble h = rect.getHeight() / texturePtr_->getH();
+        GLfloat x = (position.x * ratio_) / texturePtr_->getW();
+        GLfloat y = (position.y * ratio_) / texturePtr_->getH();
+        GLfloat w = rect.getWidth() / texturePtr_->getW();
+        GLfloat h = rect.getHeight() / texturePtr_->getH();
 
         glBegin(GL_QUADS);
-        glTexCoord2d(x - w / 2, y - h / 2);
-        glVertex2d(rect.x1, rect.y1);
-        glTexCoord2d(x + w / 2, y - h / 2);
-        glVertex2d(rect.x2, rect.y1);
-        glTexCoord2d(x + w / 2, y + h / 2);
-        glVertex2d(rect.x2, rect.y2);
-        glTexCoord2d(x - w / 2, y + h / 2);
-        glVertex2d(rect.x1, rect.y2);
+        glTexCoord2f(x - w / 2, y - h / 2);
+        glVertex2f(rect.x1, rect.y1);
+        glTexCoord2f(x + w / 2, y - h / 2);
+        glVertex2f(rect.x2, rect.y1);
+        glTexCoord2f(x + w / 2, y + h / 2);
+        glVertex2f(rect.x2, rect.y2);
+        glTexCoord2f(x - w / 2, y + h / 2);
+        glVertex2f(rect.x1, rect.y2);
         glEnd();
 
         texturePtr_->glUnbind();
     }
     else {
         glBegin(GL_QUADS);
-        glVertex2d(0, 0);
-        glVertex2d(rect.getWidth(), 0);
-        glVertex2d(rect.getWidth(), rect.getHeight());
-        glVertex2d(0, rect.getHeight());
+        glVertex2f(0, 0);
+        glVertex2f(rect.getWidth(), 0);
+        glVertex2f(rect.getWidth(), rect.getHeight());
+        glVertex2f(0, rect.getHeight());
         glEnd();
     }
 }

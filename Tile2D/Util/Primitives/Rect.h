@@ -21,22 +21,22 @@
 
 class Rect {
 public:
-    double x1;
-    double y1;
-    double x2;
-    double y2;
+    float x1;
+    float y1;
+    float x2;
+    float y2;
 
-    Rect(double x1, double y1, double x2, double y2);
+    Rect(float x1, float y1, float x2, float y2);
 
     inline void setPosition(const Vec &point);
 
-    inline double getWidth() const;
-    inline double getHeight() const;
+    inline float getWidth() const;
+    inline float getHeight() const;
 
     inline bool hasPointInside(const Vec &point) const;
 
     inline bool intersectsWith(const Rect &otherRectangle) const;
-    inline bool intersectsWithLine(const double &x1, const double &y1, const double &x2, const double &y2) const;
+    inline bool intersectsWithLine(const float &x1, const float &y1, const float &x2, const float &y2) const;
 
     inline void copy(Rect rect);
 };
@@ -44,20 +44,20 @@ public:
 // inline functions
 
 inline bool Rect::intersectsWith(const Rect &otherRectangle) const {
-    const double& rectAx1 = x1;
-    const double& rectAy1 = y2;
-    const double& rectAx2 = x1;
-    const double& rectAy2 = y2;
+    const float& rectAx1 = x1;
+    const float& rectAy1 = y2;
+    const float& rectAx2 = x1;
+    const float& rectAy2 = y2;
 
-    const double& rectBx1 = otherRectangle.x1;
-    const double& rectBy1 = otherRectangle.y1;
-    const double& rectBx2 = otherRectangle.x2;
-    const double& rectBy2 = otherRectangle.y2;
+    const float& rectBx1 = otherRectangle.x1;
+    const float& rectBy1 = otherRectangle.y1;
+    const float& rectBx2 = otherRectangle.x2;
+    const float& rectBy2 = otherRectangle.y2;
 
     return rectAx1 <= rectBx2 && rectAx2 >= rectBx1 && rectAy1 <= rectBy2 && rectAy2 >= rectBy1;
 }
 
-inline bool Rect::intersectsWithLine(const double &x1, const double &y1, const double &x2, const double &y2) const {
+inline bool Rect::intersectsWithLine(const float &x1, const float &y1, const float &x2, const float &y2) const {
     // if one of the points is inside the rectangle
     if (
             (x1 >= this->x1 && x1 <= this->x2) && (y1 >= this->y1 && y1 <= this->y2)
@@ -67,12 +67,12 @@ inline bool Rect::intersectsWithLine(const double &x1, const double &y1, const d
             (x2 >= this->x1 && x2 <= this->x2) && (y2 >= this->y1 && y2 <= this->y2)
             ) return true;
 
-    double slope = (y2 - y1) / (x2 - x1);
+    float slope = (y2 - y1) / (x2 - x1);
 
     // top line
 
-    double y = this->y1;
-    double x = (y + slope * x1 - y1) / slope;
+    float y = this->y1;
+    float x = (y + slope * x1 - y1) / slope;
     if (
             x >= this->x1 && x <= this->x2 &&
             ((y1 >= y && y2 <= y) ||
@@ -113,19 +113,19 @@ inline bool Rect::intersectsWithLine(const double &x1, const double &y1, const d
 }
 
 inline void Rect::setPosition(const Vec &point) {
-    double w = this->getWidth();
-    double h = this->getHeight();
+    float w = this->getWidth();
+    float h = this->getHeight();
     x1 = point.x;
     y1 = point.y;
     x2 = point.x + w;
     y2 = point.y + h;
 }
 
-inline double Rect::getWidth() const {
+inline float Rect::getWidth() const {
     return x2 - x1;
 }
 
-inline double Rect::getHeight() const {
+inline float Rect::getHeight() const {
     return y2 - y1;
 }
 

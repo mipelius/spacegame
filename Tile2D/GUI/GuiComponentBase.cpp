@@ -21,17 +21,17 @@
 GuiComponentBase::GuiComponentBase() :
     // properties
 
-    marginTop       (   Property<double>  (&marginTop_        )   ),
-    marginRight     (   Property<double>  (&marginRight_      )   ),
-    marginLeft      (   Property<double>  (&marginLeft_       )   ),
-    marginBottom    (   Property<double>  (&marginBottom_     )   ),
+    marginTop       (   Property<float>  (&marginTop_        )   ),
+    marginRight     (   Property<float>  (&marginRight_      )   ),
+    marginLeft      (   Property<float>  (&marginLeft_       )   ),
+    marginBottom    (   Property<float>  (&marginBottom_     )   ),
 
     anchor          (   Property<Anchor>  (&anchor_           )   ),
 
-    w               (   Property<double>  (&w_                )   ),
-    h               (   Property<double>  (&h_                )   ),
+    w               (   Property<float>  (&w_                )   ),
+    h               (   Property<float>  (&h_                )   ),
 
-    opacity         (   Property<double>  (&opacity_          )   ),
+    opacity         (   Property<float>  (&opacity_          )   ),
 
     isVisible       (   BooleanProperty   (&isVisible_        )   ),
     isBoundsVisible (   BooleanProperty   (&isBoundsVisible_  )   )
@@ -55,7 +55,7 @@ GuiComponentBase::GuiComponentBase() :
     isBoundsVisible_ = false;
 }
 
-void GuiComponentBase::setMargin(double top, double right, double bottom, double left) {
+void GuiComponentBase::setMargin(float top, float right, float bottom, float left) {
     marginTop.set(top);
     marginRight.set(right);
     marginBottom.set(bottom);
@@ -85,7 +85,7 @@ Rect GuiComponentBase::getRenderingAreaRect() const {
         parentRect = Rect(0, 0, window_->w.get(), window_->h.get());
     }
 
-    double w, h;
+    float w, h;
 
     if (w_ >= 0) w = w_;
     else w = parentRect.getWidth();
@@ -96,8 +96,8 @@ Rect GuiComponentBase::getRenderingAreaRect() const {
     if (w + marginLeft_ + marginRight_ > parentRect.getWidth()) w -= (marginLeft_ + marginRight_);
     if (h + marginTop_ + marginBottom_ > parentRect.getHeight()) h -= (marginTop_ + marginBottom_);
 
-    double x1 = 0.0;
-    double y1 = 0.0;
+    float x1 = 0.0;
+    float y1 = 0.0;
 
     switch (this->anchor_) {
         case TOP_LEFT:
@@ -118,8 +118,8 @@ Rect GuiComponentBase::getRenderingAreaRect() const {
             break;
     }
 
-    double x2 = x1 + w;
-    double y2 = y1 + h;
+    float x2 = x1 + w;
+    float y2 = y1 + h;
 
     return {x1, y1, x2, y2};
 
@@ -178,6 +178,6 @@ void GuiComponentBase::render() {
     }
 }
 
-void GuiComponentBase::glColor(double red, double green, double blue) const {
+void GuiComponentBase::glColor(float red, float green, float blue) const {
     glColor4d(red, green, blue, opacity_);
 }

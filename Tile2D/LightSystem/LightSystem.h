@@ -37,7 +37,7 @@ public:
     LightSystem();
     ~LightSystem() = default;
 
-    Property<double> const ambientLight;
+    Property<float> const ambientLight;
     BooleanProperty const softShadowsEnabled;
     BooleanProperty const blendedShadowsEnabled;
 
@@ -53,9 +53,9 @@ private:
 
     void createLightMap_();
 
-    double ambientLight_;
-    double w;
-    double h;
+    float ambientLight_;
+    float w;
+    float h;
 
     bool softShadowsEnabled_;
     bool blendedShadowsEnabled_;

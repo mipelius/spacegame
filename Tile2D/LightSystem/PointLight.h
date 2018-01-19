@@ -39,8 +39,8 @@ public:
     ~PointLight() = default;
 
     Property<Vec> const position;
-    Property<double> const radius;
-    Property<double> const intensity;
+    Property<float> const radius;
+    Property<float> const intensity;
 
     static GLuint glTextureId_;
 
@@ -50,8 +50,8 @@ protected:
 
 private:
     Vec position_;
-    double radius_;
-    double intensity_;
+    float radius_;
+    float intensity_;
 
     static const int TEXTURE_SIZE = 32;
     static void createLightTexture();

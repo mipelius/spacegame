@@ -20,7 +20,7 @@ GLuint LightSystem::glShadowTextureId_ = 0;
 
 LightSystem::LightSystem() :
 
-ambientLight            (   Property<double> ( &ambientLight_            )    ),
+ambientLight            (   Property<float> ( &ambientLight_            )    ),
 softShadowsEnabled      (   BooleanProperty  ( &softShadowsEnabled_      )    ),
 blendedShadowsEnabled   (   BooleanProperty  ( &blendedShadowsEnabled_   )    ),
 
@@ -147,14 +147,14 @@ void LightSystem::update(const Canvas& canvas) {
         glBindTexture(GL_TEXTURE_2D, glTextureId_);
 
         glBegin(GL_QUADS);
-        glTexCoord2d(0, 0);
-        glVertex2d(0, 0);
-        glTexCoord2d(1, 0);
-        glVertex2d(w, 0);
-        glTexCoord2d(1, 1);
-        glVertex2d(w, h);
-        glTexCoord2d(0, 1);
-        glVertex2d(0, h);
+        glTexCoord2f(0, 0);
+        glVertex2f(0, 0);
+        glTexCoord2f(1, 0);
+        glVertex2f(w, 0);
+        glTexCoord2f(1, 1);
+        glVertex2f(w, h);
+        glTexCoord2f(0, 1);
+        glVertex2f(0, h);
         glEnd();
 
         // update mask texture
@@ -180,14 +180,14 @@ void LightSystem::draw(const Canvas& canvas) {
     Rect rect = canvas.getCamera()->areaRect.get();
 
     glBegin(GL_QUADS);
-    glTexCoord2d(0, 0);
-    glVertex2d(rect.x1, rect.y1);
-    glTexCoord2d(1, 0);
-    glVertex2d(rect.x2, rect.y1);
-    glTexCoord2d(1, 1);
-    glVertex2d(rect.x2, rect.y2);
-    glTexCoord2d(0, 1);
-    glVertex2d(rect.x1, rect.y2);
+    glTexCoord2f(0, 0);
+    glVertex2f(rect.x1, rect.y1);
+    glTexCoord2f(1, 0);
+    glVertex2f(rect.x2, rect.y1);
+    glTexCoord2f(1, 1);
+    glVertex2f(rect.x2, rect.y2);
+    glTexCoord2f(0, 1);
+    glVertex2f(rect.x1, rect.y2);
     glEnd();
 
     glDisable(GL_TEXTURE_2D);
@@ -228,8 +228,8 @@ void LightSystem::drawLightMap(const Canvas &canvas) {
 
             for (int y = yStart; y < yEnd; y++) {
                 unsigned char lightAmount = lightMap_->getValue(dynX, dynY);
-                float x1 = x * tileMap->getTileSet()->getTileW() - (float)rect.x1;
-                float y1 = y * tileMap->getTileSet()->getTileH() - (float)rect.y1;
+                float x1 = x * tileMap->getTileSet()->getTileW() - rect.x1;
+                float y1 = y * tileMap->getTileSet()->getTileH() - rect.y1;
                 float x2 = x1 + tileMap->getTileSet()->getTileW();
                 float y2 = y1 + tileMap->getTileSet()->getTileH();
 
@@ -274,8 +274,8 @@ void LightSystem::drawLightMap(const Canvas &canvas) {
             for (int y = yStart; y < yEnd; y++) {
                 unsigned char lightAmount = lightMap_->getValue(dynX, dynY);
 
-                float x1 = x * tileMap->getTileSet()->getTileW() - (float)rect.x1;
-                float y1 = y * tileMap->getTileSet()->getTileH() - (float)rect.y1;
+                float x1 = x * tileMap->getTileSet()->getTileW() - rect.x1;
+                float y1 = y * tileMap->getTileSet()->getTileH() - rect.y1;
                 float x2 = x1 + tileMap->getTileSet()->getTileW();
                 float y2 = y1 + tileMap->getTileSet()->getTileH();
 
@@ -304,18 +304,16 @@ void LightSystem::drawLightMap(const Canvas &canvas) {
 
 void LightSystem::createShadowTexture() {
     Uint8 alphaValue;
-    double temp;
+    float temp;
 
     Uint32* pixels = new Uint32[LIGHT_TEXTURE_SIZE * LIGHT_TEXTURE_SIZE];
 
-    double fullLightThreshold = LIGHT_TEXTURE_SIZE / (2 * sqrt(2));
-
     for (int i = 0; i < LIGHT_TEXTURE_SIZE; i++) {
         for (int j = 0; j < LIGHT_TEXTURE_SIZE; j++) {
-            double deltaX = LIGHT_TEXTURE_SIZE/2 - i;
-            double deltaY = LIGHT_TEXTURE_SIZE/2 - j;
+            float deltaX = LIGHT_TEXTURE_SIZE/2 - i;
+            float deltaY = LIGHT_TEXTURE_SIZE/2 - j;
 
-            double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
+            float distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 
             temp = distance / (LIGHT_TEXTURE_SIZE / 2);
             temp *= 8;
@@ -411,7 +409,7 @@ void LightSystem::updateLightMapRecursive(
         return;
     }
 
-    double translucency = 1.0;
+    float translucency = 1.0;
 
     Tile* currentBlock = Tile2D::tileMap().getValue(currentX, currentY);
     if (currentBlock != nullptr) {

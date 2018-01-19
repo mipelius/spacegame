@@ -44,7 +44,7 @@ public:
     bool overlap(
             const PolygonCollider&   otherCollider,
             Vec&                        contactNormal,
-            double&                     penetration
+            float&                     penetration
     ) const;
 
     void setPoints(std::vector<Vec> points);
@@ -56,7 +56,7 @@ protected:
 
 private:
     Vec pos_;
-    double rot_;
+    float rot_;
 
     bool castOneWay_(
             const Vec &direction,

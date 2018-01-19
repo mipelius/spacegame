@@ -21,9 +21,9 @@ BasicDrawableBase::BasicDrawableBase() :
 
 // properties
 position    (   Property<Vec>     (&position_)    ),
-angle       (   Property<double>  (&angle_)       ),
+angle       (   Property<float>  (&angle_)       ),
 isVisible   (   BooleanProperty   (&isVisible_)   ),
-opacity     (   Property<double>  (&opacity_)     ),
+opacity     (   Property<float>  (&opacity_)     ),
 color       (   Property<Color>   (&color_)       ),
 
 // private attributes initialization

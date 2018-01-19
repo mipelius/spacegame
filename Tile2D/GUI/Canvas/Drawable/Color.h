@@ -20,9 +20,9 @@
 class Color {
 
 public:
-    Color(double red, double green, double blue);
+    Color(float red, float green, float blue);
 
-    double red, green, blue;
+    float red, green, blue;
 
 };
 

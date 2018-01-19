@@ -19,8 +19,8 @@
 
 PhysicsWorld::PhysicsWorld():
     gForce(             Property<Vec>    (&gForce_)           ),
-    metersPerPixel(     Property<double>    (&metersPerPixel_)   ),
-    airDensity(         Property<double>    (&airDensity_)       ),
+    metersPerPixel(     Property<float>    (&metersPerPixel_)   ),
+    airDensity(         Property<float>    (&airDensity_)       ),
 
     map_(nullptr),
     gForce_({0, 0})
@@ -35,7 +35,7 @@ void PhysicsWorld::add(Body *body) {
     body->setWorld_(this);
 }
 
-void PhysicsWorld::step(double timeSeconds) {
+void PhysicsWorld::step(float timeSeconds) {
     // remove removed bodies from the list
     for (auto* body : bodiesToRemove_) {
         bodies_.remove(body);
@@ -55,7 +55,7 @@ void PhysicsWorld::step(double timeSeconds) {
     }
 }
 
-void PhysicsWorld::detectCollision_(Body* body, double deltaTime) {
+void PhysicsWorld::detectCollision_(Body* body, float deltaTime) {
     body->detectMapCollision_(deltaTime);
 
     for (auto& bodyCur : bodies_) {
@@ -86,7 +86,7 @@ void PhysicsWorld::debugDraw() {
         glBegin(GL_LINE_LOOP);
         for (auto& pointOrig : points) {
             auto point = pointOrig.rotated(body->angle.get()) + body->position.get();
-            glVertex2d(point.x, point.y);
+            glVertex2f(point.x, point.y);
         }
         glEnd();
 
@@ -101,10 +101,10 @@ void PhysicsWorld::debugDraw() {
         rect.y2 += body->position.get().y;
 
         glBegin(GL_LINE_LOOP);
-            glVertex2d(rect.x1, rect.y1);
-            glVertex2d(rect.x2, rect.y1);
-            glVertex2d(rect.x2, rect.y2);
-            glVertex2d(rect.x1, rect.y2);
+            glVertex2f(rect.x1, rect.y1);
+            glVertex2f(rect.x2, rect.y1);
+            glVertex2f(rect.x2, rect.y2);
+            glVertex2f(rect.x1, rect.y2);
         glEnd();
     }
 }

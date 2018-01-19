@@ -31,10 +31,10 @@ public:
     void pause();
 
 protected:
-    void update(double seconds) override;
+    void update(float seconds) override;
     virtual void updateActual() = 0;
 
-    double timeElapsedAfterPreviousFrame_;
+    float timeElapsedAfterPreviousFrame_;
     unsigned int currentFrame_;
     unsigned int fps_;
     unsigned int frameAmount_;

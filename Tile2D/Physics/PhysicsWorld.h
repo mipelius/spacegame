@@ -31,11 +31,11 @@ class PhysicsWorld {
 
 public:
     Property<Vec> const gForce;
-    Property<double> const metersPerPixel;
-    Property<double> const airDensity;
+    Property<float> const metersPerPixel;
+    Property<float> const airDensity;
 
-    const double defaultAirDensity = 0.001;
-    const double defaultMetersPerPixel = 0.1;
+    const float defaultAirDensity = 0.001;
+    const float defaultMetersPerPixel = 0.1;
     const Vec defaultGForce = Vec(0.0, 9.81);
 
     TileMap* getMap();
@@ -46,19 +46,19 @@ private:
     PhysicsWorld();
     ~PhysicsWorld() = default;
 
-    void step(double timeSeconds);
+    void step(float timeSeconds);
     void add(Body *body);
     void remove(Body *body);
 
     Vec gForce_;
-    double metersPerPixel_;
-    double airDensity_;
+    float metersPerPixel_;
+    float airDensity_;
 
     std::list<Body *> bodies_;
     std::list<Body *> bodiesToRemove_;
 
     TileMap * map_;
-    void detectCollision_(Body* body, double deltaTime);
+    void detectCollision_(Body* body, float deltaTime);
 };
 
 #endif //__PhysicsWorld_H_

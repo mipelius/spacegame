@@ -21,7 +21,7 @@
 
 Plot::Plot() :
     position(   Property<Vec>  (&position_)    ),
-    size(       Property<double>  (&size_   )     ),
+    size(       Property<float>  (&size_   )     ),
 
     position_(  Vec(0, 0) ),
     size_(      1.0          )
@@ -33,10 +33,10 @@ void Plot::draw(const Canvas &canvas) {
     Rect cameraRect = canvas.getCamera()->areaRect.get();
     Rect renderingAreaRect = canvas.getRenderingAreaRect();
 
-    double pixelWidth = cameraRect.getWidth() / renderingAreaRect.getWidth();
-    double pixelHeight = cameraRect.getHeight() / renderingAreaRect.getHeight();
+    float pixelWidth = cameraRect.getWidth() / renderingAreaRect.getWidth();
+    float pixelHeight = cameraRect.getHeight() / renderingAreaRect.getHeight();
 
-    double addition;
+    float addition;
 
     if (size_ <= 1.0) {
         addition = 0;
@@ -45,17 +45,17 @@ void Plot::draw(const Canvas &canvas) {
         addition = size_ / 2;
     }
 
-    double x1 = position_.x - addition * pixelWidth;
-    double y1 = position_.y - addition * pixelHeight;
-    double x2 = x1 + pixelWidth + addition * pixelWidth * 2;
-    double y2 = y1 + pixelHeight + addition * pixelHeight * 2;
+    float x1 = position_.x - addition * pixelWidth;
+    float y1 = position_.y - addition * pixelHeight;
+    float x2 = x1 + pixelWidth + addition * pixelWidth * 2;
+    float y2 = y1 + pixelHeight + addition * pixelHeight * 2;
 
     canvas.glColor(1, 1, 1);
 
     glBegin(GL_QUADS);
-    glVertex2d(x1, y1);
-    glVertex2d(x2, y1);
-    glVertex2d(x2, y2);
-    glVertex2d(x1, y2);
+    glVertex2f(x1, y1);
+    glVertex2f(x2, y1);
+    glVertex2f(x2, y2);
+    glVertex2f(x1, y2);
     glEnd();
 }

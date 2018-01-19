@@ -36,10 +36,10 @@ class Body : public Tile2DComponent {
 public:
     // properties
 
-    Property<double> const mass;
+    Property<float> const mass;
 
-    Property<double> const angle;
-    Property<double> const angularVelocity;
+    Property<float> const angle;
+    Property<float> const angularVelocity;
 
     Property<Vec> const position;
     Property<Vec> const velocity;
@@ -67,19 +67,19 @@ private:
     void init() override;
     void onDestroy() override;
 
-    double mass_;
+    float mass_;
 
-    double angle_;
-    double angularVelocity_;
+    float angle_;
+    float angularVelocity_;
 
     Vec position_;
     Vec velocity_;
     Vec force_;
 
     bool detectCollisionWith_(Body &otherBody);
-    bool detectMapCollision_(double deltaTime);
+    bool detectMapCollision_(float deltaTime);
     void setWorld_(PhysicsWorld *gameWorld);
-    void step_(double timeElapsedSec);
+    void step_(float timeElapsedSec);
 };
 
 #endif //__Body_H_

@@ -107,7 +107,7 @@ void SceneInGame::init() {
     // camera
 
     camera = new Camera;
-    camera->areaRect.set({0, 0, (double)Tile2D::window().w.get(), (double)Tile2D::window().h.get()});
+    camera->areaRect.set({0, 0, (float)Tile2D::window().w.get(), (float)Tile2D::window().h.get()});
     Tile2D::canvas().setCamera(camera);
 
     // dummy enemies

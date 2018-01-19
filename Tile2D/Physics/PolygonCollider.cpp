@@ -27,7 +27,7 @@ public:
         min = axis.dot(collider.points_[0].rotated(collider.rot_) + collider.pos_);
         max = min;
         for (auto i = 1u; i < collider.points_.size(); ++i) {
-            double p = axis.dot(collider.points_[i].rotated(collider.rot_) + collider.pos_);
+            float p = axis.dot(collider.points_[i].rotated(collider.rot_) + collider.pos_);
             if (p < min) {
                 min = p;
             } else if (p > max) {
@@ -36,7 +36,7 @@ public:
         }
     }
 
-    bool overlap(const Projection& other, double& penetration, Vec& currentContactNormal) {
+    bool overlap(const Projection& other, float& penetration, Vec& currentContactNormal) {
         penetration = DBL_MAX;
         bool overlap = (min >= other.min || max >= other.min) && (min <= other.max || max <= other.max);
         if (!overlap) { return false; }
@@ -55,7 +55,7 @@ public:
         return overlap;
     }
 
-    double min, max;
+    float min, max;
 };
 
 bool PolygonCollider::castOneWay_(
@@ -73,13 +73,13 @@ bool PolygonCollider::castOneWay_(
     const PolygonCollider& c2 = otherCollider;
 
     const Vec& c1pos = collider.pos_;
-    const double& c1rot = collider.rot_;
+    const float& c1rot = collider.rot_;
     const Vec& c2pos = otherCollider.pos_;
-    const double& c2rot = otherCollider.rot_;
+    const float& c2rot = otherCollider.rot_;
 
     Vec intersectionPoint;
-    double maxDistanceSqr = 0.0f;
-    double curDistanceSqr;
+    float maxDistanceSqr = 0.0f;
+    float curDistanceSqr;
     Vec curVec;
 
     for (const auto& pointOrig : c1.points_) {
@@ -147,9 +147,9 @@ const Rect &PolygonCollider::boundingBox() const {
 }
 
 
-bool PolygonCollider::overlap(const PolygonCollider &otherCollider, Vec& contactNormal, double& penetration) const {
+bool PolygonCollider::overlap(const PolygonCollider &otherCollider, Vec& contactNormal, float& penetration) const {
     penetration = DBL_MAX;
-    double currentPenetration;
+    float currentPenetration;
     Vec currentContactNormal;
 
     const std::vector<Vec>& axes1 = getAxes();
@@ -202,12 +202,12 @@ void PolygonCollider::setPoints(std::vector<Vec> points) {
     Vec farMost = Vec(0, 0);
 
     for (const auto& vec : this->points_) {
-        double length = vec.length();
-        double farMostLength = Vec(farMost.x, farMost.y).length();
+        float length = vec.length();
+        float farMostLength = Vec(farMost.x, farMost.y).length();
         if (length > farMostLength) farMost = vec;
     }
 
-    double length = Vec(farMost.x, farMost.y).length();
+    float length = Vec(farMost.x, farMost.y).length();
     boundingBox_ = Rect(-length, -length, length, length);
 }
 

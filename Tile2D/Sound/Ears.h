@@ -27,11 +27,11 @@ public:
     ~Ears();
 
     Property<Vec> const position;
-    Property<double> const maxDistance;
+    Property<float> const maxDistance;
 
 private:
     Vec position_;
-    double maxDistance_;
+    float maxDistance_;
 };
 
 #endif //__Ears_H_

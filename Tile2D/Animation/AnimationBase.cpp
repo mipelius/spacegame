@@ -25,7 +25,7 @@ AnimationBase::AnimationBase(unsigned int framesPerSecond, unsigned int frameAmo
     AnimationBase::stop();
 }
 
-void AnimationBase::update(double seconds) {
+void AnimationBase::update(float seconds) {
     if (isStopped_ || !isPlaying_) return;
 
     timeElapsedAfterPreviousFrame_ += seconds;

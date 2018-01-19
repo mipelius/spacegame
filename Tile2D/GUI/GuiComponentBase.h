@@ -35,17 +35,17 @@ public:
 
     GuiComponentBase();
 
-    Property<double> const marginTop;
-    Property<double> const marginRight;
-    Property<double> const marginBottom;
-    Property<double> const marginLeft;
+    Property<float> const marginTop;
+    Property<float> const marginRight;
+    Property<float> const marginBottom;
+    Property<float> const marginLeft;
 
     Property<Anchor> const anchor;
 
-    Property<double> const w;
-    Property<double> const h;
+    Property<float> const w;
+    Property<float> const h;
 
-    Property<double> const opacity;
+    Property<float> const opacity;
 
     BooleanProperty const isVisible;
     BooleanProperty const isBoundsVisible;
@@ -56,13 +56,13 @@ public:
 
     Rect getRenderingAreaRect() const;
 
-    void setMargin(double top, double right, double bottom, double left);
+    void setMargin(float top, float right, float bottom, float left);
 
     void addComponent(GuiComponentBase* guiComponent);
 
     Window* getWindow();
 
-    void glColor(double red, double green, double blue) const;
+    void glColor(float red, float green, float blue) const;
 
 protected:
     std::list<GuiComponentBase*> children_;
@@ -72,20 +72,20 @@ private:
     Window* window_;
     GuiComponentBase* parentGuiComponent_;
 
-    double marginTop_;
-    double marginRight_;
-    double marginBottom_;
-    double marginLeft_;
+    float marginTop_;
+    float marginRight_;
+    float marginBottom_;
+    float marginLeft_;
 
     Anchor anchor_;
 
     bool isVisible_;
     bool isBoundsVisible_;
 
-    double w_;
-    double h_;
+    float w_;
+    float h_;
 
-    double opacity_;
+    float opacity_;
 
     void setParent(GuiComponentBase *guiComponent);
 };
