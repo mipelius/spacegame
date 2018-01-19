@@ -17,7 +17,7 @@
 #ifndef __AgeDependentBehaviour_H
 #define __AgeDependentBehaviour_H
 
-#include <SDL_bits.h>
+#include <SDL2/SDL_bits.h>
 #include <cfloat>
 #include "Property.h"
 #include "Tile2DBehaviour.h"

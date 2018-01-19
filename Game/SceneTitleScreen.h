@@ -17,7 +17,7 @@
 #ifndef __SceneTitleScreen_H
 #define __SceneTitleScreen_H
 
-#include <Tile2D/Core/IScene.h>
+#include "IScene.h"
 
 class SceneTitleScreen : public IScene {
     void init() override;

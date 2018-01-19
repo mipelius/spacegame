@@ -2,6 +2,7 @@
 // Created by Miika Pelkonen on 15/12/2017.
 //
 
+#include <stdlib.h>
 #include "LineSegment.h"
 
 LineSegment::LineSegment(Vec point1, Vec point2) {

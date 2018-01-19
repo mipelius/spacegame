@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <SDL_timer.h>
+#include <SDL2/SDL_timer.h>
 #include "LimitedAgeBehaviour.h"
 
 void LimitedAgeBehaviour::awake() {

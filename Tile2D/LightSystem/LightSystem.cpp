@@ -29,11 +29,7 @@ ambientLight_           (   1.0  ),
 softShadowsEnabled_     (   true ),
 blendedShadowsEnabled_  (   true )
 
-{
-    if (glShadowTextureId_ == 0) {
-        createShadowTexture();
-    }
-}
+{ }
 
 void LightSystem::init() {
     w = Tile2D::window().w.get();

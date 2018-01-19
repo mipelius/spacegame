@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <Tile2D/GUI/Canvas/Drawable/DrawableMap.h>
+#include "DrawableMap.h"
 #include "TileMap.h"
 #include "Tile2D.h"
 #include "Body.h"

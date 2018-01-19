@@ -17,7 +17,7 @@
 #ifndef __Sprite_H_
 #define __Sprite_H_
 
-#include <Tile2D/GUI/Canvas/Texture/Texture.h>
+#include "Texture.h"
 #include "BasicDrawableBase.h"
 #include "Rect.h"
 
