@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "MathUtils.h"
 #include "Tile2D.h"
 
 GLuint LightSystem::glShadowTextureId_ = 0;
@@ -29,7 +28,13 @@ ambientLight_           (   1.0  ),
 softShadowsEnabled_     (   true ),
 blendedShadowsEnabled_  (   true )
 
-{ }
+{
+    for (auto x = 0u; x < MAX_LIGHT_RADIUS; ++x) {
+        for (auto y = 0u; y < MAX_LIGHT_RADIUS; ++y) {
+            intDistances[x][y] = (unsigned int)sqrt(x * x + y * y);
+        }
+    }
+}
 
 void LightSystem::init() {
     w = Tile2D::window().w.get();
@@ -399,7 +404,7 @@ void LightSystem::updateLightMapRecursive(
     int lightX = currentX - centerX;
     int lightY = currentY - centerY;
 
-    int length = MathUtils::getLength(lightX, lightY);
+    int length = getLength(lightX, lightY);
     int distanceToBorder = radius - length;
 
     if (distanceToBorder < 1) { // light can't spread further

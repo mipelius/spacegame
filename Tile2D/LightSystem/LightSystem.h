@@ -83,6 +83,23 @@ private:
             const int &radius,
             unsigned int encounteredWallness
     );
+
+    unsigned int intDistances[MAX_LIGHT_RADIUS][MAX_LIGHT_RADIUS];
+
+    inline unsigned int getLength(int x, int y) {
+        if (x < 0) {
+            x = -x;
+        }
+        if (y < 0) {
+            y = -y;
+        }
+
+        if (x >= MAX_LIGHT_RADIUS || y >= MAX_LIGHT_RADIUS) {
+            return INT_MAX;
+        }
+
+        return intDistances[x][y];
+    };
 };
 
 #endif //__ShadowMask_H_

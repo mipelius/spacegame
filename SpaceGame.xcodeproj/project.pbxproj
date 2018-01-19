@@ -165,7 +165,6 @@
 		33249816D3C16D2C20411489 /* BasicDrawableBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BasicDrawableBase.cpp; sourceTree = "<group>"; };
 		3324981F0FB76F47B527ED94 /* Ears.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ears.h; sourceTree = "<group>"; };
 		332498285799CBD3187BF183 /* SamplePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SamplePlayer.h; sourceTree = "<group>"; };
-		3324984D9DEFF3C19FACBE17 /* MathUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathUtils.h; sourceTree = "<group>"; };
 		3324989A5D8C010B9B980ED9 /* DrawableBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawableBase.cpp; sourceTree = "<group>"; };
 		332498C8A319A8484B8CA2A3 /* spaceship_shoot.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = spaceship_shoot.wav; sourceTree = "<group>"; };
 		332498CB230020852750785F /* MapCollisionEventArgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapCollisionEventArgs.h; sourceTree = "<group>"; };
@@ -356,7 +355,6 @@
 				332490D3A6B9EDF84F1C7194 /* Property */,
 				332493F9E753A8693F573549 /* gl_utils.h */,
 				3324991CB8405EB208B53369 /* Primitives */,
-				3324984D9DEFF3C19FACBE17 /* MathUtils.h */,
 				33249E5C3DCB6A60D1B2D8DB /* DataStructures */,
 				332499634A704C0C12FE1F09 /* JsonFileManager.h */,
 				33249F5495EF0C4129ACC3DA /* JsonFileManager.cpp */,
