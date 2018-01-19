@@ -76,7 +76,7 @@ void LightSystem::makeLightMap_() {
 
     lightMap_ = new Array2d<unsigned char>(
             (int)(w / tileW + 2),
-            (int)(h / tileW + 2)
+            (int)(h / tileH + 2)
     );
 }
 
