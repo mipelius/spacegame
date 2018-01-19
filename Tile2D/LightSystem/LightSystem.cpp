@@ -417,7 +417,7 @@ void LightSystem::updateLightMapRecursive(
 
     encounteredWallness += 256 - translucency * 256.0;
 
-    auto lightBasedOnDistance = (int)(255 * (sqrt((float)distanceToBorder / radius)));
+    auto lightBasedOnDistance = (int)(255 * ((float)distanceToBorder / radius));
 
     int newLight = lightBasedOnDistance - encounteredWallness;
 
