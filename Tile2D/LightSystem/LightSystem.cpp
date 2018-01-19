@@ -62,7 +62,7 @@ void LightSystem::init() {
 }
 
 
-void LightSystem::makeLightMap_() {
+void LightSystem::createLightMap_() {
     int tileW = Tile2D::tileMap().getTileSet()->getTileW();
     int tileH = Tile2D::tileMap().getTileSet()->getTileH();
 
@@ -71,8 +71,8 @@ void LightSystem::makeLightMap_() {
     }
 
     lightMap_ = new Array2d<unsigned char>(
-            (int)(w / tileW + 2),
-            (int)(h / tileH + 2)
+            (int)(2 * MAX_LIGHT_RADIUS + w / tileW + 2),
+            (int)(2 * MAX_LIGHT_RADIUS + h / tileH + 2)
     );
 }
 
@@ -216,10 +216,10 @@ void LightSystem::drawLightMap(const Canvas &canvas) {
 
         glBegin(GL_QUADS);
 
-        int dynX = 0;
+        int dynX = MAX_LIGHT_RADIUS;
 
         for (int x = xStart; x < xEnd; x++) {
-            int dynY = 0;
+            int dynY = MAX_LIGHT_RADIUS;
 
             for (int y = yStart; y < yEnd; y++) {
                 unsigned char lightAmount = lightMap_->getValue(dynX, dynY);
@@ -261,10 +261,10 @@ void LightSystem::drawLightMap(const Canvas &canvas) {
 
         glBegin(GL_QUADS);
 
-        int dynX = 0;
+        int dynX = MAX_LIGHT_RADIUS;
 
         for (int x = xStart; x < xEnd; x++) {
-            int dynY = 0;
+            int dynY = MAX_LIGHT_RADIUS;
 
             for (int y = yStart; y < yEnd; y++) {
                 unsigned char lightAmount = lightMap_->getValue(dynX, dynY);
@@ -358,15 +358,13 @@ void LightSystem::updateLightMap(Rect *areaRect) {
 
     lightMap_->fill(0);
 
-    int offsetX = (int)(areaRect->x1 / tileMap->getTileSet()->getTileW());
-    int offsetY = (int)(areaRect->y1 / tileMap->getTileSet()->getTileH());
+    int offsetX = (int)(areaRect->x1 / tileMap->getTileSet()->getTileW()) - MAX_LIGHT_RADIUS;
+    int offsetY = (int)(areaRect->y1 / tileMap->getTileSet()->getTileH()) - MAX_LIGHT_RADIUS;
 
     for (auto light : lights_) {
         int currentLightCenterX = (int)(light->position.get().x / tileMap->getTileSet()->getTileW());
         int currentLightCenterY = (int)(light->position.get().y / tileMap->getTileSet()->getTileH());
         int radius              = (int)(light->radius.get()     / tileMap->getTileSet()->getTileW());
-
-        // TODO: light source that has its center outside the view will be ignored -> FIX THAT
 
         updateLightMapRecursive(
                 currentLightCenterX,

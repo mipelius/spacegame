@@ -117,7 +117,7 @@ void TileMap::load(std::string path, std::string tileSet) {
     drawableMap_->setMap(this);
     drawableMap_->setMapTexture(tileSet_->getMapTexture());
     Tile2D::physicsWorld().map_ = this;
-    Tile2D::lightSystem().makeLightMap_();
+    Tile2D::lightSystem().createLightMap_();
 }
 
 void TileMap::unload() {

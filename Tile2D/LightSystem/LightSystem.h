@@ -51,7 +51,7 @@ private:
     std::list<PointLight*> lights_;
     Array2d<unsigned char>* lightMap_ = nullptr;
 
-    void makeLightMap_();
+    void createLightMap_();
 
     double ambientLight_;
     double w;
@@ -69,6 +69,7 @@ private:
 
     static void createShadowTexture();
     static const int LIGHT_TEXTURE_SIZE = 8;
+    static const int MAX_LIGHT_RADIUS = 100; // measured in tiles
 
     void updateLightMap(Rect *areaRect);
 
