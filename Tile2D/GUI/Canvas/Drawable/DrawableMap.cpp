@@ -28,7 +28,7 @@ DrawableMap::DrawableMap() {
 }
 
 void DrawableMap::draw(const Canvas &canvas) {
-    if (map_ == nullptr) return;
+    if (map_ == nullptr || canvas.getCamera() == nullptr) return;
 
     const Rect& rect = canvas.getCamera()->areaRect.get();
 

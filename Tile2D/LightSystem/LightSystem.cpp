@@ -95,6 +95,9 @@ void LightSystem::removeLight(PointLight *light) {
 // ------------------------ RENDERING --------------------------
 
 void LightSystem::update(const Canvas& canvas) {
+    if (canvas.getCamera() == nullptr) {
+        return;
+    }
     // turn projection upside down
 
     glMatrixMode(GL_PROJECTION);
