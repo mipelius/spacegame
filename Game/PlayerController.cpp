@@ -25,6 +25,61 @@ void PlayerController::awake() {
 }
 
 void PlayerController::update() {
+    // prevent player from going outside the world
+    Vec pos = body->position.get();
+    Vec vel = body->velocity.get();
+
+    if (pos.x < 0) {
+        pos.x = 0;
+        vel.x = 0;
+    }
+    if (pos.x > Tile2D::tileMap().getActualW()) {
+        pos.x = Tile2D::tileMap().getActualW();
+        vel.x = 0;
+    }
+    if (pos.y < 0) {
+        pos.y = 0;
+        vel.y = 0;
+    }
+    if (pos.y > Tile2D::tileMap().getActualH()) {
+        pos.y = Tile2D::tileMap().getActualH();
+        vel.y = 0;
+    }
+
+    body->position.set(pos);
+    body->velocity.set(vel);
+
+    // set camera
+
+    auto camera = Tile2D::canvas().getCamera();
+
+    if (camera != nullptr && Tile2D::tileMap().isLoaded()) {
+        Rect cameraBounds = {
+                camera->areaRect.get().getWidth() / 2,
+                camera->areaRect.get().getHeight() / 2,
+                Tile2D::tileMap().getActualW() - camera->areaRect.get().getWidth() / 2,
+                Tile2D::tileMap().getActualH() - camera->areaRect.get().getHeight() / 2
+        };
+
+        Vec cameraPos = body->position.get();
+
+        if (cameraPos.x < cameraBounds.x1) {
+            cameraPos.x = cameraBounds.x1;
+        }
+        if (cameraPos.y < cameraBounds.y1) {
+            cameraPos.y = cameraBounds.y1;
+        }
+        if (cameraPos.x > cameraBounds.x2) {
+            cameraPos.x = cameraBounds.x2;
+        }
+        if (cameraPos.y > cameraBounds.y2) {
+            cameraPos.y = cameraBounds.y2;
+        }
+
+        camera->position.set(cameraPos);
+    }
+
+    // read input -> actions
     const Uint8 *state = SDL_GetKeyboardState(NULL);
 
     double angularVelocity = 0;

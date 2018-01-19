@@ -108,7 +108,6 @@ void SceneInGame::init() {
 
     camera = new Camera;
     camera->areaRect.set({0, 0, (double)Tile2D::window().w.get(), (double)Tile2D::window().h.get()});
-    camera->position.bind(spaceshipBody->position);
     Tile2D::canvas().setCamera(camera);
 
     // dummy enemies
