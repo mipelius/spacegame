@@ -56,8 +56,8 @@ void MapTexture::glVertices(float x, float y, float w, float h, int textureNumbe
     float textureW = blockW_ / (float)GL_TEXTURE_SIZE;
     float textureH = blockH_ / (float)GL_TEXTURE_SIZE;
 
-    float texX1 = ((textureNumber * blockInternalSize_) % GL_TEXTURE_SIZE) / GL_TEXTURE_SIZE;
-    float texY1 = ((textureNumber * blockInternalSize_) / GL_TEXTURE_SIZE) / GL_TEXTURE_SIZE;
+    float texX1 = ((textureNumber * blockInternalSize_) % GL_TEXTURE_SIZE) / (float)GL_TEXTURE_SIZE;
+    float texY1 = ((textureNumber * blockInternalSize_) / GL_TEXTURE_SIZE) / (float)GL_TEXTURE_SIZE;
     float texX2 = texX1 + textureW;
     float texY2 = texY1 + textureH;
 
