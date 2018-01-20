@@ -90,7 +90,12 @@ void LightSystem::addLight(PointLight *light) {
 }
 
 void LightSystem::removeLight(PointLight *light) {
-    lights_.remove(light);
+    for (std::vector<PointLight*>::iterator it = lights_.begin(); it != lights_.end(); it++) {
+        if (*it == light) {
+            lights_.erase(it);
+            break;
+        }
+    }
 }
 
 // ------------------------ RENDERING --------------------------
@@ -356,7 +361,11 @@ void LightSystem::createShadowTexture() {
 
 // --------------------- COMPUTE THE SHADOW MAP -------------------------
 
+bool wayToSort(PointLight* a, PointLight* b) { return a->radius.get() > b->radius.get(); }
+
 void LightSystem::updateLightMap(Rect *areaRect) {
+    std::sort(lights_.begin(), lights_.end(), wayToSort);
+
     auto tileMap = Tile2D::physicsWorld().getMap();
 
     lightMap_->fill(0);

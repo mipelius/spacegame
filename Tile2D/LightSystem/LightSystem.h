@@ -48,7 +48,7 @@ public:
     void removeLight(PointLight *light);
 
 private:
-    std::list<PointLight*> lights_;
+    std::vector<PointLight*> lights_;
     Array2d<unsigned char>* lightMap_ = nullptr;
 
     void createLightMap_();
