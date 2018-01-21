@@ -30,10 +30,10 @@ void Canvas::renderActual() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(
-            camera_->areaRect.get().x1,
-            camera_->areaRect.get().x2,
-            camera_->areaRect.get().y2,
-            camera_->areaRect.get().y1,
+            camera_->getAreaRect().x1,
+            camera_->getAreaRect().x2,
+            camera_->getAreaRect().y2,
+            camera_->getAreaRect().y1,
             -1.0,
             1.0
     );

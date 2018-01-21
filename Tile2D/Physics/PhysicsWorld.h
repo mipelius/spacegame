@@ -22,7 +22,6 @@ class Body;
 
 #include <list>
 #include "Vec.h"
-#include "Property.h"
 
 class PhysicsWorld {
     friend class Tile2D;
@@ -30,10 +29,6 @@ class PhysicsWorld {
     friend class TileMap;
 
 public:
-    Property<Vecf> const gForce;
-    Property<float> const metersPerPixel;
-    Property<float> const airDensity;
-
     const float defaultAirDensity = 0.001;
     const float defaultMetersPerPixel = 0.1;
     const Vecf defaultGForce = Vecf(0.0, 9.81);
@@ -41,6 +36,14 @@ public:
     TileMap* getMap();
 
     void debugDraw();
+
+    // getters and setters
+    const Vecf &getGForce() const;
+    void setGForce(const Vecf &gForce);
+    float getMetersPerPixel() const;
+    void setMetersPerPixel(float metersPerPixel);
+    float getAirDensity() const;
+    void setAirDensity(float airDensity);
 
 private:
     PhysicsWorld();
@@ -50,6 +53,7 @@ private:
     void add(Body *body);
     void remove(Body *body);
 
+private:
     Vecf gForce_;
     float metersPerPixel_;
     float airDensity_;

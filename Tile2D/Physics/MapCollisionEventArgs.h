@@ -23,7 +23,7 @@
 class MapCollisionEventArgs {
 
 public:
-    explicit MapCollisionEventArgs(float deltaTime, Vecf contactNormal, Vecf tileCoordinates, Tile* tile);
+    MapCollisionEventArgs(float deltaTime, Vecf contactNormal, Vecf tileCoordinates, Tile* tile);
 
     float deltaTime;
     Vecf contactNormal;

@@ -23,21 +23,22 @@ SamplePlayer::SamplePlayer() : Player() {
     ears_ = nullptr;
 }
 
-void SamplePlayer::play(AudioClip *sample, const Vecf& position, int channel) {
+
+void SamplePlayer::play(AudioClip *sample, const Vecf &position, int channel) {
     if (ears_ == nullptr) {
         Mix_SetPanning(channel, 255, 255);
     }
     else {
-        float distance = (position - ears_->position.get()).length();
+        float distance = (position - ears_->getPosition()).length();
 
-        if (distance < ears_->maxDistance.get()) {
-            float amount = 1.0 - (distance / ears_->maxDistance.get());
+        if (distance < ears_->getMaxDistance()) {
+            float amount = 1.0 - (distance / ears_->getMaxDistance());
 
             if (amount < 0) {
                 amount = 0;
             }
 
-            float deltaX = position.x - ears_->position.get().x;
+            float deltaX = position.x - ears_->getPosition().x;
 
             Uint8 left;
             Uint8 right;

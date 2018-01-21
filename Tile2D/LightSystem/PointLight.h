@@ -25,12 +25,10 @@ class PartialLightMap;
 #include "Event.h"
 #include <SDL2/SDL_opengl.h>
 #include "Tile2DComponent.h"
-#include "Property.h"
 #include "Vec.h"
 
 class PointLight : public Tile2DComponent {
     friend class LightSystem;
-    friend class positionProperty;
 
 public:
     virtual void draw(const Canvas &canvas);
@@ -38,28 +36,28 @@ public:
     PointLight();
     ~PointLight() = default;
 
-    Property<Vecf> const position;
-    Property<float> const radius;
-    Property<float> const intensity;
+    // getters and setters
 
-    static GLuint glTextureId_;
+    const Vecf &getPosition() const;
+    void setPosition(const Vecf &position);
+    float getRadius() const;
+    void setRadius(float radius);
+    float getIntensity() const;
+    void setIntensity(float intensity);
 
 protected:
     void init() override;
     void onDestroy() override;
 
 private:
+    static GLuint glTextureId_;
+
     Vecf position_;
     float radius_;
     float intensity_;
 
     static const int TEXTURE_SIZE = 32;
     static void createLightTexture();
-
-    static Vecf getPosition_(void *owner);
-    static void setPosition_(void *owner, const Vecf &value);
-
-    class positionProperty;
 };
 
 

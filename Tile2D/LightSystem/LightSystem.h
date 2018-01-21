@@ -19,7 +19,6 @@
 
 #include <list>
 #include <queue>
-#include "Property.h"
 #include "Canvas.h"
 #include "PointLight.h"
 #include "Array2d.h"
@@ -37,15 +36,20 @@ public:
     LightSystem();
     ~LightSystem() = default;
 
-    Property<float> const ambientLight;
-    BooleanProperty const softShadowsEnabled;
-    BooleanProperty const blendedShadowsEnabled;
-
     void update(const Canvas& canvas);
     void draw(const Canvas& canvas);
 
     void addLight(PointLight *light);
     void removeLight(PointLight *light);
+
+    // getters and setters
+
+    float getAmbientLight() const;
+    void setAmbientLight(float ambientLight);
+    bool isSoftShadowsEnabled() const;
+    void setSoftShadowsEnabled(bool softShadowsEnabled);
+    bool isBlendedShadowsEnabled() const;
+    void setBlendedShadowsEnabled(bool blendedShadowsEnabled);
 
 private:
     std::vector<PointLight*> lights_;

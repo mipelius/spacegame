@@ -20,7 +20,6 @@
 #include "Tile2DComponent.h"
 #include "DrawableBase.h"
 #include "Canvas.h"
-#include "Property.h"
 #include "Color.h"
 
 class BasicDrawableBase : public DrawableBase {
@@ -28,12 +27,18 @@ class BasicDrawableBase : public DrawableBase {
 public:
     BasicDrawableBase();
 
-    Property<Vecf>       const position;
-    Property<float>    const angle;
-    BooleanProperty     const isVisible;
-    Property<float>    const opacity;
-    Property<Color>     const color;
+    // getters and setters
 
+    const Vecf &getPosition() const;
+    void setPosition(const Vecf &position);
+    float getAngle() const;
+    void setAngle(float angle);
+    bool isVisible() const;
+    void setIsVisible(bool isVisible);
+    float getOpacity() const;
+    void setOpacity(float opacity);
+    const Color &getColor() const;
+    void setColor(const Color &color);
     void draw(const Canvas& canvas) override;
 
 protected:

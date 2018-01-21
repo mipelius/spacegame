@@ -23,10 +23,6 @@
 GLuint PointLight::glTextureId_ = 0;
 
 PointLight::PointLight() :
-    position    (   Property<Vecf>     (this, getPosition_, setPosition_)  ),
-    radius      (   Property<float>  (&radius_                        )  ),
-    intensity   (   Property<float>  (&intensity_                     )  ),
-
     position_   (   {0, 0}    ),
     radius_     (   0         ),
     intensity_  (   1.0       )
@@ -37,7 +33,7 @@ PointLight::PointLight() :
 }
 
 void PointLight::draw(const Canvas &canvas) {
-    Rect rect = canvas.getCamera()->areaRect.get();
+    const Rect& rect = canvas.getCamera()->getAreaRect();
 
     float x = position_.x - rect.x1 - radius_;
     float y = position_.y - rect.y1 - radius_;
@@ -116,26 +112,36 @@ void PointLight::createLightTexture() {
     delete[] lightPixels;
 }
 
-
-Vecf PointLight::getPosition_(void *owner) {
-    return ((PointLight*)owner)->position_;
-}
-
-void PointLight::setPosition_(void *owner, const Vecf &value) {
-    PointLight* pointLight = (PointLight*)owner;
-
-    Vecf oldLocation = pointLight->position_;
-
-    pointLight->position_ = value;
-
-    Vecf newLocation = pointLight->position_;
-
-}
-
 void PointLight::init() {
     Tile2D::lightSystem().addLight(this);
 }
 
 void PointLight::onDestroy() {
     Tile2D::lightSystem().removeLight(this);
+}
+
+// getters and setters
+
+const Vecf &PointLight::getPosition() const {
+    return position_;
+}
+
+void PointLight::setPosition(const Vecf &position) {
+    position_ = position;
+}
+
+float PointLight::getRadius() const {
+    return radius_;
+}
+
+void PointLight::setRadius(float radius) {
+    radius_ = radius;
+}
+
+float PointLight::getIntensity() const {
+    return intensity_;
+}
+
+void PointLight::setIntensity(float intensity) {
+    intensity_ = intensity;
 }

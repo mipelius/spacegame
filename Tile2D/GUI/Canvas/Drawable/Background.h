@@ -18,7 +18,6 @@
 #define __Background_H_
 
 #include "DrawableBase.h"
-#include "Property.h"
 
 class Texture;
 
@@ -27,13 +26,19 @@ class Background : public DrawableBase {
 public:
     Background();
 
-    Property<float> const      ratio;
-    Property<Texture*> const    texturePtr;
-
     void draw(const Canvas& canvas) override;
+
+    // getters and setters
+
+    Texture *getTexturePtr() const;
+    void setTexturePtr(Texture *texturePtr);
+    float getRatio() const;
+    void setRatio(float ratio);
 
 private:
     Texture* texturePtr_;
+
+private:
 
     float ratio_;
 

@@ -17,17 +17,11 @@
 #include "Camera.h"
 
 Camera::Camera() :
-    // properties
-
-    position(       Property<Vecf>    (this, getPosition_, setPosition_   )),
-    areaRect(       Property<Rect>   (&areaRect_                         )),
-
     // member objects
     areaRect_(      Rect(0, 0, 0, 0)    )
 {
 
 }
-
 
 void Camera::zoom(float amount) {
     float ratio = areaRect_.getHeight() / areaRect_.getWidth();
@@ -36,32 +30,31 @@ void Camera::zoom(float amount) {
     areaRect_.y1 += amount * ratio;
     areaRect_.x2 -= amount;
     areaRect_.y2 -= amount * ratio;
-    areaRect.updateDependentProperties();
 }
 
-Vecf Camera::getPosition_(void *owner) {
-    Rect rect = ((Camera*)owner)->areaRect.get();
+// getters and setters
 
-    float x = rect.x1 + rect.getWidth() / 2;
-    float y = rect.y1 + rect.getHeight() / 2;
+Vecf Camera::getPosition() {
+    float x = areaRect_.x1 + areaRect_.getWidth() / 2;
+    float y = areaRect_.y1 + areaRect_.getHeight() / 2;
 
     return Vecf(x, y);
 }
 
-void Camera::setPosition_(void *owner, const Vecf &value) {
-    Rect areaRect = ((Camera*)owner)->areaRect.get();
+void Camera::setPosition(const Vecf &value) {
+    float w = areaRect_.getWidth();
+    float h = areaRect_.getHeight();
 
-    float x = value.x - areaRect.getWidth() / 2;
-    float y = value.y - areaRect.getHeight() / 2;
-    float w = areaRect.getWidth();
-    float h = areaRect.getHeight();
+    areaRect_.x1 = value.x;
+    areaRect_.y1 = value.y;
+    areaRect_.x2 = value.x + w;
+    areaRect_.y2 = value.y + h;
+}
 
-    ((Camera*)owner)->areaRect.set(
-            Rect(
-                    x,
-                    y,
-                    x + w,
-                    y + h
-            )
-    );
+const Rect &Camera::getAreaRect() const {
+    return areaRect_;
+}
+
+void Camera::setAreaRect(const Rect &areaRect) {
+    areaRect_ = areaRect;
 }

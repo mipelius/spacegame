@@ -13,7 +13,6 @@ public:
 
     LineSegment(Vecf point1, Vecf point2);
     void rotate(float angle);
-    bool collision(const LineSegment& staticLine, const Vecf& moveDirection, Vecf& penetration, Vecf& contactNormal) const;
     bool intersection(const LineSegment& other, Vecf& result) const;
 };
 

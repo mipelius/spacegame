@@ -18,21 +18,11 @@
 #include "BasicDrawableBase.h"
 
 BasicDrawableBase::BasicDrawableBase() :
-
-// properties
-position    (   Property<Vecf>     (&position_)    ),
-angle       (   Property<float>  (&angle_)       ),
-isVisible   (   BooleanProperty   (&isVisible_)   ),
-opacity     (   Property<float>  (&opacity_)     ),
-color       (   Property<Color>   (&color_)       ),
-
-// private attributes initialization
 position_   (Vecf(0, 0)  ),
 angle_      (0          ),
 isVisible_  (true       ),
 opacity_    (1.0        ),
 color_      (Color(1.0, 1.0, 1.0))
-
 {
 
 }
@@ -62,4 +52,46 @@ void BasicDrawableBase::draw(const Canvas& canvas) {
     if (opacity_ > 0.0 && opacity_ < 1.0) {
         glDisable(GL_BLEND);
     }
+}
+
+// getters and setters
+
+const Vecf &BasicDrawableBase::getPosition() const {
+    return position_;
+}
+
+void BasicDrawableBase::setPosition(const Vecf &position) {
+    position_ = position;
+}
+
+float BasicDrawableBase::getAngle() const {
+    return angle_;
+}
+
+void BasicDrawableBase::setAngle(float angle) {
+    angle_ = angle;
+}
+
+bool BasicDrawableBase::isVisible() const {
+    return isVisible_;
+}
+
+void BasicDrawableBase::setIsVisible(bool isVisible) {
+    isVisible_ = isVisible;
+}
+
+float BasicDrawableBase::getOpacity() const {
+    return opacity_;
+}
+
+void BasicDrawableBase::setOpacity(float opacity) {
+    opacity_ = opacity;
+}
+
+const Color &BasicDrawableBase::getColor() const {
+    return color_;
+}
+
+void BasicDrawableBase::setColor(const Color &color) {
+    color_ = color;
 }

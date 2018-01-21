@@ -21,11 +21,7 @@
 #include "Window.h"
 #include "GuiComponentBase.h"
 
-Window::Window() :
-    position        (   Property<Vecf>              (this, getPosition_, setPosition_         )),
-    isFullScreen    (   BooleanProperty            (this, getIsFullScreen_, setIsFullScreen_ )),
-    w               (   ReadableProperty<unsigned> (&w_                                      )),
-    h               (   ReadableProperty<unsigned> (&h_                                      ))
+Window::Window()
 {
     isInitialized_ = false;
 }
@@ -70,8 +66,6 @@ void Window::init(const std::string& configJson) {
         return;
     }
 
-    isFullScreen.updateDependentProperties();
-
     isInitialized_ = true;
 }
 
@@ -109,9 +103,6 @@ void Window::setSize(unsigned w, unsigned h) {
     SDL_SetWindowSize(window_, w, h);
     w_ = w;
     h_ = h;
-
-    this->w.updateDependentProperties();
-    this->h.updateDependentProperties();
 }
 
 Vecf Window::getPosition_(void *owner) {
@@ -145,4 +136,22 @@ void Window::setIsFullScreen_(void *owner, const bool &value) {
     if (retValue == 0) {
         window->isFullScreen_ = value;
     }
+}
+
+// getters and setters
+
+unsigned int Window::getW() const {
+    return w_;
+}
+
+void Window::setW(unsigned int w) {
+    w_ = w;
+}
+
+unsigned int Window::getH() const {
+    return h_;
+}
+
+void Window::setH(unsigned int h) {
+    h_ = h;
 }

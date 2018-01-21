@@ -21,22 +21,19 @@ class GuiComponentBase;
 
 #include <SDL2/SDL_video.h>
 #include <list>
-#include "Property.h"
-#include "ReadableProperty.h"
 #include "Vec.h"
-#include "BooleanProperty.h"
 
 class Window {
     friend class Tile2D;
 public:
-    Property<Vecf>            const position;
-    BooleanProperty             const isFullScreen;
-    ReadableProperty<unsigned>  const w;
-    ReadableProperty<unsigned>  const h;
-
     void setSize(unsigned w, unsigned h);
-
     void addComponent(GuiComponentBase *guiComponent);
+
+// getters and setters
+    unsigned int getW() const;
+    void setW(unsigned int w);
+    unsigned int getH() const;
+    void setH(unsigned int h);
 
 private:
     void update_();
@@ -56,7 +53,6 @@ private:
     unsigned h_;
 
     bool isFullScreen_;
-
     bool isInitialized_;
 
     static Vecf getPosition_(void *owner);

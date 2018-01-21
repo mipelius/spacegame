@@ -18,24 +18,7 @@
 #include "GuiComponentBase.h"
 #include "Window.h"
 
-GuiComponentBase::GuiComponentBase() :
-    // properties
-
-    marginTop       (   Property<float>  (&marginTop_        )   ),
-    marginRight     (   Property<float>  (&marginRight_      )   ),
-    marginLeft      (   Property<float>  (&marginLeft_       )   ),
-    marginBottom    (   Property<float>  (&marginBottom_     )   ),
-
-    anchor          (   Property<Anchor>  (&anchor_           )   ),
-
-    w               (   Property<float>  (&w_                )   ),
-    h               (   Property<float>  (&h_                )   ),
-
-    opacity         (   Property<float>  (&opacity_          )   ),
-
-    isVisible       (   BooleanProperty   (&isVisible_        )   ),
-    isBoundsVisible (   BooleanProperty   (&isBoundsVisible_  )   )
-
+GuiComponentBase::GuiComponentBase()
 {
     parentGuiComponent_ = nullptr;
     opacity_ = 1.0;
@@ -56,10 +39,7 @@ GuiComponentBase::GuiComponentBase() :
 }
 
 void GuiComponentBase::setMargin(float top, float right, float bottom, float left) {
-    marginTop.set(top);
-    marginRight.set(right);
-    marginBottom.set(bottom);
-    marginLeft.set(left);
+
 }
 
 void GuiComponentBase::setWindow(Window *window) {
@@ -82,7 +62,7 @@ Rect GuiComponentBase::getRenderingAreaRect() const {
         parentRect.copy(parentGuiComponent_->getRenderingAreaRect());
     }
     else {
-        parentRect = Rect(0, 0, window_->w.get(), window_->h.get());
+        parentRect = Rect(0, 0, window_->getW(), window_->getH());
     }
 
     float w, h;
@@ -146,7 +126,7 @@ void GuiComponentBase::render() {
     Rect rect = getRenderingAreaRect();
 
     auto x = (GLint)(rect.x1);
-    auto y = (GLint)(getWindow()->h.get() - rect.y2);
+    auto y = (GLint)(getWindow()->getH() - rect.y2);
     auto w = (GLint)(rect.getWidth());
     auto h = (GLint)(rect.getHeight());
 

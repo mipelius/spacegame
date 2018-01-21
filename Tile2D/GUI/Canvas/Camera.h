@@ -20,23 +20,23 @@
 #include "Rect.h"
 #include "Vec.h"
 
-#include "Property.h"
-
 class Camera {
 
 public:
-    Property<Vecf> const position;
-    Property<Rect> const areaRect;
-
     Camera();
 
     void zoom(float amount);
 
+    // getters and setters
+
+    const Rect &getAreaRect() const;
+    void setAreaRect(const Rect &areaRect);
+    Vecf getPosition();
+    void setPosition(const Vecf &value);
+
 private:
     Rect areaRect_;
 
-    static Vecf getPosition_(void *owner);
-    static void setPosition_(void *owner, const Vecf &value);
 };
 
 #endif //__Camera_H_

@@ -20,10 +20,6 @@ GLuint LightSystem::glShadowTextureId_ = 0;
 
 LightSystem::LightSystem() :
 
-ambientLight            (   Property<float> ( &ambientLight_            )    ),
-softShadowsEnabled      (   BooleanProperty  ( &softShadowsEnabled_      )    ),
-blendedShadowsEnabled   (   BooleanProperty  ( &blendedShadowsEnabled_   )    ),
-
 ambientLight_           (   1.0  ),
 softShadowsEnabled_     (   true ),
 blendedShadowsEnabled_  (   true )
@@ -37,8 +33,8 @@ blendedShadowsEnabled_  (   true )
 }
 
 void LightSystem::init() {
-    w = Tile2D::window().w.get();
-    h = Tile2D::window().h.get();
+    w = Tile2D::window().getW();
+    h = Tile2D::window().getH();
 
     if (glShadowTextureId_ == 0) {
         createShadowTexture();
@@ -182,7 +178,7 @@ void LightSystem::draw(const Canvas& canvas) {
 
     glColor4d(1, 1, 1, 1.0 - ambientLight_);
 
-    Rect rect = canvas.getCamera()->areaRect.get();
+    Rect rect = canvas.getCamera()->getAreaRect();
 
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
@@ -207,7 +203,7 @@ void LightSystem::drawLightMap(const Canvas &canvas) {
         return;
     }
 
-    Rect rect = canvas.getCamera()->areaRect.get();
+    Rect rect = canvas.getCamera()->getAreaRect();
     updateLightMap(&rect);
 
     int xStart = (int)(rect.x1 / tileMap->getTileSet()->getTileW());
@@ -361,7 +357,7 @@ void LightSystem::createShadowTexture() {
 
 // --------------------- COMPUTE THE SHADOW MAP -------------------------
 
-bool wayToSort(PointLight* a, PointLight* b) { return a->radius.get() > b->radius.get(); }
+bool wayToSort(PointLight* a, PointLight* b) { return a->getRadius() > b->getRadius(); }
 
 void LightSystem::updateLightMap(Rect *areaRect) {
     std::sort(lights_.begin(), lights_.end(), wayToSort);
@@ -374,9 +370,9 @@ void LightSystem::updateLightMap(Rect *areaRect) {
     int offsetY = (int)(areaRect->y1 / tileMap->getTileSet()->getTileH()) - MAX_LIGHT_RADIUS;
 
     for (auto light : lights_) {
-        int currentLightCenterX = (int)(light->position.get().x / tileMap->getTileSet()->getTileW());
-        int currentLightCenterY = (int)(light->position.get().y / tileMap->getTileSet()->getTileH());
-        int radius              = (int)(light->radius.get()     / tileMap->getTileSet()->getTileW());
+        int currentLightCenterX = (int)(light->getPosition().x / tileMap->getTileSet()->getTileW());
+        int currentLightCenterY = (int)(light->getPosition().y / tileMap->getTileSet()->getTileH());
+        int radius              = (int)(light->getRadius()     / tileMap->getTileSet()->getTileW());
 
         updateLightMapRecursive(
                 currentLightCenterX,
@@ -422,7 +418,7 @@ void LightSystem::updateLightMapRecursive(
 
     Tile* currentBlock = Tile2D::tileMap().getValue(currentX, currentY);
     if (currentBlock != nullptr) {
-        translucency = currentBlock->translucency.get();
+        translucency = currentBlock->getTranslucency();
     }
 
     encounteredWallness += 256 - translucency * 256.0;
@@ -440,5 +436,31 @@ void LightSystem::updateLightMapRecursive(
     updateLightMapRecursive(currentX + 1, currentY, centerX, centerY, offsetX, offsetY, radius, encounteredWallness);
     updateLightMapRecursive(currentX, currentY - 1, centerX, centerY, offsetX, offsetY, radius, encounteredWallness);
     updateLightMapRecursive(currentX, currentY + 1, centerX, centerY, offsetX, offsetY, radius, encounteredWallness);
+}
+
+// getters and setters
+
+float LightSystem::getAmbientLight() const {
+    return ambientLight_;
+}
+
+void LightSystem::setAmbientLight(float ambientLight) {
+    ambientLight_ = ambientLight;
+}
+
+bool LightSystem::isSoftShadowsEnabled() const {
+    return softShadowsEnabled_;
+}
+
+void LightSystem::setSoftShadowsEnabled(bool softShadowsEnabled) {
+    softShadowsEnabled_ = softShadowsEnabled;
+}
+
+bool LightSystem::isBlendedShadowsEnabled() const {
+    return blendedShadowsEnabled_;
+}
+
+void LightSystem::setBlendedShadowsEnabled(bool blendedShadowsEnabled) {
+    blendedShadowsEnabled_ = blendedShadowsEnabled;
 }
 

@@ -19,7 +19,6 @@
 
 #include <SDL2/SDL_bits.h>
 #include <cfloat>
-#include "Property.h"
 #include "Tile2DBehaviour.h"
 
 class LimitedAgeBehaviour : public Tile2DBehaviour {

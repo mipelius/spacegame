@@ -18,10 +18,6 @@
 #include "Body.h"
 
 PhysicsWorld::PhysicsWorld():
-    gForce(             Property<Vecf>    (&gForce_)           ),
-    metersPerPixel(     Property<float>    (&metersPerPixel_)   ),
-    airDensity(         Property<float>    (&airDensity_)       ),
-
     map_(nullptr),
     gForce_({0, 0})
 {
@@ -85,7 +81,7 @@ void PhysicsWorld::debugDraw() {
 
         glBegin(GL_LINE_LOOP);
         for (auto& pointOrig : points) {
-            auto point = pointOrig.rotated(body->angle.get()) + body->position.get();
+            auto point = pointOrig.rotated(body->getAngle()) + body->getPosition();
             glVertex2f(point.x, point.y);
         }
         glEnd();
@@ -95,10 +91,10 @@ void PhysicsWorld::debugDraw() {
         glColor3f(0.0f, 0.3f, 0.0f);
 
         Rect rect = body->collider_->boundingBox();
-        rect.x1 += body->position.get().x;
-        rect.y1 += body->position.get().y;
-        rect.x2 += body->position.get().x;
-        rect.y2 += body->position.get().y;
+        rect.x1 += body->getPosition().x;
+        rect.y1 += body->getPosition().y;
+        rect.x2 += body->getPosition().x;
+        rect.y2 += body->getPosition().y;
 
         glBegin(GL_LINE_LOOP);
             glVertex2f(rect.x1, rect.y1);
@@ -111,4 +107,30 @@ void PhysicsWorld::debugDraw() {
 
 TileMap *PhysicsWorld::getMap() {
     return map_;
+}
+
+// getters and setters
+
+const Vecf &PhysicsWorld::getGForce() const {
+    return gForce_;
+}
+
+void PhysicsWorld::setGForce(const Vecf &gForce) {
+    gForce_ = gForce;
+}
+
+float PhysicsWorld::getMetersPerPixel() const {
+    return metersPerPixel_;
+}
+
+void PhysicsWorld::setMetersPerPixel(float metersPerPixel) {
+    metersPerPixel_ = metersPerPixel;
+}
+
+float PhysicsWorld::getAirDensity() const {
+    return airDensity_;
+}
+
+void PhysicsWorld::setAirDensity(float airDensity) {
+    airDensity_ = airDensity;
 }

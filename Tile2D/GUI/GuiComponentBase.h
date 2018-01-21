@@ -21,8 +21,6 @@ class Window;
 
 #include <list>
 #include "Rect.h"
-#include "BooleanProperty.h"
-#include "Property.h"
 
 class GuiComponentBase {
     friend class Window;
@@ -35,33 +33,12 @@ public:
 
     GuiComponentBase();
 
-    Property<float> const marginTop;
-    Property<float> const marginRight;
-    Property<float> const marginBottom;
-    Property<float> const marginLeft;
-
-    Property<Anchor> const anchor;
-
-    Property<float> const w;
-    Property<float> const h;
-
-    Property<float> const opacity;
-
-    BooleanProperty const isVisible;
-    BooleanProperty const isBoundsVisible;
-
     virtual void renderActual() = 0;
-
     void render();
-
     Rect getRenderingAreaRect() const;
-
     void setMargin(float top, float right, float bottom, float left);
-
     void addComponent(GuiComponentBase* guiComponent);
-
     Window* getWindow();
-
     void glColor(float red, float green, float blue) const;
 
 protected:

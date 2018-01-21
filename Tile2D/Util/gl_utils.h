@@ -35,18 +35,20 @@ static void prepareRendering() {
     Rect rect = canvas.getRenderingAreaRect();
 
     auto x = (GLint)(rect.x1);
-    auto y = (GLint)(Tile2D::window().h.get() - rect.y2);
+    auto y = (GLint)(Tile2D::window().getH() - rect.y2);
     auto w = (GLint)(rect.getWidth());
     auto h = (GLint)(rect.getHeight());
+
+    const Rect& cameraAreaRect = camera->getAreaRect();
 
     glViewport(x, y, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(
-            camera->areaRect.get().x1,
-            camera->areaRect.get().x2,
-            camera->areaRect.get().y2,
-            camera->areaRect.get().y1,
+            cameraAreaRect.x1,
+            cameraAreaRect.x2,
+            cameraAreaRect.y2,
+            cameraAreaRect.y1,
             -1.0,
             1.0
     );

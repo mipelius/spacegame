@@ -18,7 +18,6 @@
 #define __Ears_H_
 
 #include "Vec.h"
-#include "Property.h"
 
 class Ears {
 
@@ -26,8 +25,12 @@ public:
     Ears();
     ~Ears();
 
-    Property<Vecf> const position;
-    Property<float> const maxDistance;
+    // getters and setters
+
+    const Vecf &getPosition() const;
+    void setPosition(const Vecf &position);
+    float getMaxDistance() const;
+    void setMaxDistance(float maxDistance);
 
 private:
     Vecf position_;

@@ -24,17 +24,6 @@
 #include "PolygonCollider.h"
 
 Body::Body() :
-    // properties
-
-    mass            (   Property<float>  (&mass_             )   ),
-
-    angle           (   Property<float>  (&angle_            )   ),
-    angularVelocity (   Property<float>  (&angularVelocity_  )   ),
-
-    position        (   Property<Vecf>  (&position_         )   ),
-    velocity        (   Property<Vecf>  (&velocity_         )   ),
-    force           (   Property<Vecf>  (&force_            )   ),
-
     // events
 
     bodyCollision   (   Event<Body, BodyCollisionEventArgs>(this) ),
@@ -73,7 +62,7 @@ void Body::step_(float timeElapsedSec) {
     if (velocity_.x != 0 || velocity_.y != 0) {
         float speedLengthPow2 = velocity_.x * velocity_.x + velocity_.y * velocity_.y;
         Vecf dragUnitVector = (velocity_ * -1) * (1 / sqrt(velocity_.x * velocity_.x + velocity_.y * velocity_.y));
-        drag = dragUnitVector * speedLengthPow2 * (0.5 * physicsWorld_->airDensity.get());
+        drag = dragUnitVector * speedLengthPow2 * (0.5 * physicsWorld_->getAirDensity());
     }
 
     Vecf totalForce = force_ + drag;
@@ -83,7 +72,7 @@ void Body::step_(float timeElapsedSec) {
     Vecf acceleration = totalForce / mass_;
     acceleration += physicsWorld_->gForce_;
     velocity_ += acceleration;
-    position_ = position_ + (velocity_ * timeElapsedSec * physicsWorld_->metersPerPixel.get());
+    position_ = position_ + (velocity_ * timeElapsedSec * physicsWorld_->getMetersPerPixel());
 
     // apply angle change
 
@@ -92,14 +81,6 @@ void Body::step_(float timeElapsedSec) {
     // remove all applied forces
 
     force_ = Vecf(0, 0);
-
-    // update dependent properties
-
-    this->angle.updateDependentProperties();
-    this->angularVelocity.updateDependentProperties();
-    this->position.updateDependentProperties();
-    this->velocity.updateDependentProperties();
-    this->force.updateDependentProperties();
 }
 
 bool Body::detectMapCollision_(float deltaTime) {
@@ -144,7 +125,7 @@ bool Body::detectMapCollision_(float deltaTime) {
         for (int i=iBegin; i <= iEnd; i += blockSizeW) {
             for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
                 tile = map->getValueScaled(Vecf(i, j));
-                if (tile != nullptr && tile->density.get() > 0.0) {
+                if (tile != nullptr && tile->getDensity() > 0.0) {
                     tileCollider.pos_ = {(float)i, (float)j};
 
                     if (collider_->overlap(tileCollider, contactNormal, penetration)) {
@@ -175,7 +156,7 @@ bool Body::detectMapCollision_(float deltaTime) {
         for (int i=iBegin; i <= iEnd; i += blockSizeW) {
             for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
                 tile = map->getValueScaled(Vecf(i, j));
-                if (tile != nullptr && tile->density.get() > 0.0) {
+                if (tile != nullptr && tile->getDensity() > 0.0) {
                     tileCollider.pos_ = {(float)i, (float)j};
 
                     if (collider_->cast(direction * -1.0, tileCollider, currentContactNormal, currentToCollision))
@@ -208,12 +189,6 @@ bool Body::detectMapCollision_(float deltaTime) {
         }
     }
 
-    // regardless of the collision detection/resolving method --> update dependent properties
-    if (collided) {
-        velocity.updateDependentProperties();
-        position.updateDependentProperties();
-    }
-
     return collided;
 }
 
@@ -234,8 +209,7 @@ bool Body::detectCollisionWith_(Body &otherBody) {
 }
 
 void Body::applyForce(Vecf force) {
-    Vecf forceBefore = this->force.get();
-    this->force.set(forceBefore + force);
+    force += force;
 }
 
 void Body::setWorld_(PhysicsWorld *gameWorld) {
@@ -248,4 +222,46 @@ PhysicsWorld *Body::getWorld() {
 
 PolygonCollider* Body::getCollider() {
     return collider_;
+}
+
+// getters and setters
+
+float Body::getMass() const {
+    return mass_;
+}
+
+void Body::setMass(float mass) {
+    mass_ = mass;
+}
+
+float Body::getAngularVelocity() const {
+    return angularVelocity_;
+}
+
+void Body::setAngularVelocity(float angularVelocity) {
+    angularVelocity_ = angularVelocity;
+}
+
+const Vecf &Body::getPosition() const {
+    return position_;
+}
+
+void Body::setPosition(const Vecf &position) {
+    position_ = position;
+}
+
+const Vecf &Body::getVelocity() const {
+    return velocity_;
+}
+
+void Body::setVelocity(const Vecf &velocity) {
+    velocity_ = velocity;
+}
+
+float Body::getAngle() const {
+    return angle_;
+}
+
+void Body::setAngle(float angle) {
+    angle_ = angle;
 }

@@ -16,22 +16,13 @@
 
 #include "Tile.h"
 #include "MapTexture.h"
-#include "ReadableProperty.h"
 
-Tile::Tile(std::string name, float density, float translucency, float opacity, MapTexture *mapTexture, int mapTextureId) :
-    name(           ReadableProperty<std::string> (   &name_          )   ),
-    density(        ReadableProperty<float>      (   &density_       )   ),
-    translucency(   ReadableProperty<float>      (   &translucency_  )   ),
-    opacity(        ReadableProperty<float>      (   &opacity_       )   )
+Tile::Tile(std::string name, float density, float translucency, float opacity, MapTexture *mapTexture, int mapTextureId)
 {
     initialize_(std::move(name), density, translucency, opacity, mapTexture, mapTextureId);
 }
 
-Tile::Tile(json::Object object, MapTexture* mapTexture)  :
-name(           ReadableProperty<std::string> (   &name_          )   ),
-density(        ReadableProperty<float>      (   &density_       )   ),
-translucency(   ReadableProperty<float>      (   &translucency_  )   ),
-opacity(        ReadableProperty<float>      (   &opacity_       )   )
+Tile::Tile(json::Object object, MapTexture* mapTexture)
 {
     MapTexture* mapTextureToUse = nullptr;
     int mapTextureId = -1;
@@ -66,6 +57,24 @@ void Tile::initialize_(std::string name, float density, float translucency, floa
     mapTextureId_ = mapTextureId;
 }
 
+// getters
+
 int Tile::getMapTextureId() {
     return mapTextureId_;
+}
+
+const std::string &Tile::getName() const {
+    return name_;
+}
+
+float Tile::getDensity() const {
+    return density_;
+}
+
+float Tile::getTranslucency() const {
+    return translucency_;
+}
+
+float Tile::getOpacity() const {
+    return opacity_;
 }

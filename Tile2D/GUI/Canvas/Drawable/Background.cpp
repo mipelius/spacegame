@@ -21,10 +21,6 @@
 #include "Canvas.h"
 
 Background::Background() :
-        // properties
-        ratio(          Property<float>   (&ratio_)            ),
-        texturePtr(     Property<Texture*> (&texturePtr_)       ),
-
         // values
         texturePtr_(nullptr),
         ratio_(1.0)
@@ -33,14 +29,14 @@ Background::Background() :
 }
 
 void Background::draw(const Canvas& canvas) {
-    Rect rect = canvas.getCamera()->areaRect.get();
+    Rect rect = canvas.getCamera()->getAreaRect();
 
     glColor3f(1.0, 1.0, 1.0);
 
     if (texturePtr_ != nullptr) {
         texturePtr_->glBind();
 
-        Vecf position = canvas.getCamera()->position.get();
+        Vecf position = canvas.getCamera()->getPosition();
 
         GLfloat x = (position.x * ratio_) / texturePtr_->getW();
         GLfloat y = (position.y * ratio_) / texturePtr_->getH();
@@ -68,4 +64,22 @@ void Background::draw(const Canvas& canvas) {
         glVertex2f(0, rect.getHeight());
         glEnd();
     }
+}
+
+// getters and setters
+
+Texture *Background::getTexturePtr() const {
+    return texturePtr_;
+}
+
+void Background::setTexturePtr(Texture *texturePtr) {
+    texturePtr_ = texturePtr;
+}
+
+float Background::getRatio() const {
+    return ratio_;
+}
+
+void Background::setRatio(float ratio) {
+    ratio_ = ratio;
 }

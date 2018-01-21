@@ -25,5 +25,5 @@ void SparkleBehaviour::awake() {
 
 void SparkleBehaviour::update() {
     LimitedAgeBehaviour::update();
-    sprite->opacity.set(1.0 - age() / TTL);
+    sprite->setOpacity(1.0 - age() / TTL);
 }

@@ -20,12 +20,6 @@
 #include "Texture.h"
 
 Text::Text() :
-        // properties
-        size(       Property<float>       (&size_   )   ),
-        string(     Property<std::string> (&string_)    ),
-        fontPtr(    Property<Font*>       (&fontPtr_)   ),
-
-        // values
         fontPtr_(nullptr),
         size_(1.0)
 {
@@ -89,5 +83,31 @@ void Text::drawActual(const Canvas &canvas) {
     glEnd();
 
     fontPtr_->fontTexture_->glUnbind();
+}
+
+// getters and setters
+
+Font *Text::getFontPtr() const {
+    return fontPtr_;
+}
+
+void Text::setFontPtr(Font *fontPtr) {
+    fontPtr_ = fontPtr;
+}
+
+float Text::getSize() const {
+    return size_;
+}
+
+void Text::setSize(float size) {
+    size_ = size;
+}
+
+const std::string &Text::getString() const {
+    return string_;
+}
+
+void Text::setString(const std::string &string) {
+    string_ = string;
 }
 

@@ -24,9 +24,9 @@ static void createPulseLight(Vecf position) {
     auto obj = Tile2D::createGameObject();
 
     auto light = obj->attachComponent<PointLight>();
-    light->radius.set(80.0);
-    light->intensity.set(1.0);
-    light->position.set(position);
+    light->setRadius(80.0);
+    light->setIntensity(1.0);
+    light->setPosition(position);
 
     auto pulseLightBehaviour = obj->attachComponent<PulseLightBehaviour>();
     pulseLightBehaviour->TTL = 1.0f;
@@ -36,17 +36,17 @@ static void createSparkle(Vecf position, Vecf velocity, Color color) {
     auto sparkle = Tile2D::createGameObject();
 
     auto sparkleBody = sparkle->attachComponent<Body>();
-    sparkleBody->mass.set(10.0);
-    sparkleBody->position.set(position);
-    sparkleBody->velocity.set(velocity);
-    sparkleBody->angle.set(velocity.angle());
+    sparkleBody->setMass(10.0);
+    sparkleBody->setPosition(position);
+    sparkleBody->setVelocity(velocity);
+    sparkleBody->setAngle(velocity.angle());
 
     auto sparkleSprite = sparkle->attachComponent<Sprite>();
-    sparkleSprite->rect.set({-20, -20, 20, 20});
-    sparkleSprite->color.set(color);
-    sparkleSprite->position.bind(sparkleBody->position);
-    sparkleSprite->angle.bind(sparkleBody->angle);
-    sparkleSprite->texturePtr.set(Tile2D::resources().textures["light"]);
+    sparkleSprite->setRect({-20, -20, 20, 20});
+    sparkleSprite->setColor(color);
+    // sparkleSprite->position.bind(sparkleBody->position);
+    // sparkleSprite->angle.bind(sparkleBody->angle);
+    sparkleSprite->setTexturePtr(Tile2D::resources().textures["light"]);
 
     auto sparkleBehaviour = sparkle->attachComponent<SparkleBehaviour>();
 }
@@ -73,21 +73,21 @@ void MissileBehaviour::Body_MapCollisionEventHandler::handle(Body* body, MapColl
     Tile2D::tileMap().setValueScaled(args.tileCoordinates, Tile2D::tileMap().getTileSet()->getEmptyBlock());
 
     createSparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
-    createPulseLight(body->position.get());
+    createPulseLight(body->getPosition());
 }
 
 void MissileBehaviour::Body_BodyCollisionEventHandler::handle(Body* body, BodyCollisionEventArgs args) {
     if (args.otherBody->gameObject()->tag == Tags::enemy) {
         auto otherBody = args.otherBody->gameObject()->getComponent<Body>();
-        otherBody->velocity.set(otherBody->velocity.get() + body->velocity.get() / 100.0);
+        otherBody->setVelocity(otherBody->getVelocity() + body->getVelocity() / 100.0);
         auto sprite = args.otherBody->gameObject()->getComponent<Sprite>();
-        if (sprite->color.get().red > 0.9) {
-            sprite->color.set({0, 1, 0});
+        if (sprite->getColor().red > 0.9) {
+            sprite->setColor({0, 1, 0});
         } else {
-            sprite->color.set({1, 0, 0});
+            sprite->setColor({1, 0, 0});
         }
 
-        createSparkles(body->position.get(), args.contactNormal, {1, 0, 0});
+        createSparkles(body->getPosition(), args.contactNormal, {1, 0, 0});
         body->gameObject()->destroy();
     }
 };

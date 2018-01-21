@@ -18,9 +18,6 @@
 #include "Ears.h"
 
 Ears::Ears() :
-    position    (   Property<Vecf>  (&position_)    ),
-    maxDistance (   Property<float>  (&maxDistance_) ),
-
     position_       (   Vecf(0, 0) ),
     maxDistance_    (   0.0          )
 {
@@ -29,4 +26,22 @@ Ears::Ears() :
 
 Ears::~Ears() {
 
+}
+
+// getters and setters
+
+const Vecf &Ears::getPosition() const {
+    return position_;
+}
+
+void Ears::setPosition(const Vecf &position) {
+    position_ = position;
+}
+
+float Ears::getMaxDistance() const {
+    return maxDistance_;
+}
+
+void Ears::setMaxDistance(float maxDistance) {
+    maxDistance_ = maxDistance;
 }

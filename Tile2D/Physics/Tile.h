@@ -21,9 +21,21 @@ class MapTexture;
 
 #include <string>
 #include "json.h"
-#include "ReadableProperty.h"
 
 class Tile {
+
+public:
+    Tile(std::string name, float density, float translucency, float opacity, MapTexture* mapTexture, int mapTextureId);
+    Tile(json::Object object, MapTexture* mapTexture);
+
+    int getMapTextureId();
+
+    // getters
+
+    const std::string &getName() const;
+    float getDensity() const;
+    float getTranslucency() const;
+    float getOpacity() const;
 
 private:
     std::string name_;
@@ -37,16 +49,6 @@ private:
     void initialize_(std::string name, float density, float translucency, float opacity, MapTexture *mapTexture,
                      int mapTextureId);
 
-public:
-    Tile(std::string name, float density, float translucency, float opacity, MapTexture* mapTexture, int mapTextureId);
-    Tile(json::Object object, MapTexture* mapTexture);
-
-    ReadableProperty<std::string> const name;
-    ReadableProperty<float> const density;
-    ReadableProperty<float> const translucency;
-    ReadableProperty<float> const opacity;
-
-    int getMapTextureId();
 };
 
 

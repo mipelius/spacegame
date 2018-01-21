@@ -19,7 +19,6 @@
 
 #include "Tile2DComponent.h"
 #include "Vec.h"
-#include "Property.h"
 #include "Event.h"
 #include "MapCollisionEventArgs.h"
 #include "PolygonCollider.h"
@@ -34,17 +33,6 @@ class Body : public Tile2DComponent {
     friend class PolygonCollider;
 
 public:
-    // properties
-
-    Property<float> const mass;
-
-    Property<float> const angle;
-    Property<float> const angularVelocity;
-
-    Property<Vecf> const position;
-    Property<Vecf> const velocity;
-    Property<Vecf> const force;
-
     // events
 
     Event<Body, BodyCollisionEventArgs> const bodyCollision;
@@ -59,6 +47,19 @@ public:
     PhysicsWorld* getWorld();
     PolygonCollider* getCollider();
 
+    // getters and setters
+
+    float getMass() const;
+    void setMass(float mass);
+    float getAngularVelocity() const;
+    void setAngularVelocity(float angularVelocity);
+    const Vecf &getPosition() const;
+    void setPosition(const Vecf &position);
+    const Vecf &getVelocity() const;
+    void setVelocity(const Vecf &velocity);
+    float getAngle() const;
+    void setAngle(float angle);
+
 protected:
     PhysicsWorld *physicsWorld_;
     PolygonCollider* collider_;
@@ -68,10 +69,9 @@ private:
     void onDestroy() override;
 
     float mass_;
-
     float angle_;
-    float angularVelocity_;
 
+    float angularVelocity_;
     Vecf position_;
     Vecf velocity_;
     Vecf force_;

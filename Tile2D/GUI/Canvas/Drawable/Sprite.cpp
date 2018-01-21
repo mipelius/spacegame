@@ -44,13 +44,26 @@ void Sprite::drawActual(const Canvas &canvas) {
 }
 
 Sprite::Sprite() :
-        // properties
-        rect(           Property<Rect>        (&rect_)        ),
-        texturePtr(     Property<ITexture*>   (&texturePtr_)  ),
-
-        // values
         rect_({0, 0, 0, 0}),
         texturePtr_(nullptr)
 {
 
+}
+
+// getters and setters
+
+const Rect &Sprite::getRect() const {
+    return rect_;
+}
+
+void Sprite::setRect(const Rect &rect) {
+    rect_ = rect;
+}
+
+ITexture *Sprite::getTexturePtr() const {
+    return texturePtr_;
+}
+
+void Sprite::setTexturePtr(ITexture *texturePtr) {
+    texturePtr_ = texturePtr;
 }

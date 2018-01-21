@@ -29,8 +29,12 @@ class Sprite : public BasicDrawableBase {
 public:
     Sprite();
 
-    Property<Rect>     const rect;
-    Property<ITexture*> const texturePtr;
+    // getters and setters
+
+    const Rect &getRect() const;
+    void setRect(const Rect &rect);
+    ITexture *getTexturePtr() const;
+    void setTexturePtr(ITexture *texturePtr);
 
 protected:
     void drawActual(const Canvas &canvas) override;

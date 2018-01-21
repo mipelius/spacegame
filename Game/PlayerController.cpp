@@ -26,8 +26,8 @@ void PlayerController::awake() {
 
 void PlayerController::update() {
     // prevent player from going outside the world
-    Vecf pos = body->position.get();
-    Vecf vel = body->velocity.get();
+    Vecf pos = body->getPosition();
+    Vecf vel = body->getVelocity();
 
     if (pos.x < 0) {
         pos.x = 0;
@@ -46,8 +46,8 @@ void PlayerController::update() {
         vel.y = 0;
     }
 
-    body->position.set(pos);
-    body->velocity.set(vel);
+    body->setPosition(pos);
+    body->setVelocity(vel);
 
     // set camera
 
@@ -55,13 +55,13 @@ void PlayerController::update() {
 
     if (camera != nullptr && Tile2D::tileMap().isLoaded()) {
         Rect cameraBounds = {
-                camera->areaRect.get().getWidth() / 2,
-                camera->areaRect.get().getHeight() / 2,
-                Tile2D::tileMap().getActualW() - camera->areaRect.get().getWidth() / 2,
-                Tile2D::tileMap().getActualH() - camera->areaRect.get().getHeight() / 2
+                camera->getAreaRect().getWidth() / 2,
+                camera->getAreaRect().getHeight() / 2,
+                Tile2D::tileMap().getActualW() - camera->getAreaRect().getWidth() / 2,
+                Tile2D::tileMap().getActualH() - camera->getAreaRect().getHeight() / 2
         };
 
-        Vecf cameraPos = body->position.get();
+        Vecf cameraPos = body->getPosition();
 
         if (cameraPos.x < cameraBounds.x1) {
             cameraPos.x = cameraBounds.x1;
@@ -76,7 +76,7 @@ void PlayerController::update() {
             cameraPos.y = cameraBounds.y2;
         }
 
-        camera->position.set(cameraPos);
+        camera->setPosition(cameraPos);
     }
 
     // read input -> actions
@@ -85,7 +85,7 @@ void PlayerController::update() {
     float angularVelocity = 0;
 
     if (state[SDL_SCANCODE_UP]) {
-        body->force.set(Vecf::byAngle(body->angle.get(), moveForce));
+        body->applyForce(Vecf::byAngle(body->getAngle(), moveForce));
     }
     if (state[SDL_SCANCODE_LEFT]) {
         angularVelocity -= 5;
@@ -94,7 +94,7 @@ void PlayerController::update() {
         angularVelocity += 5;
     }
 
-    body->angularVelocity.set(angularVelocity);
+    body->setAngularVelocity(angularVelocity);
 
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
@@ -102,38 +102,38 @@ void PlayerController::update() {
             if (event.key.keysym.sym == SDLK_RETURN) {
                 Tile2D::isDebugMode = !Tile2D::isDebugMode;
                 if (Tile2D::isDebugMode) {
-                    sprite->opacity.set(0.5);
+                    sprite->setOpacity(0.5);
                 } else {
-                    sprite->opacity.set(1.0);
+                    sprite->setOpacity(1.0);
                 }
             }
             if (event.key.keysym.sym == SDLK_q) {
-                body->position.set({500.0, 250.0});
+                body->setPosition({500.0, 250.0});
             }
             if (event.key.keysym.sym == SDLK_r) {
                 // reload map
                 Tile2D::tileMap().load("maps/map.bmp", "json/tileset.json");
             }
             if (event.key.keysym.sym == SDLK_s) {
-                Tile2D::lightSystem().blendedShadowsEnabled.toggle();
+                Tile2D::lightSystem().setBlendedShadowsEnabled(!Tile2D::lightSystem().isBlendedShadowsEnabled());
             }
             if (event.key.keysym.sym == SDLK_d) {
-                Tile2D::lightSystem().softShadowsEnabled.toggle();
+                Tile2D::lightSystem().setSoftShadowsEnabled(!Tile2D::lightSystem().isSoftShadowsEnabled());
             }
             if (event.key.keysym.sym == SDLK_TAB) {
                 if (Tile2D::isDebugMode) {
-                    sprite->opacity.set(0.5);
+                    sprite->setOpacity(0.5);
                 } else {
-                    sprite->opacity.set(1.0);
+                    sprite->setOpacity(1.0);
                 }
 
                 auto light = Tile2D::createGameObject();
 
                 auto lightBody = light->attachComponent<Body>();
-                lightBody->mass.set(10.0);
-                lightBody->position.set(body->position.get());
-                lightBody->velocity.set(Vecf(0, 0));
-                lightBody->angle.set(0.0);
+                lightBody->setMass(10.0);
+                lightBody->setPosition(body->getPosition());
+                lightBody->setVelocity(Vecf(0, 0));
+                lightBody->setAngle(0.0);
 
                 auto collider = light->attachComponent<PolygonCollider>();
                 collider->setPoints({
@@ -144,15 +144,15 @@ void PlayerController::update() {
                                     });
 
                 auto lightSprite = light->attachComponent<Sprite>();
-                lightSprite->rect.set({-40, -40, 40, 40});
-                lightSprite->position.bind(lightBody->position);
-                lightSprite->angle.bind(lightBody->angle);
-                lightSprite->texturePtr.set(Tile2D::resources().textures["light"]);
+                lightSprite->setRect({-40, -40, 40, 40});
+                // lightSprite->position.bind(lightBody->position);
+                // lightSprite->angle.bind(lightBody->angle);
+                lightSprite->setTexturePtr(Tile2D::resources().textures["light"]);
 
                 auto lightLight = light->attachComponent<PointLight>();
-                lightLight->radius.set(100.0);
-                lightLight->intensity.set(1.0);
-                lightLight->position.bind(lightBody->position);
+                lightLight->setRadius(100.0);
+                lightLight->setIntensity(1.0);
+                //lightLight->position.bind(lightBody->position);
             }
         }
 
@@ -165,9 +165,9 @@ void PlayerController::update() {
 
 void PlayerController::shoot() {
     if (SDL_GetTicks() - lastShotTimestamp >= shootingInterval) {
-        shootOnce({0, 0});
-        shootOnce(Vecf(-10, -15).rotated(body->angle.get()));
-        shootOnce(Vecf(-10, 15).rotated(body->angle.get()));
+        shootOnce({0.0f, 0.0f});
+        shootOnce(Vecf(-10, -15).rotated(body->getAngle()));
+        shootOnce(Vecf(-10, 15).rotated(body->getAngle()));
         lastShotTimestamp = SDL_GetTicks();
     }
 }
@@ -176,10 +176,10 @@ void PlayerController::shootOnce(Vecf offset) {
     auto missile = Tile2D::createGameObject();
 
     auto missileBody = missile->attachComponent<Body>();
-    missileBody->mass.set(10.0);
-    missileBody->position.set(body->position.get() + offset);
-    missileBody->velocity.set(Vecf::byAngle(body->angle.get(), 30000.0) + body->velocity.get());
-    missileBody->angle.set(body->angle.get());
+    missileBody->setMass(10.0);
+    missileBody->setPosition(body->getPosition() + offset);
+    missileBody->setVelocity(Vecf::byAngle(body->getAngle(), 30000.0) + body->getVelocity());
+    missileBody->setAngle(body->getAngle());
     auto collider = missile->attachComponent<PolygonCollider>();
     collider->setPoints({
                                 {-18, -5},
@@ -189,15 +189,15 @@ void PlayerController::shootOnce(Vecf offset) {
                         });
 
     auto missileSprite = missile->attachComponent<Sprite>();
-    missileSprite->rect.set({-20,-5,20,5});
-    missileSprite->position.bind(missileBody->position);
-    missileSprite->angle.bind(missileBody->angle);
-    missileSprite->texturePtr.set(Tile2D::resources().textures["missile"]);
+    missileSprite->setRect({-20,-5,20,5});
+    //missileSprite->position.bind(missileBody->position);
+    //missileSprite->angle.bind(missileBody->angle);
+    missileSprite->setTexturePtr(Tile2D::resources().textures["missile"]);
 
     auto missileBehaviour = missile->attachComponent<MissileBehaviour>();
 
     auto missileLight = missile->attachComponent<PointLight>();
-    missileLight->radius.set(80.0);
-    missileLight->intensity.set(1.0);
-    missileLight->position.bind(missileBody->position);
+    missileLight->setRadius(80.0);
+    missileLight->setIntensity(1.0);
+    //missileLight->position.bind(missileBody->position);
 }

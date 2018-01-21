@@ -19,7 +19,6 @@
 
 #include <string>
 #include "DrawableBase.h"
-#include "Property.h"
 #include "Vec.h"
 #include "BasicDrawableBase.h"
 
@@ -29,12 +28,14 @@ class Text : public BasicDrawableBase {
 public:
     Text();
 
-    // properties
+    // getters and setters
 
-    Property<float> const size;
-    Property<std::string> const string;
-    Property<Font*> const fontPtr;
-
+    Font *getFontPtr() const;
+    void setFontPtr(Font *fontPtr);
+    float getSize() const;
+    void setSize(float size);
+    const std::string &getString() const;
+    void setString(const std::string &string);
     void drawActual(const Canvas &canvas) override;
 
 private:

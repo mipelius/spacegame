@@ -19,12 +19,12 @@
 void PulseLightBehaviour::awake() {
     LimitedAgeBehaviour::awake();
     light = gameObject()->getComponent<PointLight>();
-    radiusOnAwake = light->radius.get();
+    radiusOnAwake = light->getRadius();
 }
 
 void PulseLightBehaviour::update() {
     LimitedAgeBehaviour::update();
     float scale = 1.0 - age() / TTL;
-    light->intensity.set(scale);
-    light->radius.set(scale * radiusOnAwake);
+    light->setIntensity(scale);
+    light->setRadius(scale * radiusOnAwake);
 }
