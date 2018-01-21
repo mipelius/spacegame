@@ -211,9 +211,9 @@ void LightSystem::drawLightMap(const Canvas &canvas) {
     updateLightMap(&rect);
 
     int xStart = (int)(rect.x1 / tileMap->getTileSet()->getTileW());
-    int xEnd = xStart + lightMap_->w;
+    int xEnd = xStart + lightMap_->w - MAX_LIGHT_RADIUS;
     int yStart = (int)(rect.y1 / tileMap->getTileSet()->getTileH());;
-    int yEnd = yStart + lightMap_->h;
+    int yEnd = yStart + lightMap_->h - MAX_LIGHT_RADIUS;
 
     // set blending function
 
