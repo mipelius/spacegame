@@ -47,6 +47,12 @@ public:
     inline T angle() const;
     inline T dot(const Vec& otherVector) const;
     inline Vec normalized();
+
+    template <typename otherT>
+    inline Vec operator = (const Vec<otherT> & otherVector) const;
+
+    template <typename otherT>
+    Vec(const otherT & otherVector);
 };
 
 typedef Vec<double> Vecd;
@@ -54,6 +60,15 @@ typedef Vec<float> Vecf;
 typedef Vec<int> Veci;
 
 // -------- definitions --------
+
+
+template <typename T>
+template <typename otherT>
+inline Vec<T> Vec<T>::operator = (const Vec<otherT> & otherVector) const {
+    this->x = (T)otherVector.x;
+    this->y = (T)otherVector.y;
+    return *this;
+};
 
 template <typename T>
 Vec<T>::Vec(T x, T y) {
@@ -63,6 +78,13 @@ Vec<T>::Vec(T x, T y) {
 
 template <typename T>
 Vec<T>::Vec() : Vec<T>(0, 0) {}
+
+template <typename T>
+template <typename otherT>
+Vec<T>::Vec(const otherT & otherVector) {
+    this->x = (T)otherVector.x;
+    this->y = (T)otherVector.y;
+}
 
 template <typename T>
 inline void Vec<T>::rotate(float degrees) {
