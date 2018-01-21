@@ -32,7 +32,7 @@ protected:
     void update() override;
 
 private:
-    void shootOnce(Vec offset);
+    void shootOnce(Vecf offset);
 
     const Uint32 shootingInterval = 100;
     Uint32 lastShotTimestamp;

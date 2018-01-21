@@ -32,43 +32,43 @@ public:
     ~PolygonCollider() = default;
 
     bool cast(
-            const Vec&                  direction,
+            const Vecf&                  direction,
             const PolygonCollider&      otherCollider,
-            Vec&                        contactNormal,
-            Vec&                        toCollision
+            Vecf&                        contactNormal,
+            Vecf&                        toCollision
     );
 
     const Rect& boundingBox() const;
-    const std::vector<Vec>& points() const;
+    const std::vector<Vecf>& points() const;
 
     bool overlap(
             const PolygonCollider&   otherCollider,
-            Vec&                        contactNormal,
+            Vecf&                        contactNormal,
             float&                     penetration
     ) const;
 
-    void setPoints(std::vector<Vec> points);
-    std::vector<Vec> getAxes() const;
+    void setPoints(std::vector<Vecf> points);
+    std::vector<Vecf> getAxes() const;
 
 protected:
     void init() override;
     void onDestroy() override;
 
 private:
-    Vec pos_;
+    Vecf pos_;
     float rot_;
 
     bool castOneWay_(
-            const Vec &direction,
+            const Vecf &direction,
             const PolygonCollider &collider,
             const PolygonCollider &otherCollider,
-            Vec &contactNormal,
-            Vec &toCollision
+            Vecf &contactNormal,
+            Vecf &toCollision
     );
 
     Rect boundingBox_;
 
-    std::vector<Vec> points_;
+    std::vector<Vecf> points_;
 };
 
 #endif //__PolygonCollider_H

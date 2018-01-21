@@ -18,7 +18,7 @@
 #include "Body.h"
 
 PhysicsWorld::PhysicsWorld():
-    gForce(             Property<Vec>    (&gForce_)           ),
+    gForce(             Property<Vecf>    (&gForce_)           ),
     metersPerPixel(     Property<float>    (&metersPerPixel_)   ),
     airDensity(         Property<float>    (&airDensity_)       ),
 

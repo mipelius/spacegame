@@ -44,7 +44,6 @@
 		3324991BE932666846E7E7F7 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3324951567969CEF8509B82E /* SDL2_image.framework */; };
 		33249938BCC013F594CA3A25 /* Rect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332492BA4125C55CD1319519 /* Rect.cpp */; };
 		332499A59A5FED23369E4279 /* MissileBehaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249533D1656C83FE699DB5 /* MissileBehaviour.cpp */; };
-		332499AD059660519305401F /* Vec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324900B09E0FAC017820EFF /* Vec.cpp */; };
 		332499B78C09F6402879E284 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249CD6B1610E09EB664175 /* Color.cpp */; };
 		33249A694428CF66BFDEBAEC /* PhysicsWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249C76949CE60405F76E63 /* PhysicsWorld.cpp */; };
 		33249A79FDFDE7A8889EE085 /* LightSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249A358C46D3CC81B440FD /* LightSystem.cpp */; };
@@ -82,7 +81,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3324900B09E0FAC017820EFF /* Vec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vec.cpp; sourceTree = "<group>"; };
 		3324901434B2B6491CF89EE3 /* Tile2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile2D.h; sourceTree = "<group>"; };
 		33249063A2C34B699A47C957 /* spaceship_explosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = spaceship_explosion.wav; sourceTree = "<group>"; };
 		3324908CB762A25848EA6677 /* LineSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineSegment.h; sourceTree = "<group>"; };
@@ -107,6 +105,7 @@
 		33249228DAF0621BEE181D9A /* BooleanProperty.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BooleanProperty.cpp; sourceTree = "<group>"; };
 		332492321ABA930C8F89C150 /* EventArgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventArgs.h; sourceTree = "<group>"; };
 		332492392BB6F169433FF5BB /* AnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationManager.h; sourceTree = "<group>"; };
+		33249239820BCFFAB4A96971 /* Vec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vec.h; sourceTree = "<group>"; };
 		3324924B68EE819794401897 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
 		33249259B7A5AA394AB22993 /* PhysicsWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsWorld.h; sourceTree = "<group>"; };
 		332492611ECBDCBEAB95D767 /* ReadableProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadableProperty.h; sourceTree = "<group>"; };
@@ -171,7 +170,6 @@
 		332498D1FC6D7984FA4EFB98 /* missile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = missile.png; sourceTree = "<group>"; };
 		332498D3565DCE36CC8090FB /* Tile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tile.cpp; sourceTree = "<group>"; };
 		332498DCC49A7C342952367C /* TileSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileSet.h; sourceTree = "<group>"; };
-		332498EEE1B17FC599901968 /* Vec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vec.h; sourceTree = "<group>"; };
 		332498F1397F88BFCDCA5106 /* SceneTitleScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneTitleScreen.cpp; sourceTree = "<group>"; };
 		332498FD9E89BAB3A115BB77 /* anim_rocket_fire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = anim_rocket_fire.png; sourceTree = "<group>"; };
 		33249911A1C615D314E72066 /* Resources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resources.cpp; sourceTree = "<group>"; };
@@ -476,12 +474,11 @@
 		3324991CB8405EB208B53369 /* Primitives */ = {
 			isa = PBXGroup;
 			children = (
-				332498EEE1B17FC599901968 /* Vec.h */,
 				33249F1063B6914F567DB21A /* Rect.h */,
-				3324900B09E0FAC017820EFF /* Vec.cpp */,
 				332492BA4125C55CD1319519 /* Rect.cpp */,
 				3324908CB762A25848EA6677 /* LineSegment.h */,
 				332495B0606D5E2689FAC847 /* LineSegment.cpp */,
+				33249239820BCFFAB4A96971 /* Vec.h */,
 			);
 			path = Primitives;
 			sourceTree = "<group>";
@@ -726,7 +723,6 @@
 				3324931E75494D011142CD0C /* Tile2DBehaviour.cpp in Sources */,
 				332490B6041347C52B6A29AB /* EventArgs.cpp in Sources */,
 				33249461A7A07C4A010C9EBD /* BooleanProperty.cpp in Sources */,
-				332499AD059660519305401F /* Vec.cpp in Sources */,
 				33249938BCC013F594CA3A25 /* Rect.cpp in Sources */,
 				332493AE3060E0615E85299B /* LineSegment.cpp in Sources */,
 				3324910666EE0FAE52CB7480 /* JsonFileManager.cpp in Sources */,

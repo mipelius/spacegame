@@ -23,7 +23,7 @@
 class Projection {
 
 public:
-    Projection(const Vec& axis, const PolygonCollider& collider) {
+    Projection(const Vecf& axis, const PolygonCollider& collider) {
         min = axis.dot(collider.points_[0].rotated(collider.rot_) + collider.pos_);
         max = min;
         for (auto i = 1u; i < collider.points_.size(); ++i) {
@@ -36,7 +36,7 @@ public:
         }
     }
 
-    bool overlap(const Projection& other, float& penetration, Vec& currentContactNormal) {
+    bool overlap(const Projection& other, float& penetration, Vecf& currentContactNormal) {
         penetration = DBL_MAX;
         bool overlap = (min >= other.min || max >= other.min) && (min <= other.max || max <= other.max);
         if (!overlap) { return false; }
@@ -59,11 +59,11 @@ public:
 };
 
 bool PolygonCollider::castOneWay_(
-        const Vec &direction,
+        const Vecf &direction,
         const PolygonCollider &collider,
         const PolygonCollider &otherCollider,
-        Vec &contactNormal,
-        Vec &toCollision
+        Vecf &contactNormal,
+        Vecf &toCollision
 ) {
     bool collided = false;
 
@@ -72,23 +72,23 @@ bool PolygonCollider::castOneWay_(
     const PolygonCollider& c1 = collider;
     const PolygonCollider& c2 = otherCollider;
 
-    const Vec& c1pos = collider.pos_;
+    const Vecf& c1pos = collider.pos_;
     const float& c1rot = collider.rot_;
-    const Vec& c2pos = otherCollider.pos_;
+    const Vecf& c2pos = otherCollider.pos_;
     const float& c2rot = otherCollider.rot_;
 
-    Vec intersectionPoint;
+    Vecf intersectionPoint;
     float maxDistanceSqr = 0.0f;
     float curDistanceSqr;
-    Vec curVec;
+    Vecf curVec;
 
     for (const auto& pointOrig : c1.points_) {
-        Vec castingPoint = pointOrig.rotated(c1rot) + c1pos;
+        Vecf castingPoint = pointOrig.rotated(c1rot) + c1pos;
         LineSegment castingLine(castingPoint, castingPoint + direction);
 
         for (auto i = 0u; i < otherCollider.points_.size(); i++) {
-            Vec startPoint = c2.points_[i].rotated(c2rot) + c2pos;
-            Vec endPoint = c2.points_[(i+1) % c2.points_.size()].rotated(c2rot) + c2pos;
+            Vecf startPoint = c2.points_[i].rotated(c2rot) + c2pos;
+            Vecf endPoint = c2.points_[(i+1) % c2.points_.size()].rotated(c2rot) + c2pos;
             LineSegment polygonLine(startPoint, endPoint);
 
             if (castingLine.intersection(polygonLine, intersectionPoint)) {
@@ -98,7 +98,7 @@ bool PolygonCollider::castOneWay_(
                 if (maxDistanceSqr < curDistanceSqr) {
                     maxDistanceSqr = curDistanceSqr;
                     toCollision = curVec;
-                    Vec tmp = startPoint - endPoint;
+                    Vecf tmp = startPoint - endPoint;
                     contactNormal = {tmp.y, -tmp.x};
                 }
             }
@@ -109,12 +109,12 @@ bool PolygonCollider::castOneWay_(
 }
 
 bool PolygonCollider::cast(
-        const Vec &direction,
+        const Vecf &direction,
         const PolygonCollider& otherCollider,
-        Vec& contactNormal,
-        Vec& toCollision
+        Vecf& contactNormal,
+        Vecf& toCollision
 ) {
-    Vec contactNormalTmp, toCollisionTmp;
+    Vecf contactNormalTmp, toCollisionTmp;
 
     bool collided1 = castOneWay_(direction, *this, otherCollider, contactNormal, toCollision);
     bool collided2 = castOneWay_(direction * -1, otherCollider, *this, contactNormalTmp, toCollisionTmp);
@@ -147,13 +147,13 @@ const Rect &PolygonCollider::boundingBox() const {
 }
 
 
-bool PolygonCollider::overlap(const PolygonCollider &otherCollider, Vec& contactNormal, float& penetration) const {
+bool PolygonCollider::overlap(const PolygonCollider &otherCollider, Vecf& contactNormal, float& penetration) const {
     penetration = DBL_MAX;
     float currentPenetration;
-    Vec currentContactNormal;
+    Vecf currentContactNormal;
 
-    const std::vector<Vec>& axes1 = getAxes();
-    const std::vector<Vec>& axes2 = otherCollider.getAxes();
+    const std::vector<Vecf>& axes1 = getAxes();
+    const std::vector<Vecf>& axes2 = otherCollider.getAxes();
 
     for (const auto& axis : axes1) {
         Projection p1(axis, *this);
@@ -182,36 +182,36 @@ bool PolygonCollider::overlap(const PolygonCollider &otherCollider, Vec& contact
     return true;
 }
 
-std::vector<Vec> PolygonCollider::getAxes() const {
-    std::vector<Vec> axes;
+std::vector<Vecf> PolygonCollider::getAxes() const {
+    std::vector<Vecf> axes;
 
     for (auto i = 0u; i < points_.size(); i++) {
-        const Vec& p1 = points_[i];
-        const Vec& p2 = points_[(i+1) % points_.size()];
-        Vec direction = (p2 - p1).rotated(rot_);
-        Vec vec = Vec(direction.y, -direction.x).normalized();
+        const Vecf& p1 = points_[i];
+        const Vecf& p2 = points_[(i+1) % points_.size()];
+        Vecf direction = (p2 - p1).rotated(rot_);
+        Vecf vec = Vecf(direction.y, -direction.x).normalized();
         axes.push_back(vec);
     }
 
     return axes;
 }
 
-void PolygonCollider::setPoints(std::vector<Vec> points) {
+void PolygonCollider::setPoints(std::vector<Vecf> points) {
     points_ = std::move(points);
 
-    Vec farMost = Vec(0, 0);
+    Vecf farMost = Vecf(0, 0);
 
     for (const auto& vec : this->points_) {
         float length = vec.length();
-        float farMostLength = Vec(farMost.x, farMost.y).length();
+        float farMostLength = Vecf(farMost.x, farMost.y).length();
         if (length > farMostLength) farMost = vec;
     }
 
-    float length = Vec(farMost.x, farMost.y).length();
+    float length = Vecf(farMost.x, farMost.y).length();
     boundingBox_ = Rect(-length, -length, length, length);
 }
 
-const std::vector<Vec> &PolygonCollider::points() const {
+const std::vector<Vecf> &PolygonCollider::points() const {
     return points_;
 }
 

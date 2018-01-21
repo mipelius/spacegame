@@ -19,11 +19,13 @@
 
 #include <cmath>
 
+template <typename T>
 class Vec {
+
 public:
-    float x;
-    float y;
-    Vec(float x, float y);
+    T x;
+    T y;
+    Vec(T x, T y);
     Vec();
 
     inline void rotate(float degrees);
@@ -32,73 +34,97 @@ public:
 
     inline Vec operator + (const Vec& otherVector) const;
     inline Vec operator - (const Vec& otherVector) const;
-    inline Vec operator * (float const &amount) const;
-    inline Vec operator / (float const &amount) const;
+    inline Vec operator * (T const &amount) const;
+    inline Vec operator / (T const &amount) const;
 
     inline Vec operator -= (const Vec& otherVector);
     inline Vec operator += (const Vec& otherVector);
-    inline Vec operator *= (float const &amount);
-    inline Vec operator /= (float const &amount);
+    inline Vec operator *= (T const &amount);
+    inline Vec operator /= (T const &amount);
 
-    inline float length() const;
-    inline float lengthSqr() const;
-    inline float angle() const;
-    inline float dot(const Vec& otherVector) const;
+    inline T length() const;
+    inline T lengthSqr() const;
+    inline T angle() const;
+    inline T dot(const Vec& otherVector) const;
     inline Vec normalized();
 };
 
-// inline functions
+typedef Vec<double> Vecd;
+typedef Vec<float> Vecf;
+typedef Vec<int> Veci;
 
-inline void Vec::rotate(float degrees) {
+// -------- definitions --------
+
+template <typename T>
+Vec<T>::Vec(T x, T y) {
+    this->x = x;
+    this->y = y;
+}
+
+template <typename T>
+Vec<T>::Vec() : Vec<T>(0, 0) {}
+
+template <typename T>
+inline void Vec<T>::rotate(float degrees) {
     *this = this->rotated(degrees);
 }
 
-inline Vec Vec::rotated(float degrees) const {
-    degrees = (degrees / 180.0) * M_PI;
+template <typename T>
+inline Vec<T> Vec<T>::rotated(float degrees) const {
+    degrees = (degrees / 180.0f) * M_PI;
     return {Vec(cos(degrees), -sin(degrees)).dot(*this), Vec(sin(degrees), cos(degrees)).dot(*this)};
 }
 
-inline Vec Vec::operator + (const Vec &otherVector) const {
+template <typename T>
+inline Vec<T> Vec<T>::operator + (const Vec<T> &otherVector) const {
     return {x + otherVector.x, y + otherVector.y};
 }
 
-inline Vec Vec::operator - (const Vec &otherVector) const {
+template <typename T>
+inline Vec<T> Vec<T>::operator - (const Vec<T> &otherVector) const {
     return {x - otherVector.x, y - otherVector.y};
 }
 
-inline Vec Vec::operator * (const float &amount) const {
+template <typename T>
+inline Vec<T> Vec<T>::operator * (const T &amount) const {
     return {x * amount, y * amount};
 }
 
-inline Vec Vec::operator /(float const &amount) const {
+template <typename T>
+inline Vec<T> Vec<T>::operator /(const T &amount) const {
     return {x / amount, y / amount};
 }
 
-inline Vec Vec::operator -= (Vec const &otherVector) {
+template <typename T>
+inline Vec<T> Vec<T>::operator -= (Vec<T> const &otherVector) {
     x = x - otherVector.x;
     y = y - otherVector.y;
     return {x, y};
 }
 
-inline Vec Vec::operator += (const Vec &otherVector) {
+template <typename T>
+inline Vec<T> Vec<T>::operator += (const Vec<T> &otherVector) {
     x = x + otherVector.x;
     y = y + otherVector.y;
     return {x, y};
 }
 
-inline Vec Vec::operator *=(float const &amount) {
+template <typename T>
+inline Vec<T> Vec<T>::operator *=(T const &amount) {
     x *= amount;
     y *= amount;
     return {x, y};
 }
 
-inline Vec Vec::operator /=(float const &amount) {
+template <typename T>
+inline Vec<T> Vec<T>::operator /=(T const &amount) {
     x /= amount;
     y /= amount;
     return {x, y};
 }
 
-inline Vec Vec::byAngle(const float &angleDegrees, const float &amount) {
+template <typename T>
+inline Vec<T> Vec<T>::byAngle(const float &angleDegrees, const float &amount) {
     float angle = angleDegrees / 360 * 2 * M_PI;
     return {
             cos(angle) * amount,
@@ -106,15 +132,18 @@ inline Vec Vec::byAngle(const float &angleDegrees, const float &amount) {
     };
 }
 
-inline float Vec::length() const {
-    return sqrt(x * x + y * y);
+template <typename T>
+inline T Vec<T>::length() const {
+    return (T)sqrt(x * x + y * y);
 }
 
-inline float Vec::lengthSqr() const {
+template <typename T>
+inline T Vec<T>::lengthSqr() const {
     return x * x + y * y;
 }
 
-inline float Vec::angle() const {
+template <typename T>
+inline T Vec<T>::angle() const {
     if (y == 0) {
         return 0;
     }
@@ -124,15 +153,17 @@ inline float Vec::angle() const {
         if (y < 0) return 90.0;
     }
 
-    return atan2(y, x) * 180 / M_PI;
+    return (T)(atan2(y, x) * 180 / M_PI);
 }
 
-inline float Vec::dot(const Vec& otherVector) const {
+template <typename T>
+inline T Vec<T>::dot(const Vec& otherVector) const {
     return this->x * otherVector.x + this->y * otherVector.y;
 }
 
-inline Vec Vec::normalized() {
-    float length = this->length();
+template <typename T>
+inline Vec<T> Vec<T>::normalized() {
+    double length = sqrt(x * x + y * y);
     if (length == 0.0) {
         return {1, 0};
     }

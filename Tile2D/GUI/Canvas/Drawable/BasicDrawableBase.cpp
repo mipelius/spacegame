@@ -20,14 +20,14 @@
 BasicDrawableBase::BasicDrawableBase() :
 
 // properties
-position    (   Property<Vec>     (&position_)    ),
+position    (   Property<Vecf>     (&position_)    ),
 angle       (   Property<float>  (&angle_)       ),
 isVisible   (   BooleanProperty   (&isVisible_)   ),
 opacity     (   Property<float>  (&opacity_)     ),
 color       (   Property<Color>   (&color_)       ),
 
 // private attributes initialization
-position_   (Vec(0, 0)  ),
+position_   (Vecf(0, 0)  ),
 angle_      (0          ),
 isVisible_  (true       ),
 opacity_    (1.0        ),

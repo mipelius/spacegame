@@ -28,12 +28,12 @@ public:
 
     Rect(float x1, float y1, float x2, float y2);
 
-    inline void setPosition(const Vec &point);
+    inline void setPosition(const Vecf &point);
 
     inline float getWidth() const;
     inline float getHeight() const;
 
-    inline bool hasPointInside(const Vec &point) const;
+    inline bool hasPointInside(const Vecf &point) const;
 
     inline bool intersectsWith(const Rect &otherRectangle) const;
     inline bool intersectsWithLine(const float &x1, const float &y1, const float &x2, const float &y2) const;
@@ -112,7 +112,7 @@ inline bool Rect::intersectsWithLine(const float &x1, const float &y1, const flo
     return false;
 }
 
-inline void Rect::setPosition(const Vec &point) {
+inline void Rect::setPosition(const Vecf &point) {
     float w = this->getWidth();
     float h = this->getHeight();
     x1 = point.x;
@@ -136,7 +136,7 @@ inline void Rect::copy(Rect rect) {
     this->y2 = rect.y2;
 }
 
-inline bool Rect::hasPointInside(const Vec &point) const {
+inline bool Rect::hasPointInside(const Vecf &point) const {
     return (point.x >= this->x1 && point.x <= this->x2) &&
            (point.y >= this->y1 && point.y <= this->y2);
 }

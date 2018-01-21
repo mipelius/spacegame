@@ -18,10 +18,10 @@
 #include "Ears.h"
 
 Ears::Ears() :
-    position    (   Property<Vec>  (&position_)    ),
+    position    (   Property<Vecf>  (&position_)    ),
     maxDistance (   Property<float>  (&maxDistance_) ),
 
-    position_       (   Vec(0, 0) ),
+    position_       (   Vecf(0, 0) ),
     maxDistance_    (   0.0          )
 {
 

@@ -28,7 +28,7 @@ class BasicDrawableBase : public DrawableBase {
 public:
     BasicDrawableBase();
 
-    Property<Vec>       const position;
+    Property<Vecf>       const position;
     Property<float>    const angle;
     BooleanProperty     const isVisible;
     Property<float>    const opacity;
@@ -40,7 +40,7 @@ protected:
     virtual void drawActual(const Canvas& canvas) = 0;
 
 private:
-    Vec position_;
+    Vecf position_;
     float angle_;
     bool isVisible_;
     float opacity_;

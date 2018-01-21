@@ -24,9 +24,9 @@ class Body;
 
 class BodyCollisionEventArgs : public EventArgs {
 public:
-    explicit BodyCollisionEventArgs(Body* otherBody, Vec contactNormal);
+    explicit BodyCollisionEventArgs(Body* otherBody, Vecf contactNormal);
 
-    Vec contactNormal;
+    Vecf contactNormal;
     Body* const otherBody;
 };
 

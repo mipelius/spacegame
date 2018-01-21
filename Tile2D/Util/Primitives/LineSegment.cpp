@@ -1,17 +1,29 @@
+// This file is part of SpaceGame.
+// Copyright (C) 2017 Miika Pelkonen
 //
-// Created by Miika Pelkonen on 15/12/2017.
+// SpaceGame is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
+// SpaceGame is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <stdlib.h>
 #include "LineSegment.h"
 
-LineSegment::LineSegment(Vec point1, Vec point2) {
+LineSegment::LineSegment(Vecf point1, Vecf point2) {
     this->point1 = point1;
     this->point2 = point2;
 }
 
 void LineSegment::rotate(float angle) {
-    Vec middlePoint = point1 + (point2 - point1) / 2.0;
+    Vecf middlePoint = point1 + (point2 - point1) / 2.0;
     point1 = point1 - middlePoint;
     point1.rotate(angle);
     point1 = point1 + middlePoint;
@@ -21,7 +33,7 @@ void LineSegment::rotate(float angle) {
     point2 = point2 + middlePoint;
 }
 
-bool LineSegment::intersection(const LineSegment& other, Vec& result) const {
+bool LineSegment::intersection(const LineSegment& other, Vecf& result) const {
     auto& ax1 = point1.x;       auto& ay1 = point1.y;       auto& ax2 = point2.x;       auto& ay2 = point2.y;
     auto& bx1 = other.point1.x; auto& by1 = other.point1.y; auto& bx2 = other.point2.x; auto& by2 = other.point2.y;
 

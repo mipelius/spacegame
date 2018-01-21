@@ -30,13 +30,13 @@ class PhysicsWorld {
     friend class TileMap;
 
 public:
-    Property<Vec> const gForce;
+    Property<Vecf> const gForce;
     Property<float> const metersPerPixel;
     Property<float> const airDensity;
 
     const float defaultAirDensity = 0.001;
     const float defaultMetersPerPixel = 0.1;
-    const Vec defaultGForce = Vec(0.0, 9.81);
+    const Vecf defaultGForce = Vecf(0.0, 9.81);
 
     TileMap* getMap();
 
@@ -50,7 +50,7 @@ private:
     void add(Body *body);
     void remove(Body *body);
 
-    Vec gForce_;
+    Vecf gForce_;
     float metersPerPixel_;
     float airDensity_;
 

@@ -17,5 +17,5 @@
 #include "BodyCollisionEventArgs.h"
 #include "Body.h"
 
-BodyCollisionEventArgs::BodyCollisionEventArgs(Body* otherBody, Vec contactNormal)
+BodyCollisionEventArgs::BodyCollisionEventArgs(Body* otherBody, Vecf contactNormal)
         : otherBody(otherBody), contactNormal(contactNormal) { }

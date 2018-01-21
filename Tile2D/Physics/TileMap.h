@@ -38,9 +38,9 @@ public:
     Event<TileMap, WorldMapModifiedEventArgs> const modification;
 
     Tile* getValue(int x, int y) const;
-    Tile* getValueScaled(Vec point) const;
+    Tile* getValueScaled(Vecf point) const;
     void setValue(int x, int y, Tile* value);
-    void setValueScaled(Vec point, Tile* value);
+    void setValueScaled(Vecf point, Tile* value);
 
     int getW() const;
     int getH() const;

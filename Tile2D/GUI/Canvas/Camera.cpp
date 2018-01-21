@@ -19,7 +19,7 @@
 Camera::Camera() :
     // properties
 
-    position(       Property<Vec>    (this, getPosition_, setPosition_   )),
+    position(       Property<Vecf>    (this, getPosition_, setPosition_   )),
     areaRect(       Property<Rect>   (&areaRect_                         )),
 
     // member objects
@@ -39,16 +39,16 @@ void Camera::zoom(float amount) {
     areaRect.updateDependentProperties();
 }
 
-Vec Camera::getPosition_(void *owner) {
+Vecf Camera::getPosition_(void *owner) {
     Rect rect = ((Camera*)owner)->areaRect.get();
 
     float x = rect.x1 + rect.getWidth() / 2;
     float y = rect.y1 + rect.getHeight() / 2;
 
-    return Vec(x, y);
+    return Vecf(x, y);
 }
 
-void Camera::setPosition_(void *owner, const Vec &value) {
+void Camera::setPosition_(void *owner, const Vecf &value) {
     Rect areaRect = ((Camera*)owner)->areaRect.get();
 
     float x = value.x - areaRect.getWidth() / 2;

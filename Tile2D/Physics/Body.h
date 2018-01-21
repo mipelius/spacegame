@@ -41,9 +41,9 @@ public:
     Property<float> const angle;
     Property<float> const angularVelocity;
 
-    Property<Vec> const position;
-    Property<Vec> const velocity;
-    Property<Vec> const force;
+    Property<Vecf> const position;
+    Property<Vecf> const velocity;
+    Property<Vecf> const force;
 
     // events
 
@@ -54,7 +54,7 @@ public:
 
     Body();
 
-    void applyForce(Vec force);
+    void applyForce(Vecf force);
 
     PhysicsWorld* getWorld();
     PolygonCollider* getCollider();
@@ -72,9 +72,9 @@ private:
     float angle_;
     float angularVelocity_;
 
-    Vec position_;
-    Vec velocity_;
-    Vec force_;
+    Vecf position_;
+    Vecf velocity_;
+    Vecf force_;
 
     bool detectCollisionWith_(Body &otherBody);
     bool detectMapCollision_(float deltaTime);

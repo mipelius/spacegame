@@ -28,13 +28,13 @@ class Plot : public DrawableBase {
 public:
     Plot();
 
-    Property<Vec> const position;
+    Property<Vecf> const position;
     Property<float> const size;
 
     void draw(const Canvas &canvas) override;
 
 private:
-    Vec position_;
+    Vecf position_;
     float size_;
 
 };

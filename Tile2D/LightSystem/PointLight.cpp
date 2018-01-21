@@ -23,7 +23,7 @@
 GLuint PointLight::glTextureId_ = 0;
 
 PointLight::PointLight() :
-    position    (   Property<Vec>     (this, getPosition_, setPosition_)  ),
+    position    (   Property<Vecf>     (this, getPosition_, setPosition_)  ),
     radius      (   Property<float>  (&radius_                        )  ),
     intensity   (   Property<float>  (&intensity_                     )  ),
 
@@ -117,18 +117,18 @@ void PointLight::createLightTexture() {
 }
 
 
-Vec PointLight::getPosition_(void *owner) {
+Vecf PointLight::getPosition_(void *owner) {
     return ((PointLight*)owner)->position_;
 }
 
-void PointLight::setPosition_(void *owner, const Vec &value) {
+void PointLight::setPosition_(void *owner, const Vecf &value) {
     PointLight* pointLight = (PointLight*)owner;
 
-    Vec oldLocation = pointLight->position_;
+    Vecf oldLocation = pointLight->position_;
 
     pointLight->position_ = value;
 
-    Vec newLocation = pointLight->position_;
+    Vecf newLocation = pointLight->position_;
 
 }
 

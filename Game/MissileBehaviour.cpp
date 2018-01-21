@@ -20,7 +20,7 @@
 #include "Tags.h"
 #include "PulseLightBehaviour.h"
 
-static void createPulseLight(Vec position) {
+static void createPulseLight(Vecf position) {
     auto obj = Tile2D::createGameObject();
 
     auto light = obj->attachComponent<PointLight>();
@@ -32,7 +32,7 @@ static void createPulseLight(Vec position) {
     pulseLightBehaviour->TTL = 1.0f;
 }
 
-static void createSparkle(Vec position, Vec velocity, Color color) {
+static void createSparkle(Vecf position, Vecf velocity, Color color) {
     auto sparkle = Tile2D::createGameObject();
 
     auto sparkleBody = sparkle->attachComponent<Body>();
@@ -51,21 +51,21 @@ static void createSparkle(Vec position, Vec velocity, Color color) {
     auto sparkleBehaviour = sparkle->attachComponent<SparkleBehaviour>();
 }
 
-static void createSparkles(Vec position, Vec normal, Color color) {
-    Vec& n = normal;
-    Vec perp = Vec(n.y, -n.x);
+static void createSparkles(Vecf position, Vecf normal, Color color) {
+    Vecf& n = normal;
+    Vecf perp = Vecf(n.y, -n.x);
 
     float div = 100.0;
 
-    Vec random = Vec(rand() % 100, rand() % 100) / div;
+    Vecf random = Vecf(rand() % 100, rand() % 100) / div;
     createSparkle(position, (n + random) * 1000, color);
-    random = Vec(rand() % 100, rand() % 100) / div;
+    random = Vecf(rand() % 100, rand() % 100) / div;
     createSparkle(position, (perp + n + random) * 1000, color);
-    random = Vec(rand() % 100, rand() % 100) / div;
+    random = Vecf(rand() % 100, rand() % 100) / div;
     createSparkle(position, ((perp * -1 + random) + n) * 1000, color);
-    random = Vec(rand() % 100, rand() % 100) / div;
+    random = Vecf(rand() % 100, rand() % 100) / div;
     createSparkle(position, (perp + random) * 1000, color);
-    random = Vec(rand() % 100, rand() % 100) / div;
+    random = Vecf(rand() % 100, rand() % 100) / div;
     createSparkle(position, (perp + random) * -1000, color);
 }
 void MissileBehaviour::Body_MapCollisionEventHandler::handle(Body* body, MapCollisionEventArgs args) {

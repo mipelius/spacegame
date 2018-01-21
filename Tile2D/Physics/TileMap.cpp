@@ -58,7 +58,7 @@ Tile* TileMap::getValue(int x, int y) const {
     return nullptr;
 }
 
-void TileMap::setValueScaled(Vec point, Tile *value) {
+void TileMap::setValueScaled(Vecf point, Tile *value) {
     setValue(
             (int)(point.x / tileSet_->getTileW()),
             (int)(point.y / tileSet_->getTileH()),
@@ -66,7 +66,7 @@ void TileMap::setValueScaled(Vec point, Tile *value) {
     );
 }
 
-Tile *TileMap::getValueScaled(Vec point) const {
+Tile *TileMap::getValueScaled(Vecf point) const {
     return getValue(
             (int)(point.x / tileSet_->getTileW()),
             (int)(point.y / tileSet_->getTileH())

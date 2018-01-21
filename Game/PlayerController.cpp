@@ -26,8 +26,8 @@ void PlayerController::awake() {
 
 void PlayerController::update() {
     // prevent player from going outside the world
-    Vec pos = body->position.get();
-    Vec vel = body->velocity.get();
+    Vecf pos = body->position.get();
+    Vecf vel = body->velocity.get();
 
     if (pos.x < 0) {
         pos.x = 0;
@@ -61,7 +61,7 @@ void PlayerController::update() {
                 Tile2D::tileMap().getActualH() - camera->areaRect.get().getHeight() / 2
         };
 
-        Vec cameraPos = body->position.get();
+        Vecf cameraPos = body->position.get();
 
         if (cameraPos.x < cameraBounds.x1) {
             cameraPos.x = cameraBounds.x1;
@@ -85,7 +85,7 @@ void PlayerController::update() {
     float angularVelocity = 0;
 
     if (state[SDL_SCANCODE_UP]) {
-        body->force.set(Vec::byAngle(body->angle.get(), moveForce));
+        body->force.set(Vecf::byAngle(body->angle.get(), moveForce));
     }
     if (state[SDL_SCANCODE_LEFT]) {
         angularVelocity -= 5;
@@ -132,7 +132,7 @@ void PlayerController::update() {
                 auto lightBody = light->attachComponent<Body>();
                 lightBody->mass.set(10.0);
                 lightBody->position.set(body->position.get());
-                lightBody->velocity.set(Vec(0, 0));
+                lightBody->velocity.set(Vecf(0, 0));
                 lightBody->angle.set(0.0);
 
                 auto collider = light->attachComponent<PolygonCollider>();
@@ -166,19 +166,19 @@ void PlayerController::update() {
 void PlayerController::shoot() {
     if (SDL_GetTicks() - lastShotTimestamp >= shootingInterval) {
         shootOnce({0, 0});
-        shootOnce(Vec(-10, -15).rotated(body->angle.get()));
-        shootOnce(Vec(-10, 15).rotated(body->angle.get()));
+        shootOnce(Vecf(-10, -15).rotated(body->angle.get()));
+        shootOnce(Vecf(-10, 15).rotated(body->angle.get()));
         lastShotTimestamp = SDL_GetTicks();
     }
 }
 
-void PlayerController::shootOnce(Vec offset) {
+void PlayerController::shootOnce(Vecf offset) {
     auto missile = Tile2D::createGameObject();
 
     auto missileBody = missile->attachComponent<Body>();
     missileBody->mass.set(10.0);
     missileBody->position.set(body->position.get() + offset);
-    missileBody->velocity.set(Vec::byAngle(body->angle.get(), 30000.0) + body->velocity.get());
+    missileBody->velocity.set(Vecf::byAngle(body->angle.get(), 30000.0) + body->velocity.get());
     missileBody->angle.set(body->angle.get());
     auto collider = missile->attachComponent<PolygonCollider>();
     collider->setPoints({

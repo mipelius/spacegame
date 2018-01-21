@@ -25,7 +25,7 @@
 class Camera {
 
 public:
-    Property<Vec> const position;
+    Property<Vecf> const position;
     Property<Rect> const areaRect;
 
     Camera();
@@ -35,8 +35,8 @@ public:
 private:
     Rect areaRect_;
 
-    static Vec getPosition_(void *owner);
-    static void setPosition_(void *owner, const Vec &value);
+    static Vecf getPosition_(void *owner);
+    static void setPosition_(void *owner, const Vecf &value);
 };
 
 #endif //__Camera_H_

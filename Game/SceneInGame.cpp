@@ -24,7 +24,7 @@
 #include "PlayerController.h"
 #include "Tags.h"
 
-static GameObject* spawnEnemy(Vec pos) {
+static GameObject* spawnEnemy(Vecf pos) {
     auto enemy = Tile2D::createGameObject();
     enemy->tag = Tags::enemy;
 
@@ -112,9 +112,9 @@ void SceneInGame::init() {
 
     // dummy enemies
 
-    spawnEnemy(spaceshipBody->position.get() + Vec(100.0, 0.0));
-    spawnEnemy(spaceshipBody->position.get() + Vec(200.0, 0.0));
-    spawnEnemy(spaceshipBody->position.get() + Vec(300.0, 0.0));
+    spawnEnemy(spaceshipBody->position.get() + Vecf(100.0, 0.0));
+    spawnEnemy(spaceshipBody->position.get() + Vecf(200.0, 0.0));
+    spawnEnemy(spaceshipBody->position.get() + Vecf(300.0, 0.0));
 
     // light test
     auto lightObj = Tile2D::createGameObject();

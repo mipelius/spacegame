@@ -31,9 +31,9 @@ Body::Body() :
     angle           (   Property<float>  (&angle_            )   ),
     angularVelocity (   Property<float>  (&angularVelocity_  )   ),
 
-    position        (   Property<Vec>  (&position_         )   ),
-    velocity        (   Property<Vec>  (&velocity_         )   ),
-    force           (   Property<Vec>  (&force_            )   ),
+    position        (   Property<Vecf>  (&position_         )   ),
+    velocity        (   Property<Vecf>  (&velocity_         )   ),
+    force           (   Property<Vecf>  (&force_            )   ),
 
     // events
 
@@ -42,9 +42,9 @@ Body::Body() :
 
     // private member variables
 
-    position_       (   Vec(0,0) ),
-    velocity_       (   Vec(0,0) ),
-    force_          (   Vec(0,0) ),
+    position_       (   Vecf(0,0) ),
+    velocity_       (   Vecf(0,0) ),
+    force_          (   Vecf(0,0) ),
     angle_          (   0.0         ),
     angularVelocity_(   0.0         ),
     mass_           (   1.0         ),
@@ -68,19 +68,19 @@ void Body::onDestroy() {
 void Body::step_(float timeElapsedSec) {
     // calculate drag
 
-    Vec drag = Vec(0, 0);
+    Vecf drag = Vecf(0, 0);
 
     if (velocity_.x != 0 || velocity_.y != 0) {
         float speedLengthPow2 = velocity_.x * velocity_.x + velocity_.y * velocity_.y;
-        Vec dragUnitVector = (velocity_ * -1) * (1 / sqrt(velocity_.x * velocity_.x + velocity_.y * velocity_.y));
+        Vecf dragUnitVector = (velocity_ * -1) * (1 / sqrt(velocity_.x * velocity_.x + velocity_.y * velocity_.y));
         drag = dragUnitVector * speedLengthPow2 * (0.5 * physicsWorld_->airDensity.get());
     }
 
-    Vec totalForce = force_ + drag;
+    Vecf totalForce = force_ + drag;
 
     // use acceleration for updating velocity --> position
 
-    Vec acceleration = totalForce / mass_;
+    Vecf acceleration = totalForce / mass_;
     acceleration += physicsWorld_->gForce_;
     velocity_ += acceleration;
     position_ = position_ + (velocity_ * timeElapsedSec * physicsWorld_->metersPerPixel.get());
@@ -91,7 +91,7 @@ void Body::step_(float timeElapsedSec) {
 
     // remove all applied forces
 
-    force_ = Vec(0, 0);
+    force_ = Vecf(0, 0);
 
     // update dependent properties
 
@@ -128,7 +128,7 @@ bool Body::detectMapCollision_(float deltaTime) {
     int jBegin = (int)boundingBox.y1 - ((int)boundingBox.y1) % blockSizeH;
     int jEnd = (int)boundingBox.y2 + (int)boundingBox.y2 % blockSizeH;
 
-    Vec direction = velocity_ * deltaTime * Tile2D::physicsWorld().metersPerPixel_;
+    Vecf direction = velocity_ * deltaTime * Tile2D::physicsWorld().metersPerPixel_;
     Tile* tile;
 
     float w = blockSizeW;
@@ -138,12 +138,12 @@ bool Body::detectMapCollision_(float deltaTime) {
     tileCollider.setPoints({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
 
     if (direction.length() < sqrt(blockSizeW * blockSizeH) / 4.0) { // if slowly moving object -> use SAT strategy
-        Vec contactNormal;
+        Vecf contactNormal;
         float penetration;
 
         for (int i=iBegin; i <= iEnd; i += blockSizeW) {
             for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
-                tile = map->getValueScaled(Vec(i, j));
+                tile = map->getValueScaled(Vecf(i, j));
                 if (tile != nullptr && tile->density.get() > 0.0) {
                     tileCollider.pos_ = {(float)i, (float)j};
 
@@ -163,18 +163,18 @@ bool Body::detectMapCollision_(float deltaTime) {
         }
 
     } else { // if fast object -> use polygon casting/sweeping
-        Vec contactNormal;
-        Vec currentContactNormal;
+        Vecf contactNormal;
+        Vecf currentContactNormal;
 
-        Vec toCollision = {0, 0};
-        Vec currentToCollision;
+        Vecf toCollision = {0, 0};
+        Vecf currentToCollision;
 
         Tile* collisionTile = nullptr;
-        Vec collisionTileCoord;
+        Vecf collisionTileCoord;
 
         for (int i=iBegin; i <= iEnd; i += blockSizeW) {
             for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
-                tile = map->getValueScaled(Vec(i, j));
+                tile = map->getValueScaled(Vecf(i, j));
                 if (tile != nullptr && tile->density.get() > 0.0) {
                     tileCollider.pos_ = {(float)i, (float)j};
 
@@ -195,11 +195,11 @@ bool Body::detectMapCollision_(float deltaTime) {
         }
 
         if (collided) {
-            const Vec& v = velocity_;
-            const Vec& n = contactNormal;
+            const Vecf& v = velocity_;
+            const Vecf& n = contactNormal;
 
-            Vec proj_n_v = n * v.dot(n);
-            Vec reflVel = v + proj_n_v * -2.0;
+            Vecf proj_n_v = n * v.dot(n);
+            Vecf reflVel = v + proj_n_v * -2.0;
 
             velocity_ = reflVel * 0.2;
             position_ += toCollision * (1.01);
@@ -222,7 +222,7 @@ bool Body::detectCollisionWith_(Body &otherBody) {
     if (collider_ == nullptr || otherBody.collider_ == nullptr) return false;
     if (!collider_->boundingBox_.intersectsWith(otherBody.collider_->boundingBox_)) return false;
 
-    Vec contactNormal;
+    Vecf contactNormal;
     float penetration;
 
     if (collider_->overlap(*otherBody.collider_, contactNormal, penetration)) {
@@ -233,8 +233,8 @@ bool Body::detectCollisionWith_(Body &otherBody) {
     return false;
 }
 
-void Body::applyForce(Vec force) {
-    Vec forceBefore = this->force.get();
+void Body::applyForce(Vecf force) {
+    Vecf forceBefore = this->force.get();
     this->force.set(forceBefore + force);
 }
 

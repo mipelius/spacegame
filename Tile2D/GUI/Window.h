@@ -29,7 +29,7 @@ class GuiComponentBase;
 class Window {
     friend class Tile2D;
 public:
-    Property<Vec>            const position;
+    Property<Vecf>            const position;
     BooleanProperty             const isFullScreen;
     ReadableProperty<unsigned>  const w;
     ReadableProperty<unsigned>  const h;
@@ -59,8 +59,8 @@ private:
 
     bool isInitialized_;
 
-    static Vec getPosition_(void *owner);
-    static void setPosition_(void *owner, const Vec &value);
+    static Vecf getPosition_(void *owner);
+    static void setPosition_(void *owner, const Vecf &value);
 
     static bool getIsFullScreen_(void *owner);
     static void setIsFullScreen_(void *owner, const bool &value);

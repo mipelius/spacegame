@@ -26,7 +26,7 @@ class Ears;
 class SamplePlayer : public Player {
 public:
     SamplePlayer();
-    void play(AudioClip* sample, const Vec& position, int channel = -1);
+    void play(AudioClip* sample, const Vecf& position, int channel = -1);
 
     void setEars(Ears* ears);
 

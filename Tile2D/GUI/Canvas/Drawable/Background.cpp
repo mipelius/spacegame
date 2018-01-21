@@ -40,7 +40,7 @@ void Background::draw(const Canvas& canvas) {
     if (texturePtr_ != nullptr) {
         texturePtr_->glBind();
 
-        Vec position = canvas.getCamera()->position.get();
+        Vecf position = canvas.getCamera()->position.get();
 
         GLfloat x = (position.x * ratio_) / texturePtr_->getW();
         GLfloat y = (position.y * ratio_) / texturePtr_->getH();

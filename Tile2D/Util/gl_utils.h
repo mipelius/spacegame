@@ -13,7 +13,7 @@
 #include "LineSegment.h"
 #include "PolygonCollider.h"
 
-static void plot(const Vec& vec, float size = 5.0) {
+static void plot(const Vecf& vec, float size = 5.0) {
     glBegin(GL_QUADS);
     glVertex2f(vec.x - size, vec.y - size);
     glVertex2f(vec.x + size, vec.y - size);

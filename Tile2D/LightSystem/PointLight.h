@@ -38,7 +38,7 @@ public:
     PointLight();
     ~PointLight() = default;
 
-    Property<Vec> const position;
+    Property<Vecf> const position;
     Property<float> const radius;
     Property<float> const intensity;
 
@@ -49,15 +49,15 @@ protected:
     void onDestroy() override;
 
 private:
-    Vec position_;
+    Vecf position_;
     float radius_;
     float intensity_;
 
     static const int TEXTURE_SIZE = 32;
     static void createLightTexture();
 
-    static Vec getPosition_(void *owner);
-    static void setPosition_(void *owner, const Vec &value);
+    static Vecf getPosition_(void *owner);
+    static void setPosition_(void *owner, const Vecf &value);
 
     class positionProperty;
 };
