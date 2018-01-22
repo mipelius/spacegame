@@ -42,7 +42,7 @@ public:
 
     Body();
 
-    void applyForce(Vecd force);
+    void applyForce(Vecf force);
 
     PhysicsWorld* getWorld();
     PolygonCollider* getCollider();
@@ -53,8 +53,8 @@ public:
     void setMass(float mass);
     float getAngularVelocity() const;
     void setAngularVelocity(float angularVelocity);
-    const Vecd &getVelocity() const;
-    void setVelocity(const Vecd &velocity);
+    const Vecf &getVelocity() const;
+    void setVelocity(const Vecf &velocity);
 
 protected:
     PhysicsWorld *physicsWorld_;
@@ -67,9 +67,8 @@ private:
     float mass_;
     float angularVelocity_;
 
-    Vecd position_;
-    Vecd velocity_;
-    Vecd force_;
+    Vecf velocity_;
+    Vecf force_;
 
     bool detectCollisionWith_(Body &otherBody);
     bool detectMapCollision_(float deltaTime);

@@ -31,7 +31,6 @@ Body::Body() :
 
     // private member variables
 
-    position_       (   Vecf(0,0) ),
     velocity_       (   Vecf(0,0) ),
     force_          (   Vecf(0,0) ),
     angularVelocity_(   0.0         ),
@@ -44,7 +43,6 @@ Body::Body() :
 }
 
 void Body::init() {
-    position_ = {(double)transform()->position_.x, (double)transform()->position_.y};
     Tile2D::physicsWorld().add(this);
 }
 
@@ -55,37 +53,35 @@ void Body::onDestroy() {
 }
 
 void Body::step_(float timeElapsedSec) {
+    Vecf& position = gameObject()->transform().position_;
+    float& rotation = gameObject()->transform().rotation_;
+
     // calculate drag
 
-    Vecd drag = Vecd(0, 0);
+    Vecf drag = Vecd(0, 0);
 
     if (velocity_.x != 0 || velocity_.y != 0) {
-        double velLength = velocity_.length();
-        Vecd dragUnitVector = (velocity_ * -1) / velLength;
+        float velLength = velocity_.length();
+        Vecf dragUnitVector = (velocity_ * -1) / velLength;
         drag = dragUnitVector * velLength * (0.5 * physicsWorld_->getAirDensity());
     }
 
-    Vecd totalForce = force_ + drag;
+    Vecf totalForce = force_ + drag;
 
     // use acceleration for updating velocity --> position
 
-    Vecd acceleration = totalForce / mass_;
+    Vecf acceleration = totalForce / mass_;
     acceleration += physicsWorld_->gForce_;
     velocity_ += acceleration;
-    position_ = position_ + (velocity_ * timeElapsedSec * physicsWorld_->getMetersPerPixel());
+    position = position + (velocity_ * timeElapsedSec * physicsWorld_->getMetersPerPixel());
 
     // apply rotation change
 
-    float& rotation = gameObject()->transform().rotation_;
     rotation = rotation + angularVelocity_;
-
-    // update transform position
-
-    gameObject()->transform().position_ = {(float)position_.x, (float)position_.y};
 
     // remove all applied forces
 
-    force_ = Vecd(0.0, 0.0);
+    force_ = Vecf(0.0, 0.0);
 }
 
 bool Body::detectMapCollision_(float deltaTime) {
@@ -97,14 +93,14 @@ bool Body::detectMapCollision_(float deltaTime) {
 
     bool collided = false;
 
-    collider_->pos_ = {(float)position_.x, (float)position_.y};
-    collider_->rot_ = gameObject()->transform().rotation_;
+    collider_->pos_ = transform()->position_;
+    collider_->rot_ = transform()->rotation_;
 
     Rect boundingBox = collider_->boundingBox();
-    boundingBox.x1 += position_.x;
-    boundingBox.x2 += position_.x;
-    boundingBox.y1 += position_.y;
-    boundingBox.y2 += position_.y;
+    boundingBox.x1 += transform()->position_.x;
+    boundingBox.x2 += transform()->position_.x;
+    boundingBox.y1 += transform()->position_.y;
+    boundingBox.y2 += transform()->position_.y;
 
     int blockSizeW = map->getTileSet()->getTileW();
     int blockSizeH = map->getTileSet()->getTileH();
@@ -145,7 +141,7 @@ bool Body::detectMapCollision_(float deltaTime) {
 
         if (collided) {
             velocity_ = {0, 0};
-            position_ = {(double)collider_->pos_.x, (double)collider_->pos_.y};
+            transform()->position_ = collider_->pos_;
         }
 
     } else { // if fast object -> use polygon casting/sweeping
@@ -181,20 +177,19 @@ bool Body::detectMapCollision_(float deltaTime) {
         }
 
         if (collided) {
-            const Vecd v = velocity_;
+            const Vecf v = velocity_;
             const Vecf& n = contactNormal;
 
             Vecf proj_n_v = n * v.dot(n);
-            Vecd reflVel = v + proj_n_v * -2.0;
+            Vecf reflVel = v + proj_n_v * -2.0;
 
             velocity_ = reflVel * 0.2;
-            position_ += toCollision * (1.01);
+            transform()->position_ += toCollision * (1.01);
 
             mapCollision.raise(MapCollisionEventArgs(deltaTime, n, collisionTileCoord, collisionTile));
         }
     }
 
-    transform()->position_ = {(float)position_.x, (float)position_.y};
 
     return collided;
 }
@@ -215,7 +210,7 @@ bool Body::detectCollisionWith_(Body &otherBody) {
     return false;
 }
 
-void Body::applyForce(Vecd force) {
+void Body::applyForce(Vecf force) {
     force_ += force;
 }
 
@@ -249,10 +244,10 @@ void Body::setAngularVelocity(float angularVelocity) {
     angularVelocity_ = angularVelocity;
 }
 
-const Vecd &Body::getVelocity() const {
+const Vecf &Body::getVelocity() const {
     return velocity_;
 }
 
-void Body::setVelocity(const Vecd &velocity) {
+void Body::setVelocity(const Vecf &velocity) {
     velocity_ = velocity;
 }
