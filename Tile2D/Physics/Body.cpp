@@ -58,10 +58,11 @@ void Body::step_(float timeElapsedSec) {
 
     // calculate drag
 
-    Vecf drag = Vecd(0, 0);
+    Vecf drag = Vecf(0, 0);
 
-    if (velocity_.x != 0 || velocity_.y != 0) {
-        float velLength = velocity_.length();
+    float velLength = velocity_.length();
+
+    if (velLength > 0.0) {
         Vecf dragUnitVector = (velocity_ * -1) / velLength;
         drag = dragUnitVector * velLength * (0.5 * physicsWorld_->getAirDensity());
     }
