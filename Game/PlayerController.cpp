@@ -17,6 +17,7 @@
 #include "Tile2D.h"
 #include "PlayerController.h"
 #include "MissileBehaviour.h"
+#include "BombBehaviour.h"
 
 void PlayerController::awake() {
     body = gameObject()->getComponent<Body>();
@@ -67,6 +68,10 @@ void PlayerController::update() {
             if (event.key.keysym.sym == SDLK_d) {
                 Tile2D::lightSystem().setSoftShadowsEnabled(!Tile2D::lightSystem().isSoftShadowsEnabled());
             }
+            if (event.key.keysym.sym == SDLK_LSHIFT) {
+                dropBomp();
+            }
+
             if (event.key.keysym.sym == SDLK_TAB) {
                 if (Tile2D::isDebugMode) {
                     sprite->setOpacity(0.5);
@@ -199,4 +204,23 @@ void PlayerController::lateUpdate() {
 
         camera->setPosition(cameraPos);
     }
+}
+
+void PlayerController::dropBomp() {
+    auto bomp = Tile2D::createGameObject();
+    bomp->transform().setPosition(transform()->getPosition());
+    bomp->transform().setRotation(transform()->getRotation());
+
+    auto bompBody = bomp->attachComponent<Body>();
+    bompBody->setMass(50);
+    bompBody->setVelocity(body->getVelocity() / 2 + Vecf(0, 1000));
+
+    auto bompCollider = bomp->attachComponent<PolygonCollider>();
+    bompCollider->setPoints({{-10, -10}, {10, -10}, {10, 10}, {-10, 10}});
+
+    auto bompSprite = bomp->attachComponent<Sprite>();
+    bompSprite->setTexturePtr(Tile2D::resources().textures["bomb"]);
+    bompSprite->setRect({-10, -10, 10, 10});
+
+    auto bompBehaviour = bomp->attachComponent<BombBehaviour>();
 }
