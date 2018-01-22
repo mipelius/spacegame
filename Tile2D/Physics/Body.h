@@ -55,6 +55,8 @@ public:
     void setAngularVelocity(float angularVelocity);
     const Vecf &getVelocity() const;
     void setVelocity(const Vecf &velocity);
+    float getDrag() const;
+    void setDrag(float drag);
 
 protected:
     PhysicsWorld *physicsWorld_;
@@ -69,6 +71,7 @@ private:
 
     Vecf velocity_;
     Vecf force_;
+    float drag_;
 
     bool detectCollisionWith_(Body &otherBody);
     bool detectMapCollision_(float deltaTime);

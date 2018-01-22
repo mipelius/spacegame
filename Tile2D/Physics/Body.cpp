@@ -33,8 +33,9 @@ Body::Body() :
 
     velocity_       (   Vecf(0,0) ),
     force_          (   Vecf(0,0) ),
-    angularVelocity_(   0.0         ),
-    mass_           (   1.0         ),
+    drag_           (   1.0f      ),
+    angularVelocity_(   0.0f      ),
+    mass_           (   1.0f      ),
 
     physicsWorld_                       (nullptr),
     collider_                           (nullptr)
@@ -58,13 +59,14 @@ void Body::step_(float timeElapsedSec) {
 
     // calculate drag
 
-    Vecf drag = Vecf(0, 0);
+    Vecf drag = {0.0f, 0.0f};
 
-    float velLength = velocity_.length();
+    float velLengthSqr = velocity_.lengthSqr();
+    float velLength = sqrt(velLengthSqr);
 
-    if (velLength > 0.0) {
+    if (velLength > 0.0f) {
         Vecf dragUnitVector = (velocity_ * -1) / velLength;
-        drag = dragUnitVector * velLength * (0.5 * physicsWorld_->getAirDensity());
+        drag = dragUnitVector * velLengthSqr * (0.5 * physicsWorld_->getAirDensity()) * drag_;
     }
 
     Vecf totalForce = force_ + drag;
@@ -251,4 +253,12 @@ const Vecf &Body::getVelocity() const {
 
 void Body::setVelocity(const Vecf &velocity) {
     velocity_ = velocity;
+}
+
+float Body::getDrag() const {
+    return drag_;
+}
+
+void Body::setDrag(float drag) {
+    drag_ = drag;
 }

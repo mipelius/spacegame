@@ -123,7 +123,8 @@ void PlayerController::shootOnce(Vecf offset) {
 
     auto missileBody = missile->attachComponent<Body>();
     missileBody->setMass(10.0);
-    missileBody->setVelocity(Vecf::byAngle(transform()->getRotation(), 30000.0) + body->getVelocity());
+    missileBody->setDrag(0.2);
+    missileBody->setVelocity(Vecf::byAngle(transform()->getRotation(), 20000.0) + body->getVelocity());
 
     auto collider = missile->attachComponent<PolygonCollider>();
     collider->setPoints({
