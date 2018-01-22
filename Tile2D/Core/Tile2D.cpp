@@ -34,14 +34,14 @@ Tile2D::Tile2D() {
 }
 
 Tile2D::~Tile2D() {
+    cleanUp_();
+
     delete canvas_;
     delete sceneManager_;
     delete physicsWorld_;
     delete resources_;
     delete window_;
     delete lightSystem_;
-
-    cleanUp_();
 
     SDL_Quit();
 }
