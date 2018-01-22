@@ -94,7 +94,7 @@ MapTexture::MapTexture(int blockW, int blockH) {
     createGlTexture();
 }
 
-int MapTexture::addTexture(std::string filename) {
+int MapTexture::addTexture(std::string filename, float opacity) {
     SDL_Surface* surface = IMG_Load(filename.data());
 
     if (!surface) {
@@ -105,6 +105,13 @@ int MapTexture::addTexture(std::string filename) {
     if (surface->w != blockW_ || surface->h != blockH_) {
         std::fprintf(stderr, "Image has invalid size (%s)\n", filename.data());
         exit(1);
+    }
+
+    Uint8* pixels = (Uint8*)(surface->pixels);
+
+    for (auto i=0u; i<surface->w * surface->h; ++i) {
+        Uint8* alphachannel = &pixels[i * 4 + 3];
+        *alphachannel = (Uint8)(opacity * 255);
     }
 
     // Bind the texture object

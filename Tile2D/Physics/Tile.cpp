@@ -33,7 +33,7 @@ Tile::Tile(json::Object object, MapTexture* mapTexture)
         mapTextureToUse = mapTexture;
 
         mapTextureId = mapTexture->addTexture(
-                object["texture"].ToString()
+                object["texture"].ToString(), object["opacity"].ToFloat()
         );
     }
 

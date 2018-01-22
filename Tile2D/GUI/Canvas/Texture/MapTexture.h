@@ -42,7 +42,7 @@ public:
 
     MapTexture(int blockW, int blockH);
 
-    int addTexture(std::string filename);
+    int addTexture(std::string filename, float opacity);
 
     void glVertices(float x, float y, float w, float h, int textureNumber, int cornerRounding);
 
