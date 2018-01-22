@@ -22,6 +22,7 @@
 #include "Sprite.h"
 #include "PlayerController.h"
 #include "Tags.h"
+#include "BackgroundBehaviour.h"
 
 static GameObject* spawnEnemy(Vecf pos) {
     auto enemy = Tile2D::createGameObject();
@@ -50,6 +51,17 @@ static GameObject* spawnEnemy(Vecf pos) {
     return enemy;
 }
 
+void createBackground(Rect area, const char* texture, Color color) {
+    auto background = Tile2D::createGameObject();
+    auto bg = background->attachComponent<Background>();
+    bg->setRatio(0.5f);
+    bg->setTexturePtr(Tile2D::resources().textures[texture]);
+    bg->setColor(color);
+    bg->setOpacity(0.0f);
+    auto bgBehaviour = background->attachComponent<BackgroundBehaviour>();
+    bgBehaviour->setArea(area);
+}
+
 void SceneInGame::init() {
     // Scene setup: tile map, physics, light system
 
@@ -57,12 +69,11 @@ void SceneInGame::init() {
     Tile2D::lightSystem().setAmbientLight(0.0);
     Tile2D::physicsWorld().setAirDensity(0.0001);
 
-    // background
-
-    auto background = Tile2D::createGameObject();
-    auto bg = background->attachComponent<Background>();
-    bg->setRatio(0.5f);
-    bg->setTexturePtr(Tile2D::resources().textures["bg2"]);
+    // backgrounds
+    createBackground({0, 0, 3300, 2400},       "bg2", {0.8, 1.0, 0.5}); // upper left corner
+    createBackground({3300, 0, 6400, 2400},    "bg2", {0.2, 0.8, 1.0}); // upper right corner
+    createBackground({0, 2400, 3300, 4800},    "bg1", {0.6, 0.3, 0.3}); // bottom left corner
+    createBackground({3300, 2400, 6400, 4800}, "bg1", {0.3, 0.3, 0.6}); // bottom right corner
 
     // player
 
@@ -90,7 +101,7 @@ void SceneInGame::init() {
 
     auto light = player->attachComponent<PointLight>();
     light->setIntensity(1.0);
-    light->setRadius(400.0);
+    light->setRadius(500.0);
 
     auto playerController = player->attachComponent<PlayerController>();
     playerController->moveForce = 10000.0f;
