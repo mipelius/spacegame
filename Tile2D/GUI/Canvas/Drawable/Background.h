@@ -26,7 +26,7 @@ class Background : public DrawableBase {
 public:
     Background();
 
-    void draw(const Canvas& canvas) override;
+    void drawActual(const Canvas& canvas) override;
 
     // getters and setters
 

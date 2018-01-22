@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2015 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,21 +14,39 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __IDrawable_H_
-#define __IDrawable_H_
+#ifndef __DrawableBase_H_
+#define __DrawableBase_H_
 
 #include "Tile2DComponent.h"
-
-class Canvas;
+#include "Canvas.h"
+#include "Color.h"
 
 class DrawableBase : public Tile2DComponent {
 
 public:
-    virtual void draw(const Canvas& canvas) = 0;
+    DrawableBase();
 
-private:
+    // getters and setters
+
+    bool isVisible() const;
+    void setIsVisible(bool isVisible);
+    float getOpacity() const;
+    void setOpacity(float opacity);
+    const Color &getColor() const;
+    void setColor(const Color &color);
+    void draw(const Canvas& canvas);
+
+protected:
+    virtual void drawActual(const Canvas& canvas) = 0;
+
     void init() override;
     void onDestroy() override;
+
+private:
+    bool isVisible_;
+    float opacity_;
+    Color color_;
 };
 
-#endif //__IDrawable_H_
+
+#endif //__DrawableBase_H_

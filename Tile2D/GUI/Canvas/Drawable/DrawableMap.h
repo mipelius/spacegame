@@ -20,7 +20,7 @@
 class TileMap;
 class MapTexture;
 
-#include "DrawableBase.h"
+#include "Canvas.h"
 
 class DrawableMap {
 

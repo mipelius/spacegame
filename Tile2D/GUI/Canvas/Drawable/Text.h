@@ -18,13 +18,12 @@
 #define __Text_H_
 
 #include <string>
-#include "DrawableBase.h"
 #include "Vec.h"
-#include "BasicDrawableBase.h"
+#include "DrawableBase.h"
 
 class Font;
 
-class Text : public BasicDrawableBase {
+class Text : public DrawableBase {
 public:
     Text();
 

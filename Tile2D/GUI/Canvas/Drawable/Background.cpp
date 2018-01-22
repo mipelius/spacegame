@@ -28,10 +28,8 @@ Background::Background() :
 
 }
 
-void Background::draw(const Canvas& canvas) {
+void Background::drawActual(const Canvas& canvas) {
     Rect rect = canvas.getCamera()->getAreaRect();
-
-    glColor3f(1.0, 1.0, 1.0);
 
     if (texturePtr_ != nullptr) {
         texturePtr_->glBind();

@@ -17,8 +17,8 @@
 #ifndef __Canvas_H_
 #define __Canvas_H_
 
-class DrawableBase;
 class Camera;
+class DrawableBase;
 
 #include "GuiComponentBase.h"
 

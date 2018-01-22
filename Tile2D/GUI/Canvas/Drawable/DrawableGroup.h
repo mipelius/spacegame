@@ -18,9 +18,9 @@
 #define __DrawableGroup_H_
 
 #include <list>
-#include "BasicDrawableBase.h"
+#include "DrawableBase.h"
 
-class DrawableGroup : public BasicDrawableBase {
+class DrawableGroup : public DrawableBase {
 
 public:
     void drawActual(const Canvas& canvas) override;

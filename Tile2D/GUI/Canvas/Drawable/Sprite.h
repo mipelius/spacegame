@@ -18,13 +18,13 @@
 #define __Sprite_H_
 
 #include "Texture.h"
-#include "BasicDrawableBase.h"
+#include "DrawableBase.h"
 #include "Rect.h"
 
 class ColliderShape;
 class ITexture;
 
-class Sprite : public BasicDrawableBase {
+class Sprite : public DrawableBase {
 
 public:
     Sprite();
