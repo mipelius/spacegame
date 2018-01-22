@@ -33,23 +33,22 @@ void BasicDrawableBase::draw(const Canvas& canvas) {
     if (opacity_ < 1.0) {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glColor4d(color_.red, color_.green, color_.blue, opacity_);
+        glColor4f(color_.red, color_.green, color_.blue, opacity_);
     }
     else {
-        glColor4d(color_.red, color_.green, color_.blue, 1.0);
+        glColor4f(color_.red, color_.green, color_.blue, 1.0);
     }
 
-    glTranslated(transform()->getPosition().x, transform()->getPosition().y, 0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glTranslatef(transform()->getPosition().x, transform()->getPosition().y, 0);
     glRotatef(transform()->getRotation(), 0.0f, 0.0f, 1.0f);
 
     drawActual(canvas);
 
     glRotatef(-transform()->getRotation(), 0.0f, 0.0f, 1.0f);
-    glTranslated(-transform()->getPosition().x, -transform()->getPosition().y, 0);
-
-    if (opacity_ > 0.0 && opacity_ < 1.0) {
-        glDisable(GL_BLEND);
-    }
+    glTranslatef(-transform()->getPosition().x, -transform()->getPosition().y, 0);
 }
 
 // getters and setters

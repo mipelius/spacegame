@@ -38,8 +38,6 @@ void Canvas::renderActual() {
             1.0
     );
 
-    glMatrixMode(GL_MODELVIEW);
-
     for (auto& drawable : drawables_) {
         drawable->draw(*this);
     }
