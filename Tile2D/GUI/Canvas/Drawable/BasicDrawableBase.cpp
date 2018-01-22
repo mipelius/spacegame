@@ -18,8 +18,6 @@
 #include "BasicDrawableBase.h"
 
 BasicDrawableBase::BasicDrawableBase() :
-position_   (Vecf(0, 0)  ),
-angle_      (0          ),
 isVisible_  (true       ),
 opacity_    (1.0        ),
 color_      (Color(1.0, 1.0, 1.0))
@@ -41,13 +39,13 @@ void BasicDrawableBase::draw(const Canvas& canvas) {
         glColor4d(color_.red, color_.green, color_.blue, 1.0);
     }
 
-    glTranslated(position_.x, position_.y, 0);
-    glRotatef((GLfloat)angle_, 0.0f, 0.0f, 1.0f);
+    glTranslated(transform()->getPosition().x, transform()->getPosition().y, 0);
+    glRotatef(transform()->getRotation(), 0.0f, 0.0f, 1.0f);
 
     drawActual(canvas);
 
-    glRotatef((GLfloat)-angle_, 0.0f, 0.0f, 1.0f);
-    glTranslated(-position_.x, -position_.y, 0);
+    glRotatef(-transform()->getRotation(), 0.0f, 0.0f, 1.0f);
+    glTranslated(-transform()->getPosition().x, -transform()->getPosition().y, 0);
 
     if (opacity_ > 0.0 && opacity_ < 1.0) {
         glDisable(GL_BLEND);
@@ -55,22 +53,6 @@ void BasicDrawableBase::draw(const Canvas& canvas) {
 }
 
 // getters and setters
-
-const Vecf &BasicDrawableBase::getPosition() const {
-    return position_;
-}
-
-void BasicDrawableBase::setPosition(const Vecf &position) {
-    position_ = position;
-}
-
-float BasicDrawableBase::getAngle() const {
-    return angle_;
-}
-
-void BasicDrawableBase::setAngle(float angle) {
-    angle_ = angle;
-}
 
 bool BasicDrawableBase::isVisible() const {
     return isVisible_;

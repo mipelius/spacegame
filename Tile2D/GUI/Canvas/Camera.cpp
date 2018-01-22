@@ -45,10 +45,10 @@ void Camera::setPosition(const Vecf &value) {
     float w = areaRect_.getWidth();
     float h = areaRect_.getHeight();
 
-    areaRect_.x1 = value.x;
-    areaRect_.y1 = value.y;
-    areaRect_.x2 = value.x + w;
-    areaRect_.y2 = value.y + h;
+    areaRect_.x1 = value.x - w / 2;
+    areaRect_.y1 = value.y - h / 2;
+    areaRect_.x2 = value.x + w / 2;
+    areaRect_.y2 = value.y + h / 2;
 }
 
 const Rect &Camera::getAreaRect() const {

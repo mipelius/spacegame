@@ -34,7 +34,6 @@ Body::Body() :
     position_       (   Vecf(0,0) ),
     velocity_       (   Vecf(0,0) ),
     force_          (   Vecf(0,0) ),
-    angle_          (   0.0         ),
     angularVelocity_(   0.0         ),
     mass_           (   1.0         ),
 
@@ -45,6 +44,7 @@ Body::Body() :
 }
 
 void Body::init() {
+    position_ = {(double)transform()->position_.x, (double)transform()->position_.y};
     Tile2D::physicsWorld().add(this);
 }
 
@@ -57,30 +57,35 @@ void Body::onDestroy() {
 void Body::step_(float timeElapsedSec) {
     // calculate drag
 
-    Vecf drag = Vecf(0, 0);
+    Vecd drag = Vecd(0, 0);
 
     if (velocity_.x != 0 || velocity_.y != 0) {
-        float speedLengthPow2 = velocity_.x * velocity_.x + velocity_.y * velocity_.y;
-        Vecf dragUnitVector = (velocity_ * -1) * (1 / sqrt(velocity_.x * velocity_.x + velocity_.y * velocity_.y));
-        drag = dragUnitVector * speedLengthPow2 * (0.5 * physicsWorld_->getAirDensity());
+        double velLength = velocity_.length();
+        Vecd dragUnitVector = (velocity_ * -1) / velLength;
+        drag = dragUnitVector * velLength * (0.5 * physicsWorld_->getAirDensity());
     }
 
-    Vecf totalForce = force_ + drag;
+    Vecd totalForce = force_ + drag;
 
     // use acceleration for updating velocity --> position
 
-    Vecf acceleration = totalForce / mass_;
+    Vecd acceleration = totalForce / mass_;
     acceleration += physicsWorld_->gForce_;
     velocity_ += acceleration;
     position_ = position_ + (velocity_ * timeElapsedSec * physicsWorld_->getMetersPerPixel());
 
-    // apply angle change
+    // apply rotation change
 
-    angle_ = angle_ + angularVelocity_;
+    float& rotation = gameObject()->transform().rotation_;
+    rotation = rotation + angularVelocity_;
+
+    // update transform position
+
+    gameObject()->transform().position_ = {(float)position_.x, (float)position_.y};
 
     // remove all applied forces
 
-    force_ = Vecf(0, 0);
+    force_ = Vecd(0.0, 0.0);
 }
 
 bool Body::detectMapCollision_(float deltaTime) {
@@ -92,8 +97,8 @@ bool Body::detectMapCollision_(float deltaTime) {
 
     bool collided = false;
 
-    collider_->pos_ = position_;
-    collider_->rot_ = angle_;
+    collider_->pos_ = {(float)position_.x, (float)position_.y};
+    collider_->rot_ = gameObject()->transform().rotation_;
 
     Rect boundingBox = collider_->boundingBox();
     boundingBox.x1 += position_.x;
@@ -140,7 +145,7 @@ bool Body::detectMapCollision_(float deltaTime) {
 
         if (collided) {
             velocity_ = {0, 0};
-            position_ = collider_->pos_;
+            position_ = {(double)collider_->pos_.x, (double)collider_->pos_.y};
         }
 
     } else { // if fast object -> use polygon casting/sweeping
@@ -176,11 +181,11 @@ bool Body::detectMapCollision_(float deltaTime) {
         }
 
         if (collided) {
-            const Vecf& v = velocity_;
+            const Vecd v = velocity_;
             const Vecf& n = contactNormal;
 
             Vecf proj_n_v = n * v.dot(n);
-            Vecf reflVel = v + proj_n_v * -2.0;
+            Vecd reflVel = v + proj_n_v * -2.0;
 
             velocity_ = reflVel * 0.2;
             position_ += toCollision * (1.01);
@@ -208,8 +213,8 @@ bool Body::detectCollisionWith_(Body &otherBody) {
     return false;
 }
 
-void Body::applyForce(Vecf force) {
-    force += force;
+void Body::applyForce(Vecd force) {
+    force_ += force;
 }
 
 void Body::setWorld_(PhysicsWorld *gameWorld) {
@@ -242,26 +247,10 @@ void Body::setAngularVelocity(float angularVelocity) {
     angularVelocity_ = angularVelocity;
 }
 
-const Vecf &Body::getPosition() const {
-    return position_;
-}
-
-void Body::setPosition(const Vecf &position) {
-    position_ = position;
-}
-
-const Vecf &Body::getVelocity() const {
+const Vecd &Body::getVelocity() const {
     return velocity_;
 }
 
-void Body::setVelocity(const Vecf &velocity) {
+void Body::setVelocity(const Vecd &velocity) {
     velocity_ = velocity;
-}
-
-float Body::getAngle() const {
-    return angle_;
-}
-
-void Body::setAngle(float angle) {
-    angle_ = angle;
 }

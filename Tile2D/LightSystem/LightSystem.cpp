@@ -370,8 +370,8 @@ void LightSystem::updateLightMap(Rect *areaRect) {
     int offsetY = (int)(areaRect->y1 / tileMap->getTileSet()->getTileH()) - MAX_LIGHT_RADIUS;
 
     for (auto light : lights_) {
-        int currentLightCenterX = (int)(light->getPosition().x / tileMap->getTileSet()->getTileW());
-        int currentLightCenterY = (int)(light->getPosition().y / tileMap->getTileSet()->getTileH());
+        int currentLightCenterX = (int)(light->transform()->getPosition().x / tileMap->getTileSet()->getTileW());
+        int currentLightCenterY = (int)(light->transform()->getPosition().y / tileMap->getTileSet()->getTileH());
         int radius              = (int)(light->getRadius()     / tileMap->getTileSet()->getTileW());
 
         updateLightMapRecursive(

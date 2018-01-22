@@ -38,8 +38,6 @@ public:
 
     // getters and setters
 
-    const Vecf &getPosition() const;
-    void setPosition(const Vecf &position);
     float getRadius() const;
     void setRadius(float radius);
     float getIntensity() const;
@@ -52,7 +50,6 @@ protected:
 private:
     static GLuint glTextureId_;
 
-    Vecf position_;
     float radius_;
     float intensity_;
 

@@ -22,11 +22,11 @@
 
 static void createPulseLight(Vecf position) {
     auto obj = Tile2D::createGameObject();
+    obj->transform().setPosition(position);
 
     auto light = obj->attachComponent<PointLight>();
     light->setRadius(80.0);
     light->setIntensity(1.0);
-    light->setPosition(position);
 
     auto pulseLightBehaviour = obj->attachComponent<PulseLightBehaviour>();
     pulseLightBehaviour->TTL = 1.0f;
@@ -34,18 +34,17 @@ static void createPulseLight(Vecf position) {
 
 static void createSparkle(Vecf position, Vecf velocity, Color color) {
     auto sparkle = Tile2D::createGameObject();
+    sparkle->transform().setPosition(position);
+    sparkle->transform().setRotation(velocity.angle());
+
 
     auto sparkleBody = sparkle->attachComponent<Body>();
     sparkleBody->setMass(10.0);
-    sparkleBody->setPosition(position);
     sparkleBody->setVelocity(velocity);
-    sparkleBody->setAngle(velocity.angle());
 
     auto sparkleSprite = sparkle->attachComponent<Sprite>();
     sparkleSprite->setRect({-20, -20, 20, 20});
     sparkleSprite->setColor(color);
-    // sparkleSprite->position.bind(sparkleBody->position);
-    // sparkleSprite->angle.bind(sparkleBody->angle);
     sparkleSprite->setTexturePtr(Tile2D::resources().textures["light"]);
 
     auto sparkleBehaviour = sparkle->attachComponent<SparkleBehaviour>();
@@ -73,7 +72,7 @@ void MissileBehaviour::Body_MapCollisionEventHandler::handle(Body* body, MapColl
     Tile2D::tileMap().setValueScaled(args.tileCoordinates, Tile2D::tileMap().getTileSet()->getEmptyBlock());
 
     createSparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
-    createPulseLight(body->getPosition());
+    createPulseLight(body->transform()->getPosition());
 }
 
 void MissileBehaviour::Body_BodyCollisionEventHandler::handle(Body* body, BodyCollisionEventArgs args) {
@@ -87,7 +86,7 @@ void MissileBehaviour::Body_BodyCollisionEventHandler::handle(Body* body, BodyCo
             sprite->setColor({1, 0, 0});
         }
 
-        createSparkles(body->getPosition(), args.contactNormal, {1, 0, 0});
+        createSparkles(body->transform()->getPosition(), args.contactNormal, {1, 0, 0});
         body->gameObject()->destroy();
     }
 };

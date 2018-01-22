@@ -159,5 +159,5 @@ void GuiComponentBase::render() {
 }
 
 void GuiComponentBase::glColor(float red, float green, float blue) const {
-    glColor4d(red, green, blue, opacity_);
+    glColor4f(red, green, blue, opacity_);
 }

@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2017 Miika Pelkonen
+// Copyright (C) 2018 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,25 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __IComponent_H
-#define __IComponent_H
+#include "Transform.h"
 
-#include "GameObject.h"
+// getters and setters
 
-class Tile2DComponent {
-    friend class GameObject;
+const Vecf &Transform::getPosition() const {
+    return position_;
+}
 
-public:
-    GameObject* gameObject() { return gameObject_; }
-    Transform* transform() { return &(gameObject_->transform()); }
+void Transform::setPosition(const Vecf &position) {
+    position_ = position;
+}
 
-protected:
-    virtual void init() = 0;
-    virtual void onDestroy() = 0;
+float Transform::getRotation() const {
+    return rotation_;
+}
 
-private:
-    GameObject* gameObject_ = nullptr;
-
-};
-
-#endif //__IComponent_H
+void Transform::setRotation(float rotation) {
+    rotation_ = rotation;
+}

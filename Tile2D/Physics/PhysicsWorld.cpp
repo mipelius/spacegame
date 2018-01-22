@@ -81,7 +81,7 @@ void PhysicsWorld::debugDraw() {
 
         glBegin(GL_LINE_LOOP);
         for (auto& pointOrig : points) {
-            auto point = pointOrig.rotated(body->getAngle()) + body->getPosition();
+            auto point = pointOrig.rotated(body->transform()->getRotation()) + body->transform()->getPosition();
             glVertex2f(point.x, point.y);
         }
         glEnd();
@@ -91,10 +91,10 @@ void PhysicsWorld::debugDraw() {
         glColor3f(0.0f, 0.3f, 0.0f);
 
         Rect rect = body->collider_->boundingBox();
-        rect.x1 += body->getPosition().x;
-        rect.y1 += body->getPosition().y;
-        rect.x2 += body->getPosition().x;
-        rect.y2 += body->getPosition().y;
+        rect.x1 += body->transform()->getPosition().x;
+        rect.y1 += body->transform()->getPosition().y;
+        rect.x2 += body->transform()->getPosition().x;
+        rect.y2 += body->transform()->getPosition().y;
 
         glBegin(GL_LINE_LOOP);
             glVertex2f(rect.x1, rect.y1);

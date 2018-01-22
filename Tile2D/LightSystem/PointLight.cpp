@@ -23,7 +23,6 @@
 GLuint PointLight::glTextureId_ = 0;
 
 PointLight::PointLight() :
-    position_   (   {0, 0}    ),
     radius_     (   0         ),
     intensity_  (   1.0       )
 {
@@ -35,8 +34,8 @@ PointLight::PointLight() :
 void PointLight::draw(const Canvas &canvas) {
     const Rect& rect = canvas.getCamera()->getAreaRect();
 
-    float x = position_.x - rect.x1 - radius_;
-    float y = position_.y - rect.y1 - radius_;
+    float x = transform()->getPosition().x - rect.x1 - radius_;
+    float y = transform()->getPosition().y - rect.y1 - radius_;
     float w = radius_ * 2;
     float h = radius_ * 2;
 
@@ -121,14 +120,6 @@ void PointLight::onDestroy() {
 }
 
 // getters and setters
-
-const Vecf &PointLight::getPosition() const {
-    return position_;
-}
-
-void PointLight::setPosition(const Vecf &position) {
-    position_ = position;
-}
 
 float PointLight::getRadius() const {
     return radius_;

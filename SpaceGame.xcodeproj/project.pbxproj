@@ -20,6 +20,7 @@
 		33249239D6EDDBEFBBFB7339 /* Music.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332496F1155D8343EC3D1FAC /* Music.cpp */; };
 		332492411F2F761A0C078F80 /* PointLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E0357F5C99BB9DE7D28 /* PointLight.cpp */; };
 		332492874CED5DCE5477A469 /* MusicPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E9F51C99A3D00C3B8A1 /* MusicPlayer.cpp */; };
+		332493009AEB85B891E950D9 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495FA3C17938DD7B522D7 /* Transform.cpp */; };
 		332493092A9CBCAF6DFB3ADE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 332493AFD86E4F7BC15AE8B3 /* OpenGL.framework */; };
 		3324931E75494D011142CD0C /* Tile2DBehaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324966D65FFDCB5645DBF44 /* Tile2DBehaviour.cpp */; };
 		33249346C1F4A712821DDAFE /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495D0B6082C5C6DE5F976 /* Sprite.cpp */; };
@@ -137,6 +138,7 @@
 		332495D0B6082C5C6DE5F976 /* Sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite.cpp; sourceTree = "<group>"; };
 		332495D2845A9B51FA147335 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
 		332495D85980A45190CFF7D1 /* red_block.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = red_block.bmp; sourceTree = "<group>"; };
+		332495FA3C17938DD7B522D7 /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
 		332495FDB6ACEDA2A2136EB2 /* WorldMapModifiedEventArgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldMapModifiedEventArgs.h; sourceTree = "<group>"; };
 		3324966D65FFDCB5645DBF44 /* Tile2DBehaviour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tile2DBehaviour.cpp; sourceTree = "<group>"; };
 		3324967ABB01952B4F99C989 /* bg2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg2.jpg; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 		33249E9F51C99A3D00C3B8A1 /* MusicPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MusicPlayer.cpp; sourceTree = "<group>"; };
 		33249EBD813C65AC8C4E72FF /* Tile2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tile2D.cpp; sourceTree = "<group>"; };
 		33249EC8B5CC2F9AEB6E601B /* json.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = json.cpp; sourceTree = "<group>"; };
+		33249EC9075C2BC6EA644332 /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
 		33249ECD8388B04A380E297F /* AnimationManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AnimationManager.cpp; sourceTree = "<group>"; };
 		33249EFB35BEB70AD903924B /* gold_block.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = gold_block.bmp; sourceTree = "<group>"; };
 		33249F1063B6914F567DB21A /* Rect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rect.h; sourceTree = "<group>"; };
@@ -614,6 +617,8 @@
 				33249AEA1F7688F33F2C4946 /* Tile2DComponent.h */,
 				332493261A6EE65E99108774 /* ResourceContainer.h */,
 				3324966D65FFDCB5645DBF44 /* Tile2DBehaviour.cpp */,
+				332495FA3C17938DD7B522D7 /* Transform.cpp */,
+				33249EC9075C2BC6EA644332 /* Transform.h */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -721,6 +726,7 @@
 				33249E0BEA17FFA20BE397DF /* AnimationManager.cpp in Sources */,
 				332492411F2F761A0C078F80 /* PointLight.cpp in Sources */,
 				33249A79FDFDE7A8889EE085 /* LightSystem.cpp in Sources */,
+				332493009AEB85B891E950D9 /* Transform.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

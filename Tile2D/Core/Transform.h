@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2015 Miika Pelkonen
+// Copyright (C) 2018 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,37 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __DrawableBase_H_
-#define __DrawableBase_H_
+#ifndef SPACEGAME_TRANSFORM_H
+#define SPACEGAME_TRANSFORM_H
 
-#include "Tile2DComponent.h"
-#include "DrawableBase.h"
-#include "Canvas.h"
-#include "Color.h"
+#include "Vec.h"
 
-class BasicDrawableBase : public DrawableBase {
+class Transform {
+    friend class Body;
 
 public:
-    BasicDrawableBase();
+// getters and setters
 
-    // getters and setters
-
-    bool isVisible() const;
-    void setIsVisible(bool isVisible);
-    float getOpacity() const;
-    void setOpacity(float opacity);
-    const Color &getColor() const;
-    void setColor(const Color &color);
-    void draw(const Canvas& canvas) override;
-
-protected:
-    virtual void drawActual(const Canvas& canvas) = 0;
+    const Vecf &getPosition() const;
+    void setPosition(const Vecf &position);
+    float getRotation() const;
+    void setRotation(float rotation);
 
 private:
-    bool isVisible_;
-    float opacity_;
-    Color color_;
+    Vecf position_;
+    float rotation_;
 };
 
 
-#endif //__DrawableBase_H_
+#endif //SPACEGAME_TRANSFORM_H

@@ -25,16 +25,13 @@ void GameObject::initializeComponents_() {
     uninitializedComponents_.clear();
 }
 
-
 void GameObject::destroy() {
     Tile2D::instance_().destroy_(this);
 }
 
-
 GameObject::GameObject() {
     Tile2D::instance_().objectsToInit_.push_back(this);
 }
-
 
 GameObject::~GameObject() {
     for (auto& component : uninitializedComponents_) {
@@ -47,3 +44,8 @@ GameObject::~GameObject() {
         delete component;
     }
 }
+
+Transform &GameObject::transform() {
+    return transform_;
+}
+

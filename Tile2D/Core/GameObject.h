@@ -18,6 +18,7 @@
 #define __GameObject_H
 
 #include <list>
+#include "Transform.h"
 
 class Tile2DComponent;
 
@@ -35,9 +36,13 @@ public:
 
     void destroy();
 
+    Transform& transform();
+
 private:
     GameObject();
     ~GameObject();
+
+    Transform transform_;
 
     std::list<Tile2DComponent*> uninitializedComponents_;
     std::list<Tile2DComponent*> components_;
