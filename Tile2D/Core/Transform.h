@@ -31,8 +31,8 @@ public:
     void setRotation(float rotation);
 
 private:
-    Vecf position_;
-    float rotation_;
+    Vecf position_ = {0.0f, 0.0f};
+    float rotation_ = 0.0f;
 };
 
 

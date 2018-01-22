@@ -37,15 +37,12 @@ void DrawableBase::draw(const Canvas& canvas) {
     if (!isVisible_) {
         return;
     }
-
-    if (opacity_ < 1.0) {
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glColor4f(color_.red, color_.green, color_.blue, opacity_);
+    if (opacity_ <= 0.0) {
+        return;
     }
-    else {
-        glColor4f(color_.red, color_.green, color_.blue, 1.0);
-    }
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(color_.red, color_.green, color_.blue, opacity_);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();

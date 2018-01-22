@@ -86,8 +86,6 @@ Texture::Texture(std::string filename) {
 void Texture::glBind() {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Texture::glUnbind() {
