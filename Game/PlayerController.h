@@ -31,6 +31,8 @@ protected:
     void awake() override;
     void update() override;
 
+    void lateUpdate() override;
+
 private:
     void shootOnce(Vecf offset);
 

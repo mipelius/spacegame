@@ -101,3 +101,6 @@ void MissileBehaviour::awake() {
 void MissileBehaviour::update() {
     LimitedAgeBehaviour::update();
 }
+
+void MissileBehaviour::lateUpdate() { }
+

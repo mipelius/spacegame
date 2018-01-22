@@ -26,6 +26,8 @@ protected:
     void awake() override;
     void update() override;
 
+    void lateUpdate() override;
+
     PointLight* light = nullptr;
     float radiusOnAwake = 0.0;
 };

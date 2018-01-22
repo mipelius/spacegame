@@ -25,60 +25,6 @@ void PlayerController::awake() {
 }
 
 void PlayerController::update() {
-    // prevent player from going outside the world
-    Vecf pos = transform()->getPosition();
-    Vecf vel = body->getVelocity();
-
-    if (pos.x < 0) {
-        pos.x = 0;
-        vel.x = 0;
-    }
-    if (pos.x > Tile2D::tileMap().getActualW()) {
-        pos.x = Tile2D::tileMap().getActualW();
-        vel.x = 0;
-    }
-    if (pos.y < 0) {
-        pos.y = 0;
-        vel.y = 0;
-    }
-    if (pos.y > Tile2D::tileMap().getActualH()) {
-        pos.y = Tile2D::tileMap().getActualH();
-        vel.y = 0;
-    }
-
-    transform()->setPosition(pos);
-    body->setVelocity(vel);
-
-    // set camera
-
-    auto camera = Tile2D::canvas().getCamera();
-
-    if (camera != nullptr && Tile2D::tileMap().isLoaded()) {
-        Rect cameraBounds = {
-                camera->getAreaRect().getWidth() / 2,
-                camera->getAreaRect().getHeight() / 2,
-                Tile2D::tileMap().getActualW() - camera->getAreaRect().getWidth() / 2,
-                Tile2D::tileMap().getActualH() - camera->getAreaRect().getHeight() / 2
-        };
-
-        Vecf cameraPos = transform()->getPosition();
-
-        if (cameraPos.x < cameraBounds.x1) {
-            cameraPos.x = cameraBounds.x1;
-        }
-        if (cameraPos.y < cameraBounds.y1) {
-            cameraPos.y = cameraBounds.y1;
-        }
-        if (cameraPos.x > cameraBounds.x2) {
-            cameraPos.x = cameraBounds.x2;
-        }
-        if (cameraPos.y > cameraBounds.y2) {
-            cameraPos.y = cameraBounds.y2;
-        }
-
-        camera->setPosition(cameraPos);
-    }
-
     // read input -> actions
     const Uint8 *state = SDL_GetKeyboardState(NULL);
 
@@ -196,4 +142,60 @@ void PlayerController::shootOnce(Vecf offset) {
     auto missileLight = missile->attachComponent<PointLight>();
     missileLight->setRadius(80.0);
     missileLight->setIntensity(1.0);
+}
+
+void PlayerController::lateUpdate() {
+    // prevent player from going outside the world
+    Vecf pos = transform()->getPosition();
+    Vecf vel = body->getVelocity();
+
+    if (pos.x < 0) {
+        pos.x = 0;
+        vel.x = 0;
+    }
+    if (pos.x > Tile2D::tileMap().getActualW()) {
+        pos.x = Tile2D::tileMap().getActualW();
+        vel.x = 0;
+    }
+    if (pos.y < 0) {
+        pos.y = 0;
+        vel.y = 0;
+    }
+    if (pos.y > Tile2D::tileMap().getActualH()) {
+        pos.y = Tile2D::tileMap().getActualH();
+        vel.y = 0;
+    }
+
+    transform()->setPosition(pos);
+    body->setVelocity(vel);
+
+    // set camera
+
+    auto camera = Tile2D::canvas().getCamera();
+
+    if (camera != nullptr && Tile2D::tileMap().isLoaded()) {
+        Rect cameraBounds = {
+                camera->getAreaRect().getWidth() / 2,
+                camera->getAreaRect().getHeight() / 2,
+                Tile2D::tileMap().getActualW() - camera->getAreaRect().getWidth() / 2,
+                Tile2D::tileMap().getActualH() - camera->getAreaRect().getHeight() / 2
+        };
+
+        Vecf cameraPos = transform()->getPosition();
+
+        if (cameraPos.x < cameraBounds.x1) {
+            cameraPos.x = cameraBounds.x1;
+        }
+        if (cameraPos.y < cameraBounds.y1) {
+            cameraPos.y = cameraBounds.y1;
+        }
+        if (cameraPos.x > cameraBounds.x2) {
+            cameraPos.x = cameraBounds.x2;
+        }
+        if (cameraPos.y > cameraBounds.y2) {
+            cameraPos.y = cameraBounds.y2;
+        }
+
+        camera->setPosition(cameraPos);
+    }
 }

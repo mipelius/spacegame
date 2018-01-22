@@ -30,6 +30,7 @@ public:
 protected:
     void awake() override;
     void update() override;
+    void lateUpdate() override;
 
 private:
     Uint32 awakeTimeStamp = 0;

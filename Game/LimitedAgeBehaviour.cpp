@@ -32,3 +32,4 @@ void LimitedAgeBehaviour::update() {
     }
 }
 
+void LimitedAgeBehaviour::lateUpdate() { }

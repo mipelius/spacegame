@@ -93,6 +93,7 @@ void Tile2D::mainLoop_() {
         removeDestroyedObjects_();
         updateBehaviours_();
         physicsWorld_->step(deltaTime / 1000.0);
+        lateUpdateBehaviours_();
         window().update_();
     }
 }
@@ -121,6 +122,12 @@ void Tile2D::initGameObjects_() {
 void Tile2D::updateBehaviours_() {
     for (auto obj: behaviours_) {
         obj->update();
+    }
+}
+
+void Tile2D::lateUpdateBehaviours_() {
+    for (auto obj: behaviours_) {
+        obj->lateUpdate();
     }
 }
 

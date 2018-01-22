@@ -28,6 +28,7 @@ class MissileBehaviour : public LimitedAgeBehaviour {
 protected:
     void awake() override;
     void update() override;
+    void lateUpdate() override;
 
     class Body_MapCollisionEventHandler : public IEventHandler<Body, MapCollisionEventArgs> {
         void handle(Body* body, MapCollisionEventArgs args) override;

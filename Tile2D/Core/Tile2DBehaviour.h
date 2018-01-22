@@ -28,6 +28,7 @@ protected:
 
     virtual void awake() = 0;
     virtual void update() = 0;
+    virtual void lateUpdate() = 0;
 };
 
 

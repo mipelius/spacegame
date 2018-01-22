@@ -74,6 +74,7 @@ private:
     void removeDestroyedObjects_();
     void initGameObjects_();
     void updateBehaviours_();
+    void lateUpdateBehaviours_();
 
     Tile2D();
     ~Tile2D();

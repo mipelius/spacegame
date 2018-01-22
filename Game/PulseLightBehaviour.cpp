@@ -28,3 +28,5 @@ void PulseLightBehaviour::update() {
     light->setIntensity(scale);
     light->setRadius(scale * radiusOnAwake);
 }
+
+void PulseLightBehaviour::lateUpdate() { }
