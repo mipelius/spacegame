@@ -22,6 +22,7 @@
 #include "Tile2DBehaviour.h"
 #include "Body.h"
 #include "BodyCollisionEventArgs.h"
+#include "Sprite.h"
 
 class BombBehaviour : public Tile2DBehaviour{
 

@@ -24,11 +24,11 @@ void BombBehaviour::awake() {
 }
 
 void BombBehaviour::update() {
-    transform()->setRotation(body_->getVelocity().angle());
+
 }
 
 void BombBehaviour::lateUpdate() {
-
+    transform()->setRotation(body_->getVelocity().angle());
 }
 
 void BombBehaviour::Body_MapCollisionEventHandler::handle(Body *body, MapCollisionEventArgs args) {
@@ -47,5 +47,7 @@ void BombBehaviour::Body_MapCollisionEventHandler::handle(Body *body, MapCollisi
             );
         }
     }
+
+    body->gameObject()->getComponent<Sprite>()->setIsVisible(false);
     body->gameObject()->destroy();
 }

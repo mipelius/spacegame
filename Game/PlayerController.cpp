@@ -216,7 +216,7 @@ void PlayerController::dropBomp() {
     bompBody->setVelocity(body->getVelocity() / 2 + Vecf(0, 1000));
 
     auto bompCollider = bomp->attachComponent<PolygonCollider>();
-    bompCollider->setPoints({{-10, -10}, {10, -10}, {10, 10}, {-10, 10}});
+    bompCollider->setPoints({{-9, -4}, {9, -4}, {9, 4}, {-9, 4}});
 
     auto bompSprite = bomp->attachComponent<Sprite>();
     bompSprite->setTexturePtr(Tile2D::resources().textures["bomb"]);
