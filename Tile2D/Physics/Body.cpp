@@ -194,6 +194,8 @@ bool Body::detectMapCollision_(float deltaTime) {
         }
     }
 
+    transform()->position_ = {(float)position_.x, (float)position_.y};
+
     return collided;
 }
 
