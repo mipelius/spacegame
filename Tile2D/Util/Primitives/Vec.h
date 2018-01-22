@@ -149,8 +149,8 @@ template <typename T>
 inline Vec<T> Vec<T>::byAngle(const float &angleDegrees, const float &amount) {
     float angle = angleDegrees / 360 * 2 * M_PI;
     return {
-            cos(angle) * amount,
-            sin(angle) * amount
+            (T)cos(angle) * amount,
+            (T)sin(angle) * amount
     };
 }
 
