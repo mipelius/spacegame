@@ -21,20 +21,19 @@
 
 template <typename TOwner, typename TArgs> class IEventHandler;
 
-template <typename TOwner, typename TArgs> class Event {
+template <typename TOwner, typename TArgs>
+class Event {
 
 public:
     explicit Event(TOwner* eventOwner);
 
     void raise(TArgs eventArgs) const;
-    void add(IEventHandler<TOwner, TArgs> * eventHandler) const;
+    void add(void (*eventHandler)(TOwner*, TArgs)) const;
 
 private:
-    mutable std::list<IEventHandler<TOwner, TArgs>* > eventHandlers_;
+    mutable std::list<void (*)(TOwner*, TArgs) > eventHandlers_;
     TOwner* eventOwner_;
 };
-
-#include "IEventHandler.h"
 
 template <typename TOwner, typename TArgs>
 Event<TOwner, TArgs>::Event(TOwner *eventOwner) {
@@ -44,12 +43,12 @@ Event<TOwner, TArgs>::Event(TOwner *eventOwner) {
 template <typename TOwner, typename TArgs>
 void Event<TOwner, TArgs>::raise(TArgs eventArgs) const {
     for (auto eventHandler : eventHandlers_) {
-        eventHandler->handle(eventOwner_, eventArgs);
+        eventHandler(eventOwner_, eventArgs);
     }
 }
 
 template <typename TOwner, typename TArgs>
-void Event<TOwner, TArgs>::add(IEventHandler<TOwner, TArgs> * eventHandler) const {
+void Event<TOwner, TArgs>::add(void (*eventHandler)(TOwner*, TArgs)) const {
     eventHandlers_.push_back(eventHandler);
 }
 

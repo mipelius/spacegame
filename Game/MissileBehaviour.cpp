@@ -67,35 +67,36 @@ static void createSparkles(Vecf position, Vecf normal, Color color) {
     random = Vecf(rand() % 100, rand() % 100) / div;
     createSparkle(position, (perp + random) * -1000, color);
 }
-void MissileBehaviour::Body_MapCollisionEventHandler::handle(Body* body, MapCollisionEventArgs args) {
-    body->gameObject()->destroy();
-    Tile2D::tileMap().setValueScaled(args.tileCoordinates, Tile2D::tileMap().getTileSet()->getEmptyBlock());
-
-    createSparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
-    createPulseLight(body->transform()->getPosition());
-}
-
-void MissileBehaviour::Body_BodyCollisionEventHandler::handle(Body* body, BodyCollisionEventArgs args) {
-    if (args.otherBody->gameObject()->tag == Tags::enemy) {
-        auto otherBody = args.otherBody->gameObject()->getComponent<Body>();
-        otherBody->setVelocity(otherBody->getVelocity() + body->getVelocity() / 100.0);
-        auto sprite = args.otherBody->gameObject()->getComponent<Sprite>();
-        if (sprite->getColor().red > 0.9) {
-            sprite->setColor({0, 1, 0});
-        } else {
-            sprite->setColor({1, 0, 0});
-        }
-
-        createSparkles(body->transform()->getPosition(), args.contactNormal, {1, 0, 0});
-        body->gameObject()->destroy();
-    }
-};
 
 void MissileBehaviour::awake() {
     LimitedAgeBehaviour::awake();
-    gameObject()->getComponent<Body>()->mapCollision.add(&body_mapCollisionEventHandler);
-    gameObject()->getComponent<Body>()->bodyCollision.add(&body_bodyCollisionEventHandler);
     TTL = 1.0;
+
+    // collision event handlers
+
+    gameObject()->getComponent<Body>()->mapCollision.add([] (Body* body, MapCollisionEventArgs args) {
+        body->gameObject()->destroy();
+        Tile2D::tileMap().setValueScaled(args.tileCoordinates, Tile2D::tileMap().getTileSet()->getEmptyBlock());
+
+        createSparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
+        createPulseLight(body->transform()->getPosition());
+    });
+
+    gameObject()->getComponent<Body>()->bodyCollision.add([] (Body* body, BodyCollisionEventArgs args) {
+        if (args.otherBody->gameObject()->tag == Tags::enemy) {
+            auto otherBody = args.otherBody->gameObject()->getComponent<Body>();
+            otherBody->setVelocity(otherBody->getVelocity() + body->getVelocity() / 100.0);
+            auto sprite = args.otherBody->gameObject()->getComponent<Sprite>();
+            if (sprite->getColor().red > 0.9) {
+                sprite->setColor({0, 1, 0});
+            } else {
+                sprite->setColor({1, 0, 0});
+            }
+
+            createSparkles(body->transform()->getPosition(), args.contactNormal, {1, 0, 0});
+            body->gameObject()->destroy();
+        }
+    });
 }
 
 void MissileBehaviour::update() {

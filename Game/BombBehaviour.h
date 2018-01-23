@@ -31,15 +31,9 @@ protected:
     void update() override;
     void lateUpdate() override;
 
-    class Body_MapCollisionEventHandler : public IEventHandler<Body, MapCollisionEventArgs> {
-        void handle(Body* body, MapCollisionEventArgs args) override;
-    };
-
     static const int explosionRadius = 10; // tiles
 
     Body* body_;
-    Body_MapCollisionEventHandler body_mapCollisionEventHandler;
-
 };
 
 

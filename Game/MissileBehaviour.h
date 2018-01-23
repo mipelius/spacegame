@@ -29,17 +29,6 @@ protected:
     void awake() override;
     void update() override;
     void lateUpdate() override;
-
-    class Body_MapCollisionEventHandler : public IEventHandler<Body, MapCollisionEventArgs> {
-        void handle(Body* body, MapCollisionEventArgs args) override;
-    };
-
-    class Body_BodyCollisionEventHandler : public IEventHandler<Body, BodyCollisionEventArgs> {
-        void handle(Body* body, BodyCollisionEventArgs args) override;
-    };
-
-    Body_MapCollisionEventHandler body_mapCollisionEventHandler;
-    Body_BodyCollisionEventHandler body_bodyCollisionEventHandler;
 };
 
 

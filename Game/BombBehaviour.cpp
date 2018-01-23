@@ -20,7 +20,26 @@
 
 void BombBehaviour::awake() {
     body_ = gameObject()->getComponent<Body>();
-    body_->mapCollision.add(&body_mapCollisionEventHandler);
+    body_->mapCollision.add([] (Body* body, MapCollisionEventArgs args) {
+        for (auto x=-explosionRadius; x<explosionRadius; ++x) {
+            for (auto y=-explosionRadius; y<explosionRadius; ++y) {
+                if (Vecf((float)x, (float)y).length() > explosionRadius) {
+                    continue;
+                }
+                Vecf offset = {
+                        (float)(x * Tile2D::tileMap().getTileSet()->getTileW()),
+                        (float)(y * Tile2D::tileMap().getTileSet()->getTileH())
+                };
+                Tile2D::tileMap().setValueScaled(
+                        args.tileCoordinates + offset,
+                        Tile2D::tileMap().getTileSet()->getEmptyBlock()
+                );
+            }
+        }
+
+        body->gameObject()->getComponent<Sprite>()->setIsVisible(false);
+        body->gameObject()->destroy();
+    });
 }
 
 void BombBehaviour::update() {
@@ -29,25 +48,4 @@ void BombBehaviour::update() {
 
 void BombBehaviour::lateUpdate() {
     transform()->setRotation(body_->getVelocity().angle());
-}
-
-void BombBehaviour::Body_MapCollisionEventHandler::handle(Body *body, MapCollisionEventArgs args) {
-    for (auto x=-explosionRadius; x<explosionRadius; ++x) {
-        for (auto y=-explosionRadius; y<explosionRadius; ++y) {
-            if (Vecf((float)x, (float)y).length() > explosionRadius) {
-                continue;
-            }
-            Vecf offset = {
-                    (float)(x * Tile2D::tileMap().getTileSet()->getTileW()),
-                    (float)(y * Tile2D::tileMap().getTileSet()->getTileH())
-            };
-            Tile2D::tileMap().setValueScaled(
-                    args.tileCoordinates + offset,
-                    Tile2D::tileMap().getTileSet()->getEmptyBlock()
-            );
-        }
-    }
-
-    body->gameObject()->getComponent<Sprite>()->setIsVisible(false);
-    body->gameObject()->destroy();
 }

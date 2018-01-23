@@ -214,9 +214,7 @@
 		33249CDD9251FBB24863F3EA /* font.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = font.png; sourceTree = "<group>"; };
 		33249CE05D7F9EBE258CC701 /* testing_reversed.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = testing_reversed.mp3; sourceTree = "<group>"; };
 		33249CE077362274B52F38FA /* ITexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITexture.h; sourceTree = "<group>"; };
-		33249D38C01DB67CAAD22074 /* IEventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEventHandler.h; sourceTree = "<group>"; };
 		33249D39E6CC488461468E17 /* config.json */ = {isa = PBXFileReference; lastKnownFileType = file.json; path = config.json; sourceTree = "<group>"; };
-		33249D3C448272478DE3A944 /* EventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventHandler.h; sourceTree = "<group>"; };
 		33249D480D517FE85AC8034A /* IScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IScene.h; sourceTree = "<group>"; };
 		33249D83A4BBFA846AA20BCD /* light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = light.png; sourceTree = "<group>"; };
 		33249D8AE33B0E8BA81CD158 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -602,8 +600,6 @@
 				332492E36CBCC512477F5499 /* Event.h */,
 				332492321ABA930C8F89C150 /* EventArgs.h */,
 				33249E1882FB8ABC7ABDDFE6 /* EventArgs.cpp */,
-				33249D3C448272478DE3A944 /* EventHandler.h */,
-				33249D38C01DB67CAAD22074 /* IEventHandler.h */,
 			);
 			path = Event;
 			sourceTree = "<group>";
