@@ -64,7 +64,6 @@ void createBackground(Rect area, const char* texture, Color color) {
 
 void SceneInGame::init() {
     // Scene setup: tile map, physics, light system
-
     Tile2D::tileMap().load("maps/map.bmp", "json/tileset.json");
     Tile2D::lightSystem().setAmbientLight(0.0);
     Tile2D::physicsWorld().setAirDensity(0.0001);
@@ -76,7 +75,6 @@ void SceneInGame::init() {
     createBackground({3300, 2400, 6400, 4800}, "bg1", {0.3, 0.3, 0.6}); // bottom right corner
 
     // player
-
     auto player = Tile2D::createGameObject();
     player->transform().setPosition({500.0f, 250.0f});
     player->transform().setRotation(0.0f);
@@ -107,25 +105,14 @@ void SceneInGame::init() {
     playerController->moveForce = 10000.0f;
 
     // camera
-
     camera = new Camera;
     camera->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
     Tile2D::canvas().setCamera(camera);
 
     // dummy enemies
-
     spawnEnemy(player->transform().getPosition() + Vecf(100.0, 0.0));
     spawnEnemy(player->transform().getPosition() + Vecf(200.0, 0.0));
     spawnEnemy(player->transform().getPosition() + Vecf(300.0, 0.0));
-
-    // light test
-    auto lightObj = Tile2D::createGameObject();
-
-    auto light2 = lightObj->attachComponent<PointLight>();
-    light2->setRadius(500);
-
-    auto light1 = lightObj->attachComponent<PointLight>();
-    light1->setRadius(20);
 }
 
 void SceneInGame::destroy() {

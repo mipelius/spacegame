@@ -117,6 +117,7 @@
 		332493235BD135F9E3A58215 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		332493261A6EE65E99108774 /* ResourceContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceContainer.h; sourceTree = "<group>"; };
 		3324935528343A29271F3C87 /* bomb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bomb.png; sourceTree = "<group>"; };
+		3324935A926C286D49012541 /* Pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pool.h; sourceTree = "<group>"; };
 		3324936AD00BA692177ECC84 /* AnimatedTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedTexture.h; sourceTree = "<group>"; };
 		33249370DA7FAE14EE8CEF76 /* tileset.json */ = {isa = PBXFileReference; lastKnownFileType = file.json; path = tileset.json; sourceTree = "<group>"; };
 		33249377E66174286B994250 /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Font.cpp; sourceTree = "<group>"; };
@@ -342,6 +343,7 @@
 				332499634A704C0C12FE1F09 /* JsonFileManager.h */,
 				33249F5495EF0C4129ACC3DA /* JsonFileManager.cpp */,
 				3324946314894F53333F69B2 /* Tile2DMath.h */,
+				3324935A926C286D49012541 /* Pool.h */,
 			);
 			path = Util;
 			sourceTree = "<group>";
