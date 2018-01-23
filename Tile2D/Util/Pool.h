@@ -25,31 +25,38 @@
 
 template <typename T>
 class Pool {
-    int i=0;
-
 private:
     union ObjectCell {
         T object;
         ObjectCell* next;
+
+        ObjectCell() : object(T()) { }
     };
 
     ObjectCell* objectCells_;
     ObjectCell* firstAvailableCell_;
 
-public:
-    const unsigned int size;
+    unsigned int size_;
+    unsigned int freeSpace_;
 
+public:
     explicit Pool(unsigned int size);
     ~Pool();
 
     T* malloc();
     void free(T*& objPtr);
+
+    unsigned int size() const;
+    unsigned int freeSpace() const;
 };
 
 // -- definitions --
 
 template <typename T>
-Pool<T>::Pool(unsigned int size) : size(size) {
+Pool<T>::Pool(unsigned int size) :
+        size_       (size),
+        freeSpace_  (size)
+{
     objectCells_ = new ObjectCell[size];
 
     firstAvailableCell_ = &objectCells_[0];
@@ -71,6 +78,7 @@ T* Pool<T>::malloc() {
     assert(firstAvailableCell_ != nullptr);
     T* object = &firstAvailableCell_->object;
     firstAvailableCell_ = firstAvailableCell_->next;
+    freeSpace_--;
     return object;
 }
 
@@ -79,8 +87,18 @@ void Pool<T>::free(T*& objPtr) {
     ObjectCell* cell = (ObjectCell*)objPtr;
     cell->next = firstAvailableCell_;
     firstAvailableCell_ = cell;
-
+    freeSpace_++;
     objPtr = nullptr;
+}
+
+template<typename T>
+unsigned int Pool<T>::size() const {
+    return size_;
+}
+
+template<typename T>
+unsigned int Pool<T>::freeSpace() const {
+    return freeSpace_;
 }
 
 

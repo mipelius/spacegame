@@ -14,26 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "Transform.h"
 
-// getters and setters
+#ifndef SPACEGAME_PARTICLE_H
+#define SPACEGAME_PARTICLE_H
 
-const Vecf &Transform::getPosition() const {
-    return position_;
-}
+#include "Body.h"
+#include "Color.h"
 
-void Transform::setPosition(const Vecf &position) {
-    position_ = position;
-}
+class Particle {
+public:
+    Particle();
 
-float Transform::getRotation() const {
-    return rotation_;
-}
+private:
+    float       currentTime_;
+    float       opacity_;
+    Transform   transform_;
+    Color       color_;
+};
 
-void Transform::setRotation(float rotation) {
-    rotation_ = rotation;
-}
 
-Transform::Transform() {
-
-}
+#endif //SPACEGAME_PARTICLE_H

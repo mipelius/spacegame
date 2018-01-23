@@ -22,7 +22,9 @@
 bool Tile2D::isLoaded_ = false;
 bool Tile2D::isDebugMode = false;
 
-Tile2D::Tile2D() {
+Tile2D::Tile2D() :
+        particlePool_(Pool<Particle>(MAX_PARTICLES))
+{
     SDL_Init(SDL_INIT_EVERYTHING);
     window_ = new Window();
     resources_ = new Resources();

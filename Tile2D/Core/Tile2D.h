@@ -29,12 +29,15 @@
 #include "GameObject.h"
 #include "Tile2DBehaviour.h"
 #include "precompile.h"
+#include "Particle.h"
+#include "Pool.h"
 
 class Tile2D {
     friend class Tile2DObject;
     friend class GameObject;
     friend class Tile2DBehaviour;
     friend class SceneManager;
+    friend class ParticleSystem;
 
 public:
     static bool isDebugMode;
@@ -90,6 +93,10 @@ private:
     std::list<Tile2DBehaviour*> behaviours_;
 
     void destroy_(GameObject* obj);
+
+    Pool<Particle> particlePool_;
+
+    static const unsigned int MAX_PARTICLES = 10000;
 };
 
 #endif //__TILE2D_H

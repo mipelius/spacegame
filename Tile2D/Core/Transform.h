@@ -23,7 +23,8 @@ class Transform {
     friend class Body;
 
 public:
-// getters and setters
+    Transform();
+    // getters and setters
 
     const Vecf &getPosition() const;
     void setPosition(const Vecf &position);

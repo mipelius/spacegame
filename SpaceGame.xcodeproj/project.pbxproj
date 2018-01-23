@@ -18,6 +18,7 @@
 		33249176EFB2D40E9FA10D61 /* SceneGameOver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249708697D65B423F4FCED /* SceneGameOver.cpp */; };
 		332491DDE1DC6A8D9A66323D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249D8AE33B0E8BA81CD158 /* main.cpp */; };
 		33249239D6EDDBEFBBFB7339 /* Music.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332496F1155D8343EC3D1FAC /* Music.cpp */; };
+		3324923B0E2B9AD22C143216 /* ParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249CF67AE35994A5085EB4 /* ParticleSystem.cpp */; };
 		332492411F2F761A0C078F80 /* PointLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E0357F5C99BB9DE7D28 /* PointLight.cpp */; };
 		332492874CED5DCE5477A469 /* MusicPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E9F51C99A3D00C3B8A1 /* MusicPlayer.cpp */; };
 		332493009AEB85B891E950D9 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495FA3C17938DD7B522D7 /* Transform.cpp */; };
@@ -50,6 +51,7 @@
 		33249AD722CBF09B6AC2D035 /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249C90DA22FBA1C8E77C12 /* Text.cpp */; };
 		33249ADD0D665AFE52DB04B9 /* Resources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249911A1C615D314E72066 /* Resources.cpp */; };
 		33249B02FFB20FA56EF11EA6 /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 332493C992ED93FDBC387419 /* SDL2_mixer.framework */; };
+		33249B244B3EBDA333E62176 /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495577779940506FEA4AA /* Particle.cpp */; };
 		33249C13800CBC7FC4F20186 /* SceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E213B8A050EFBA07501 /* SceneManager.cpp */; };
 		33249CA95EA8FA9A49D0E71C /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332492098F3E53F761C3D8AD /* Window.cpp */; };
 		33249CDD19E8B4D04327D436 /* DrawableMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249AD57808B3A36C86FA9A /* DrawableMap.cpp */; };
@@ -137,6 +139,7 @@
 		33249520984162F25850E376 /* green_block.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = green_block.bmp; sourceTree = "<group>"; };
 		3324953023929045A6551EAC /* PlayerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerController.cpp; sourceTree = "<group>"; };
 		33249533D1656C83FE699DB5 /* MissileBehaviour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MissileBehaviour.cpp; sourceTree = "<group>"; };
+		332495577779940506FEA4AA /* Particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Particle.cpp; sourceTree = "<group>"; };
 		3324958AF461CD160A4B8B02 /* PulseLightBehaviour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PulseLightBehaviour.cpp; sourceTree = "<group>"; };
 		3324959A3A11B10ABB1482E7 /* SpaceGame */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SpaceGame; sourceTree = BUILT_PRODUCTS_DIR; };
 		332495B0606D5E2689FAC847 /* LineSegment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LineSegment.cpp; sourceTree = "<group>"; };
@@ -183,6 +186,7 @@
 		33249A358C46D3CC81B440FD /* LightSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LightSystem.cpp; sourceTree = "<group>"; };
 		33249A6BE33A0B3AD110AB93 /* testing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = testing.mp3; sourceTree = "<group>"; };
 		33249A88B9A24362ECC367AB /* spaceship_acceleration.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = spaceship_acceleration.wav; sourceTree = "<group>"; };
+		33249AB42937E3C2DA2A8121 /* ParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleSystem.h; sourceTree = "<group>"; };
 		33249AC6FCD14940B01807B8 /* Tile2DBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile2DBehaviour.h; sourceTree = "<group>"; };
 		33249ACA341FF9A8F543BE4E /* inventory_slot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = inventory_slot.png; sourceTree = "<group>"; };
 		33249AD57808B3A36C86FA9A /* DrawableMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawableMap.cpp; sourceTree = "<group>"; };
@@ -193,6 +197,7 @@
 		33249B3AB02BE51B1F849807 /* PlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerController.h; sourceTree = "<group>"; };
 		33249B62F628B8D0067C28B3 /* AudioClip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioClip.cpp; sourceTree = "<group>"; };
 		33249B80D801A1423CC64C81 /* PointLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointLight.h; sourceTree = "<group>"; };
+		33249B92A9737E9067DFF2B2 /* Particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Particle.h; sourceTree = "<group>"; };
 		33249B9A124345E3E60A3BBF /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Font.h; sourceTree = "<group>"; };
 		33249BCD21DCD18A25F24BE4 /* MissileBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MissileBehaviour.h; sourceTree = "<group>"; };
 		33249BD03F34C847B3AF3009 /* plasma_cannon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plasma_cannon.png; sourceTree = "<group>"; };
@@ -215,6 +220,7 @@
 		33249CDD9251FBB24863F3EA /* font.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = font.png; sourceTree = "<group>"; };
 		33249CE05D7F9EBE258CC701 /* testing_reversed.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = testing_reversed.mp3; sourceTree = "<group>"; };
 		33249CE077362274B52F38FA /* ITexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITexture.h; sourceTree = "<group>"; };
+		33249CF67AE35994A5085EB4 /* ParticleSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleSystem.cpp; sourceTree = "<group>"; };
 		33249D39E6CC488461468E17 /* config.json */ = {isa = PBXFileReference; lastKnownFileType = file.json; path = config.json; sourceTree = "<group>"; };
 		33249D480D517FE85AC8034A /* IScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IScene.h; sourceTree = "<group>"; };
 		33249D83A4BBFA846AA20BCD /* light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = light.png; sourceTree = "<group>"; };
@@ -361,6 +367,17 @@
 			path = soundfx;
 			sourceTree = "<group>";
 		};
+		3324947DD71A68DF499F8A6F /* ParticleSystem */ = {
+			isa = PBXGroup;
+			children = (
+				33249CF67AE35994A5085EB4 /* ParticleSystem.cpp */,
+				33249AB42937E3C2DA2A8121 /* ParticleSystem.h */,
+				332495577779940506FEA4AA /* Particle.cpp */,
+				33249B92A9737E9067DFF2B2 /* Particle.h */,
+			);
+			path = ParticleSystem;
+			sourceTree = "<group>";
+		};
 		3324950397D59C7783EAE32F /* Canvas */ = {
 			isa = PBXGroup;
 			children = (
@@ -370,6 +387,7 @@
 				332499016561CA0AFDB38003 /* Drawable */,
 				33249DED77D9A6FF95E0CAD7 /* Camera.cpp */,
 				33249E9484B681AEC42BF756 /* Canvas.cpp */,
+				3324947DD71A68DF499F8A6F /* ParticleSystem */,
 			);
 			path = Canvas;
 			sourceTree = "<group>";
@@ -733,6 +751,8 @@
 				332493009AEB85B891E950D9 /* Transform.cpp in Sources */,
 				33249529DAFD219351BD4FB3 /* BackgroundBehaviour.cpp in Sources */,
 				33249EB1E13F9EDE3A99FA5D /* BombBehaviour.cpp in Sources */,
+				3324923B0E2B9AD22C143216 /* ParticleSystem.cpp in Sources */,
+				33249B244B3EBDA333E62176 /* Particle.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
