@@ -31,6 +31,9 @@ public:
     float getRotation() const;
     void setRotation(float rotation);
 
+    void glTransform();
+    void glInvTransform();
+
 private:
     Vecf position_ = {0.0f, 0.0f};
     float rotation_ = 0.0f;

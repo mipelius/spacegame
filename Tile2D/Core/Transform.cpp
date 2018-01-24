@@ -15,6 +15,7 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Transform.h"
+#include "precompile.h"
 
 // getters and setters
 
@@ -36,4 +37,14 @@ void Transform::setRotation(float rotation) {
 
 Transform::Transform() {
 
+}
+
+void Transform::glTransform() {
+    glTranslatef(position_.x, position_.y, 0);
+    glRotatef(rotation_, 0.0f, 0.0f, 1.0f);
+}
+
+void Transform::glInvTransform() {
+    glRotatef(-rotation_, 0.0f, 0.0f, 1.0f);
+    glTranslatef(-position_.x, -position_.y, 0);
 }

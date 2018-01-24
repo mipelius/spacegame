@@ -47,13 +47,11 @@ void DrawableBase::draw(const Canvas& canvas) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    glTranslatef(transform()->getPosition().x, transform()->getPosition().y, 0);
-    glRotatef(transform()->getRotation(), 0.0f, 0.0f, 1.0f);
+    transform()->glTransform();
 
     drawActual(canvas);
 
-    glRotatef(-transform()->getRotation(), 0.0f, 0.0f, 1.0f);
-    glTranslatef(-transform()->getPosition().x, -transform()->getPosition().y, 0);
+    transform()->glInvTransform();
 }
 
 // getters and setters
