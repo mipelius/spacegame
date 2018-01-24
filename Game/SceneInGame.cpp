@@ -25,30 +25,34 @@
 #include "BackgroundBehaviour.h"
 #include "ParticleSystem.h"
 #include "Tile2DMath.h"
+#include "WalkingEnemyAI.h"
 
-static GameObject* spawnEnemy(Vecf pos) {
+static GameObject* spawnEnemy(Vecf pos, Transform* target) {
     auto enemy = Tile2D::createGameObject();
     enemy->transform().setPosition(pos);
     enemy->transform().setRotation(0.0f);
 
     enemy->tag = Tags::enemy;
 
-    auto spaceshipBody = enemy->attachComponent<Body>();
-    spaceshipBody->setMass(100.0);
+    auto enemyBody = enemy->attachComponent<Body>();
+    enemyBody->setMass(100.0);
 
     auto polygonCollider = enemy->attachComponent<PolygonCollider>();
     polygonCollider->setPoints({
-                                       {-20, -18},
-                                       {-5, -18},
-                                       {18, 0},
-                                       {-5, 18},
-                                       {-20, 18}
-                               });
+            {0, -16},
+            {16, 0},
+            {16, 16},
+            {-16, 16},
+            {-16, 0},
+    });
 
-    auto spaceshipSprite = enemy->attachComponent<Sprite>();
-    spaceshipSprite->setRect({-20, -20, 20, 20});
-    spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship"]);
-    spaceshipSprite->setColor({1, 0, 0});
+    auto enemySprite = enemy->attachComponent<Sprite>();
+    enemySprite->setRect({-16, -16, 16, 16});
+    enemySprite->setTexturePtr(Tile2D::resources().textures["badguy"]);
+    enemySprite->setColor({1, 0, 0});
+
+    auto AI = enemy->attachComponent<WalkingEnemyAI>();
+    AI->setTarget(target);
 
     return enemy;
 }
@@ -112,9 +116,9 @@ void SceneInGame::init() {
     Tile2D::canvas().setCamera(camera);
 
     // dummy enemies
-//    spawnEnemy(player->transform().getPosition() + Vecf(100.0, 0.0));
-//    spawnEnemy(player->transform().getPosition() + Vecf(200.0, 0.0));
-//    spawnEnemy(player->transform().getPosition() + Vecf(300.0, 0.0));
+    spawnEnemy(player->transform().getPosition() + Vecf(100.0, 0.0), &player->transform());
+    spawnEnemy(player->transform().getPosition() + Vecf(200.0, 0.0), &player->transform());
+    spawnEnemy(player->transform().getPosition() + Vecf(300.0, 0.0), &player->transform());
 }
 
 void SceneInGame::destroy() {

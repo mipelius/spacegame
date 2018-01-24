@@ -50,6 +50,7 @@
 		33249A7DA728830D0EDF2C53 /* SceneTitleScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332498F1397F88BFCDCA5106 /* SceneTitleScreen.cpp */; };
 		33249AD722CBF09B6AC2D035 /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249C90DA22FBA1C8E77C12 /* Text.cpp */; };
 		33249ADD0D665AFE52DB04B9 /* Resources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249911A1C615D314E72066 /* Resources.cpp */; };
+		33249AF1C082D85E6723F684 /* WalkingEnemyAI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249F16A23666BDDBB6DC23 /* WalkingEnemyAI.cpp */; };
 		33249B02FFB20FA56EF11EA6 /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 332493C992ED93FDBC387419 /* SDL2_mixer.framework */; };
 		33249B244B3EBDA333E62176 /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495577779940506FEA4AA /* Particle.cpp */; };
 		33249C13800CBC7FC4F20186 /* SceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E213B8A050EFBA07501 /* SceneManager.cpp */; };
@@ -127,6 +128,7 @@
 		332493A3A6F73D3D9BE7C2A5 /* Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
 		332493AFD86E4F7BC15AE8B3 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		332493C992ED93FDBC387419 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = /Library/Frameworks/SDL2_mixer.framework; sourceTree = "<absolute>"; };
+		332493CDCDE3C265E609C29D /* WalkingEnemyAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalkingEnemyAI.h; sourceTree = "<group>"; };
 		332493F2FDE1AA7C7CEACC55 /* GameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameObject.cpp; sourceTree = "<group>"; };
 		332493F9E753A8693F573549 /* gl_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gl_utils.h; sourceTree = "<group>"; };
 		332494285E2FFE6BB21B7A8F /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 		33249F1063B6914F567DB21A /* Rect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rect.h; sourceTree = "<group>"; };
 		33249F12CFB08059B884BAD6 /* Tags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tags.h; sourceTree = "<group>"; };
 		33249F15787040FD272478B3 /* inventory_selected_slot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = inventory_selected_slot.png; sourceTree = "<group>"; };
+		33249F16A23666BDDBB6DC23 /* WalkingEnemyAI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WalkingEnemyAI.cpp; sourceTree = "<group>"; };
 		33249F53E2E9E04D3E4806CC /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		33249F5495EF0C4129ACC3DA /* JsonFileManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JsonFileManager.cpp; sourceTree = "<group>"; };
 		33249F86AFD1A32E07ED3128 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
@@ -511,6 +514,8 @@
 				33249AF46B0F4635E425B8AB /* BackgroundBehaviour.h */,
 				332494A83E1FF4B4A02658C9 /* BombBehaviour.cpp */,
 				3324927C8A405C3DE2DFBAD7 /* BombBehaviour.h */,
+				33249F16A23666BDDBB6DC23 /* WalkingEnemyAI.cpp */,
+				332493CDCDE3C265E609C29D /* WalkingEnemyAI.h */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -753,6 +758,7 @@
 				33249EB1E13F9EDE3A99FA5D /* BombBehaviour.cpp in Sources */,
 				3324923B0E2B9AD22C143216 /* ParticleSystem.cpp in Sources */,
 				33249B244B3EBDA333E62176 /* Particle.cpp in Sources */,
+				33249AF1C082D85E6723F684 /* WalkingEnemyAI.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
