@@ -77,6 +77,8 @@ void ParticleSystem::drawParticles_() {
     texturePtr_->glBind();
     Particle* currentParticle = firstParticle_;
 
+    glBlendFunc(blendSourceFactor_, blendDestinationFactor_);
+
     while (currentParticle != nullptr) {
         glMatrixMode(GL_MODELVIEW);
         currentParticle->transform_.glTransform();
@@ -161,4 +163,20 @@ void ParticleSystem::onDestroy() {
         Tile2D::instance_().particlePool_.free(currentParticle);
         currentParticle = nextParticle;
     }
+}
+
+GLenum ParticleSystem::getBlendSourceFactor() const {
+    return blendSourceFactor_;
+}
+
+void ParticleSystem::setBlendSourceFactor(GLenum blendSourceFactor) {
+    blendSourceFactor_ = blendSourceFactor;
+}
+
+GLenum ParticleSystem::getBlendDestinationFactor() const {
+    return blendDestinationFactor_;
+}
+
+void ParticleSystem::setBlendDestinationFactor(GLenum blendDestionationFactor) {
+    blendDestinationFactor_ = blendDestionationFactor;
 }

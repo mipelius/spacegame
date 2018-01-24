@@ -31,6 +31,10 @@ public:
     ParticleSystem();
 
     // getters and setters
+    GLenum          getBlendSourceFactor() const;
+    void            setBlendSourceFactor(GLenum blendSourceFactor);
+    GLenum          getBlendDestinationFactor() const;
+    void            setBlendDestinationFactor(GLenum blendDestionationFactor);
     unsigned int    getSpawnFrequency() const;
     void            setSpawnFrequency(unsigned int spawnFrequency);
     unsigned int    getMaxParticles() const;
@@ -44,6 +48,8 @@ public:
     void            setUpdateFunc(void (*updateFunc)(Particle *));
 
 private:
+    GLenum          blendSourceFactor_ = GL_SRC_ALPHA;
+    GLenum          blendDestinationFactor_ = GL_ONE_MINUS_SRC_ALPHA;
     unsigned int    spawnFrequency_;
     unsigned int    maxParticles_;
     Rect            particleRect_;
