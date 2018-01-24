@@ -43,9 +43,10 @@ public:
     void            setParticleRect(const Rect &particleRect);
     Texture         *getTexturePtr() const;
     void            setTexturePtr(Texture *texturePtr);
-
     void            setInitFunc(void (*initFunc)(Particle *));
     void            setUpdateFunc(void (*updateFunc)(Particle *));
+    bool            playsOnce() const;
+    void            setPlaysOnce(bool playOnce);
 
 private:
     GLenum          blendSourceFactor_ = GL_SRC_ALPHA;
@@ -56,6 +57,9 @@ private:
     Texture*        texturePtr_ = nullptr;
     void            (*initFunc)(Particle*) = nullptr;
     void            (*updateFunc)(Particle*) = nullptr;
+    bool            playsOnce_;
+
+public:
 
 protected:
     void onDestroy() override;
@@ -64,6 +68,7 @@ private:
 
     Particle*       firstParticle_ = nullptr;
     unsigned int    particleCount_ = 0;
+    unsigned int    particlesSpawned_ = 0;
 
     Uint32          lastSpawnTimeStamp_;
 

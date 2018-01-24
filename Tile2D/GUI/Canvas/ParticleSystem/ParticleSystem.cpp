@@ -34,6 +34,9 @@ void ParticleSystem::spawnParticles_() {
     if (spawnFrequency_ == 0) {
         return;
     }
+    if (playsOnce_ && particlesSpawned_ >= maxParticles_) {
+        return;
+    }
     if (initFunc != nullptr) {
         Uint32 deltaTime = SDL_GetTicks() - lastSpawnTimeStamp_;
         float threshold = 1000.0f / spawnFrequency_;
@@ -57,6 +60,7 @@ void ParticleSystem::spawnParticles_() {
                 newParticle->spawnTimestamp_ = lastSpawnTimeStamp_;
                 initFunc(newParticle);
                 particleCount_++;
+                particlesSpawned_++;
             }
         }
     }
@@ -179,4 +183,12 @@ GLenum ParticleSystem::getBlendDestinationFactor() const {
 
 void ParticleSystem::setBlendDestinationFactor(GLenum blendDestionationFactor) {
     blendDestinationFactor_ = blendDestionationFactor;
+}
+
+bool ParticleSystem::playsOnce() const {
+    return playsOnce_;
+}
+
+void ParticleSystem::setPlaysOnce(bool playOnce) {
+    playsOnce_ = playOnce;
 }
