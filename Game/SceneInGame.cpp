@@ -67,7 +67,7 @@ void createBackground(Rect area, const char* texture, Color color) {
 void SceneInGame::init() {
     // Scene setup: tile map, physics, light system
     Tile2D::tileMap().load("maps/map.bmp", "json/tileset.json");
-    Tile2D::lightSystem().setAmbientLight(0.0);
+    Tile2D::lightSystem().setAmbientLight(0.5f);
     Tile2D::physicsWorld().setAirDensity(0.0001);
 
     // backgrounds

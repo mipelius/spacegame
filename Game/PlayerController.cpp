@@ -18,6 +18,7 @@
 #include "PlayerController.h"
 #include "MissileBehaviour.h"
 #include "BombBehaviour.h"
+#include "Tile2DMath.h"
 
 void PlayerController::awake() {
     body = gameObject()->getComponent<Body>();
@@ -203,6 +204,12 @@ void PlayerController::lateUpdate() {
         }
 
         camera->setPosition(cameraPos);
+
+        float ambientLight = 1.0f - cameraPos.y / (Tile2D::tileMap().getActualH() / 2.0f);
+        ambientLight /= 3.0f;
+        Mathf::clamp(ambientLight, 0.0f, 0.1f);
+
+        Tile2D::lightSystem().setAmbientLight(ambientLight);
     }
 }
 
