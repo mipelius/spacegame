@@ -46,7 +46,7 @@ public:
     inline T lengthSqr() const;
     inline T angle() const;
     inline T dot(const Vec& otherVector) const;
-    inline Vec normalized();
+    inline Vec normalized() const;
 
     template <typename otherT>
     inline Vec operator = (const Vec<otherT> & otherVector) const;
@@ -184,7 +184,7 @@ inline T Vec<T>::dot(const Vec& otherVector) const {
 }
 
 template <typename T>
-inline Vec<T> Vec<T>::normalized() {
+inline Vec<T> Vec<T>::normalized() const {
     double length = sqrt(x * x + y * y);
     if (length == 0.0) {
         return {1, 0};

@@ -23,12 +23,19 @@
 class MapCollisionEventArgs {
 
 public:
-    MapCollisionEventArgs(float deltaTime, Vecf contactNormal, Vecf tileCoordinates, Tile* tile);
+    MapCollisionEventArgs(
+            float   deltaTime,
+            Vecf    contactNormal,
+            Vecf    tileCoordinates,
+            Tile*   tile,
+            Vecf    velocityBeforeCollision
+    );
 
     float deltaTime;
     Vecf contactNormal;
     Vecf tileCoordinates;
     Tile* tile;
+    Vecf velocityBeforeCollision;
 };
 
 #endif //__MapCollisionEventArgs_H

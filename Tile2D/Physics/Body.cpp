@@ -88,6 +88,8 @@ void Body::step_(float timeElapsedSec) {
 }
 
 bool Body::detectMapCollision_(float deltaTime) {
+    Vecf velocityBeforeCollision = velocity_;
+
     TileMap* map = this->physicsWorld_->map_;
 
     if (map == nullptr || collider_ == nullptr) {
@@ -136,7 +138,15 @@ bool Body::detectMapCollision_(float deltaTime) {
                         collider_->pos_ += contactNormal * (penetration + 0.05);
                         collided = true;
 
-                        mapCollision.raise(MapCollisionEventArgs(deltaTime, contactNormal, tileCollider.pos_, tile));
+                        mapCollision.raise(
+                                MapCollisionEventArgs(
+                                        deltaTime,
+                                        contactNormal,
+                                        tileCollider.pos_,
+                                        tile,
+                                        velocityBeforeCollision
+                                )
+                        );
                     }
                 }
             }
@@ -189,7 +199,15 @@ bool Body::detectMapCollision_(float deltaTime) {
             velocity_ = reflVel * 0.2;
             transform()->position_ += toCollision * (1.01);
 
-            mapCollision.raise(MapCollisionEventArgs(deltaTime, n, collisionTileCoord, collisionTile));
+            mapCollision.raise(
+                    MapCollisionEventArgs(
+                            deltaTime,
+                            n,
+                            collisionTileCoord,
+                            collisionTile,
+                            velocityBeforeCollision
+                    )
+            );
         }
     }
 
