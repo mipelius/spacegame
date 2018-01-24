@@ -18,18 +18,40 @@
 #ifndef SPACEGAME_PARTICLE_H
 #define SPACEGAME_PARTICLE_H
 
+#include <SDL2/SDL_stdinc.h>
 #include "Body.h"
 #include "Color.h"
+class ParticleSystem;
 
 class Particle {
+    friend class ParticleSystem;
+
 public:
     Particle();
+    void destroy();
+
+    // getters and setters
+    Uint32 getTimeLived();
+    Uint32 getSpawnTimestamp() const;
+    float getOpacity() const;
+    void setOpacity(float opacity);
+    Transform &getTransform();
+    const Color &getColor() const;
+    void setColor(const Color &color);
+    const Vecf &getVelocity() const;
+
+    void setVelocity(const Vecf &velocity);
 
 private:
-    float       currentTime_;
-    float       opacity_;
-    Transform   transform_;
-    Color       color_;
+    Uint32          spawnTimestamp_;
+    float           opacity_;
+    Vecf            velocity_;
+    Transform       transform_;
+    Color           color_;
+
+    ParticleSystem* owner_;
+    Particle*       next_;
+    Particle*       prev_;
 };
 
 

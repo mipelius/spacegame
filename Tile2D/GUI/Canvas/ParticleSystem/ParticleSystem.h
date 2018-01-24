@@ -22,32 +22,50 @@
 #include "Tile2DComponent.h"
 #include "Particle.h"
 #include "DrawableBase.h"
+#include "Texture.h"
 
-class ParticleSystem : DrawableBase {
+class ParticleSystem : public DrawableBase {
+    friend class Particle;
 
 public:
     ParticleSystem();
 
     // getters and setters
-    unsigned int getSpawnFrequency() const;
-    void setSpawnFrequency(unsigned int spawnFrequency);
-    unsigned int getMaxParticles() const;
-    void setMaxParticles(unsigned int maxParticles);
+    unsigned int    getSpawnFrequency() const;
+    void            setSpawnFrequency(unsigned int spawnFrequency);
+    unsigned int    getMaxParticles() const;
+    void            setMaxParticles(unsigned int maxParticles);
+    const           Rect &getParticleRect() const;
+    void            setParticleRect(const Rect &particleRect);
+    Texture         *getTexturePtr() const;
+    void            setTexturePtr(Texture *texturePtr);
 
-    void setInitFunc(void (*initFunc)(Particle *));
-    void setUpdateFunc(void (*updateFunc)(Particle *));
+    void            setInitFunc(void (*initFunc)(Particle *));
+    void            setUpdateFunc(void (*updateFunc)(Particle *));
 
 private:
-    unsigned int spawnFrequency_;
-    unsigned int maxParticles_;
-    unsigned int particleCount_;
+    unsigned int    spawnFrequency_;
+    unsigned int    maxParticles_;
+    Rect            particleRect_;
+    Texture*        texturePtr_ = nullptr;
+    void            (*initFunc)(Particle*) = nullptr;
+    void            (*updateFunc)(Particle*) = nullptr;
 
-    void (*initFunc)(Particle*) = nullptr;
-    void (*updateFunc)(Particle*) = nullptr;
+protected:
+    void onDestroy() override;
 
-    Uint32 lastSpawnTimeStamp_;
+private:
+
+    Particle*       firstParticle_ = nullptr;
+    unsigned int    particleCount_ = 0;
+
+    Uint32          lastSpawnTimeStamp_;
 
     void drawActual(const Canvas &canvas) override;
+
+    void spawnParticles_();
+    void updateParticles_();
+    void drawParticles_();
 };
 
 #endif //SPACEGAME_PARTICLESYSTEM_H

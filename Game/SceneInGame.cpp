@@ -23,6 +23,7 @@
 #include "PlayerController.h"
 #include "Tags.h"
 #include "BackgroundBehaviour.h"
+#include "ParticleSystem.h"
 
 static GameObject* spawnEnemy(Vecf pos) {
     auto enemy = Tile2D::createGameObject();
@@ -103,6 +104,30 @@ void SceneInGame::init() {
 
     auto playerController = player->attachComponent<PlayerController>();
     playerController->moveForce = 10000.0f;
+
+    auto playerParticles = player->attachComponent<ParticleSystem>();
+    playerParticles->setInitFunc([] (Particle* particle){
+        Vecf pos = {(rand() % 10) * 5.0f - 25.0f, (rand() % 10) * 5.0f - 25.0f};
+        particle->getTransform().setPosition(pos);
+        particle->setVelocity(pos.normalized() * 10.0f);
+        particle->getTransform().setRotation(rand() % 360);
+        particle->setColor({(rand() % 255) / 255.0f, (rand() % 255) / 255.0f, (rand() % 255) / 255.0f});
+        particle->setOpacity(1.0);
+    });
+    playerParticles->setUpdateFunc([] (Particle* particle){
+        if (particle->getTimeLived() > 2000) {
+            particle->destroy();
+        } else {
+            Vecf pos = particle->getTransform().getPosition();
+            particle->getTransform().setPosition(pos + particle->getVelocity());
+            particle->setOpacity(particle->getOpacity() - 0.001f);
+            particle->setColor({(rand() % 255) / 255.0f, (rand() % 255) / 255.0f, (rand() % 255) / 255.0f});
+        }
+    });
+    playerParticles->setTexturePtr(Tile2D::resources().textures["light"]);
+    playerParticles->setMaxParticles(720);
+    playerParticles->setParticleRect({-20, -20, 20, 20});
+    playerParticles->setSpawnFrequency(720);
 
     // camera
     camera = new Camera;

@@ -38,6 +38,7 @@ class Tile2D {
     friend class Tile2DBehaviour;
     friend class SceneManager;
     friend class ParticleSystem;
+    friend class Particle;
 
 public:
     static bool isDebugMode;
