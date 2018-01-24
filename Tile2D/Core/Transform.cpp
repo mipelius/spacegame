@@ -42,9 +42,19 @@ Transform::Transform() {
 void Transform::glTransform() {
     glTranslatef(position_.x, position_.y, 0);
     glRotatef(rotation_, 0.0f, 0.0f, 1.0f);
+    glScalef(scale_.x, scale_.y, 1.0f);
 }
 
 void Transform::glInvTransform() {
+    glScalef(1.0f / scale_.x, 1.0f / scale_.y, 1.0f);
     glRotatef(-rotation_, 0.0f, 0.0f, 1.0f);
     glTranslatef(-position_.x, -position_.y, 0);
+}
+
+const Vecf &Transform::getScale() const {
+    return scale_;
+}
+
+void Transform::setScale(const Vecf &scale) {
+    scale_ = scale;
 }

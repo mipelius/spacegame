@@ -30,11 +30,14 @@ public:
     void setPosition(const Vecf &position);
     float getRotation() const;
     void setRotation(float rotation);
+    const Vecf &getScale() const;
+    void setScale(const Vecf &scale);
 
     void glTransform();
     void glInvTransform();
 
 private:
+    Vecf scale_ = {1.0, 1.0};
     Vecf position_ = {0.0f, 0.0f};
     float rotation_ = 0.0f;
 };
