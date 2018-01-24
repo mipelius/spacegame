@@ -19,14 +19,42 @@
 void PulseLightBehaviour::awake() {
     LimitedAgeBehaviour::awake();
     light = gameObject()->getComponent<PointLight>();
-    radiusOnAwake = light->getRadius();
+    radiusOnAwake_ = light->getRadius();
+    intensityOnAwake_ = light->getIntensity();
 }
 
 void PulseLightBehaviour::update() {
     LimitedAgeBehaviour::update();
-    float scale = 1.0 - age() / TTL;
-    light->setIntensity(scale);
-    light->setRadius(scale * radiusOnAwake);
+    if (age() < timeToStartDiminish_) {
+        return;
+    }
+    float scale = (age() - timeToStartDiminish_) / (TTL - timeToStartDiminish_);
+    light->setIntensity((1.0f - scale * intensityDiminishSpeed_) * intensityOnAwake_);
+    light->setRadius((1.0f - scale * radiusDiminishSpeed_) * radiusOnAwake_);
 }
 
 void PulseLightBehaviour::lateUpdate() { }
+
+float PulseLightBehaviour::getRadiusDiminishSpeed() const {
+    return radiusDiminishSpeed_;
+}
+
+void PulseLightBehaviour::setRadiusDiminishSpeed(float radiusDiminishSpeed) {
+    radiusDiminishSpeed_ = radiusDiminishSpeed;
+}
+
+float PulseLightBehaviour::getIntensityDiminishSpeed() const {
+    return intensityDiminishSpeed_;
+}
+
+void PulseLightBehaviour::setIntensityDiminishSpeed(float intensityDiminishSpeed) {
+    intensityDiminishSpeed_ = intensityDiminishSpeed;
+}
+
+float PulseLightBehaviour::getTimeToStartDiminish() const {
+    return timeToStartDiminish_;
+}
+
+void PulseLightBehaviour::setTimeToStartDiminish(float timeToStartDiminish) {
+    timeToStartDiminish_ = timeToStartDiminish;
+}

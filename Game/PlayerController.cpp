@@ -222,5 +222,5 @@ void PlayerController::dropBomp() {
     bompSprite->setTexturePtr(Tile2D::resources().textures["bomb"]);
     bompSprite->setRect({-10, -10, 10, 10});
 
-    auto bompBehaviour = bomp->attachComponent<BombBehaviour>();
+    auto bombBehaviour = bomp->attachComponent<BombBehaviour>();
 }

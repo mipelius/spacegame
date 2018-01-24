@@ -24,6 +24,7 @@
 #include "Tags.h"
 #include "BackgroundBehaviour.h"
 #include "ParticleSystem.h"
+#include "Tile2DMath.h"
 
 static GameObject* spawnEnemy(Vecf pos) {
     auto enemy = Tile2D::createGameObject();
@@ -105,40 +106,15 @@ void SceneInGame::init() {
     auto playerController = player->attachComponent<PlayerController>();
     playerController->moveForce = 10000.0f;
 
-    auto playerParticles = player->attachComponent<ParticleSystem>();
-    playerParticles->setInitFunc([] (Particle* particle){
-        Vecf pos = {(rand() % 10) * 5.0f - 25.0f, (rand() % 10) * 5.0f - 25.0f};
-        particle->getTransform().setPosition(pos);
-        particle->setVelocity(pos.normalized() * 1.0f);
-        particle->getTransform().setRotation(rand() % 360);
-        particle->setColor({(rand() % 255) / 255.0f, (rand() % 255) / 255.0f, (rand() % 255) / 255.0f});
-        particle->setOpacity(1.0);
-    });
-    playerParticles->setUpdateFunc([] (Particle* particle){
-        if (particle->getTimeLived() > 2000) {
-            particle->destroy();
-        } else {
-            Vecf pos = particle->getTransform().getPosition();
-            particle->getTransform().setPosition(pos + particle->getVelocity());
-            particle->setOpacity(particle->getOpacity() - 0.001f);
-        }
-    });
-    playerParticles->setParticleRect({-100, -100, 100, 100});
-    playerParticles->setTexturePtr(Tile2D::resources().textures["light"]);
-    playerParticles->setMaxParticles(720);
-    playerParticles->setSpawnFrequency(20);
-    playerParticles->setBlendSourceFactor(GL_SRC_ALPHA);
-    playerParticles->setBlendDestinationFactor(GL_ONE);
-
     // camera
     camera = new Camera;
     camera->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
     Tile2D::canvas().setCamera(camera);
 
     // dummy enemies
-    spawnEnemy(player->transform().getPosition() + Vecf(100.0, 0.0));
-    spawnEnemy(player->transform().getPosition() + Vecf(200.0, 0.0));
-    spawnEnemy(player->transform().getPosition() + Vecf(300.0, 0.0));
+//    spawnEnemy(player->transform().getPosition() + Vecf(100.0, 0.0));
+//    spawnEnemy(player->transform().getPosition() + Vecf(200.0, 0.0));
+//    spawnEnemy(player->transform().getPosition() + Vecf(300.0, 0.0));
 }
 
 void SceneInGame::destroy() {

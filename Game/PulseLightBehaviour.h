@@ -29,7 +29,24 @@ protected:
     void lateUpdate() override;
 
     PointLight* light = nullptr;
-    float radiusOnAwake = 0.0;
+    float radiusOnAwake_ = 0.0f;
+    float intensityOnAwake_ = 0.0f;
+    float timeToStartDiminish_ = 0.0f;
+public:
+    float getTimeToStartDiminish() const;
+
+    void setTimeToStartDiminish(float timeToStartDiminish);
+
+private:
+    float radiusDiminishSpeed_ = 1.0f;
+    float intensityDiminishSpeed_ = 1.0f;
+public:
+    float getRadiusDiminishSpeed() const;
+    void setRadiusDiminishSpeed(float radiusDiminishSpeed);
+    float getIntensityDiminishSpeed() const;
+    void setIntensityDiminishSpeed(float intensityDiminishSpeed);
+
+
 };
 
 #endif //__PulseLightBehaviour_H
