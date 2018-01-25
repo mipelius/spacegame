@@ -22,6 +22,7 @@
 		332492411F2F761A0C078F80 /* PointLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E0357F5C99BB9DE7D28 /* PointLight.cpp */; };
 		332492874CED5DCE5477A469 /* MusicPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E9F51C99A3D00C3B8A1 /* MusicPlayer.cpp */; };
 		332493009AEB85B891E950D9 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495FA3C17938DD7B522D7 /* Transform.cpp */; };
+		33249303EB6C3FDAF59956DB /* Spawner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249BDA691A20805A912058 /* Spawner.cpp */; };
 		332493092A9CBCAF6DFB3ADE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 332493AFD86E4F7BC15AE8B3 /* OpenGL.framework */; };
 		3324931E75494D011142CD0C /* Tile2DBehaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324966D65FFDCB5645DBF44 /* Tile2DBehaviour.cpp */; };
 		33249346C1F4A712821DDAFE /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495D0B6082C5C6DE5F976 /* Sprite.cpp */; };
@@ -67,6 +68,7 @@
 		33249EFB2773BBC0F32C6048 /* json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249EC8B5CC2F9AEB6E601B /* json.cpp */; };
 		33249F41C32732529D0C4F21 /* SceneInGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332499F4D35FFD54068ECAE6 /* SceneInGame.cpp */; };
 		33249F475D152391D61F846C /* Ears.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332490B02ADEC0D042251E15 /* Ears.cpp */; };
+		33249F8C4C00A8C3513999D9 /* DebugBehaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332499A6AB4E49E5FC5E2E43 /* DebugBehaviour.cpp */; };
 		33249FE99E77F5AC3409336F /* Tile2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249EBD813C65AC8C4E72FF /* Tile2D.cpp */; };
 		33249FF76D0C5D91689DFDAF /* PulseLightBehaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324958AF461CD160A4B8B02 /* PulseLightBehaviour.cpp */; };
 /* End PBXBuildFile section */
@@ -109,6 +111,7 @@
 		332492392BB6F169433FF5BB /* AnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationManager.h; sourceTree = "<group>"; };
 		33249239820BCFFAB4A96971 /* Vec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vec.h; sourceTree = "<group>"; };
 		3324924B68EE819794401897 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
+		3324924D169EB5D1CE0DC3F9 /* DebugBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugBehaviour.h; sourceTree = "<group>"; };
 		33249259B7A5AA394AB22993 /* PhysicsWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsWorld.h; sourceTree = "<group>"; };
 		3324927C8A405C3DE2DFBAD7 /* BombBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BombBehaviour.h; sourceTree = "<group>"; };
 		33249287D7E99E550342E847 /* SceneInGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneInGame.h; sourceTree = "<group>"; };
@@ -137,6 +140,7 @@
 		3324947EA7F1F13D714D12DB /* Background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Background.h; sourceTree = "<group>"; };
 		332494A83E1FF4B4A02658C9 /* BombBehaviour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BombBehaviour.cpp; sourceTree = "<group>"; };
 		332494BCB41F5E615AEED7D7 /* AnimationBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationBase.h; sourceTree = "<group>"; };
+		332494D33A8C312B3ADF7845 /* Spawner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Spawner.h; sourceTree = "<group>"; };
 		3324951567969CEF8509B82E /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = /Library/Frameworks/SDL2_image.framework; sourceTree = "<absolute>"; };
 		33249520984162F25850E376 /* green_block.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = green_block.bmp; sourceTree = "<group>"; };
 		3324953023929045A6551EAC /* PlayerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerController.cpp; sourceTree = "<group>"; };
@@ -180,6 +184,7 @@
 		3324995A928712F2C632280F /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		332499634A704C0C12FE1F09 /* JsonFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonFileManager.h; sourceTree = "<group>"; };
 		33249964C7AF9A946152A7CB /* resources.json */ = {isa = PBXFileReference; lastKnownFileType = file.json; path = resources.json; sourceTree = "<group>"; };
+		332499A6AB4E49E5FC5E2E43 /* DebugBehaviour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugBehaviour.cpp; sourceTree = "<group>"; };
 		332499A7A9EE94541287B71A /* Canvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Canvas.h; sourceTree = "<group>"; };
 		332499B1A393A9478446E9D6 /* Body.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Body.cpp; sourceTree = "<group>"; };
 		332499DC1016E1FD7289567D /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
@@ -203,6 +208,7 @@
 		33249B9A124345E3E60A3BBF /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Font.h; sourceTree = "<group>"; };
 		33249BCD21DCD18A25F24BE4 /* MissileBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MissileBehaviour.h; sourceTree = "<group>"; };
 		33249BD03F34C847B3AF3009 /* plasma_cannon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plasma_cannon.png; sourceTree = "<group>"; };
+		33249BDA691A20805A912058 /* Spawner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Spawner.cpp; sourceTree = "<group>"; };
 		33249BDD1BC6C3F4F516FECA /* MapTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTexture.h; sourceTree = "<group>"; };
 		33249BE0B335CA189366947F /* SceneTitleScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneTitleScreen.h; sourceTree = "<group>"; };
 		33249C2060BED6C15C6152F0 /* BodyCollisionEventArgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BodyCollisionEventArgs.h; sourceTree = "<group>"; };
@@ -516,6 +522,10 @@
 				3324927C8A405C3DE2DFBAD7 /* BombBehaviour.h */,
 				33249F16A23666BDDBB6DC23 /* WalkingEnemyAI.cpp */,
 				332493CDCDE3C265E609C29D /* WalkingEnemyAI.h */,
+				33249BDA691A20805A912058 /* Spawner.cpp */,
+				332494D33A8C312B3ADF7845 /* Spawner.h */,
+				332499A6AB4E49E5FC5E2E43 /* DebugBehaviour.cpp */,
+				3324924D169EB5D1CE0DC3F9 /* DebugBehaviour.h */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -759,6 +769,8 @@
 				3324923B0E2B9AD22C143216 /* ParticleSystem.cpp in Sources */,
 				33249B244B3EBDA333E62176 /* Particle.cpp in Sources */,
 				33249AF1C082D85E6723F684 /* WalkingEnemyAI.cpp in Sources */,
+				33249303EB6C3FDAF59956DB /* Spawner.cpp in Sources */,
+				33249F8C4C00A8C3513999D9 /* DebugBehaviour.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

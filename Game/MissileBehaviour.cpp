@@ -85,14 +85,9 @@ void MissileBehaviour::awake() {
     gameObject()->getComponent<Body>()->bodyCollision.add([] (Body* body, BodyCollisionEventArgs args) {
         if (args.otherBody->gameObject()->tag == Tags::enemy) {
             auto otherBody = args.otherBody->gameObject()->getComponent<Body>();
+            float scaleX = args.otherBody->transform()->getScale().x;
+            args.otherBody->transform()->setScale({-scaleX, 1});
             otherBody->setVelocity(otherBody->getVelocity() + body->getVelocity() / 100.0);
-            auto sprite = args.otherBody->gameObject()->getComponent<Sprite>();
-            if (sprite->getColor().red > 0.9) {
-                sprite->setColor({0, 1, 0});
-            } else {
-                sprite->setColor({1, 0, 0});
-            }
-
             createSparkles(body->transform()->getPosition(), args.contactNormal, {1, 0, 0});
             body->gameObject()->destroy();
         }

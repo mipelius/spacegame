@@ -23,39 +23,8 @@
 #include "PlayerController.h"
 #include "Tags.h"
 #include "BackgroundBehaviour.h"
-#include "ParticleSystem.h"
-#include "Tile2DMath.h"
-#include "WalkingEnemyAI.h"
-
-static GameObject* spawnEnemy(Vecf pos, Transform* target) {
-    auto enemy = Tile2D::createGameObject();
-    enemy->transform().setPosition(pos);
-    enemy->transform().setRotation(0.0f);
-
-    enemy->tag = Tags::enemy;
-
-    auto enemyBody = enemy->attachComponent<Body>();
-    enemyBody->setMass(100.0);
-
-    auto polygonCollider = enemy->attachComponent<PolygonCollider>();
-    polygonCollider->setPoints({
-            {0, -16},
-            {16, 0},
-            {16, 16},
-            {-16, 16},
-            {-16, 0},
-    });
-
-    auto enemySprite = enemy->attachComponent<Sprite>();
-    enemySprite->setRect({-16, -16, 16, 16});
-    enemySprite->setTexturePtr(Tile2D::resources().textures["badguy"]);
-    enemySprite->setColor({1, 0, 0});
-
-    auto AI = enemy->attachComponent<WalkingEnemyAI>();
-    AI->setTarget(target);
-
-    return enemy;
-}
+#include "Spawner.h"
+#include "DebugBehaviour.h"
 
 void createBackground(Rect area, const char* texture, Color color) {
     auto background = Tile2D::createGameObject();
@@ -87,6 +56,8 @@ void SceneInGame::init() {
 
     player->tag = Tags::player;
 
+    auto debugBehaviour = player->attachComponent<DebugBehaviour>();
+
     auto spaceshipBody = player->attachComponent<Body>();
     spaceshipBody->setMass(100.0);
 
@@ -114,11 +85,6 @@ void SceneInGame::init() {
     camera = new Camera;
     camera->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
     Tile2D::canvas().setCamera(camera);
-
-    // dummy enemies
-    spawnEnemy(player->transform().getPosition() + Vecf(100.0, 0.0), &player->transform());
-    spawnEnemy(player->transform().getPosition() + Vecf(200.0, 0.0), &player->transform());
-    spawnEnemy(player->transform().getPosition() + Vecf(300.0, 0.0), &player->transform());
 }
 
 void SceneInGame::destroy() {
