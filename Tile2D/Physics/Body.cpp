@@ -36,6 +36,7 @@ Body::Body() :
     drag_           (   1.0f      ),
     angularVelocity_(   0.0f      ),
     mass_           (   1.0f      ),
+    gravityFactor_  (   1.0f      ),
 
     physicsWorld_                       (nullptr),
     collider_                           (nullptr)
@@ -74,7 +75,7 @@ void Body::step_(float timeElapsedSec) {
     // use acceleration for updating velocity --> position
 
     Vecf acceleration = totalForce / mass_;
-    acceleration += physicsWorld_->gForce_;
+    acceleration += physicsWorld_->gForce_ * gravityFactor_;
     velocity_ += acceleration;
     position = position + (velocity_ * timeElapsedSec * physicsWorld_->getMetersPerPixel());
 
@@ -279,4 +280,12 @@ float Body::getDrag() const {
 
 void Body::setDrag(float drag) {
     drag_ = drag;
+}
+
+float Body::getGravityFactor() const {
+    return gravityFactor_;
+}
+
+void Body::setGravityFactor(float gravityFactor) {
+    gravityFactor_ = gravityFactor;
 }
