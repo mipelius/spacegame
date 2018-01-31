@@ -18,11 +18,20 @@
 #ifndef SPACEGAME_MATH_H
 #define SPACEGAME_MATH_H
 
+#include <cfloat>
+
 template <typename T>
 class Math {
 
 public:
-    inline static void clamp(T& value, T min, T max);
+    inline static void clamp(T& value, const T& min, const T& max);
+
+    inline static T min(T& value1, T& value2);
+    inline static T max(T& value1, T& value2);
+
+    inline static bool approx(const T& value1, const T& value2);
+
+    static constexpr float epsilon = FLT_EPSILON;
 };
 
 typedef Math<float>     Mathf;
@@ -32,13 +41,28 @@ typedef Math<int>       Mathi;
 // -- definitions
 
 template <typename T>
-inline void Math<T>::clamp(T& value, T min, T max) {
+inline void Math<T>::clamp(T& value, const T& min, const T& max) {
     if (value < min) {
         value = min;
     }
     else if (value > max) {
         value = max;
     }
+}
+
+template <typename T>
+inline T Math<T>::min(T& value1, T& value2) {
+    return value1 < value2 ? value1 : value2;
+}
+
+template <typename T>
+inline T Math<T>::max(T& value1, T& value2) {
+    return value1 > value2 ? value1 : value2;
+}
+
+template<typename T>
+bool Math<T>::approx(const T &value1, const T &value2) {
+    return abs(value1 - value2) < epsilon;
 }
 
 #endif //SPACEGAME_TILE2DMATH_H
