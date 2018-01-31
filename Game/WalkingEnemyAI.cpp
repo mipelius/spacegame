@@ -16,6 +16,7 @@
 
 #include "WalkingEnemyAI.h"
 #include "Tile2DMath.h"
+#include "Tile2D.h"
 
 Transform *WalkingEnemyAI::getTarget() const {
     return target_;
@@ -26,32 +27,63 @@ void WalkingEnemyAI::setTarget(Transform *target) {
 }
 
 void WalkingEnemyAI::awake() {
+    lastJumpTimeStamp_ = SDL_GetTicks();
+    lastReactionTimeStamp_ = SDL_GetTicks();
+
     body_ = gameObject()->getComponent<Body>();
+
+    body_->mapCollision.add([] (Body* body, MapCollisionEventArgs args) {
+//        auto thisAI = body->gameObject()->getComponent<WalkingEnemyAI>();
+//        bool horizontalCollision = Mathf::approx(abs(args.contactNormal.x), 1.0);
+//
+//        if (horizontalCollision || !thisAI->isGrounded_()) {
+//            body->setVelocity({0, args.velocityBeforeCollision.y});
+//        } else {
+//            body->setVelocity({args.velocityBeforeCollision.x, 0});
+//        }
+    });
 }
 
 void WalkingEnemyAI::update() {
     if (target_ != nullptr) {
-        Vecf vel = body_->getVelocity();
+        if (isGrounded_()) {
+            Vecf vel = body_->getVelocity();
 
-        float xChange = (target_->getPosition().x - transform()->getPosition().x);
-        xChange = xChange / abs(xChange);
+            Uint32 ticks = SDL_GetTicks();
 
-        float maxVelX = xChange * 1000.0f;
-
-        if ((vel.x < 0 && maxVelX) < 0 || (vel.x > 0 && maxVelX > 0)) {
-            if (abs(vel.x) > abs(maxVelX)) {
-                return;
+            Uint32 reactionTime = reactionTime_ + (reactionTimeRandomness_ - rand() % (2 * reactionTimeRandomness_));
+            if (ticks - lastReactionTimeStamp_ > reactionTime) {
+                lastReactionTimeStamp_ = ticks;
+                xDirection_ = (target_->getPosition().x - transform()->getPosition().x);
+                xDirection_ = xDirection_ / abs(xDirection_);
             }
+
+            vel.x = xDirection_ * 1000;
+
+            Uint32 jumpInterval = jumpInterval_ + (jumpIntervalRandomness_ - rand() % (2 * jumpIntervalRandomness_));
+            if (ticks - lastJumpTimeStamp_ > jumpInterval) {
+                lastJumpTimeStamp_ = ticks;
+                vel.y = -1000;
+                transform()->setPosition(transform()->getPosition() + Vecf{0.0f, -1.0f});
+            }
+
+            body_->setVelocity(vel);
         }
-
-        xChange *= 100.0f;
-
-        vel.x += xChange;
-
-        body_->setVelocity(vel);
     }
 }
 
-void WalkingEnemyAI::lateUpdate() {
+void WalkingEnemyAI::lateUpdate() { }
 
+bool WalkingEnemyAI::isGrounded_() {
+    for (auto groundCheckPoint : groundSensors_) {
+        auto tile = Tile2D::tileMap().getValueScaled(transform()->getPosition() + groundCheckPoint);
+        if (tile != nullptr && tile->getDensity() > Mathf::epsilon) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void WalkingEnemyAI::setGroundCheckPoints(const std::vector<Vecf> &groundSensors) {
+    groundSensors_ = groundSensors;
 }

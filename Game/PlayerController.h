@@ -45,7 +45,6 @@ private:
     const Uint32 lightDropInterval_ = 500;
     Uint32 lastLightDropTimestamp_;
 
-
     Body* body_;
     Sprite* sprite_;
 

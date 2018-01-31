@@ -18,6 +18,7 @@
 #ifndef SPACEGAME_WALKINGENEMYAI_H
 #define SPACEGAME_WALKINGENEMYAI_H
 
+#include <SDL2/SDL_quit.h>
 #include "Transform.h"
 #include "Tile2DBehaviour.h"
 #include "Body.h"
@@ -26,6 +27,7 @@ class WalkingEnemyAI : public Tile2DBehaviour {
 public:
     Transform *getTarget() const;
     void setTarget(Transform *target);
+    void setGroundCheckPoints(const std::vector<Vecf> &groundSensors);
 
 protected:
     void awake() override;
@@ -35,7 +37,19 @@ protected:
 private:
     Body* body_ = nullptr;
     Transform* target_ = nullptr;
+    std::vector<Vecf> groundSensors_;
 
+    Uint32 lastJumpTimeStamp_ = 0;
+    const Uint32 jumpInterval_ = 6000;
+    const Uint32 jumpIntervalRandomness_ = 1000;
+
+    Uint32 lastReactionTimeStamp_ = 0;
+    const Uint32 reactionTime_ = 500;
+    const Uint32 reactionTimeRandomness_ = 200;
+
+    float xDirection_;
+
+    bool isGrounded_();
 };
 
 #endif //SPACEGAME_WALKINGENEMYAI_H

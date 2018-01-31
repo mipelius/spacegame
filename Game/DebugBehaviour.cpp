@@ -21,6 +21,7 @@
 #include "Tile2D.h"
 #include "Sprite.h"
 #include "Body.h"
+#include "WalkingEnemyAI.h"
 
 void DebugBehaviour::awake() {
     body_ = gameObject()->getComponent<Body>();
@@ -28,20 +29,41 @@ void DebugBehaviour::awake() {
 }
 
 void DebugBehaviour::update() {
-    float size = 3.0f;
+    float size = 1.0f;
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
         if (event.type == SDL_KEYDOWN) {
             switch (event.key.keysym.sym) {
-                case SDLK_1 :
-                    Spawner::spawnEnemy(
-                            transform()->getPosition(),
-                            "crab_kindof_silhouettish",
-                            {{-10 * size, -25 * size}, {10 * size, -25 * size}, {10 * size, 25 * size}, {-10 * size, 25 * size}},
-                            {-25 * size, -25 * size, 25 * size, 25 * size},
-                            0.0f
-                    );
-                    break;
+                case SDLK_1 : {
+                        auto enemy = Spawner::spawnEnemy(
+                                transform()->getPosition(),
+                                "walking_alien_green",
+                                {
+                                        {-10 * size, -25 * size},
+                                        {10 * size, -25 * size},
+                                        {10 * size, 15 * size},
+                                        {5 * size, 25 * size},
+                                        {-5 * size, 25 * size},
+                                        {-10 * size, 15 * size}
+                                },
+                                {-25 * size, -25 * size, 25 * size, 25 * size},
+                                1.0f
+                        );
+
+                        auto AI = enemy->attachComponent<WalkingEnemyAI>();
+                        AI->setTarget(transform());
+                        AI->setGroundCheckPoints(
+                                {
+                                        {-10, 26.0f * size},
+                                        {-5, 26.0f * size},
+                                        {0, 26.0f * size},
+                                        {5, 26.0f * size},
+                                        {10, 26.0f * size}
+                                }
+                        );
+
+                        break;
+                    }
                 case SDLK_2 :
                     Spawner::spawnEnemy(
                             transform()->getPosition(),
@@ -54,7 +76,7 @@ void DebugBehaviour::update() {
                 case SDLK_3:
                     Spawner::spawnEnemy(
                             transform()->getPosition(),
-                            "fourwaycyclops_silhouettish",
+                            "fourwaycyclops_colored",
                             {{-30 * size, -24 * size}, {30 * size, -24 * size}, {30 * size, 24 * size}, {-30 * size, 24 * size}},
                             {-30 * size, -30 * size, 30 * size, 30 * size},
                             0.0f
@@ -63,30 +85,13 @@ void DebugBehaviour::update() {
                 case SDLK_4:
                     Spawner::spawnEnemy(
                             transform()->getPosition(),
-                            "fourwaycyclops_colored",
-                            {{-30 * size, -24 * size}, {30 * size, -24 * size}, {30 * size, 24 * size}, {-30 * size, 24 * size}},
-                            {-30 * size, -30 * size, 30 * size, 30 * size},
-                            0.0f
-                    );
-                    break;
-                case SDLK_5:
-                    Spawner::spawnEnemy(
-                            transform()->getPosition(),
-                            "twohorn_silhouettish",
-                            {{-10 * size, -25 * size}, {10 * size, -25 * size}, {10 * size, 25 * size}, {-10 * size, 25 * size}},
-                            {-25 * size, -25 * size, 25 * size, 25 * size},
-                            0.0f
-                    );
-                    break;
-                case SDLK_6:
-                    Spawner::spawnEnemy(
-                            transform()->getPosition(),
                             "twohorn_colored",
                             {{-10 * size, -25 * size}, {10 * size, -25 * size}, {10 * size, 25 * size}, {-10 * size, 25 * size}},
                             {-25 * size, -25 * size, 25 * size, 25 * size},
                             0.0f
                     );
                     break;
+
                 case SDLK_RETURN:
                     Tile2D::isDebugMode = !Tile2D::isDebugMode;
                     if (Tile2D::isDebugMode) {
