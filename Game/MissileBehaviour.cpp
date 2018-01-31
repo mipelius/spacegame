@@ -19,6 +19,7 @@
 #include "SparkleBehaviour.h"
 #include "Tags.h"
 #include "PulseLightBehaviour.h"
+#include "Health.h"
 
 static void createPulseLight(Vecf position) {
     auto obj = Tile2D::createGameObject();
@@ -90,6 +91,12 @@ void MissileBehaviour::awake() {
             otherBody->setVelocity(otherBody->getVelocity() + body->getVelocity() / 100.0);
             createSparkles(body->transform()->getPosition(), args.contactNormal, {1, 0, 0});
             body->gameObject()->destroy();
+
+            auto health = args.otherBody->gameObject()->getComponent<Health>();
+
+            if (health != nullptr) {
+                health->damage(10, body->gameObject());
+            }
         }
     });
 }

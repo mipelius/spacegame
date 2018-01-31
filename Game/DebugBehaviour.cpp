@@ -22,6 +22,10 @@
 #include "Sprite.h"
 #include "Body.h"
 #include "WalkingEnemyAI.h"
+#include "Health.h"
+#include "Tile2DMath.h"
+#include "PulseLightBehaviour.h"
+#include "ParticleSystem.h"
 
 void DebugBehaviour::awake() {
     body_ = gameObject()->getComponent<Body>();
@@ -61,6 +65,60 @@ void DebugBehaviour::update() {
                                         {10, 26.0f * size}
                                 }
                         );
+
+                        auto health = enemy->attachComponent<Health>();
+                        health->setMaxHealth(300);
+                        health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
+                            health->gameObject()->destroy();
+
+                            auto explosion = Tile2D::createGameObject();
+                            explosion->transform() = *(health->transform());
+
+                            auto explosionLight = explosion->attachComponent<PointLight>();
+                            explosionLight->setRadius(300.0f);
+                            explosionLight->setIntensity(1.0f);
+
+                            auto explosionPulseLightBehaviour = explosion->attachComponent<PulseLightBehaviour>();
+                            explosionPulseLightBehaviour->TTL = 2.0;
+                            explosionPulseLightBehaviour->setTimeToStartDiminish(1.0f);
+                            explosionPulseLightBehaviour->setRadiusDiminishSpeed(0.5f);
+                            explosionPulseLightBehaviour->setIntensityDiminishSpeed(1.5f);
+
+                            auto explosionParticles = explosion->attachComponent<ParticleSystem>();
+                            explosionParticles->setPlaysOnce(true);
+                            explosionParticles->setInitFunc([] (Particle* particle){
+                                Vecf pos = {(rand() % 10) * 5.0f - 25.0f, (rand() % 10) * 5.0f - 25.0f};
+                                pos *= 2;
+                                particle->getTransform().setPosition(pos);
+                                particle->getTransform().setRotation(rand() % 360);
+                                float size = 0.5f + (rand() % 255) / 255.0f;
+                                particle->getTransform().setScale({size, size});
+                                particle->setVelocity(pos.normalized() * (rand() % 2 + 3.0f));
+                                particle->setColor({1.0f, 0.0f, 0.0f});
+                                particle->setOpacity((rand() % 200) / 400.0f + 0.5f);
+                            });
+                            explosionParticles->setUpdateFunc([] (Particle* particle){
+                                if (particle->getTimeLived() > 1000) {
+                                    particle->destroy();
+                                } else {
+                                    Vecf pos = particle->getTransform().getPosition();
+                                    particle->getTransform().setRotation(particle->getTransform().getRotation() + 1.0f);
+                                    particle->getTransform().setPosition(pos + particle->getVelocity());
+                                    particle->setOpacity(particle->getOpacity() - 0.01f);
+                                    float newSize = particle->getTransform().getScale().x - 0.007f;
+                                    Mathf::clamp(newSize, 0.0f, 100.0f);
+                                    particle->getTransform().setScale({newSize, newSize});
+                                }
+                            });
+                            explosionParticles->setParticleRect({-32, -32, 32, 32});
+                            explosionParticles->setTexturePtr(Tile2D::resources().textures["explosion_particle"]);
+                            explosionParticles->setMaxParticles(100);
+                            explosionParticles->setSpawnFrequency(300);
+                            explosionParticles->setBlendSourceFactor(GL_SRC_ALPHA);
+                            explosionParticles->setBlendDestinationFactor(GL_ONE);
+
+                            explosion->transform().setScale({0.75, 0.75});
+                        });
 
                         break;
                     }

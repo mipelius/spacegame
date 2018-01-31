@@ -65,6 +65,7 @@
 		33249E12C1BB44FD852954A6 /* Canvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E9484B681AEC42BF756 /* Canvas.cpp */; };
 		33249E4888C7E5DDBDE0F50F /* Background.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332497F2358DE2CADB9232C5 /* Background.cpp */; };
 		33249EB1E13F9EDE3A99FA5D /* BombBehaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332494A83E1FF4B4A02658C9 /* BombBehaviour.cpp */; };
+		33249ED06867DB8FD2BEAA95 /* Health.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324945E151765B8D62E93F6 /* Health.cpp */; };
 		33249EFB2773BBC0F32C6048 /* json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249EC8B5CC2F9AEB6E601B /* json.cpp */; };
 		33249F41C32732529D0C4F21 /* SceneInGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332499F4D35FFD54068ECAE6 /* SceneInGame.cpp */; };
 		33249F475D152391D61F846C /* Ears.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332490B02ADEC0D042251E15 /* Ears.cpp */; };
@@ -136,6 +137,7 @@
 		332493F9E753A8693F573549 /* gl_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gl_utils.h; sourceTree = "<group>"; };
 		332494285E2FFE6BB21B7A8F /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		3324942EFC64A6DD5FFA7D21 /* Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sprite.h; sourceTree = "<group>"; };
+		3324945E151765B8D62E93F6 /* Health.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Health.cpp; sourceTree = "<group>"; };
 		3324946314894F53333F69B2 /* Tile2DMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile2DMath.h; sourceTree = "<group>"; };
 		3324947EA7F1F13D714D12DB /* Background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Background.h; sourceTree = "<group>"; };
 		332494A83E1FF4B4A02658C9 /* BombBehaviour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BombBehaviour.cpp; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 		33249F5495EF0C4129ACC3DA /* JsonFileManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JsonFileManager.cpp; sourceTree = "<group>"; };
 		33249F86AFD1A32E07ED3128 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
 		33249F9EC7ADC0E16725B939 /* MusicPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicPlayer.h; sourceTree = "<group>"; };
+		33249FB07002785123E63432 /* Health.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Health.h; sourceTree = "<group>"; };
 		33249FB4EE4A1F07425C209A /* blue_block.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = blue_block.bmp; sourceTree = "<group>"; };
 		33249FBA4AB3C3395B5CB122 /* LimitedAgeBehaviour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LimitedAgeBehaviour.cpp; sourceTree = "<group>"; };
 		33249FBE89ABF7D73C460778 /* DrawableMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawableMap.h; sourceTree = "<group>"; };
@@ -526,6 +529,8 @@
 				332494D33A8C312B3ADF7845 /* Spawner.h */,
 				332499A6AB4E49E5FC5E2E43 /* DebugBehaviour.cpp */,
 				3324924D169EB5D1CE0DC3F9 /* DebugBehaviour.h */,
+				3324945E151765B8D62E93F6 /* Health.cpp */,
+				33249FB07002785123E63432 /* Health.h */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -771,6 +776,7 @@
 				33249AF1C082D85E6723F684 /* WalkingEnemyAI.cpp in Sources */,
 				33249303EB6C3FDAF59956DB /* Spawner.cpp in Sources */,
 				33249F8C4C00A8C3513999D9 /* DebugBehaviour.cpp in Sources */,
+				33249ED06867DB8FD2BEAA95 /* Health.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
