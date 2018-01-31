@@ -18,7 +18,6 @@
 #ifndef SPACEGAME_DEBUGBEHAVIOUR_H
 #define SPACEGAME_DEBUGBEHAVIOUR_H
 
-
 #include "Tile2DBehaviour.h"
 #include "Sprite.h"
 #include "Body.h"
@@ -32,9 +31,6 @@ protected:
 private:
     Body* body_ = nullptr;
     Sprite* sprite_ = nullptr;
-
-    bool spawnEnemy_ = false;
-
 };
 
 

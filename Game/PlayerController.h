@@ -39,7 +39,7 @@ private:
     const Uint32 shootingInterval_ = 100;
     Uint32 lastShotTimestamp_;
 
-    const Uint32 bombingInterval_ = 500;
+    const Uint32 bombingInterval_ = 100;
     Uint32 lastBombTimestamp_;
 
     const Uint32 lightDropInterval_ = 500;

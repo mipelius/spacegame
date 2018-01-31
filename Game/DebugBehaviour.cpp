@@ -19,6 +19,8 @@
 #include "DebugBehaviour.h"
 #include "Spawner.h"
 #include "Tile2D.h"
+#include "Sprite.h"
+#include "Body.h"
 
 void DebugBehaviour::awake() {
     body_ = gameObject()->getComponent<Body>();
@@ -26,99 +28,86 @@ void DebugBehaviour::awake() {
 }
 
 void DebugBehaviour::update() {
+    float size = 3.0f;
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
         if (event.type == SDL_KEYDOWN) {
-            if (spawnEnemy_) {
-                switch (event.key.keysym.sym) {
-                    case SDLK_1 :
-                        Spawner::spawnEnemy(
-                                transform()->getPosition(),
-                                "walking_alien_green",
-                                {{-10, -25}, {10, -25}, {10, 25}, {-10, 25}},
-                                {-25, -25, 25, 25},
-                                1.0f
-                        );
-                        break;
-                    case SDLK_2 :
-                        Spawner::spawnEnemy(
-                                transform()->getPosition(),
-                                "walking_alien_blue",
-                                {{-10, -25}, {10, -25}, {10, 25}, {-10, 25}},
-                                {-25, -25, 25, 25},
-                                1.0f
-                        );
-                        break;
-
-                    case SDLK_3:
-                        Spawner::spawnEnemy(
-                                transform()->getPosition(),
-                                "yoda_kindof_red",
-                                {{-30, -24}, {30, -24}, {30, 24}, {-30, 24}},
-                                {-30, -30, 30, 30},
-                                1.0f
-                        );
-                        break;
-                    case SDLK_4:
-                        Spawner::spawnEnemy(
-                                transform()->getPosition(),
-                                "yoda_kindof_blue",
-                                {{-30, -24}, {30, -24}, {30, 24}, {-30, 24}},
-                                {-30, -30, 30, 30},
-                                1.0f
-                        );
-                        break;
-                    case SDLK_5:
-                        Spawner::spawnEnemy(
-                                transform()->getPosition(),
-                                "flying_alien_redwine",
-                                {{-10, -25}, {10, -25}, {10, 25}, {-10, 25}},
-                                {-25, -25, 25, 25},
-                                0.0f
-                        );
-                        break;
-                    case SDLK_6:
-                        Spawner::spawnEnemy(
-                                transform()->getPosition(),
-                                "flying_alien_blue",
-                                {{-10, -25}, {10, -25}, {10, 25}, {-10, 25}},
-                                {-25, -25, 25, 25},
-                                0.0f
-                        );
-                        break;
-                    case SDLK_v:
-                        spawnEnemy_ = false;
-                        break;
-                    default:
-                        break;
-                }
-
-                continue;
-            }
-
-            if (event.key.keysym.sym == SDLK_RETURN) {
-                Tile2D::isDebugMode = !Tile2D::isDebugMode;
-                if (Tile2D::isDebugMode) {
-                    sprite_->setOpacity(0.5);
-                } else {
-                    sprite_->setOpacity(1.0);
-                }
-            }
-            if (event.key.keysym.sym == SDLK_q) {
-                transform()->setPosition({500.0, 250.0});
-            }
-            if (event.key.keysym.sym == SDLK_r) {
-                // reload map
-                Tile2D::tileMap().load("maps/map.bmp", "json/tileset.json");
-            }
-            if (event.key.keysym.sym == SDLK_s) {
-                Tile2D::lightSystem().setBlendedShadowsEnabled(!Tile2D::lightSystem().isBlendedShadowsEnabled());
-            }
-            if (event.key.keysym.sym == SDLK_d) {
-                Tile2D::lightSystem().setSoftShadowsEnabled(!Tile2D::lightSystem().isSoftShadowsEnabled());
-            }
-            if (event.key.keysym.sym == SDLK_v) {
-                spawnEnemy_ = true;
+            switch (event.key.keysym.sym) {
+                case SDLK_1 :
+                    Spawner::spawnEnemy(
+                            transform()->getPosition(),
+                            "crab_kindof_silhouettish",
+                            {{-10 * size, -25 * size}, {10 * size, -25 * size}, {10 * size, 25 * size}, {-10 * size, 25 * size}},
+                            {-25 * size, -25 * size, 25 * size, 25 * size},
+                            0.0f
+                    );
+                    break;
+                case SDLK_2 :
+                    Spawner::spawnEnemy(
+                            transform()->getPosition(),
+                            "crab_kindof_colored",
+                            {{-10 * size, -25 * size}, {10 * size, -25 * size}, {10 * size, 25 * size}, {-10 * size, 25 * size}},
+                            {-25 * size, -25 * size, 25 * size, 25 * size},
+                            0.0f
+                    );
+                    break;
+                case SDLK_3:
+                    Spawner::spawnEnemy(
+                            transform()->getPosition(),
+                            "fourwaycyclops_silhouettish",
+                            {{-30 * size, -24 * size}, {30 * size, -24 * size}, {30 * size, 24 * size}, {-30 * size, 24 * size}},
+                            {-30 * size, -30 * size, 30 * size, 30 * size},
+                            0.0f
+                    );
+                    break;
+                case SDLK_4:
+                    Spawner::spawnEnemy(
+                            transform()->getPosition(),
+                            "fourwaycyclops_colored",
+                            {{-30 * size, -24 * size}, {30 * size, -24 * size}, {30 * size, 24 * size}, {-30 * size, 24 * size}},
+                            {-30 * size, -30 * size, 30 * size, 30 * size},
+                            0.0f
+                    );
+                    break;
+                case SDLK_5:
+                    Spawner::spawnEnemy(
+                            transform()->getPosition(),
+                            "twohorn_silhouettish",
+                            {{-10 * size, -25 * size}, {10 * size, -25 * size}, {10 * size, 25 * size}, {-10 * size, 25 * size}},
+                            {-25 * size, -25 * size, 25 * size, 25 * size},
+                            0.0f
+                    );
+                    break;
+                case SDLK_6:
+                    Spawner::spawnEnemy(
+                            transform()->getPosition(),
+                            "twohorn_colored",
+                            {{-10 * size, -25 * size}, {10 * size, -25 * size}, {10 * size, 25 * size}, {-10 * size, 25 * size}},
+                            {-25 * size, -25 * size, 25 * size, 25 * size},
+                            0.0f
+                    );
+                    break;
+                case SDLK_RETURN:
+                    Tile2D::isDebugMode = !Tile2D::isDebugMode;
+                    if (Tile2D::isDebugMode) {
+                        sprite_->setOpacity(0.5);
+                    } else {
+                        sprite_->setOpacity(1.0);
+                    }
+                    break;
+                case SDLK_q:
+                    transform()->setPosition({500.0, 250.0});
+                    break;
+                case SDLK_r:
+                    Tile2D::tileMap().load("maps/map.bmp", "json/tileset.json");
+                    break;
+                case SDLK_s:
+                    Tile2D::lightSystem().setBlendedShadowsEnabled(!Tile2D::lightSystem().isBlendedShadowsEnabled());
+                    break;
+                case SDLK_d:
+                    Tile2D::lightSystem().setSoftShadowsEnabled(!Tile2D::lightSystem().isSoftShadowsEnabled());
+                default:
+                    break;
             }
         }
     }
