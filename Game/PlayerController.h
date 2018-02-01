@@ -20,6 +20,7 @@
 #include "Body.h"
 #include "Sprite.h"
 #include "Tile2DBehaviour.h"
+#include "Timer.h"
 
 class PlayerController : public Tile2DBehaviour {
 
@@ -35,14 +36,9 @@ protected:
 private:
     void shootOnce(Vecf offset);
 
-    const Uint32 shootingInterval_ = 100;
-    Uint32 lastShotTimestamp_;
-
-    const Uint32 bombingInterval_ = 100;
-    Uint32 lastBombTimestamp_;
-
-    const Uint32 lightDropInterval_ = 500;
-    Uint32 lastLightDropTimestamp_;
+    Timer shootTimer;
+    Timer bombTimer;
+    Timer lightTimer;
 
     Body* body_;
     Sprite* sprite_;

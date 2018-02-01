@@ -20,9 +20,9 @@
 #include <SDL2/SDL_quit.h>
 #include "Sprite.h"
 #include "Tile2DBehaviour.h"
-#include "LimitedAgeBehaviour.h"
+#include "LimitedLifetimeBehaviour.h"
 
-class SparkleBehaviour : public LimitedAgeBehaviour {
+class SparkleBehaviour : public LimitedLifetimeBehaviour {
 
 protected:
     void awake() override;

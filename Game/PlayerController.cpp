@@ -22,7 +22,10 @@
 void PlayerController::awake() {
     body_ = gameObject()->getComponent<Body>();
     sprite_ = gameObject()->getComponent<Sprite>();
-    lastShotTimestamp_ = SDL_GetTicks();
+
+    shootTimer.setInterval(100);
+    bombTimer.setInterval(100);
+    lightTimer.setInterval(500);
 }
 
 void PlayerController::update() {
@@ -58,10 +61,9 @@ void PlayerController::update() {
 }
 
 void PlayerController::shoot_() {
-    if (SDL_GetTicks() - lastShotTimestamp_ < shootingInterval_) {
+    if (!shootTimer.resetIfTimeIntervalPassed()) {
         return;
     }
-    lastShotTimestamp_ = SDL_GetTicks();
 
     shootOnce({0.0f, 0.0f});
     shootOnce(Vecf(-10, -15).rotated(transform()->getRotation()));
@@ -141,10 +143,9 @@ void PlayerController::lateUpdate() {
 }
 
 void PlayerController::dropBomp_() {
-    if (SDL_GetTicks() - lastBombTimestamp_ < bombingInterval_) {
+    if (!bombTimer.resetIfTimeIntervalPassed()) {
         return;
     }
-    lastBombTimestamp_ = SDL_GetTicks();
 
     auto bomb = Prefabs::bomb();
     bomb->transform() = *transform();
@@ -152,10 +153,9 @@ void PlayerController::dropBomp_() {
 }
 
 void PlayerController::dropLight_() {
-    if (SDL_GetTicks() - lastLightDropTimestamp_ < lightDropInterval_) {
+    if (!lightTimer.resetIfTimeIntervalPassed()) {
         return;
     }
-    lastLightDropTimestamp_ = SDL_GetTicks();
 
     auto light = Prefabs::light();
     light->transform().setPosition(transform()->getPosition());

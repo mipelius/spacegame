@@ -14,16 +14,39 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <SDL2/SDL_timer.h>
-#include "SparkleBehaviour.h"
 
-void SparkleBehaviour::awake() {
-    LimitedLifetimeBehaviour::awake();
-    sprite = gameObject()->getComponent<Sprite>();
-    timer.setInterval(500);
-}
+#ifndef SPACEGAME_TIMER_H
+#define SPACEGAME_TIMER_H
 
-void SparkleBehaviour::update() {
-    LimitedLifetimeBehaviour::update();
-    sprite->setOpacity(1.0f - timer.getTime() / (float)timer.getInterval());
-}
+
+#include <SDL2/SDL_quit.h>
+
+class Timer {
+public:
+    Timer();
+    Timer(Uint32 interval, Uint32 intervalRandomness);
+
+    ~Timer();
+
+    void reset();
+    bool resetIfTimeIntervalPassed();
+
+    Uint32 getInterval() const;
+    void setInterval(Uint32 interval);
+    Uint32 getIntervalRandomness() const;
+    void setIntervalRandomness(Uint32 intervalRandomness);
+
+    bool timeIntervalPassed();
+
+    Uint32 getTime();
+
+private:
+    Uint32 resetTimeStamp_ = 0;
+
+    Uint32 interval_ = 0;
+    Uint32 intervalRandomness_ = 0;
+
+};
+
+
+#endif //SPACEGAME_TIMER_H

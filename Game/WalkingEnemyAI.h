@@ -22,6 +22,7 @@
 #include "Transform.h"
 #include "Body.h"
 #include "EnemyAIBase.h"
+#include "Timer.h"
 
 class WalkingEnemyAI : public EnemyAIBase {
 public:
@@ -36,13 +37,9 @@ private:
     Body* body_ = nullptr;
     std::vector<Vecf> groundSensors_;
 
-    Uint32 lastJumpTimeStamp_ = 0;
-    const Uint32 jumpInterval_ = 6000;
-    const Uint32 jumpIntervalRandomness_ = 1000;
-
-    Uint32 lastReactionTimeStamp_ = 0;
-    const Uint32 reactionTime_ = 500;
-    const Uint32 reactionTimeRandomness_ = 200;
+    Timer jumpTimer_;
+    Timer reactionTimer_;
+    Timer shootTimer_;
 
     float xDirection_;
 

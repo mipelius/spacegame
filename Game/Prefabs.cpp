@@ -217,8 +217,8 @@ GameObject *Prefabs::laser() {
     laserSprite->setRect({-20,-5,20,5});
     laserSprite->setTexturePtr(Tile2D::resources().textures["missile"]);
 
-    auto laserAge = laser->attachComponent<LimitedAgeBehaviour>();
-    laserAge->TTL = 1.0;
+    auto laserAge = laser->attachComponent<LimitedLifetimeBehaviour>();
+    laserAge->getTimer().setInterval(1000);
 
     auto laserLight = laser->attachComponent<PointLight>();
     laserLight->setRadius(80.0);
@@ -272,8 +272,8 @@ GameObject* Prefabs::bloodBurst() {
     light->setIntensity(1.0f);
 
     auto pulseLightBehaviour = bloodBurst->attachComponent<PulseLightBehaviour>();
-    pulseLightBehaviour->TTL = 2.0;
-    pulseLightBehaviour->setTimeToStartDiminish(1.0f);
+    pulseLightBehaviour->getTimer().setInterval(2000);
+    pulseLightBehaviour->setTimeToStartDiminish(1000);
     pulseLightBehaviour->setRadiusDiminishSpeed(0.5f);
     pulseLightBehaviour->setIntensityDiminishSpeed(1.5f);
 
@@ -323,8 +323,8 @@ GameObject *Prefabs::explosion() {
     explosionLight->setIntensity(1.0f);
 
     auto explosionPulseLightBehaviour = explosion->attachComponent<PulseLightBehaviour>();
-    explosionPulseLightBehaviour->TTL = 2.0;
-    explosionPulseLightBehaviour->setTimeToStartDiminish(1.0f);
+    explosionPulseLightBehaviour->getTimer().setInterval(2000);
+    explosionPulseLightBehaviour->setTimeToStartDiminish(1000);
     explosionPulseLightBehaviour->setRadiusDiminishSpeed(0.5f);
     explosionPulseLightBehaviour->setIntensityDiminishSpeed(1.5f);
 
@@ -373,7 +373,7 @@ void Prefabs::pulseLight(Vecf position) {
     light->setIntensity(1.0);
 
     auto pulseLightBehaviour = obj->attachComponent<PulseLightBehaviour>();
-    pulseLightBehaviour->TTL = 1.0f;
+    pulseLightBehaviour->getTimer().setInterval(1000);
 }
 
 void Prefabs::sparkle(Vecf position, Vecf velocity, Color color) {

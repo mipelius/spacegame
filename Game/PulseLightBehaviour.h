@@ -18,16 +18,16 @@
 #define __PulseLightBehaviour_H
 
 #include "PointLight.h"
-#include "LimitedAgeBehaviour.h"
+#include "LimitedLifetimeBehaviour.h"
 
-class PulseLightBehaviour : public LimitedAgeBehaviour {
+class PulseLightBehaviour : public LimitedLifetimeBehaviour {
 public:
     float getRadiusDiminishSpeed() const;
     void setRadiusDiminishSpeed(float radiusDiminishSpeed);
     float getIntensityDiminishSpeed() const;
     void setIntensityDiminishSpeed(float intensityDiminishSpeed);
-    float getTimeToStartDiminish() const;
-    void setTimeToStartDiminish(float timeToStartDiminish);
+    Uint32 getTimeToStartDiminish() const;
+    void setTimeToStartDiminish(Uint32 timeToStartDiminish);
 
 protected:
     void awake() override;
@@ -42,7 +42,7 @@ private:
     PointLight* light = nullptr;
     float radiusOnAwake_ = 0.0f;
     float intensityOnAwake_ = 0.0f;
-    float timeToStartDiminish_ = 0.0f;
+    Uint32 timeToStartDiminish_ = 0;
 
 };
 

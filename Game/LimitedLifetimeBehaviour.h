@@ -14,22 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <SDL2/SDL_timer.h>
-#include "LimitedAgeBehaviour.h"
+#ifndef __AgeDependentBehaviour_H
+#define __AgeDependentBehaviour_H
 
-void LimitedAgeBehaviour::awake() {
-    awakeTimeStamp = SDL_GetTicks();
-}
+#include <SDL2/SDL_bits.h>
+#include <cfloat>
+#include "Tile2DBehaviour.h"
+#include "Timer.h"
 
-float LimitedAgeBehaviour::age() {
-    float age = (SDL_GetTicks() - awakeTimeStamp) / 1000.0f;
-    return age;
-}
+class LimitedLifetimeBehaviour : public Tile2DBehaviour {
 
-void LimitedAgeBehaviour::update() {
-    if (age() >= TTL) {
-        gameObject()->destroy();
-    }
-}
+protected:
+    void awake() override;
+    void update() override;
+    void lateUpdate() override;
 
-void LimitedAgeBehaviour::lateUpdate() { }
+    Timer timer;
+
+public:
+    Timer &getTimer();
+};
+
+
+#endif //__AgeDependentBehaviour_H

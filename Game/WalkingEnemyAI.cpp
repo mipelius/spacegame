@@ -19,8 +19,14 @@
 #include "Tile2D.h"
 
 void WalkingEnemyAI::awake() {
-    lastJumpTimeStamp_ = SDL_GetTicks();
-    lastReactionTimeStamp_ = SDL_GetTicks();
+    jumpTimer_.setInterval(6000);
+    jumpTimer_.setIntervalRandomness(1000);
+
+    reactionTimer_.setInterval(500);
+    reactionTimer_.setIntervalRandomness(200);
+
+    shootTimer_.setInterval(1000);
+    shootTimer_.setIntervalRandomness(200);
 
     body_ = gameObject()->getComponent<Body>();
 }
@@ -52,20 +58,14 @@ void WalkingEnemyAI::walkTowardsTarget_() {
     if (isGrounded_()) {
         Vecf vel = body_->getVelocity();
 
-        Uint32 ticks = SDL_GetTicks();
-
-        Uint32 reactionTime = reactionTime_ + (reactionTimeRandomness_ - rand() % (2 * reactionTimeRandomness_));
-        if (ticks - lastReactionTimeStamp_ > reactionTime) {
-            lastReactionTimeStamp_ = ticks;
+        if (reactionTimer_.resetIfTimeIntervalPassed()) {
             xDirection_ = (target_->getPosition().x - transform()->getPosition().x);
             xDirection_ = xDirection_ / abs(xDirection_);
         }
 
         vel.x = xDirection_ * 1000;
 
-        Uint32 jumpInterval = jumpInterval_ + (jumpIntervalRandomness_ - rand() % (2 * jumpIntervalRandomness_));
-        if (ticks - lastJumpTimeStamp_ > jumpInterval) {
-            lastJumpTimeStamp_ = ticks;
+        if (jumpTimer_.resetIfTimeIntervalPassed()) {
             vel.y = -1000;
             transform()->setPosition(transform()->getPosition() + Vecf{0.0f, -1.0f});
         }
@@ -75,5 +75,8 @@ void WalkingEnemyAI::walkTowardsTarget_() {
 }
 
 void WalkingEnemyAI::shootTarget_() {
-    Vecf direction = target_->getPosition() - transform()->getPosition();
+    if (shootTimer_.resetIfTimeIntervalPassed()) {
+        Vecf direction = target_->getPosition() - transform()->getPosition();
+        // shoot to direction
+    }
 }
