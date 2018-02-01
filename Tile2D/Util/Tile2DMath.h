@@ -20,11 +20,14 @@
 
 #include <cfloat>
 
+#include "Rect.h"
+
 template <typename T>
 class Math {
 
 public:
     inline static void clamp(T& value, const T& min, const T& max);
+    inline static void clamp(Vec<T>& vec, const Rect& rect);
 
     inline static T min(T& value1, T& value2);
     inline static T max(T& value1, T& value2);
@@ -63,6 +66,12 @@ inline T Math<T>::max(T& value1, T& value2) {
 template<typename T>
 bool Math<T>::approx(const T &value1, const T &value2) {
     return abs(value1 - value2) < epsilon;
+}
+
+template<typename T>
+void Math<T>::clamp(Vec<T> &vec, const Rect &rect) {
+    clamp(vec.x, rect.x1, rect.x2);
+    clamp(vec.y, rect.y1, rect.y2);
 }
 
 #endif //SPACEGAME_TILE2DMATH_H

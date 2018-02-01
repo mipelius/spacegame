@@ -119,18 +119,7 @@ void PlayerController::lateUpdate() {
 
         Vecf cameraPos = transform()->getPosition();
 
-        if (cameraPos.x < cameraBounds.x1) {
-            cameraPos.x = cameraBounds.x1;
-        }
-        if (cameraPos.y < cameraBounds.y1) {
-            cameraPos.y = cameraBounds.y1;
-        }
-        if (cameraPos.x > cameraBounds.x2) {
-            cameraPos.x = cameraBounds.x2;
-        }
-        if (cameraPos.y > cameraBounds.y2) {
-            cameraPos.y = cameraBounds.y2;
-        }
+        Mathf::clamp(cameraPos, cameraBounds);
 
         camera->setPosition(cameraPos);
 
