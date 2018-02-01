@@ -33,41 +33,49 @@ void DebugBehaviour::awake() {
 }
 
 void DebugBehaviour::update() {
-    float size = 1.0f;
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
         if (event.type == SDL_KEYDOWN) {
             switch (event.key.keysym.sym) {
+                case SDLK_o : {
+                    sizeOfEnemy_ -= 0.5;
+                break;
+                }
+                case SDLK_p : {
+                    sizeOfEnemy_ += 0.5;
+                    break;
+                }
+
                 case SDLK_1 : {
                         auto enemy = Spawner::spawnEnemy(
                                 transform()->getPosition(),
                                 "walking_alien_green",
                                 {
-                                        {-10 * size, -25 * size},
-                                        {10 * size, -25 * size},
-                                        {10 * size, 15 * size},
-                                        {5 * size, 25 * size},
-                                        {-5 * size, 25 * size},
-                                        {-10 * size, 15 * size}
+                                        {-10 * sizeOfEnemy_, -25 * sizeOfEnemy_},
+                                        {10 * sizeOfEnemy_, -25 * sizeOfEnemy_},
+                                        {10 * sizeOfEnemy_, 15 * sizeOfEnemy_},
+                                        {5 * sizeOfEnemy_, 25 * sizeOfEnemy_},
+                                        {-5 * sizeOfEnemy_, 25 * sizeOfEnemy_},
+                                        {-10 * sizeOfEnemy_, 15 * sizeOfEnemy_}
                                 },
-                                {-25 * size, -25 * size, 25 * size, 25 * size},
-                                1.0f
+                                {-25 * sizeOfEnemy_, -25 * sizeOfEnemy_, 25 * sizeOfEnemy_, 25 * sizeOfEnemy_},
+                                2.0f
                         );
 
                         auto AI = enemy->attachComponent<WalkingEnemyAI>();
                         AI->setTarget(transform());
                         AI->setGroundCheckPoints(
                                 {
-                                        {-10, 26.0f * size},
-                                        {-5, 26.0f * size},
-                                        {0, 26.0f * size},
-                                        {5, 26.0f * size},
-                                        {10, 26.0f * size}
+                                        {-10, 26.0f * sizeOfEnemy_},
+                                        {-5, 26.0f * sizeOfEnemy_},
+                                        {0, 26.0f * sizeOfEnemy_},
+                                        {5, 26.0f * sizeOfEnemy_},
+                                        {10, 26.0f * sizeOfEnemy_}
                                 }
                         );
 
                         auto health = enemy->attachComponent<Health>();
-                        health->setMaxHealth(300);
+                        health->setMaxHealth(100);
                         health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
                             health->gameObject()->destroy();
 
@@ -91,14 +99,14 @@ void DebugBehaviour::update() {
                                 pos *= 2;
                                 particle->getTransform().setPosition(pos);
                                 particle->getTransform().setRotation(rand() % 360);
-                                float size = 0.5f + (rand() % 255) / 255.0f;
+                                float size = 0.25f + (rand() % 255) / 255.0f;
                                 particle->getTransform().setScale({size, size});
                                 particle->setVelocity(pos.normalized() * (rand() % 2 + 3.0f));
                                 particle->setColor({1.0f, 0.0f, 0.0f});
                                 particle->setOpacity((rand() % 200) / 400.0f + 0.5f);
                             });
                             explosionParticles->setUpdateFunc([] (Particle* particle){
-                                if (particle->getTimeLived() > 1000) {
+                                if (particle->getTimeLived() > 2000) {
                                     particle->destroy();
                                 } else {
                                     Vecf pos = particle->getTransform().getPosition();
@@ -117,7 +125,7 @@ void DebugBehaviour::update() {
                             explosionParticles->setBlendSourceFactor(GL_SRC_ALPHA);
                             explosionParticles->setBlendDestinationFactor(GL_ONE);
 
-                            explosion->transform().setScale({0.75, 0.75});
+                            explosion->transform().setScale({0.5, 0.5});
                         });
 
                         break;
@@ -126,8 +134,8 @@ void DebugBehaviour::update() {
                     Spawner::spawnEnemy(
                             transform()->getPosition(),
                             "crab_kindof_colored",
-                            {{-10 * size, -25 * size}, {10 * size, -25 * size}, {10 * size, 25 * size}, {-10 * size, 25 * size}},
-                            {-25 * size, -25 * size, 25 * size, 25 * size},
+                            {{-10 * sizeOfEnemy_, -25 * sizeOfEnemy_}, {10 * sizeOfEnemy_, -25 * sizeOfEnemy_}, {10 * sizeOfEnemy_, 25 * sizeOfEnemy_}, {-10 * sizeOfEnemy_, 25 * sizeOfEnemy_}},
+                            {-25 * sizeOfEnemy_, -25 * sizeOfEnemy_, 25 * sizeOfEnemy_, 25 * sizeOfEnemy_},
                             0.0f
                     );
                     break;
@@ -135,8 +143,8 @@ void DebugBehaviour::update() {
                     Spawner::spawnEnemy(
                             transform()->getPosition(),
                             "fourwaycyclops_colored",
-                            {{-30 * size, -24 * size}, {30 * size, -24 * size}, {30 * size, 24 * size}, {-30 * size, 24 * size}},
-                            {-30 * size, -30 * size, 30 * size, 30 * size},
+                            {{-30 * sizeOfEnemy_, -24 * sizeOfEnemy_}, {30 * sizeOfEnemy_, -24 * sizeOfEnemy_}, {30 * sizeOfEnemy_, 24 * sizeOfEnemy_}, {-30 * sizeOfEnemy_, 24 * sizeOfEnemy_}},
+                            {-30 * sizeOfEnemy_, -30 * sizeOfEnemy_, 30 * sizeOfEnemy_, 30 * sizeOfEnemy_},
                             0.0f
                     );
                     break;
@@ -144,8 +152,8 @@ void DebugBehaviour::update() {
                     Spawner::spawnEnemy(
                             transform()->getPosition(),
                             "twohorn_colored",
-                            {{-10 * size, -25 * size}, {10 * size, -25 * size}, {10 * size, 25 * size}, {-10 * size, 25 * size}},
-                            {-25 * size, -25 * size, 25 * size, 25 * size},
+                            {{-10 * sizeOfEnemy_, -25 * sizeOfEnemy_}, {10 * sizeOfEnemy_, -25 * sizeOfEnemy_}, {10 * sizeOfEnemy_, 25 * sizeOfEnemy_}, {-10 * sizeOfEnemy_, 25 * sizeOfEnemy_}},
+                            {-25 * sizeOfEnemy_, -25 * sizeOfEnemy_, 25 * sizeOfEnemy_, 25 * sizeOfEnemy_},
                             0.0f
                     );
                     break;
