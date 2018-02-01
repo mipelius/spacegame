@@ -9,10 +9,8 @@
 /* Begin PBXBuildFile section */
 		332490A0A8952AD78A7E128B /* AudioClip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249B62F628B8D0067C28B3 /* AudioClip.cpp */; };
 		332490A1BCE3E98185ADA971 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332498D3565DCE36CC8090FB /* Tile.cpp */; };
-		332490B6041347C52B6A29AB /* EventArgs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E1882FB8ABC7ABDDFE6 /* EventArgs.cpp */; };
 		3324910666EE0FAE52CB7480 /* JsonFileManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249F5495EF0C4129ACC3DA /* JsonFileManager.cpp */; };
 		332491264F4D73EC132D3CFB /* GuiComponentBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249694C8D28E21A0FE6B5D /* GuiComponentBase.cpp */; };
-		3324913072657BA83438FACA /* BodyCollisionEventArgs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E8B3202113397A483BB /* BodyCollisionEventArgs.cpp */; };
 		3324914C1EC58027D3913C1C /* TileSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324909AF1B82F89E3F66E8A /* TileSet.cpp */; };
 		332491571500F80D89593BD2 /* SamplePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249DE20D747CFDB42C9CB6 /* SamplePlayer.cpp */; };
 		33249176EFB2D40E9FA10D61 /* SceneGameOver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249708697D65B423F4FCED /* SceneGameOver.cpp */; };
@@ -26,7 +24,6 @@
 		332493092A9CBCAF6DFB3ADE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 332493AFD86E4F7BC15AE8B3 /* OpenGL.framework */; };
 		3324931E75494D011142CD0C /* Tile2DBehaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324966D65FFDCB5645DBF44 /* Tile2DBehaviour.cpp */; };
 		33249346C1F4A712821DDAFE /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495D0B6082C5C6DE5F976 /* Sprite.cpp */; };
-		3324936B01F241FFD897E65C /* MapCollisionEventArgs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332493009F0C860268ECD23B /* MapCollisionEventArgs.cpp */; };
 		332493AE3060E0615E85299B /* LineSegment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495B0606D5E2689FAC847 /* LineSegment.cpp */; };
 		33249529DAFD219351BD4FB3 /* BackgroundBehaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249C7EF1802D5E81450280 /* BackgroundBehaviour.cpp */; };
 		3324958C7839B95A75CAF742 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249F86AFD1A32E07ED3128 /* Texture.cpp */; };
@@ -108,7 +105,6 @@
 		332491E963A982E67AE84255 /* LightSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightSystem.h; sourceTree = "<group>"; };
 		3324920337120309345A0BFC /* TileMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileMap.h; sourceTree = "<group>"; };
 		332492098F3E53F761C3D8AD /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
-		332492321ABA930C8F89C150 /* EventArgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventArgs.h; sourceTree = "<group>"; };
 		332492392BB6F169433FF5BB /* AnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationManager.h; sourceTree = "<group>"; };
 		33249239820BCFFAB4A96971 /* Vec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vec.h; sourceTree = "<group>"; };
 		3324924B68EE819794401897 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
@@ -120,7 +116,6 @@
 		332492C95C75902041CE284D /* anim_explosion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = anim_explosion.png; sourceTree = "<group>"; };
 		332492D1CD46398D8D379D2D /* smallfont.json */ = {isa = PBXFileReference; lastKnownFileType = file.json; path = smallfont.json; sourceTree = "<group>"; };
 		332492E36CBCC512477F5499 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
-		332493009F0C860268ECD23B /* MapCollisionEventArgs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapCollisionEventArgs.cpp; sourceTree = "<group>"; };
 		332493235BD135F9E3A58215 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		332493261A6EE65E99108774 /* ResourceContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceContainer.h; sourceTree = "<group>"; };
 		3324935528343A29271F3C87 /* bomb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bomb.png; sourceTree = "<group>"; };
@@ -176,7 +171,6 @@
 		3324981F0FB76F47B527ED94 /* Ears.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ears.h; sourceTree = "<group>"; };
 		332498285799CBD3187BF183 /* SamplePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SamplePlayer.h; sourceTree = "<group>"; };
 		332498C8A319A8484B8CA2A3 /* spaceship_shoot.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = spaceship_shoot.wav; sourceTree = "<group>"; };
-		332498CB230020852750785F /* MapCollisionEventArgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapCollisionEventArgs.h; sourceTree = "<group>"; };
 		332498D1FC6D7984FA4EFB98 /* missile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = missile.png; sourceTree = "<group>"; };
 		332498D3565DCE36CC8090FB /* Tile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tile.cpp; sourceTree = "<group>"; };
 		332498DCC49A7C342952367C /* TileSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileSet.h; sourceTree = "<group>"; };
@@ -213,7 +207,6 @@
 		33249BDA691A20805A912058 /* Spawner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Spawner.cpp; sourceTree = "<group>"; };
 		33249BDD1BC6C3F4F516FECA /* MapTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTexture.h; sourceTree = "<group>"; };
 		33249BE0B335CA189366947F /* SceneTitleScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneTitleScreen.h; sourceTree = "<group>"; };
-		33249C2060BED6C15C6152F0 /* BodyCollisionEventArgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BodyCollisionEventArgs.h; sourceTree = "<group>"; };
 		33249C3C218A615D4BD8FC6A /* GameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
 		33249C5966E612C19B1ADAE2 /* PulseLightBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulseLightBehaviour.h; sourceTree = "<group>"; };
 		33249C6729E44F316D631783 /* map.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = map.bmp; sourceTree = "<group>"; };
@@ -241,9 +234,7 @@
 		33249DED77D9A6FF95E0CAD7 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		33249DFEAC708953C2EEAC37 /* LimitedAgeBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LimitedAgeBehaviour.h; sourceTree = "<group>"; };
 		33249E0357F5C99BB9DE7D28 /* PointLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointLight.cpp; sourceTree = "<group>"; };
-		33249E1882FB8ABC7ABDDFE6 /* EventArgs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EventArgs.cpp; sourceTree = "<group>"; };
 		33249E213B8A050EFBA07501 /* SceneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneManager.cpp; sourceTree = "<group>"; };
-		33249E8B3202113397A483BB /* BodyCollisionEventArgs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyCollisionEventArgs.cpp; sourceTree = "<group>"; };
 		33249E9484B681AEC42BF756 /* Canvas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Canvas.cpp; sourceTree = "<group>"; };
 		33249E9D70DEE06BA92F0DD4 /* spaceship.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spaceship.png; sourceTree = "<group>"; };
 		33249E9F51C99A3D00C3B8A1 /* MusicPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MusicPlayer.cpp; sourceTree = "<group>"; };
@@ -560,10 +551,6 @@
 				33249C76949CE60405F76E63 /* PhysicsWorld.cpp */,
 				3324975CC88864B15D767244 /* PolygonCollider.h */,
 				33249DDFC4ADB938562F51AC /* PolygonCollider.cpp */,
-				332498CB230020852750785F /* MapCollisionEventArgs.h */,
-				33249C2060BED6C15C6152F0 /* BodyCollisionEventArgs.h */,
-				332493009F0C860268ECD23B /* MapCollisionEventArgs.cpp */,
-				33249E8B3202113397A483BB /* BodyCollisionEventArgs.cpp */,
 				332495FDB6ACEDA2A2136EB2 /* WorldMapModifiedEventArgs.h */,
 			);
 			path = Physics;
@@ -638,8 +625,6 @@
 			isa = PBXGroup;
 			children = (
 				332492E36CBCC512477F5499 /* Event.h */,
-				332492321ABA930C8F89C150 /* EventArgs.h */,
-				33249E1882FB8ABC7ABDDFE6 /* EventArgs.cpp */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -745,7 +730,6 @@
 				33249DE4D18C1DC3B74F94D5 /* GameObject.cpp in Sources */,
 				33249C13800CBC7FC4F20186 /* SceneManager.cpp in Sources */,
 				3324931E75494D011142CD0C /* Tile2DBehaviour.cpp in Sources */,
-				332490B6041347C52B6A29AB /* EventArgs.cpp in Sources */,
 				33249938BCC013F594CA3A25 /* Rect.cpp in Sources */,
 				332493AE3060E0615E85299B /* LineSegment.cpp in Sources */,
 				3324910666EE0FAE52CB7480 /* JsonFileManager.cpp in Sources */,
@@ -761,8 +745,6 @@
 				3324914C1EC58027D3913C1C /* TileSet.cpp in Sources */,
 				33249A694428CF66BFDEBAEC /* PhysicsWorld.cpp in Sources */,
 				332496DBB372B5626D2920B7 /* PolygonCollider.cpp in Sources */,
-				3324936B01F241FFD897E65C /* MapCollisionEventArgs.cpp in Sources */,
-				3324913072657BA83438FACA /* BodyCollisionEventArgs.cpp in Sources */,
 				33249718383534DEDD8C1F33 /* AnimationBase.cpp in Sources */,
 				33249CDD4D81CBDE3157B234 /* AnimatedTexture.cpp in Sources */,
 				33249E0BEA17FFA20BE397DF /* AnimationManager.cpp in Sources */,

@@ -18,13 +18,11 @@
 #ifndef SPACEGAME_BOMBBEHAVIOUR_H
 #define SPACEGAME_BOMBBEHAVIOUR_H
 
-
 #include "Tile2DBehaviour.h"
 #include "Body.h"
-#include "BodyCollisionEventArgs.h"
 #include "Sprite.h"
 
-class BombBehaviour : public Tile2DBehaviour{
+class BombBehaviour : public Tile2DBehaviour {
 
 protected:
     void awake() override;
@@ -35,6 +33,5 @@ protected:
 
     Body* body_;
 };
-
 
 #endif //SPACEGAME_BOMBBEHAVIOUR_H

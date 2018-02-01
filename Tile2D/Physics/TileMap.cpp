@@ -116,7 +116,6 @@ void TileMap::load(std::string path, std::string tileSet) {
     drawableMap_ = new DrawableMap();
     drawableMap_->setMap(this);
     drawableMap_->setMapTexture(tileSet_->getMapTexture());
-    Tile2D::physicsWorld().map_ = this;
     Tile2D::lightSystem().createLightMap_();
 }
 
@@ -127,7 +126,6 @@ void TileMap::unload() {
     delete drawableMap_;
     delete tileSet_;
     delete tiles_;
-    Tile2D::physicsWorld().map_ = nullptr;
 }
 
 bool TileMap::isLoaded() {

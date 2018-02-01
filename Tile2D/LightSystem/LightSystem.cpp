@@ -197,7 +197,7 @@ void LightSystem::draw(const Canvas& canvas) {
 }
 
 void LightSystem::drawLightMap(const Canvas &canvas) {
-    TileMap* tileMap = Tile2D::physicsWorld().getMap();
+    TileMap* tileMap = &Tile2D::tileMap();
 
     if (tileMap == nullptr) {
         return;
@@ -362,7 +362,7 @@ bool wayToSort(PointLight* a, PointLight* b) { return a->getRadius() > b->getRad
 void LightSystem::updateLightMap(Rect *areaRect) {
     std::sort(lights_.begin(), lights_.end(), wayToSort);
 
-    auto tileMap = Tile2D::physicsWorld().getMap();
+    auto tileMap = &Tile2D::tileMap();
 
     lightMap_->fill(0);
 

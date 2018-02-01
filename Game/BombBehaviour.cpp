@@ -23,7 +23,9 @@
 
 void BombBehaviour::awake() {
     body_ = gameObject()->getComponent<Body>();
-    body_->mapCollision.add([] (Body* body, MapCollisionEventArgs args) {
+    auto collider = gameObject()->getComponent<PolygonCollider>();
+
+    collider->terrainCollision.add([] (PolygonCollider* collider, TerrainCollisionEventArgs args) {
         for (auto x=-explosionRadius; x<explosionRadius; ++x) {
             for (auto y=-explosionRadius; y<explosionRadius; ++y) {
                 if (Vecf((float)x, (float)y).length() > explosionRadius) {
@@ -40,11 +42,11 @@ void BombBehaviour::awake() {
             }
         }
 
-        body->gameObject()->getComponent<Sprite>()->setIsVisible(false);
-        body->gameObject()->destroy();
+        collider->gameObject()->getComponent<Sprite>()->setIsVisible(false);
+        collider->gameObject()->destroy();
 
         auto explosion = Tile2D::createGameObject();
-        explosion->transform() = *(body->transform());
+        explosion->transform() = *(collider->transform());
         explosion->transform().setPosition(
                 explosion->transform().getPosition() +
                 args.velocityBeforeCollision.normalized() * 30.0f

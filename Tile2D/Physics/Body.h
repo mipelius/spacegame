@@ -19,33 +19,16 @@
 
 #include "Tile2DComponent.h"
 #include "Vec.h"
-#include "Event.h"
-#include "MapCollisionEventArgs.h"
 #include "PolygonCollider.h"
-
-class PhysicsWorld;
-class ColliderShape;
-class BodyCollisionEventArgs;
-class EventArgs;
 
 class Body : public Tile2DComponent {
     friend class PhysicsWorld;
     friend class PolygonCollider;
 
 public:
-    // events
-
-    Event<Body, BodyCollisionEventArgs> const bodyCollision;
-    Event<Body, MapCollisionEventArgs> const mapCollision;
-
-    // methods
-
     Body();
 
     void applyForce(Vecf force);
-
-    PhysicsWorld* getWorld();
-    PolygonCollider* getCollider();
 
     // getters and setters
 
@@ -60,10 +43,6 @@ public:
     float getGravityFactor() const;
     void setGravityFactor(float gravityFactor);
 
-protected:
-    PhysicsWorld *physicsWorld_;
-    PolygonCollider* collider_;
-
 private:
     void init() override;
     void onDestroy() override;
@@ -76,9 +55,6 @@ private:
     float drag_;
     float gravityFactor_;
 
-    bool detectCollisionWith_(Body &otherBody);
-    bool detectMapCollision_(float deltaTime);
-    void setWorld_(PhysicsWorld *gameWorld);
     void step_(float timeElapsedSec);
 };
 

@@ -21,6 +21,8 @@
 #include "ITexture.h"
 #include "AnimationBase.h"
 
+struct AnimationStoppedEventArgs { };
+
 class AnimatedTexture : public AnimationBase, public ITexture {
 private:
     Texture* texture_;
@@ -33,7 +35,7 @@ public:
     void glTexCorner(Corner corner) override;
     void glUnbind() override;
 
-    Event<AnimatedTexture, EventArgs> const stopped;
+    Event<AnimatedTexture, AnimationStoppedEventArgs> const stopped;
 
     void stop() override ;
 };

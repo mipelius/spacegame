@@ -19,6 +19,7 @@
 
 class TileMap;
 class Body;
+class PolygonCollider;
 
 #include <list>
 #include "Vec.h"
@@ -26,14 +27,12 @@ class Body;
 class PhysicsWorld {
     friend class Tile2D;
     friend class Body;
-    friend class TileMap;
+    friend class PolygonCollider;
 
 public:
-    const float defaultAirDensity = 0.001;
-    const float defaultMetersPerPixel = 0.1;
-    const Vecf defaultGForce = Vecf(0.0, 9.81);
-
-    TileMap* getMap();
+    const float defaultAirDensity       = 0.001;
+    const float defaultMetersPerPixel   = 0.1;
+    const Vecf  defaultGForce           = Vecf(0.0, 9.81);
 
     void debugDraw();
 
@@ -50,8 +49,6 @@ private:
     ~PhysicsWorld() = default;
 
     void step(float timeSeconds);
-    void add(Body *body);
-    void remove(Body *body);
 
 private:
     Vecf gForce_;
@@ -59,10 +56,7 @@ private:
     float airDensity_;
 
     std::list<Body *> bodies_;
-    std::list<Body *> bodiesToRemove_;
-
-    TileMap * map_;
-    void detectCollision_(Body* body, float deltaTime);
+    std::list<PolygonCollider *> colliders_;
 };
 
 #endif //__PhysicsWorld_H_

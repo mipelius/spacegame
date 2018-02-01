@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "PolygonCollider.h"
 #include <iostream>
 #include <cfloat>
-#include "PolygonCollider.h"
 #include "LineSegment.h"
+#include "Tile2D.h"
 #include "Body.h"
 
 class Projection {
@@ -37,7 +38,7 @@ public:
     }
 
     bool overlap(const Projection& other, float& penetration, Vecf& currentContactNormal) {
-        penetration = DBL_MAX;
+        penetration = FLT_MAX;
         bool overlap = (min >= other.min || max >= other.min) && (min <= other.max || max <= other.max);
         if (!overlap) { return false; }
 
@@ -140,15 +141,22 @@ bool PolygonCollider::cast(
     return true;
 }
 
-PolygonCollider::PolygonCollider() : boundingBox_({-1, -1, 1, 1}) { }
+PolygonCollider::PolygonCollider() :
+        boundingBox_        (   {-1, -1, 1, 1}                                              ),
+        collision           (   Event<PolygonCollider, CollisionEventArgs>(this)            ),
+        terrainCollision    (   Event<PolygonCollider, TerrainCollisionEventArgs>(this)     )
+{ }
 
 const Rect &PolygonCollider::boundingBox() const {
     return boundingBox_;
 }
 
-
-bool PolygonCollider::overlap(const PolygonCollider &otherCollider, Vecf& contactNormal, float& penetration) const {
-    penetration = DBL_MAX;
+bool PolygonCollider::overlap(
+        const PolygonCollider&  otherCollider,
+        Vecf&                   contactNormal,
+        float&                  penetration
+) const {
+    penetration = FLT_MAX;
     float currentPenetration;
     Vecf currentContactNormal;
 
@@ -216,9 +224,166 @@ const std::vector<Vecf> &PolygonCollider::points() const {
 }
 
 void PolygonCollider::init() {
-    gameObject()->getComponent<Body>()->collider_ = this;
+    Tile2D::physicsWorld().colliders_.push_back(this);
+    body_ = gameObject()->getComponent<Body>();
 }
 
 void PolygonCollider::onDestroy() {
-    gameObject()->getComponent<Body>()->collider_ = nullptr;
+    Tile2D::physicsWorld().colliders_.remove(this);
+}
+
+bool PolygonCollider::detectTerrainCollision_(float deltaTime) {
+    TileMap* map = &Tile2D::tileMap();
+
+    if (map == nullptr) {
+        return false;
+    }
+
+    bool collided = false;
+
+    pos_ = transform()->position_;
+    rot_ = transform()->rotation_;
+
+    Rect boundingBox = boundingBox_;
+
+    boundingBox.x1 += transform()->position_.x;
+    boundingBox.x2 += transform()->position_.x;
+    boundingBox.y1 += transform()->position_.y;
+    boundingBox.y2 += transform()->position_.y;
+
+    int blockSizeW = map->getTileSet()->getTileW();
+    int blockSizeH = map->getTileSet()->getTileH();
+
+    int iBegin = (int)boundingBox.x1 - ((int)boundingBox.x1) % blockSizeW;
+    int iEnd = (int)boundingBox.x2 + (int)boundingBox.x2 % blockSizeW;
+    int jBegin = (int)boundingBox.y1 - ((int)boundingBox.y1) % blockSizeH;
+    int jEnd = (int)boundingBox.y2 + (int)boundingBox.y2 % blockSizeH;
+
+    Vecf direction =                {0.0f, 0.0f};
+    Vecf velocityBeforeCollision =  {0.0f, 0.0f};
+
+    if (body_ != nullptr) {
+        velocityBeforeCollision = body_->velocity_;
+        direction = body_->velocity_ * deltaTime * Tile2D::physicsWorld().metersPerPixel_;
+    }
+
+    Tile* tile;
+
+    float w = blockSizeW;
+    float h = blockSizeH;
+    PolygonCollider tileCollider;
+    tileCollider.rot_ = 0.0;
+    tileCollider.setPoints({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
+
+    float thresholdForSweeping = (float)sqrt(blockSizeW * blockSizeH) / 4.0f;
+
+    // if slowly moving object or body doesn't exist -> use SAT strategy
+    if (direction.length() < thresholdForSweeping || body_ == nullptr) {
+        Vecf contactNormal;
+        float penetration;
+
+        for (int i=iBegin; i <= iEnd; i += blockSizeW) {
+            for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
+                tile = map->getValueScaled(Vecf(i, j));
+                if (tile != nullptr && tile->getDensity() > 0.0) {
+                    tileCollider.pos_ = {(float)i, (float)j};
+
+                    if (overlap(tileCollider, contactNormal, penetration)) {
+                        pos_ += contactNormal * (penetration + 0.05);
+                        collided = true;
+
+                        terrainCollision.raise(
+                                {
+                                        deltaTime,
+                                        contactNormal,
+                                        tileCollider.pos_,
+                                        tile,
+                                        velocityBeforeCollision
+                                }
+                        );
+                    }
+                }
+            }
+        }
+
+        if (collided) {
+            if (body_ != nullptr)  {
+                body_->velocity_ = {0, 0};
+            }
+            transform()->position_ = pos_;
+        }
+
+    } else { // if fast object -> use polygon casting/sweeping
+        Vecf contactNormal;
+        Vecf currentContactNormal;
+
+        Vecf toCollision = {0, 0};
+        Vecf currentToCollision;
+
+        Tile* collisionTile = nullptr;
+        Vecf collisionTileCoord;
+
+        for (int i=iBegin; i <= iEnd; i += blockSizeW) {
+            for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
+                tile = map->getValueScaled(Vecf(i, j));
+                if (tile != nullptr && tile->getDensity() > 0.0) {
+                    tileCollider.pos_ = {(float)i, (float)j};
+
+                    if (cast(direction * -1.0, tileCollider, currentContactNormal, currentToCollision))
+                    {
+                        collided = true;
+
+                        if (currentToCollision.lengthSqr() > toCollision.lengthSqr()) {
+                            collisionTile = tile;
+                            collisionTileCoord = tileCollider.pos_;
+
+                            toCollision = currentToCollision;
+                            contactNormal = currentContactNormal;
+                        }
+                    }
+                }
+            }
+        }
+        if (collided) {
+            const Vecf v = body_->velocity_;
+            const Vecf& n = contactNormal;
+
+            Vecf proj_n_v = n * v.dot(n);
+            Vecf reflVel = v + proj_n_v * -2.0;
+
+            body_->velocity_ = reflVel * 0.2;
+            transform()->position_ += toCollision * (1.01);
+
+            terrainCollision.raise(
+                    {
+                            deltaTime,
+                            n,
+                            collisionTileCoord,
+                            collisionTile,
+                            velocityBeforeCollision
+                    }
+            );
+        }
+    }
+
+    return collided;
+}
+
+bool PolygonCollider::detectCollisionWith_(PolygonCollider& otherCollider) {
+    if (!boundingBox_.intersectsWith(otherCollider.boundingBox_)) return false;
+
+    Vecf contactNormal;
+    float penetration;
+
+    if (overlap(otherCollider, contactNormal, penetration)) {
+        collision.raise(
+                {
+                        &otherCollider,
+                        contactNormal
+                }
+        );
+        return true;
+    }
+
+    return false;
 }

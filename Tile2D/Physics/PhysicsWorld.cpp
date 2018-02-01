@@ -15,61 +15,40 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "gl_utils.h"
-#include "Body.h"
 
 PhysicsWorld::PhysicsWorld():
-    map_(nullptr),
-    gForce_({0, 0})
+    gForce_(defaultGForce)
 {
-    gForce_ = defaultGForce;
     metersPerPixel_ = defaultMetersPerPixel;
     airDensity_ = defaultAirDensity;
 }
 
-void PhysicsWorld::add(Body *body) {
-    bodies_.push_back(body);
-    body->setWorld_(this);
-}
-
 void PhysicsWorld::step(float timeSeconds) {
-    // remove removed bodies from the list
-    for (auto* body : bodiesToRemove_) {
-        bodies_.remove(body);
+    if (timeSeconds == 0.0) {
+        return;
     }
-    bodiesToRemove_.clear();
 
-    if (timeSeconds == 0.0) return;
-
-    // update velocities and new locations
+    // update velocities and positions
     for(auto& body : bodies_) {
         body->step_(timeSeconds);
     }
 
-    // now all the new positions are updated -> detect collision
-    for(auto& body : bodies_) {
-        detectCollision_(body, timeSeconds);
+    // now all the positions are updated -> detect collision
+    for(auto& collider : colliders_) {
+        collider->detectTerrainCollision_(timeSeconds);
+
+        for (auto& otherCollider : colliders_) {
+            if (otherCollider == collider) continue;
+            collider->detectCollisionWith_(*otherCollider);
+        }
     }
-}
-
-void PhysicsWorld::detectCollision_(Body* body, float deltaTime) {
-    body->detectMapCollision_(deltaTime);
-
-    for (auto& bodyCur : bodies_) {
-        if (bodyCur == body) continue;
-        body->detectCollisionWith_(*bodyCur);
-    }
-}
-
-void PhysicsWorld::remove(Body *body) {
-    bodiesToRemove_.push_back(body);
-    body->setWorld_(nullptr);
 }
 
 void PhysicsWorld::debugDraw() {
     prepareRendering();
 
-    for (auto& body : bodies_) {
-        if (body->collider_ == nullptr) {
+    for (auto& collider : colliders_) {
+        if (collider == nullptr) {
             continue;
         }
 
@@ -77,11 +56,11 @@ void PhysicsWorld::debugDraw() {
 
         glColor3f(0.3f, 1.0f, 0.3f);
 
-        auto& points = body->collider_->points();
+        auto& points = collider->points();
 
         glBegin(GL_LINE_LOOP);
         for (auto& pointOrig : points) {
-            auto point = pointOrig.rotated(body->transform()->getRotation()) + body->transform()->getPosition();
+            auto point = pointOrig.rotated(collider->transform()->getRotation()) + collider->transform()->getPosition();
             glVertex2f(point.x, point.y);
         }
         glEnd();
@@ -90,11 +69,11 @@ void PhysicsWorld::debugDraw() {
 
         glColor3f(0.0f, 0.3f, 0.0f);
 
-        Rect rect = body->collider_->boundingBox();
-        rect.x1 += body->transform()->getPosition().x;
-        rect.y1 += body->transform()->getPosition().y;
-        rect.x2 += body->transform()->getPosition().x;
-        rect.y2 += body->transform()->getPosition().y;
+        Rect rect = collider->boundingBox();
+        rect.x1 += collider->transform()->getPosition().x;
+        rect.y1 += collider->transform()->getPosition().y;
+        rect.x2 += collider->transform()->getPosition().x;
+        rect.y2 += collider->transform()->getPosition().y;
 
         glBegin(GL_LINE_LOOP);
             glVertex2f(rect.x1, rect.y1);
@@ -103,10 +82,6 @@ void PhysicsWorld::debugDraw() {
             glVertex2f(rect.x1, rect.y2);
         glEnd();
     }
-}
-
-TileMap *PhysicsWorld::getMap() {
-    return map_;
 }
 
 // getters and setters

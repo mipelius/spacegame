@@ -74,28 +74,32 @@ void MissileBehaviour::awake() {
     TTL = 1.0;
 
     // collision event handlers
+    PolygonCollider* collider = gameObject()->getComponent<PolygonCollider>();
 
-    gameObject()->getComponent<Body>()->mapCollision.add([] (Body* body, MapCollisionEventArgs args) {
-        body->gameObject()->destroy();
+    collider->terrainCollision.add([] (PolygonCollider* collider, TerrainCollisionEventArgs args) {
+        collider->gameObject()->destroy();
         Tile2D::tileMap().setValueScaled(args.tileCoordinates, Tile2D::tileMap().getTileSet()->getEmptyBlock());
 
         createSparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
-        createPulseLight(body->transform()->getPosition());
+        createPulseLight(collider->transform()->getPosition());
     });
 
-    gameObject()->getComponent<Body>()->bodyCollision.add([] (Body* body, BodyCollisionEventArgs args) {
-        if (args.otherBody->gameObject()->tag == Tags::enemy) {
-            auto otherBody = args.otherBody->gameObject()->getComponent<Body>();
-            float scaleX = args.otherBody->transform()->getScale().x;
-            args.otherBody->transform()->setScale({-scaleX, 1});
-            otherBody->setVelocity(otherBody->getVelocity() + body->getVelocity() / 100.0);
-            createSparkles(body->transform()->getPosition(), args.contactNormal, {1, 0, 0});
-            body->gameObject()->destroy();
+    collider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
+        if (args.otherCollider->gameObject()->tag == Tags::enemy) {
+            auto otherBody = args.otherCollider->gameObject()->getComponent<Body>();
+            float scaleX = args.otherCollider->transform()->getScale().x;
+            args.otherCollider->transform()->setScale({-scaleX, 1});
 
-            auto health = args.otherBody->gameObject()->getComponent<Health>();
+            auto missileBody = collider->gameObject()->getComponent<Body>();
+
+            otherBody->setVelocity(otherBody->getVelocity() + missileBody->getVelocity() / 100.0);
+            createSparkles(collider->transform()->getPosition(), args.contactNormal, {1, 0, 0});
+            missileBody->gameObject()->destroy();
+
+            auto health = args.otherCollider->gameObject()->getComponent<Health>();
 
             if (health != nullptr) {
-                health->damage(10, body->gameObject());
+                health->damage(10, missileBody->gameObject());
             }
         }
     });

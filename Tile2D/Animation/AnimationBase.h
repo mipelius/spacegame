@@ -19,7 +19,6 @@
 
 #include "IAnimation.h"
 #include "Event.h"
-#include "EventArgs.h"
 
 class AnimationBase : public IAnimation {
 

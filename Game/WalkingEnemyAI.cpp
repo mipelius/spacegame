@@ -31,17 +31,6 @@ void WalkingEnemyAI::awake() {
     lastReactionTimeStamp_ = SDL_GetTicks();
 
     body_ = gameObject()->getComponent<Body>();
-
-    body_->mapCollision.add([] (Body* body, MapCollisionEventArgs args) {
-//        auto thisAI = body->gameObject()->getComponent<WalkingEnemyAI>();
-//        bool horizontalCollision = Mathf::approx(abs(args.contactNormal.x), 1.0);
-//
-//        if (horizontalCollision || !thisAI->isGrounded_()) {
-//            body->setVelocity({0, args.velocityBeforeCollision.y});
-//        } else {
-//            body->setVelocity({args.velocityBeforeCollision.x, 0});
-//        }
-    });
 }
 
 void WalkingEnemyAI::update() {

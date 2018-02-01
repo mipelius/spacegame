@@ -20,7 +20,6 @@
 #include "Tile2D.h"
 #include "IScene.h"
 #include "Vec.h"
-#include "EventArgs.h"
 #include "Body.h"
 
 class SceneInGame : public IScene {

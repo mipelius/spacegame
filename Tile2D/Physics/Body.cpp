@@ -15,46 +15,29 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Tile2D.h"
-#include "precompile.h"
-#include "Body.h"
-
-#include "PhysicsWorld.h"
-#include "TileMap.h"
-#include "BodyCollisionEventArgs.h"
-#include "PolygonCollider.h"
 
 Body::Body() :
-    // events
-
-    bodyCollision   (   Event<Body, BodyCollisionEventArgs>(this) ),
-    mapCollision    (   Event<Body, MapCollisionEventArgs>(this) ),
-
-    // private member variables
-
     velocity_       (   Vecf(0,0) ),
     force_          (   Vecf(0,0) ),
     drag_           (   1.0f      ),
     angularVelocity_(   0.0f      ),
     mass_           (   1.0f      ),
-    gravityFactor_  (   1.0f      ),
-
-    physicsWorld_                       (nullptr),
-    collider_                           (nullptr)
+    gravityFactor_  (   1.0f      )
 {
 
 }
 
 void Body::init() {
-    Tile2D::physicsWorld().add(this);
+    Tile2D::physicsWorld().bodies_.push_back(this);
 }
 
 void Body::onDestroy() {
-    if (physicsWorld_ != nullptr) {
-        physicsWorld_->remove(this);
-    }
+    Tile2D::physicsWorld().bodies_.remove(this);
 }
 
 void Body::step_(float timeElapsedSec) {
+    PhysicsWorld& world = Tile2D::physicsWorld();
+
     Vecf& position = gameObject()->transform().position_;
     float& rotation = gameObject()->transform().rotation_;
 
@@ -67,7 +50,7 @@ void Body::step_(float timeElapsedSec) {
 
     if (velLength > 0.0f) {
         Vecf dragUnitVector = (velocity_ * -1) / velLength;
-        drag = dragUnitVector * velLengthSqr * (0.5 * physicsWorld_->getAirDensity()) * drag_;
+        drag = dragUnitVector * velLengthSqr * (0.5 * world.getAirDensity()) * drag_;
     }
 
     Vecf totalForce = force_ + drag;
@@ -75,9 +58,9 @@ void Body::step_(float timeElapsedSec) {
     // use acceleration for updating velocity --> position
 
     Vecf acceleration = totalForce / mass_;
-    acceleration += physicsWorld_->gForce_ * gravityFactor_;
+    acceleration += world.gForce_ * gravityFactor_;
     velocity_ += acceleration;
-    position = position + (velocity_ * timeElapsedSec * physicsWorld_->getMetersPerPixel());
+    position = position + (velocity_ * timeElapsedSec * world.getMetersPerPixel());
 
     // apply rotation change
 
@@ -88,164 +71,8 @@ void Body::step_(float timeElapsedSec) {
     force_ = Vecf(0.0, 0.0);
 }
 
-bool Body::detectMapCollision_(float deltaTime) {
-    Vecf velocityBeforeCollision = velocity_;
-
-    TileMap* map = this->physicsWorld_->map_;
-
-    if (map == nullptr || collider_ == nullptr) {
-        return false;
-    }
-
-    bool collided = false;
-
-    collider_->pos_ = transform()->position_;
-    collider_->rot_ = transform()->rotation_;
-
-    Rect boundingBox = collider_->boundingBox();
-    boundingBox.x1 += transform()->position_.x;
-    boundingBox.x2 += transform()->position_.x;
-    boundingBox.y1 += transform()->position_.y;
-    boundingBox.y2 += transform()->position_.y;
-
-    int blockSizeW = map->getTileSet()->getTileW();
-    int blockSizeH = map->getTileSet()->getTileH();
-
-    int iBegin = (int)boundingBox.x1 - ((int)boundingBox.x1) % blockSizeW;
-    int iEnd = (int)boundingBox.x2 + (int)boundingBox.x2 % blockSizeW;
-    int jBegin = (int)boundingBox.y1 - ((int)boundingBox.y1) % blockSizeH;
-    int jEnd = (int)boundingBox.y2 + (int)boundingBox.y2 % blockSizeH;
-
-    Vecf direction = velocity_ * deltaTime * Tile2D::physicsWorld().metersPerPixel_;
-    Tile* tile;
-
-    float w = blockSizeW;
-    float h = blockSizeH;
-    PolygonCollider tileCollider;
-    tileCollider.rot_ = 0.0;
-    tileCollider.setPoints({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
-
-    if (direction.length() < sqrt(blockSizeW * blockSizeH) / 4.0) { // if slowly moving object -> use SAT strategy
-        Vecf contactNormal;
-        float penetration;
-
-        for (int i=iBegin; i <= iEnd; i += blockSizeW) {
-            for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
-                tile = map->getValueScaled(Vecf(i, j));
-                if (tile != nullptr && tile->getDensity() > 0.0) {
-                    tileCollider.pos_ = {(float)i, (float)j};
-
-                    if (collider_->overlap(tileCollider, contactNormal, penetration)) {
-                        collider_->pos_ += contactNormal * (penetration + 0.05);
-                        collided = true;
-
-                        mapCollision.raise(
-                                MapCollisionEventArgs(
-                                        deltaTime,
-                                        contactNormal,
-                                        tileCollider.pos_,
-                                        tile,
-                                        velocityBeforeCollision
-                                )
-                        );
-                    }
-                }
-            }
-        }
-
-        if (collided) {
-            velocity_ = {0, 0};
-            transform()->position_ = collider_->pos_;
-        }
-
-    } else { // if fast object -> use polygon casting/sweeping
-        Vecf contactNormal;
-        Vecf currentContactNormal;
-
-        Vecf toCollision = {0, 0};
-        Vecf currentToCollision;
-
-        Tile* collisionTile = nullptr;
-        Vecf collisionTileCoord;
-
-        for (int i=iBegin; i <= iEnd; i += blockSizeW) {
-            for (int j=jBegin; j <= jEnd ; j += blockSizeH) {
-                tile = map->getValueScaled(Vecf(i, j));
-                if (tile != nullptr && tile->getDensity() > 0.0) {
-                    tileCollider.pos_ = {(float)i, (float)j};
-
-                    if (collider_->cast(direction * -1.0, tileCollider, currentContactNormal, currentToCollision))
-                    {
-                        collided = true;
-
-                        if (currentToCollision.lengthSqr() > toCollision.lengthSqr()) {
-                            collisionTile = tile;
-                            collisionTileCoord = tileCollider.pos_;
-
-                            toCollision = currentToCollision;
-                            contactNormal = currentContactNormal;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (collided) {
-            const Vecf v = velocity_;
-            const Vecf& n = contactNormal;
-
-            Vecf proj_n_v = n * v.dot(n);
-            Vecf reflVel = v + proj_n_v * -2.0;
-
-            velocity_ = reflVel * 0.2;
-            transform()->position_ += toCollision * (1.01);
-
-            mapCollision.raise(
-                    MapCollisionEventArgs(
-                            deltaTime,
-                            n,
-                            collisionTileCoord,
-                            collisionTile,
-                            velocityBeforeCollision
-                    )
-            );
-        }
-    }
-
-
-    return collided;
-}
-
-
-bool Body::detectCollisionWith_(Body &otherBody) {
-    if (collider_ == nullptr || otherBody.collider_ == nullptr) return false;
-    if (!collider_->boundingBox_.intersectsWith(otherBody.collider_->boundingBox_)) return false;
-
-    Vecf contactNormal;
-    float penetration;
-
-    if (collider_->overlap(*otherBody.collider_, contactNormal, penetration)) {
-        bodyCollision.raise(BodyCollisionEventArgs(&otherBody, contactNormal));
-        return true;
-    }
-
-    return false;
-}
-
 void Body::applyForce(Vecf force) {
     force_ += force;
-}
-
-void Body::setWorld_(PhysicsWorld *gameWorld) {
-    this->physicsWorld_ = gameWorld;
-}
-
-PhysicsWorld *Body::getWorld() {
-    return this->physicsWorld_;
-}
-
-PolygonCollider* Body::getCollider() {
-    return collider_;
 }
 
 // getters and setters

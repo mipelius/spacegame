@@ -19,7 +19,7 @@
 
 AnimatedTexture::AnimatedTexture(unsigned int framesPerSecond, unsigned int frameAmount, bool enableLoop, Texture* texture) :
     AnimationBase(framesPerSecond, frameAmount, enableLoop),
-    stopped   (   Event<AnimatedTexture, EventArgs>(this) )
+    stopped   (   Event<AnimatedTexture, AnimationStoppedEventArgs>(this) )
 {
     texture_ = texture;
 }
@@ -59,5 +59,5 @@ void AnimatedTexture::updateActual() {
 
 void AnimatedTexture::stop() {
     AnimationBase::stop();
-    stopped.raise(EventArgs());
+    stopped.raise(AnimationStoppedEventArgs());
 }

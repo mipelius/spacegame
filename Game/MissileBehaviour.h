@@ -17,7 +17,6 @@
 #ifndef __MissileBehaviour_H
 #define __MissileBehaviour_H
 
-#include "BodyCollisionEventArgs.h"
 #include "Sprite.h"
 #include "Body.h"
 #include "Tile2DBehaviour.h"

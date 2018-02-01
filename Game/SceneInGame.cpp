@@ -16,7 +16,6 @@
 
 #include "DrawableMap.h"
 #include "SceneInGame.h"
-#include "BodyCollisionEventArgs.h"
 #include "DrawableGroup.h"
 #include "Background.h"
 #include "Sprite.h"

@@ -21,21 +21,41 @@
 #include "Tile2DComponent.h"
 #include "Vec.h"
 #include "Rect.h"
+#include "Event.h"
+#include "Tile.h"
+
+class Body;
+class PolygonCollider;
+
+struct CollisionEventArgs {
+    PolygonCollider* const otherCollider;
+    Vecf contactNormal;
+};
+
+struct TerrainCollisionEventArgs {
+    float deltaTime;
+    Vecf contactNormal;
+    Vecf tileCoordinates;
+    Tile* tile;
+    Vecf velocityBeforeCollision;
+};
 
 class PolygonCollider : public Tile2DComponent {
+    friend class PhysicsWorld;
     friend class PolygonCollider;
-    friend class Body;
     friend class Projection;
 
 public:
     PolygonCollider();
-    ~PolygonCollider() = default;
+
+    const Event<PolygonCollider, CollisionEventArgs>        collision;
+    const Event<PolygonCollider, TerrainCollisionEventArgs> terrainCollision;
 
     bool cast(
-            const Vecf&                  direction,
-            const PolygonCollider&      otherCollider,
-            Vecf&                        contactNormal,
-            Vecf&                        toCollision
+            const Vecf&              direction,
+            const PolygonCollider&   otherCollider,
+            Vecf&                    contactNormal,
+            Vecf&                    toCollision
     );
 
     const Rect& boundingBox() const;
@@ -43,8 +63,8 @@ public:
 
     bool overlap(
             const PolygonCollider&   otherCollider,
-            Vecf&                        contactNormal,
-            float&                     penetration
+            Vecf&                    contactNormal,
+            float&                   penetration
     ) const;
 
     void setPoints(std::vector<Vecf> points);
@@ -55,20 +75,24 @@ protected:
     void onDestroy() override;
 
 private:
+    bool detectCollisionWith_(PolygonCollider& otherCollider);
+    bool detectTerrainCollision_(float deltaTime);
+
     Vecf pos_;
     float rot_;
 
     bool castOneWay_(
-            const Vecf &direction,
-            const PolygonCollider &collider,
-            const PolygonCollider &otherCollider,
-            Vecf &contactNormal,
-            Vecf &toCollision
+            const Vecf&             direction,
+            const PolygonCollider&  collider,
+            const PolygonCollider&  otherCollider,
+            Vecf&                   contactNormal,
+            Vecf&                   toCollision
     );
 
     Rect boundingBox_;
-
+    Body* body_ = nullptr;
     std::vector<Vecf> points_;
 };
+
 
 #endif //__PolygonCollider_H

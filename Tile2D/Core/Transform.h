@@ -21,6 +21,7 @@
 
 class Transform {
     friend class Body;
+    friend class PolygonCollider;
 
 public:
     Transform();

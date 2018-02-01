@@ -20,7 +20,6 @@
 
 
 #include "Tile2DBehaviour.h"
-#include "EventArgs.h"
 #include "Event.h"
 
 class GameObjectDiedEventArgs {
