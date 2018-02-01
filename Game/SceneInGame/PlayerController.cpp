@@ -65,12 +65,12 @@ void PlayerController::shoot_() {
         return;
     }
 
-    shootOnce({0.0f, 0.0f});
-    shootOnce(Vecf(-10, -15).rotated(transform()->getRotation()));
-    shootOnce(Vecf(-10, 15).rotated(transform()->getRotation()));
+    shootOnce_({0.0f, 0.0f});
+    shootOnce_(Vecf(-10, -15).rotated(transform()->getRotation()));
+    shootOnce_(Vecf(-10, 15).rotated(transform()->getRotation()));
 }
 
-void PlayerController::shootOnce(Vecf offset) {
+void PlayerController::shootOnce_(Vecf offset) {
     auto laser = Prefabs::laser();
     laser->transform().setPosition(transform()->getPosition() + offset);
     laser->transform().setRotation(transform()->getRotation());
@@ -79,6 +79,27 @@ void PlayerController::shootOnce(Vecf offset) {
 
     laserBody->setVelocity(Vecf::byAngle(transform()->getRotation(), 20000.0) + body_->getVelocity());
 }
+
+void PlayerController::dropBomp_() {
+    if (!bombTimer.resetIfTimeIntervalPassed()) {
+        return;
+    }
+
+    auto bomb = Prefabs::bomb();
+    bomb->transform() = *transform();
+    bomb->getComponent<Body>()->setVelocity(body_->getVelocity() / 2 + Vecf(0, 1000));
+}
+
+void PlayerController::dropLight_() {
+    if (!lightTimer.resetIfTimeIntervalPassed()) {
+        return;
+    }
+
+    auto light = Prefabs::light();
+    light->transform().setPosition(transform()->getPosition());
+    light->transform().setRotation(0.0f);
+}
+
 
 void PlayerController::lateUpdate() {
     // prevent player from going outside the world
@@ -129,24 +150,4 @@ void PlayerController::lateUpdate() {
 
         Tile2D::lightSystem().setAmbientLight(ambientLight);
     }
-}
-
-void PlayerController::dropBomp_() {
-    if (!bombTimer.resetIfTimeIntervalPassed()) {
-        return;
-    }
-
-    auto bomb = Prefabs::bomb();
-    bomb->transform() = *transform();
-    bomb->getComponent<Body>()->setVelocity(body_->getVelocity() / 2 + Vecf(0, 1000));
-}
-
-void PlayerController::dropLight_() {
-    if (!lightTimer.resetIfTimeIntervalPassed()) {
-        return;
-    }
-
-    auto light = Prefabs::light();
-    light->transform().setPosition(transform()->getPosition());
-    light->transform().setRotation(0.0f);
 }

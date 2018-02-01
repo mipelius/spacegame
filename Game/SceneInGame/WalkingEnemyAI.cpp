@@ -17,6 +17,7 @@
 #include "WalkingEnemyAI.h"
 #include "Tile2DMath.h"
 #include "Tile2D.h"
+#include "Prefabs.h"
 
 void WalkingEnemyAI::awake() {
     jumpTimer_.setInterval(6000);
@@ -55,13 +56,23 @@ void WalkingEnemyAI::setGroundCheckSensors(const std::vector<Vecf> &groundSensor
 }
 
 void WalkingEnemyAI::walkTowardsTarget_() {
+    if (reactionTimer_.resetIfTimeIntervalPassed()) {
+        xDirection_ = (target_->getPosition().x - transform()->getPosition().x);
+        xDirection_ = xDirection_ / abs(xDirection_);
+
+        Vecf scale = transform()->getScale();
+
+        if (xDirection_ > 0) {
+            scale.x = -abs(scale.x);
+        } else {
+            scale.x = abs(scale.x);
+        }
+
+        transform()->setScale(scale);
+    }
+
     if (isGrounded_()) {
         Vecf vel = body_->getVelocity();
-
-        if (reactionTimer_.resetIfTimeIntervalPassed()) {
-            xDirection_ = (target_->getPosition().x - transform()->getPosition().x);
-            xDirection_ = xDirection_ / abs(xDirection_);
-        }
 
         vel.x = xDirection_ * 1000;
 
@@ -77,6 +88,13 @@ void WalkingEnemyAI::walkTowardsTarget_() {
 void WalkingEnemyAI::shootTarget_() {
     if (shootTimer_.resetIfTimeIntervalPassed()) {
         Vecf direction = target_->getPosition() - transform()->getPosition();
-        // shoot to direction
+        auto laser = Prefabs::laser();
+
+        laser->transform().setPosition(transform()->getPosition() + direction.normalized() * 15.0f);
+        laser->transform().setRotation(direction.angle());
+
+        auto laserBody = laser->getComponent<Body>();
+
+        laserBody->setVelocity(direction.normalized() * 20000.0 + body_->getVelocity());
     }
 }

@@ -26,7 +26,6 @@ class PlayerController : public Tile2DBehaviour {
 
 public:
     float moveForce;
-    void shoot_();
 
 protected:
     void awake() override;
@@ -34,8 +33,6 @@ protected:
     void lateUpdate() override;
 
 private:
-    void shootOnce(Vecf offset);
-
     Timer shootTimer;
     Timer bombTimer;
     Timer lightTimer;
@@ -43,8 +40,11 @@ private:
     Body* body_;
     Sprite* sprite_;
 
+    void shoot_();
+    void shootOnce_(Vecf offset);
     void dropBomp_();
     void dropLight_();
+
 };
 
 #endif //__PlayerController_H
