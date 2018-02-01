@@ -20,6 +20,7 @@
 #include "LineSegment.h"
 #include "Tile2D.h"
 #include "Body.h"
+#include "Tile2DMath.h"
 
 class Projection {
 
@@ -145,7 +146,14 @@ PolygonCollider::PolygonCollider() :
         boundingBox_        (   {-1, -1, 1, 1}                                              ),
         collision           (   Event<PolygonCollider, CollisionEventArgs>(this)            ),
         terrainCollision    (   Event<PolygonCollider, TerrainCollisionEventArgs>(this)     )
-{ }
+{
+    if (Tile2D::tileMap().isLoaded()) {
+        TileSet* tileSet = Tile2D::tileMap().getTileSet();
+        sweepingStrategyThreshold_ = (float)sqrt(tileSet->getTileW() * tileSet->getTileW()) / 4.0f;
+    } else {
+        sweepingStrategyThreshold_ = 2.0f;
+    }
+}
 
 const Rect &PolygonCollider::boundingBox() const {
     return boundingBox_;
@@ -275,10 +283,8 @@ bool PolygonCollider::detectTerrainCollision_(float deltaTime) {
     tileCollider.rot_ = 0.0;
     tileCollider.setPoints({{0.0, 0.0}, {0.0, h}, {w, h}, {w, 0.0}});
 
-    float thresholdForSweeping = (float)sqrt(blockSizeW * blockSizeH) / 4.0f;
-
     // if slowly moving object or body doesn't exist -> use SAT strategy
-    if (direction.length() < thresholdForSweeping || body_ == nullptr) {
+    if (direction.length() < sweepingStrategyThreshold_ || body_ == nullptr) {
         Vecf contactNormal;
         float penetration;
 
@@ -386,4 +392,15 @@ bool PolygonCollider::detectCollisionWith_(PolygonCollider& otherCollider) {
     }
 
     return false;
+}
+
+float PolygonCollider::getSweepingStrategyThreshold() const {
+    return sweepingStrategyThreshold_;
+}
+
+void PolygonCollider::setSweepingStrategyThreshold(float sweepingStrategyThreshold) {
+    sweepingStrategyThreshold_ = sweepingStrategyThreshold;
+    if (sweepingStrategyThreshold_ < 0) {
+        sweepingStrategyThreshold_ = 0;
+    }
 }

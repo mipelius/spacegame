@@ -62,6 +62,8 @@ void DebugBehaviour::update() {
                                 2.0f
                         );
 
+                        enemy->getComponent<PolygonCollider>()->setSweepingStrategyThreshold(FLT_MAX);
+
                         auto AI = enemy->attachComponent<WalkingEnemyAI>();
                         AI->setTarget(transform());
                         AI->setGroundCheckPoints(

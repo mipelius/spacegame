@@ -89,6 +89,13 @@ private:
             Vecf&                   toCollision
     );
 
+    float sweepingStrategyThreshold_;
+public:
+    float getSweepingStrategyThreshold() const;
+    void setSweepingStrategyThreshold(float sweepingStrategyThreshold);
+
+private:
+
     Rect boundingBox_;
     Body* body_ = nullptr;
     std::vector<Vecf> points_;
