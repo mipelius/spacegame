@@ -14,21 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __MissileBehaviour_H
-#define __MissileBehaviour_H
 
-#include "Sprite.h"
-#include "Body.h"
+#ifndef SPACEGAME_ENEMYAIBASE_H
+#define SPACEGAME_ENEMYAIBASE_H
+
 #include "Tile2DBehaviour.h"
-#include "LimitedAgeBehaviour.h"
 
-class MissileBehaviour : public LimitedAgeBehaviour {
+class EnemyAIBase : public Tile2DBehaviour {
+public:
+    void setTarget(Transform *target);
+    Transform *getTarget() const;
 
 protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
+    Transform* target_ = nullptr;
 };
 
-
-#endif //__MissileBehaviour_H
+#endif //SPACEGAME_ENEMYAIBASE_H

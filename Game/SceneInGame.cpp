@@ -22,7 +22,6 @@
 #include "PlayerController.h"
 #include "Tags.h"
 #include "BackgroundBehaviour.h"
-#include "Spawner.h"
 #include "DebugBehaviour.h"
 
 void createBackground(Rect area, const char* texture, Color color) {

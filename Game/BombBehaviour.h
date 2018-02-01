@@ -29,8 +29,6 @@ protected:
     void update() override;
     void lateUpdate() override;
 
-    static const int explosionRadius = 10; // tiles
-
     Body* body_;
 };
 

@@ -31,7 +31,6 @@ protected:
 private:
     Body* body_ = nullptr;
     Sprite* sprite_ = nullptr;
-    float sizeOfEnemy_ = 1.0f;
 };
 
 

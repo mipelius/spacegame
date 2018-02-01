@@ -20,14 +20,12 @@
 
 #include <SDL2/SDL_quit.h>
 #include "Transform.h"
-#include "Tile2DBehaviour.h"
 #include "Body.h"
+#include "EnemyAIBase.h"
 
-class WalkingEnemyAI : public Tile2DBehaviour {
+class WalkingEnemyAI : public EnemyAIBase {
 public:
-    Transform *getTarget() const;
-    void setTarget(Transform *target);
-    void setGroundCheckPoints(const std::vector<Vecf> &groundSensors);
+    void setGroundCheckSensors(const std::vector<Vecf> &groundSensors);
 
 protected:
     void awake() override;
@@ -36,7 +34,6 @@ protected:
 
 private:
     Body* body_ = nullptr;
-    Transform* target_ = nullptr;
     std::vector<Vecf> groundSensors_;
 
     Uint32 lastJumpTimeStamp_ = 0;
@@ -49,7 +46,9 @@ private:
 
     float xDirection_;
 
+    void walkTowardsTarget_();
     bool isGrounded_();
+    void shootTarget_();
 };
 
 #endif //SPACEGAME_WALKINGENEMYAI_H

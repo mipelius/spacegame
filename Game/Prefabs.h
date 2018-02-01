@@ -14,20 +14,41 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-
-#ifndef SPACEGAME_SPAWNER_H
-#define SPACEGAME_SPAWNER_H
-
+#ifndef SPACEGAME_PREFABS_H
+#define SPACEGAME_PREFABS_H
 
 #include <string>
 #include <vector>
 #include "GameObject.h"
 #include "Rect.h"
+#include "Color.h"
 
-class Spawner {
+class Prefabs {
+
 public:
-    static GameObject* spawnEnemy(
-            Vecf pos,
+    // enemies
+
+    static GameObject* fourwayCyclops();
+    static GameObject* crabKindOf();
+    static GameObject* walkingEnemy();
+    static GameObject* twoHorn();
+
+    // player stuff to drop / shoot
+
+    static GameObject* laser();
+    static GameObject* bomb();
+    static GameObject* light();
+
+    // effects
+
+    static GameObject* bloodBurst();
+    static GameObject* explosion();
+    static void sparkles(Vecf position, Vecf normal, Color color);
+    static void sparkle(Vecf position, Vecf velocity, Color color);
+    static void pulseLight(Vecf position);
+
+private:
+    static GameObject* spawnEnemy_(
             std::string textureName,
             std::vector<Vecf> colliderPoints,
             Rect spriteRect,
@@ -35,5 +56,4 @@ public:
     );
 };
 
-
-#endif //SPACEGAME_SPAWNER_H
+#endif //SPACEGAME_PREFABS_H

@@ -18,14 +18,6 @@
 #include "Tile2DMath.h"
 #include "Tile2D.h"
 
-Transform *WalkingEnemyAI::getTarget() const {
-    return target_;
-}
-
-void WalkingEnemyAI::setTarget(Transform *target) {
-    target_ = target;
-}
-
 void WalkingEnemyAI::awake() {
     lastJumpTimeStamp_ = SDL_GetTicks();
     lastReactionTimeStamp_ = SDL_GetTicks();
@@ -35,29 +27,8 @@ void WalkingEnemyAI::awake() {
 
 void WalkingEnemyAI::update() {
     if (target_ != nullptr) {
-        if (isGrounded_()) {
-            Vecf vel = body_->getVelocity();
-
-            Uint32 ticks = SDL_GetTicks();
-
-            Uint32 reactionTime = reactionTime_ + (reactionTimeRandomness_ - rand() % (2 * reactionTimeRandomness_));
-            if (ticks - lastReactionTimeStamp_ > reactionTime) {
-                lastReactionTimeStamp_ = ticks;
-                xDirection_ = (target_->getPosition().x - transform()->getPosition().x);
-                xDirection_ = xDirection_ / abs(xDirection_);
-            }
-
-            vel.x = xDirection_ * 1000;
-
-            Uint32 jumpInterval = jumpInterval_ + (jumpIntervalRandomness_ - rand() % (2 * jumpIntervalRandomness_));
-            if (ticks - lastJumpTimeStamp_ > jumpInterval) {
-                lastJumpTimeStamp_ = ticks;
-                vel.y = -1000;
-                transform()->setPosition(transform()->getPosition() + Vecf{0.0f, -1.0f});
-            }
-
-            body_->setVelocity(vel);
-        }
+        walkTowardsTarget_();
+        shootTarget_();
     }
 }
 
@@ -73,6 +44,36 @@ bool WalkingEnemyAI::isGrounded_() {
     return false;
 }
 
-void WalkingEnemyAI::setGroundCheckPoints(const std::vector<Vecf> &groundSensors) {
+void WalkingEnemyAI::setGroundCheckSensors(const std::vector<Vecf> &groundSensors) {
     groundSensors_ = groundSensors;
+}
+
+void WalkingEnemyAI::walkTowardsTarget_() {
+    if (isGrounded_()) {
+        Vecf vel = body_->getVelocity();
+
+        Uint32 ticks = SDL_GetTicks();
+
+        Uint32 reactionTime = reactionTime_ + (reactionTimeRandomness_ - rand() % (2 * reactionTimeRandomness_));
+        if (ticks - lastReactionTimeStamp_ > reactionTime) {
+            lastReactionTimeStamp_ = ticks;
+            xDirection_ = (target_->getPosition().x - transform()->getPosition().x);
+            xDirection_ = xDirection_ / abs(xDirection_);
+        }
+
+        vel.x = xDirection_ * 1000;
+
+        Uint32 jumpInterval = jumpInterval_ + (jumpIntervalRandomness_ - rand() % (2 * jumpIntervalRandomness_));
+        if (ticks - lastJumpTimeStamp_ > jumpInterval) {
+            lastJumpTimeStamp_ = ticks;
+            vel.y = -1000;
+            transform()->setPosition(transform()->getPosition() + Vecf{0.0f, -1.0f});
+        }
+
+        body_->setVelocity(vel);
+    }
+}
+
+void WalkingEnemyAI::shootTarget_() {
+    Vecf direction = target_->getPosition() - transform()->getPosition();
 }

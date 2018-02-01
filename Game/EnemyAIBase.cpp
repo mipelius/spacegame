@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2017 Miika Pelkonen
+// Copyright (C) 2018 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,14 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __SceneTitleScreen_H
-#define __SceneTitleScreen_H
 
-#include "IScene.h"
+#include "EnemyAIBase.h"
 
-class SceneTitleScreen : public IScene {
-    void init() override;
-    void destroy() override;
-};
+Transform *EnemyAIBase::getTarget() const {
+    return target_;
+}
 
-#endif //__SceneTitleScreen_H
+void EnemyAIBase::setTarget(Transform *target) {
+    target_ = target;
+}

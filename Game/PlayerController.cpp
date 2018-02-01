@@ -16,10 +16,8 @@
 
 #include "Tile2D.h"
 #include "PlayerController.h"
-#include "MissileBehaviour.h"
-#include "BombBehaviour.h"
 #include "Tile2DMath.h"
-#include "Spawner.h"
+#include "Prefabs.h"
 
 void PlayerController::awake() {
     body_ = gameObject()->getComponent<Body>();
@@ -71,32 +69,13 @@ void PlayerController::shoot_() {
 }
 
 void PlayerController::shootOnce(Vecf offset) {
-    auto missile = Tile2D::createGameObject();
-    missile->transform().setPosition(transform()->getPosition() + offset);
-    missile->transform().setRotation(transform()->getRotation());
+    auto laser = Prefabs::laser();
+    laser->transform().setPosition(transform()->getPosition() + offset);
+    laser->transform().setRotation(transform()->getRotation());
 
-    auto missileBody = missile->attachComponent<Body>();
-    missileBody->setMass(10.0);
-    missileBody->setDrag(0.2);
-    missileBody->setVelocity(Vecf::byAngle(transform()->getRotation(), 20000.0) + body_->getVelocity());
+    auto laserBody = laser->getComponent<Body>();
 
-    auto collider = missile->attachComponent<PolygonCollider>();
-    collider->setPoints({
-                                {-18, -5},
-                                {18,  -5},
-                                {18,  5},
-                                {-18, 5}
-                        });
-
-    auto missileSprite = missile->attachComponent<Sprite>();
-    missileSprite->setRect({-20,-5,20,5});
-    missileSprite->setTexturePtr(Tile2D::resources().textures["missile"]);
-
-    auto missileBehaviour = missile->attachComponent<MissileBehaviour>();
-
-    auto missileLight = missile->attachComponent<PointLight>();
-    missileLight->setRadius(80.0);
-    missileLight->setIntensity(1.0);
+    laserBody->setVelocity(Vecf::byAngle(transform()->getRotation(), 20000.0) + body_->getVelocity());
 }
 
 void PlayerController::lateUpdate() {
@@ -167,22 +146,9 @@ void PlayerController::dropBomp_() {
     }
     lastBombTimestamp_ = SDL_GetTicks();
 
-    auto bomp = Tile2D::createGameObject();
-    bomp->transform().setPosition(transform()->getPosition());
-    bomp->transform().setRotation(transform()->getRotation());
-
-    auto bompBody = bomp->attachComponent<Body>();
-    bompBody->setMass(50);
-    bompBody->setVelocity(body_->getVelocity() / 2 + Vecf(0, 1000));
-
-    auto bompCollider = bomp->attachComponent<PolygonCollider>();
-    bompCollider->setPoints({{-9, -4}, {9, -4}, {9, 4}, {-9, 4}});
-
-    auto bompSprite = bomp->attachComponent<Sprite>();
-    bompSprite->setTexturePtr(Tile2D::resources().textures["bomb"]);
-    bompSprite->setRect({-10, -10, 10, 10});
-
-    auto bombBehaviour = bomp->attachComponent<BombBehaviour>();
+    auto bomb = Prefabs::bomb();
+    bomb->transform() = *transform();
+    bomb->getComponent<Body>()->setVelocity(body_->getVelocity() / 2 + Vecf(0, 1000));
 }
 
 void PlayerController::dropLight_() {
@@ -191,28 +157,7 @@ void PlayerController::dropLight_() {
     }
     lastLightDropTimestamp_ = SDL_GetTicks();
 
-    auto light = Tile2D::createGameObject();
+    auto light = Prefabs::light();
     light->transform().setPosition(transform()->getPosition());
     light->transform().setRotation(0.0f);
-
-    auto lightBody = light->attachComponent<Body>();
-    lightBody->setMass(10.0);
-    lightBody->setVelocity(Vecf(0, 0));
-
-    auto collider = light->attachComponent<PolygonCollider>();
-    collider->setPoints({
-            {-6, -6},
-            {6,  -6},
-            {6,  6},
-            {-6, 6}
-    });
-
-    auto lightSprite = light->attachComponent<Sprite>();
-    lightSprite->setRect({-40, -40, 40, 40});
-    lightSprite->setTexturePtr(Tile2D::resources().textures["light"]);
-
-    auto lightLight = light->attachComponent<PointLight>();
-    lightLight->setRadius(100.0);
-    lightLight->setIntensity(1.0);
-
 }

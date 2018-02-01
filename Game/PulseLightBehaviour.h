@@ -21,6 +21,13 @@
 #include "LimitedAgeBehaviour.h"
 
 class PulseLightBehaviour : public LimitedAgeBehaviour {
+public:
+    float getRadiusDiminishSpeed() const;
+    void setRadiusDiminishSpeed(float radiusDiminishSpeed);
+    float getIntensityDiminishSpeed() const;
+    void setIntensityDiminishSpeed(float intensityDiminishSpeed);
+    float getTimeToStartDiminish() const;
+    void setTimeToStartDiminish(float timeToStartDiminish);
 
 protected:
     void awake() override;
@@ -28,24 +35,14 @@ protected:
 
     void lateUpdate() override;
 
+private:
+    float radiusDiminishSpeed_ = 1.0f;
+    float intensityDiminishSpeed_ = 1.0f;
+
     PointLight* light = nullptr;
     float radiusOnAwake_ = 0.0f;
     float intensityOnAwake_ = 0.0f;
     float timeToStartDiminish_ = 0.0f;
-public:
-    float getTimeToStartDiminish() const;
-
-    void setTimeToStartDiminish(float timeToStartDiminish);
-
-private:
-    float radiusDiminishSpeed_ = 1.0f;
-    float intensityDiminishSpeed_ = 1.0f;
-public:
-    float getRadiusDiminishSpeed() const;
-    void setRadiusDiminishSpeed(float radiusDiminishSpeed);
-    float getIntensityDiminishSpeed() const;
-    void setIntensityDiminishSpeed(float intensityDiminishSpeed);
-
 
 };
 

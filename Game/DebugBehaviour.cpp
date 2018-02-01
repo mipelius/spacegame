@@ -14,18 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-
 #include <SDL2/SDL_events.h>
 #include "DebugBehaviour.h"
-#include "Spawner.h"
 #include "Tile2D.h"
-#include "Sprite.h"
-#include "Body.h"
-#include "WalkingEnemyAI.h"
-#include "Health.h"
-#include "Tile2DMath.h"
-#include "PulseLightBehaviour.h"
-#include "ParticleSystem.h"
+#include "Prefabs.h"
+#include "EnemyAIBase.h"
 
 void DebugBehaviour::awake() {
     body_ = gameObject()->getComponent<Body>();
@@ -37,129 +30,27 @@ void DebugBehaviour::update() {
     while(SDL_PollEvent(&event)) {
         if (event.type == SDL_KEYDOWN) {
             switch (event.key.keysym.sym) {
-                case SDLK_o : {
-                    sizeOfEnemy_ -= 0.5;
-                break;
-                }
-                case SDLK_p : {
-                    sizeOfEnemy_ += 0.5;
-                    break;
-                }
-
                 case SDLK_1 : {
-                        auto enemy = Spawner::spawnEnemy(
-                                transform()->getPosition(),
-                                "walking_alien_green",
-                                {
-                                        {-10 * sizeOfEnemy_, -25 * sizeOfEnemy_},
-                                        {10 * sizeOfEnemy_, -25 * sizeOfEnemy_},
-                                        {10 * sizeOfEnemy_, 15 * sizeOfEnemy_},
-                                        {5 * sizeOfEnemy_, 25 * sizeOfEnemy_},
-                                        {-5 * sizeOfEnemy_, 25 * sizeOfEnemy_},
-                                        {-10 * sizeOfEnemy_, 15 * sizeOfEnemy_}
-                                },
-                                {-25 * sizeOfEnemy_, -25 * sizeOfEnemy_, 25 * sizeOfEnemy_, 25 * sizeOfEnemy_},
-                                2.0f
-                        );
-
-                        enemy->getComponent<PolygonCollider>()->setSweepingStrategyThreshold(FLT_MAX);
-
-                        auto AI = enemy->attachComponent<WalkingEnemyAI>();
-                        AI->setTarget(transform());
-                        AI->setGroundCheckPoints(
-                                {
-                                        {-10, 26.0f * sizeOfEnemy_},
-                                        {-5, 26.0f * sizeOfEnemy_},
-                                        {0, 26.0f * sizeOfEnemy_},
-                                        {5, 26.0f * sizeOfEnemy_},
-                                        {10, 26.0f * sizeOfEnemy_}
-                                }
-                        );
-
-                        auto health = enemy->attachComponent<Health>();
-                        health->setMaxHealth(100);
-                        health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
-                            health->gameObject()->destroy();
-
-                            auto explosion = Tile2D::createGameObject();
-                            explosion->transform() = *(health->transform());
-
-                            auto explosionLight = explosion->attachComponent<PointLight>();
-                            explosionLight->setRadius(300.0f);
-                            explosionLight->setIntensity(1.0f);
-
-                            auto explosionPulseLightBehaviour = explosion->attachComponent<PulseLightBehaviour>();
-                            explosionPulseLightBehaviour->TTL = 2.0;
-                            explosionPulseLightBehaviour->setTimeToStartDiminish(1.0f);
-                            explosionPulseLightBehaviour->setRadiusDiminishSpeed(0.5f);
-                            explosionPulseLightBehaviour->setIntensityDiminishSpeed(1.5f);
-
-                            auto explosionParticles = explosion->attachComponent<ParticleSystem>();
-                            explosionParticles->setPlaysOnce(true);
-                            explosionParticles->setInitFunc([] (Particle* particle){
-                                Vecf pos = {(rand() % 10) * 5.0f - 25.0f, (rand() % 10) * 5.0f - 25.0f};
-                                pos *= 2;
-                                particle->getTransform().setPosition(pos);
-                                particle->getTransform().setRotation(rand() % 360);
-                                float size = 0.25f + (rand() % 255) / 255.0f;
-                                particle->getTransform().setScale({size, size});
-                                particle->setVelocity(pos.normalized() * (rand() % 2 + 3.0f));
-                                particle->setColor({1.0f, 0.0f, 0.0f});
-                                particle->setOpacity((rand() % 200) / 400.0f + 0.5f);
-                            });
-                            explosionParticles->setUpdateFunc([] (Particle* particle){
-                                if (particle->getTimeLived() > 2000) {
-                                    particle->destroy();
-                                } else {
-                                    Vecf pos = particle->getTransform().getPosition();
-                                    particle->getTransform().setRotation(particle->getTransform().getRotation() + 1.0f);
-                                    particle->getTransform().setPosition(pos + particle->getVelocity());
-                                    particle->setOpacity(particle->getOpacity() - 0.01f);
-                                    float newSize = particle->getTransform().getScale().x - 0.007f;
-                                    Mathf::clamp(newSize, 0.0f, 100.0f);
-                                    particle->getTransform().setScale({newSize, newSize});
-                                }
-                            });
-                            explosionParticles->setParticleRect({-32, -32, 32, 32});
-                            explosionParticles->setTexturePtr(Tile2D::resources().textures["explosion_particle"]);
-                            explosionParticles->setMaxParticles(100);
-                            explosionParticles->setSpawnFrequency(300);
-                            explosionParticles->setBlendSourceFactor(GL_SRC_ALPHA);
-                            explosionParticles->setBlendDestinationFactor(GL_ONE);
-
-                            explosion->transform().setScale({0.5, 0.5});
-                        });
-
+                        auto walkingEnemy = Prefabs::walkingEnemy();
+                        walkingEnemy->transform().setPosition(transform()->getPosition());
+                        walkingEnemy->getComponent<EnemyAIBase>()->setTarget(transform());
                         break;
-                    }
-                case SDLK_2 :
-                    Spawner::spawnEnemy(
-                            transform()->getPosition(),
-                            "crab_kindof_colored",
-                            {{-10 * sizeOfEnemy_, -25 * sizeOfEnemy_}, {10 * sizeOfEnemy_, -25 * sizeOfEnemy_}, {10 * sizeOfEnemy_, 25 * sizeOfEnemy_}, {-10 * sizeOfEnemy_, 25 * sizeOfEnemy_}},
-                            {-25 * sizeOfEnemy_, -25 * sizeOfEnemy_, 25 * sizeOfEnemy_, 25 * sizeOfEnemy_},
-                            0.0f
-                    );
+                }
+                case SDLK_2 : {
+                    auto crabKindOf = Prefabs::crabKindOf();
+                    crabKindOf->transform().setPosition(transform()->getPosition());
                     break;
-                case SDLK_3:
-                    Spawner::spawnEnemy(
-                            transform()->getPosition(),
-                            "fourwaycyclops_colored",
-                            {{-30 * sizeOfEnemy_, -24 * sizeOfEnemy_}, {30 * sizeOfEnemy_, -24 * sizeOfEnemy_}, {30 * sizeOfEnemy_, 24 * sizeOfEnemy_}, {-30 * sizeOfEnemy_, 24 * sizeOfEnemy_}},
-                            {-30 * sizeOfEnemy_, -30 * sizeOfEnemy_, 30 * sizeOfEnemy_, 30 * sizeOfEnemy_},
-                            0.0f
-                    );
+                }
+                case SDLK_3: {
+                    auto fourwayCyclops = Prefabs::fourwayCyclops();
+                    fourwayCyclops->transform().setPosition(transform()->getPosition());
                     break;
-                case SDLK_4:
-                    Spawner::spawnEnemy(
-                            transform()->getPosition(),
-                            "twohorn_colored",
-                            {{-10 * sizeOfEnemy_, -25 * sizeOfEnemy_}, {10 * sizeOfEnemy_, -25 * sizeOfEnemy_}, {10 * sizeOfEnemy_, 25 * sizeOfEnemy_}, {-10 * sizeOfEnemy_, 25 * sizeOfEnemy_}},
-                            {-25 * sizeOfEnemy_, -25 * sizeOfEnemy_, 25 * sizeOfEnemy_, 25 * sizeOfEnemy_},
-                            0.0f
-                    );
+                }
+                case SDLK_4: {
+                    auto twoHorn = Prefabs::twoHorn();
+                    twoHorn->transform().setPosition(transform()->getPosition());
                     break;
-
+                }
                 case SDLK_RETURN:
                     Tile2D::isDebugMode = !Tile2D::isDebugMode;
                     if (Tile2D::isDebugMode) {
