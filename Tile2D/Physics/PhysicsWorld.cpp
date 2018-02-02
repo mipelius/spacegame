@@ -127,8 +127,8 @@ void PhysicsWorld::setAirDensity(float airDensity) {
     airDensity_ = airDensity;
 }
 
-void PhysicsWorld::init(ColliderLayerMatrix *colliderLayerMatrix) {
-    colliderLayerMatrix_ = colliderLayerMatrix;
+void PhysicsWorld::init(std::vector<ColliderLayerMatrix::Rule> colliderMatrixRules) {
+    colliderLayerMatrix_ = new ColliderLayerMatrix(colliderMatrixRules);
 }
 
 PhysicsWorld::~PhysicsWorld() {

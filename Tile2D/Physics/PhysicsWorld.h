@@ -46,7 +46,7 @@ public:
     void setAirDensity(float airDensity);
 
 private:
-    void init(ColliderLayerMatrix* colliderLayerMatrix);
+    void init(std::vector<ColliderLayerMatrix::Rule> colliderMatrixRules);
 
     PhysicsWorld();
     ~PhysicsWorld();

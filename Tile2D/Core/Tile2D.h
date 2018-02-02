@@ -50,10 +50,10 @@ public:
     Tile2D& operator=(Tile2D &&)        = delete;
 
     void static load(
-            const std::string&              configFile,
-            const std::string&              resourcesFile,
-            std::map<unsigned, IScene*>     scenes,
-            ColliderLayerMatrix*            colliderLayerMatrix
+            const std::string&                      configFile,
+            const std::string&                      resourcesFile,
+            std::map<unsigned, IScene*>             scenes,
+            std::vector<ColliderLayerMatrix::Rule>  colliderLayerRules
     );
 
     static Window &window();

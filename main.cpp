@@ -33,8 +33,7 @@ int main(int argc, const char *argv[]) {
                     {Scenes::inGame,         new SceneInGame},
                     {Scenes::gameOverScreen, new SceneGameOver}
             },
-
-            new ColliderLayerMatrix({
+            {
                     {ColliderLayers::playerAmmo, ColliderLayers::playerAmmo, false},
                     {ColliderLayers::playerAmmo, ColliderLayers::enemyAmmo, false},
                     {ColliderLayers::playerAmmo, ColliderLayers::player, false},
@@ -48,7 +47,7 @@ int main(int argc, const char *argv[]) {
                     {ColliderLayers::player, ColliderLayers::enemy, true},
 
                     {ColliderLayers::enemy, ColliderLayers::enemy, false}
-            })
+            }
     );
 
     return 0;
