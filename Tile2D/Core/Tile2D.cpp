@@ -60,7 +60,8 @@ Tile2D &Tile2D::instance_() {
 void Tile2D::load(
         const std::string& configFile,
         const std::string& resourcesFile,
-        std::map<unsigned, IScene*> scenes
+        std::map<unsigned, IScene*> scenes,
+        ColliderLayerMatrix* colliderLayerMatrix
 ) {
     // LOAD
 
@@ -77,6 +78,7 @@ void Tile2D::load(
     Tile2D::resources().init(resourcesFile);
     Tile2D::sceneManager().init(scenes);
     Tile2D::lightSystem().init();
+    Tile2D::physicsWorld().init(colliderLayerMatrix);
 
     // START LOOP
 

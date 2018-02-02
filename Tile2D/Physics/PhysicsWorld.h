@@ -23,6 +23,7 @@ class PolygonCollider;
 
 #include <list>
 #include "Vec.h"
+#include "ColliderLayerMatrix.h"
 
 class PhysicsWorld {
     friend class Tile2D;
@@ -45,12 +46,15 @@ public:
     void setAirDensity(float airDensity);
 
 private:
+    void init(ColliderLayerMatrix* colliderLayerMatrix);
+
     PhysicsWorld();
-    ~PhysicsWorld() = default;
+    ~PhysicsWorld();
 
     void step(float timeSeconds);
 
-private:
+    ColliderLayerMatrix* colliderLayerMatrix_ = nullptr;
+
     Vecf gForce_;
     float metersPerPixel_;
     float airDensity_;

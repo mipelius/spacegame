@@ -18,6 +18,7 @@
 #include "PlayerController.h"
 #include "Tile2DMath.h"
 #include "Prefabs.h"
+#include "ColliderLayers.h"
 
 void PlayerController::awake() {
     body_ = gameObject()->getComponent<Body>();
@@ -76,8 +77,10 @@ void PlayerController::shootOnce_(Vecf offset) {
     laser->transform().setRotation(transform()->getRotation());
 
     auto laserBody = laser->getComponent<Body>();
-
     laserBody->setVelocity(Vecf::byAngle(transform()->getRotation(), 20000.0) + body_->getVelocity());
+
+    auto laserCollider = laser->getComponent<PolygonCollider>();
+    laserCollider->setLayer(ColliderLayers::playerAmmo);
 }
 
 void PlayerController::dropBomp_() {
@@ -88,6 +91,9 @@ void PlayerController::dropBomp_() {
     auto bomb = Prefabs::bomb();
     bomb->transform() = *transform();
     bomb->getComponent<Body>()->setVelocity(body_->getVelocity() / 2 + Vecf(0, 1000));
+
+    auto bombCollider = bomb->getComponent<PolygonCollider>();
+    bombCollider->setLayer(ColliderLayers::playerAmmo);
 }
 
 void PlayerController::dropLight_() {

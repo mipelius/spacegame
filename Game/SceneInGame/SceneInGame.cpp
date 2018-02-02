@@ -23,6 +23,7 @@
 #include "Tags.h"
 #include "BackgroundBehaviour.h"
 #include "DebugBehaviour.h"
+#include "ColliderLayers.h"
 
 void createBackground(Rect area, const char* texture, Color color) {
     auto background = Tile2D::createGameObject();
@@ -67,6 +68,7 @@ void SceneInGame::init() {
                                        {-5, 18},
                                        {-20, 18}
                                });
+    polygonCollider->setLayer(ColliderLayers::player);
 
     auto spaceshipSprite = player->attachComponent<Sprite>();
     spaceshipSprite->setRect({-20, -20, 20, 20});

@@ -17,9 +17,11 @@
 #ifndef __Tags_H
 #define __Tags_H
 
-enum Tags {
-    enemy,
-    player
-};
+namespace Tags {
+    enum {
+        enemy,
+        player
+    };
+}
 
 #endif //__Tags_H

@@ -404,3 +404,11 @@ void PolygonCollider::setSweepingStrategyThreshold(float sweepingStrategyThresho
         sweepingStrategyThreshold_ = 0;
     }
 }
+
+unsigned int PolygonCollider::getLayer() const {
+    return layer_;
+}
+
+void PolygonCollider::setLayer(unsigned int layer) {
+    layer_ = layer;
+}

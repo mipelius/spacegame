@@ -31,6 +31,7 @@
 #include "precompile.h"
 #include "Particle.h"
 #include "Pool.h"
+#include "ColliderLayerMatrix.h"
 
 class Tile2D {
     friend class Tile2DObject;
@@ -49,9 +50,10 @@ public:
     Tile2D& operator=(Tile2D &&)        = delete;
 
     void static load(
-            const std::string& configFile,
-            const std::string& resourcesFile,
-            std::map<unsigned, IScene*> scenes
+            const std::string&              configFile,
+            const std::string&              resourcesFile,
+            std::map<unsigned, IScene*>     scenes,
+            ColliderLayerMatrix*            colliderLayerMatrix
     );
 
     static Window &window();

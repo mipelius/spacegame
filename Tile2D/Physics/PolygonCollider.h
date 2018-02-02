@@ -48,6 +48,14 @@ class PolygonCollider : public Tile2DComponent {
 public:
     PolygonCollider();
 
+    void setPoints(std::vector<Vecf> points);
+    std::vector<Vecf> getAxes() const;
+
+    float getSweepingStrategyThreshold() const;
+    void setSweepingStrategyThreshold(float sweepingStrategyThreshold);
+    unsigned int getLayer() const;
+    void setLayer(unsigned int layer);
+
     const Event<PolygonCollider, CollisionEventArgs>        collision;
     const Event<PolygonCollider, TerrainCollisionEventArgs> terrainCollision;
 
@@ -66,9 +74,6 @@ public:
             Vecf&                    contactNormal,
             float&                   penetration
     ) const;
-
-    void setPoints(std::vector<Vecf> points);
-    std::vector<Vecf> getAxes() const;
 
 protected:
     void init() override;
@@ -90,15 +95,11 @@ private:
     );
 
     float sweepingStrategyThreshold_;
-public:
-    float getSweepingStrategyThreshold() const;
-    void setSweepingStrategyThreshold(float sweepingStrategyThreshold);
-
-private:
 
     Rect boundingBox_;
     Body* body_ = nullptr;
     std::vector<Vecf> points_;
+    unsigned int layer_ = 0;
 };
 
 

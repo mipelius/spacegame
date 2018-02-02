@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2017 Miika Pelkonen
+// Copyright (C) 2018 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,15 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SPACEGAME_SCENES_H
-#define SPACEGAME_SCENES_H
 
-namespace Scenes {
+#ifndef SPACEGAME_COLLIDERLAYERS_H
+#define SPACEGAME_COLLIDERLAYERS_H
+
+namespace ColliderLayers {
     enum {
-        titleScreen,
-        inGame,
-        gameOverScreen
+        playerAmmo, enemyAmmo, player, enemy
     };
 }
 
-#endif //SPACEGAME_SCENES_H
+#endif //SPACEGAME_COLLIDERLAYERS_H

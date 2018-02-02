@@ -18,6 +18,7 @@
 #include "Tile2DMath.h"
 #include "Tile2D.h"
 #include "Prefabs.h"
+#include "ColliderLayers.h"
 
 void WalkingEnemyAI::awake() {
     jumpTimer_.setInterval(6000);
@@ -94,7 +95,9 @@ void WalkingEnemyAI::shootTarget_() {
         laser->transform().setRotation(direction.angle());
 
         auto laserBody = laser->getComponent<Body>();
-
         laserBody->setVelocity(direction.normalized() * 20000.0 + body_->getVelocity());
+
+        auto laserCollider = laser->getComponent<PolygonCollider>();
+        laserCollider->setLayer(ColliderLayers::enemyAmmo);
     }
 }

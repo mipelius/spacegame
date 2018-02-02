@@ -38,13 +38,29 @@ void PhysicsWorld::step(float timeSeconds) {
         collider->detectTerrainCollision_(timeSeconds);
 
         for (auto& otherCollider : colliders_) {
-            if (otherCollider == collider) continue;
+            if (otherCollider == collider || !colliderLayerMatrix_->getRule(collider->layer_, otherCollider->layer_)) {
+                continue;
+            }
+
             collider->detectCollisionWith_(*otherCollider);
         }
     }
 }
 
 void PhysicsWorld::debugDraw() {
+    static const int layerColorsCount = 9;
+    static const Color layerColors[layerColorsCount] = {
+            {1.0, 0.0, 0.0},
+            {0.0, 1.0, 0.0},
+            {0.0, 0.0, 1.0},
+            {1.0, 1.0, 0.0},
+            {0.0, 1.0, 1.0},
+            {1.0, 0.0, 1.0},
+            {1.0, 0.5, 0.5},
+            {0.5, 1.0, 0.5},
+            {0.5, 0.5, 1.0},
+    };
+
     prepareRendering();
 
     for (auto& collider : colliders_) {
@@ -54,7 +70,8 @@ void PhysicsWorld::debugDraw() {
 
         // COLLIDER
 
-        glColor3f(0.3f, 1.0f, 0.3f);
+        Color color = layerColors[collider->layer_ % layerColorsCount];
+        glColor3f(color.red, color.green, color.blue);
 
         auto& points = collider->points();
 
@@ -108,4 +125,12 @@ float PhysicsWorld::getAirDensity() const {
 
 void PhysicsWorld::setAirDensity(float airDensity) {
     airDensity_ = airDensity;
+}
+
+void PhysicsWorld::init(ColliderLayerMatrix *colliderLayerMatrix) {
+    colliderLayerMatrix_ = colliderLayerMatrix;
+}
+
+PhysicsWorld::~PhysicsWorld() {
+    delete colliderLayerMatrix_;
 }

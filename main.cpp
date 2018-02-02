@@ -19,7 +19,7 @@
 #include "SceneTitleScreen.h"
 #include "SceneGameOver.h"
 #include "Scenes.h"
-#include "Tile2D.h"
+#include "ColliderLayers.h"
 
 #undef main
 
@@ -27,11 +27,28 @@ int main(int argc, const char *argv[]) {
     Tile2D::load(
             "json/config.json",
             "json/resources.json",
+
             {
-                    {titleScreen,    new SceneTitleScreen},
-                    {inGame,         new SceneInGame},
-                    {gameOverScreen, new SceneGameOver}
-            }
+                    {Scenes::titleScreen,    new SceneTitleScreen},
+                    {Scenes::inGame,         new SceneInGame},
+                    {Scenes::gameOverScreen, new SceneGameOver}
+            },
+
+            new ColliderLayerMatrix({
+                    {ColliderLayers::playerAmmo, ColliderLayers::playerAmmo, false},
+                    {ColliderLayers::playerAmmo, ColliderLayers::enemyAmmo, false},
+                    {ColliderLayers::playerAmmo, ColliderLayers::player, false},
+                    {ColliderLayers::playerAmmo, ColliderLayers::enemy, true},
+
+                    {ColliderLayers::enemyAmmo, ColliderLayers::enemyAmmo, false},
+                    {ColliderLayers::enemyAmmo, ColliderLayers::player, true},
+                    {ColliderLayers::enemyAmmo, ColliderLayers::enemy, false},
+
+                    {ColliderLayers::player, ColliderLayers::player, false},
+                    {ColliderLayers::player, ColliderLayers::enemy, true},
+
+                    {ColliderLayers::enemy, ColliderLayers::enemy, false}
+            })
     );
 
     return 0;

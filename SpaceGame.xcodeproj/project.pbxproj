@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3324902B76F1628977558337 /* ColliderLayerMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249F9ED3896FCF6DF7F351 /* ColliderLayerMatrix.cpp */; };
 		332490A0A8952AD78A7E128B /* AudioClip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249B62F628B8D0067C28B3 /* AudioClip.cpp */; };
 		332490A1BCE3E98185ADA971 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332498D3565DCE36CC8090FB /* Tile.cpp */; };
 		3324910666EE0FAE52CB7480 /* JsonFileManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249F5495EF0C4129ACC3DA /* JsonFileManager.cpp */; };
@@ -110,6 +111,7 @@
 		3324920337120309345A0BFC /* TileMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileMap.h; sourceTree = "<group>"; };
 		332492098F3E53F761C3D8AD /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		3324921C9607A725369EB814 /* WalkingEnemyAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalkingEnemyAI.h; sourceTree = "<group>"; };
+		332492326917EAF64D365619 /* Tags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tags.h; sourceTree = "<group>"; };
 		332492392BB6F169433FF5BB /* AnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationManager.h; sourceTree = "<group>"; };
 		33249239820BCFFAB4A96971 /* Vec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vec.h; sourceTree = "<group>"; };
 		3324924B68EE819794401897 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
@@ -161,15 +163,16 @@
 		33249694C8D28E21A0FE6B5D /* GuiComponentBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuiComponentBase.cpp; sourceTree = "<group>"; };
 		332496A670F76E441C99277C /* spaceship_collision.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = spaceship_collision.wav; sourceTree = "<group>"; };
 		332496B8F6E45364CDA29832 /* DrawableGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawableGroup.h; sourceTree = "<group>"; };
+		332496BFC6628FFB469CC65A /* ColliderLayers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColliderLayers.h; sourceTree = "<group>"; };
 		332496C5CA7FDC6CAF40AE19 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = /Library/Frameworks/SDL2.framework; sourceTree = "<absolute>"; };
 		332496C618E815F2E60F7DAC /* PlayerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerController.cpp; sourceTree = "<group>"; };
 		332496DDDA7C8380DAC4A689 /* DrawableGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawableGroup.cpp; sourceTree = "<group>"; };
 		332496F1155D8343EC3D1FAC /* Music.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Music.cpp; sourceTree = "<group>"; };
 		33249705D680F5503BC6C669 /* AnimatedTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AnimatedTexture.cpp; sourceTree = "<group>"; };
+		3324971C5D5F2A866DBF413D /* ColliderLayerMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColliderLayerMatrix.h; sourceTree = "<group>"; };
 		3324975CC88864B15D767244 /* PolygonCollider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolygonCollider.h; sourceTree = "<group>"; };
 		332497763172808C47649902 /* missile_collision.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = missile_collision.wav; sourceTree = "<group>"; };
 		332497C310F4433C8FCC3AD1 /* AnimationBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AnimationBase.cpp; sourceTree = "<group>"; };
-		332497EF9C09F3AD47DF602F /* Tags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tags.h; sourceTree = "<group>"; };
 		332497F2358DE2CADB9232C5 /* Background.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Background.cpp; sourceTree = "<group>"; };
 		33249816D3C16D2C20411489 /* DrawableBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawableBase.cpp; sourceTree = "<group>"; };
 		33249818CFFD0D792BAC52F3 /* SparkleBehaviour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SparkleBehaviour.cpp; sourceTree = "<group>"; };
@@ -256,6 +259,7 @@
 		33249F5495EF0C4129ACC3DA /* JsonFileManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JsonFileManager.cpp; sourceTree = "<group>"; };
 		33249F86AFD1A32E07ED3128 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
 		33249F9EC7ADC0E16725B939 /* MusicPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicPlayer.h; sourceTree = "<group>"; };
+		33249F9ED3896FCF6DF7F351 /* ColliderLayerMatrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColliderLayerMatrix.cpp; sourceTree = "<group>"; };
 		33249FB4EE4A1F07425C209A /* blue_block.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = blue_block.bmp; sourceTree = "<group>"; };
 		33249FBE89ABF7D73C460778 /* DrawableMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawableMap.h; sourceTree = "<group>"; };
 		33249FE374A90EA08022E128 /* Body.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Body.h; sourceTree = "<group>"; };
@@ -482,7 +486,6 @@
 				3324960D47C046E226323E19 /* Health.cpp */,
 				33249A6785B175B27492C1DF /* BackgroundBehaviour.cpp */,
 				3324932ABB1440B4EEE5A460 /* BackgroundBehaviour.h */,
-				332497EF9C09F3AD47DF602F /* Tags.h */,
 			);
 			path = SceneInGame;
 			sourceTree = "<group>";
@@ -542,6 +545,8 @@
 				332498B6A68ABC996A742FAA /* SceneInGame */,
 				332497833C589E8DD651BD73 /* SceneTitleScreen */,
 				33249BE4018248F60CDB0401 /* SceneGameOver */,
+				332496BFC6628FFB469CC65A /* ColliderLayers.h */,
+				332492326917EAF64D365619 /* Tags.h */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -572,6 +577,8 @@
 				3324975CC88864B15D767244 /* PolygonCollider.h */,
 				33249DDFC4ADB938562F51AC /* PolygonCollider.cpp */,
 				332495FDB6ACEDA2A2136EB2 /* WorldMapModifiedEventArgs.h */,
+				33249F9ED3896FCF6DF7F351 /* ColliderLayerMatrix.cpp */,
+				3324971C5D5F2A866DBF413D /* ColliderLayerMatrix.h */,
 			);
 			path = Physics;
 			sourceTree = "<group>";
@@ -789,6 +796,7 @@
 				33249D4C982557E28E50778E /* SceneGameOver.cpp in Sources */,
 				33249F67A1A1343E07703DC1 /* SceneTitleScreen.cpp in Sources */,
 				33249C14574BED7645260D6A /* Timer.cpp in Sources */,
+				3324902B76F1628977558337 /* ColliderLayerMatrix.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

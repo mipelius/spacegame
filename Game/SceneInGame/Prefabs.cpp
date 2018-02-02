@@ -28,6 +28,7 @@
 #include "Health.h"
 #include "BombBehaviour.h"
 #include "SparkleBehaviour.h"
+#include "ColliderLayers.h"
 
 // ---- ENEMIES ----
 
@@ -108,6 +109,7 @@ GameObject *Prefabs::spawnEnemy_(
 
     auto polygonCollider = enemy->attachComponent<PolygonCollider>();
     polygonCollider->setPoints(colliderPoints);
+    polygonCollider->setLayer(ColliderLayers::enemy);
 
     auto enemySprite = enemy->attachComponent<Sprite>();
     enemySprite->setRect(spriteRect);
@@ -239,15 +241,25 @@ GameObject *Prefabs::laser() {
         pulseLight(collider->transform()->getPosition());
     });
     collider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
+        auto otherBody = args.otherCollider->gameObject()->getComponent<Body>();
+        auto missileBody = collider->gameObject()->getComponent<Body>();
+
         if (args.otherCollider->gameObject()->tag == Tags::enemy) {
-            auto otherBody = args.otherCollider->gameObject()->getComponent<Body>();
-            float scaleX = args.otherCollider->transform()->getScale().x;
-            args.otherCollider->transform()->setScale({-scaleX, 1});
-
-            auto missileBody = collider->gameObject()->getComponent<Body>();
-
             otherBody->setVelocity(otherBody->getVelocity() + missileBody->getVelocity() / 100.0);
             sparkles(collider->transform()->getPosition(), args.contactNormal, {1, 0, 0});
+            missileBody->gameObject()->destroy();
+
+            auto health = args.otherCollider->gameObject()->getComponent<Health>();
+
+            if (health != nullptr) {
+                health->damage(10, missileBody->gameObject());
+            }
+
+            pulseLight(collider->transform()->getPosition());
+        }
+        if (args.otherCollider->gameObject()->tag == Tags::player) {
+            otherBody->setVelocity(otherBody->getVelocity() + missileBody->getVelocity() / 100.0);
+            sparkles(collider->transform()->getPosition(), args.contactNormal, {0, 1, 0});
             missileBody->gameObject()->destroy();
 
             auto health = args.otherCollider->gameObject()->getComponent<Health>();
