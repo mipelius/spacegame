@@ -24,7 +24,6 @@
 		3324931E75494D011142CD0C /* Tile2DBehaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324966D65FFDCB5645DBF44 /* Tile2DBehaviour.cpp */; };
 		33249333C46BF6F971367A6D /* WalkingEnemyAI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324911702F18C41A04B5453 /* WalkingEnemyAI.cpp */; };
 		33249346C1F4A712821DDAFE /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495D0B6082C5C6DE5F976 /* Sprite.cpp */; };
-		3324938562700F76E7A0ABCE /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332496042A6F24961C8F36FD /* Timer.cpp */; };
 		332493AE3060E0615E85299B /* LineSegment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495B0606D5E2689FAC847 /* LineSegment.cpp */; };
 		33249475A2D7EFACEC0E72A8 /* PulseLightBehaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249F45FD465585DDA8684C /* PulseLightBehaviour.cpp */; };
 		332494C982EAC8E7C6820F3E /* EnemyAIBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249F40FBA5A3889135D9AA /* EnemyAIBase.cpp */; };
@@ -54,6 +53,7 @@
 		33249B244B3EBDA333E62176 /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495577779940506FEA4AA /* Particle.cpp */; };
 		33249C0A27139B2C7FE9F105 /* Health.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324960D47C046E226323E19 /* Health.cpp */; };
 		33249C13800CBC7FC4F20186 /* SceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E213B8A050EFBA07501 /* SceneManager.cpp */; };
+		33249C14574BED7645260D6A /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324996E91A74994AC0B60E0 /* Timer.cpp */; };
 		33249CA95EA8FA9A49D0E71C /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332492098F3E53F761C3D8AD /* Window.cpp */; };
 		33249CDD19E8B4D04327D436 /* DrawableMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249AD57808B3A36C86FA9A /* DrawableMap.cpp */; };
 		33249CDD4D81CBDE3157B234 /* AnimatedTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249705D680F5503BC6C669 /* AnimatedTexture.cpp */; };
@@ -144,6 +144,7 @@
 		3324951567969CEF8509B82E /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = /Library/Frameworks/SDL2_image.framework; sourceTree = "<absolute>"; };
 		33249520984162F25850E376 /* green_block.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = green_block.bmp; sourceTree = "<group>"; };
 		332495577779940506FEA4AA /* Particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Particle.cpp; sourceTree = "<group>"; };
+		33249599C8E925A5D9A2E7F5 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		3324959A3A11B10ABB1482E7 /* SpaceGame */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SpaceGame; sourceTree = BUILT_PRODUCTS_DIR; };
 		332495B0606D5E2689FAC847 /* LineSegment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LineSegment.cpp; sourceTree = "<group>"; };
 		332495D0B6082C5C6DE5F976 /* Sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite.cpp; sourceTree = "<group>"; };
@@ -153,7 +154,6 @@
 		332495FA3C17938DD7B522D7 /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
 		332495FD7210DBA55E4D332C /* BombBehaviour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BombBehaviour.cpp; sourceTree = "<group>"; };
 		332495FDB6ACEDA2A2136EB2 /* WorldMapModifiedEventArgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldMapModifiedEventArgs.h; sourceTree = "<group>"; };
-		332496042A6F24961C8F36FD /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timer.cpp; sourceTree = "<group>"; };
 		3324960D47C046E226323E19 /* Health.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Health.cpp; sourceTree = "<group>"; };
 		3324966D65FFDCB5645DBF44 /* Tile2DBehaviour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tile2DBehaviour.cpp; sourceTree = "<group>"; };
 		3324967ABB01952B4F99C989 /* bg2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg2.jpg; sourceTree = "<group>"; };
@@ -184,6 +184,7 @@
 		3324995A928712F2C632280F /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		332499634A704C0C12FE1F09 /* JsonFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonFileManager.h; sourceTree = "<group>"; };
 		33249964C7AF9A946152A7CB /* resources.json */ = {isa = PBXFileReference; lastKnownFileType = file.json; path = resources.json; sourceTree = "<group>"; };
+		3324996E91A74994AC0B60E0 /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timer.cpp; sourceTree = "<group>"; };
 		332499A7A9EE94541287B71A /* Canvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Canvas.h; sourceTree = "<group>"; };
 		332499B1A393A9478446E9D6 /* Body.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Body.cpp; sourceTree = "<group>"; };
 		332499DC1016E1FD7289567D /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
@@ -216,7 +217,6 @@
 		33249C880111D836992F2DF0 /* enemies.json */ = {isa = PBXFileReference; lastKnownFileType = file.json; path = enemies.json; sourceTree = "<group>"; };
 		33249C90DA22FBA1C8E77C12 /* Text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
 		33249CB5077D2BA2B6756AEC /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
-		33249CC256AB5E6C265B7C09 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		33249CCBA9CB786E6BAB2F3F /* precompile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = precompile.h; sourceTree = "<group>"; };
 		33249CD6B1610E09EB664175 /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Color.cpp; sourceTree = "<group>"; };
 		33249CD9E80C30F820951712 /* IAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAnimation.h; sourceTree = "<group>"; };
@@ -356,6 +356,8 @@
 				33249F5495EF0C4129ACC3DA /* JsonFileManager.cpp */,
 				3324946314894F53333F69B2 /* Tile2DMath.h */,
 				3324935A926C286D49012541 /* Pool.h */,
+				3324996E91A74994AC0B60E0 /* Timer.cpp */,
+				33249599C8E925A5D9A2E7F5 /* Timer.h */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -537,8 +539,6 @@
 			children = (
 				33249AC2E88670E81F68F04A /* Data */,
 				33249A32CC499429322658A3 /* Scenes.h */,
-				332496042A6F24961C8F36FD /* Timer.cpp */,
-				33249CC256AB5E6C265B7C09 /* Timer.h */,
 				332498B6A68ABC996A742FAA /* SceneInGame */,
 				332497833C589E8DD651BD73 /* SceneTitleScreen */,
 				33249BE4018248F60CDB0401 /* SceneGameOver */,
@@ -774,7 +774,6 @@
 				332493009AEB85B891E950D9 /* Transform.cpp in Sources */,
 				3324923B0E2B9AD22C143216 /* ParticleSystem.cpp in Sources */,
 				33249B244B3EBDA333E62176 /* Particle.cpp in Sources */,
-				3324938562700F76E7A0ABCE /* Timer.cpp in Sources */,
 				3324925CBE9B788E45A3BACC /* Prefabs.cpp in Sources */,
 				33249475A2D7EFACEC0E72A8 /* PulseLightBehaviour.cpp in Sources */,
 				3324984347F53EB6FA8E138E /* SparkleBehaviour.cpp in Sources */,
@@ -789,6 +788,7 @@
 				33249F209194AA65D85B8C68 /* BackgroundBehaviour.cpp in Sources */,
 				33249D4C982557E28E50778E /* SceneGameOver.cpp in Sources */,
 				33249F67A1A1343E07703DC1 /* SceneTitleScreen.cpp in Sources */,
+				33249C14574BED7645260D6A /* Timer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

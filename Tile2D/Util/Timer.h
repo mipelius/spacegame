@@ -22,6 +22,7 @@
 #include <SDL2/SDL_quit.h>
 
 class Timer {
+
 public:
     Timer();
     Timer(Uint32 interval, Uint32 intervalRandomness);
@@ -35,7 +36,6 @@ public:
     void setInterval(Uint32 interval);
     Uint32 getIntervalRandomness() const;
     void setIntervalRandomness(Uint32 intervalRandomness);
-
     bool timeIntervalPassed();
 
     Uint32 getTime();
