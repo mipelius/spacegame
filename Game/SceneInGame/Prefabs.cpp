@@ -29,6 +29,7 @@
 #include "BombBehaviour.h"
 #include "SparkleBehaviour.h"
 #include "ColliderLayers.h"
+#include "FlyingEnemyAI.h"
 
 // ---- ENEMIES ----
 
@@ -66,30 +67,40 @@ GameObject *Prefabs::walkingEnemy() {
 
 
 GameObject *Prefabs::crabKindOf() {
-    return spawnEnemy_(
+    auto enemy = spawnEnemy_(
             "crab_kindof_colored",
             {{-10, -25}, {10, -25}, {10, 25}, {-10, 25}},
             {-25, -25, 25, 25},
             0.0f
     );
+    auto AI = enemy->attachComponent<FlyingEnemyAI>();
+
+    return enemy;
 }
 
 GameObject *Prefabs::fourwayCyclops() {
-    return spawnEnemy_(
+    auto enemy = spawnEnemy_(
             "fourwaycyclops_colored",
-            {{-30, -24}, {30, -24}, {30, 24}, {-30, 24}},
+            {{-20, -20}, {20, -20}, {20, 20}, {-20, 20}},
             {-30, -30, 30, 30},
             0.0f
     );
+    auto AI = enemy->attachComponent<FlyingEnemyAI>();
+
+    return enemy;
 }
 
 GameObject *Prefabs::twoHorn() {
-    return spawnEnemy_(
+    auto enemy = spawnEnemy_(
             "twohorn_colored",
             {{-10, -25}, {10, -25}, {10, 25}, {-10, 25}},
             {-25, -25, 25, 25},
             0.0f
     );
+
+    auto AI = enemy->attachComponent<FlyingEnemyAI>();
+
+    return enemy;
 }
 
 GameObject *Prefabs::spawnEnemy_(

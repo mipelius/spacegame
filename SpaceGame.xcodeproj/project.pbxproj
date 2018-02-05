@@ -53,6 +53,7 @@
 		33249ADD0D665AFE52DB04B9 /* Resources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249911A1C615D314E72066 /* Resources.cpp */; };
 		33249B02FFB20FA56EF11EA6 /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 332493C992ED93FDBC387419 /* SDL2_mixer.framework */; };
 		33249B244B3EBDA333E62176 /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495577779940506FEA4AA /* Particle.cpp */; };
+		33249B57448D62C1C673BCB1 /* FlyingEnemyAI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332499D66A9D5822C142BC68 /* FlyingEnemyAI.cpp */; };
 		33249C0A27139B2C7FE9F105 /* Health.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324960D47C046E226323E19 /* Health.cpp */; };
 		33249C13800CBC7FC4F20186 /* SceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E213B8A050EFBA07501 /* SceneManager.cpp */; };
 		33249C14574BED7645260D6A /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324996E91A74994AC0B60E0 /* Timer.cpp */; };
@@ -125,6 +126,7 @@
 		332493235BD135F9E3A58215 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		332493261A6EE65E99108774 /* ResourceContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceContainer.h; sourceTree = "<group>"; };
 		3324932ABB1440B4EEE5A460 /* BackgroundBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundBehaviour.h; sourceTree = "<group>"; };
+		33249346F6E545F9E4CEBDB7 /* FlyingEnemyAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlyingEnemyAI.h; sourceTree = "<group>"; };
 		3324935528343A29271F3C87 /* bomb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bomb.png; sourceTree = "<group>"; };
 		3324935A926C286D49012541 /* Pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pool.h; sourceTree = "<group>"; };
 		3324936AD00BA692177ECC84 /* AnimatedTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedTexture.h; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 		3324996E91A74994AC0B60E0 /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timer.cpp; sourceTree = "<group>"; };
 		332499A7A9EE94541287B71A /* Canvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Canvas.h; sourceTree = "<group>"; };
 		332499B1A393A9478446E9D6 /* Body.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Body.cpp; sourceTree = "<group>"; };
+		332499D66A9D5822C142BC68 /* FlyingEnemyAI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FlyingEnemyAI.cpp; sourceTree = "<group>"; };
 		332499DC1016E1FD7289567D /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		33249A32CC499429322658A3 /* Scenes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scenes.h; sourceTree = "<group>"; };
 		33249A358C46D3CC81B440FD /* LightSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LightSystem.cpp; sourceTree = "<group>"; };
@@ -498,6 +501,8 @@
 				3324960D47C046E226323E19 /* Health.cpp */,
 				33249A6785B175B27492C1DF /* BackgroundBehaviour.cpp */,
 				3324932ABB1440B4EEE5A460 /* BackgroundBehaviour.h */,
+				332499D66A9D5822C142BC68 /* FlyingEnemyAI.cpp */,
+				33249346F6E545F9E4CEBDB7 /* FlyingEnemyAI.h */,
 			);
 			path = SceneInGame;
 			sourceTree = "<group>";
@@ -811,6 +816,7 @@
 				33249C14574BED7645260D6A /* Timer.cpp in Sources */,
 				3324902B76F1628977558337 /* ColliderLayerMatrix.cpp in Sources */,
 				3324916C25D636A06FC366D6 /* PathFinder.cpp in Sources */,
+				33249B57448D62C1C673BCB1 /* FlyingEnemyAI.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

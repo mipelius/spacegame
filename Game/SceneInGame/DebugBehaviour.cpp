@@ -31,24 +31,27 @@ void DebugBehaviour::update() {
         if (event.type == SDL_KEYDOWN) {
             switch (event.key.keysym.sym) {
                 case SDLK_1 : {
-                        auto walkingEnemy = Prefabs::walkingEnemy();
-                        walkingEnemy->transform().setPosition(transform()->getPosition());
-                        walkingEnemy->getComponent<EnemyAIBase>()->setTarget(transform());
-                        break;
+                    auto walkingEnemy = Prefabs::walkingEnemy();
+                    walkingEnemy->transform().setPosition(transform()->getPosition());
+                    walkingEnemy->getComponent<EnemyAIBase>()->setTarget(transform());
+                    break;
                 }
                 case SDLK_2 : {
                     auto crabKindOf = Prefabs::crabKindOf();
                     crabKindOf->transform().setPosition(transform()->getPosition());
+                    crabKindOf->getComponent<EnemyAIBase>()->setTarget(transform());
                     break;
                 }
                 case SDLK_3: {
                     auto fourwayCyclops = Prefabs::fourwayCyclops();
                     fourwayCyclops->transform().setPosition(transform()->getPosition());
+                    fourwayCyclops->getComponent<EnemyAIBase>()->setTarget(transform());
                     break;
                 }
                 case SDLK_4: {
                     auto twoHorn = Prefabs::twoHorn();
                     twoHorn->transform().setPosition(transform()->getPosition());
+                    twoHorn->getComponent<EnemyAIBase>()->setTarget(transform());
                     break;
                 }
                 case SDLK_RETURN:
