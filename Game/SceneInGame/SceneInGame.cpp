@@ -89,11 +89,20 @@ void SceneInGame::init() {
     Tile2D::canvas().setCamera(camera);
 
     // PathFinder test
-    auto path = Tile2D::pathFinder().getPath({200, 200}, {992.469, 3163.91});
+    auto path = Tile2D::pathFinder().getPath({200, 200}, {992.469, 3163.91},
+            {
+                    polygonCollider->boundingBox().x1 - 16.0f,
+                    polygonCollider->boundingBox().y1 - 16.0f,
+                    polygonCollider->boundingBox().x2 + 16.0f,
+                    polygonCollider->boundingBox().y2 + 16.0f,
+            }
+    );
+
     int i = 0;
     for (auto pos : path) {
         if (i++ % 10 == 0) {
-            auto obj = Prefabs::crabKindOf();
+            auto obj = Prefabs::light();
+            obj->getComponent<Body>()->setGravityFactor(0.0f);
             obj->transform().setPosition(pos);
             obj->transform().setScale({0.5f, 0.5f});
         }

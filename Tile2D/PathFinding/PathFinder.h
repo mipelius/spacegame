@@ -23,11 +23,16 @@
 #include <list>
 #include "Vec.h"
 #include "Pool.h"
+#include "Rect.h"
 
 class PathFinder {
     friend class Tile2D;
 public:
-    std::list<Vecf> getPath(const Vecf &start, const Vecf &goal);
+    std::list<Vecf> getPath(
+            const Vecf&     start,
+            const Vecf&     goal,
+            const Rect&     boundingBox = {-0.5f, -0.5f, 0.5f, 0.5f}
+    );
 
 private:
     PathFinder() = default;
@@ -43,7 +48,11 @@ private:
     Pool<Node> nodePool_ = Pool<Node>(1000000);  // ~= 24 MB
 
     float heuristicCost_(Veci start, Veci goal);
-    bool canMove_(Veci pos);
+    bool canMove_(
+            const Veci& pos,
+            const Veci& boundingBoxTopLeftCorner,
+            const Veci& boundingBoxBottomRightCorner
+    );
 
     struct CmpNode {
     public:
