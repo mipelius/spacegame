@@ -14,6 +14,7 @@
 		332491264F4D73EC132D3CFB /* GuiComponentBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249694C8D28E21A0FE6B5D /* GuiComponentBase.cpp */; };
 		3324914C1EC58027D3913C1C /* TileSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324909AF1B82F89E3F66E8A /* TileSet.cpp */; };
 		332491571500F80D89593BD2 /* SamplePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249DE20D747CFDB42C9CB6 /* SamplePlayer.cpp */; };
+		3324916C25D636A06FC366D6 /* PathFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324929B960D9BB72BDA0139 /* PathFinder.cpp */; };
 		332491DDE1DC6A8D9A66323D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249D8AE33B0E8BA81CD158 /* main.cpp */; };
 		33249239D6EDDBEFBBFB7339 /* Music.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332496F1155D8343EC3D1FAC /* Music.cpp */; };
 		3324923B0E2B9AD22C143216 /* ParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249CF67AE35994A5085EB4 /* ParticleSystem.cpp */; };
@@ -116,6 +117,7 @@
 		33249239820BCFFAB4A96971 /* Vec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vec.h; sourceTree = "<group>"; };
 		3324924B68EE819794401897 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
 		33249259B7A5AA394AB22993 /* PhysicsWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsWorld.h; sourceTree = "<group>"; };
+		3324929B960D9BB72BDA0139 /* PathFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathFinder.cpp; sourceTree = "<group>"; };
 		332492BA4125C55CD1319519 /* Rect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Rect.cpp; sourceTree = "<group>"; };
 		332492C95C75902041CE284D /* anim_explosion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = anim_explosion.png; sourceTree = "<group>"; };
 		332492D1CD46398D8D379D2D /* smallfont.json */ = {isa = PBXFileReference; lastKnownFileType = file.json; path = smallfont.json; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 		3324942EFC64A6DD5FFA7D21 /* Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sprite.h; sourceTree = "<group>"; };
 		3324945E48EF0A24CDA51CE9 /* SceneInGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneInGame.cpp; sourceTree = "<group>"; };
 		3324946314894F53333F69B2 /* Tile2DMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile2DMath.h; sourceTree = "<group>"; };
+		332494775A99AF71D190F837 /* PathFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathFinder.h; sourceTree = "<group>"; };
 		3324947EA7F1F13D714D12DB /* Background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Background.h; sourceTree = "<group>"; };
 		3324948FCB9E173AF7B58984 /* EnemyAIBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyAIBase.h; sourceTree = "<group>"; };
 		33249491FFC9C80ADEB14C01 /* SparkleBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SparkleBehaviour.h; sourceTree = "<group>"; };
@@ -431,6 +434,15 @@
 			path = json;
 			sourceTree = "<group>";
 		};
+		33249752CD7AFB7D3E59791F /* PathFinding */ = {
+			isa = PBXGroup;
+			children = (
+				3324929B960D9BB72BDA0139 /* PathFinder.cpp */,
+				332494775A99AF71D190F837 /* PathFinder.h */,
+			);
+			path = PathFinding;
+			sourceTree = "<group>";
+		};
 		332497833C589E8DD651BD73 /* SceneTitleScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -616,6 +628,7 @@
 				332499700FFA7FB6581115F1 /* Physics */,
 				33249128AD05ECFB2C477570 /* Animation */,
 				33249D6BE063EB28C1CBF650 /* LightSystem */,
+				33249752CD7AFB7D3E59791F /* PathFinding */,
 			);
 			path = Tile2D;
 			sourceTree = "<group>";
@@ -797,6 +810,7 @@
 				33249F67A1A1343E07703DC1 /* SceneTitleScreen.cpp in Sources */,
 				33249C14574BED7645260D6A /* Timer.cpp in Sources */,
 				3324902B76F1628977558337 /* ColliderLayerMatrix.cpp in Sources */,
+				3324916C25D636A06FC366D6 /* PathFinder.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

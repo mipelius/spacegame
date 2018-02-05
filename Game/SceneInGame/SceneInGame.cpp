@@ -24,6 +24,8 @@
 #include "BackgroundBehaviour.h"
 #include "DebugBehaviour.h"
 #include "ColliderLayers.h"
+#include "PathFinder.h"
+#include "Prefabs.h"
 
 void createBackground(Rect area, const char* texture, Color color) {
     auto background = Tile2D::createGameObject();
@@ -85,6 +87,17 @@ void SceneInGame::init() {
     camera = new Camera;
     camera->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
     Tile2D::canvas().setCamera(camera);
+
+    // PathFinder test
+    auto path = Tile2D::pathFinder().getPath({200, 200}, {992.469, 3163.91});
+    int i = 0;
+    for (auto pos : path) {
+        if (i++ % 10 == 0) {
+            auto obj = Prefabs::crabKindOf();
+            obj->transform().setPosition(pos);
+            obj->transform().setScale({0.5f, 0.5f});
+        }
+    }
 }
 
 void SceneInGame::destroy() {

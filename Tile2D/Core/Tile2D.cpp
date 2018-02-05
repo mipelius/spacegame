@@ -18,6 +18,7 @@
 #include <vector>
 #include "Canvas.h"
 #include "Tile2D.h"
+#include "PathFinder.h"
 
 bool Tile2D::isLoaded_ = false;
 bool Tile2D::isDebugMode = false;
@@ -33,17 +34,20 @@ Tile2D::Tile2D() :
     canvas_ = new Canvas(); window_->addComponent(canvas_);
     tileMap_ = new TileMap();
     lightSystem_ = new LightSystem();
+    pathFinder_ = new PathFinder();
 }
 
 Tile2D::~Tile2D() {
     cleanUp_();
 
+    delete pathFinder_;
+    delete lightSystem_;
+    delete tileMap_;
     delete canvas_;
     delete sceneManager_;
     delete physicsWorld_;
     delete resources_;
     delete window_;
-    delete lightSystem_;
 
     SDL_Quit();
 }
@@ -172,6 +176,10 @@ LightSystem &Tile2D::lightSystem() {
 
 TileMap &Tile2D::tileMap() {
     return *instance_().tileMap_;
+}
+
+PathFinder &Tile2D::pathFinder() {
+    return *instance_().pathFinder_;
 }
 
 GameObject *Tile2D::createGameObject() {

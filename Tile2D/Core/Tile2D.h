@@ -32,6 +32,7 @@
 #include "Particle.h"
 #include "Pool.h"
 #include "ColliderLayerMatrix.h"
+#include "PathFinder.h"
 
 class Tile2D {
     friend class Tile2DObject;
@@ -63,6 +64,7 @@ public:
     static Canvas &canvas();
     static LightSystem &lightSystem();
     static TileMap &tileMap();
+    static PathFinder &pathFinder();
 
     static GameObject* createGameObject();
 
@@ -74,6 +76,7 @@ private:
     Canvas* canvas_;
     LightSystem* lightSystem_;
     TileMap* tileMap_;
+    PathFinder* pathFinder_;
 
     void mainLoop_();
     void cleanUp_();

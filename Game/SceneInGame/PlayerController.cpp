@@ -36,7 +36,7 @@ void PlayerController::update() {
     float angularVelocity = 0;
 
     if (state[SDL_SCANCODE_UP]) {
-        Vecd force = Vecd::byAngle(transform()->getRotation(), moveForce);
+        Vecf force = Vecf::byAngle(transform()->getRotation(), moveForce);
         body_->applyForce(force);
     }
     if (state[SDL_SCANCODE_LEFT]) {

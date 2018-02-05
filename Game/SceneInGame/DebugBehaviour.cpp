@@ -59,6 +59,9 @@ void DebugBehaviour::update() {
                         sprite_->setOpacity(1.0);
                     }
                     break;
+                case SDLK_p:
+                    std::cout << transform()->getPosition().x << "," << transform()->getPosition().y << "\n";
+                    break;
                 case SDLK_q:
                     transform()->setPosition({500.0, 250.0});
                     break;
