@@ -33,6 +33,7 @@ void WalkingEnemyAI::awake() {
 }
 
 void WalkingEnemyAI::update() {
+    EnemyAIBase::update();
     if (target_ != nullptr) {
         if (reactionTimer_.resetIfTimeIntervalPassed()) {
             updateDirection_();

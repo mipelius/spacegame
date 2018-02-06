@@ -21,12 +21,14 @@
 #include "Tile2DBehaviour.h"
 #include "Body.h"
 #include "Timer.h"
+#include "SpawnerBehaviour.h"
 
 class EnemyAIBase : public Tile2DBehaviour {
 
 public:
     void setTarget(Transform *target);
     Transform *getTarget() const;
+    void setSpawnerBehaviour(SpawnerBehaviour *spawnerBehaviour);
 
 protected:
     Body* body_;
@@ -34,7 +36,14 @@ protected:
 
     void shootTarget_(bool useTimer = true);
     Timer shootingTimer_;
+
     void awake() override;
+
+    SpawnerBehaviour* spawnerBehaviour_ = nullptr;
+
+    void onDestroy() override;
+
+    void update() override;
 };
 
 #endif //SPACEGAME_ENEMYAIBASE_H

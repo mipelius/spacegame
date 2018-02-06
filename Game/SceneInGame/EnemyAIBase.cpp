@@ -48,3 +48,28 @@ void EnemyAIBase::shootTarget_(bool useTimer) {
     }
 }
 
+void EnemyAIBase::setSpawnerBehaviour(SpawnerBehaviour *spawnerBehaviour) {
+    assert(spawnerBehaviour != nullptr);
+    spawnerBehaviour_ = spawnerBehaviour;
+}
+
+
+
+void EnemyAIBase::update() {
+    float distanceSqr = (target_->getPosition() - transform()->getPosition()).lengthSqr();
+
+    static const float maxDistanceSqr = 1500 * 1500;
+
+    if (distanceSqr > maxDistanceSqr) {
+        gameObject()->destroy();
+    }
+}
+
+void EnemyAIBase::onDestroy() {
+    Tile2DBehaviour::onDestroy();
+    if (spawnerBehaviour_ != nullptr) {
+        spawnerBehaviour_->remove(gameObject());
+    }
+}
+
+

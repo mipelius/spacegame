@@ -35,10 +35,14 @@ void SpawnerBehaviour::update() {
 }
 
 void SpawnerBehaviour::lateUpdate() {
+    if (spawnedGameObjects_.size() >= maxSpawnedObjects_) {
+        return;
+    }
     if (spawningTimer_.resetIfTimeIntervalPassed()) {
         Vecf targetVelocityDirection = target_->getComponent<Body>()->getVelocity().normalized();
 
         auto enemy = Prefabs::fourwayCyclops();
+
         auto boundingBox = enemy->getComponent<PolygonCollider>()->boundingBox();
 
         Rect rect       = {0.0f, 0.0f, 0.0f, 0.0f};
@@ -73,7 +77,11 @@ void SpawnerBehaviour::lateUpdate() {
 
         enemy->transform().setPosition(position);
 
-        enemy->getComponent<EnemyAIBase>()->setTarget(&target_->transform());
+        auto enemyAI = enemy->getComponent<EnemyAIBase>();
+        enemyAI->setTarget(&target_->transform());
+        enemyAI->setSpawnerBehaviour(this);
+
+        spawnedGameObjects_.push_back(enemy);
     }
 }
 
@@ -99,4 +107,8 @@ const Rect &SpawnerBehaviour::getInnerRect() const {
 
 void SpawnerBehaviour::setInnerRect(const Rect &innerRect) {
     innerRect_ = innerRect;
+}
+
+void SpawnerBehaviour::remove(GameObject *gameObject) {
+    spawnedGameObjects_.remove(gameObject);
 }

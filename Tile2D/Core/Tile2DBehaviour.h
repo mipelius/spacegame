@@ -24,7 +24,7 @@ class Tile2DBehaviour : public Tile2DComponent {
 
 protected:
     void init() final;
-    void onDestroy() final;
+    void onDestroy();
 
     virtual void awake() = 0;
     virtual void update() = 0;

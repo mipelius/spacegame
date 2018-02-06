@@ -35,6 +35,7 @@ void FlyingEnemyAI::awake() {
 }
 
 void FlyingEnemyAI::update() {
+    EnemyAIBase::update();
     float distanceToTarget = (target_->getPosition() - transform()->getPosition()).length();
 
     if (pathUpdateTimer_.timeIntervalPassed() && distanceToTarget < maxPathFindingDistance_) {

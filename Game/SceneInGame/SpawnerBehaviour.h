@@ -32,6 +32,8 @@ public:
     const Rect &getInnerRect() const;
     void setInnerRect(const Rect &innerRect);
 
+    void remove(GameObject *gameObject);
+
 protected:
     void awake() override;
     void update() override;
@@ -39,6 +41,10 @@ protected:
 
 private:
     Timer spawningTimer_;
+
+    const unsigned int maxSpawnedObjects_ = 5;
+
+    std::list<GameObject*> spawnedGameObjects_;
 
     GameObject* target_;
     Rect outerRect_;
