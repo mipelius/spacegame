@@ -73,12 +73,13 @@ void SceneInGame::init() {
     polygonCollider->setLayer(ColliderLayers::player);
 
     auto spaceshipSprite = player->attachComponent<Sprite>();
-    spaceshipSprite->setRect({-20, -20, 20, 20});
-    spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship"]);
 
-    // uncomment and use this later!
-//    spaceshipSprite->setRect({-30, -30, 30, 30});
-//    spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship_small"]);
+    spaceshipSprite->setRect({-30, -30, 30, 30});
+    spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship_small"]);
+
+    // uncomment to use old spaceship sprite and use this later!
+//    spaceshipSprite->setRect({-20, -20, 20, 20});
+//    spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship"]);
 
     auto light = player->attachComponent<PointLight>();
     light->setIntensity(1.0);

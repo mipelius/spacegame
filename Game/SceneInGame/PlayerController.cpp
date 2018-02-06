@@ -48,10 +48,6 @@ void PlayerController::update() {
 
     body_->setAngularVelocity(angularVelocity);
 
-    if (state[SDL_SCANCODE_SPACE]) {
-        shoot_();
-    }
-
     if (state[SDL_SCANCODE_LSHIFT]) {
         dropBomp_();
     }
@@ -66,9 +62,8 @@ void PlayerController::shoot_() {
         return;
     }
 
-    shootOnce_({0.0f, 0.0f});
-    shootOnce_(Vecf(-10, -15).rotated(transform()->getRotation()));
-    shootOnce_(Vecf(-10, 15).rotated(transform()->getRotation()));
+    shootOnce_(Vecf(-10, -13).rotated(transform()->getRotation()));
+    shootOnce_(Vecf(-10, 13).rotated(transform()->getRotation()));
 }
 
 void PlayerController::shootOnce_(Vecf offset) {
@@ -108,6 +103,12 @@ void PlayerController::dropLight_() {
 
 
 void PlayerController::lateUpdate() {
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+    if (state[SDL_SCANCODE_SPACE]) {
+        shoot_();
+    }
+
     // prevent player from going outside the world
     Vecf pos = transform()->getPosition();
     Vecf vel = body_->getVelocity();
