@@ -65,8 +65,8 @@ std::list<Vecf> PathFinder::getPath(
     Veci start          = {(int)(startPoint.x   / w), (int)(startPoint.y    / h)};
     Veci goal           = {(int)(goalPoint.x    / w), (int)(goalPoint.y     / h)};
 
-    Veci boundingBoxTopLeftCorner       = {(int)(boundingBox.x1 / w), (int)(boundingBox.y1 / h)};
-    Veci boundingBoxBottomRightCorner   = {(int)(boundingBox.x2 / w), (int)(boundingBox.y2 / h)};
+    Veci boundingBoxTopLeftCorner       = {(int)floor(boundingBox.x1 / w), (int)floor(boundingBox.y1 / h)};
+    Veci boundingBoxBottomRightCorner   = {(int)ceil(boundingBox.x2 / w),  (int)ceil(boundingBox.y2 / h)};
 
     if (
             !canMove_(start, boundingBoxTopLeftCorner, boundingBoxBottomRightCorner) ||
