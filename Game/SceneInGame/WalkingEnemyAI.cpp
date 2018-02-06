@@ -19,6 +19,7 @@
 #include "Tile2D.h"
 
 void WalkingEnemyAI::awake() {
+    EnemyAIBase::awake();
     jumpTimer_.setInterval(6000);
     jumpTimer_.setIntervalRandomness(1000);
 
@@ -39,9 +40,8 @@ void WalkingEnemyAI::update() {
         if (isGrounded_()) {
             walkTowardsTarget_();
         }
-        if (shootingTimer_.resetIfTimeIntervalPassed()) {
-            shootTarget_();
-        }
+
+        shootTarget_();
     }
 }
 

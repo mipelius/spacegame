@@ -20,6 +20,7 @@
 
 #include "Tile2DBehaviour.h"
 #include "Body.h"
+#include "Timer.h"
 
 class EnemyAIBase : public Tile2DBehaviour {
 
@@ -31,7 +32,8 @@ protected:
     Body* body_;
     Transform* target_ = nullptr;
 
-    void shootTarget_();
+    void shootTarget_(bool useTimer = true);
+    Timer shootingTimer_;
     void awake() override;
 };
 

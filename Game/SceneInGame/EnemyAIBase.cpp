@@ -32,17 +32,19 @@ void EnemyAIBase::setTarget(Transform *target) {
     target_ = target;
 }
 
-void EnemyAIBase::shootTarget_() {
-    Vecf direction = target_->getPosition() - transform()->getPosition();
-    auto laser = Prefabs::laser();
+void EnemyAIBase::shootTarget_(bool useTimer) {
+    if (shootingTimer_.resetIfTimeIntervalPassed() || !useTimer) {
+        Vecf direction = target_->getPosition() - transform()->getPosition();
+        auto laser = Prefabs::laser();
 
-    laser->transform().setPosition(transform()->getPosition() + direction.normalized());
-    laser->transform().setRotation(direction.angle());
+        laser->transform().setPosition(transform()->getPosition() + direction.normalized());
+        laser->transform().setRotation(direction.angle());
 
-    auto laserBody = laser->getComponent<Body>();
-    laserBody->setVelocity(direction.normalized() * 20000.0 + body_->getVelocity());
+        auto laserBody = laser->getComponent<Body>();
+        laserBody->setVelocity(direction.normalized() * 20000.0 + body_->getVelocity());
 
-    auto laserCollider = laser->getComponent<PolygonCollider>();
-    laserCollider->setLayer(ColliderLayers::enemyAmmo);
+        auto laserCollider = laser->getComponent<PolygonCollider>();
+        laserCollider->setLayer(ColliderLayers::enemyAmmo);
+    }
 }
 

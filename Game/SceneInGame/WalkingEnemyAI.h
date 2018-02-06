@@ -38,7 +38,6 @@ private:
 
     Timer jumpTimer_;
     Timer reactionTimer_;
-    Timer shootingTimer_;
 
     float xDirection_;
 

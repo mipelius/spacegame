@@ -19,9 +19,14 @@
 #include "Tile2D.h"
 
 void FlyingEnemyAI::awake() {
+    EnemyAIBase::awake();
+
     pathUpdateTimer_.setInterval(1000);
     pathUpdateTimer_.setIntervalRandomness(0);
     pathUpdateTimer_.reset();
+
+    shootingTimer_.setInterval(500);
+    shootingTimer_.setIntervalRandomness(200);
 
     nextPoint_ = transform()->getPosition();
     lastPoint_ = nextPoint_;
@@ -52,6 +57,8 @@ void FlyingEnemyAI::update() {
     Vecf movement = (nextPoint_ - lastPoint_) / 2;
 
     transform()->setPosition(currentPosition + movement);
+
+    shootTarget_();
 }
 
 void FlyingEnemyAI::lateUpdate() {
