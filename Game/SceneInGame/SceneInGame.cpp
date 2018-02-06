@@ -76,6 +76,10 @@ void SceneInGame::init() {
     spaceshipSprite->setRect({-20, -20, 20, 20});
     spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship"]);
 
+    // uncomment and use this later!
+//    spaceshipSprite->setRect({-30, -30, 30, 30});
+//    spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship_small"]);
+
     auto light = player->attachComponent<PointLight>();
     light->setIntensity(1.0);
     light->setRadius(500.0);

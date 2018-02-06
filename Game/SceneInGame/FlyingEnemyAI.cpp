@@ -25,22 +25,20 @@ void FlyingEnemyAI::awake() {
 
     nextPoint_ = transform()->getPosition();
     lastPoint_ = nextPoint_;
+
+    collider_ = gameObject()->getComponent<PolygonCollider>();
 }
 
 void FlyingEnemyAI::update() {
+    float distanceToTarget = (target_->getPosition() - transform()->getPosition()).length();
 
-    if (pathUpdateTimer_.resetIfTimeIntervalPassed()) {
-        Rect boundingBox = gameObject()->getComponent<PolygonCollider>()->boundingBox();
+    if (pathUpdateTimer_.timeIntervalPassed() && distanceToTarget < maxPathFindingDistance_) {
+        pathUpdateTimer_.reset();
 
         pathToTarget_ = Tile2D::pathFinder().getPath(
                 transform()->getPosition(),
                 target_->getPosition(),
-                {
-                        boundingBox.x1 + 8.0f,
-                        boundingBox.y1 + 8.0f,
-                        boundingBox.x2 - 8.0f,
-                        boundingBox.y2 - 8.0f
-                }
+                collider_->boundingBox()
         );
         updateNextPoint_();
     }
