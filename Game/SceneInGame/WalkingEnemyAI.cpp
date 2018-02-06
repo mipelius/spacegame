@@ -17,8 +17,6 @@
 #include "WalkingEnemyAI.h"
 #include "Tile2DMath.h"
 #include "Tile2D.h"
-#include "Prefabs.h"
-#include "ColliderLayers.h"
 
 void WalkingEnemyAI::awake() {
     jumpTimer_.setInterval(6000);
@@ -27,16 +25,23 @@ void WalkingEnemyAI::awake() {
     reactionTimer_.setInterval(500);
     reactionTimer_.setIntervalRandomness(200);
 
-    shootTimer_.setInterval(1000);
-    shootTimer_.setIntervalRandomness(200);
+    shootingTimer_.setInterval(1000);
+    shootingTimer_.setIntervalRandomness(200);
 
     body_ = gameObject()->getComponent<Body>();
 }
 
 void WalkingEnemyAI::update() {
     if (target_ != nullptr) {
-        walkTowardsTarget_();
-        shootTarget_();
+        if (reactionTimer_.resetIfTimeIntervalPassed()) {
+            updateDirection_();
+        }
+        if (isGrounded_()) {
+            walkTowardsTarget_();
+        }
+        if (shootingTimer_.resetIfTimeIntervalPassed()) {
+            shootTarget_();
+        }
     }
 }
 
@@ -56,48 +61,30 @@ void WalkingEnemyAI::setGroundCheckSensors(const std::vector<Vecf> &groundSensor
     groundSensors_ = groundSensors;
 }
 
-void WalkingEnemyAI::walkTowardsTarget_() {
-    if (reactionTimer_.resetIfTimeIntervalPassed()) {
-        xDirection_ = (target_->getPosition().x - transform()->getPosition().x);
-        xDirection_ = xDirection_ / abs(xDirection_);
+void WalkingEnemyAI::updateDirection_() {
+    xDirection_ = (target_->getPosition().x - transform()->getPosition().x);
+    xDirection_ = xDirection_ / abs(xDirection_);
 
-        Vecf scale = transform()->getScale();
+    Vecf scale = transform()->getScale();
 
-        if (xDirection_ > 0) {
-            scale.x = -abs(scale.x);
-        } else {
-            scale.x = abs(scale.x);
-        }
-
-        transform()->setScale(scale);
+    if (xDirection_ > 0) {
+        scale.x = -abs(scale.x);
+    } else {
+        scale.x = abs(scale.x);
     }
 
-    if (isGrounded_()) {
-        Vecf vel = body_->getVelocity();
-
-        vel.x = xDirection_ * 1000;
-
-        if (jumpTimer_.resetIfTimeIntervalPassed()) {
-            vel.y = -1000;
-            transform()->setPosition(transform()->getPosition() + Vecf{0.0f, -1.0f});
-        }
-
-        body_->setVelocity(vel);
-    }
+    transform()->setScale(scale);
 }
 
-void WalkingEnemyAI::shootTarget_() {
-    if (shootTimer_.resetIfTimeIntervalPassed()) {
-        Vecf direction = target_->getPosition() - transform()->getPosition();
-        auto laser = Prefabs::laser();
+void WalkingEnemyAI::walkTowardsTarget_() {
+    Vecf vel = body_->getVelocity();
 
-        laser->transform().setPosition(transform()->getPosition() + direction.normalized() * 15.0f);
-        laser->transform().setRotation(direction.angle());
+    vel.x = xDirection_ * 1000;
 
-        auto laserBody = laser->getComponent<Body>();
-        laserBody->setVelocity(direction.normalized() * 20000.0 + body_->getVelocity());
-
-        auto laserCollider = laser->getComponent<PolygonCollider>();
-        laserCollider->setLayer(ColliderLayers::enemyAmmo);
+    if (jumpTimer_.resetIfTimeIntervalPassed()) {
+        vel.y = -1000;
+        transform()->setPosition(transform()->getPosition() + Vecf{0.0f, -1.0f});
     }
+
+    body_->setVelocity(vel);
 }

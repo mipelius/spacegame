@@ -15,7 +15,14 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 
+#include "WalkingEnemyAI.h"
 #include "EnemyAIBase.h"
+#include "Prefabs.h"
+#include "ColliderLayers.h"
+
+void EnemyAIBase::awake() {
+    body_ = gameObject()->getComponent<Body>();
+}
 
 Transform *EnemyAIBase::getTarget() const {
     return target_;
@@ -24,3 +31,18 @@ Transform *EnemyAIBase::getTarget() const {
 void EnemyAIBase::setTarget(Transform *target) {
     target_ = target;
 }
+
+void EnemyAIBase::shootTarget_() {
+    Vecf direction = target_->getPosition() - transform()->getPosition();
+    auto laser = Prefabs::laser();
+
+    laser->transform().setPosition(transform()->getPosition() + direction.normalized());
+    laser->transform().setRotation(direction.angle());
+
+    auto laserBody = laser->getComponent<Body>();
+    laserBody->setVelocity(direction.normalized() * 20000.0 + body_->getVelocity());
+
+    auto laserCollider = laser->getComponent<PolygonCollider>();
+    laserCollider->setLayer(ColliderLayers::enemyAmmo);
+}
+

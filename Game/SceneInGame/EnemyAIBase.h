@@ -19,14 +19,20 @@
 #define SPACEGAME_ENEMYAIBASE_H
 
 #include "Tile2DBehaviour.h"
+#include "Body.h"
 
 class EnemyAIBase : public Tile2DBehaviour {
+
 public:
     void setTarget(Transform *target);
     Transform *getTarget() const;
 
 protected:
+    Body* body_;
     Transform* target_ = nullptr;
+
+    void shootTarget_();
+    void awake() override;
 };
 
 #endif //SPACEGAME_ENEMYAIBASE_H

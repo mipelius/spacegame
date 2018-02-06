@@ -34,18 +34,17 @@ protected:
     void lateUpdate() override;
 
 private:
-    Body* body_ = nullptr;
     std::vector<Vecf> groundSensors_;
 
     Timer jumpTimer_;
     Timer reactionTimer_;
-    Timer shootTimer_;
+    Timer shootingTimer_;
 
     float xDirection_;
 
+    void updateDirection_();
     void walkTowardsTarget_();
     bool isGrounded_();
-    void shootTarget_();
 };
 
 #endif //SPACEGAME_WALKINGENEMYAI_H
