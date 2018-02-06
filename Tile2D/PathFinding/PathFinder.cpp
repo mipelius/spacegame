@@ -26,28 +26,6 @@ float PathFinder::heuristicCost_(Veci start, Veci goal) {
     return sqrt(dx * dx + dy * dy);
 }
 
-bool PathFinder::canMove_(
-        const Veci& pos,
-        const Veci& boundingBoxTopLeftCorner,
-        const Veci& boundingBoxBottomRightCorner
-) {
-    Tile* tile = nullptr;
-    Veci currentPos;
-
-    for (auto x = boundingBoxTopLeftCorner.x; x <= boundingBoxBottomRightCorner.x; ++x) {
-        for (auto y = boundingBoxTopLeftCorner.y; y <= boundingBoxBottomRightCorner.y; ++y) {
-            currentPos = pos + Veci(x, y);
-            tile = Tile2D::tileMap().getValue(currentPos.x, currentPos.y);
-
-            if (tile == nullptr || tile->getDensity() > 0.0f) {
-                return false;
-            }
-        }
-    }
-
-    return true;
-}
-
 std::list<Vecf> PathFinder::getPath(
         const Vecf&     startPoint,
         const Vecf&     goalPoint,
@@ -75,8 +53,8 @@ std::list<Vecf> PathFinder::getPath(
     }
 
     if (
-            !canMove_(start, {0, 0}, {0, 0}) ||
-            !canMove_(goal,  boundingBoxTopLeftCorner, boundingBoxBottomRightCorner)
+            !Tile2D::tileMap().canMove(start, {0, 0}, {0, 0}) ||
+            !Tile2D::tileMap().canMove(goal,  boundingBoxTopLeftCorner, boundingBoxBottomRightCorner)
     ) {
         return path;
     }
@@ -128,7 +106,7 @@ std::list<Vecf> PathFinder::getPath(
                 currentNeighbour->fCost = 0;
                 currentNeighbour->cameFrom = nullptr;
 
-                if (!canMove_(pos, boundingBoxTopLeftCorner, boundingBoxBottomRightCorner)) {
+                if (!Tile2D::tileMap().canMove(pos, boundingBoxTopLeftCorner, boundingBoxBottomRightCorner)) {
                     closedSet.add(currentNeighbour);
                     continue;
                 }

@@ -49,11 +49,6 @@ private:
     Pool<Node> nodePool_ = Pool<Node>(1000000);  // ~= 24 MB
 
     float heuristicCost_(Veci start, Veci goal);
-    bool canMove_(
-            const Veci& pos,
-            const Veci& boundingBoxTopLeftCorner,
-            const Veci& boundingBoxBottomRightCorner
-    );
 
     struct CmpNode {
     public:

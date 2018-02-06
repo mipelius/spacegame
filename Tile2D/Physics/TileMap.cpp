@@ -135,3 +135,38 @@ bool TileMap::isLoaded() {
 TileSet *TileMap::getTileSet() {
     return tileSet_;
 }
+
+bool TileMap::canMove(const Veci &position, const Veci &boundingBoxTopLeftCorner, const Veci &boundingBoxBottomRightCorner) {
+    Tile* tile = nullptr;
+    Veci currentPos;
+
+    for (auto x = boundingBoxTopLeftCorner.x; x <= boundingBoxBottomRightCorner.x; ++x) {
+        for (auto y = boundingBoxTopLeftCorner.y; y <= boundingBoxBottomRightCorner.y; ++y) {
+            currentPos = position + Veci(x, y);
+            tile = getValue(currentPos.x, currentPos.y);
+
+            if (tile == nullptr || tile->getDensity() > 0.0f) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+bool TileMap::canMoveScaled(const Vecf &position, const Rect& boundingBox, bool useInnerBounding) {
+    const int& w = tileSet_->getTileW();
+    const int& h = tileSet_->getTileH();
+
+    Veci pos                            = {(int)(position.x   / w)          , (int)(position.y    / h)};
+
+    Veci boundingBoxTopLeftCorner       = {(int)floor(boundingBox.x1 / w)   , (int)floor(boundingBox.y1 / h)};
+    Veci boundingBoxBottomRightCorner   = {(int)ceil(boundingBox.x2 / w)    , (int)ceil(boundingBox.y2 / h)};
+
+    if (useInnerBounding) {
+        boundingBoxTopLeftCorner        += {1, 1};
+        boundingBoxBottomRightCorner    -= {1, 1};
+    }
+
+    return canMove(pos, boundingBoxTopLeftCorner, boundingBoxTopLeftCorner);
+}

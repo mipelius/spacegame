@@ -47,6 +47,14 @@ public:
     long getActualW() const;
     long getActualH() const;
 
+    bool canMove(
+            const Veci &position,
+            const Veci &boundingBoxTopLeftCorner,
+            const Veci &boundingBoxBottomRightCorner
+    );
+
+    bool canMoveScaled(const Vecf &pos, const Rect& boundingBox, bool useInnerBounding = false);
+
     void load(
             std::string path,
             std::string tileSet
@@ -68,6 +76,7 @@ private:
     DrawableMap* drawableMap_ = nullptr;
     Array2d<Tile*> *tiles_ = nullptr;
     TileSet* tileSet_ = nullptr;
+
 };
 
 #endif //__WorldMap_H_

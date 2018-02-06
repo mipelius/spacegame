@@ -26,6 +26,7 @@
 #include "ColliderLayers.h"
 #include "PathFinder.h"
 #include "Prefabs.h"
+#include "SpawnerBehaviour.h"
 
 void createBackground(Rect area, const char* texture, Color color) {
     auto background = Tile2D::createGameObject();
@@ -92,6 +93,14 @@ void SceneInGame::init() {
     camera = new Camera;
     camera->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
     Tile2D::canvas().setCamera(camera);
+
+    // spawner
+
+    GameObject* spawner = Tile2D::createGameObject();
+    auto spawnerBehaviour = spawner->attachComponent<SpawnerBehaviour>();
+    spawnerBehaviour->setTarget(player);
+    spawnerBehaviour->setInnerRect({-600.0f, -400.0f, 600.0f, 400.0f});
+    spawnerBehaviour->setOuterRect({-1000.0f, -800.0f, 1000.0f, 800.0f});
 }
 
 void SceneInGame::destroy() {

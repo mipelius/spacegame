@@ -24,6 +24,8 @@
 
 template <typename T>
 class Math {
+private:
+    static const unsigned int randMax = RAND_MAX;
 
 public:
     inline static void clamp(T& value, const T& min, const T& max);
@@ -33,6 +35,8 @@ public:
     inline static T max(T& value1, T& value2);
 
     inline static bool approx(const T& value1, const T& value2);
+
+    inline static T random(const T& min, const T& max);
 
     static constexpr float epsilon = FLT_EPSILON;
 };
@@ -72,6 +76,12 @@ template<typename T>
 void Math<T>::clamp(Vec<T> &vec, const Rect &rect) {
     clamp(vec.x, rect.x1, rect.x2);
     clamp(vec.y, rect.y1, rect.y2);
+}
+
+template<typename T>
+T Math<T>::random(const T &min, const T &max) {
+    T interval = max - min;
+    return min + interval * ((rand() % randMax) / (float)randMax);
 }
 
 #endif //SPACEGAME_TILE2DMATH_H
