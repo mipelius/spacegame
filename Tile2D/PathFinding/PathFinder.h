@@ -31,7 +31,8 @@ public:
     std::list<Vecf> getPath(
             const Vecf&     start,
             const Vecf&     goal,
-            const Rect&     boundingBox = {-0.5f, -0.5f, 0.5f, 0.5f}
+            const Rect&     boundingBox = {-0.5f, -0.5f, 0.5f, 0.5f},
+            const bool&     useInnerBounding = false
     );
 
 private:

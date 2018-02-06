@@ -38,7 +38,8 @@ void FlyingEnemyAI::update() {
         pathToTarget_ = Tile2D::pathFinder().getPath(
                 transform()->getPosition(),
                 target_->getPosition(),
-                collider_->boundingBox()
+                collider_->boundingBox(),
+                true
         );
         updateNextPoint_();
     }

@@ -51,7 +51,8 @@ bool PathFinder::canMove_(
 std::list<Vecf> PathFinder::getPath(
         const Vecf&     startPoint,
         const Vecf&     goalPoint,
-        const Rect&     boundingBox
+        const Rect&     boundingBox,
+        const bool&     useInnerBounding
 ) {
     std::list<Vecf> path;
 
@@ -68,8 +69,13 @@ std::list<Vecf> PathFinder::getPath(
     Veci boundingBoxTopLeftCorner       = {(int)floor(boundingBox.x1 / w), (int)floor(boundingBox.y1 / h)};
     Veci boundingBoxBottomRightCorner   = {(int)ceil(boundingBox.x2 / w),  (int)ceil(boundingBox.y2 / h)};
 
+    if (useInnerBounding) {
+        boundingBoxTopLeftCorner        += {1, 1};
+        boundingBoxBottomRightCorner    -= {1, 1};
+    }
+
     if (
-            !canMove_(start, boundingBoxTopLeftCorner, boundingBoxBottomRightCorner) ||
+            !canMove_(start, {0, 0}, {0, 0}) ||
             !canMove_(goal,  boundingBoxTopLeftCorner, boundingBoxBottomRightCorner)
     ) {
         return path;
