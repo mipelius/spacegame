@@ -19,6 +19,7 @@
 #include "PointLight.h"
 #include "Canvas.h"
 #include "Camera.h"
+#include "Tile2DMath.h"
 
 GLuint PointLight::glTextureId_ = 0;
 
@@ -39,55 +40,42 @@ void PointLight::draw(const Canvas &canvas) {
     float w = radius_ * 2;
     float h = radius_ * 2;
 
-    float margin = 0.0;
+    float margin = 0.0f;
 
-    glColor4f(0.0, 0.0, 0.0, (GLfloat)intensity_);
+    glColor4f(0.0f, 0.0f, 0.0f, (GLfloat)intensity_);
 
     glTexCoord2f(margin, margin);
     glVertex2f(x, y);
-    glTexCoord2f(1 - margin, margin);
+    glTexCoord2f(1.0f - margin, margin);
     glVertex2f(x + w, y);
-    glTexCoord2f(1 - margin, 1 - margin);
+    glTexCoord2f(1.0f - margin, 1.0f - margin);
     glVertex2f(x + w, y + h);
-    glTexCoord2f(margin, 1 - margin);
+    glTexCoord2f(margin, 1.0f - margin);
     glVertex2f(x, y + h);
 }
 
 void PointLight::createLightTexture() {
-    int w = TEXTURE_SIZE;
-    int h = TEXTURE_SIZE;
+	Uint8 alphaValue = 0;
+	int tempAlpha = 0;
+    double tempAlphaDouble = 0.0;
 
-    Uint8 alphaValue;
-    float temp = 0.0;
+    Uint32* lightPixels = new Uint32[TEXTURE_SIZE * TEXTURE_SIZE];
+	int radius = TEXTURE_SIZE / 2;
 
-    Uint32* lightPixels = new Uint32[w * h];
+    for (int i = 0; i < TEXTURE_SIZE; i++) {
+        for (int j = 0; j < TEXTURE_SIZE; j++) {
+			Vecd vec = { (double)(radius - i), (double)(radius - j) };
+        	
+			double distance = vec.length();
 
-    for (int i = 0; i < w; i++) {
-        for (int j = 0; j < h; j++) {
-            float deltaX = w/2 - i;
-            float deltaY = h/2 - j;
+            tempAlphaDouble = distance / (radius);
 
-            float distance = sqrt(deltaX * deltaX + deltaY * deltaY);
+            tempAlpha = (int)(tempAlphaDouble * 255);
+			Mathi::clamp(tempAlpha, 0, 255);
 
-            temp = distance / (w / 2);
+			alphaValue = (Uint8)tempAlpha;
 
-            temp *= 1.2;
-            temp -= 0.2;
-
-            // clamp
-
-            if (temp < 0.0) {
-                temp = 0.0;
-            }
-
-            if (temp > 1.0) {
-                temp = 1.0;
-            }
-
-            //temp = temp * temp; // temp ^= 3
-
-            alphaValue = (Uint8)(temp * 255);
-            lightPixels[j * w + i] = (0x000000FF - alphaValue) << 24;
+            lightPixels[j * TEXTURE_SIZE + i] = (0x000000FF - alphaValue) << 24;
         }
     }
 
@@ -105,7 +93,7 @@ void PointLight::createLightTexture() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     // Edit the texture object's image data using the information SDL_Surface gives us
-    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, w, h, 1,
+    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, TEXTURE_SIZE, TEXTURE_SIZE, 1,
             texture_format, GL_UNSIGNED_BYTE, lightPixels);
 
     delete[] lightPixels;

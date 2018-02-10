@@ -45,6 +45,12 @@ void Window::init(const std::string& configJson) {
 
     isFullScreen_ = windowJson["fullscreen"].ToBool();
 
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
     window_ = SDL_CreateWindow(
             "",
             x_,
@@ -74,7 +80,7 @@ void Window::update_() {
 
     glViewport(0, 0, (GLsizei)w_, (GLsizei)h_);
 
-   // Tile2D::lightSystem().update(Tile2D::canvas()); // TODO
+    Tile2D::lightSystem().update(Tile2D::canvas());
 
     for (auto& guiComponent : guiComponents_) {
         guiComponent->render();
@@ -84,7 +90,7 @@ void Window::update_() {
         Tile2D::tileMap().drawableMap_->draw(Tile2D::canvas());
     }
 
-    //Tile2D::lightSystem().draw(Tile2D::canvas()); // TODO
+    Tile2D::lightSystem().draw(Tile2D::canvas());
 
     if (Tile2D::isDebugMode) {
         Tile2D::physicsWorld().debugDraw();

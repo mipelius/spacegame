@@ -128,7 +128,6 @@ void LightSystem::update(const Canvas& canvas) {
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
 
-        glBlendFunc(GL_DST_ALPHA, GL_ZERO);
         glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
 
         glBindTexture(GL_TEXTURE_2D, PointLight::glTextureId_);
@@ -204,7 +203,7 @@ void LightSystem::drawLightMap(const Canvas &canvas) {
     }
 
     Rect rect = canvas.getCamera()->getAreaRect();
-    updateLightMap(&rect);
+	updateLightMap(&rect);
 
     int xStart = (int)(rect.x1 / tileMap->getTileSet()->getTileW());
     int xEnd = xStart + lightMap_->w - MAX_LIGHT_RADIUS;
@@ -364,7 +363,10 @@ void LightSystem::updateLightMap(Rect *areaRect) {
 
     auto tileMap = &Tile2D::tileMap();
 
-    lightMap_->fill(0);
+    // lightMap_->fill(0);
+
+	lightMap_->fill(255);
+	return;
 
     int offsetX = (int)(areaRect->x1 / tileMap->getTileSet()->getTileW()) - MAX_LIGHT_RADIUS;
     int offsetY = (int)(areaRect->y1 / tileMap->getTileSet()->getTileH()) - MAX_LIGHT_RADIUS;
