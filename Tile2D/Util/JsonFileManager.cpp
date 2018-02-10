@@ -21,8 +21,13 @@
 json::Object JsonFileManager::load(std::string filename) {
     json::Object obj;
 
+#ifdef _WIN32
 	std::replace(filename.begin(), filename.end(), '/', '\\');
-	
+#endif /* _WIN32 */
+#ifdef __APPLE__
+    std::replace(filename.begin(), filename.end(), '\\', '/');
+#endif /* __APPLE__ */
+
     std::ifstream file(filename);
 	
     if (file.is_open()) {
