@@ -95,7 +95,11 @@ MapTexture::MapTexture(int blockW, int blockH) {
 }
 
 int MapTexture::addTexture(std::string filename, float opacity) {
-    SDL_Surface* surface = IMG_Load(filename.data());
+	SDL_Surface *surface;    // This surface will tell us the details of the image
+	GLenum texture_format = GL_NONE;
+	GLint nOfColors;
+    
+	surface = IMG_Load(filename.data());
 
     if (!surface) {
         std::fprintf(stderr, "SDL could not load %s: %s\n", filename.data(), SDL_GetError());
@@ -104,15 +108,26 @@ int MapTexture::addTexture(std::string filename, float opacity) {
     }
     if (surface->w != blockW_ || surface->h != blockH_) {
         std::fprintf(stderr, "Image has invalid size (%s)\n", filename.data());
-        exit(1);
+		SDL_Quit();
+    	exit(1);
     }
 
-    Uint8* pixels = (Uint8*)(surface->pixels);
+	nOfColors = surface->format->BytesPerPixel;
 
-    for (auto i=0u; i<surface->w * surface->h; ++i) {
-        Uint8* alphachannel = &pixels[i * 4 + 3];
-        *alphachannel = (Uint8)(opacity * 255);
-    }
+	if (nOfColors == 4)     // contains an alpha channel
+	{
+		if (surface->format->Rmask == 0x000000ff)
+			texture_format = GL_RGBA;
+		else
+			texture_format = GL_BGRA;
+	}
+	else if (nOfColors == 3)     // no alpha channel
+	{
+		if (surface->format->Rmask == 0x000000ff)
+			texture_format = GL_RGB;
+		else
+			texture_format = GL_BGR;
+	}
 
     // Bind the texture object
     glBindTexture(GL_TEXTURE_2D, glTextureId_);
@@ -120,8 +135,10 @@ int MapTexture::addTexture(std::string filename, float opacity) {
     // Update texture
     int offsetX = (blockInternalSize_ * count) % GL_TEXTURE_SIZE;
     int offsetY = (blockInternalSize_ * count) / GL_TEXTURE_SIZE;
+	
+    glTexSubImage2D(GL_TEXTURE_2D, 0, offsetX, offsetY, blockW_, blockH_, texture_format, GL_UNSIGNED_BYTE, surface->pixels);
 
-    glTexSubImage2D(GL_TEXTURE_2D, 0, offsetX, offsetY, blockW_, blockH_, GL_BGRA, GL_UNSIGNED_BYTE, surface->pixels);
+	SDL_FreeSurface(surface);
 
     count++;
 
