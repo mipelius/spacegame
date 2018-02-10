@@ -19,7 +19,7 @@
 
 class GuiComponentBase;
 
-#include <SDL2/SDL_video.h>
+#include "precompile.h"
 #include <list>
 #include "Vec.h"
 

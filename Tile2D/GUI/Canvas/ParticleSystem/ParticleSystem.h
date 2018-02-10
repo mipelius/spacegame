@@ -18,7 +18,7 @@
 #ifndef SPACEGAME_PARTICLESYSTEM_H
 #define SPACEGAME_PARTICLESYSTEM_H
 
-#include <SDL2/SDL_stdinc.h>
+#include "precompile.h"
 #include "Tile2DComponent.h"
 #include "Particle.h"
 #include "DrawableBase.h"

@@ -17,7 +17,7 @@
 #ifndef __Sample_H_
 #define __Sample_H_
 
-#include <SDL2_mixer/SDL_mixer.h>
+#include "precompile.h"
 
 class AudioClip {
     friend class SamplePlayer;

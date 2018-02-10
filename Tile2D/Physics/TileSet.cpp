@@ -21,7 +21,7 @@
 #include "Tile.h"
 
 TileSet::TileSet(std::string jsonFilename) :
-        blocks_(std::vector<Tile*>(255))
+        blocks_(std::vector<Tile*>(256))
 {
     emptyBlock_ = new Tile("empty block", 0.0, 1.0, 1.0, nullptr, -1);
 

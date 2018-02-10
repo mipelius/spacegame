@@ -74,7 +74,7 @@ void Window::update_() {
 
     glViewport(0, 0, (GLsizei)w_, (GLsizei)h_);
 
-    Tile2D::lightSystem().update(Tile2D::canvas());
+   // Tile2D::lightSystem().update(Tile2D::canvas()); // TODO
 
     for (auto& guiComponent : guiComponents_) {
         guiComponent->render();
@@ -84,7 +84,7 @@ void Window::update_() {
         Tile2D::tileMap().drawableMap_->draw(Tile2D::canvas());
     }
 
-    Tile2D::lightSystem().draw(Tile2D::canvas());
+    //Tile2D::lightSystem().draw(Tile2D::canvas()); // TODO
 
     if (Tile2D::isDebugMode) {
         Tile2D::physicsWorld().debugDraw();

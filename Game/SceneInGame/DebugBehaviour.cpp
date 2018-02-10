@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <SDL2/SDL_events.h>
+#include "precompile.h"
 #include "DebugBehaviour.h"
 #include "Tile2D.h"
 #include "Prefabs.h"

@@ -19,7 +19,7 @@
 #define SPACEGAME_TIMER_H
 
 
-#include <SDL2/SDL_quit.h>
+#include "precompile.h"
 
 class Timer {
 

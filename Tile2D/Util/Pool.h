@@ -17,8 +17,8 @@
 #ifndef SPACEGAME_POOL_H
 #define SPACEGAME_POOL_H
 
-#import <cstdio>
-#import <assert.h>
+#include <cstdio>
+#include <assert.h>
 
 // NOTE: this class has borrowed some ideas from book titled Game Programming Patterns by Robert Nystrom
 // and from Boost library

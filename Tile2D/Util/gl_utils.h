@@ -5,7 +5,7 @@
 #ifndef __utils_H
 #define __utils_H
 
-#include <SDL2/SDL_opengl.h>
+#include "precompile.h"
 #include "Canvas.h"
 #include "Camera.h"
 #include "Tile2D.h"

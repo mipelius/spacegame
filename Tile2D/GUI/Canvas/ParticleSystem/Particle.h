@@ -18,7 +18,7 @@
 #ifndef SPACEGAME_PARTICLE_H
 #define SPACEGAME_PARTICLE_H
 
-#include <SDL2/SDL_stdinc.h>
+#include "precompile.h"
 #include "Body.h"
 #include "Color.h"
 class ParticleSystem;

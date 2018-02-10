@@ -46,10 +46,10 @@ void SceneInGame::init() {
     Tile2D::physicsWorld().setAirDensity(0.0001);
 
     // backgrounds
-    createBackground({0, 0, 3300, 2400},       "bg2", {0.8, 1.0, 0.5}); // upper left corner
-    createBackground({3300, 0, 6400, 2400},    "bg2", {0.2, 0.8, 1.0}); // upper right corner
-    createBackground({0, 2400, 3300, 4800},    "bg1", {0.6, 0.3, 0.3}); // bottom left corner
-    createBackground({3300, 2400, 6400, 4800}, "bg1", {0.3, 0.3, 0.6}); // bottom right corner
+    createBackground({0.0f, 0.0f, 3300.0f, 2400.0f},       "bg2", {0.8f, 1.0f, 0.5f}); // upper left corner
+    createBackground({3300.0f, 0.0f, 6400.0f, 2400.0f},    "bg2", {0.2f, 0.8f, 1.0f}); // upper right corner
+    createBackground({0.0f, 2400.0f, 3300.0f, 4800.0f},    "bg1", {0.6f, 0.3f, 0.3f}); // bottom left corner
+    createBackground({3300.0f, 2400.0f, 6400.0f, 4800.0f}, "bg1", {0.3f, 0.3f, 0.6f}); // bottom right corner
 
     // player
     auto player = Tile2D::createGameObject();

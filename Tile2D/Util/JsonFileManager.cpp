@@ -16,11 +16,15 @@
 
 #include "precompile.h"
 #include "JsonFileManager.h"
+#include <algorithm>
 
 json::Object JsonFileManager::load(std::string filename) {
     json::Object obj;
 
+	std::replace(filename.begin(), filename.end(), '/', '\\');
+	
     std::ifstream file(filename);
+	
     if (file.is_open()) {
         std::stringstream buffer;
         buffer << file.rdbuf();

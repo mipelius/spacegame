@@ -23,7 +23,7 @@ class TileMap;
 class PartialLightMap;
 
 #include "Event.h"
-#include <SDL2/SDL_opengl.h>
+#include "precompile.h"
 #include "Tile2DComponent.h"
 #include "Vec.h"
 

@@ -17,7 +17,7 @@
 #ifndef __AgeDependentBehaviour_H
 #define __AgeDependentBehaviour_H
 
-#include <SDL2/SDL_bits.h>
+#include "precompile.h"
 #include <cfloat>
 #include "Tile2DBehaviour.h"
 #include "Timer.h"

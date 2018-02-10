@@ -18,7 +18,7 @@
 #ifndef SPACEGAME_WALKINGENEMYAI_H
 #define SPACEGAME_WALKINGENEMYAI_H
 
-#include <SDL2/SDL_quit.h>
+#include "precompile.h"
 #include "Transform.h"
 #include "Body.h"
 #include "EnemyAIBase.h"

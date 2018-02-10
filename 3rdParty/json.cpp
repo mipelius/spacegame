@@ -10,7 +10,7 @@
 #include <cctype>
 #include <stack>
 
-#ifndef WIN32
+#ifndef _WIN32
 #define _stricmp strcasecmp
 #endif
 

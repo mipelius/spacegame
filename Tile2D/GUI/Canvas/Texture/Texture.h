@@ -19,7 +19,7 @@
 
 #include <string>
 #include "ITexture.h"
-#include <SDL2/SDL_opengl.h>
+#include "precompile.h"
 
 class Texture : public ITexture {
 private:

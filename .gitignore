@@ -1,5 +1,26 @@
+# CLION / CMAKE
+
 .idea/
 cmake-build-debug/
 cmake-build-release/
+
+# OSX / XCODE
+
 .DS_STORE
 SpaceGame.xcodeproj/xcuserdata/
+
+# DATA IS IGNORED FOR NOW SINCE BINARY+GIT=BAD
+
+Data/
+
+# SDL2 DEV LIBS
+
+SDL2/
+SDL2_image/
+SDL2_mixer/
+
+# VISUAL STUDIO
+
+x64/
+x86/
+Debug/

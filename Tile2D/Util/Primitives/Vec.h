@@ -17,6 +17,7 @@
 #ifndef __Vector_H_
 #define __Vector_H_
 
+#include "precompile.h"
 #include <cmath>
 
 template <typename T>

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <SDL2/SDL_timer.h>
+#include "precompile.h"
 #include "LimitedLifetimeBehaviour.h"
 
 void LimitedLifetimeBehaviour::awake() {

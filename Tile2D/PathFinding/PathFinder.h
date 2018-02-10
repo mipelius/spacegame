@@ -108,7 +108,7 @@ private:
         inline Node* popBestOut() {
             Node* best = queue.top();
             queue.pop();
-            map.erase(best->position);
+            map.erase(best->position); // TODO : occasional crash!
 
             return best;
         }

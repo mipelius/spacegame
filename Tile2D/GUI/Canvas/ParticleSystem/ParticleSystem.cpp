@@ -15,7 +15,7 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 
-#include <SDL2/SDL_timer.h>
+#include "precompile.h"
 #include "ParticleSystem.h"
 #include "Tile2D.h"
 

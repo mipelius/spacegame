@@ -27,7 +27,6 @@ int main(int argc, const char *argv[]) {
     Tile2D::load(
             "json/config.json",
             "json/resources.json",
-
             {
                     {Scenes::titleScreen,    new SceneTitleScreen},
                     {Scenes::inGame,         new SceneInGame},

@@ -17,7 +17,7 @@
 #ifndef __Music_H_
 #define __Music_H_
 
-#include <SDL2_mixer/SDL_mixer.h>
+#include "precompile.h"
 
 #include <string>
 

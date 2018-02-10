@@ -140,9 +140,9 @@ void Tile2D::lateUpdateBehaviours_() {
 }
 
 void Tile2D::destroy_(GameObject* obj) {
-    auto it = instance_().objects_.find(obj);
-
-    if ((*it) != nullptr) {
+	auto it = instance_().objects_.find(obj);
+	
+    if (it != objects_.end()) {
         instance_().objects_.erase((*it));
     }
 

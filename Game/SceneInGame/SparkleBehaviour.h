@@ -17,7 +17,7 @@
 #ifndef __SparkleBehaviour_H
 #define __SparkleBehaviour_H
 
-#include <SDL2/SDL_quit.h>
+#include "precompile.h"
 #include "Sprite.h"
 #include "Tile2DBehaviour.h"
 #include "LimitedLifetimeBehaviour.h"
