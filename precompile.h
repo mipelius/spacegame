@@ -24,7 +24,7 @@
 #include <sstream>
 #include <math.h>
 
-#ifdef __MACOS
+#ifdef __APPLE__
 #include <SDL2/SDL_opengl.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
