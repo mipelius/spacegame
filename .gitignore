@@ -21,6 +21,7 @@ SDL2_mixer/
 
 # VISUAL STUDIO
 
+.vs/
 x64/
-x86/
+Win32/
 Debug/
