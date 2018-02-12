@@ -365,10 +365,7 @@ void LightSystem::updateLightMap(Rect *areaRect) {
 
     auto tileMap = &Tile2D::tileMap();
 
-    // lightMap_->fill(0);
-
-	lightMap_->fill(255);
-	return;
+    lightMap_->fill(0);
 
     Veci offset = {
             (int)(areaRect->x1 / tileMap->getTileSet()->getTileW()) - MAX_LIGHT_RADIUS,
