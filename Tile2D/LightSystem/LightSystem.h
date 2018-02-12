@@ -77,17 +77,6 @@ private:
 
     void updateLightMap(Rect *areaRect);
 
-    void updateLightMapRecursive(
-            int currentX,
-            int currentY,
-            const int &centerX,
-            const int &centerY,
-            const int &offsetX,
-            const int &offsetY,
-            const int &radius,
-            unsigned int encounteredWallness
-    );
-
     unsigned int intDistances[MAX_LIGHT_RADIUS][MAX_LIGHT_RADIUS];
 
     inline unsigned int getLength(int x, int y) {

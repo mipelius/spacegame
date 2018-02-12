@@ -14,7 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <stack>
 #include "Tile2D.h"
+#include "Tile2DMath.h"
 
 GLuint LightSystem::glShadowTextureId_ = 0;
 
@@ -368,76 +370,92 @@ void LightSystem::updateLightMap(Rect *areaRect) {
 	lightMap_->fill(255);
 	return;
 
-    int offsetX = (int)(areaRect->x1 / tileMap->getTileSet()->getTileW()) - MAX_LIGHT_RADIUS;
-    int offsetY = (int)(areaRect->y1 / tileMap->getTileSet()->getTileH()) - MAX_LIGHT_RADIUS;
+    Veci offset = {
+            (int)(areaRect->x1 / tileMap->getTileSet()->getTileW()) - MAX_LIGHT_RADIUS,
+            (int)(areaRect->y1 / tileMap->getTileSet()->getTileH()) - MAX_LIGHT_RADIUS
+    };
+
+    // temporary variables used by algorithm
+    Veci lightMapPoint                  = {0, 0};
+    Veci currentInLightCoordinateSystem = {0, 0};
+    int brightnessBasedOnDistance       = 0;
+    int tmpWallness                     = 0;
+    int tmpBrightness                   = 0;
+    unsigned char encounteredWallness   = 0;
+    unsigned char brightness            = 0;
+
+    struct Node {
+        Veci            coords;
+        unsigned char   encounteredWallness;
+    };
 
     for (auto light : lights_) {
-        int currentLightCenterX = (int)(light->transform()->getPosition().x / tileMap->getTileSet()->getTileW());
-        int currentLightCenterY = (int)(light->transform()->getPosition().y / tileMap->getTileSet()->getTileH());
-        int radius              = (int)(light->getRadius()     / tileMap->getTileSet()->getTileW());
+        Veci lightOrigin        = {
+                (int)(light->transform()->getPosition().x / tileMap->getTileSet()->getTileW()),
+                (int)(light->transform()->getPosition().y / tileMap->getTileSet()->getTileH())
+        };
+        int radius              = (int)(light->getRadius() / tileMap->getTileSet()->getTileW());
 
-        updateLightMapRecursive(
-                currentLightCenterX,
-                currentLightCenterY,
-                currentLightCenterX,
-                currentLightCenterY,
-                offsetX,
-                offsetY,
-                radius,
-                0
-        );
+        std::stack<Node> nodes;
+        nodes.push({lightOrigin, 0});
+
+        while (!nodes.empty()) {
+            const auto current = nodes.top();
+            nodes.pop();
+
+            // early-out-check
+
+            lightMapPoint = current.coords - offset;
+            if (!lightMap_->isInsideBounds(lightMapPoint.x, lightMapPoint.y)) { // outside the light map
+                continue;
+            }
+
+            currentInLightCoordinateSystem  = current.coords - lightOrigin;
+            int length = getLength(currentInLightCoordinateSystem.x, currentInLightCoordinateSystem.y);
+            int distanceToBorder = radius - length;
+
+            if (distanceToBorder < 1) { // light can't spread further
+                continue;
+            }
+
+            // calculate new encountered wallness
+
+            float translucency = 1.0;
+
+            Tile* currentTile = Tile2D::tileMap().getValue(current.coords.x, current.coords.y);
+            if (currentTile != nullptr) {
+                translucency = currentTile->getTranslucency();
+            }
+
+            tmpWallness = current.encounteredWallness + (int)(256.0 - translucency * 256.0);
+
+            // calculate new brightness
+
+            brightnessBasedOnDistance = (int)(255 * ((float)distanceToBorder / radius));
+            tmpBrightness = brightnessBasedOnDistance - tmpWallness;
+
+            // check if new brightness can't improve the brightness of the current light map cell
+
+            if (tmpBrightness <= lightMap_->getValue(lightMapPoint.x, lightMapPoint.y)) continue;
+            if (tmpBrightness < 0) continue;
+
+            // clamp values to unsigned char
+
+            Mathi::clamp(tmpBrightness, 0, 255);
+            Mathi::clamp(tmpWallness, 0, 255);
+            brightness           = (unsigned char)tmpBrightness;
+            encounteredWallness  = (unsigned char)tmpWallness;
+
+            // update lightmap and push neighbor nodes to the stack
+
+            lightMap_->setValue(lightMapPoint.x, lightMapPoint.y, brightness);
+
+            nodes.push({{current.coords.x - 1, current.coords.y - 0}, encounteredWallness});  // WEST
+            nodes.push({{current.coords.x - 0, current.coords.y + 1}, encounteredWallness});  // SOUTH
+            nodes.push({{current.coords.x + 1, current.coords.y + 0}, encounteredWallness});  // EAST
+            nodes.push({{current.coords.x + 0, current.coords.y - 1}, encounteredWallness});  // NORTH
+        }
     }
-}
-
-void LightSystem::updateLightMapRecursive(
-        int currentX,
-        int currentY,
-        const int &centerX,
-        const int &centerY,
-        const int &offsetX,
-        const int &offsetY,
-        const int &radius,
-        unsigned int encounteredWallness
-) {
-    int lightMapX = currentX - offsetX;
-    int lightMapY = currentY - offsetY;
-
-    if (!lightMap_->isInsideBounds(lightMapX, lightMapY)) { // outside the shadow map
-        return;
-    }
-
-    int lightX = currentX - centerX;
-    int lightY = currentY - centerY;
-
-    int length = getLength(lightX, lightY);
-    int distanceToBorder = radius - length;
-
-    if (distanceToBorder < 1) { // light can't spread further
-        return;
-    }
-
-    float translucency = 1.0;
-
-    Tile* currentBlock = Tile2D::tileMap().getValue(currentX, currentY);
-    if (currentBlock != nullptr) {
-        translucency = currentBlock->getTranslucency();
-    }
-
-    encounteredWallness += 256 - translucency * 256.0;
-
-    auto lightBasedOnDistance = (int)(255 * ((float)distanceToBorder / radius));
-
-    int newLight = lightBasedOnDistance - encounteredWallness;
-
-    if (newLight <= lightMap_->getValue(lightMapX, lightMapY)) return;
-    if (newLight < 0) return;
-
-    lightMap_->setValue(lightMapX, lightMapY, newLight);
-
-    updateLightMapRecursive(currentX - 1, currentY, centerX, centerY, offsetX, offsetY, radius, encounteredWallness);
-    updateLightMapRecursive(currentX + 1, currentY, centerX, centerY, offsetX, offsetY, radius, encounteredWallness);
-    updateLightMapRecursive(currentX, currentY - 1, centerX, centerY, offsetX, offsetY, radius, encounteredWallness);
-    updateLightMapRecursive(currentX, currentY + 1, centerX, centerY, offsetX, offsetY, radius, encounteredWallness);
 }
 
 // getters and setters
