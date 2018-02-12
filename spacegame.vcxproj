@@ -100,6 +100,10 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)SDL2\include;$(ProjectDir)SDL2_image\include;$(ProjectDir)SDL2_mixer\include;$(ProjectDir)Tile2D\Animation;$(ProjectDir)Tile2D\Core;$(ProjectDir)Tile2D\GUI;$(ProjectDir)Tile2D\LightSystem;$(ProjectDir)Tile2D\PathFinding;$(ProjectDir)Tile2D\Physics;$(ProjectDir)Tile2D\Sound;$(ProjectDir)Tile2D\Util;$(ProjectDir)Tile2D\GUI\Canvas;$(ProjectDir)Tile2D\GUI\Canvas\Drawable;$(ProjectDir)Tile2D\GUI\Canvas\ParticleSystem;$(ProjectDir)Tile2D\GUI\Canvas\Texture;$(ProjectDir)Tile2D\Util\DataStructures;$(ProjectDir)Tile2D\Util\Event;$(ProjectDir)Tile2D\Util\Primitives;$(ProjectDir)Game;$(ProjectDir)Game\SceneGameOver;$(ProjectDir)Game\SceneInGame;$(ProjectDir)Game\SceneTitleScreen;$(ProjectDir)3rdParty;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <UndefinePreprocessorDefinitions>%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>SDL2\lib\x64\SDL2.lib;SDL2_mixer\lib\x64\SDL2_mixer.lib;SDL2_image\lib\x64\SDL2_image.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>

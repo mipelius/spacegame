@@ -34,8 +34,6 @@ std::list<Vecf> PathFinder::getPath(
 ) {
     std::list<Vecf> path;
 
-	return path; // TODO
-
     if (!Tile2D::tileMap().isLoaded()) {
         return path;
     }
