@@ -373,9 +373,19 @@ void LightSystem::updateLightMap(Rect *areaRect) {
             (int)(areaRect->y1 / tileMap->getTileSet()->getTileH()) - MAX_LIGHT_RADIUS
     };
 
-    // temporary variables
-    Veci lightMapPoint = {0, 0};
+    // temporary variables used by algorithm
+    Veci lightMapPoint                  = {0, 0};
     Veci currentInLightCoordinateSystem = {0, 0};
+    int brightnessBasedOnDistance       = 0;
+    int tmpWallness                     = 0;
+    int tmpBrightness                   = 0;
+    unsigned char encounteredWallness   = 0;
+    unsigned char brightness            = 0;
+
+    struct Node {
+        Veci            coords;
+        unsigned char   encounteredWallness;
+    };
 
     for (auto light : lights_) {
         Veci lightOrigin        = {
@@ -384,20 +394,21 @@ void LightSystem::updateLightMap(Rect *areaRect) {
         };
         int radius              = (int)(light->getRadius() / tileMap->getTileSet()->getTileW());
 
-        std::stack<Veci> nodes;
-        nodes.push(lightOrigin);
+        std::stack<Node> nodes;
+        nodes.push({lightOrigin, 0});
 
         while (!nodes.empty()) {
             const auto current = nodes.top();
             nodes.pop();
 
-            lightMapPoint = current - offset;
-            currentInLightCoordinateSystem = current - lightOrigin;
+            // early-out-check
 
+            lightMapPoint = current.coords - offset;
             if (!lightMap_->isInsideBounds(lightMapPoint.x, lightMapPoint.y)) { // outside the light map
                 continue;
             }
 
+            currentInLightCoordinateSystem  = current.coords - lightOrigin;
             int length = getLength(currentInLightCoordinateSystem.x, currentInLightCoordinateSystem.y);
             int distanceToBorder = radius - length;
 
@@ -405,30 +416,42 @@ void LightSystem::updateLightMap(Rect *areaRect) {
                 continue;
             }
 
+            // calculate new encountered wallness
+
             float translucency = 1.0;
 
-            Tile* currentTile = Tile2D::tileMap().getValue(current.x, current.y);
+            Tile* currentTile = Tile2D::tileMap().getValue(current.coords.x, current.coords.y);
             if (currentTile != nullptr) {
                 translucency = currentTile->getTranslucency();
             }
 
-            int wallness = translucency < 1.0 ? 128 : 0 ; //(int)(256.0 - translucency * 256.0);
+            tmpWallness = current.encounteredWallness + (int)(256.0 - translucency * 256.0);
 
-            auto lightBasedOnDistance = (int)(255 * ((float)distanceToBorder / radius));
+            // calculate new brightness
 
-            int newLight = lightBasedOnDistance - wallness;
+            brightnessBasedOnDistance = (int)(255 * ((float)distanceToBorder / radius));
+            tmpBrightness = brightnessBasedOnDistance - tmpWallness;
 
-            if (newLight <= lightMap_->getValue(lightMapPoint.x, lightMapPoint.y)) continue;
-            if (newLight < 0) continue;
+            // check if new brightness can't improve the brightness of the current light map cell
 
-            Mathi::clamp(newLight, 0, 255);
+            if (tmpBrightness <= lightMap_->getValue(lightMapPoint.x, lightMapPoint.y)) continue;
+            if (tmpBrightness < 0) continue;
 
-            lightMap_->setValue(lightMapPoint.x, lightMapPoint.y, (unsigned char)newLight);
+            // clamp values to unsigned char
 
-            nodes.push(Veci(current.x - 1, current.y - 0));  // WEST
-            nodes.push(Veci(current.x - 0, current.y - 1));  // SOUTH
-            nodes.push(Veci(current.x + 1, current.y + 0));  // EAST
-            nodes.push(Veci(current.x + 0, current.y + 1));  // NORTH
+            Mathi::clamp(tmpBrightness, 0, 255);
+            Mathi::clamp(tmpWallness, 0, 255);
+            brightness           = (unsigned char)tmpBrightness;
+            encounteredWallness  = (unsigned char)tmpWallness;
+
+            // update lightmap and push neighbor nodes to the stack
+
+            lightMap_->setValue(lightMapPoint.x, lightMapPoint.y, brightness);
+
+            nodes.push({{current.coords.x - 1, current.coords.y - 0}, encounteredWallness});  // WEST
+            nodes.push({{current.coords.x - 0, current.coords.y + 1}, encounteredWallness});  // SOUTH
+            nodes.push({{current.coords.x + 1, current.coords.y + 0}, encounteredWallness});  // EAST
+            nodes.push({{current.coords.x + 0, current.coords.y - 1}, encounteredWallness});  // NORTH
         }
     }
 }
