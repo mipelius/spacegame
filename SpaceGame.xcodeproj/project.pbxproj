@@ -169,11 +169,9 @@
 		33249818CFFD0D792BAC52F3 /* SparkleBehaviour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SparkleBehaviour.cpp; sourceTree = "<group>"; };
 		3324981F0FB76F47B527ED94 /* Ears.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ears.h; sourceTree = "<group>"; };
 		332498285799CBD3187BF183 /* SamplePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SamplePlayer.h; sourceTree = "<group>"; };
-		332498CEAE83755BEDD04F1B /* JsonFileManager copy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JsonFileManager copy.h"; sourceTree = "<group>"; };
 		332498D3565DCE36CC8090FB /* Tile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tile.cpp; sourceTree = "<group>"; };
 		332498DCC49A7C342952367C /* TileSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileSet.h; sourceTree = "<group>"; };
 		33249911A1C615D314E72066 /* Resources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resources.cpp; sourceTree = "<group>"; };
-		3324991CC3DB15FAA8FA429E /* JsonFileManager copy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "JsonFileManager copy.cpp"; sourceTree = "<group>"; };
 		3324995A928712F2C632280F /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		332499634A704C0C12FE1F09 /* JsonFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonFileManager.h; sourceTree = "<group>"; };
 		3324996E91A74994AC0B60E0 /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timer.cpp; sourceTree = "<group>"; };
@@ -303,8 +301,6 @@
 				3324935A926C286D49012541 /* Pool.h */,
 				3324996E91A74994AC0B60E0 /* Timer.cpp */,
 				33249599C8E925A5D9A2E7F5 /* Timer.h */,
-				332498CEAE83755BEDD04F1B /* JsonFileManager copy.h */,
-				3324991CC3DB15FAA8FA429E /* JsonFileManager copy.cpp */,
 			);
 			path = Util;
 			sourceTree = "<group>";

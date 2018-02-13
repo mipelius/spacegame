@@ -1,0 +1,6 @@
+Making SpaceGame .app-bundle
+----------------------------
+
+1) Copy all the assets to SpaceGame.app/Contents/Resources
+2) Copy executable (SpaceGame) to SpaceGame.app/Contents/MacOS
+3) Copy SDL-frameworks (SDL2, SDL2_image, SDL2_mixer) to SpaceGame.app/Contents/Frameworks
