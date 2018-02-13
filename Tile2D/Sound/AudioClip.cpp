@@ -16,9 +16,10 @@
 
 #include "precompile.h"
 #include "AudioClip.h"
+#include "Tile2D.h"
 
 AudioClip::AudioClip(std::string filename) {
-    chunk_ = Mix_LoadWAV(filename.data());
+    chunk_ = Mix_LoadWAV((Tile2D::getResourcePath() + filename).data());
 }
 
 AudioClip::~AudioClip() {

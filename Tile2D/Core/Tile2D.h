@@ -57,6 +57,8 @@ public:
             std::vector<ColliderLayerMatrix::Rule>  colliderLayerRules
     );
 
+    static std::string getResourcePath();
+
     static Window &window();
     static Resources &resources();
     static SceneManager &sceneManager();

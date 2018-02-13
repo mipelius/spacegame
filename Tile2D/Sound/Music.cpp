@@ -16,9 +16,10 @@
 
 #include "precompile.h"
 #include "Music.h"
+#include "Tile2D.h"
 
 Music::Music(std::string filename) {
-    this->music = Mix_LoadMUS(filename.data());
+    this->music = Mix_LoadMUS((Tile2D::getResourcePath() + filename).data());
 }
 
 Music::~Music() {

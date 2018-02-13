@@ -16,13 +16,14 @@
 
 #include "precompile.h"
 #include "Texture.h"
+#include "Tile2D.h"
 
 Texture::Texture(std::string filename) {
     SDL_Surface *surface;    // This surface will tell us the details of the image
     GLenum texture_format = GL_NONE;
     GLint nOfColors;
 
-	surface = IMG_Load(filename.data());
+	surface = IMG_Load((Tile2D::getResourcePath() + filename).data());
     if (!surface)
 	{
 		std::string error = "Could not load texture file: ";

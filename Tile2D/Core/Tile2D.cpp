@@ -187,3 +187,19 @@ GameObject *Tile2D::createGameObject() {
     instance_().objects_.insert(gameObject);
     return gameObject;
 }
+
+std::string Tile2D::getResourcePath() {
+    char *basePath = SDL_GetBasePath();
+
+    std::string path;
+
+    if (basePath) {
+        path = basePath;
+    } else {
+        path = SDL_strdup("./");
+    }
+
+    SDL_free(basePath);
+
+    return path;
+}

@@ -16,10 +16,13 @@
 
 #include "precompile.h"
 #include "JsonFileManager.h"
+#include "Tile2D.h"
 #include <algorithm>
 
 json::Object JsonFileManager::load(std::string filename) {
     json::Object obj;
+
+    filename = Tile2D::getResourcePath() + filename;
 
 #ifdef _WIN32
 	std::replace(filename.begin(), filename.end(), '/', '\\');
