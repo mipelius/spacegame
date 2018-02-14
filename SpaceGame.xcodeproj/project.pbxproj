@@ -17,6 +17,7 @@
 		33249239D6EDDBEFBBFB7339 /* Music.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332496F1155D8343EC3D1FAC /* Music.cpp */; };
 		3324923B0E2B9AD22C143216 /* ParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249CF67AE35994A5085EB4 /* ParticleSystem.cpp */; };
 		332492411F2F761A0C078F80 /* PointLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E0357F5C99BB9DE7D28 /* PointLight.cpp */; };
+		33249251F8DB2481E502C98E /* TitleScreenController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249AA69F7E4FC0C937C816 /* TitleScreenController.cpp */; };
 		3324925CBE9B788E45A3BACC /* Prefabs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495F96B26C97ECA4A3D26 /* Prefabs.cpp */; };
 		332492874CED5DCE5477A469 /* MusicPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E9F51C99A3D00C3B8A1 /* MusicPlayer.cpp */; };
 		332492B488336026177637DD /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249E5AA9897F9A268DD2AC /* main.cpp */; };
@@ -100,6 +101,7 @@
 		3324911702F18C41A04B5453 /* WalkingEnemyAI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WalkingEnemyAI.cpp; sourceTree = "<group>"; };
 		3324911A8E9065C6153C7EF1 /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json.h; sourceTree = "<group>"; };
 		33249176ABDE55519A97688A /* DebugBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugBehaviour.h; sourceTree = "<group>"; };
+		3324918646F82763C5C14C6A /* TitleScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleScreenController.h; sourceTree = "<group>"; };
 		3324919535E4550FAFAA8854 /* AudioClip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioClip.h; sourceTree = "<group>"; };
 		332491E963A982E67AE84255 /* LightSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightSystem.h; sourceTree = "<group>"; };
 		3324920337120309345A0BFC /* TileMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileMap.h; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 		33249A32CC499429322658A3 /* Scenes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scenes.h; sourceTree = "<group>"; };
 		33249A358C46D3CC81B440FD /* LightSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LightSystem.cpp; sourceTree = "<group>"; };
 		33249A6785B175B27492C1DF /* BackgroundBehaviour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BackgroundBehaviour.cpp; sourceTree = "<group>"; };
+		33249AA69F7E4FC0C937C816 /* TitleScreenController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TitleScreenController.cpp; sourceTree = "<group>"; };
 		33249AB42937E3C2DA2A8121 /* ParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleSystem.h; sourceTree = "<group>"; };
 		33249AC6FCD14940B01807B8 /* Tile2DBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile2DBehaviour.h; sourceTree = "<group>"; };
 		33249AD57808B3A36C86FA9A /* DrawableMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawableMap.cpp; sourceTree = "<group>"; };
@@ -356,6 +359,8 @@
 			children = (
 				332493FFAEDA27A02F9D9DB8 /* SceneTitleScreen.h */,
 				33249D39889D5B03CDE6DF1F /* SceneTitleScreen.cpp */,
+				33249AA69F7E4FC0C937C816 /* TitleScreenController.cpp */,
+				3324918646F82763C5C14C6A /* TitleScreenController.h */,
 			);
 			path = SceneTitleScreen;
 			sourceTree = "<group>";
@@ -703,6 +708,7 @@
 				332492B488336026177637DD /* main.cpp in Sources */,
 				3324993231996C47AE1C019C,
 				33249D6D46BB5AEA72B8B2F5,
+				33249251F8DB2481E502C98E /* TitleScreenController.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

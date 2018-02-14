@@ -20,10 +20,11 @@
 
 namespace SortingLayers {
     enum {
-        background = -10,
+        background = -100,
         ammo = -2,
         enemy = -1,
-        player = 0
+        player = 0,
+        UI = 100
     };
 }
 

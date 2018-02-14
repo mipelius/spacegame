@@ -37,7 +37,12 @@ private:
     void addDrawable(DrawableBase *drawable);
     void removeDrawable(DrawableBase* drawable);
 
-    void renderDrawablesAndTerrain_();
+    void setCameraProjection_();
+    void setUIProjection_();
+    void sortDrawables_();
+    void renderDrawablesBeforeTerrain_(std::list<DrawableBase*>::iterator& it);
+    void renderDrawablesAfterTerrain_(std::list<DrawableBase*>::iterator& it);
+    void renderUIDrawables_(std::list<DrawableBase*>::iterator& it);
 
     std::list<DrawableBase*> drawables_;
     Camera* camera_;

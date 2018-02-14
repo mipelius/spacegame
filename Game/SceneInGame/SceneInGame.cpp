@@ -103,6 +103,15 @@ void SceneInGame::init() {
     spawnerBehaviour->setTarget(player);
     spawnerBehaviour->setInnerRect({-600.0f, -400.0f, 600.0f, 400.0f});
     spawnerBehaviour->setOuterRect({-1000.0f, -800.0f, 1000.0f, 800.0f});
+
+    // healthbar (test)
+    GameObject* healthBar = Tile2D::createGameObject();
+    healthBar->transform().setPosition({20.0f, 20.0f});
+
+    auto healthBarSprite = healthBar->attachComponent<Sprite>();
+    healthBarSprite->setRect({0.0f, -5.0f, 300.0f, 5.0f});
+    healthBarSprite->setColor({1.0f, 0.0f, 0.0f});
+    healthBarSprite->setIsUIDrawable(true);
 }
 
 void SceneInGame::destroy() {

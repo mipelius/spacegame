@@ -26,15 +26,26 @@ Canvas::Canvas() {
 }
 
 void Canvas::render() {
-    if (camera_ == nullptr) return;
+    sortDrawables_();
+    auto it = drawables_.begin();
 
-    Tile2D::lightSystem().update(Tile2D::canvas());
-    renderDrawablesAndTerrain_();
-    Tile2D::lightSystem().draw(Tile2D::canvas());
+    if (camera_ != nullptr) {
+        Tile2D::lightSystem().update(Tile2D::canvas());
+        setCameraProjection_();
+        renderDrawablesBeforeTerrain_(it);
+        if (Tile2D::tileMap().isLoaded()) {
+            Tile2D::tileMap().drawableMap_->draw(*this);
+        }
+        renderDrawablesAfterTerrain_(it);
+        Tile2D::lightSystem().draw(Tile2D::canvas());
 
-    if (Tile2D::isDebugMode()) {
-        Tile2D::physicsWorld().debugDraw();
+        if (Tile2D::isDebugMode()) {
+            Tile2D::physicsWorld().debugDraw();
+        }
     }
+
+    setUIProjection_();
+    renderUIDrawables_(it);
 }
 
 void Canvas::addDrawable(DrawableBase *drawable) {
@@ -53,8 +64,7 @@ void Canvas::removeDrawable(DrawableBase *drawable) {
     drawables_.remove(drawable);
 }
 
-void Canvas::renderDrawablesAndTerrain_() {
-    // set projection matrix
+void Canvas::setCameraProjection_() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(
@@ -65,28 +75,54 @@ void Canvas::renderDrawablesAndTerrain_() {
             -1.0,
             1.0
     );
+}
 
-    // sort based on sorting layer
+
+void Canvas::setUIProjection_() {
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    auto rect = Tile2D::window().getRect();
+    glOrtho(
+            rect.x1,
+            rect.x2,
+            rect.y2,
+            rect.y1,
+            -1.0,
+            1.0
+    );
+}
+
+
+void Canvas::sortDrawables_() {
     drawables_.sort([](DrawableBase* drawableA, DrawableBase* drawableB){
-        return drawableA->sortingLayer_ < drawableB->sortingLayer_;
+        if (drawableA->isUIDrawable_ != drawableB->isUIDrawable_) {
+            return !drawableA->isUIDrawable_; // and drawableB->isUIDrawable_
+        } else {
+            return drawableA->sortingLayer_ < drawableB->sortingLayer_;
+        }
     });
+}
 
-    auto it = drawables_.begin();
-
-    // render drawables with sortingLayer < 0
+void Canvas::renderDrawablesBeforeTerrain_(std::list<DrawableBase*>::iterator& it) {
+    // render drawables with conditions sortingLayer < 0 AND isUIDrawable == false
     for (; it != drawables_.end(); it++) {
-        if ((*it)->sortingLayer_ == 0) {
+        if ((*it)->sortingLayer_ == 0 || (*it)->isUIDrawable_) {
             break;
         }
         (*it)->draw(*this);
     }
+}
 
-    // render map
-    if (Tile2D::tileMap().isLoaded()) {
-        Tile2D::tileMap().drawableMap_->draw(*this);
+void Canvas::renderDrawablesAfterTerrain_(std::list<DrawableBase*>::iterator& it) {
+    for (; it != drawables_.end(); it++) {
+        if ((*it)->isUIDrawable_) {
+            break;
+        }
+        (*it)->draw(*this);
     }
+}
 
-    // render rest of the drawables (sortingLayer >= 0)
+void Canvas::renderUIDrawables_(std::list<DrawableBase*>::iterator& it) {
     for (; it != drawables_.end(); it++) {
         (*it)->draw(*this);
     }

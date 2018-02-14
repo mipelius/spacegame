@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2014  Miika Pelkonen
+// Copyright (C) 2018 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,38 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Sprite_H_
-#define __Sprite_H_
 
-#include "Texture.h"
-#include "DrawableBase.h"
-#include "Rect.h"
+#ifndef SPACEGAME_TITLESCREENCONTROLLER_H
+#define SPACEGAME_TITLESCREENCONTROLLER_H
 
-class ColliderShape;
-class ITexture;
 
-class Sprite : public DrawableBase {
+#include "Tile2DBehaviour.h"
+#include "Timer.h"
 
-public:
-    Sprite();
-
-    // getters and setters
-
-    const Rect &getRect() const;
-    void setRect(const Rect &rect);
-    ITexture *getTexturePtr() const;
-    void setTexturePtr(ITexture *texturePtr);
-
+class TitleScreenController : public Tile2DBehaviour {
 protected:
-    void drawActual(const Canvas &canvas) override;
+    void awake() override;
+    void update() override;
+    void lateUpdate() override;
 
 private:
-    Rect rect_;
-    ITexture* texturePtr_;
-
-    void drawRect_();
-    void drawSpriteHavingTexture_();
+    Timer startGameTimer_;
 };
 
 
-#endif //__Sprite_H_
+#endif //SPACEGAME_TITLESCREENCONTROLLER_H

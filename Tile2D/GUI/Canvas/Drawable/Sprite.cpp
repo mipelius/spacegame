@@ -19,28 +19,10 @@
 
 void Sprite::drawActual(const Canvas &canvas) {
     if (texturePtr_ == nullptr) {
-        return;
+        drawRect_();
+    } else {
+        drawSpriteHavingTexture_();
     }
-
-    texturePtr_->glBind();
-
-    glBegin(GL_QUADS);
-
-    texturePtr_->glTexCorner(Texture::Corner::TOP_LEFT);
-    glVertex3f(rect_.x1, rect_.y1, 0.0);
-
-    texturePtr_->glTexCorner(Texture::Corner::TOP_RIGHT);
-    glVertex3f(rect_.x2, rect_.y1, 0.0);
-
-    texturePtr_->glTexCorner(Texture::Corner::BOTTOM_RIGHT);
-    glVertex3f(rect_.x2, rect_.y2, 0.0);
-
-    texturePtr_->glTexCorner(Texture::Corner::BOTTOM_LEFT);
-    glVertex3f(rect_.x1, rect_.y2, 0.0);
-
-    glEnd();
-
-    texturePtr_->glUnbind();
 }
 
 Sprite::Sprite() :
@@ -66,4 +48,38 @@ ITexture *Sprite::getTexturePtr() const {
 
 void Sprite::setTexturePtr(ITexture *texturePtr) {
     texturePtr_ = texturePtr;
+}
+
+void Sprite::drawRect_() {
+    glDisable(GL_TEXTURE_2D);
+    glBegin(GL_QUADS);
+
+    glVertex3f(rect_.x1, rect_.y1, 0.0);
+    glVertex3f(rect_.x2, rect_.y1, 0.0);
+    glVertex3f(rect_.x2, rect_.y2, 0.0);
+    glVertex3f(rect_.x1, rect_.y2, 0.0);
+
+    glEnd();
+}
+
+void Sprite::drawSpriteHavingTexture_() {
+    texturePtr_->glBind();
+
+    glBegin(GL_QUADS);
+
+    texturePtr_->glTexCorner(Texture::Corner::TOP_LEFT);
+    glVertex3f(rect_.x1, rect_.y1, 0.0);
+
+    texturePtr_->glTexCorner(Texture::Corner::TOP_RIGHT);
+    glVertex3f(rect_.x2, rect_.y1, 0.0);
+
+    texturePtr_->glTexCorner(Texture::Corner::BOTTOM_RIGHT);
+    glVertex3f(rect_.x2, rect_.y2, 0.0);
+
+    texturePtr_->glTexCorner(Texture::Corner::BOTTOM_LEFT);
+    glVertex3f(rect_.x1, rect_.y2, 0.0);
+
+    glEnd();
+
+    texturePtr_->glUnbind();
 }

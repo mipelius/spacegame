@@ -18,10 +18,34 @@
 #include "Tile2D.h"
 #include "SceneTitleScreen.h"
 #include "Scenes.h"
+#include "Text.h"
+#include "SortingLayers.h"
+#include "TitleScreenController.h"
 
 void SceneTitleScreen::init() {
     // we are just loading the in game scene for now
-    Tile2D::sceneManager().loadScene(Scenes::inGame);
+    auto welcomeText = Tile2D::createGameObject();
+
+    auto textWelcome = welcomeText->attachComponent<Text>();
+    textWelcome->transform()->setPosition({400.0f, 200.0f});
+    textWelcome->setIsUIDrawable(true);
+    textWelcome->setSortingLayer(SortingLayers::UI);
+    textWelcome->setString("Welcome to the");
+    textWelcome->setFontPtr(Tile2D::resources().fonts["smallfont"]);
+    textWelcome->setSize(4.0f);
+
+    auto spaceGameText = Tile2D::createGameObject();
+
+    auto textSpaceGame = spaceGameText->attachComponent<Text>();
+    textSpaceGame->transform()->setPosition({300.0f, 300.0f});
+    textSpaceGame->setIsUIDrawable(true);
+    textSpaceGame->setSortingLayer(SortingLayers::UI);
+    textSpaceGame->setString("Space Game");
+    textSpaceGame->setFontPtr(Tile2D::resources().fonts["smallfont"]);
+    textSpaceGame->setSize(10.0f);
+
+    auto titleScreenController = Tile2D::createGameObject();
+    titleScreenController->attachComponent<TitleScreenController>();
 }
 
 void SceneTitleScreen::destroy() { }

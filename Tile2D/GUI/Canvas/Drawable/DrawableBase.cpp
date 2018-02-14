@@ -21,7 +21,8 @@ DrawableBase::DrawableBase() :
 isVisible_      (true       ),
 opacity_        (1.0        ),
 color_          (Color(1.0, 1.0, 1.0)),
-sortingLayer_   (0)
+sortingLayer_   (0),
+isUIDrawable_   (false      )
 {
 
 }
@@ -85,4 +86,12 @@ int DrawableBase::getSortingLayer() const {
 
 void DrawableBase::setSortingLayer(int sortingLayer) {
     sortingLayer_ = sortingLayer;
+}
+
+bool DrawableBase::isUIDrawable() const {
+    return isUIDrawable_;
+}
+
+void DrawableBase::setIsUIDrawable(bool isUIDrawable) {
+    isUIDrawable_ = isUIDrawable;
 }

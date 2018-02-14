@@ -37,6 +37,8 @@ public:
     void setColor(const Color &color);
     int getSortingLayer() const;
     void setSortingLayer(int sortingLayer);
+    bool isUIDrawable() const;
+    void setIsUIDrawable(bool isUIDrawable);
 
 protected:
     virtual void drawActual(const Canvas& canvas) = 0;
@@ -49,6 +51,7 @@ private:
     float opacity_;
     Color color_;
     int sortingLayer_;
+    bool isUIDrawable_;
 };
 
 
