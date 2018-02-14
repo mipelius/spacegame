@@ -32,7 +32,7 @@ class WorldMapModifiedEventArgs;
 #include "Event.h"
 
 class TileMap {
-    friend class Window;
+    friend class Canvas;
 
 public:
     Event<TileMap, WorldMapModifiedEventArgs> const modification;

@@ -43,8 +43,6 @@ class Tile2D {
     friend class Particle;
 
 public:
-    static bool isDebugMode;
-
     Tile2D(Tile2D const &)              = delete;
     Tile2D& operator=(Tile2D const &)   = delete;
     Tile2D(Tile2D &&)                   = delete;
@@ -69,6 +67,9 @@ public:
     static PathFinder &pathFinder();
 
     static GameObject* createGameObject();
+
+    static bool isDebugMode();
+    static void setIsDebugMode(bool isDebugMode);
 
 private:
     Window *window_;
@@ -103,6 +104,10 @@ private:
     void destroy_(GameObject* obj);
 
     Pool<Particle> particlePool_;
+
+    bool isDebugMode_;
+
+private:
 
     static const unsigned int MAX_PARTICLES = 10000;
 };

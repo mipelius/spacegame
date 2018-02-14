@@ -19,31 +19,21 @@
 #include "Window.h"
 #include "DrawableBase.h"
 #include "Camera.h"
+#include "Tile2D.h"
 
 Canvas::Canvas() {
     camera_ = nullptr;
 }
 
-void Canvas::renderActual() {
+void Canvas::render() {
     if (camera_ == nullptr) return;
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(
-            camera_->getAreaRect().x1,
-            camera_->getAreaRect().x2,
-            camera_->getAreaRect().y2,
-            camera_->getAreaRect().y1,
-            -1.0,
-            1.0
-    );
+    Tile2D::lightSystem().update(Tile2D::canvas());
+    renderDrawablesAndTerrain_();
+    Tile2D::lightSystem().draw(Tile2D::canvas());
 
-    drawables_.sort([](DrawableBase* drawableA, DrawableBase* drawableB){
-        return drawableA->sortingLayer_ < drawableB->sortingLayer_;
-    });
-
-    for (auto& drawable : drawables_) {
-        drawable->draw(*this);
+    if (Tile2D::isDebugMode()) {
+        Tile2D::physicsWorld().debugDraw();
     }
 }
 
@@ -61,4 +51,43 @@ Camera* Canvas::getCamera() const {
 
 void Canvas::removeDrawable(DrawableBase *drawable) {
     drawables_.remove(drawable);
+}
+
+void Canvas::renderDrawablesAndTerrain_() {
+    // set projection matrix
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(
+            camera_->getAreaRect().x1,
+            camera_->getAreaRect().x2,
+            camera_->getAreaRect().y2,
+            camera_->getAreaRect().y1,
+            -1.0,
+            1.0
+    );
+
+    // sort based on sorting layer
+    drawables_.sort([](DrawableBase* drawableA, DrawableBase* drawableB){
+        return drawableA->sortingLayer_ < drawableB->sortingLayer_;
+    });
+
+    auto it = drawables_.begin();
+
+    // render drawables with sortingLayer < 0
+    for (; it != drawables_.end(); it++) {
+        if ((*it)->sortingLayer_ == 0) {
+            break;
+        }
+        (*it)->draw(*this);
+    }
+
+    // render map
+    if (Tile2D::tileMap().isLoaded()) {
+        Tile2D::tileMap().drawableMap_->draw(*this);
+    }
+
+    // render rest of the drawables (sortingLayer >= 0)
+    for (; it != drawables_.end(); it++) {
+        (*it)->draw(*this);
+    }
 }

@@ -18,8 +18,6 @@
 #include "JsonFileManager.h"
 #include "Tile2D.h"
 #include "precompile.h"
-#include "Window.h"
-#include "GuiComponentBase.h"
 
 Window::Window()
 {
@@ -86,34 +84,8 @@ void Window::init(const std::string& configJson) {
     isInitialized_ = true;
 }
 
-void Window::update_() {
-    // render
-
-    glViewport(0, 0, (GLsizei)w_, (GLsizei)h_);
-
-    Tile2D::lightSystem().update(Tile2D::canvas());
-
-    for (auto& guiComponent : guiComponents_) {
-        guiComponent->render();
-    }
-
-    if (Tile2D::tileMap().isLoaded()) {
-        Tile2D::tileMap().drawableMap_->draw(Tile2D::canvas());
-    }
-
-    Tile2D::lightSystem().draw(Tile2D::canvas());
-
-    if (Tile2D::isDebugMode) {
-        Tile2D::physicsWorld().debugDraw();
-    }
-
-    // swap
+void Window::swap_() {
     SDL_GL_SwapWindow(window_);
-}
-
-void Window::addComponent(GuiComponentBase* guiComponent) {
-    guiComponents_.push_back(guiComponent);
-    guiComponent->setWindow(this);
 }
 
 void Window::setSize(unsigned w, unsigned h) {
@@ -130,29 +102,8 @@ Vecf Window::getPosition_(void *owner) {
 void Window::setPosition_(void *owner, const Vecf &value) {
     auto window = (Window*)owner;
     SDL_SetWindowPosition(window->window_, (int)value.x, (int)value.y);
-    window->x_ = value.x;
-    window->y_ = value.y;
-}
-
-
-bool Window::getIsFullScreen_(void *owner) {
-    return ((Window*)owner)->isFullScreen_;
-}
-void Window::setIsFullScreen_(void *owner, const bool &value) {
-    auto window = (Window*)owner;
-
-    int retValue;
-
-    if (value) {
-        retValue = SDL_SetWindowFullscreen(window->window_, SDL_WINDOW_FULLSCREEN);
-    }
-    else {
-        retValue = SDL_SetWindowFullscreen(window->window_, 0);
-    }
-
-    if (retValue == 0) {
-        window->isFullScreen_ = value;
-    }
+    window->x_ = (unsigned)value.x;
+    window->y_ = (unsigned)value.y;
 }
 
 // getters and setters
@@ -171,4 +122,8 @@ unsigned int Window::getH() const {
 
 void Window::setH(unsigned int h) {
     h_ = h;
+}
+
+Rect Window::getRect() {
+    return Rect(x_, y_, w_, h_);
 }

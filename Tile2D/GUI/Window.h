@@ -22,27 +22,27 @@ class GuiComponentBase;
 #include "precompile.h"
 #include <list>
 #include "Vec.h"
+#include "Rect.h"
 
 class Window {
     friend class Tile2D;
 public:
     void setSize(unsigned w, unsigned h);
-    void addComponent(GuiComponentBase *guiComponent);
 
 // getters and setters
+    Rect getRect();
+
     unsigned int getW() const;
     void setW(unsigned int w);
     unsigned int getH() const;
     void setH(unsigned int h);
 
 private:
-    void update_();
+    void swap_();
 
     ~Window();
     Window();
     void init(const std::string& configJson);
-
-    std::list<GuiComponentBase*> guiComponents_;
 
     SDL_Window* window_;
     SDL_GLContext context_;
@@ -57,11 +57,6 @@ private:
 
     static Vecf getPosition_(void *owner);
     static void setPosition_(void *owner, const Vecf &value);
-
-    static bool getIsFullScreen_(void *owner);
-    static void setIsFullScreen_(void *owner, const bool &value);
-
-    class PropertyIsFullScreen;
 };
 
 #endif //__Window_H_

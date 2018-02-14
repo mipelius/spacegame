@@ -11,7 +11,6 @@
 		332490A0A8952AD78A7E128B /* AudioClip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249B62F628B8D0067C28B3 /* AudioClip.cpp */; };
 		332490A1BCE3E98185ADA971 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332498D3565DCE36CC8090FB /* Tile.cpp */; };
 		3324910666EE0FAE52CB7480 /* JsonFileManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249F5495EF0C4129ACC3DA /* JsonFileManager.cpp */; };
-		332491264F4D73EC132D3CFB /* GuiComponentBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249694C8D28E21A0FE6B5D /* GuiComponentBase.cpp */; };
 		3324914C1EC58027D3913C1C /* TileSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324909AF1B82F89E3F66E8A /* TileSet.cpp */; };
 		332491571500F80D89593BD2 /* SamplePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249DE20D747CFDB42C9CB6 /* SamplePlayer.cpp */; };
 		3324916C25D636A06FC366D6 /* PathFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324929B960D9BB72BDA0139 /* PathFinder.cpp */; };
@@ -100,7 +99,6 @@
 		332491078973FF16541F1B2A /* MapTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapTexture.cpp; sourceTree = "<group>"; };
 		3324911702F18C41A04B5453 /* WalkingEnemyAI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WalkingEnemyAI.cpp; sourceTree = "<group>"; };
 		3324911A8E9065C6153C7EF1 /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json.h; sourceTree = "<group>"; };
-		3324913524FEADB1D21E23D3 /* GuiComponentBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuiComponentBase.h; sourceTree = "<group>"; };
 		33249176ABDE55519A97688A /* DebugBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugBehaviour.h; sourceTree = "<group>"; };
 		3324919535E4550FAFAA8854 /* AudioClip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioClip.h; sourceTree = "<group>"; };
 		332491E963A982E67AE84255 /* LightSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightSystem.h; sourceTree = "<group>"; };
@@ -154,7 +152,6 @@
 		3324960D47C046E226323E19 /* Health.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Health.cpp; sourceTree = "<group>"; };
 		3324966D65FFDCB5645DBF44 /* Tile2DBehaviour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tile2DBehaviour.cpp; sourceTree = "<group>"; };
 		3324967CD95241FA3575B704 /* Music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Music.h; sourceTree = "<group>"; };
-		33249694C8D28E21A0FE6B5D /* GuiComponentBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuiComponentBase.cpp; sourceTree = "<group>"; };
 		332496B8F6E45364CDA29832 /* DrawableGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawableGroup.h; sourceTree = "<group>"; };
 		332496C5CA7FDC6CAF40AE19 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = /Library/Frameworks/SDL2.framework; sourceTree = "<absolute>"; };
 		332496C618E815F2E60F7DAC /* PlayerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerController.cpp; sourceTree = "<group>"; };
@@ -446,8 +443,6 @@
 				3324950397D59C7783EAE32F /* Canvas */,
 				332495D2845A9B51FA147335 /* Window.h */,
 				332492098F3E53F761C3D8AD /* Window.cpp */,
-				3324913524FEADB1D21E23D3 /* GuiComponentBase.h */,
-				33249694C8D28E21A0FE6B5D /* GuiComponentBase.cpp */,
 			);
 			path = GUI;
 			sourceTree = "<group>";
@@ -658,7 +653,6 @@
 				3324969E180A466908E14C4B /* Camera.cpp in Sources */,
 				33249E12C1BB44FD852954A6 /* Canvas.cpp in Sources */,
 				33249CA95EA8FA9A49D0E71C /* Window.cpp in Sources */,
-				332491264F4D73EC132D3CFB /* GuiComponentBase.cpp in Sources */,
 				33249FE99E77F5AC3409336F /* Tile2D.cpp in Sources */,
 				33249ADD0D665AFE52DB04B9 /* Resources.cpp in Sources */,
 				33249DE4D18C1DC3B74F94D5 /* GameObject.cpp in Sources */,

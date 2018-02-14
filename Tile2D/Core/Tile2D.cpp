@@ -21,7 +21,7 @@
 #include "PathFinder.h"
 
 bool Tile2D::isLoaded_ = false;
-bool Tile2D::isDebugMode = false;
+
 
 Tile2D::Tile2D() :
         particlePool_(Pool<Particle>(MAX_PARTICLES))
@@ -31,7 +31,7 @@ Tile2D::Tile2D() :
     resources_ = new Resources();
     physicsWorld_ = new PhysicsWorld();
     sceneManager_ = new SceneManager();
-    canvas_ = new Canvas(); window_->addComponent(canvas_);
+    canvas_ = new Canvas();
     tileMap_ = new TileMap();
     lightSystem_ = new LightSystem();
     pathFinder_ = new PathFinder();
@@ -83,6 +83,7 @@ void Tile2D::load(
     Tile2D::sceneManager().init(scenes);
     Tile2D::lightSystem().init();
     Tile2D::physicsWorld().init(colliderLayerRules);
+    Tile2D::setIsDebugMode(false);
 
     // START LOOP
 
@@ -100,9 +101,10 @@ void Tile2D::mainLoop_() {
         initGameObjects_();
         removeDestroyedObjects_();
         updateBehaviours_();
-        physicsWorld_->step(deltaTime / 1000.0);
+        physicsWorld_->step(deltaTime / 1000.0f);
         lateUpdateBehaviours_();
-        window().update_();
+        canvas().render();
+        window().swap_();
     }
 }
 
@@ -202,4 +204,12 @@ std::string Tile2D::getResourcePath() {
     SDL_free(basePath);
 
     return path;
+}
+
+bool Tile2D::isDebugMode() {
+    return instance_().isDebugMode_;
+}
+
+void Tile2D::setIsDebugMode(bool isDebugMode) {
+    instance_().isDebugMode_ = isDebugMode;
 }

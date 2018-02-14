@@ -55,8 +55,8 @@ void DebugBehaviour::update() {
                     break;
                 }
                 case SDLK_RETURN:
-                    Tile2D::isDebugMode = !Tile2D::isDebugMode;
-                    if (Tile2D::isDebugMode) {
+                    Tile2D::setIsDebugMode(!Tile2D::isDebugMode());
+                    if (Tile2D::isDebugMode()) {
                         sprite_->setOpacity(0.5);
                     } else {
                         sprite_->setOpacity(1.0);

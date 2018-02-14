@@ -32,7 +32,7 @@ static void drawLine(const LineSegment& lineSegment) {
 static void prepareRendering() {
     Canvas& canvas = Tile2D::canvas();
     auto camera = Tile2D::canvas().getCamera();
-    Rect rect = canvas.getRenderingAreaRect();
+    Rect rect = Tile2D::window().getRect();
 
     auto x = (GLint)(rect.x1);
     auto y = (GLint)(Tile2D::window().getH() - rect.y2);

@@ -17,12 +17,12 @@
 #ifndef __Canvas_H_
 #define __Canvas_H_
 
+#include <list>
+
 class Camera;
 class DrawableBase;
 
-#include "GuiComponentBase.h"
-
-class Canvas : public GuiComponentBase {
+class Canvas {
     friend class Tile2D;
     friend class DrawableBase;
 
@@ -33,9 +33,11 @@ public:
 private:
     Canvas();
 
-    void renderActual() override;
+    void render();
     void addDrawable(DrawableBase *drawable);
     void removeDrawable(DrawableBase* drawable);
+
+    void renderDrawablesAndTerrain_();
 
     std::list<DrawableBase*> drawables_;
     Camera* camera_;
