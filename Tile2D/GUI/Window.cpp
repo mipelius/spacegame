@@ -38,13 +38,24 @@ void Window::init(const std::string& configJson) {
     json::Object obj = JsonFileManager::load(configJson);
     json::Object windowJson = obj["window"];
 
-    x_ = (unsigned)windowJson["x"].ToInt();
-    y_ = (unsigned)windowJson["y"].ToInt();
-    w_ = (unsigned)windowJson["w"].ToInt();
-    h_ = (unsigned)windowJson["h"].ToInt();
+    if (windowJson["use_default_fullscreen"].ToBool()) {
+        static int displayInUse = 0;
+        SDL_DisplayMode mode;
+        SDL_GetCurrentDisplayMode(displayInUse, &mode);
+        x_ = 0;
+        y_ = 0;
+        w_ = (unsigned)mode.w;
+        h_ = (unsigned)mode.h;
 
-    isFullScreen_ = windowJson["fullscreen"].ToBool();
+        isFullScreen_ = true;
+    } else {
+        x_ = (unsigned)windowJson["x"].ToInt();
+        y_ = (unsigned)windowJson["y"].ToInt();
+        w_ = (unsigned)windowJson["w"].ToInt();
+        h_ = (unsigned)windowJson["h"].ToInt();
 
+        isFullScreen_ = windowJson["fullscreen"].ToBool();
+    }
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
