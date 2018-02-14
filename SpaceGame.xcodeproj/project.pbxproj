@@ -162,6 +162,7 @@
 		332496F1155D8343EC3D1FAC /* Music.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Music.cpp; sourceTree = "<group>"; };
 		33249705D680F5503BC6C669 /* AnimatedTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AnimatedTexture.cpp; sourceTree = "<group>"; };
 		3324971C5D5F2A866DBF413D /* ColliderLayerMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColliderLayerMatrix.h; sourceTree = "<group>"; };
+		332497233B8E1AF4569745D7 /* SortingLayers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SortingLayers.h; sourceTree = "<group>"; };
 		3324975CC88864B15D767244 /* PolygonCollider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolygonCollider.h; sourceTree = "<group>"; };
 		332497C310F4433C8FCC3AD1 /* AnimationBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AnimationBase.cpp; sourceTree = "<group>"; };
 		332497F2358DE2CADB9232C5 /* Background.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Background.cpp; sourceTree = "<group>"; };
@@ -473,6 +474,7 @@
 				332492326917EAF64D365619 /* Tags.h */,
 				33249E5AA9897F9A268DD2AC /* main.cpp */,
 				332492DEB4B875A4C6DCBF7F /* ColliderLayers.h */,
+				332497233B8E1AF4569745D7 /* SortingLayers.h */,
 			);
 			path = Game;
 			sourceTree = "<group>";

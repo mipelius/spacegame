@@ -18,9 +18,10 @@
 #include "DrawableBase.h"
 
 DrawableBase::DrawableBase() :
-isVisible_  (true       ),
-opacity_    (1.0        ),
-color_      (Color(1.0, 1.0, 1.0))
+isVisible_      (true       ),
+opacity_        (1.0        ),
+color_          (Color(1.0, 1.0, 1.0)),
+sortingLayer_   (0)
 {
 
 }
@@ -48,9 +49,7 @@ void DrawableBase::draw(const Canvas& canvas) {
     glLoadIdentity();
 
     transform()->glTransform();
-
     drawActual(canvas);
-
     transform()->glInvTransform();
 }
 
@@ -78,4 +77,12 @@ const Color &DrawableBase::getColor() const {
 
 void DrawableBase::setColor(const Color &color) {
     color_ = color;
+}
+
+int DrawableBase::getSortingLayer() const {
+    return sortingLayer_;
+}
+
+void DrawableBase::setSortingLayer(int sortingLayer) {
+    sortingLayer_ = sortingLayer;
 }

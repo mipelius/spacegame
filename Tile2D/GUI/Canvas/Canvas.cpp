@@ -38,6 +38,10 @@ void Canvas::renderActual() {
             1.0
     );
 
+    drawables_.sort([](DrawableBase* drawableA, DrawableBase* drawableB){
+        return drawableA->sortingLayer_ < drawableB->sortingLayer_;
+    });
+
     for (auto& drawable : drawables_) {
         drawable->draw(*this);
     }

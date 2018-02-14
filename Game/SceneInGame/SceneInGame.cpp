@@ -27,6 +27,7 @@
 #include "PathFinder.h"
 #include "Prefabs.h"
 #include "SpawnerBehaviour.h"
+#include "SortingLayers.h"
 
 void createBackground(Rect area, const char* texture, Color color) {
     auto background = Tile2D::createGameObject();
@@ -35,6 +36,7 @@ void createBackground(Rect area, const char* texture, Color color) {
     bg->setTexturePtr(Tile2D::resources().textures[texture]);
     bg->setColor(color);
     bg->setOpacity(0.0f);
+    bg->setSortingLayer(SortingLayers::background);
     auto bgBehaviour = background->attachComponent<BackgroundBehaviour>();
     bgBehaviour->setArea(area);
 }
@@ -74,7 +76,7 @@ void SceneInGame::init() {
     polygonCollider->setLayer(ColliderLayers::player);
 
     auto spaceshipSprite = player->attachComponent<Sprite>();
-
+    spaceshipSprite->setSortingLayer(SortingLayers::player);
     spaceshipSprite->setRect({-30, -30, 30, 30});
     spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship_small"]);
 

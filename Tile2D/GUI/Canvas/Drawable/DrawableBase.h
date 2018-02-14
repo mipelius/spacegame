@@ -22,10 +22,11 @@
 #include "Color.h"
 
 class DrawableBase : public Tile2DComponent {
-
+    friend class Canvas;
 public:
     DrawableBase();
 
+    void draw(const Canvas& canvas);
     // getters and setters
 
     bool isVisible() const;
@@ -34,7 +35,8 @@ public:
     void setOpacity(float opacity);
     const Color &getColor() const;
     void setColor(const Color &color);
-    void draw(const Canvas& canvas);
+    int getSortingLayer() const;
+    void setSortingLayer(int sortingLayer);
 
 protected:
     virtual void drawActual(const Canvas& canvas) = 0;
@@ -46,6 +48,7 @@ private:
     bool isVisible_;
     float opacity_;
     Color color_;
+    int sortingLayer_;
 };
 
 

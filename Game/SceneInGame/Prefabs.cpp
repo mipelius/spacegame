@@ -30,6 +30,7 @@
 #include "SparkleBehaviour.h"
 #include "ColliderLayers.h"
 #include "FlyingEnemyAI.h"
+#include "SortingLayers.h"
 
 // ---- ENEMIES ----
 
@@ -123,6 +124,7 @@ GameObject *Prefabs::spawnEnemy_(
     polygonCollider->setLayer(ColliderLayers::enemy);
 
     auto enemySprite = enemy->attachComponent<Sprite>();
+    enemySprite->setSortingLayer(SortingLayers::enemy);
     enemySprite->setRect(spriteRect);
     enemySprite->setTexturePtr(Tile2D::resources().textures[textureName]);
     enemySprite->setColor({1, 1, 1});
@@ -146,12 +148,12 @@ GameObject *Prefabs::bomb() {
 
     auto bomb = Tile2D::createGameObject();
 
-    auto bompBody = bomb->attachComponent<Body>();
-    bompBody->setMass(50);
+    auto body = bomb->attachComponent<Body>();
+    body->setMass(50);
 
-    auto bompCollider = bomb->attachComponent<PolygonCollider>();
-    bompCollider->setPoints({{-9, -4}, {9, -4}, {9, 4}, {-9, 4}});
-    bompCollider->terrainCollision.add([] (PolygonCollider* collider, TerrainCollisionEventArgs args) {
+    auto collider = bomb->attachComponent<PolygonCollider>();
+    collider->setPoints({{-9, -4}, {9, -4}, {9, 4}, {-9, 4}});
+    collider->terrainCollision.add([] (PolygonCollider* collider, TerrainCollisionEventArgs args) {
         for (auto x=-explosionRadius; x<explosionRadius; ++x) {
             for (auto y=-explosionRadius; y<explosionRadius; ++y) {
                 if (Vecf((float)x, (float)y).length() > explosionRadius) {
@@ -182,13 +184,12 @@ GameObject *Prefabs::bomb() {
         explosion->transform().setScale({0.75, 0.75});
     });
 
-    auto bompSprite = bomb->attachComponent<Sprite>();
-    bompSprite->setTexturePtr(Tile2D::resources().textures["bomb"]);
-    bompSprite->setRect({-10, -10, 10, 10});
+    auto sprite = bomb->attachComponent<Sprite>();
+    sprite->setSortingLayer(SortingLayers::ammo);
+    sprite->setTexturePtr(Tile2D::resources().textures["bomb"]);
+    sprite->setRect({-10, -10, 10, 10});
 
     auto bombBehaviour = bomb->attachComponent<BombBehaviour>();
-
-
 
     return bomb;
 }
@@ -209,6 +210,7 @@ GameObject *Prefabs::light() {
     });
 
     auto lightSprite = light->attachComponent<Sprite>();
+    lightSprite->setSortingLayer(SortingLayers::ammo);
     lightSprite->setRect({-40, -40, 40, 40});
     lightSprite->setTexturePtr(Tile2D::resources().textures["light"]);
 
@@ -229,6 +231,7 @@ GameObject *Prefabs::laser() {
     auto laserSprite = laser->attachComponent<Sprite>();
     laserSprite->setRect({-20,-5,20,5});
     laserSprite->setTexturePtr(Tile2D::resources().textures["missile"]);
+    laserSprite->setSortingLayer(SortingLayers::ammo);
 
     auto laserAge = laser->attachComponent<LimitedLifetimeBehaviour>();
     laserAge->getTimer().setInterval(1000);
