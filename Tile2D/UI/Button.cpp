@@ -23,7 +23,8 @@ Button::Button() :
         click(Event<Button, ButtonClickedEventArgs>(this)),
         normalColor_({1.0f, 1.0f, 1.0f}),
         highLightedColor_({0.7f, 0.7f, 0.9f}),
-        pressedColor_({0.4f, 0.4f, 7.0f})
+        pressedColor_({0.4f, 0.4f, 7.0f}),
+        mousePressedOnThis_(false)
 {
 
 }
