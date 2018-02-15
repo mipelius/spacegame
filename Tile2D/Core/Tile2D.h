@@ -33,6 +33,7 @@
 #include "Pool.h"
 #include "ColliderLayerMatrix.h"
 #include "PathFinder.h"
+#include "Input.h"
 
 class Tile2D {
     friend class Tile2DObject;
@@ -65,6 +66,7 @@ public:
     static LightSystem &lightSystem();
     static TileMap &tileMap();
     static PathFinder &pathFinder();
+    static const Input &input();
 
     static GameObject* createGameObject();
 
@@ -82,6 +84,7 @@ private:
     LightSystem* lightSystem_;
     TileMap* tileMap_;
     PathFinder* pathFinder_;
+    Input* input_;
 
     void mainLoop_();
     void cleanUp_();
@@ -89,6 +92,7 @@ private:
     void initGameObjects_();
     void updateBehaviours_();
     void lateUpdateBehaviours_();
+    void PollSDL_Events();
 
     Tile2D();
     ~Tile2D();
@@ -109,8 +113,6 @@ private:
 
     bool isDebugMode_;
     bool quit_;
-
-private:
 
     static const unsigned int MAX_PARTICLES = 10000;
 };

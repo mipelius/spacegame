@@ -23,20 +23,14 @@ void TitleScreenController::awake() {
 }
 
 void TitleScreenController::update() {
-    SDL_Event event;
-    while(SDL_PollEvent(&event)) {
-        if (event.type == SDL_KEYDOWN) {
-            switch (event.key.keysym.sym) {
-                case SDLK_RETURN:
-                    Tile2D::sceneManager().loadScene(Scenes::inGame);
-                    break;
-                case SDLK_ESCAPE:
-                    Tile2D::quit();
-                    break;
-                default:
-                    break;
-            }
-        }
+    auto& keyboard = Tile2D::input().keyboard();
+    auto& mouse = Tile2D::input().mouse();
+
+    if (keyboard.keyPressed(SDL_SCANCODE_RETURN)) {
+        Tile2D::sceneManager().loadScene(Scenes::inGame);
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_ESCAPE)) {
+        Tile2D::quit();
     }
 }
 

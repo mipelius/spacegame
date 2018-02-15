@@ -27,6 +27,7 @@
 		33249333C46BF6F971367A6D /* WalkingEnemyAI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3324911702F18C41A04B5453 /* WalkingEnemyAI.cpp */; };
 		33249346C1F4A712821DDAFE /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495D0B6082C5C6DE5F976 /* Sprite.cpp */; };
 		332493AE3060E0615E85299B /* LineSegment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332495B0606D5E2689FAC847 /* LineSegment.cpp */; };
+		332494197672A3E838101307 /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249D61330EEF1904AA3A21 /* Input.cpp */; };
 		33249475A2D7EFACEC0E72A8 /* PulseLightBehaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249F45FD465585DDA8684C /* PulseLightBehaviour.cpp */; };
 		332494C982EAC8E7C6820F3E /* EnemyAIBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249F40FBA5A3889135D9AA /* EnemyAIBase.cpp */; };
 		3324958C7839B95A75CAF742 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249F86AFD1A32E07ED3128 /* Texture.cpp */; };
@@ -212,6 +213,7 @@
 		33249D44E82BA4B22EFDBA92 /* PulseLightBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulseLightBehaviour.h; sourceTree = "<group>"; };
 		33249D480D517FE85AC8034A /* IScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IScene.h; sourceTree = "<group>"; };
 		33249D60E204AFB9013009AB /* BombBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BombBehaviour.h; sourceTree = "<group>"; };
+		33249D61330EEF1904AA3A21 /* Input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Input.cpp; sourceTree = "<group>"; };
 		33249D9BC4F03A47E0CB7692 /* SceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneManager.h; sourceTree = "<group>"; };
 		33249DDFC4ADB938562F51AC /* PolygonCollider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolygonCollider.cpp; sourceTree = "<group>"; };
 		33249DE20D747CFDB42C9CB6 /* SamplePlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SamplePlayer.cpp; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 		33249EC9075C2BC6EA644332 /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
 		33249ECD8388B04A380E297F /* AnimationManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AnimationManager.cpp; sourceTree = "<group>"; };
 		33249F1063B6914F567DB21A /* Rect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rect.h; sourceTree = "<group>"; };
+		33249F40B06182336706E418 /* Input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Input.h; sourceTree = "<group>"; };
 		33249F40FBA5A3889135D9AA /* EnemyAIBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyAIBase.cpp; sourceTree = "<group>"; };
 		33249F45FD465585DDA8684C /* PulseLightBehaviour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PulseLightBehaviour.cpp; sourceTree = "<group>"; };
 		33249F53E2E9E04D3E4806CC /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
@@ -590,6 +593,8 @@
 				3324966D65FFDCB5645DBF44 /* Tile2DBehaviour.cpp */,
 				332495FA3C17938DD7B522D7 /* Transform.cpp */,
 				33249EC9075C2BC6EA644332 /* Transform.h */,
+				33249D61330EEF1904AA3A21 /* Input.cpp */,
+				33249F40B06182336706E418 /* Input.h */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -709,6 +714,7 @@
 				3324993231996C47AE1C019C,
 				33249D6D46BB5AEA72B8B2F5,
 				33249251F8DB2481E502C98E /* TitleScreenController.cpp in Sources */,
+				332494197672A3E838101307 /* Input.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

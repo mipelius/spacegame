@@ -27,64 +27,50 @@ void DebugBehaviour::awake() {
 }
 
 void DebugBehaviour::update() {
-    SDL_Event event;
-    while(SDL_PollEvent(&event)) {
-        if (event.type == SDL_KEYDOWN) {
-            switch (event.key.keysym.sym) {
-                case SDLK_1 : {
-                    auto walkingEnemy = Prefabs::walkingEnemy();
-                    walkingEnemy->transform().setPosition(transform()->getPosition());
-                    walkingEnemy->getComponent<EnemyAIBase>()->setTarget(transform());
-                    break;
-                }
-                case SDLK_2 : {
-                    auto crabKindOf = Prefabs::crabKindOf();
-                    crabKindOf->transform().setPosition(transform()->getPosition());
-                    crabKindOf->getComponent<EnemyAIBase>()->setTarget(transform());
-                    break;
-                }
-                case SDLK_3: {
-                    auto fourwayCyclops = Prefabs::fourwayCyclops();
-                    fourwayCyclops->transform().setPosition(transform()->getPosition());
-                    fourwayCyclops->getComponent<EnemyAIBase>()->setTarget(transform());
-                    break;
-                }
-                case SDLK_4: {
-                    auto twoHorn = Prefabs::twoHorn();
-                    twoHorn->transform().setPosition(transform()->getPosition());
-                    twoHorn->getComponent<EnemyAIBase>()->setTarget(transform());
-                    break;
-                }
-                case SDLK_RETURN:
-                    Tile2D::setIsDebugMode(!Tile2D::isDebugMode());
-                    if (Tile2D::isDebugMode()) {
-                        sprite_->setOpacity(0.5);
-                    } else {
-                        sprite_->setOpacity(1.0);
-                    }
-                    break;
-                case SDLK_p:
-                    std::cout << transform()->getPosition().x << "," << transform()->getPosition().y << "\n";
-                    break;
-                case SDLK_q:
-                    transform()->setPosition({500.0, 250.0});
-                    break;
-                case SDLK_r:
-                    Tile2D::tileMap().load("maps/map.bmp", "json/tileset.json");
-                    break;
-                case SDLK_s:
-                    Tile2D::lightSystem().setBlendedShadowsEnabled(!Tile2D::lightSystem().isBlendedShadowsEnabled());
-                    break;
-                case SDLK_d:
-                    Tile2D::lightSystem().setSoftShadowsEnabled(!Tile2D::lightSystem().isSoftShadowsEnabled());
-                    break;
-                case SDLK_ESCAPE:
-                    Tile2D::sceneManager().loadScene(Scenes::titleScreen);
-                    break;
-                default:
-                    break;
-            }
+    auto& keyboard = Tile2D::input().keyboard();
+
+    if (keyboard.keyPressed(SDL_SCANCODE_1)) {
+        auto walkingEnemy = Prefabs::walkingEnemy();
+        walkingEnemy->transform().setPosition(transform()->getPosition());
+        walkingEnemy->getComponent<EnemyAIBase>()->setTarget(transform());
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_2)) {
+        auto crabKindOf = Prefabs::crabKindOf();
+        crabKindOf->transform().setPosition(transform()->getPosition());
+        crabKindOf->getComponent<EnemyAIBase>()->setTarget(transform());
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_3)) {
+        auto fourwayCyclops = Prefabs::fourwayCyclops();
+        fourwayCyclops->transform().setPosition(transform()->getPosition());
+        fourwayCyclops->getComponent<EnemyAIBase>()->setTarget(transform());
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_4)) {
+        auto twoHorn = Prefabs::twoHorn();
+        twoHorn->transform().setPosition(transform()->getPosition());
+        twoHorn->getComponent<EnemyAIBase>()->setTarget(transform());
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_RETURN)) {
+        Tile2D::setIsDebugMode(!Tile2D::isDebugMode());
+        if (Tile2D::isDebugMode()) {
+            sprite_->setOpacity(0.5);
+        } else {
+            sprite_->setOpacity(1.0);
         }
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_P)) {
+        std::cout << transform()->getPosition().x << "," << transform()->getPosition().y << "\n";
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_Q)) {
+        transform()->setPosition({500.0, 250.0});
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_R)) {
+        Tile2D::tileMap().load("maps/map.bmp", "json/tileset.json");
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_S)) {
+        Tile2D::lightSystem().setBlendedShadowsEnabled(!Tile2D::lightSystem().isBlendedShadowsEnabled());
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_D)) {
+        Tile2D::lightSystem().setSoftShadowsEnabled(!Tile2D::lightSystem().isSoftShadowsEnabled());
     }
 }
 

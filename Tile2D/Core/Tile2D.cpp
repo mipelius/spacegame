@@ -36,11 +36,13 @@ Tile2D::Tile2D() :
     tileMap_ = new TileMap();
     lightSystem_ = new LightSystem();
     pathFinder_ = new PathFinder();
+    input_ = new Input();
 }
 
 Tile2D::~Tile2D() {
     cleanUp_();
 
+    delete input_;
     delete pathFinder_;
     delete lightSystem_;
     delete tileMap_;
@@ -101,6 +103,7 @@ void Tile2D::mainLoop_() {
         sceneManager_->update_();
         initGameObjects_();
         removeDestroyedObjects_();
+        PollSDL_Events();
         updateBehaviours_();
         physicsWorld_->step(deltaTime / 1000.0f);
         lateUpdateBehaviours_();
@@ -151,7 +154,6 @@ void Tile2D::destroy_(GameObject* obj) {
 
     instance_().objectsToDestroy_.insert(obj);
 }
-
 
 Window &Tile2D::window() {
     return *instance_().window_;
@@ -217,4 +219,26 @@ void Tile2D::setIsDebugMode(bool isDebugMode) {
 
 void Tile2D::quit() {
     instance_().quit_ = true;
+}
+
+void Tile2D::PollSDL_Events() {
+    SDL_Event event;
+
+    instance_().input_->keyboard_.keyboardEvents_.clear();
+    instance_().input_->mouse_.mouseButtonEvents_.clear();
+
+    while(SDL_PollEvent(&event)) {
+        if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
+            instance_().input_->keyboard_.keyboardEvents_.push_back(event.key);
+        }
+        if (event.type == SDL_MOUSEBUTTONUP || event.type == SDL_MOUSEBUTTONDOWN) {
+            instance_().input_->mouse_.mouseButtonEvents_.push_back(event.button);
+        }
+    }
+
+    instance_().input_->keyboard_.keyboardState_ = SDL_GetKeyboardState(0);
+}
+
+const Input &Tile2D::input() {
+    return *instance_().input_;
 }

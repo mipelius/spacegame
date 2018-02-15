@@ -31,30 +31,33 @@ void PlayerController::awake() {
 }
 
 void PlayerController::update() {
-    // read input -> actions
-    const Uint8 *state = SDL_GetKeyboardState(NULL);
+    auto& keyboard = Tile2D::input().keyboard();
 
     float angularVelocity = 0;
 
-    if (state[SDL_SCANCODE_UP]) {
+    if (keyboard.keyState(SDL_SCANCODE_UP)) {
         Vecf force = Vecf::byAngle(transform()->getRotation(), moveForce);
         body_->applyForce(force);
     }
-    if (state[SDL_SCANCODE_LEFT]) {
+    if (keyboard.keyState(SDL_SCANCODE_LEFT)) {
         angularVelocity -= 5;
     }
-    if (state[SDL_SCANCODE_RIGHT]) {
+    if (keyboard.keyState(SDL_SCANCODE_RIGHT)) {
         angularVelocity += 5;
     }
 
     body_->setAngularVelocity(angularVelocity);
 
-    if (state[SDL_SCANCODE_LSHIFT]) {
+    if (keyboard.keyState(SDL_SCANCODE_LSHIFT)) {
         dropBomp_();
     }
 
-    if (state[SDL_SCANCODE_LCTRL]) {
+    if (keyboard.keyState(SDL_SCANCODE_LCTRL)) {
         dropLight_();
+    }
+
+    if (keyboard.keyPressed(SDL_SCANCODE_ESCAPE)) {
+        Tile2D::sceneManager().loadScene(Scenes::titleScreen);
     }
 }
 
