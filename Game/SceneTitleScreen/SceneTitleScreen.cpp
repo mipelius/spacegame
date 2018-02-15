@@ -23,7 +23,6 @@
 #include "TitleScreenController.h"
 
 void SceneTitleScreen::init() {
-    // we are just loading the in game scene for now
     auto welcomeText = Tile2D::createGameObject();
 
     auto textWelcome = welcomeText->attachComponent<Text>();
