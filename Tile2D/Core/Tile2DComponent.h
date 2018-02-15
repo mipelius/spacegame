@@ -27,7 +27,8 @@ public:
     Transform* transform() { return &(gameObject_->transform()); }
 
     Tile2DComponent() = default;
-    ~Tile2DComponent() = default;
+
+    virtual ~Tile2DComponent() = default;
 
 protected:
     virtual void init() = 0;

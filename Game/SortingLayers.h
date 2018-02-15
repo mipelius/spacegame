@@ -24,7 +24,9 @@ namespace SortingLayers {
         ammo = -2,
         enemy = -1,
         player = 0,
-        UI = 100
+        UI = 100,
+        UI_Button = 101,
+        UI_ButtonText = 102
     };
 }
 

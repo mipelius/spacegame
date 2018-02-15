@@ -29,6 +29,7 @@ public:
     public:
         bool buttonPressed(Uint8 SDL_mousebutton, Veci& position) const;
         bool buttonReleased(Uint8 SDL_mousebutton, Veci& position) const;
+        Veci getMousePosition() const;
 
     private:
         std::list<SDL_MouseButtonEvent> mouseButtonEvents_;

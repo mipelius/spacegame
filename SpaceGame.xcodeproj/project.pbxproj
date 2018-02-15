@@ -41,6 +41,7 @@
 		33249718383534DEDD8C1F33 /* AnimationBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332497C310F4433C8FCC3AD1 /* AnimationBase.cpp */; };
 		3324971C0C4834C292044657 /* Background.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332493C23A695EBD051A2422 /* Background.cpp */; };
 		33249742F14EA8354AB0C8AD /* Canvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249B8AD5F155476070ABB1 /* Canvas.cpp */; };
+		3324975847CCBC84D54FDBA0 /* Button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249BD21FE116A6FB9E2335 /* Button.cpp */; };
 		3324975D0397CD1F1C5A3E20 /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332493142BAAD3F441C7A171 /* Window.cpp */; };
 		33249778ABD5B2AAD501DE9B /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 332496C5CA7FDC6CAF40AE19 /* SDL2.framework */; };
 		332497A33EF4E7B7BEBCE322 /* DebugBehaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33249BC5515E23DD3D74B324 /* DebugBehaviour.cpp */; };
@@ -145,6 +146,7 @@
 		3324945E48EF0A24CDA51CE9 /* SceneInGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneInGame.cpp; sourceTree = "<group>"; };
 		3324946314894F53333F69B2 /* Tile2DMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile2DMath.h; sourceTree = "<group>"; };
 		332494775A99AF71D190F837 /* PathFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathFinder.h; sourceTree = "<group>"; };
+		3324948D431701E1E41C11C7 /* Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
 		3324948FCB9E173AF7B58984 /* EnemyAIBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyAIBase.h; sourceTree = "<group>"; };
 		33249491FFC9C80ADEB14C01 /* SparkleBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SparkleBehaviour.h; sourceTree = "<group>"; };
 		332494B3E8DEAA4B245301C2 /* SpawnerBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpawnerBehaviour.h; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 		33249B80D801A1423CC64C81 /* PointLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointLight.h; sourceTree = "<group>"; };
 		33249B8AD5F155476070ABB1 /* Canvas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Canvas.cpp; sourceTree = "<group>"; };
 		33249BC5515E23DD3D74B324 /* DebugBehaviour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugBehaviour.cpp; sourceTree = "<group>"; };
+		33249BD21FE116A6FB9E2335 /* Button.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Button.cpp; sourceTree = "<group>"; };
 		33249C0A4C642D8272AF9CAC /* Health.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Health.h; sourceTree = "<group>"; };
 		33249C3C218A615D4BD8FC6A /* GameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
 		33249C76949CE60405F76E63 /* PhysicsWorld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhysicsWorld.cpp; sourceTree = "<group>"; };
@@ -414,6 +417,8 @@
 		3324990E17D6159A3F37D795 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				33249BD21FE116A6FB9E2335 /* Button.cpp */,
+				3324948D431701E1E41C11C7 /* Button.h */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -715,6 +720,7 @@
 				332493DEDB8FB4E44686FCBA /* ParticleSystem.cpp in Sources */,
 				332495B043A2F9B84813D69B /* Particle.cpp in Sources */,
 				3324975D0397CD1F1C5A3E20 /* Window.cpp in Sources */,
+				3324975847CCBC84D54FDBA0 /* Button.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

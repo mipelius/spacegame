@@ -37,6 +37,12 @@ bool Input::Mouse::buttonReleased(Uint8 SDL_mousebutton, Veci& position) const {
     return false;
 }
 
+Veci Input::Mouse::getMousePosition() const {
+    Veci result;
+    SDL_GetMouseState(&result.x, &result.y);
+    return result;
+}
+
 bool Input::Keyboard::keyPressed(SDL_Scancode scancode) const {
     for (auto& keyboardEvent : keyboardEvents_) {
         if (keyboardEvent.keysym.scancode == scancode && keyboardEvent.state == SDL_PRESSED) {
