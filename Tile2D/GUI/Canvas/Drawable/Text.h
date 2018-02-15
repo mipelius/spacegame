@@ -27,22 +27,38 @@ class Text : public DrawableBase {
 public:
     Text();
 
+    enum class HorizontalAlignment {left, center, right};
+    enum class VerticalAlignment {top, center, bottom};
+
     // getters and setters
 
     Font *getFontPtr() const;
     void setFontPtr(Font *fontPtr);
-    float getSize() const;
-    void setSize(float size);
+    float getFontSize() const;
+    void setFontSize(float size);
     const std::string &getString() const;
     void setString(const std::string &string);
     void drawActual(const Canvas &canvas) override;
+    HorizontalAlignment getHorizontalAlignment() const;
+    void setHorizontalAlignment(HorizontalAlignment horizontalAlignment);
+    VerticalAlignment getVerticalAlignment() const;
+    void setVerticalAlignment(VerticalAlignment verticalAlignment);
+
+private:
 
 private:
     Font* fontPtr_;
 
-    float size_;
+    float fontSize_;
     std::string string_;
 
+    HorizontalAlignment horizontalAlignment_;
+    VerticalAlignment verticalAlignment_;
+
+    Vecf size_;
+
+    void updateTextSize_();
+    void unsetSize_();
 };
 
 

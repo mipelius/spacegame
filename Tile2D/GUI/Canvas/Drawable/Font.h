@@ -45,7 +45,7 @@ private:
 
     Texture* fontTexture_;
 
-    Letter* getLetter(unsigned char ch);
+    Letter* getLetter(const char& ch);
 
     std::map<unsigned char, Letter*> mappings;
 };

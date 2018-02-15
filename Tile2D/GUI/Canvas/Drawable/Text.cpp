@@ -21,9 +21,11 @@
 
 Text::Text() :
         fontPtr_(nullptr),
-        size_(1.0)
+        fontSize_(1.0f),
+        horizontalAlignment_(HorizontalAlignment::center),
+        verticalAlignment_(VerticalAlignment::center)
 {
-
+    unsetSize_();
 }
 
 
@@ -32,40 +34,73 @@ void Text::drawActual(const Canvas &canvas) {
         return;
     }
 
+    if (size_.x < 0) {
+        updateTextSize_();
+    }
+
     fontPtr_->fontTexture_->glBind();
 
     float textureW = fontPtr_->fontTexture_->getW();
     float textureH = fontPtr_->fontTexture_->getH();
 
-    float offsetX = 0;
-    float offsetY = 0;
+    float offsetX;
+    switch (horizontalAlignment_) {
+        case HorizontalAlignment::left : {
+            offsetX = 0.0f;
+            break;
+        }
+        case HorizontalAlignment::center : {
+            offsetX = size_.x / -2.0f;
+            break;
+        }
+        case HorizontalAlignment::right : {
+            offsetX = -size_.x;
+            break;
+        }
+    }
+
+    float offsetY;
+    switch (verticalAlignment_) {
+        case VerticalAlignment::top : {
+            offsetY = 0.0f;
+            break;
+        }
+        case VerticalAlignment::center : {
+            offsetY = size_.y / -2.0f;
+            break;
+        }
+        case VerticalAlignment::bottom : {
+            offsetY = -size_.y;
+            break;
+        }
+    }
 
     glBegin(GL_QUADS);
 
     for (int i = 0; i < string_.length(); i++) {
-        unsigned char ch = string_.data()[i];
+        char ch = string_.data()[i];
         Font::Letter* letter = fontPtr_->getLetter(ch);
 
         if (letter) {
-            float texX1 = (1.0 / textureW) * letter->x;
+            float texX1 = (1.0f / textureW) * letter->x;
             float x1 = 0;
-            float texY1 = (1.0 / textureH) * letter->y;
+            float texY1 = (1.0f / textureH) * letter->y;
             float y1 = 0;
 
-            float texX2 = (1.0 / textureW) * (letter->x + letter->w);
-            float x2 = (0 + letter->w) * size_;
-            float texY2 = (1.0 / textureH) * letter->y;
+            float texX2 = (1.0f / textureW) * (letter->x + letter->w);
+            float x2 = (0 + letter->w) * fontSize_;
+            float texY2 = (1.0f / textureH) * letter->y;
             float y2 = 0;
 
-            float texX3 = (1.0 / textureW) * (letter->x + letter->w);
-            float x3 = (0 + letter->w) * size_;
-            float texY3 = (1.0 / textureH) * (letter->y + letter->h);
-            float y3 = (0 + letter->h) * size_;
+            float texX3 = (1.0f / textureW) * (letter->x + letter->w);
+            float x3 = (0 + letter->w) * fontSize_;
+            float texY3 = (1.0f / textureH) * (letter->y + letter->h);
+            float y3 = (0 + letter->h) * fontSize_;
 
-            float texX4 = (1.0 / textureW) * letter->x;
+            float texX4 = (1.0f / textureW) * letter->x;
             float x4 = 0;
-            float texY4 = (1.0 / textureH) * (letter->y + letter->h);
-            float y4 = (0 + letter->h) * size_;
+            float texY4 = (1.0f / textureH) * (letter->y + letter->h);
+            float y4 = (0 + letter->h) * fontSize_;
 
             x1 += offsetX; x2 += offsetX; x3 += offsetX; x4 += offsetX;
             y1 += offsetY; y2 += offsetY; y3 += offsetY; y4 += offsetY;
@@ -75,8 +110,7 @@ void Text::drawActual(const Canvas &canvas) {
             glTexCoord2f(texX3, texY3); glVertex2f(x3, y3);
             glTexCoord2f(texX4, texY4); glVertex2f(x4, y4);
 
-            offsetX += (letter->w) * size_;
-            // offsetY = ???
+            offsetX += (letter->w) * fontSize_;
         }
     }
 
@@ -93,14 +127,16 @@ Font *Text::getFontPtr() const {
 
 void Text::setFontPtr(Font *fontPtr) {
     fontPtr_ = fontPtr;
+    unsetSize_();
 }
 
-float Text::getSize() const {
-    return size_;
+float Text::getFontSize() const {
+    return fontSize_;
 }
 
-void Text::setSize(float size) {
-    size_ = size;
+void Text::setFontSize(float size) {
+    fontSize_ = size;
+    unsetSize_();
 }
 
 const std::string &Text::getString() const {
@@ -109,5 +145,42 @@ const std::string &Text::getString() const {
 
 void Text::setString(const std::string &string) {
     string_ = string;
+    unsetSize_();
+}
+
+void Text::updateTextSize_() {
+    size_ = {0, 0};
+    for (int i = 0; i < string_.length(); i++) {
+        char ch = string_.data()[i];
+        Font::Letter* letter = fontPtr_->getLetter(ch);
+
+        if (letter) {
+            size_.x += letter->w * fontSize_;
+            float letterH = letter->h * fontSize_;
+            if (letterH > size_.y) {
+                size_.y = letterH;
+            }
+        }
+    }
+}
+
+void Text::unsetSize_() {
+    size_ = {-1.0f, -1.0f};
+}
+
+Text::HorizontalAlignment Text::getHorizontalAlignment() const {
+    return horizontalAlignment_;
+}
+
+void Text::setHorizontalAlignment(Text::HorizontalAlignment horizontalAlignment) {
+    horizontalAlignment_ = horizontalAlignment;
+}
+
+Text::VerticalAlignment Text::getVerticalAlignment() const {
+    return verticalAlignment_;
+}
+
+void Text::setVerticalAlignment(Text::VerticalAlignment verticalAlignment) {
+    verticalAlignment_ = verticalAlignment;
 }
 

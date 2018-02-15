@@ -27,22 +27,26 @@ void SceneTitleScreen::init() {
     auto welcomeText = Tile2D::createGameObject();
 
     auto textWelcome = welcomeText->attachComponent<Text>();
-    textWelcome->transform()->setPosition({400.0f, 200.0f});
+    textWelcome->transform()->setPosition({Tile2D::window().getW() / 2.0f, Tile2D::window().getH() / 2.0f - 20.0f});
+    textWelcome->setHorizontalAlignment(Text::HorizontalAlignment::center);
+    textWelcome->setVerticalAlignment(Text::VerticalAlignment::bottom);
     textWelcome->setIsUIDrawable(true);
     textWelcome->setSortingLayer(SortingLayers::UI);
     textWelcome->setString("Welcome to the");
     textWelcome->setFontPtr(Tile2D::resources().fonts["smallfont"]);
-    textWelcome->setSize(4.0f);
+    textWelcome->setFontSize(4.0f);
 
     auto spaceGameText = Tile2D::createGameObject();
 
     auto textSpaceGame = spaceGameText->attachComponent<Text>();
-    textSpaceGame->transform()->setPosition({300.0f, 300.0f});
+    textSpaceGame->transform()->setPosition({Tile2D::window().getW() / 2.0f, Tile2D::window().getH() / 2.0f - 20.0f});
+    textSpaceGame->setHorizontalAlignment(Text::HorizontalAlignment::center);
+    textSpaceGame->setVerticalAlignment(Text::VerticalAlignment::top);
     textSpaceGame->setIsUIDrawable(true);
     textSpaceGame->setSortingLayer(SortingLayers::UI);
     textSpaceGame->setString("Space Game");
     textSpaceGame->setFontPtr(Tile2D::resources().fonts["smallfont"]);
-    textSpaceGame->setSize(10.0f);
+    textSpaceGame->setFontSize(10.0f);
 
     auto titleScreenController = Tile2D::createGameObject();
     titleScreenController->attachComponent<TitleScreenController>();

@@ -65,6 +65,6 @@ Font::~Font() {
 }
 
 
-Font::Letter *Font::getLetter(unsigned char ch) {
+Font::Letter *Font::getLetter(const char& ch) {
     return mappings[ch];
 }
