@@ -80,10 +80,6 @@ void SceneInGame::init() {
     spaceshipSprite->setRect({-30, -30, 30, 30});
     spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship_small"]);
 
-    // uncomment to use old spaceship sprite and use this later!
-//    spaceshipSprite->setRect({-20, -20, 20, 20});
-//    spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship"]);
-
     auto light = player->attachComponent<PointLight>();
     light->setIntensity(1.0);
     light->setRadius(500.0);
@@ -97,7 +93,6 @@ void SceneInGame::init() {
     Tile2D::canvas().setCamera(camera);
 
     // spawner
-
     GameObject* spawner = Tile2D::createGameObject();
     auto spawnerBehaviour = spawner->attachComponent<SpawnerBehaviour>();
     spawnerBehaviour->setTarget(player);

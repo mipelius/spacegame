@@ -19,13 +19,24 @@
 #include "Tile2D.h"
 
 void TitleScreenController::awake() {
-    startGameTimer_.setInterval(2000);
-    startGameTimer_.reset();
+
 }
 
 void TitleScreenController::update() {
-    if (startGameTimer_.timeIntervalPassed()) {
-        Tile2D::sceneManager().loadScene(Scenes::inGame);
+    SDL_Event event;
+    while(SDL_PollEvent(&event)) {
+        if (event.type == SDL_KEYDOWN) {
+            switch (event.key.keysym.sym) {
+                case SDLK_RETURN:
+                    Tile2D::sceneManager().loadScene(Scenes::inGame);
+                    break;
+                case SDLK_ESCAPE:
+                    Tile2D::quit();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
 

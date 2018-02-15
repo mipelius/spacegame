@@ -28,8 +28,6 @@ protected:
     void update() override;
     void lateUpdate() override;
 
-private:
-    Timer startGameTimer_;
 };
 
 

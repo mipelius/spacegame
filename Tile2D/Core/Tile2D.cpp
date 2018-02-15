@@ -24,7 +24,8 @@ bool Tile2D::isLoaded_ = false;
 
 
 Tile2D::Tile2D() :
-        particlePool_(Pool<Particle>(MAX_PARTICLES))
+        particlePool_(Pool<Particle>(MAX_PARTICLES)),
+        quit_(false)
 {
     SDL_Init(SDL_INIT_EVERYTHING);
     window_ = new Window();
@@ -93,7 +94,7 @@ void Tile2D::load(
 void Tile2D::mainLoop_() {
     Uint32 timestamp = SDL_GetTicks();
 
-    while(!SDL_QuitRequested()) {
+    while(!SDL_QuitRequested() && !quit_) {
         glClear(GL_COLOR_BUFFER_BIT);
         Uint32 deltaTime = SDL_GetTicks() - timestamp;
         timestamp = SDL_GetTicks();
@@ -212,4 +213,8 @@ bool Tile2D::isDebugMode() {
 
 void Tile2D::setIsDebugMode(bool isDebugMode) {
     instance_().isDebugMode_ = isDebugMode;
+}
+
+void Tile2D::quit() {
+    instance_().quit_ = true;
 }

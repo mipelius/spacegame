@@ -71,6 +71,8 @@ public:
     static bool isDebugMode();
     static void setIsDebugMode(bool isDebugMode);
 
+    static void quit();
+
 private:
     Window *window_;
     Resources *resources_;
@@ -106,6 +108,7 @@ private:
     Pool<Particle> particlePool_;
 
     bool isDebugMode_;
+    bool quit_;
 
 private:
 

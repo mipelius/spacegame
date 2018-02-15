@@ -19,6 +19,7 @@
 #include "Tile2D.h"
 #include "Prefabs.h"
 #include "EnemyAIBase.h"
+#include "Scenes.h"
 
 void DebugBehaviour::awake() {
     body_ = gameObject()->getComponent<Body>();
@@ -76,6 +77,10 @@ void DebugBehaviour::update() {
                     break;
                 case SDLK_d:
                     Tile2D::lightSystem().setSoftShadowsEnabled(!Tile2D::lightSystem().isSoftShadowsEnabled());
+                    break;
+                case SDLK_ESCAPE:
+                    Tile2D::sceneManager().loadScene(Scenes::titleScreen);
+                    break;
                 default:
                     break;
             }
