@@ -26,9 +26,7 @@ TileMap::TileMap() :
 { }
 
 TileMap::~TileMap() {
-    if (tiles_ != nullptr) {
-        delete tiles_;
-    }
+    unload();
 }
 
 void TileMap::setValue(int x, int y, Tile* value) {
@@ -123,9 +121,9 @@ void TileMap::unload() {
     if (!isLoaded()) {
         return;
     }
-    delete drawableMap_;
-    delete tileSet_;
-    delete tiles_;
+    delete drawableMap_;    drawableMap_ = nullptr;
+    delete tileSet_;        tileSet_ = nullptr;
+    delete tiles_;          tiles_ = nullptr;
 }
 
 bool TileMap::isLoaded() {
