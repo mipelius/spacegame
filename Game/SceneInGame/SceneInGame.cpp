@@ -111,5 +111,6 @@ void SceneInGame::init() {
 
 void SceneInGame::destroy() {
     Tile2D::canvas().setCamera(nullptr);
+    Tile2D::tileMap().unload();
     delete camera;
 }
