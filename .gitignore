@@ -7,7 +7,7 @@ cmake-build-release/
 # OSX / XCODE
 
 .DS_STORE
-SpaceGame.xcodeproj/xcuserdata/
+SpaceGame.xcodeproj/project.xcworkspace
 
 # DATA IS IGNORED FOR NOW SINCE BINARY+GIT=BAD
 
