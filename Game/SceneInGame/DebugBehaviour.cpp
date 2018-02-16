@@ -64,7 +64,7 @@ void DebugBehaviour::update() {
         transform()->setPosition({500.0, 250.0});
     }
     if (keyboard.keyPressed(SDL_SCANCODE_R)) {
-        Tile2D::tileMap().load("maps/map.bmp", "json/tileset.json");
+        Tile2D::tileMap().load("data/maps/map.bmp", "data/maps/tileset.json");
     }
     if (keyboard.keyPressed(SDL_SCANCODE_S)) {
         Tile2D::lightSystem().setBlendedShadowsEnabled(!Tile2D::lightSystem().isBlendedShadowsEnabled());

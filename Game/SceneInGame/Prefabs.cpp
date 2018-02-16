@@ -36,7 +36,7 @@
 
 GameObject *Prefabs::walkingEnemy() {
     auto enemy = spawnEnemy_(
-            "walking_alien_green",
+            "sentry",
             {
                     {-10, -25},
                     {10, -25},
@@ -69,7 +69,7 @@ GameObject *Prefabs::walkingEnemy() {
 
 GameObject *Prefabs::crabKindOf() {
     auto enemy = spawnEnemy_(
-            "crab_kindof_colored",
+            "crab_kindof",
             {{-10, -25}, {10, -25}, {10, 25}, {-10, 25}},
             {-25, -25, 25, 25},
             0.0f
@@ -81,7 +81,7 @@ GameObject *Prefabs::crabKindOf() {
 
 GameObject *Prefabs::fourwayCyclops() {
     auto enemy = spawnEnemy_(
-            "fourwaycyclops_colored",
+            "fourwaycyclops",
             {{-20, -20}, {20, -20}, {20, 20}, {-20, 20}},
             {-30, -30, 30, 30},
             0.0f
@@ -93,7 +93,7 @@ GameObject *Prefabs::fourwayCyclops() {
 
 GameObject *Prefabs::twoHorn() {
     auto enemy = spawnEnemy_(
-            "twohorn_colored",
+            "twohorn",
             {{-10, -25}, {10, -25}, {10, 25}, {-10, 25}},
             {-25, -25, 25, 25},
             0.0f
@@ -230,7 +230,7 @@ GameObject *Prefabs::laser() {
 
     auto laserSprite = laser->attachComponent<Sprite>();
     laserSprite->setRect({-20,-5,20,5});
-    laserSprite->setTexturePtr(Tile2D::resources().textures["missile"]);
+    laserSprite->setTexturePtr(Tile2D::resources().textures["laser"]);
     laserSprite->setSortingLayer(SortingLayers::ammo);
 
     auto laserAge = laser->attachComponent<LimitedLifetimeBehaviour>();

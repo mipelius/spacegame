@@ -28,6 +28,7 @@
 #include "Prefabs.h"
 #include "SpawnerBehaviour.h"
 #include "SortingLayers.h"
+#include "Text.h"
 
 void createBackground(Rect area, const char* texture, Color color) {
     auto background = Tile2D::createGameObject();
@@ -43,7 +44,7 @@ void createBackground(Rect area, const char* texture, Color color) {
 
 void SceneInGame::init() {
     // Scene setup: tile map, physics, light system
-    Tile2D::tileMap().load("maps/map.bmp", "json/tileset.json");
+    Tile2D::tileMap().load("data/maps/map.bmp", "data/maps/tileset.json");
     Tile2D::lightSystem().setAmbientLight(0.5f);
     Tile2D::physicsWorld().setAirDensity(0.0001);
 
@@ -78,7 +79,7 @@ void SceneInGame::init() {
     auto spaceshipSprite = player->attachComponent<Sprite>();
     spaceshipSprite->setSortingLayer(SortingLayers::player);
     spaceshipSprite->setRect({-30, -30, 30, 30});
-    spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship_small"]);
+    spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship"]);
 
     auto light = player->attachComponent<PointLight>();
     light->setIntensity(1.0);
