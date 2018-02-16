@@ -113,10 +113,12 @@ void Tile2D::mainLoop_() {
 }
 
 void Tile2D::cleanUp_() {
-    for (auto& obj : objects_) {
-        delete obj;
+    for (auto obj : objects_) {
+        instance_().objectsToDestroy_.insert(obj);
     }
     objects_.clear();
+    objectsToInit_.clear();
+    removeDestroyedObjects_();
 }
 
 void Tile2D::removeDestroyedObjects_() {
