@@ -21,7 +21,7 @@ namespace Scenes {
     enum {
         titleScreen,
         inGame,
-        gameOverScreen
+        gameEndScreen
     };
 }
 

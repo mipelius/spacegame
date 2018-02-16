@@ -14,12 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "SceneGameOver.h"
+#ifndef __SceneGameOver_H
+#define __SceneGameOver_H
 
-void SceneGameOver::init() {
+#include "IScene.h"
 
-}
+class SceneEndScreen : public IScene {
+    void init() override;
+    void destroy() override;
+};
 
-void SceneGameOver::destroy() {
-
-}
+#endif //__SceneGameOver_H

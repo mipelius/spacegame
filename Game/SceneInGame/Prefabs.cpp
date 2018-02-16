@@ -16,6 +16,7 @@
 
 
 #include <cfloat>
+#include <Game/Scenes.h>
 #include "Prefabs.h"
 #include "PolygonCollider.h"
 #include "WalkingEnemyAI.h"
@@ -33,6 +34,29 @@
 #include "SortingLayers.h"
 
 // ---- ENEMIES ----
+
+GameObject *Prefabs::boss() {
+    auto enemy = spawnEnemy_(
+            "fourwaycyclops",
+            {{-60, -60}, {60, -60}, {60, 60}, {-60, 60}},
+            {-80, -80, 80, 80},
+            0.0f
+    );
+    auto health = enemy->getComponent<Health>();
+    health->setMaxHealth(1000) ;
+    health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
+        Tile2D::sceneManager().loadScene(Scenes::gameEndScreen);
+    });
+
+    auto AI = enemy->attachComponent<FlyingEnemyAI>();
+    AI->setMaxDistance(100000);
+    Timer shootingTimer;
+    shootingTimer.setInterval(200);
+    AI->setShootingTimer(shootingTimer);
+    AI->setMaxPathFindingDistance(1500);
+
+    return enemy;
+}
 
 GameObject *Prefabs::walkingEnemy() {
     auto enemy = spawnEnemy_(
@@ -87,6 +111,18 @@ GameObject *Prefabs::fourwayCyclops() {
             0.0f
     );
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
+    Timer pathUpdateTimer;
+    pathUpdateTimer.setInterval(1000);
+    AI->setPathUpdateTimer(pathUpdateTimer);
+
+    AI->setMaxPathFindingDistance(1500);
+
+    Timer shootingTimer;
+    shootingTimer.setInterval(500);
+    shootingTimer.setIntervalRandomness(200);
+    AI->setShootingTimer(shootingTimer);
+
+    AI->setMaxDistance(1500);
 
     return enemy;
 }
@@ -436,4 +472,5 @@ void Prefabs::sparkles(Vecf position, Vecf normal, Color color) {
     random = Vecf(rand() % 100, rand() % 100) / div;
     sparkle(position, (perp + random) * -1000, color);
 }
+
 

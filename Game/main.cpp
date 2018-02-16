@@ -17,7 +17,7 @@
 #include "Resources.h"
 #include "SceneInGame.h"
 #include "SceneTitleScreen.h"
-#include "SceneGameOver.h"
+#include "SceneEndScreen.h"
 #include "Scenes.h"
 #include "ColliderLayers.h"
 
@@ -30,7 +30,7 @@ int main(int argc, const char *argv[]) {
             {
                     {Scenes::titleScreen,    new SceneTitleScreen},
                     {Scenes::inGame,         new SceneInGame},
-                    {Scenes::gameOverScreen, new SceneGameOver}
+                    {Scenes::gameEndScreen,  new SceneEndScreen}
             },
             {
                     {ColliderLayers::playerAmmo, ColliderLayers::playerAmmo, false},

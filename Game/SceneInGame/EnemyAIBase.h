@@ -30,6 +30,14 @@ public:
     Transform *getTarget() const;
     void setSpawnerBehaviour(SpawnerBehaviour *spawnerBehaviour);
 
+    const Timer &getShootingTimer() const;
+    void setShootingTimer(const Timer &shootingTimer);
+    float getMaxDistance() const;
+    void setMaxDistance(float maxDistance);
+
+protected:
+
+
 protected:
     Body* body_;
     Transform* target_ = nullptr;
@@ -37,12 +45,12 @@ protected:
     void shootTarget_(bool useTimer = true);
     Timer shootingTimer_;
 
-    void awake() override;
+    float maxDistance_;
 
+    void awake() override;
     SpawnerBehaviour* spawnerBehaviour_ = nullptr;
 
     void onDestroy() override;
-
     void update() override;
 };
 

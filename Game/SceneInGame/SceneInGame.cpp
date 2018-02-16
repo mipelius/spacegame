@@ -29,6 +29,7 @@
 #include "SpawnerBehaviour.h"
 #include "SortingLayers.h"
 #include "Text.h"
+#include "EnemyAIBase.h"
 
 void createBackground(Rect area, const char* texture, Color color) {
     auto background = Tile2D::createGameObject();
@@ -108,6 +109,11 @@ void SceneInGame::init() {
     healthBarSprite->setRect({0.0f, -5.0f, 300.0f, 5.0f});
     healthBarSprite->setColor({1.0f, 0.0f, 0.0f});
     healthBarSprite->setIsUIDrawable(true);
+
+    // boss
+    auto boss = Prefabs::boss();
+    boss->transform().setPosition({2622.0f ,3880.0f});
+    boss->getComponent<EnemyAIBase>()->setTarget(&player->transform());
 }
 
 void SceneInGame::destroy() {

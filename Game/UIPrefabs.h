@@ -14,14 +14,33 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __Tags_H
-#define __Tags_H
 
-namespace Tags {
-    enum {
-        enemy,
-        player,
-    };
-}
+#ifndef __UIPrefabs_H
+#define __UIPrefabs_H
 
-#endif //__Tags_H
+#include "GameObject.h"
+#include "Button.h"
+#include "Vec.h"
+#include "Text.h"
+
+class UIPrefabs {
+public:
+    static GameObject* button(
+            const Vecf &position,
+            const char *string,
+            const float width,
+            void (*handler) (Button* button, Button::ButtonClickedEventArgs args)
+    );
+
+    static GameObject* text(
+            const Vecf& position,
+            const char* string,
+            float size,
+            Text::HorizontalAlignment horizontalAlignment = Text::HorizontalAlignment::center,
+            Text::VerticalAlignment verticalAlignment = Text::VerticalAlignment::center
+    );
+
+};
+
+
+#endif //__UIPrefabs_H

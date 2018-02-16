@@ -37,7 +37,7 @@ include_directories(
         Game
         Game/SceneInGame
         Game/SceneTitleScreen
-        Game/SceneGameOver
+        Game/SceneEndScreen
         Tile2D/Animation
         Tile2D/LightSystem
         Tile2D/Canvas/ParticleSystem
@@ -172,8 +172,8 @@ set(SOURCE_FILES
         Game/Tags.h
         Game/ColliderLayers.h
 
-        Game/SceneGameOver/SceneGameOver.cpp
-        Game/SceneGameOver/SceneGameOver.h
+        Game/SceneEndScreen/SceneEndScreen.cpp
+        Game/SceneEndScreen/SceneEndScreen.h
 
         Game/SceneTitleScreen/SceneTitleScreen.cpp
         Game/SceneTitleScreen/SceneTitleScreen.h
@@ -209,7 +209,7 @@ set(SOURCE_FILES
         Game/SceneInGame/WalkingEnemyAI.cpp
         Game/SceneInGame/WalkingEnemyAI.h
 
-        )
+        Game/UIPrefabs.cpp Game/UIPrefabs.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

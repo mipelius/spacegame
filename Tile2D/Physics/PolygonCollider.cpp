@@ -243,7 +243,7 @@ void PolygonCollider::onDestroy() {
 bool PolygonCollider::detectTerrainCollision_(float deltaTime) {
     TileMap* map = &Tile2D::tileMap();
 
-    if (map == nullptr) {
+    if (!map->isLoaded()) {
         return false;
     }
 

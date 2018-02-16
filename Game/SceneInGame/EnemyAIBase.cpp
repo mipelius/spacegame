@@ -53,14 +53,10 @@ void EnemyAIBase::setSpawnerBehaviour(SpawnerBehaviour *spawnerBehaviour) {
     spawnerBehaviour_ = spawnerBehaviour;
 }
 
-
-
 void EnemyAIBase::update() {
     float distanceSqr = (target_->getPosition() - transform()->getPosition()).lengthSqr();
 
-    static const float maxDistanceSqr = 1500 * 1500;
-
-    if (distanceSqr > maxDistanceSqr) {
+    if (distanceSqr > (maxDistance_ * maxDistance_)) {
         gameObject()->destroy();
     }
 }
@@ -72,4 +68,18 @@ void EnemyAIBase::onDestroy() {
     }
 }
 
+const Timer &EnemyAIBase::getShootingTimer() const {
+    return shootingTimer_;
+}
 
+void EnemyAIBase::setShootingTimer(const Timer &shootingTimer) {
+    shootingTimer_ = shootingTimer;
+}
+
+float EnemyAIBase::getMaxDistance() const {
+    return maxDistance_;
+}
+
+void EnemyAIBase::setMaxDistance(float maxDistance) {
+    maxDistance_ = maxDistance;
+}

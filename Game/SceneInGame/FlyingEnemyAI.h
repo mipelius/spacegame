@@ -23,23 +23,25 @@
 #include "PolygonCollider.h"
 
 class FlyingEnemyAI : public EnemyAIBase {
+public:
+    float getMaxPathFindingDistance() const;
+    void setMaxPathFindingDistance(float maxPathFindingDistance);
+    const Timer &getPathUpdateTimer() const;
+    void setPathUpdateTimer(const Timer &pathUpdateTimer);
 
 protected:
     void awake() override;
     void update() override;
     void lateUpdate() override;
 
-private:
     std::list<Vecf> pathToTarget_;
     Vecf lastPoint_;
     Vecf nextPoint_;
 
+private:
     PolygonCollider* collider_;
-
-    static constexpr float maxPathFindingDistance_ = 1200.0f;
-
+    float maxPathFindingDistance_ = 1200.0f;
     void updateNextPoint_();
-
     Timer pathUpdateTimer_;
 };
 

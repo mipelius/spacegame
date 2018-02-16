@@ -49,6 +49,11 @@ void DebugBehaviour::update() {
         twoHorn->transform().setPosition(transform()->getPosition());
         twoHorn->getComponent<EnemyAIBase>()->setTarget(transform());
     }
+    if (keyboard.keyPressed(SDL_SCANCODE_5)) {
+        auto boss = Prefabs::boss();
+        boss->transform().setPosition(transform()->getPosition());
+        boss->getComponent<EnemyAIBase>()->setTarget(transform());
+    }
     if (keyboard.keyPressed(SDL_SCANCODE_RETURN)) {
         Tile2D::setIsDebugMode(!Tile2D::isDebugMode());
         if (Tile2D::isDebugMode()) {

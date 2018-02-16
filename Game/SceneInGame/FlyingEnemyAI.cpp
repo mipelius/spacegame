@@ -21,13 +21,6 @@
 void FlyingEnemyAI::awake() {
     EnemyAIBase::awake();
 
-    pathUpdateTimer_.setInterval(1000);
-    pathUpdateTimer_.setIntervalRandomness(0);
-    pathUpdateTimer_.reset();
-
-    shootingTimer_.setInterval(500);
-    shootingTimer_.setIntervalRandomness(200);
-
     nextPoint_ = transform()->getPosition();
     lastPoint_ = nextPoint_;
 
@@ -75,3 +68,20 @@ void FlyingEnemyAI::updateNextPoint_() {
     nextPoint_ = *it;
     pathToTarget_.erase(it);
 }
+
+float FlyingEnemyAI::getMaxPathFindingDistance() const {
+    return maxPathFindingDistance_;
+}
+
+void FlyingEnemyAI::setMaxPathFindingDistance(float maxPathFindingDistance_) {
+    FlyingEnemyAI::maxPathFindingDistance_ = maxPathFindingDistance_;
+}
+
+const Timer &FlyingEnemyAI::getPathUpdateTimer() const {
+    return pathUpdateTimer_;
+}
+
+void FlyingEnemyAI::setPathUpdateTimer(const Timer &pathUpdateTimer_) {
+    FlyingEnemyAI::pathUpdateTimer_ = pathUpdateTimer_;
+}
+

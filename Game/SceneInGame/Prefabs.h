@@ -28,6 +28,7 @@ class Prefabs {
 public:
     // enemies
 
+    static GameObject* boss();
     static GameObject* fourwayCyclops();
     static GameObject* crabKindOf();
     static GameObject* walkingEnemy();
