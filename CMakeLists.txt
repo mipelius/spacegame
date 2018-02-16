@@ -35,13 +35,16 @@ include_directories(
         ./
         3rdParty
         Game
-        Game/Object
+        Game/SceneInGame
+        Game/SceneTitleScreen
+        Game/SceneGameOver
         Tile2D/Animation
-        Tile2D/GUI/Canvas/Drawable
         Tile2D/LightSystem
-        Tile2D/GUI/Canvas/Texture
-        Tile2D/GUI/Canvas
-        Tile2D/GUI
+        Tile2D/Canvas/ParticleSystem
+        Tile2D/Canvas/Drawable
+        Tile2D/Canvas/Texture
+        Tile2D/Canvas
+        Tile2D/UI
         Tile2D/Physics
         Tile2D/Sound
         Tile2D/Util/DataStructures
@@ -50,6 +53,7 @@ include_directories(
         Tile2D/Util/Property
         Tile2D/Util
         Tile2D/Core
+        Tile2D/PathFinding
 )
 
 set(SOURCE_FILES
@@ -62,60 +66,56 @@ set(SOURCE_FILES
         Tile2D/Animation/AnimationManager.cpp
         Tile2D/Animation/AnimationManager.h
         Tile2D/Animation/IAnimation.h
-        Tile2D/GUI/Canvas/Drawable/Background.cpp
-        Tile2D/GUI/Canvas/Drawable/Background.h
-        Tile2D/GUI/Canvas/Drawable/Color.cpp
-        Tile2D/GUI/Canvas/Drawable/Color.h
-        Tile2D/GUI/Canvas/Drawable/BasicDrawableBase.cpp
-        Tile2D/GUI/Canvas/Drawable/BasicDrawableBase.h
-        Tile2D/GUI/Canvas/Drawable/DrawableGroup.cpp
-        Tile2D/GUI/Canvas/Drawable/DrawableGroup.h
-        Tile2D/GUI/Canvas/Drawable/DrawableMap.cpp
-        Tile2D/GUI/Canvas/Drawable/DrawableMap.h
-        Tile2D/GUI/Canvas/Drawable/Font.cpp
-        Tile2D/GUI/Canvas/Drawable/Font.h
-        Tile2D/GUI/Canvas/Drawable/DrawableBase.h
-        Tile2D/GUI/Canvas/Drawable/DrawableBase.cpp
-        Tile2D/GUI/Canvas/Drawable/Plot.cpp
-        Tile2D/GUI/Canvas/Drawable/Plot.h
-        Tile2D/GUI/Canvas/Drawable/Sprite.cpp
-        Tile2D/GUI/Canvas/Drawable/Sprite.h
-        Tile2D/GUI/Canvas/Drawable/Text.cpp
-        Tile2D/GUI/Canvas/Drawable/Text.h
+        Tile2D/Canvas/Drawable/Background.cpp
+        Tile2D/Canvas/Drawable/Background.h
+        Tile2D/Canvas/Drawable/Color.cpp
+        Tile2D/Canvas/Drawable/Color.h
+        Tile2D/Canvas/Drawable/DrawableGroup.cpp
+        Tile2D/Canvas/Drawable/DrawableGroup.h
+        Tile2D/Canvas/Drawable/DrawableMap.cpp
+        Tile2D/Canvas/Drawable/DrawableMap.h
+        Tile2D/Canvas/Drawable/Font.cpp
+        Tile2D/Canvas/Drawable/Font.h
+        Tile2D/Canvas/Drawable/DrawableBase.h
+        Tile2D/Canvas/Drawable/DrawableBase.cpp
+        Tile2D/Canvas/Drawable/Sprite.cpp
+        Tile2D/Canvas/Drawable/Sprite.h
+        Tile2D/Canvas/Drawable/Text.cpp
+        Tile2D/Canvas/Drawable/Text.h
+        Tile2D/UI/Button.cpp
+        Tile2D/UI/Button.h
         Tile2D/LightSystem/PointLight.cpp
         Tile2D/LightSystem/PointLight.h
         Tile2D/LightSystem/LightSystem.cpp
         Tile2D/LightSystem/LightSystem.h
-        Tile2D/GUI/Canvas/Texture/ITexture.h
-        Tile2D/GUI/Canvas/Texture/MapTexture.cpp
-        Tile2D/GUI/Canvas/Texture/MapTexture.h
-        Tile2D/GUI/Canvas/Texture/Texture.cpp
-        Tile2D/GUI/Canvas/Texture/Texture.h
-        Tile2D/GUI/Canvas/Camera.cpp
-        Tile2D/GUI/Canvas/Camera.h
-        Tile2D/GUI/Canvas/Canvas.cpp
-        Tile2D/GUI/Canvas/Canvas.h
-        Tile2D/GUI/GuiComponentBase.cpp
-        Tile2D/GUI/GuiComponentBase.h
-        Tile2D/GUI/Window.cpp
-        Tile2D/GUI/Window.h
+        Tile2D/Canvas/ParticleSystem/Particle.cpp
+        Tile2D/Canvas/ParticleSystem/Particle.h
+        Tile2D/Canvas/ParticleSystem/ParticleSystem.cpp
+        Tile2D/Canvas/ParticleSystem/ParticleSystem.h
+        Tile2D/Canvas/Texture/ITexture.h
+        Tile2D/Canvas/Texture/MapTexture.cpp
+        Tile2D/Canvas/Texture/MapTexture.h
+        Tile2D/Canvas/Texture/Texture.cpp
+        Tile2D/Canvas/Texture/Texture.h
+        Tile2D/Canvas/Camera.cpp
+        Tile2D/Canvas/Camera.h
+        Tile2D/Canvas/Canvas.cpp
+        Tile2D/Canvas/Canvas.h
         Tile2D/Physics/Tile.cpp
         Tile2D/Physics/Tile.h
         Tile2D/Physics/TileSet.cpp
         Tile2D/Physics/TileSet.h
         Tile2D/Physics/Body.cpp
         Tile2D/Physics/Body.h
-        Tile2D/Physics/BodyCollisionEventArgs.cpp
-        Tile2D/Physics/BodyCollisionEventArgs.h
         Tile2D/Physics/PhysicsWorld.cpp
         Tile2D/Physics/PhysicsWorld.h
         Tile2D/Physics/TileMap.cpp
         Tile2D/Physics/TileMap.h
         Tile2D/Physics/WorldMapModifiedEventArgs.h
-        Tile2D/Physics/MapCollisionEventArgs.cpp
-        Tile2D/Physics/MapCollisionEventArgs.h
         Tile2D/Physics/PolygonCollider.cpp
         Tile2D/Physics/PolygonCollider.h
+        Tile2D/Physics/ColliderLayerMatrix.cpp
+        Tile2D/Physics/ColliderLayerMatrix.h
         Tile2D/Sound/Ears.cpp
         Tile2D/Sound/Ears.h
         Tile2D/Sound/Music.cpp
@@ -130,22 +130,18 @@ set(SOURCE_FILES
         Tile2D/Sound/SamplePlayer.h
         Tile2D/Util/DataStructures/Array2d.h
         Tile2D/Util/Event/Event.h
-        Tile2D/Util/Event/EventArgs.cpp
-        Tile2D/Util/Event/EventArgs.h
-        Tile2D/Util/Event/EventHandler.h
-        Tile2D/Util/Event/IEventHandler.h
         Tile2D/Util/Primitives/Rect.cpp
         Tile2D/Util/Primitives/Rect.h
-        Tile2D/Util/Primitives/Vec.cpp
         Tile2D/Util/Primitives/Vec.h
         Tile2D/Util/Primitives/LineSegment.cpp
         Tile2D/Util/Primitives/LineSegment.h
-        Tile2D/Util/Property/BooleanProperty.cpp
-        Tile2D/Util/Property/BooleanProperty.h
-        Tile2D/Util/Property/Property.h
-        Tile2D/Util/Property/ReadableProperty.h
         Tile2D/Util/JsonFileManager.cpp
         Tile2D/Util/JsonFileManager.h
+        Tile2D/Util/gl_utils.h
+        Tile2D/Util/Pool.h
+        Tile2D/Util/Tile2DMath.h
+        Tile2D/Util/Timer.cpp
+        Tile2D/Util/Timer.h
         Tile2D/Core/Tile2D.cpp
         Tile2D/Core/Tile2D.h
         Tile2D/Core/SceneManager.cpp
@@ -159,29 +155,60 @@ set(SOURCE_FILES
         Tile2D/Core/Tile2DComponent.h
         Tile2D/Core/Tile2DBehaviour.cpp
         Tile2D/Core/Tile2DBehaviour.h
+        Tile2D/Core/Window.cpp
+        Tile2D/Core/Window.h
+        Tile2D/Core/Input.cpp
+        Tile2D/Core/Input.h
+        Tile2D/Core/Transform.cpp
+        Tile2D/Core/Transform.h
+        Tile2D/PathFinding/PathFinder.cpp
+        Tile2D/PathFinding/PathFinder.h
 
-        main.cpp
         precompile.h
-        Game/SceneInGame.cpp
-        Game/SceneInGame.h
-        Game/SceneTitleScreen.cpp
-        Game/SceneTitleScreen.h
-        Game/SceneGameOver.cpp
-        Game/SceneGameOver.h
-        Game/Scenes.h
 
-        Game/PlayerController.cpp
-        Game/PlayerController.h
-        Game/MissileBehaviour.cpp
-        Game/MissileBehaviour.h
-        Game/SparkleBehaviour.cpp
-        Game/SparkleBehaviour.h
+        Game/main.cpp
+        Game/Scenes.h
+        Game/SortingLayers.h
         Game/Tags.h
-        Game/PulseLightBehaviour.cpp
-        Game/PulseLightBehaviour.h
-        Game/LimitedAgeBehaviour.cpp
-        Game/LimitedAgeBehaviour.h
-        Tile2D/Util/MathUtils.h
+        Game/ColliderLayers.h
+
+        Game/SceneGameOver/SceneGameOver.cpp
+        Game/SceneGameOver/SceneGameOver.h
+
+        Game/SceneTitleScreen/SceneTitleScreen.cpp
+        Game/SceneTitleScreen/SceneTitleScreen.h
+        Game/SceneTitleScreen/TitleScreenController.cpp
+        Game/SceneTitleScreen/TitleScreenController.h
+
+        Game/SceneInGame/SceneInGame.cpp
+        Game/SceneInGame/SceneInGame.h
+        Game/SceneInGame/BackgroundBehaviour.cpp
+        Game/SceneInGame/BackgroundBehaviour.h
+        Game/SceneInGame/BombBehaviour.cpp
+        Game/SceneInGame/BombBehaviour.h
+        Game/SceneInGame/DebugBehaviour.cpp
+        Game/SceneInGame/DebugBehaviour.h
+        Game/SceneInGame/EnemyAIBase.cpp
+        Game/SceneInGame/EnemyAIBase.h
+        Game/SceneInGame/FlyingEnemyAI.cpp
+        Game/SceneInGame/FlyingEnemyAI.h
+        Game/SceneInGame/Health.cpp
+        Game/SceneInGame/Health.h
+        Game/SceneInGame/LimitedLifetimeBehaviour.cpp
+        Game/SceneInGame/LimitedLifetimeBehaviour.h
+        Game/SceneInGame/PlayerController.cpp
+        Game/SceneInGame/PlayerController.h
+        Game/SceneInGame/Prefabs.cpp
+        Game/SceneInGame/Prefabs.h
+        Game/SceneInGame/PulseLightBehaviour.cpp
+        Game/SceneInGame/PulseLightBehaviour.h
+        Game/SceneInGame/SparkleBehaviour.cpp
+        Game/SceneInGame/SparkleBehaviour.h
+        Game/SceneInGame/SpawnerBehaviour.cpp
+        Game/SceneInGame/SpawnerBehaviour.h
+        Game/SceneInGame/WalkingEnemyAI.cpp
+        Game/SceneInGame/WalkingEnemyAI.h
+
         )
 
 add_executable(SpaceGame ${SOURCE_FILES})
