@@ -33,3 +33,11 @@ void HUD::lateUpdate() {
 void HUD::setHealthSprite(Sprite *healthSprite) {
     healthSprite_ = healthSprite;
 }
+
+void HUD::hide() {
+    healthSprite_->setIsVisible(false);
+}
+
+void HUD::show() {
+    healthSprite_->setIsVisible(true);
+}

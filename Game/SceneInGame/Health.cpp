@@ -36,6 +36,10 @@ void Health::setMaxHealth(int maxHealth) {
 }
 
 void Health::damage(int amount, GameObject* damager) {
+    if (health_ <= 0) { // if already dead, do nothing
+        return;
+    }
+
     health_ -= amount;
     if (health_ <= 0) {
         onDeath.raise({damager});

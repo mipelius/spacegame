@@ -25,6 +25,8 @@ class HUD : public Tile2DBehaviour {
 
 public:
     void setHealthSprite(Sprite *healthSprite);
+    void hide();
+    void show();
 
 protected:
     void awake() override;

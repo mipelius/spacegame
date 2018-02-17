@@ -75,8 +75,16 @@ GameObject *Prefabs::player() {
     health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
         GameObject* newBloodBurst = bloodBurst();
         newBloodBurst->transform().setPosition(health->transform()->getPosition());
-        health->transform()->setPosition({500.0f, 250.0f});
-        health->reset();
+        health->gameObject()->setIsActive(false);
+        health->gameObject()->getComponent<HUD>()->hide();
+
+        Tile2D::executeDelayedFunction(health->gameObject(), 2000, [] (GameObject* gameObject) {
+            gameObject->transform().setPosition({500.0f, 250.0f});
+            gameObject->getComponent<Body>()->setVelocity({0.0f, 0.0f});
+            gameObject->setIsActive(true);
+            gameObject->getComponent<Health>()->reset();
+            gameObject->getComponent<HUD>()->show();
+        });
     });
 
     auto hud = player->attachComponent<HUD>();
