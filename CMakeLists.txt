@@ -209,7 +209,8 @@ set(SOURCE_FILES
         Game/SceneInGame/WalkingEnemyAI.cpp
         Game/SceneInGame/WalkingEnemyAI.h
 
-        Game/UIPrefabs.cpp Game/UIPrefabs.h)
+        Game/UIPrefabs.cpp
+        Game/UIPrefabs.h Game/SceneInGame/HUD.cpp Game/SceneInGame/HUD.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

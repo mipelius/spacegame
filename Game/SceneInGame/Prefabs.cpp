@@ -35,6 +35,7 @@
 #include "PlayerController.h"
 #include "DebugBehaviour.h"
 #include "BackgroundBehaviour.h"
+#include "HUD.h"
 
 GameObject *Prefabs::player() {
     auto player = Tile2D::createGameObject();
@@ -70,11 +71,15 @@ GameObject *Prefabs::player() {
     playerController->moveForce = 10000.0f;
 
     auto health = player->attachComponent<Health>();
-    health->setMaxHealth(300);
+    health->setMaxHealth(600);
     health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
+        GameObject* newBloodBurst = bloodBurst();
+        newBloodBurst->transform().setPosition(health->transform()->getPosition());
         health->transform()->setPosition({500.0f, 250.0f});
         health->reset();
     });
+
+    auto hud = player->attachComponent<HUD>();
 
     return player;
 }

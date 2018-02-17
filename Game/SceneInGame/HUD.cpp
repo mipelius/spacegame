@@ -14,47 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "HUD.h"
 
-#ifndef SPACEGAME_HEALTH_H
-#define SPACEGAME_HEALTH_H
+void HUD::awake() {
+    health_ = gameObject()->getComponent<Health>();
+}
 
+void HUD::update() {
+    Rect rect = healthSprite_->getRect();
+    rect.x2 = (float)health_->getHealth();
+    healthSprite_->setRect(rect);
+}
 
-#include "Tile2DBehaviour.h"
-#include "Event.h"
+void HUD::lateUpdate() {
 
-class GameObjectDiedEventArgs {
-public:
-    GameObject* killer;
-};
+}
 
-class Health : public Tile2DBehaviour {
-
-public:
-    Health();
-
-    void damage(int amount, GameObject* whoDamaged);
-    void heal(int amount);
-    void reset();
-
-    int getHealth() const;
-
-    int getMaxHealth() const;
-    void setMaxHealth(int maxHealth);
-
-    const Event<Health, GameObjectDiedEventArgs> onDeath;
-
-protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
-
-private:
-    int health_;
-    int maxHealth_;
-
-    void clampHealth_();
-
-};
-
-
-#endif //SPACEGAME_HEALTH_H
+void HUD::setHealthSprite(Sprite *healthSprite) {
+    healthSprite_ = healthSprite;
+}

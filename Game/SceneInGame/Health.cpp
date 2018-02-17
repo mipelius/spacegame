@@ -59,3 +59,7 @@ void Health::clampHealth_() {
 Health::Health() : onDeath(this) {
 
 }
+
+int Health::getHealth() const {
+    return health_;
+}
