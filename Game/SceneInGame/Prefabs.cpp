@@ -69,6 +69,13 @@ GameObject *Prefabs::player() {
     auto playerController = player->attachComponent<PlayerController>();
     playerController->moveForce = 10000.0f;
 
+    auto health = player->attachComponent<Health>();
+    health->setMaxHealth(300);
+    health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
+        health->transform()->setPosition({500.0f, 250.0f});
+        health->reset();
+    });
+
     return player;
 }
 
