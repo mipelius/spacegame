@@ -138,13 +138,17 @@ void Tile2D::initGameObjects_() {
 
 void Tile2D::updateBehaviours_() {
     for (auto obj: behaviours_) {
-        obj->update();
+        if (obj->gameObject()->isActive()) {
+            obj->update();
+        }
     }
 }
 
 void Tile2D::lateUpdateBehaviours_() {
     for (auto obj: behaviours_) {
-        obj->lateUpdate();
+        if (obj->gameObject()->isActive()) {
+            obj->lateUpdate();
+        }
     }
 }
 

@@ -49,3 +49,11 @@ Transform &GameObject::transform() {
     return transform_;
 }
 
+bool GameObject::isActive() const {
+    return isActive_;
+}
+
+void GameObject::setIsActive(bool isActive) {
+    isActive_ = isActive;
+}
+

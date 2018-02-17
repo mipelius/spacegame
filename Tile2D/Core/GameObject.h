@@ -38,6 +38,9 @@ public:
 
     Transform& transform();
 
+    bool isActive() const;
+    void setIsActive(bool isActive);
+
 private:
     GameObject();
     ~GameObject();
@@ -46,6 +49,10 @@ private:
 
     std::list<Tile2DComponent*> uninitializedComponents_;
     std::list<Tile2DComponent*> components_;
+
+    bool isActive_ = true;
+
+private:
 
     void initializeComponents_();
 };

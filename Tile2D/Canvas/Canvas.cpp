@@ -109,7 +109,7 @@ void Canvas::renderDrawablesBeforeTerrain_(std::list<DrawableBase*>::iterator& i
         if ((*it)->sortingLayer_ == 0 || (*it)->isUIDrawable_) {
             break;
         }
-        (*it)->draw(*this);
+        renderDrawable_((*it));
     }
 }
 
@@ -118,12 +118,18 @@ void Canvas::renderDrawablesAfterTerrain_(std::list<DrawableBase*>::iterator& it
         if ((*it)->isUIDrawable_) {
             break;
         }
-        (*it)->draw(*this);
+        renderDrawable_((*it));
     }
 }
 
 void Canvas::renderUIDrawables_(std::list<DrawableBase*>::iterator& it) {
     for (; it != drawables_.end(); it++) {
-        (*it)->draw(*this);
+        renderDrawable_((*it));
+    }
+}
+
+void Canvas::renderDrawable_(DrawableBase *drawable) {
+    if (drawable->gameObject()->isActive()) {
+        drawable->draw(*this);
     }
 }

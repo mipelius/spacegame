@@ -44,6 +44,8 @@ private:
     void renderDrawablesAfterTerrain_(std::list<DrawableBase*>::iterator& it);
     void renderUIDrawables_(std::list<DrawableBase*>::iterator& it);
 
+    void renderDrawable_(DrawableBase* drawable);
+
     std::list<DrawableBase*> drawables_;
     Camera* camera_;
 };

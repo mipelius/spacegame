@@ -30,15 +30,24 @@ void PhysicsWorld::step(float timeSeconds) {
 
     // update velocities and positions
     for(auto& body : bodies_) {
-        body->step_(timeSeconds);
+        if (body->gameObject()->isActive()) {
+            body->step_(timeSeconds);
+        }
     }
 
     // now all the positions are updated -> detect collision
     for(auto& collider : colliders_) {
+        if (!collider->gameObject()->isActive()) {
+            continue;
+        }
         collider->detectTerrainCollision_(timeSeconds);
 
         for (auto& otherCollider : colliders_) {
-            if (otherCollider == collider || !colliderLayerMatrix_->getRule(collider->layer_, otherCollider->layer_)) {
+            if (
+                    !otherCollider->gameObject()->isActive() ||
+                    otherCollider == collider ||
+                    !colliderLayerMatrix_->getRule(collider->layer_, otherCollider->layer_)
+            ) {
                 continue;
             }
 
