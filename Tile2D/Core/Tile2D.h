@@ -68,6 +68,12 @@ public:
     static PathFinder &pathFinder();
     static const Input &input();
 
+    static void executeDelayedFunction(
+            GameObject* gameObject,
+            Uint32      delay,
+            void        (*function)(GameObject*)
+    );
+
     static GameObject* createGameObject();
 
     static bool isDebugMode();
@@ -105,9 +111,18 @@ private:
     std::set<GameObject*> objectsToDestroy_;
     std::list<GameObject*> objectsToInit_;
 
+    struct DelayedFunction {
+        GameObject* gameObject;
+        Uint32 delay;
+        void (*function)(GameObject*);
+        Uint32 timestamp;
+    };
+
     std::list<Tile2DBehaviour*> behaviours_;
+    std::list<DelayedFunction> delayedFunctions_;
 
     void destroy_(GameObject* obj);
+    void executeDelayedFunctions_();
 
     Pool<Particle> particlePool_;
 

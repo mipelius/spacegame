@@ -105,6 +105,7 @@ void Tile2D::mainLoop_() {
         removeDestroyedObjects_();
         PollSDL_Events();
         updateBehaviours_();
+        executeDelayedFunctions_();
         physicsWorld_->step(deltaTime / 1000.0f);
         lateUpdateBehaviours_();
         canvas().render();
@@ -243,4 +244,26 @@ void Tile2D::PollSDL_Events() {
 
 const Input &Tile2D::input() {
     return *instance_().input_;
+}
+
+void Tile2D::executeDelayedFunction(
+        GameObject *gameObject,
+        Uint32 delay,
+        void (*function)(GameObject *)
+) {
+    DelayedFunction delayedFunction = {gameObject, delay, function, SDL_GetTicks()};
+    instance_().delayedFunctions_.push_back(delayedFunction);
+}
+
+void Tile2D::executeDelayedFunctions_() {
+    auto ticks = SDL_GetTicks();
+    for (auto it = delayedFunctions_.begin(); it != delayedFunctions_.end(); ) {
+        auto deltaTime = ticks - (*it).timestamp;
+        if (deltaTime > (*it).delay) {
+            (*it).function((*it).gameObject);
+            delayedFunctions_.erase(it++);
+        } else {
+            ++it;
+        }
+    }
 }
