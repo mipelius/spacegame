@@ -32,6 +32,45 @@
 #include "ColliderLayers.h"
 #include "FlyingEnemyAI.h"
 #include "SortingLayers.h"
+#include "PlayerController.h"
+#include "DebugBehaviour.h"
+#include "BackgroundBehaviour.h"
+
+GameObject *Prefabs::player() {
+    auto player = Tile2D::createGameObject();
+    player->transform().setRotation(0.0f);
+
+    player->tag = Tags::player;
+
+    auto debugBehaviour = player->attachComponent<DebugBehaviour>();
+
+    auto spaceshipBody = player->attachComponent<Body>();
+    spaceshipBody->setMass(100.0);
+
+    auto polygonCollider = player->attachComponent<PolygonCollider>();
+    polygonCollider->setPoints({
+                                       {-20, -18},
+                                       {-5, -18},
+                                       {18, 0},
+                                       {-5, 18},
+                                       {-20, 18}
+                               });
+    polygonCollider->setLayer(ColliderLayers::player);
+
+    auto spaceshipSprite = player->attachComponent<Sprite>();
+    spaceshipSprite->setSortingLayer(SortingLayers::player);
+    spaceshipSprite->setRect({-30, -30, 30, 30});
+    spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship"]);
+
+    auto light = player->attachComponent<PointLight>();
+    light->setIntensity(1.0);
+    light->setRadius(500.0);
+
+    auto playerController = player->attachComponent<PlayerController>();
+    playerController->moveForce = 10000.0f;
+
+    return player;
+}
 
 // ---- ENEMIES ----
 
@@ -473,4 +512,16 @@ void Prefabs::sparkles(Vecf position, Vecf normal, Color color) {
     sparkle(position, (perp + random) * -1000, color);
 }
 
+GameObject *Prefabs::background(Rect area, const char *texture, Color color) {
+    auto background = Tile2D::createGameObject();
+    auto bg = background->attachComponent<Background>();
+    bg->setRatio(0.5f);
+    bg->setTexturePtr(Tile2D::resources().textures[texture]);
+    bg->setColor(color);
+    bg->setOpacity(0.0f);
+    bg->setSortingLayer(SortingLayers::background);
+    auto bgBehaviour = background->attachComponent<BackgroundBehaviour>();
+    bgBehaviour->setArea(area);
+    return background;
+}
 

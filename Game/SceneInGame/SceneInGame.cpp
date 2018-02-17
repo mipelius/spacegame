@@ -31,18 +31,6 @@
 #include "Text.h"
 #include "EnemyAIBase.h"
 
-void createBackground(Rect area, const char* texture, Color color) {
-    auto background = Tile2D::createGameObject();
-    auto bg = background->attachComponent<Background>();
-    bg->setRatio(0.5f);
-    bg->setTexturePtr(Tile2D::resources().textures[texture]);
-    bg->setColor(color);
-    bg->setOpacity(0.0f);
-    bg->setSortingLayer(SortingLayers::background);
-    auto bgBehaviour = background->attachComponent<BackgroundBehaviour>();
-    bgBehaviour->setArea(area);
-}
-
 void SceneInGame::init() {
     // Scene setup: tile map, physics, light system
     Tile2D::tileMap().load("data/maps/map.bmp", "data/maps/tileset.json");
@@ -50,44 +38,14 @@ void SceneInGame::init() {
     Tile2D::physicsWorld().setAirDensity(0.0001);
 
     // backgrounds
-    createBackground({0.0f, 0.0f, 3300.0f, 2400.0f},       "bg2", {0.8f, 1.0f, 0.5f}); // upper left corner
-    createBackground({3300.0f, 0.0f, 6400.0f, 2400.0f},    "bg2", {0.2f, 0.8f, 1.0f}); // upper right corner
-    createBackground({0.0f, 2400.0f, 3300.0f, 4800.0f},    "bg1", {0.6f, 0.3f, 0.3f}); // bottom left corner
-    createBackground({3300.0f, 2400.0f, 6400.0f, 4800.0f}, "bg1", {0.3f, 0.3f, 0.6f}); // bottom right corner
+    Prefabs::background({0.0f, 0.0f, 3300.0f, 2400.0f},       "bg2", {0.8f, 1.0f, 0.5f}); // upper left corner
+    Prefabs::background({3300.0f, 0.0f, 6400.0f, 2400.0f},    "bg2", {0.2f, 0.8f, 1.0f}); // upper right corner
+    Prefabs::background({0.0f, 2400.0f, 3300.0f, 4800.0f},    "bg1", {0.6f, 0.3f, 0.3f}); // bottom left corner
+    Prefabs::background({3300.0f, 2400.0f, 6400.0f, 4800.0f}, "bg1", {0.3f, 0.3f, 0.6f}); // bottom right corner
 
     // player
-    auto player = Tile2D::createGameObject();
+    auto player = Prefabs::player();
     player->transform().setPosition({500.0f, 250.0f});
-    player->transform().setRotation(0.0f);
-
-    player->tag = Tags::player;
-
-    auto debugBehaviour = player->attachComponent<DebugBehaviour>();
-
-    auto spaceshipBody = player->attachComponent<Body>();
-    spaceshipBody->setMass(100.0);
-
-    auto polygonCollider = player->attachComponent<PolygonCollider>();
-    polygonCollider->setPoints({
-                                       {-20, -18},
-                                       {-5, -18},
-                                       {18, 0},
-                                       {-5, 18},
-                                       {-20, 18}
-                               });
-    polygonCollider->setLayer(ColliderLayers::player);
-
-    auto spaceshipSprite = player->attachComponent<Sprite>();
-    spaceshipSprite->setSortingLayer(SortingLayers::player);
-    spaceshipSprite->setRect({-30, -30, 30, 30});
-    spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship"]);
-
-    auto light = player->attachComponent<PointLight>();
-    light->setIntensity(1.0);
-    light->setRadius(500.0);
-
-    auto playerController = player->attachComponent<PlayerController>();
-    playerController->moveForce = 10000.0f;
 
     // camera
     camera = new Camera;

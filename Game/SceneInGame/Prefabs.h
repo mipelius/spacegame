@@ -26,6 +26,8 @@
 class Prefabs {
 
 public:
+    static GameObject* player();
+
     // enemies
 
     static GameObject* boss();
@@ -47,6 +49,9 @@ public:
     static void sparkles(Vecf position, Vecf normal, Color color);
     static void sparkle(Vecf position, Vecf velocity, Color color);
     static void pulseLight(Vecf position);
+
+    // other
+    static GameObject* background(Rect area, const char* texture, Color color);
 
 private:
     static GameObject* spawnEnemy_(
