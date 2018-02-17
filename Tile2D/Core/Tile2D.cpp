@@ -119,6 +119,7 @@ void Tile2D::cleanUp_() {
     }
     objects_.clear();
     objectsToInit_.clear();
+    delayedFunctions_.clear();
     removeDestroyedObjects_();
 }
 
