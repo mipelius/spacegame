@@ -320,8 +320,8 @@ GameObject *Prefabs::laser() {
     laserSprite->setTexturePtr(Tile2D::resources().textures["laser"]);
     laserSprite->setSortingLayer(SortingLayers::ammo);
 
-    auto laserAge = laser->attachComponent<LimitedLifetimeBehaviour>();
-    laserAge->getTimer().setInterval(1000);
+    auto laserLifetime = laser->attachComponent<LimitedLifetimeBehaviour>();
+    laserLifetime->getTimer().setInterval(1000);
 
     auto laserLight = laser->attachComponent<PointLight>();
     laserLight->setRadius(80.0);
@@ -343,30 +343,30 @@ GameObject *Prefabs::laser() {
     });
     collider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
         auto otherBody = args.otherCollider->gameObject()->getComponent<Body>();
-        auto missileBody = collider->gameObject()->getComponent<Body>();
+        auto laserBody = collider->gameObject()->getComponent<Body>();
 
         if (args.otherCollider->gameObject()->tag == Tags::enemy) {
-            otherBody->setVelocity(otherBody->getVelocity() + missileBody->getVelocity() / 100.0);
+            otherBody->setVelocity(otherBody->getVelocity() + laserBody->getVelocity() / 100.0);
             sparkles(collider->transform()->getPosition(), args.contactNormal, {1, 0, 0});
-            missileBody->gameObject()->destroy();
+            laserBody->gameObject()->destroy();
 
             auto health = args.otherCollider->gameObject()->getComponent<Health>();
 
             if (health != nullptr) {
-                health->damage(10, missileBody->gameObject());
+                health->damage(10, laserBody->gameObject());
             }
 
             pulseLight(collider->transform()->getPosition());
         }
         if (args.otherCollider->gameObject()->tag == Tags::player) {
-            otherBody->setVelocity(otherBody->getVelocity() + missileBody->getVelocity() / 100.0);
+            otherBody->setVelocity(otherBody->getVelocity() + laserBody->getVelocity() / 100.0);
             sparkles(collider->transform()->getPosition(), args.contactNormal, {0, 1, 0});
-            missileBody->gameObject()->destroy();
+            laserBody->gameObject()->destroy();
 
             auto health = args.otherCollider->gameObject()->getComponent<Health>();
 
             if (health != nullptr) {
-                health->damage(10, missileBody->gameObject());
+                health->damage(10, laserBody->gameObject());
             }
 
             pulseLight(collider->transform()->getPosition());
