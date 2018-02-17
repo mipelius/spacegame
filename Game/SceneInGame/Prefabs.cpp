@@ -102,9 +102,11 @@ GameObject *Prefabs::boss() {
             0.0f
     );
     auto health = enemy->getComponent<Health>();
-    health->setMaxHealth(1000) ;
+    health->setMaxHealth(1000);
     health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
-        Tile2D::sceneManager().loadScene(Scenes::gameEndScreen);
+        Tile2D::executeDelayedFunction(nullptr, 2000, [] (GameObject* gameObject) {
+            Tile2D::sceneManager().loadScene(Scenes::gameEndScreen);
+        });
     });
 
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
