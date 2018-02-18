@@ -45,10 +45,10 @@ void PlayerController::update() {
         body_->applyForce(force);
     }
     if (keyboard.keyState(SDL_SCANCODE_LEFT)) {
-        angularVelocity -= 5;
+        angularVelocity -= 300;
     }
     if (keyboard.keyState(SDL_SCANCODE_RIGHT)) {
-        angularVelocity += 5;
+        angularVelocity += 300;
     }
 
     body_->setAngularVelocity(angularVelocity);

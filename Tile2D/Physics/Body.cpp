@@ -65,7 +65,7 @@ void Body::step_(float timeElapsedSec) {
 
     // apply rotation change
 
-    rotation = rotation + angularVelocity_;
+    rotation = rotation + angularVelocity_ * timeElapsedSec;
 
     // remove all applied forces
 
