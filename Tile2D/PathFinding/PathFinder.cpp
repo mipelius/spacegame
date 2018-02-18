@@ -22,9 +22,9 @@
 #include "TileSet.h"
 
 float PathFinder::heuristicCost_(Veci start, Veci goal) {
-    float dx = start.x - goal.x;
-    float dy = start.y - goal.y;
-    return sqrtf(dx * dx + dy * dy);
+    float dx = (float)(start.x - goal.x);
+    float dy = (float)(start.y - goal.y);
+    return fabsf(dx) + fabsf(dy);
 }
 
 std::list<Vecf> PathFinder::getPath(
