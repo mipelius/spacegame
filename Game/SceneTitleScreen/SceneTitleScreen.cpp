@@ -26,7 +26,7 @@
 
 void SceneTitleScreen::init() {
     // remove next row later
-    Tile2D::sceneManager().loadScene(Scenes::inGame);
+    //Tile2D::sceneManager().loadScene(Scenes::inGame);
 
     Vecf center = {Tile2D::window().getW() / 2.0f, Tile2D::window().getH() / 2.0f};
 

@@ -18,7 +18,6 @@
 #include "SceneInGame.h"
 #include "DrawableGroup.h"
 #include "Sprite.h"
-#include "PlayerController.h"
 #include "Prefabs.h"
 #include "SpawnerBehaviour.h"
 #include "EnemyAIBase.h"
@@ -59,13 +58,13 @@ void SceneInGame::init() {
     camera = new Camera;
     camera->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
     Tile2D::canvas().setCamera(camera);
-//
-//    // spawner
-//    GameObject* spawner = Tile2D::createGameObject();
-//    auto spawnerBehaviour = spawner->attachComponent<SpawnerBehaviour>();
-//    spawnerBehaviour->setTarget(player);
-//    spawnerBehaviour->setInnerRect({-600.0f, -400.0f, 600.0f, 400.0f});
-//    spawnerBehaviour->setOuterRect({-1000.0f, -800.0f, 1000.0f, 800.0f});
+
+    // spawner
+    GameObject* spawner = Tile2D::createGameObject();
+    auto spawnerBehaviour = spawner->attachComponent<SpawnerBehaviour>();
+    spawnerBehaviour->setTarget(player);
+    spawnerBehaviour->setInnerRect({-600.0f, -400.0f, 600.0f, 400.0f});
+    spawnerBehaviour->setOuterRect({-1000.0f, -800.0f, 1000.0f, 800.0f});
 
     // boss
     auto boss = Prefabs::boss();
