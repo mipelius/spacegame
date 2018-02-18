@@ -82,6 +82,8 @@ void Window::init(const std::string& configJson) {
         return;
     }
 
+    setVsync(windowJson["vsync"]);
+
     isInitialized_ = true;
 }
 
