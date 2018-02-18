@@ -50,8 +50,12 @@ public:
     inline T angle() const;
     inline T dot(const Vec& otherVector) const;
     inline Vec normalized() const;
-
 };
+
+template <typename T>
+std::ostream& operator<<(std::ostream &strm, const Vec<T> &vec) {
+    return strm << "(" << vec.x << ", " << vec.y << ")";
+}
 
 typedef Vec<double> Vecd;
 typedef Vec<float> Vecf;
