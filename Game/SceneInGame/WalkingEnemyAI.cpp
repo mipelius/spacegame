@@ -81,10 +81,10 @@ void WalkingEnemyAI::updateDirection_() {
 void WalkingEnemyAI::walkTowardsTarget_() {
     Vecf vel = body_->getVelocity();
 
-    vel.x = xDirection_ * 1000;
+    vel.x = xDirection_ * 100;
 
     if (jumpTimer_.resetIfTimeIntervalPassed()) {
-        vel.y = -1000;
+        vel.y = -100;
         transform()->setPosition(transform()->getPosition() + Vecf{0.0f, -1.0f});
     }
 

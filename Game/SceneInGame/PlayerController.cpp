@@ -81,7 +81,7 @@ void PlayerController::shootOnce_(Vecf offset) {
     laser->transform().setRotation(transform()->getRotation());
 
     auto laserBody = laser->getComponent<Body>();
-    laserBody->setVelocity(Vecf::byAngle(transform()->getRotation(), 20000.0) + body_->getVelocity());
+    laserBody->setVelocity(Vecf::byAngle(transform()->getRotation(), 2000.0) + body_->getVelocity());
 
     auto laserCollider = laser->getComponent<PolygonCollider>();
     laserCollider->setLayer(ColliderLayers::playerAmmo);
@@ -94,7 +94,7 @@ void PlayerController::dropBomp_() {
 
     auto bomb = Prefabs::bomb();
     bomb->transform() = *transform();
-    bomb->getComponent<Body>()->setVelocity(body_->getVelocity() / 2 + Vecf(0, 1000));
+    bomb->getComponent<Body>()->setVelocity(body_->getVelocity() / 2 + Vecf(0, 100));
 
     auto bombCollider = bomb->getComponent<PolygonCollider>();
     bombCollider->setLayer(ColliderLayers::playerAmmo);

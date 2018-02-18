@@ -32,7 +32,8 @@ void SceneInGame::init() {
     // Scene setup: tile map, physics, light system
     Tile2D::tileMap().load("data/maps/map.bmp", "data/maps/tileset.json");
     Tile2D::lightSystem().setAmbientLight(0.5f);
-    Tile2D::physicsWorld().setAirDensity(0.0001);
+    Tile2D::physicsWorld().setAirDensity(0.2f);
+    Tile2D::physicsWorld().setGForce({0, 100.0f});
 
     // backgrounds
     Prefabs::background({0.0f, 0.0f, 3300.0f, 2400.0f},       "bg2", {0.8f, 1.0f, 0.5f}); // upper left corner
@@ -58,13 +59,13 @@ void SceneInGame::init() {
     camera = new Camera;
     camera->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
     Tile2D::canvas().setCamera(camera);
-
-    // spawner
-    GameObject* spawner = Tile2D::createGameObject();
-    auto spawnerBehaviour = spawner->attachComponent<SpawnerBehaviour>();
-    spawnerBehaviour->setTarget(player);
-    spawnerBehaviour->setInnerRect({-600.0f, -400.0f, 600.0f, 400.0f});
-    spawnerBehaviour->setOuterRect({-1000.0f, -800.0f, 1000.0f, 800.0f});
+//
+//    // spawner
+//    GameObject* spawner = Tile2D::createGameObject();
+//    auto spawnerBehaviour = spawner->attachComponent<SpawnerBehaviour>();
+//    spawnerBehaviour->setTarget(player);
+//    spawnerBehaviour->setInnerRect({-600.0f, -400.0f, 600.0f, 400.0f});
+//    spawnerBehaviour->setOuterRect({-1000.0f, -800.0f, 1000.0f, 800.0f});
 
     // boss
     auto boss = Prefabs::boss();

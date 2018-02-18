@@ -41,7 +41,7 @@ void EnemyAIBase::shootTarget_(bool useTimer) {
         laser->transform().setRotation(direction.angle());
 
         auto laserBody = laser->getComponent<Body>();
-        laserBody->setVelocity(direction.normalized() * 20000.0 + body_->getVelocity());
+        laserBody->setVelocity(direction.normalized() * 2000.0 + body_->getVelocity());
 
         auto laserCollider = laser->getComponent<PolygonCollider>();
         laserCollider->setLayer(ColliderLayers::enemyAmmo);

@@ -69,7 +69,7 @@ GameObject *Prefabs::player() {
     light->setRadius(500.0);
 
     auto playerController = player->attachComponent<PlayerController>();
-    playerController->moveForce = 10000.0f;
+    playerController->moveForce = 100000.0f;
 
     auto health = player->attachComponent<Health>();
     health->setMaxHealth(600);
@@ -139,6 +139,7 @@ GameObject *Prefabs::walkingEnemy() {
     enemy->getComponent<PolygonCollider>()->setSweepingStrategyThreshold(FLT_MAX);
 
     auto AI = enemy->attachComponent<WalkingEnemyAI>();
+    AI->setMaxDistance(1500);
 
     AI->setGroundCheckSensors(
             {
@@ -162,6 +163,7 @@ GameObject *Prefabs::crabKindOf() {
             0.0f
     );
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
+    AI->setMaxDistance(1500);
 
     return enemy;
 }
@@ -199,6 +201,7 @@ GameObject *Prefabs::twoHorn() {
     );
 
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
+    AI->setMaxDistance(1500);
 
     return enemy;
 }
@@ -324,8 +327,8 @@ GameObject *Prefabs::laser() {
     auto laser = Tile2D::createGameObject();
 
     auto laserBody = laser->attachComponent<Body>();
-    laserBody->setMass(10.0);
-    laserBody->setDrag(0.2);
+    laserBody->setMass(10.0f);
+    laserBody->setDrag(0.0f);
 
     auto laserSprite = laser->attachComponent<Sprite>();
     laserSprite->setRect({-20,-5,20,5});
@@ -523,17 +526,13 @@ void Prefabs::sparkles(Vecf position, Vecf normal, Color color) {
     Vecf perp = Vecf(n.y, -n.x);
 
     float div = 100.0;
+    auto random = Vecf(rand() % 100, rand() % 100) / div;
 
-    Vecf random = Vecf(rand() % 100, rand() % 100) / div;
-    sparkle(position, (n + random) * 1000, color);
-    random = Vecf(rand() % 100, rand() % 100) / div;
-    sparkle(position, (perp + n + random) * 1000, color);
-    random = Vecf(rand() % 100, rand() % 100) / div;
-    sparkle(position, ((perp * -1 + random) + n) * 1000, color);
-    random = Vecf(rand() % 100, rand() % 100) / div;
-    sparkle(position, (perp + random) * 1000, color);
-    random = Vecf(rand() % 100, rand() % 100) / div;
-    sparkle(position, (perp + random) * -1000, color);
+    sparkle(position, (n + random) * 100, color);
+    sparkle(position, (perp + n + random) * 100, color);
+    sparkle(position, ((perp * -1 + random) + n) * 100, color);
+    sparkle(position, (perp + random) * 100, color);
+    sparkle(position, (perp + random) * -100, color);
 }
 
 GameObject *Prefabs::background(Rect area, const char *texture, Color color) {
