@@ -47,21 +47,21 @@ void Body::step_(float timeElapsedSec) {
     Vecf drag = {0.0f, 0.0f};
 
     float velLengthSqr = velocity_.lengthSqr();
-    float velLength = sqrt(velLengthSqr);
+    float velLength = sqrtf(velLengthSqr);
 
     if (velLength > 0.0f) {
-        Vecf dragUnitVector = (velocity_ * -1) / velLength;
+        Vecf dragUnitVector = velocity_ / (-velLength);
         drag = dragUnitVector * velLengthSqr * (0.5 * world.getAirDensity()) * drag_;
     }
 
     Vecf totalForce = force_ + drag;
 
-    // use acceleration for updating velocity --> position
+    // update position and velocity
 
-    Vecf acceleration = totalForce / mass_;
-    acceleration += world.gForce_ * gravityFactor_;
-    position = position + (velocity_ * timeElapsedSec * world.getMetersPerPixel());
-    velocity_ += acceleration;
+    position += velocity_ * timeElapsedSec;
+
+    Vecf acceleration = (totalForce / mass_) + (world.gForce_ * gravityFactor_);
+    velocity_ += acceleration * timeElapsedSec;
 
     // apply rotation change
 

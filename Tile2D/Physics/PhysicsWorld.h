@@ -31,17 +31,14 @@ class PhysicsWorld {
     friend class PolygonCollider;
 
 public:
-    const float defaultAirDensity       = 0.001;
-    const float defaultMetersPerPixel   = 0.1;
-    const Vecf  defaultGForce           = Vecf(0.0, 9.81);
+    const float defaultAirDensity       = 0.001f;
+    const Vecf  defaultGForce           = Vecf(0.0f, 9.81f);
 
     void debugDraw();
 
     // getters and setters
     const Vecf &getGForce() const;
     void setGForce(const Vecf &gForce);
-    float getMetersPerPixel() const;
-    void setMetersPerPixel(float metersPerPixel);
     float getAirDensity() const;
     void setAirDensity(float airDensity);
 
@@ -56,7 +53,6 @@ private:
     ColliderLayerMatrix* colliderLayerMatrix_ = nullptr;
 
     Vecf gForce_;
-    float metersPerPixel_;
     float airDensity_;
 
     std::list<Body *> bodies_;
