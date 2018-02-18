@@ -60,8 +60,8 @@ void Body::step_(float timeElapsedSec) {
 
     Vecf acceleration = totalForce / mass_;
     acceleration += world.gForce_ * gravityFactor_;
-    velocity_ += acceleration;
     position = position + (velocity_ * timeElapsedSec * world.getMetersPerPixel());
+    velocity_ += acceleration;
 
     // apply rotation change
 
