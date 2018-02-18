@@ -29,10 +29,11 @@ class PathFinder {
     friend class Tile2D;
 public:
     std::list<Vecf> getPath(
-            const Vecf&     start,
-            const Vecf&     goal,
-            const Rect&     boundingBox = {-0.5f, -0.5f, 0.5f, 0.5f},
-            const bool&     useInnerBounding = false
+            const Vecf &start,
+            const Vecf &goal,
+            const unsigned int &maxNodesToExplore,
+            const bool &useInnerBounding,
+            const Rect &boundingBox
     );
 
 private:
@@ -76,10 +77,13 @@ private:
         inline bool has(Veci position) {
             return map.count(position) > 0;
         }
-
         inline void add(Node* node) {
             map.insert({node->position, node});
         }
+        inline size_t size() {
+            return map.size();
+        }
+
     };
 
     class OpenSet {
@@ -108,7 +112,7 @@ private:
         inline Node* popBestOut() {
             Node* best = queue.top();
             queue.pop();
-            map.erase(best->position); // TODO : occasional crash!
+            map.erase(best->position);
 
             return best;
         }

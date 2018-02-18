@@ -15,6 +15,7 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "gl_utils.h"
+#include "PhysicsWorld.h"
 
 PhysicsWorld::PhysicsWorld():
     gForce_(defaultGForce)

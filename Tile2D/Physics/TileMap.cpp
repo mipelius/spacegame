@@ -17,8 +17,9 @@
 #include "DrawableMap.h"
 #include "TileMap.h"
 #include "Tile2D.h"
-#include "Body.h"
+#include "TileSet.h"
 #include "WorldMapModifiedEventArgs.h"
+#include "LightSystem.h"
 
 TileMap::TileMap() :
     modification(this),

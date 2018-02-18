@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-
 #include "FlyingEnemyAI.h"
 #include "Tile2D.h"
+#include "PathFinder.h"
 
 void FlyingEnemyAI::awake() {
     EnemyAIBase::awake();
@@ -37,9 +37,11 @@ void FlyingEnemyAI::update() {
         pathToTarget_ = Tile2D::pathFinder().getPath(
                 transform()->getPosition(),
                 target_->getPosition(),
-                collider_->boundingBox(),
-                true
+                maxNodesPathFinderExplores_,
+                true,
+                collider_->boundingBox()
         );
+
         updateNextPoint_();
     }
 
@@ -83,5 +85,13 @@ const Timer &FlyingEnemyAI::getPathUpdateTimer() const {
 
 void FlyingEnemyAI::setPathUpdateTimer(const Timer &pathUpdateTimer_) {
     FlyingEnemyAI::pathUpdateTimer_ = pathUpdateTimer_;
+}
+
+unsigned int FlyingEnemyAI::getMaxNodesPathFinderExplores() const {
+    return maxNodesPathFinderExplores_;
+}
+
+void FlyingEnemyAI::setMaxNodesPathFinderExplores(unsigned int maxNodesPathFinderExplores) {
+    maxNodesPathFinderExplores_ = maxNodesPathFinderExplores;
 }
 

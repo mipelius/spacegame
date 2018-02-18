@@ -21,6 +21,8 @@
 #include "TitleScreenController.h"
 #include "Button.h"
 #include "UIPrefabs.h"
+#include "Window.h"
+#include "SceneManager.h"
 
 void SceneTitleScreen::init() {
     Vecf center = {Tile2D::window().getW() / 2.0f, Tile2D::window().getH() / 2.0f};

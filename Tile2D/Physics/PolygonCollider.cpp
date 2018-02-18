@@ -15,12 +15,12 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "PolygonCollider.h"
-#include <iostream>
 #include <cfloat>
 #include "LineSegment.h"
 #include "Tile2D.h"
-#include "Body.h"
-#include "Tile2DMath.h"
+#include "TileSet.h"
+#include "TileMap.h"
+#include "PhysicsWorld.h"
 
 class Projection {
 

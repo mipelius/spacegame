@@ -12,6 +12,7 @@
 #include "Vec.h"
 #include "LineSegment.h"
 #include "PolygonCollider.h"
+#include "Window.h"
 
 static void plot(const Vecf& vec, float size = 5.0) {
     glBegin(GL_QUADS);

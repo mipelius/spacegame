@@ -22,6 +22,7 @@
 #include <Tile2D/Canvas/Drawable/Text.h>
 #include "UIPrefabs.h"
 #include "SortingLayers.h"
+#include "Resources.h"
 
 GameObject* UIPrefabs::button(
         const Vecf& position,

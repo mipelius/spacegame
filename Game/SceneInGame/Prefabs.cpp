@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-
 #include <cfloat>
 #include <Game/Scenes.h>
 #include "Prefabs.h"
@@ -36,6 +35,8 @@
 #include "DebugBehaviour.h"
 #include "BackgroundBehaviour.h"
 #include "HUD.h"
+#include "Resources.h"
+#include "SceneManager.h"
 
 GameObject *Prefabs::player() {
     auto player = Tile2D::createGameObject();
@@ -111,6 +112,7 @@ GameObject *Prefabs::boss() {
 
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
     AI->setMaxDistance(100000);
+    AI->setMaxNodesPathFinderExplores(100);
     Timer shootingTimer;
     shootingTimer.setInterval(200);
     AI->setShootingTimer(shootingTimer);

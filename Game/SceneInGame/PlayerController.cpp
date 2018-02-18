@@ -20,6 +20,11 @@
 #include "Prefabs.h"
 #include "ColliderLayers.h"
 #include "Scenes.h"
+#include "Input.h"
+#include "SceneManager.h"
+#include "Tilemap.h"
+#include "LightSystem.h"
+#include "Camera.h"
 
 void PlayerController::awake() {
     body_ = gameObject()->getComponent<Body>();

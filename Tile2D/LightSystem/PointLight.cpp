@@ -20,6 +20,7 @@
 #include "Canvas.h"
 #include "Camera.h"
 #include "Tile2DMath.h"
+#include "LightSystem.h"
 
 GLuint PointLight::glTextureId_ = 0;
 

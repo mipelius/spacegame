@@ -28,6 +28,10 @@ public:
     void setMaxPathFindingDistance(float maxPathFindingDistance);
     const Timer &getPathUpdateTimer() const;
     void setPathUpdateTimer(const Timer &pathUpdateTimer);
+    unsigned int getMaxNodesPathFinderExplores() const;
+    void setMaxNodesPathFinderExplores(unsigned int maxNodesPathFinderExplores);
+
+private:
 
 protected:
     void awake() override;
@@ -41,6 +45,7 @@ protected:
 private:
     PolygonCollider* collider_;
     float maxPathFindingDistance_ = 1200.0f;
+    unsigned int maxNodesPathFinderExplores_ = 100;
     void updateNextPoint_();
     Timer pathUpdateTimer_;
 };

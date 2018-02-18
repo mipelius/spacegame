@@ -17,6 +17,8 @@
 #include "TitleScreenController.h"
 #include "Scenes.h"
 #include "Tile2D.h"
+#include "Input.h"
+#include "SceneManager.h"
 
 void TitleScreenController::awake() {
 

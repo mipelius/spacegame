@@ -20,6 +20,9 @@
 #include "DrawableBase.h"
 #include "Camera.h"
 #include "Tile2D.h"
+#include "LightSystem.h"
+#include "TileMap.h"
+#include "PhysicsWorld.h"
 
 Canvas::Canvas() {
     camera_ = nullptr;

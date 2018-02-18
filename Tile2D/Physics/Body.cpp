@@ -15,6 +15,7 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Tile2D.h"
+#include "PhysicsWorld.h"
 
 Body::Body() :
     velocity_       (   Vecf(0,0) ),

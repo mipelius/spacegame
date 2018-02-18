@@ -19,7 +19,9 @@
 #include "Tile2D.h"
 #include "Prefabs.h"
 #include "EnemyAIBase.h"
-#include "Scenes.h"
+#include "Input.h"
+#include "LightSystem.h"
+#include "TileMap.h"
 
 void DebugBehaviour::awake() {
     body_ = gameObject()->getComponent<Body>();

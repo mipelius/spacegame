@@ -14,23 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <cfloat>
 #include "PathFinder.h"
-#include "Vec.h"
-#include "Pool.h"
+
+#include <cfloat>
 #include "Tile2D.h"
+#include "TileMap.h"
+#include "TileSet.h"
 
 float PathFinder::heuristicCost_(Veci start, Veci goal) {
     float dx = start.x - goal.x;
     float dy = start.y - goal.y;
-    return sqrt(dx * dx + dy * dy);
+    return sqrtf(dx * dx + dy * dy);
 }
 
 std::list<Vecf> PathFinder::getPath(
-        const Vecf&     startPoint,
-        const Vecf&     goalPoint,
-        const Rect&     boundingBox,
-        const bool&     useInnerBounding
+        const Vecf &startPoint,
+        const Vecf &goalPoint,
+        const unsigned int &maxNodesToExplore,
+        const bool &useInnerBounding,
+        const Rect &boundingBox
 ) {
     std::list<Vecf> path;
 
@@ -87,6 +89,10 @@ std::list<Vecf> PathFinder::getPath(
         }
 
         closedSet.add(current);
+
+        if (closedSet.size() >= maxNodesToExplore) {
+            break;
+        }
 
         calculateNeigbourPositions_(neighbourPositions, current->position);
 

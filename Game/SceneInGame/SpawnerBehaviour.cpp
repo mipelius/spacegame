@@ -20,6 +20,7 @@
 #include "Prefabs.h"
 #include "Tile2D.h"
 #include "Tile2DMath.h"
+#include "TileMap.h"
 
 SpawnerBehaviour::SpawnerBehaviour() :
         outerRect_({0.0f, 0.0f, 0.0f, 0.0f}),

@@ -20,20 +20,23 @@
 #include <map>
 #include <assert.h>
 #include <set>
-#include "LightSystem.h"
-#include "PhysicsWorld.h"
-#include "SceneManager.h"
-#include "Resources.h"
-#include "Window.h"
-#include "Canvas.h"
-#include "GameObject.h"
-#include "Tile2DBehaviour.h"
 #include "precompile.h"
+#include "ColliderLayerMatrix.h"
 #include "Particle.h"
 #include "Pool.h"
-#include "ColliderLayerMatrix.h"
-#include "PathFinder.h"
-#include "Input.h"
+
+class PathFinder;
+class Window;
+class SceneManager;
+class TileMap;
+class PhysicsWorld;
+class Input;
+class Tile2DBehaviour;
+class Canvas;
+class LightSystem;
+class Resources;
+class IScene;
+class GameObject;
 
 class Tile2D {
     friend class Tile2DObject;

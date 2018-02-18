@@ -19,9 +19,17 @@
 #include "Canvas.h"
 #include "Tile2D.h"
 #include "PathFinder.h"
+#include "LightSystem.h"
+#include "PhysicsWorld.h"
+#include "SceneManager.h"
+#include "Resources.h"
+#include "Window.h"
+#include "GameObject.h"
+#include "Tile2DBehaviour.h"
+#include "PathFinder.h"
+#include "Input.h"
 
 bool Tile2D::isLoaded_ = false;
-
 
 Tile2D::Tile2D() :
         particlePool_(Pool<Particle>(MAX_PARTICLES)),

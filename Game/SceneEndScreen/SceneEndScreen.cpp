@@ -14,10 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <Game/UIPrefabs.h>
-#include <Tile2D/Core/Tile2D.h>
-#include <Game/Scenes.h>
+#include "UIPrefabs.h"
+#include "Tile2D.h"
+#include "Scenes.h"
 #include "SceneEndScreen.h"
+#include "Window.h"
+#include "SceneManager.h"
 
 void SceneEndScreen::init() {
     Vecf center = {Tile2D::window().getW() / 2.0f, Tile2D::window().getH() / 2.0f};

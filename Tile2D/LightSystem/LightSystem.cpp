@@ -17,6 +17,10 @@
 #include <stack>
 #include "Tile2D.h"
 #include "Tile2DMath.h"
+#include "LightSystem.h"
+#include "Window.h"
+#include "TileMap.h"
+#include "TileSet.h"
 
 GLuint LightSystem::glShadowTextureId_ = 0;
 
