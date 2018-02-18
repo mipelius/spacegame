@@ -28,7 +28,8 @@ LightSystem::LightSystem() :
 
 ambientLight_           (   1.0  ),
 softShadowsEnabled_     (   true ),
-blendedShadowsEnabled_  (   true )
+blendedShadowsEnabled_  (   true ),
+enabled_                (   true )
 
 {
     for (auto x = 0u; x < MAX_LIGHT_RADIUS; ++x) {
@@ -103,7 +104,7 @@ void LightSystem::removeLight(PointLight *light) {
 // ------------------------ RENDERING --------------------------
 
 void LightSystem::update(const Canvas& canvas) {
-    if (canvas.getCamera() == nullptr) {
+    if (canvas.getCamera() == nullptr || !enabled_) {
         return;
     }
     // turn projection upside down
@@ -171,7 +172,7 @@ void LightSystem::update(const Canvas& canvas) {
 }
 
 void LightSystem::draw(const Canvas& canvas) {
-    if (canvas.getCamera() == nullptr) {
+    if (canvas.getCamera() == nullptr || !enabled_) {
         return;
     }
 
@@ -486,5 +487,13 @@ bool LightSystem::isBlendedShadowsEnabled() const {
 
 void LightSystem::setBlendedShadowsEnabled(bool blendedShadowsEnabled) {
     blendedShadowsEnabled_ = blendedShadowsEnabled;
+}
+
+bool LightSystem::isEnabled() const {
+    return enabled_;
+}
+
+void LightSystem::setEnabled(bool enabled) {
+    enabled_ = enabled;
 }
 

@@ -50,6 +50,8 @@ public:
     void setSoftShadowsEnabled(bool softShadowsEnabled);
     bool isBlendedShadowsEnabled() const;
     void setBlendedShadowsEnabled(bool blendedShadowsEnabled);
+    bool isEnabled() const;
+    void setEnabled(bool enabled);
 
 private:
     std::vector<PointLight*> lights_;
@@ -63,6 +65,9 @@ private:
 
     bool softShadowsEnabled_;
     bool blendedShadowsEnabled_;
+    bool enabled_;
+
+private:
 
     void init();
 
