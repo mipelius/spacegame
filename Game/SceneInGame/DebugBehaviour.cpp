@@ -22,6 +22,7 @@
 #include "Input.h"
 #include "LightSystem.h"
 #include "TileMap.h"
+#include "Window.h"
 
 void DebugBehaviour::awake() {
     body_ = gameObject()->getComponent<Body>();
@@ -81,6 +82,9 @@ void DebugBehaviour::update() {
     }
     if (keyboard.keyPressed(SDL_SCANCODE_D)) {
         Tile2D::lightSystem().setSoftShadowsEnabled(!Tile2D::lightSystem().isSoftShadowsEnabled());
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_V)) {
+        Tile2D::window().setVsync(!Tile2D::window().getVsync());
     }
 }
 

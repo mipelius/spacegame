@@ -128,3 +128,16 @@ void Window::setH(unsigned int h) {
 Rect Window::getRect() {
     return Rect(x_, y_, w_, h_);
 }
+
+bool Window::getVsync() const {
+    return SDL_GL_GetSwapInterval() == 1;
+}
+
+void Window::setVsync(bool vsync) {
+    if (vsync) {
+        SDL_GL_SetSwapInterval(1);
+    } else {
+        SDL_GL_SetSwapInterval(0);
+    }
+
+}

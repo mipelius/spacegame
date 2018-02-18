@@ -36,6 +36,10 @@ public:
     void setW(unsigned int w);
     unsigned int getH() const;
     void setH(unsigned int h);
+    bool getVsync() const;
+    void setVsync(bool vsync);
+
+private:
 
 private:
     void swap_();
