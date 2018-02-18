@@ -20,7 +20,6 @@
 PhysicsWorld::PhysicsWorld():
     gForce_(defaultGForce)
 {
-    metersPerPixel_ = defaultMetersPerPixel;
     airDensity_ = defaultAirDensity;
 }
 
@@ -119,14 +118,6 @@ const Vecf &PhysicsWorld::getGForce() const {
 
 void PhysicsWorld::setGForce(const Vecf &gForce) {
     gForce_ = gForce;
-}
-
-float PhysicsWorld::getMetersPerPixel() const {
-    return metersPerPixel_;
-}
-
-void PhysicsWorld::setMetersPerPixel(float metersPerPixel) {
-    metersPerPixel_ = metersPerPixel;
 }
 
 float PhysicsWorld::getAirDensity() const {

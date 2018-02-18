@@ -272,7 +272,7 @@ bool PolygonCollider::detectTerrainCollision_(float deltaTime) {
 
     if (body_ != nullptr) {
         velocityBeforeCollision = body_->velocity_;
-        direction = body_->velocity_ * deltaTime * Tile2D::physicsWorld().metersPerPixel_;
+        direction = body_->velocity_ * deltaTime;
     }
 
     Tile* tile;
