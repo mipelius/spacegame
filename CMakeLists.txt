@@ -38,6 +38,7 @@ include_directories(
         Game/SceneInGame
         Game/SceneTitleScreen
         Game/SceneEndScreen
+        Game/SceneQuickTesting
         Tile2D/Animation
         Tile2D/LightSystem
         Tile2D/Canvas/ParticleSystem
@@ -215,7 +216,13 @@ set(SOURCE_FILES
         Game/SceneInGame/HUD.h
 
         Tile2D/Core/t2Time.cpp
-        Tile2D/Core/t2Time.h)
+        Tile2D/Core/t2Time.h
+
+        Game/SceneQuickTesting/SceneQuickTesting.cpp
+        Game/SceneQuickTesting/SceneQuickTesting.h
+        Game/SceneQuickTesting/QuickTestingBehaviour.cpp
+        Game/SceneQuickTesting/QuickTestingBehaviour.h
+        )
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

@@ -20,6 +20,7 @@
 #include "SceneEndScreen.h"
 #include "Scenes.h"
 #include "ColliderLayers.h"
+#include "SceneQuickTesting.h"
 
 #undef main
 
@@ -30,7 +31,8 @@ int main(int argc, const char *argv[]) {
             {
                     {Scenes::titleScreen,    new SceneTitleScreen},
                     {Scenes::inGame,         new SceneInGame},
-                    {Scenes::gameEndScreen,  new SceneEndScreen}
+                    {Scenes::gameEndScreen,  new SceneEndScreen},
+                    {Scenes::quickTesting,   new SceneQuickTesting}
             },
             {
                     {ColliderLayers::playerAmmo, ColliderLayers::playerAmmo, false},

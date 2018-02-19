@@ -1,5 +1,5 @@
 // This file is part of SpaceGame.
-// Copyright (C) 2017 Miika Pelkonen
+// Copyright (C) 2018 Miika Pelkonen
 //
 // SpaceGame is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,16 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SPACEGAME_SCENES_H
-#define SPACEGAME_SCENES_H
+#ifndef __SceneQuickTesting_H
+#define __SceneQuickTesting_H
 
-namespace Scenes {
-    enum {
-        titleScreen,
-        inGame,
-        gameEndScreen,
-        quickTesting
-    };
-}
+#include "IScene.h"
 
-#endif //SPACEGAME_SCENES_H
+class Camera;
+
+class SceneQuickTesting : public IScene {
+    void init() override;
+    void destroy() override;
+
+private:
+    Camera* camera_;
+};
+
+
+#endif //__SceneQuickTesting_H

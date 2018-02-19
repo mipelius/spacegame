@@ -21,6 +21,7 @@
 #include <map>
 #include <queue>
 #include <list>
+#include "Tile.h"
 #include "Vec.h"
 #include "Pool.h"
 #include "Rect.h"
@@ -35,6 +36,8 @@ public:
             const bool &useInnerBounding,
             const Rect &boundingBox
     );
+
+    Tile* castLine(const Vecf &start, const Vecf &goal);
 
 private:
     PathFinder() = default;
