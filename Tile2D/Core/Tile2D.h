@@ -37,6 +37,7 @@ class LightSystem;
 class Resources;
 class IScene;
 class GameObject;
+class Time;
 
 class Tile2D {
     friend class Tile2DObject;
@@ -70,6 +71,7 @@ public:
     static TileMap &tileMap();
     static PathFinder &pathFinder();
     static const Input &input();
+    static const Time &time();
 
     static void executeDelayedFunction(
             GameObject* gameObject,
@@ -94,6 +96,7 @@ private:
     TileMap* tileMap_;
     PathFinder* pathFinder_;
     Input* input_;
+    Time* time_;
 
     void mainLoop_();
     void cleanUp_();

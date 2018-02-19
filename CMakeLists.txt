@@ -210,7 +210,12 @@ set(SOURCE_FILES
         Game/SceneInGame/WalkingEnemyAI.h
 
         Game/UIPrefabs.cpp
-        Game/UIPrefabs.h Game/SceneInGame/HUD.cpp Game/SceneInGame/HUD.h)
+        Game/UIPrefabs.h
+        Game/SceneInGame/HUD.cpp
+        Game/SceneInGame/HUD.h
+
+        Tile2D/Core/t2Time.cpp
+        Tile2D/Core/t2Time.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

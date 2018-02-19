@@ -28,6 +28,7 @@
 #include "Tile2DBehaviour.h"
 #include "PathFinder.h"
 #include "Input.h"
+#include "t2Time.h"
 
 bool Tile2D::isLoaded_ = false;
 
@@ -45,11 +46,13 @@ Tile2D::Tile2D() :
     lightSystem_ = new LightSystem();
     pathFinder_ = new PathFinder();
     input_ = new Input();
+    time_ = new Time();
 }
 
 Tile2D::~Tile2D() {
     cleanUp_();
 
+    delete time_;
     delete input_;
     delete pathFinder_;
     delete lightSystem_;
@@ -106,15 +109,18 @@ void Tile2D::mainLoop_() {
 
     while(!SDL_QuitRequested() && !quit_) {
         glClear(GL_COLOR_BUFFER_BIT);
-        Uint32 deltaTime = SDL_GetTicks() - timestamp;
-        timestamp = SDL_GetTicks();
+
+        Uint32 ticks = SDL_GetTicks();
+        time_->deltaTime_ = ticks - timestamp;
+        timestamp = ticks;
+
         sceneManager_->update_();
         initGameObjects_();
         removeDestroyedObjects_();
         PollSDL_Events();
         updateBehaviours_();
         executeDelayedFunctions_();
-        physicsWorld_->step(deltaTime / 1000.0f);
+        physicsWorld_->step(time_->deltaTime_ / 1000.0f);
         lateUpdateBehaviours_();
         canvas().render();
         window().swap_();
@@ -201,6 +207,10 @@ TileMap &Tile2D::tileMap() {
 
 PathFinder &Tile2D::pathFinder() {
     return *instance_().pathFinder_;
+}
+
+const Time &Tile2D::time() {
+    return *instance_().time_;
 }
 
 GameObject *Tile2D::createGameObject() {
