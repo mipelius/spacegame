@@ -17,6 +17,7 @@
 #include "FlyingEnemyAI.h"
 #include "Tile2D.h"
 #include "PathFinder.h"
+#include "t2Time.h"
 
 void FlyingEnemyAI::awake() {
     EnemyAIBase::awake();
@@ -50,7 +51,7 @@ void FlyingEnemyAI::update() {
     }
 
     Vecf currentPosition = transform()->getPosition();
-    Vecf movement = (nextPoint_ - lastPoint_) / 2;
+    Vecf movement = (nextPoint_ - lastPoint_) * Tile2D::time().getDeltaTime() * speed;
 
     transform()->setPosition(currentPosition + movement);
 

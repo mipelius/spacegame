@@ -45,6 +45,7 @@ protected:
 private:
     PolygonCollider* collider_;
     float maxPathFindingDistance_ = 1200.0f;
+    float speed = 20;
     unsigned int maxNodesPathFinderExplores_ = 100;
     void updateNextPoint_();
     Timer pathUpdateTimer_;
