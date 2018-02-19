@@ -37,6 +37,7 @@
 #include "HUD.h"
 #include "Resources.h"
 #include "SceneManager.h"
+#include "t2Time.h"
 
 GameObject *Prefabs::player() {
     auto player = Tile2D::createGameObject();
@@ -422,11 +423,13 @@ GameObject* Prefabs::bloodBurst() {
         if (particle->getTimeLived() > 2000) {
             particle->destroy();
         } else {
+            auto deltaTime = Tile2D::time().getDeltaTime() * 60.0f;
+
             Vecf pos = particle->getTransform().getPosition();
-            particle->getTransform().setRotation(particle->getTransform().getRotation() + 1.0f);
-            particle->getTransform().setPosition(pos + particle->getVelocity());
-            particle->setOpacity(particle->getOpacity() - 0.01f);
-            float newSize = particle->getTransform().getScale().x - 0.007f;
+            particle->getTransform().setRotation(particle->getTransform().getRotation() + 1.0f * deltaTime);
+            particle->getTransform().setPosition(pos + particle->getVelocity() * deltaTime);
+            particle->setOpacity(particle->getOpacity() - 0.01f * deltaTime);
+            float newSize = particle->getTransform().getScale().x - 0.007f * deltaTime;
             Mathf::clamp(newSize, 0.0f, 100.0f);
             particle->getTransform().setScale({newSize, newSize});
         }
@@ -473,11 +476,13 @@ GameObject *Prefabs::explosion() {
         if (particle->getTimeLived() > 2000) {
             particle->destroy();
         } else {
+            auto deltaTime = Tile2D::time().getDeltaTime() * 60.0f;
+
             Vecf pos = particle->getTransform().getPosition();
-            particle->getTransform().setRotation(particle->getTransform().getRotation() + 1.0f);
-            particle->getTransform().setPosition(pos + particle->getVelocity());
-            particle->setOpacity(particle->getOpacity() - 0.01f);
-            float newSize = particle->getTransform().getScale().x - 0.007f;
+            particle->getTransform().setRotation(particle->getTransform().getRotation() + 1.0f * deltaTime);
+            particle->getTransform().setPosition(pos + (particle->getVelocity() * deltaTime));
+            particle->setOpacity(particle->getOpacity() - (0.01f * deltaTime));
+            float newSize = particle->getTransform().getScale().x - 0.007f * deltaTime;
             Mathf::clamp(newSize, 0.0f, 100.0f);
             particle->getTransform().setScale({newSize, newSize});
         }
