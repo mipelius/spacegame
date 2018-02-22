@@ -28,7 +28,6 @@ void SceneQuickTesting::init() {
     Tile2D::lightSystem().setEnabled(false);
     camera_ = new Camera();
     Tile2D::canvas().setCamera(camera_);
-    camera_->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
 
     GameObject* quickTestingObj = Tile2D::createGameObject();
     quickTestingObj->attachComponent<QuickTestingBehaviour>();

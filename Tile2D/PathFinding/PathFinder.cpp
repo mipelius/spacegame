@@ -19,7 +19,6 @@
 #include <cfloat>
 #include "Tile2D.h"
 #include "TileMap.h"
-#include "TileSet.h"
 
 float PathFinder::heuristicCost_(Veci start, Veci goal) {
     float dx = (float)(start.x - goal.x);
@@ -149,50 +148,4 @@ std::list<Vecf> PathFinder::getPath(
     }
 
     return path;
-}
-
-Tile *PathFinder::castLine(const Vecf &startPoint, const Vecf &goalPoint) {
-    auto& tileMap = Tile2D::tileMap();
-
-    Tile* result = nullptr;
-
-    if (!tileMap.isLoaded()) {
-        return result;
-    }
-
-    Veci start = {
-            (int)(startPoint.x / tileMap.getTileSet()->getTileW()),
-            (int)(startPoint.y / tileMap.getTileSet()->getTileH())
-    };
-
-    Veci goal = {
-            (int)(goalPoint.x / tileMap.getTileSet()->getTileW()),
-            (int)(goalPoint.y / tileMap.getTileSet()->getTileH())
-    };
-
-    // horizontal case
-    if (start.y == goal.y) {
-        int stepX = goal.x - start.x > 0 ? 1 : -1;
-        for (auto x = start.x; start.x != goal.x; x += stepX) {
-            result = tileMap.getValue(x, start.y);
-            if (result != nullptr) {
-                return result;
-            }
-        }
-    }
-
-    // vertical case
-    if (start.x == goal.x) {
-        int stepY = goal.y - start.y > 0 ? 1 : -1;
-        for (auto y = start.y; start.y != goal.y; y += stepY) {
-            result = tileMap.getValue(start.x, y);
-            if (result != nullptr) {
-                return result;
-            }
-        }
-    }
-    // other cases
-    // TODO
-
-    return result;
 }

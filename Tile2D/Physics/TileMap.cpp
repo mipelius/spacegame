@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <Tile2D/Util/Tile2DMath.h>
 #include "DrawableMap.h"
 #include "TileMap.h"
 #include "Tile2D.h"
@@ -168,4 +169,73 @@ bool TileMap::canMoveScaled(const Vecf &position, const Rect& boundingBox, bool 
     }
 
     return canMove(pos, boundingBoxTopLeftCorner, boundingBoxTopLeftCorner);
+}
+
+bool TileMap::castLine(const Vecf &start, const Vecf &goal, Vecf &collisionPoint) {
+    auto& tileMap = Tile2D::tileMap();
+
+    bool result = false;
+
+    if (!tileMap.isLoaded()) {
+        return result;
+    }
+
+    Veci startMapCoords = tileMap.getMapCoords(start);
+    Veci goalMapCoords = tileMap.getMapCoords(goal);
+
+    if (startMapCoords == goalMapCoords) {
+        collisionPoint = tileMap.getWorldCoords(startMapCoords);
+        return true;
+    }
+
+    Vecf delta = {
+            (float)(goalMapCoords.x - startMapCoords.x),
+            (float)(goalMapCoords.y - startMapCoords.y)
+    };
+
+    if (fabsf(delta.x) >= fabsf(delta.y)) {
+        float slope = delta.y / delta.x;
+
+        if (delta.x < Mathf::epsilon) {
+            slope *= -1.0f;
+        }
+
+        auto stepX = goalMapCoords.x - startMapCoords.x > 0 ? 1 : -1;
+
+        float y = startMapCoords.y;
+
+        for (auto x = startMapCoords.x; x != goalMapCoords.x; x += stepX) {
+            Veci currentPoint = {x, (int)y};
+            Tile* tile = tileMap.getValue(currentPoint.x, currentPoint.y);
+            if (tile != nullptr && tile->getDensity() > 0.0f) {
+                collisionPoint = tileMap.getWorldCoords(currentPoint);
+                return true;
+            }
+
+            y += slope;
+        }
+    } else {
+        float slope = delta.x / delta.y;
+
+        if (delta.y < Mathf::epsilon) {
+            slope *= -1.0f;
+        }
+
+        auto stepY = goalMapCoords.y - startMapCoords.y > 0 ? 1 : -1;
+
+        float x = startMapCoords.x;
+
+        for (auto y = startMapCoords.y; y != goalMapCoords.y; y += stepY) {
+            Veci currentPoint = {(int)x, y};
+            Tile* tile = tileMap.getValue(currentPoint.x, currentPoint.y);
+            if (tile != nullptr && tile->getDensity() > 0.0f) {
+                collisionPoint = tileMap.getWorldCoords(currentPoint);
+                return true;
+            }
+
+            x += slope;
+        }
+    }
+
+    return result;
 }

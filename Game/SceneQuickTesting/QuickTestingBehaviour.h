@@ -30,7 +30,7 @@ protected:
 private:
     GameObject* lineStart_;
     GameObject* lineGoal_;
-
+    GameObject* collisionPoint_;
 };
 
 #endif //__QuickTestingBehaviour_H

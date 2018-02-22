@@ -37,8 +37,6 @@ public:
             const Rect &boundingBox
     );
 
-    Tile* castLine(const Vecf &start, const Vecf &goal);
-
 private:
     PathFinder() = default;
     ~PathFinder() = default;

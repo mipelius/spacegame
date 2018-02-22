@@ -22,18 +22,28 @@
 #include "PathFinder.h"
 #include "TileMap.h"
 #include "TileSet.h"
+#include "Camera.h"
+#include "Window.h"
 
 void QuickTestingBehaviour::awake() {
-    auto createLineEndpoint = [] (Color color) {
+    auto createRect = [] (Color color) {
         auto endPoint = Tile2D::createGameObject();
+        Vecf position = Vecf(8.0f, 8.0f) * 400.0f + Vecf(4.0f, 4.0f);
+        endPoint->transform().setPosition(position);
         auto spriteEndPoint_ = endPoint->attachComponent<Sprite>();
         spriteEndPoint_->setRect({-4.0f, -4.0f, 4.0f, 4.0f});
         spriteEndPoint_->setColor(color);
         return endPoint;
     };
 
-    lineStart_ = createLineEndpoint({1.0f, 0.0f, 0.0f});
-    lineGoal_ = createLineEndpoint({0.0f, 1.0f, 0.0f});
+    auto camera = Tile2D::canvas().getCamera();
+    camera->setAreaRect({0, 0, (float)Tile2D::window().getW() * 2, (float)Tile2D::window().getH() * 2});
+
+    Tile2D::canvas().getCamera()->setPosition(Vecf(8.0f, 8.0f) * 400.0f);
+
+    lineStart_ = createRect({1.0f, 0.0f, 0.0f});
+    lineGoal_ = createRect({0.0f, 1.0f, 0.0f});
+    collisionPoint_ = createRect({1.0f, 1.0f, 1.0f});
 }
 
 void QuickTestingBehaviour::update() {
@@ -78,7 +88,14 @@ void QuickTestingBehaviour::update() {
         lineGoal_->transform().setPosition(lineGoalPosition + right);
     }
 
-    Tile2D::pathFinder().castLine(lineStartPosition, lineGoalPosition);
+    Vecf result;
+
+    if (Tile2D::tileMap().castLine(lineStartPosition, lineGoalPosition, result)) {
+        collisionPoint_->transform().setPosition(result);
+        collisionPoint_->setIsActive(true);
+    } else {
+        collisionPoint_->setIsActive(false);
+    }
 }
 
 void QuickTestingBehaviour::lateUpdate() {

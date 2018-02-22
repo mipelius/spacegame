@@ -20,6 +20,7 @@
 #include <string>
 #include "Array2d.h"
 #include "DrawableMap.h"
+#include "TileSet.h"
 
 class MapTexture;
 class Body;
@@ -67,6 +68,23 @@ public:
 
     TileMap();
     ~TileMap();
+
+
+    bool castLine(const Vecf &start, const Vecf &goal, Vecf &collisionPoint);
+
+    inline Veci getMapCoords(Vecf worldCoords) {
+        return {
+                (int)(worldCoords.x / tileSet_->getTileW()),
+                (int)(worldCoords.y / tileSet_->getTileH())
+        };
+    }
+
+    inline Vecf getWorldCoords(Veci mapCoords) {
+        return {
+                (mapCoords.x + 0.5f) * tileSet_->getTileW(),
+                (mapCoords.y + 0.5f) * tileSet_->getTileH()
+        };
+    };
 
 private:
     static const int DEFAULT_BLOCK_SIZE_W = 8;
