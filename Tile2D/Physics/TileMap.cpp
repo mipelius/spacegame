@@ -172,19 +172,17 @@ bool TileMap::canMoveScaled(const Vecf &position, const Rect& boundingBox, bool 
 }
 
 bool TileMap::castLine(const Vecf &start, const Vecf &goal, Vecf &collisionPoint) {
-    auto& tileMap = Tile2D::tileMap();
-
     bool result = false;
 
-    if (!tileMap.isLoaded()) {
+    if (!isLoaded()) {
         return result;
     }
 
-    Veci startMapCoords = tileMap.getMapCoords(start);
-    Veci goalMapCoords = tileMap.getMapCoords(goal);
+    Veci startMapCoords = getMapCoords(start);
+    Veci goalMapCoords = getMapCoords(goal);
 
     if (startMapCoords == goalMapCoords) {
-        collisionPoint = tileMap.getWorldCoords(startMapCoords);
+        collisionPoint = getWorldCoords(startMapCoords);
         return true;
     }
 
@@ -206,9 +204,9 @@ bool TileMap::castLine(const Vecf &start, const Vecf &goal, Vecf &collisionPoint
 
         for (auto x = startMapCoords.x; x != goalMapCoords.x; x += stepX) {
             Veci currentPoint = {x, (int)y};
-            Tile* tile = tileMap.getValue(currentPoint.x, currentPoint.y);
+            Tile* tile = getValue(currentPoint.x, currentPoint.y);
             if (tile != nullptr && tile->getDensity() > 0.0f) {
-                collisionPoint = tileMap.getWorldCoords(currentPoint);
+                collisionPoint = getWorldCoords(currentPoint);
                 return true;
             }
 
@@ -227,9 +225,9 @@ bool TileMap::castLine(const Vecf &start, const Vecf &goal, Vecf &collisionPoint
 
         for (auto y = startMapCoords.y; y != goalMapCoords.y; y += stepY) {
             Veci currentPoint = {(int)x, y};
-            Tile* tile = tileMap.getValue(currentPoint.x, currentPoint.y);
+            Tile* tile = getValue(currentPoint.x, currentPoint.y);
             if (tile != nullptr && tile->getDensity() > 0.0f) {
-                collisionPoint = tileMap.getWorldCoords(currentPoint);
+                collisionPoint = getWorldCoords(currentPoint);
                 return true;
             }
 
