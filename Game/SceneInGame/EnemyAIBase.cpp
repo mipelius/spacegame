@@ -35,17 +35,9 @@ void EnemyAIBase::setTarget(Transform *target) {
 
 void EnemyAIBase::shootTarget_(bool useTimer) {
     if (shootingTimer_.resetIfTimeIntervalPassed() || !useTimer) {
-        Vecf collisionPoint;
-        bool cannotSeeTarget = Tile2D::tileMap().castLine(
-            transform()->getPosition(),
-            target_->getPosition(),
-            collisionPoint
-        );
-
-        if (cannotSeeTarget) {
+        if (!canSeeTarget_()) {
             return;
         }
-
         Vecf direction = target_->getPosition() - transform()->getPosition();
         auto laser = Prefabs::laser();
 
@@ -94,4 +86,13 @@ float EnemyAIBase::getMaxDistance() const {
 
 void EnemyAIBase::setMaxDistance(float maxDistance) {
     maxDistance_ = maxDistance;
+}
+
+bool EnemyAIBase::canSeeTarget_() {
+    Vecf collisionPoint;
+    return !Tile2D::tileMap().castLine(
+            transform()->getPosition(),
+            target_->getPosition(),
+            collisionPoint
+    );
 }

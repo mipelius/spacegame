@@ -36,9 +36,6 @@ public:
     void setMaxDistance(float maxDistance);
 
 protected:
-
-
-protected:
     Body* body_;
     Transform* target_ = nullptr;
 
@@ -52,6 +49,8 @@ protected:
 
     void onDestroy() override;
     void update() override;
+
+    bool canSeeTarget_();
 };
 
 #endif //SPACEGAME_ENEMYAIBASE_H

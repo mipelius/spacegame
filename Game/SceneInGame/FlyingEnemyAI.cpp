@@ -30,11 +30,18 @@ void FlyingEnemyAI::awake() {
 
 void FlyingEnemyAI::update() {
     EnemyAIBase::update();
+    shootTarget_();
+
     float distanceToTarget = (target_->getPosition() - transform()->getPosition()).length();
 
-    if (pathUpdateTimer_.timeIntervalPassed() && distanceToTarget < maxPathFindingDistance_) {
-        pathUpdateTimer_.reset();
+    if (
+            (distanceToTarget < minPathFindingDistance_ && canSeeTarget_()) ||
+            distanceToTarget > maxPathFindingDistance_
+    ) {
+        return;
+    }
 
+    if (pathUpdateTimer_.resetIfTimeIntervalPassed()) {
         pathToTarget_ = Tile2D::pathFinder().getPath(
                 transform()->getPosition(),
                 target_->getPosition(),
@@ -54,8 +61,6 @@ void FlyingEnemyAI::update() {
     Vecf movement = (nextPoint_ - lastPoint_) * Tile2D::time().getDeltaTime() * speed;
 
     transform()->setPosition(currentPosition + movement);
-
-    shootTarget_();
 }
 
 void FlyingEnemyAI::lateUpdate() {
