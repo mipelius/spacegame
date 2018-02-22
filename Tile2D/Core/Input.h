@@ -18,7 +18,7 @@
 #ifndef SPACEGAME_INPUT_H
 #define SPACEGAME_INPUT_H
 
-#include <SDL2/SDL_scancode.h>
+#include "precompile.h"
 #include "Vec.h"
 
 class Input {
