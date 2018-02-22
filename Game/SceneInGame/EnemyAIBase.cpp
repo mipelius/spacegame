@@ -14,11 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-
-#include "WalkingEnemyAI.h"
 #include "EnemyAIBase.h"
+
+#include "Tile2D.h"
 #include "Prefabs.h"
 #include "ColliderLayers.h"
+#include "TileMap.h"
 
 void EnemyAIBase::awake() {
     body_ = gameObject()->getComponent<Body>();
@@ -34,6 +35,17 @@ void EnemyAIBase::setTarget(Transform *target) {
 
 void EnemyAIBase::shootTarget_(bool useTimer) {
     if (shootingTimer_.resetIfTimeIntervalPassed() || !useTimer) {
+        Vecf collisionPoint;
+        bool cannotSeeTarget = Tile2D::tileMap().castLine(
+            transform()->getPosition(),
+            target_->getPosition(),
+            collisionPoint
+        );
+
+        if (cannotSeeTarget) {
+            return;
+        }
+
         Vecf direction = target_->getPosition() - transform()->getPosition();
         auto laser = Prefabs::laser();
 
