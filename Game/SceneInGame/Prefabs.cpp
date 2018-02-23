@@ -159,11 +159,34 @@ GameObject *Prefabs::walkingEnemy() {
 GameObject *Prefabs::crabKindOf() {
     auto enemy = spawnEnemy_(
             "crab_kindof",
-            {{-10, -25}, {10, -25}, {10, 25}, {-10, 25}},
-            {-25, -25, 25, 25},
+            {{-30, -20}, {30, -20}, {30, 20}, {-30, 20}},
+            {-30, -30, 30, 30},
             0.0f
     );
+    auto collider = enemy->getComponent<PolygonCollider>();
+    collider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
+        if (args.otherCollider->gameObject()->tag == Tags::player) {
+            auto playerHealth = args.otherCollider->gameObject()->getComponent<Health>();
+            playerHealth->damage(Tile2D::time().getDeltaTimeMS() / 2, collider->gameObject());
+        }
+    });
+
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
+
+    Timer pathUpdateTimer;
+    pathUpdateTimer.setInterval(200);
+    AI->setPathUpdateTimer(pathUpdateTimer);
+
+    AI->setMaxPathFindingDistance(3000);
+    AI->setMinPathFindingDistance(0);
+    AI->setMaxNodesPathFinderExplores(2000);
+    AI->setSpeed(40);
+
+    Timer shootingTimer;
+    shootingTimer.setInterval(5000);
+    shootingTimer.setIntervalRandomness(2000);
+    AI->setShootingTimer(shootingTimer);
+
     AI->setMaxDistance(1500);
 
     return enemy;
@@ -551,5 +574,17 @@ GameObject *Prefabs::background(Rect area, const char *texture, Color color) {
     auto bgBehaviour = background->attachComponent<BackgroundBehaviour>();
     bgBehaviour->setArea(area);
     return background;
+}
+
+GameObject *Prefabs::spawner(Rect area, GameObject* target, GameObject* (*spawnfunction)()) {
+    GameObject* spawnerObj = Tile2D::createGameObject();
+    auto spawnerBehaviour = spawnerObj->attachComponent<SpawnerBehaviour>();
+    spawnerBehaviour->setTarget(target);
+    spawnerBehaviour->setSpawnFunction(spawnfunction);
+    spawnerBehaviour->setAreaRect(area);
+    spawnerBehaviour->setInnerRect({-600.0f, -400.0f, 600.0f, 400.0f});
+    spawnerBehaviour->setOuterRect({-1000.0f, -800.0f, 1000.0f, 800.0f});
+
+    return spawnerObj;
 }
 

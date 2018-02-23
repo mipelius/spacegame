@@ -52,6 +52,7 @@ public:
 
     // other
     static GameObject* background(Rect area, const char* texture, Color color);
+    static GameObject* spawner(Rect area, GameObject* target, GameObject* (*spawnFunction)());
 
 private:
     static GameObject* spawnEnemy_(

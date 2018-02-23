@@ -59,12 +59,10 @@ void SceneInGame::init() {
     camera_->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
     Tile2D::canvas().setCamera(camera_);
 
-    // spawner
-    GameObject* spawner = Tile2D::createGameObject();
-    auto spawnerBehaviour = spawner->attachComponent<SpawnerBehaviour>();
-    spawnerBehaviour->setTarget(player);
-    spawnerBehaviour->setInnerRect({-600.0f, -400.0f, 600.0f, 400.0f});
-    spawnerBehaviour->setOuterRect({-1000.0f, -800.0f, 1000.0f, 800.0f});
+    // spawners
+    Prefabs::spawner({0.0f, 0.0f, 3300.0f, 2400.0f}, player, Prefabs::walkingEnemy);
+    Prefabs::spawner({3300.0f, 0.0f, 6400.0f, 2400.0f}, player, Prefabs::crabKindOf);
+    Prefabs::spawner({3300.0f, 2400.0f, 6400.0f, 4800.0f}, player, Prefabs::fourwayCyclops);
 
     // boss
     auto boss = Prefabs::boss();

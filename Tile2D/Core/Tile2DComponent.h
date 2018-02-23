@@ -24,7 +24,7 @@ class Tile2DComponent {
 
 public:
     GameObject* gameObject() { return gameObject_; }
-    Transform* transform() { return &(gameObject_->transform()); }
+    Transform* transform() const { return &(gameObject_->transform()); }
 
     Tile2DComponent() = default;
 
