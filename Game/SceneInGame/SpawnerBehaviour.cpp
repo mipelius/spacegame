@@ -29,7 +29,7 @@ SpawnerBehaviour::SpawnerBehaviour() :
 { }
 
 void SpawnerBehaviour::awake() {
-    spawningTimer_.setInterval(2000);
+    spawningTimer_.setInterval(500);
 }
 
 void SpawnerBehaviour::update() {

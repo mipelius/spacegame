@@ -113,7 +113,7 @@ GameObject *Prefabs::boss() {
 
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
     AI->setMaxDistance(100000);
-    AI->setMaxNodesPathFinderExplores(100);
+    AI->setMaxNodesPathFinderExplores(2000);
     Timer shootingTimer;
     shootingTimer.setInterval(200);
     AI->setShootingTimer(shootingTimer);
