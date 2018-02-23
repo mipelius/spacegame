@@ -376,10 +376,15 @@ bool PolygonCollider::detectTerrainCollision_(float deltaTime) {
 }
 
 bool PolygonCollider::detectCollisionWith_(PolygonCollider& otherCollider) {
-    if (!boundingBox_.intersectsWith(otherCollider.boundingBox_)) return false;
+    if (!boundingBoxWorldCoordinates().intersectsWith(otherCollider.boundingBoxWorldCoordinates())) {
+        return false;
+    }
 
     Vecf contactNormal;
     float penetration;
+
+    pos_ = transform()->getPosition();
+    otherCollider.pos_ = otherCollider.transform()->getPosition();
 
     if (overlap(otherCollider, contactNormal, penetration)) {
         collision.raise(
@@ -411,4 +416,13 @@ unsigned int PolygonCollider::getLayer() const {
 
 void PolygonCollider::setLayer(unsigned int layer) {
     layer_ = layer;
+}
+
+const Rect PolygonCollider::boundingBoxWorldCoordinates() {
+    return {
+            boundingBox_.x1 + transform()->getPosition().x,
+            boundingBox_.y1 + transform()->getPosition().y,
+            boundingBox_.x2 + transform()->getPosition().x,
+            boundingBox_.y2 + transform()->getPosition().y
+    };
 }

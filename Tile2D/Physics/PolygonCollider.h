@@ -67,6 +67,8 @@ public:
     );
 
     const Rect& boundingBox() const;
+    const Rect boundingBoxWorldCoordinates();
+
     const std::vector<Vecf>& points() const;
 
     bool overlap(
