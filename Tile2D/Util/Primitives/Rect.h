@@ -45,8 +45,8 @@ public:
 
 inline bool Rect::intersectsWith(const Rect &otherRectangle) const {
     const float& rectAx1 = x1;
-    const float& rectAy1 = y2;
-    const float& rectAx2 = x1;
+    const float& rectAy1 = y1;
+    const float& rectAx2 = x2;
     const float& rectAy2 = y2;
 
     const float& rectBx1 = otherRectangle.x1;
