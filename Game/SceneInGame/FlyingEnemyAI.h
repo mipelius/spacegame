@@ -30,6 +30,12 @@ public:
     void setPathUpdateTimer(const Timer &pathUpdateTimer);
     unsigned int getMaxNodesPathFinderExplores() const;
     void setMaxNodesPathFinderExplores(unsigned int maxNodesPathFinderExplores);
+    float getMinPathFindingDistance() const;
+    void setMinPathFindingDistance(float minPathFindingDistance);
+    float getSpeed() const;
+    void setSpeed(float speed);
+
+private:
 
 protected:
     void awake() override;

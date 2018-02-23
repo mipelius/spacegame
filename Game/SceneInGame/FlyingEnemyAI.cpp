@@ -101,3 +101,19 @@ void FlyingEnemyAI::setMaxNodesPathFinderExplores(unsigned int maxNodesPathFinde
     maxNodesPathFinderExplores_ = maxNodesPathFinderExplores;
 }
 
+float FlyingEnemyAI::getMinPathFindingDistance() const {
+    return minPathFindingDistance_;
+}
+
+void FlyingEnemyAI::setMinPathFindingDistance(float minPathFindingDistance) {
+    minPathFindingDistance_ = minPathFindingDistance;
+}
+
+float FlyingEnemyAI::getSpeed() const {
+    return speed;
+}
+
+void FlyingEnemyAI::setSpeed(float speed) {
+    FlyingEnemyAI::speed = speed;
+}
+
