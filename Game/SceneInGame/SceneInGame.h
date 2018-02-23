@@ -26,7 +26,8 @@ class SceneInGame : public IScene {
     void init() override;
     void destroy() override;
 
-    Camera* camera = nullptr;
+private:
+    Camera* camera_ = nullptr;
 };
 
 

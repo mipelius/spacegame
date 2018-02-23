@@ -55,9 +55,9 @@ void SceneInGame::init() {
     player->getComponent<HUD>()->setHealthSprite(healthBarSprite);
 
     // camera
-    camera = new Camera;
-    camera->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
-    Tile2D::canvas().setCamera(camera);
+    camera_ = new Camera;
+    camera_->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
+    Tile2D::canvas().setCamera(camera_);
 
     // spawner
     GameObject* spawner = Tile2D::createGameObject();
@@ -75,5 +75,5 @@ void SceneInGame::init() {
 void SceneInGame::destroy() {
     Tile2D::canvas().setCamera(nullptr);
     Tile2D::tileMap().unload();
-    delete camera;
+    delete camera_;
 }
