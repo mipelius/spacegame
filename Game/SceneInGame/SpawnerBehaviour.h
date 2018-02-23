@@ -31,6 +31,12 @@ public:
     void setOuterRect(const Rect &outerRect);
     const Rect &getInnerRect() const;
     void setInnerRect(const Rect &innerRect);
+    const Rect &getAreaRect() const;
+    void setAreaRect(const Rect &areaRect);
+    unsigned int getMaxSpawnedObjects() const;
+    void setMaxSpawnedObjects(unsigned int maxSpawnedObjects);
+
+    void setSpawnFunction(GameObject *(*spawnFunction)());
 
     void remove(GameObject *gameObject);
 
@@ -42,13 +48,18 @@ protected:
 private:
     Timer spawningTimer_;
 
-    const unsigned int maxSpawnedObjects_ = 5;
+    unsigned int maxSpawnedObjects_ = 5;
 
     std::list<GameObject*> spawnedGameObjects_;
+
+    GameObject* (*spawnFunction_)();
 
     GameObject* target_;
     Rect outerRect_;
     Rect innerRect_;
+
+    Rect areaRect_;
+
 };
 
 

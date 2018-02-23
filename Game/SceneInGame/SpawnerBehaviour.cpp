@@ -24,7 +24,8 @@
 
 SpawnerBehaviour::SpawnerBehaviour() :
         outerRect_({0.0f, 0.0f, 0.0f, 0.0f}),
-        innerRect_({0.0f, 0.0f, 0.0f, 0.0f})
+        innerRect_({0.0f, 0.0f, 0.0f, 0.0f}),
+        areaRect_({0.0f, 0.0f, 0.0f, 0.0f})
 { }
 
 void SpawnerBehaviour::awake() {
@@ -36,13 +37,16 @@ void SpawnerBehaviour::update() {
 }
 
 void SpawnerBehaviour::lateUpdate() {
-    if (spawnedGameObjects_.size() >= maxSpawnedObjects_) {
+    if (
+            spawnedGameObjects_.size() >= maxSpawnedObjects_ ||
+            !areaRect_.hasPointInside(target_->transform().getPosition())
+    ) {
         return;
     }
     if (spawningTimer_.resetIfTimeIntervalPassed()) {
         Vecf targetVelocityDirection = target_->getComponent<Body>()->getVelocity().normalized();
 
-        auto enemy = Prefabs::fourwayCyclops();
+        auto enemy = spawnFunction_();
 
         auto boundingBox = enemy->getComponent<PolygonCollider>()->boundingBox();
 
@@ -79,6 +83,13 @@ void SpawnerBehaviour::lateUpdate() {
         enemy->transform().setPosition(position);
 
         auto enemyAI = enemy->getComponent<EnemyAIBase>();
+
+        if (enemyAI == nullptr) {
+            throw std::runtime_error(
+                    "Invalid spawn function: spawned object doesn't have component EnemyAIBase"
+            );
+        }
+
         enemyAI->setTarget(&target_->transform());
         enemyAI->setSpawnerBehaviour(this);
 
@@ -112,4 +123,24 @@ void SpawnerBehaviour::setInnerRect(const Rect &innerRect) {
 
 void SpawnerBehaviour::remove(GameObject *gameObject) {
     spawnedGameObjects_.remove(gameObject);
+}
+
+void SpawnerBehaviour::setSpawnFunction(GameObject* (*spawnFunction)()) {
+    spawnFunction_ = spawnFunction;
+}
+
+const Rect &SpawnerBehaviour::getAreaRect() const {
+    return areaRect_;
+}
+
+void SpawnerBehaviour::setAreaRect(const Rect &areaRect) {
+    areaRect_ = areaRect;
+}
+
+unsigned int SpawnerBehaviour::getMaxSpawnedObjects() const {
+    return maxSpawnedObjects_;
+}
+
+void SpawnerBehaviour::setMaxSpawnedObjects(unsigned int maxSpawnedObjects) {
+    maxSpawnedObjects_ = maxSpawnedObjects;
 }
