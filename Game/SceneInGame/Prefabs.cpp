@@ -99,7 +99,7 @@ GameObject *Prefabs::player() {
 GameObject *Prefabs::boss() {
     auto enemy = spawnEnemy_(
             "fourwaycyclops",
-            {{-60, -60}, {60, -60}, {60, 60}, {-60, 60}},
+            {{-50, -50}, {50, -50}, {50, 50}, {-50, 50}},
             {-80, -80, 80, 80},
             0.0f
     );
@@ -115,6 +115,7 @@ GameObject *Prefabs::boss() {
     AI->setMaxDistance(100000);
     AI->setMaxNodesPathFinderExplores(2000);
     AI->setSpeed(150.0f);
+    AI->setRotates(false);
 
     Timer shootingTimer;
     shootingTimer.setInterval(200);
