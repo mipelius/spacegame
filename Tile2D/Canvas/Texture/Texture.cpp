@@ -18,7 +18,11 @@
 #include "Texture.h"
 #include "Tile2D.h"
 
-Texture::Texture(std::string filename) {
+Texture::Texture(
+        std::string filename,
+        GLint       minFilter,
+        GLint       magFilter
+) {
     SDL_Surface *surface;    // This surface will tell us the details of the image
     GLenum texture_format = GL_NONE;
     GLint nOfColors;
@@ -72,8 +76,8 @@ Texture::Texture(std::string filename) {
     glBindTexture(GL_TEXTURE_2D, texture);
 
     // Set the texture's stretching properties
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
 
     // Edit the texture object's image data using the information SDL_Surface gives us
     glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, surface->w, surface->h, 0,

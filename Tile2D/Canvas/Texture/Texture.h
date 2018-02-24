@@ -30,7 +30,11 @@ private:
 public:
     int getW();
     int getH();
-    explicit Texture(std::string filename);
+    explicit Texture(
+            std::string filename,
+            GLint       minFilter = GL_LINEAR,
+            GLint       magFilter = GL_LINEAR
+    );
     void glBind() override;
     void glUnbind() override ;
     void glTexCorner(Corner corner) override ;
