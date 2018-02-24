@@ -14,21 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "MovingCameraBehaviour.h"
+#include "Tile2D.h"
+#include "Camera.h"
+#include "Canvas.h"
+#include "t2Time.h"
 
-#ifndef SPACEGAME_TITLESCREENCONTROLLER_H
-#define SPACEGAME_TITLESCREENCONTROLLER_H
+void MovingCameraBehaviour::awake() {
 
+}
 
-#include "Tile2DBehaviour.h"
-#include "Timer.h"
+void MovingCameraBehaviour::update() {
+    Vecf move = {Tile2D::time().getDeltaTime() * 50.0f, 0.0f};
+    auto cameraNewPos = Tile2D::canvas().getCamera()->getPosition() + move;
+    Tile2D::canvas().getCamera()->setPosition(cameraNewPos);
+}
 
-class TitleScreenController : public Tile2DBehaviour {
-protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
+void MovingCameraBehaviour::lateUpdate() {
 
-};
-
-
-#endif //SPACEGAME_TITLESCREENCONTROLLER_H
+}

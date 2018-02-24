@@ -14,28 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "TitleScreenController.h"
-#include "Scenes.h"
-#include "Tile2D.h"
-#include "Input.h"
-#include "SceneManager.h"
 
-void TitleScreenController::awake() {
+#ifndef SPACEGAME_MOVINGCAMERABEHAVIOUR_H
+#define SPACEGAME_MOVINGCAMERABEHAVIOUR_H
 
-}
 
-void TitleScreenController::update() {
-    auto& keyboard = Tile2D::input().keyboard();
-    auto& mouse = Tile2D::input().mouse();
+#include "Tile2DBehaviour.h"
+#include "Timer.h"
 
-    if (keyboard.keyPressed(SDL_SCANCODE_RETURN)) {
-        Tile2D::sceneManager().loadScene(Scenes::inGame);
-    }
-    if (keyboard.keyPressed(SDL_SCANCODE_ESCAPE)) {
-        Tile2D::quit();
-    }
-}
+class MovingCameraBehaviour : public Tile2DBehaviour {
+protected:
+    void awake() override;
+    void update() override;
+    void lateUpdate() override;
 
-void TitleScreenController::lateUpdate() {
+};
 
-}
+
+#endif //SPACEGAME_MOVINGCAMERABEHAVIOUR_H

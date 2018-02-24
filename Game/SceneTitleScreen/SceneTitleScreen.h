@@ -19,9 +19,14 @@
 
 #include "IScene.h"
 
+class Camera;
+
 class SceneTitleScreen : public IScene {
     void init() override;
     void destroy() override;
+
+private:
+    Camera* camera_ = nullptr;
 };
 
 #endif //__SceneTitleScreen_H

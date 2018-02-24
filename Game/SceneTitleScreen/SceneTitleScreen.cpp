@@ -14,21 +14,37 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "Background.h"
+#include "Resources.h"
 #include "Tile2D.h"
 #include "SceneTitleScreen.h"
 #include "Scenes.h"
 #include "Text.h"
-#include "TitleScreenController.h"
+#include "MovingCameraBehaviour.h"
 #include "Button.h"
 #include "UIPrefabs.h"
 #include "Window.h"
 #include "SceneManager.h"
+#include "Camera.h"
 
 void SceneTitleScreen::init() {
     // uncomment next line to load quick testing scene
     // Tile2D::sceneManager().loadScene(Scenes::quickTesting);
 
     Vecf center = {Tile2D::window().getW() / 2.0f, Tile2D::window().getH() / 2.0f};
+
+    camera_ = new Camera();
+    camera_->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
+    Tile2D::canvas().setCamera(camera_);
+
+    auto background = Tile2D::createGameObject();
+    auto bg = background->attachComponent<Background>();
+    bg->setOpacity(0.5f);
+    bg->setColor({0.5f, 1.0f, 1.0f});
+    bg->setTexturePtr(Tile2D::resources().textures["bg1"]);
+
+    auto titleScreenBehaviour = Tile2D::createGameObject();
+    titleScreenBehaviour->attachComponent<MovingCameraBehaviour>();
 
     auto welcomeText = UIPrefabs::text(
             center + Vecf(0.0f, -300.0f),
@@ -45,9 +61,6 @@ void SceneTitleScreen::init() {
             Text::HorizontalAlignment::center,
             Text::VerticalAlignment::top
     );
-
-    auto titleScreenController = Tile2D::createGameObject();
-    titleScreenController->attachComponent<TitleScreenController>();
 
     auto buttonStart = UIPrefabs::button(
             center + Vecf(0.0f, -50.0f),
@@ -68,4 +81,7 @@ void SceneTitleScreen::init() {
 
 }
 
-void SceneTitleScreen::destroy() { }
+void SceneTitleScreen::destroy() {
+    delete camera_;
+    Tile2D::canvas().setCamera(nullptr);
+}

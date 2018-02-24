@@ -178,8 +178,8 @@ set(SOURCE_FILES
 
         Game/SceneTitleScreen/SceneTitleScreen.cpp
         Game/SceneTitleScreen/SceneTitleScreen.h
-        Game/SceneTitleScreen/TitleScreenController.cpp
-        Game/SceneTitleScreen/TitleScreenController.h
+        Game/SceneTitleScreen/MovingCameraBehaviour.cpp
+        Game/SceneTitleScreen/MovingCameraBehaviour.h
 
         Game/SceneInGame/SceneInGame.cpp
         Game/SceneInGame/SceneInGame.h

@@ -104,7 +104,7 @@ void LightSystem::removeLight(PointLight *light) {
 // ------------------------ RENDERING --------------------------
 
 void LightSystem::update(const Canvas& canvas) {
-    if (canvas.getCamera() == nullptr || !enabled_) {
+    if (canvas.getCamera() == nullptr || !enabled_ || !Tile2D::tileMap().isLoaded()) {
         return;
     }
     // turn projection upside down
@@ -172,7 +172,7 @@ void LightSystem::update(const Canvas& canvas) {
 }
 
 void LightSystem::draw(const Canvas& canvas) {
-    if (canvas.getCamera() == nullptr || !enabled_) {
+    if (canvas.getCamera() == nullptr || !enabled_ || !Tile2D::tileMap().isLoaded()) {
         return;
     }
 

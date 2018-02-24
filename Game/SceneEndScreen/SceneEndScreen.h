@@ -19,9 +19,13 @@
 
 #include "IScene.h"
 
+class Camera;
+
 class SceneEndScreen : public IScene {
     void init() override;
     void destroy() override;
+private:
+    Camera* camera_;
 };
 
 #endif //__SceneGameOver_H
