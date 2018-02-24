@@ -122,7 +122,7 @@ GameObject *Prefabs::boss() {
     return enemy;
 }
 
-GameObject *Prefabs::walkingEnemy() {
+GameObject *Prefabs::sentry() {
     auto enemy = spawnEnemy_(
             "sentry",
             {
@@ -133,7 +133,7 @@ GameObject *Prefabs::walkingEnemy() {
                     {-5, 25},
                     {-10, 15}
             },
-            {-25, -25, 25, 25},
+            {-30, -25, 30, 25},
             2.0f
     );
 

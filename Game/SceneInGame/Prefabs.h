@@ -33,7 +33,7 @@ public:
     static GameObject* boss();
     static GameObject* fourwayCyclops();
     static GameObject* crabKindOf();
-    static GameObject* walkingEnemy();
+    static GameObject* sentry();
     static GameObject* twoHorn();
 
     // player stuff to drop / shoot
