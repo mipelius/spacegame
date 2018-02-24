@@ -28,18 +28,21 @@ GameObject* UIPrefabs::button(
         const Vecf& position,
         const char* string,
         const float width,
-        void (*handler) (Button* button, Button::ButtonClickedEventArgs args)
+        void (*handler) (Button* button, Button::ButtonEventArgs args)
 ) {
     auto buttonObj = Tile2D::createGameObject();
     buttonObj->transform().setPosition(position);
 
-    auto buttonSprite = buttonObj->attachComponent<Sprite>();
-    buttonSprite->setRect({-width / 2.0f, -30.0f, width / 2.0f, 30.0f});
-    buttonSprite->setIsUIDrawable(true);
-    buttonSprite->setSortingLayer(SortingLayers::UI_Button);
+    Rect rect = {-width / 2.0f, -30.0f, width / 2.0f, 30.0f};
 
-    auto buttonBehaviour = buttonObj->attachComponent<Button>();
-    buttonBehaviour->click.add(handler);
+    static const Color textColorNormal      = {1.0f, 1.0f, 1.0f};
+    static const Vecf scaleNormal           = {1.0f, 1.0f};
+
+    static const Color textColorHighlighted = {0.0f, 1.0f, 0.0f};
+    static const Vecf scaleHighlighted      = {1.2f, 1.2f};
+
+    static const Color textColorPressed     = {0.5f, 1.0f, 1.0f};
+    static const Vecf scalePressed          = {1.4f, 1.4f};
 
     auto buttonText = buttonObj->attachComponent<Text>();
     buttonText->setHorizontalAlignment(Text::HorizontalAlignment::center);
@@ -49,7 +52,44 @@ GameObject* UIPrefabs::button(
     buttonText->setString(string);
     buttonText->setFontPtr(Tile2D::resources().fonts["smallfont"]);
     buttonText->setFontSize(4.0f);
-    buttonText->setColor({0.0f, 0.0f, 0.0f});
+    buttonText->setColor(textColorNormal);
+
+    static auto setNormalButton = [] (Button* button) {
+        button->gameObject()->getComponent<Text>()->setColor(textColorNormal);
+        button->gameObject()->transform().setScale(scaleNormal);
+    };
+
+    static auto setHighlightedButton = [] (Button* button) {
+        button->gameObject()->getComponent<Text>()->setColor(textColorHighlighted);
+        button->gameObject()->transform().setScale(scaleHighlighted);
+    };
+
+    static auto setPressedButton = [] (Button* button) {
+        button->gameObject()->getComponent<Text>()->setColor(textColorPressed);
+        button->gameObject()->transform().setScale(scalePressed);
+    };
+
+    auto buttonBehaviour = buttonObj->attachComponent<Button>();
+    buttonBehaviour->setRect(rect);
+    buttonBehaviour->clicked.add(handler);
+    buttonBehaviour->mouseOver.add([] (Button* button, Button::ButtonEventArgs args) {
+        if (!args.buttonIsPressed) {
+            setHighlightedButton(button);
+        } else {
+            setPressedButton(button);
+        }
+    });
+    buttonBehaviour->mouseOut.add([] (Button* button, Button::ButtonEventArgs args) {
+        if (!args.buttonIsPressed) {
+            setNormalButton(button);
+        }
+    });
+    buttonBehaviour->pressed.add([] (Button* button, Button::ButtonEventArgs args) {
+        setPressedButton(button);
+    });
+    buttonBehaviour->released.add([] (Button* button, Button::ButtonEventArgs args) {
+        setNormalButton(button);
+    });
 
     return buttonObj;
 }

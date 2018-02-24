@@ -34,7 +34,7 @@ void SceneEndScreen::init() {
             center + Vecf(0.0f, -50.0f),
             "Back to main menu",
             700.0f,
-            [] (Button* button, Button::ButtonClickedEventArgs args){
+            [] (Button* button, Button::ButtonEventArgs args){
                 Tile2D::sceneManager().loadScene(Scenes::titleScreen);
             }
     );

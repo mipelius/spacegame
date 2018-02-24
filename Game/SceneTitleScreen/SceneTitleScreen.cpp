@@ -53,7 +53,7 @@ void SceneTitleScreen::init() {
             center + Vecf(0.0f, -50.0f),
             "Start game",
             400.0f,
-            [] (Button* button, Button::ButtonClickedEventArgs args){
+            [] (Button* button, Button::ButtonEventArgs args) {
                 Tile2D::sceneManager().loadScene(Scenes::inGame);
             }
     );
@@ -61,7 +61,7 @@ void SceneTitleScreen::init() {
             center + Vecf(0.0f, 50.0f),
             "Quit",
             200.0f,
-            [] (Button* button, Button::ButtonClickedEventArgs args) {
+            [] (Button* button, Button::ButtonEventArgs args) {
                 Tile2D::quit();
             }
     );

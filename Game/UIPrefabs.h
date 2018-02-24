@@ -29,7 +29,7 @@ public:
             const Vecf &position,
             const char *string,
             const float width,
-            void (*handler) (Button* button, Button::ButtonClickedEventArgs args)
+            void (*handler) (Button* button, Button::ButtonEventArgs args)
     );
 
     static GameObject* text(

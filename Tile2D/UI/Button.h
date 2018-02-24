@@ -26,21 +26,21 @@
 class Button : public Tile2DBehaviour {
 
 public:
-    struct ButtonClickedEventArgs {
-        // fill in later if necessary
+    struct ButtonEventArgs {
+        bool buttonIsPressed;
     };
 
     Button();
     ~Button() override = default;
 
-    const Event<Button, ButtonClickedEventArgs> click;
+    const Event<Button, ButtonEventArgs> clicked;
+    const Event<Button, ButtonEventArgs> pressed;
+    const Event<Button, ButtonEventArgs> released;
+    const Event<Button, ButtonEventArgs> mouseOver;
+    const Event<Button, ButtonEventArgs> mouseOut;
 
-    const Color &getNormalColor() const;
-    void setNormalColor(const Color &normalColor);
-    const Color &getHighLightedColor() const;
-    void setHighLightedColor(const Color &highLightedColor);
-    const Color &getPressedColor() const;
-    void setPressedColor(const Color &pressedColor);
+    const Rect &getRect() const;
+    void setRect(const Rect &rect);
 
 protected:
     void awake() override;
@@ -49,12 +49,10 @@ protected:
 
 private:
     bool mousePressedOnThis_;
+    bool mouseOver_;
 
-    Color normalColor_;
-    Color highLightedColor_;
-    Color pressedColor_;
+    Rect rect_;
 
-    Sprite* sprite_;
 };
 
 
