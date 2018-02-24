@@ -35,8 +35,6 @@ public:
     float getSpeed() const;
     void setSpeed(float speed);
 
-private:
-
 protected:
     void awake() override;
     void update() override;

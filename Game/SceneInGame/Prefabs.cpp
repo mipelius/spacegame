@@ -180,7 +180,8 @@ GameObject *Prefabs::crabKindOf() {
     AI->setMaxPathFindingDistance(3000);
     AI->setMinPathFindingDistance(0);
     AI->setMaxNodesPathFinderExplores(2000);
-    AI->setSpeed(40);
+
+    AI->setSpeed(300);
 
     Timer shootingTimer;
     shootingTimer.setInterval(5000);
@@ -210,6 +211,8 @@ GameObject *Prefabs::fourwayCyclops() {
     shootingTimer.setInterval(500);
     shootingTimer.setIntervalRandomness(200);
     AI->setShootingTimer(shootingTimer);
+
+    AI->setSpeed(300);
 
     AI->setMaxDistance(1500);
 

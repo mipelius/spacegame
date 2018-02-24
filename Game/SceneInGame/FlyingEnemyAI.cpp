@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "Tile2DMath.h"
 #include "FlyingEnemyAI.h"
 #include "Tile2D.h"
 #include "PathFinder.h"
@@ -53,12 +54,16 @@ void FlyingEnemyAI::update() {
         updateNextPoint_();
     }
 
-    if ((transform()->getPosition() - nextPoint_).length() < 16.0f) {
+    for (auto i = 0u; i < 10; ++i) {
+        if ((transform()->getPosition() - nextPoint_).length() > 8.0f) {
+            break;
+        }
         updateNextPoint_();
     }
 
     Vecf currentPosition = transform()->getPosition();
-    Vecf movement = (nextPoint_ - lastPoint_) * Tile2D::time().getDeltaTime() * speed;
+    Vecf direction = (nextPoint_ - lastPoint_).normalized();
+    Vecf movement = direction * Tile2D::time().getDeltaTime() * speed;
 
     transform()->setPosition(currentPosition + movement);
 }
@@ -68,7 +73,7 @@ void FlyingEnemyAI::lateUpdate() {
 }
 
 void FlyingEnemyAI::updateNextPoint_() {
-    lastPoint_ = nextPoint_;
+    lastPoint_ = transform()->getPosition();
     auto it = pathToTarget_.begin();
     if (it == pathToTarget_.end()) {
         return;
