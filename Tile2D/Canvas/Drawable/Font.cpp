@@ -25,7 +25,7 @@ Font::Font(std::string filename) {
 
     std::string fontTextureFilename = object["imgFile"];
 
-    fontTexture_ = new Texture(fontTextureFilename);
+    fontTexture_ = new Texture(fontTextureFilename, GL_NEAREST, GL_NEAREST);
 
     json::Array mappingsArray = object["mappings"];
 
