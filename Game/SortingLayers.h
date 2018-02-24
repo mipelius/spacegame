@@ -21,9 +21,10 @@
 namespace SortingLayers {
     enum {
         background = -100,
-        ammo = -2,
-        enemy = -1,
-        player = 0,
+        ammo = -4,
+        enemy = -3,
+        player = -2,
+        particles = -1,
         UI = 100,
         UI_Button = 101,
         UI_ButtonText = 102

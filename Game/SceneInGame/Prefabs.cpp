@@ -75,8 +75,8 @@ GameObject *Prefabs::player() {
     auto health = player->attachComponent<Health>();
     health->setMaxHealth(600);
     health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
-        GameObject* newBloodBurst = bloodBurst();
-        newBloodBurst->transform().setPosition(health->transform()->getPosition());
+        GameObject* spaceShipExplosion = explosion();
+        spaceShipExplosion->transform().setPosition(health->transform()->getPosition());
         health->gameObject()->setIsActive(false);
         health->gameObject()->getComponent<HUD>()->hide();
 
@@ -171,6 +171,7 @@ GameObject *Prefabs::crabKindOf() {
         if (args.otherCollider->gameObject()->tag == Tags::player) {
             auto playerHealth = args.otherCollider->gameObject()->getComponent<Health>();
             playerHealth->damage(Tile2D::time().getDeltaTimeMS() / 2, collider->gameObject());
+            sparkles(args.otherCollider->transform()->getPosition(), args.contactNormal, {0.0f, 1.0f, 0.0f});
         }
     });
 
@@ -437,6 +438,7 @@ GameObject* Prefabs::bloodBurst() {
     pulseLightBehaviour->setIntensityDiminishSpeed(1.5f);
 
     auto particles = bloodBurst->attachComponent<ParticleSystem>();
+    particles->setSortingLayer(SortingLayers::particles);
     particles->setPlaysOnce(true);
     particles->setInitFunc([] (Particle* particle){
         Vecf pos = {(rand() % 10) * 5.0f - 25.0f, (rand() % 10) * 5.0f - 25.0f};
@@ -490,6 +492,7 @@ GameObject *Prefabs::explosion() {
     explosionPulseLightBehaviour->setIntensityDiminishSpeed(1.5f);
 
     auto explosionParticles = explosion->attachComponent<ParticleSystem>();
+    explosionParticles->setSortingLayer(SortingLayers::particles);
     explosionParticles->setPlaysOnce(true);
     explosionParticles->setInitFunc([] (Particle* particle){
         Vecf pos = {(rand() % 10) * 5.0f - 25.0f, (rand() % 10) * 5.0f - 25.0f};
