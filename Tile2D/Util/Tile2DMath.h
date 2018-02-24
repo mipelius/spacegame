@@ -38,7 +38,11 @@ public:
 
     inline static T random(const T& min, const T& max);
 
+    inline static int sign(T value);
+
     static constexpr float epsilon = FLT_EPSILON;
+
+    inline static T deltaAngle(const T& angleA, const T& angleB);
 };
 
 typedef Math<float>     Mathf;
@@ -82,6 +86,32 @@ template<typename T>
 T Math<T>::random(const T &min, const T &max) {
     T interval = max - min;
     return min + interval * ((rand() % randMax) / (float)randMax);
+}
+
+template<typename T>
+int Math<T>::sign(T value) {
+    if (value < 0) {
+        return -1;
+    }
+    if (value == 0) {
+        return 0;
+    }
+    return 1;
+}
+
+template<typename T>
+T Math<T>::deltaAngle(const T &angleA, const T &angleB) {
+    T delta = angleB - angleA;
+    if (delta < -360 || delta > 360) {
+        delta = (int)delta % 360;
+    }
+    if (delta < -180) {
+        delta = 360 + delta;
+    }
+    if (delta > 180) {
+        delta = -360 + delta;
+    }
+    return delta;
 }
 
 #endif //SPACEGAME_TILE2DMATH_H
