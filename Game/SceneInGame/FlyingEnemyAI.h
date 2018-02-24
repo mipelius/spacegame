@@ -34,6 +34,10 @@ public:
     void setMinPathFindingDistance(float minPathFindingDistance);
     float getSpeed() const;
     void setSpeed(float speed);
+    float getAngularSpeed() const;
+    void setAngularSpeed(float angularSpeed);
+    bool rotates() const;
+    void setRotates(bool rotates);
 
 protected:
     void awake() override;
@@ -41,7 +45,6 @@ protected:
     void lateUpdate() override;
 
     std::list<Vecf> pathToTarget_;
-    Vecf lastPoint_;
     Vecf nextPoint_;
 
 private:
@@ -49,6 +52,9 @@ private:
     float minPathFindingDistance_ = 350.0f;
     float maxPathFindingDistance_ = 2000.0f;
     float speed = 20;
+    float angularSpeed_ = 100.0f;
+    bool rotates_ = true;
+
     unsigned int maxNodesPathFinderExplores_ = 1000;
     void updateNextPoint_();
     Timer pathUpdateTimer_;

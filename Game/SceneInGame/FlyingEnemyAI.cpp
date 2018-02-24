@@ -24,7 +24,6 @@ void FlyingEnemyAI::awake() {
     EnemyAIBase::awake();
 
     nextPoint_ = transform()->getPosition();
-    lastPoint_ = nextPoint_;
 
     collider_ = gameObject()->getComponent<PolygonCollider>();
 }
@@ -35,14 +34,20 @@ void FlyingEnemyAI::update() {
 
     float distanceToTarget = (target_->getPosition() - transform()->getPosition()).length();
 
+    bool canSeeTarget = canSeeTarget_();
+
     if (
-            (distanceToTarget < minPathFindingDistance_ && canSeeTarget_()) ||
+            (distanceToTarget < minPathFindingDistance_ && canSeeTarget) ||
             distanceToTarget > maxPathFindingDistance_
     ) {
         return;
     }
 
-    if (pathUpdateTimer_.resetIfTimeIntervalPassed()) {
+    if (canSeeTarget) {
+        pathToTarget_.clear();
+        pathToTarget_.push_back(target_->getPosition());
+    }
+    else if (pathUpdateTimer_.resetIfTimeIntervalPassed()) {
         pathToTarget_ = Tile2D::pathFinder().getPath(
                 transform()->getPosition(),
                 target_->getPosition(),
@@ -50,22 +55,44 @@ void FlyingEnemyAI::update() {
                 true,
                 collider_->boundingBox()
         );
+    }
 
-        updateNextPoint_();
+    if (pathToTarget_.empty()) {
+        return;
     }
 
     for (auto i = 0u; i < 10; ++i) {
+        updateNextPoint_();
         if ((transform()->getPosition() - nextPoint_).length() > 8.0f) {
             break;
         }
-        updateNextPoint_();
     }
 
     Vecf currentPosition = transform()->getPosition();
-    Vecf direction = (nextPoint_ - lastPoint_).normalized();
+    Vecf direction = (nextPoint_ - currentPosition).normalized();
     Vecf movement = direction * Tile2D::time().getDeltaTime() * speed;
 
-    transform()->setPosition(currentPosition + movement);
+    if (rotates_) {
+        float currentRotation = transform()->getRotation();
+        float targetRotation = movement.angle();
+        float deltaAngle = Mathf::deltaAngle(currentRotation, targetRotation);
+
+        if (!Mathf::approx(deltaAngle, 0.0f)) {
+            auto angularDirection = (float)Mathf::sign(deltaAngle);
+            float rotate = angularDirection * Tile2D::time().getDeltaTime() * angularSpeed_;
+            if (fabsf(rotate) > fabsf(deltaAngle)) {
+                transform()->setRotation(targetRotation);
+            } else {
+                transform()->setRotation(currentRotation + rotate);
+            }
+        }
+
+        if (fabsf(deltaAngle) < 45.0f) {
+            transform()->setPosition(currentPosition + movement);
+        }
+    } else {
+        transform()->setPosition(currentPosition + movement);
+    }
 }
 
 void FlyingEnemyAI::lateUpdate() {
@@ -73,11 +100,10 @@ void FlyingEnemyAI::lateUpdate() {
 }
 
 void FlyingEnemyAI::updateNextPoint_() {
-    lastPoint_ = transform()->getPosition();
-    auto it = pathToTarget_.begin();
-    if (it == pathToTarget_.end()) {
+    if (pathToTarget_.empty()) {
         return;
     }
+    auto it = pathToTarget_.begin();
     nextPoint_ = *it;
     pathToTarget_.erase(it);
 }
@@ -120,5 +146,21 @@ float FlyingEnemyAI::getSpeed() const {
 
 void FlyingEnemyAI::setSpeed(float speed) {
     FlyingEnemyAI::speed = speed;
+}
+
+float FlyingEnemyAI::getAngularSpeed() const {
+    return angularSpeed_;
+}
+
+void FlyingEnemyAI::setAngularSpeed(float angularSpeed) {
+    angularSpeed_ = angularSpeed;
+}
+
+bool FlyingEnemyAI::rotates() const {
+    return rotates_;
+}
+
+void FlyingEnemyAI::setRotates(bool rotates) {
+    rotates_ = rotates;
 }
 

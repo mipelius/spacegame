@@ -114,6 +114,8 @@ GameObject *Prefabs::boss() {
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
     AI->setMaxDistance(100000);
     AI->setMaxNodesPathFinderExplores(2000);
+    AI->setSpeed(150.0f);
+
     Timer shootingTimer;
     shootingTimer.setInterval(200);
     AI->setShootingTimer(shootingTimer);
@@ -159,8 +161,8 @@ GameObject *Prefabs::sentry() {
 GameObject *Prefabs::crabKindOf() {
     auto enemy = spawnEnemy_(
             "crab_kindof",
-            {{-30, -20}, {30, -20}, {30, 20}, {-30, 20}},
-            {-30, -30, 30, 30},
+            {{-25, -15}, {25, -15}, {25, 15}, {-25, 15}},
+            {-25, -25, 25, 25},
             0.0f
     );
     auto collider = enemy->getComponent<PolygonCollider>();
@@ -213,6 +215,7 @@ GameObject *Prefabs::fourwayCyclops() {
     AI->setShootingTimer(shootingTimer);
 
     AI->setSpeed(300);
+    AI->setRotates(false);
 
     AI->setMaxDistance(1500);
 
