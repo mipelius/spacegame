@@ -40,8 +40,8 @@
     <ClInclude Include="Game\SceneQuickTesting\QuickTestingBehaviour.h" />
     <ClInclude Include="Game\SceneQuickTesting\SceneQuickTesting.h" />
     <ClInclude Include="Game\Scenes.h" />
+    <ClInclude Include="Game\SceneTitleScreen\MovingCameraBehaviour.h" />
     <ClInclude Include="Game\SceneTitleScreen\SceneTitleScreen.h" />
-    <ClInclude Include="Game\SceneTitleScreen\TitleScreenController.h" />
     <ClInclude Include="Game\SortingLayers.h" />
     <ClInclude Include="Game\Tags.h" />
     <ClInclude Include="Game\UIPrefabs.h" />
@@ -127,8 +127,8 @@
     <ClCompile Include="Game\SceneInGame\WalkingEnemyAI.cpp" />
     <ClCompile Include="Game\SceneQuickTesting\QuickTestingBehaviour.cpp" />
     <ClCompile Include="Game\SceneQuickTesting\SceneQuickTesting.cpp" />
+    <ClCompile Include="Game\SceneTitleScreen\MovingCameraBehaviour.cpp" />
     <ClCompile Include="Game\SceneTitleScreen\SceneTitleScreen.cpp" />
-    <ClCompile Include="Game\SceneTitleScreen\TitleScreenController.cpp" />
     <ClCompile Include="Game\UIPrefabs.cpp" />
     <ClCompile Include="Tile2D\Animation\AnimatedTexture.cpp" />
     <ClCompile Include="Tile2D\Animation\AnimationBase.cpp" />
