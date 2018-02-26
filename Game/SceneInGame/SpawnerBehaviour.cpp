@@ -28,6 +28,14 @@ SpawnerBehaviour::SpawnerBehaviour() :
         areaRect_({0.0f, 0.0f, 0.0f, 0.0f})
 { }
 
+void SpawnerBehaviour::onDestroy() {
+	Tile2DBehaviour::onDestroy();
+	for (auto obj : spawnedGameObjects_) {
+		obj->getComponent<EnemyAIBase>()->setSpawnerBehaviour(nullptr);
+		obj->destroy();
+	}
+}
+
 void SpawnerBehaviour::awake() {
     spawningTimer_.setInterval(500);
 }

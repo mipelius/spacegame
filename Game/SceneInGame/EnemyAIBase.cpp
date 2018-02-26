@@ -53,7 +53,6 @@ void EnemyAIBase::shootTarget_(bool useTimer) {
 }
 
 void EnemyAIBase::setSpawnerBehaviour(SpawnerBehaviour *spawnerBehaviour) {
-    assert(spawnerBehaviour != nullptr);
     spawnerBehaviour_ = spawnerBehaviour;
 }
 

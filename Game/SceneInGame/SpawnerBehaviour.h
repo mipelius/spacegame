@@ -24,7 +24,7 @@
 class SpawnerBehaviour : public Tile2DBehaviour {
 public:
     SpawnerBehaviour();
-
+	
     GameObject *getTarget() const;
     void setTarget(GameObject *target);
     const Rect &getOuterRect() const;
@@ -41,6 +41,8 @@ public:
     void remove(GameObject *gameObject);
 
 protected:
+	void onDestroy() override;
+
     void awake() override;
     void update() override;
     void lateUpdate() override;
