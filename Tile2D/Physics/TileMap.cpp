@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <Tile2D/Util/Tile2DMath.h>
+#include "Tile2DMath.h"
 #include "DrawableMap.h"
 #include "TileMap.h"
 #include "Tile2D.h"

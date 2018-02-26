@@ -15,11 +15,11 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 
-#include <Tile2D/Util/Primitives/Vec.h>
-#include <Tile2D/Core/Tile2D.h>
-#include <Tile2D/Canvas/Drawable/Sprite.h>
-#include <Tile2D/UI/Button.h>
-#include <Tile2D/Canvas/Drawable/Text.h>
+#include "Vec.h"
+#include "Tile2D.h"
+#include "Sprite.h"
+#include "Button.h"
+#include "Text.h"
 #include "UIPrefabs.h"
 #include "SortingLayers.h"
 #include "Resources.h"

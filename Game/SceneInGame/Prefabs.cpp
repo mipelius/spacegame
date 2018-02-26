@@ -15,7 +15,7 @@
 // along with SpaceGame.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <cfloat>
-#include <Game/Scenes.h>
+#include "Scenes.h"
 #include "Prefabs.h"
 #include "PolygonCollider.h"
 #include "WalkingEnemyAI.h"
