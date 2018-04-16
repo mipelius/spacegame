@@ -69,7 +69,6 @@ public:
     TileMap();
     ~TileMap();
 
-
     bool castLine(const Vecf &start, const Vecf &goal, Vecf &collisionPoint);
 
     inline Veci getMapCoords(Vecf worldCoords) {

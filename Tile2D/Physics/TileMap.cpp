@@ -168,7 +168,7 @@ bool TileMap::canMoveScaled(const Vecf &position, const Rect& boundingBox, bool 
         boundingBoxBottomRightCorner    -= {1, 1};
     }
 
-    return canMove(pos, boundingBoxTopLeftCorner, boundingBoxTopLeftCorner);
+    return canMove(pos, boundingBoxTopLeftCorner, boundingBoxBottomRightCorner);
 }
 
 bool TileMap::castLine(const Vecf &start, const Vecf &goal, Vecf &collisionPoint) {
