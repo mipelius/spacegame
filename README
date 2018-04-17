@@ -1,12 +1,30 @@
 SpaceGame - project
 -------------------
 
-SpaceGame is a simple 2d game.
+SpaceGame is a 2D game that uses a custom 2D game engine (Tile2D). It is written in C++
+using SDL2 and OpenGL.
 
-The aim of this project is to learn to write a 2D game using C++, SDL2 and OpenGL. The original idea was to have a very simple architecture and concentrate on the game programming basics. However, In some point I was too unsatisfied with the complex and rigid code and decided to concentrate more on the architectural design. So, the project is divided in to two parts: the game engine library and the actual game. The game engine library (called Tile2D) provides some basic features such as GUI elements, sprites, dynamics, collision detection, path finding tools and some cross-cutting features such as events and (dependency)properties. The actual game (which might be quite simple) is going to be built on top of the Tile2D.
+This is a list of the main features of the game engine (Tile2D):
 
-Latest documentation: [ coming "soon" ]
+- Support for Windows and Mac OSX
+- Unity3D-kind-of public interface (Scenes, GameObjects, Components, etc)
+- Built-in easy-to-use components such as Sprite, Body, PolygonCollider, Light etc.
+- Simple UI system (buttons, text)
+- Simple event system for raising events and handling them
+- Custom 2D physics engine (rigid body dynamics, collision detection etc)
+- Tilemap rendering and collision detection
+- Particle systems
+- Light system based on flood fill algorithm (similar to Terraria)
+- Primitives like 2D vectors, rectangles and such
+- Math helper functions (clamping, delta angle, etc)
+- Efficient pathfinding algorithm (A*)
+- Linecasting to find out if there is a tile in a tile map between two endpoints
 
-Project on my website: [ coming "soon" ]
+Note that the assets of the game are not included in this repository. You'll need to
+download them separately.
+
+Website:       [ coming "soon" ]
+Documentation: [ coming "soon" ]
+Assets:        [ coming "soon" ]
 
 Developer: Miika Pelkonen
