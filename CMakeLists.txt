@@ -78,8 +78,6 @@ set(SOURCE_FILES
         Tile2D/Canvas/Drawable/Background.h
         Tile2D/Canvas/Drawable/Color.cpp
         Tile2D/Canvas/Drawable/Color.h
-        Tile2D/Canvas/Drawable/DrawableGroup.cpp
-        Tile2D/Canvas/Drawable/DrawableGroup.h
         Tile2D/Canvas/Drawable/DrawableMap.cpp
         Tile2D/Canvas/Drawable/DrawableMap.h
         Tile2D/Canvas/Drawable/Font.cpp

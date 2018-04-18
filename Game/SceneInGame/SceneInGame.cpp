@@ -24,7 +24,6 @@
 
 #include "DrawableMap.h"
 #include "SceneInGame.h"
-#include "DrawableGroup.h"
 #include "Sprite.h"
 #include "Prefabs.h"
 #include "SpawnerBehaviour.h"
