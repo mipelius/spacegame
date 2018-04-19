@@ -26,26 +26,25 @@
 #define __Texture_H_
 
 #include <string>
-#include "ITexture.h"
 #include "precompile.h"
 
-class Texture : public ITexture {
+class Texture {
 private:
-    GLuint texture;
-    int w;
-    int h;
+    GLuint texture_;
+    int w_;
+    int h_;
 
 public:
     int getW();
     int getH();
+
     explicit Texture(
             std::string filename,
             GLint       minFilter = GL_LINEAR,
             GLint       magFilter = GL_LINEAR
     );
-    void glBind() override;
-    void glUnbind() override ;
-    void glTexCorner(Corner corner) override ;
+
+    void glBind();
 };
 
 

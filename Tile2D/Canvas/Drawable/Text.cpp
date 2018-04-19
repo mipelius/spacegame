@@ -124,7 +124,6 @@ void Text::drawActual(const Canvas &canvas) {
 
     glEnd();
 
-    fontPtr_->fontTexture_->glUnbind();
 }
 
 // getters and setters

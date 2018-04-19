@@ -104,16 +104,16 @@ void ParticleSystem::drawParticles_() {
 
         glBegin(GL_QUADS);
 
-        texturePtr_->glTexCorner(Texture::Corner::TOP_LEFT);
+        glTexCoord2f(0.01, 0.01);
         glVertex3f(particleRect_.x1, particleRect_.y1, 0.0);
 
-        texturePtr_->glTexCorner(Texture::Corner::TOP_RIGHT);
+        glTexCoord2f(0.99, 0.01);
         glVertex3f(particleRect_.x2, particleRect_.y1, 0.0);
 
-        texturePtr_->glTexCorner(Texture::Corner::BOTTOM_RIGHT);
+        glTexCoord2f(0.99, 0.99);
         glVertex3f(particleRect_.x2, particleRect_.y2, 0.0);
 
-        texturePtr_->glTexCorner(Texture::Corner::BOTTOM_LEFT);
+        glTexCoord2f(0.01, 0.99);
         glVertex3f(particleRect_.x1, particleRect_.y2, 0.0);
 
         glEnd();

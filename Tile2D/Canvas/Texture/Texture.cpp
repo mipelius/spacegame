@@ -43,8 +43,8 @@ Texture::Texture(
 		throw std::exception();
 	}
 
-	this->w = surface->w;
-    this->h = surface->h;
+	this->w_ = surface->w;
+    this->h_ = surface->h;
 
 #ifdef DEBUG
     // Check that the image's width is a power of 2
@@ -78,10 +78,10 @@ Texture::Texture(
     }
 
     // Have OpenGL generate a texture object handle for us
-    glGenTextures(1, &texture);
+    glGenTextures(1, &texture_);
 
     // Bind the texture object
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindTexture(GL_TEXTURE_2D, texture_);
 
     // Set the texture's stretching properties
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
@@ -98,34 +98,13 @@ Texture::Texture(
 
 void Texture::glBind() {
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, texture);
-}
-
-void Texture::glUnbind() {
-    glDisable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture_);
 }
 
 int Texture::getW() {
-    return this->w;
+    return this->w_;
 }
 
 int Texture::getH() {
-    return this->h;
-}
-
-void Texture::glTexCorner(ITexture::Corner corner) {
-    switch (corner) {
-        case (TOP_LEFT):
-            glTexCoord2f(0.01, 0.01);
-            break;
-        case (TOP_RIGHT):
-            glTexCoord2f(0.99, 0.01);
-            break;
-        case (BOTTOM_LEFT):
-            glTexCoord2f(0.01, 0.99);
-            break;
-        case (BOTTOM_RIGHT):
-            glTexCoord2f(0.99, 0.99);
-            break;
-    }
+    return this->h_;
 }

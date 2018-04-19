@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
 #include "precompile.h"
 #include "Sprite.h"
 
@@ -50,11 +49,11 @@ void Sprite::setRect(const Rect &rect) {
     rect_ = rect;
 }
 
-ITexture *Sprite::getTexturePtr() const {
+Texture *Sprite::getTexturePtr() const {
     return texturePtr_;
 }
 
-void Sprite::setTexturePtr(ITexture *texturePtr) {
+void Sprite::setTexturePtr(Texture *texturePtr) {
     texturePtr_ = texturePtr;
 }
 
@@ -75,19 +74,14 @@ void Sprite::drawSpriteHavingTexture_() {
 
     glBegin(GL_QUADS);
 
-    texturePtr_->glTexCorner(Texture::Corner::TOP_LEFT);
+    glTexCoord2f(0.01, 0.01);
     glVertex3f(rect_.x1, rect_.y1, 0.0);
-
-    texturePtr_->glTexCorner(Texture::Corner::TOP_RIGHT);
+    glTexCoord2f(0.99, 0.01);
     glVertex3f(rect_.x2, rect_.y1, 0.0);
-
-    texturePtr_->glTexCorner(Texture::Corner::BOTTOM_RIGHT);
+    glTexCoord2f(0.99, 0.99);
     glVertex3f(rect_.x2, rect_.y2, 0.0);
-
-    texturePtr_->glTexCorner(Texture::Corner::BOTTOM_LEFT);
+    glTexCoord2f(0.01, 0.99);
     glVertex3f(rect_.x1, rect_.y2, 0.0);
 
     glEnd();
-
-    texturePtr_->glUnbind();
 }

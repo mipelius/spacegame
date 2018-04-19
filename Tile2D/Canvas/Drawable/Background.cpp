@@ -60,7 +60,6 @@ void Background::drawActual(const Canvas& canvas) {
         glVertex2f(rect.x1, rect.y2);
         glEnd();
 
-        texturePtr_->glUnbind();
     }
     else {
         glBegin(GL_QUADS);

@@ -30,7 +30,6 @@
 #include "Rect.h"
 
 class ColliderShape;
-class ITexture;
 
 class Sprite : public DrawableBase {
 
@@ -41,15 +40,15 @@ public:
 
     const Rect &getRect() const;
     void setRect(const Rect &rect);
-    ITexture *getTexturePtr() const;
-    void setTexturePtr(ITexture *texturePtr);
+    Texture *getTexturePtr() const;
+    void setTexturePtr(Texture *texturePtr);
 
 protected:
     void drawActual(const Canvas &canvas) override;
 
 private:
     Rect rect_;
-    ITexture* texturePtr_;
+    Texture* texturePtr_;
 
     void drawRect_();
     void drawSpriteHavingTexture_();
