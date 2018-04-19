@@ -21,27 +21,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "precompile.h"
-#include "Sprite.h"
+#ifndef SPACEGAME_SPRITEBASE_H
+#define SPACEGAME_SPRITEBASE_H
 
-void Sprite::drawActual(const Canvas &canvas) {
-    drawTexture_(texturePtr_, {0.01, 0.01, 0.99, 0.99});
-}
+#include "Texture.h"
+#include "DrawableBase.h"
+#include "Rect.h"
 
-Sprite::Sprite() :
-        rect_({0, 0, 0, 0}),
-        texturePtr_(nullptr)
-{
+class SpriteBase : public DrawableBase {
+public:
+    SpriteBase();
 
-}
+    // getters and setters
 
-// getters and setters
+    const Rect &getRect() const;
+    void setRect(const Rect &rect);
 
-Texture *Sprite::getTexturePtr() const {
-    return texturePtr_;
-}
+protected:
+    void drawTexture_(Texture* texture, const Rect& texCoords);
 
-void Sprite::setTexturePtr(Texture *texturePtr) {
-    texturePtr_ = texturePtr;
-}
+private:
+    Rect rect_;
 
+};
+
+
+#endif //SPACEGAME_SPRITEBASE_H

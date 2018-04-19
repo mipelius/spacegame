@@ -220,7 +220,7 @@ set(SOURCE_FILES
         Game/SceneQuickTesting/QuickTestingBehaviour.cpp
         Game/SceneQuickTesting/QuickTestingBehaviour.h
         Tile2D/Animation/Animation.cpp
-        Tile2D/Animation/Animation.h)
+        Tile2D/Animation/Animation.h Tile2D/Canvas/Drawable/SpriteBase.cpp Tile2D/Canvas/Drawable/SpriteBase.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

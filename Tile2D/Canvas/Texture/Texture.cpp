@@ -97,7 +97,6 @@ Texture::Texture(
 }
 
 void Texture::glBind() {
-    glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture_);
 }
 

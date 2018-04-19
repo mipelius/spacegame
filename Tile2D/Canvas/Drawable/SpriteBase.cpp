@@ -21,27 +21,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "precompile.h"
-#include "Sprite.h"
+#include "SpriteBase.h"
 
-void Sprite::drawActual(const Canvas &canvas) {
-    drawTexture_(texturePtr_, {0.01, 0.01, 0.99, 0.99});
-}
-
-Sprite::Sprite() :
-        rect_({0, 0, 0, 0}),
-        texturePtr_(nullptr)
+SpriteBase::SpriteBase() :
+        rect_({0, 0, 0, 0})
 {
 
 }
 
 // getters and setters
 
-Texture *Sprite::getTexturePtr() const {
-    return texturePtr_;
+const Rect &SpriteBase::getRect() const {
+    return rect_;
 }
 
-void Sprite::setTexturePtr(Texture *texturePtr) {
-    texturePtr_ = texturePtr;
+void SpriteBase::setRect(const Rect &rect) {
+    rect_ = rect;
 }
 
+void SpriteBase::drawTexture_(Texture *texture, const Rect &texCoords) {
+    if (texture != nullptr) {
+        glEnable(GL_TEXTURE_2D);
+        texture->glBind();
+    } else {
+        glDisable(GL_TEXTURE_2D);
+    }
+
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(texCoords.x1, texCoords.y1);
+    glVertex3f(rect_.x1, rect_.y1, 0.0);
+    glTexCoord2f(texCoords.x2, texCoords.y1);
+    glVertex3f(rect_.x2, rect_.y1, 0.0);
+    glTexCoord2f(texCoords.x2, texCoords.y2);
+    glVertex3f(rect_.x2, rect_.y2, 0.0);
+    glTexCoord2f(texCoords.x1, texCoords.y2);
+    glVertex3f(rect_.x1, rect_.y2, 0.0);
+
+    glEnd();
+}

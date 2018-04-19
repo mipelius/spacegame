@@ -46,6 +46,7 @@ void Text::drawActual(const Canvas &canvas) {
         updateTextSize_();
     }
 
+    glEnable(GL_TEXTURE_2D);
     fontPtr_->fontTexture_->glBind();
 
     float textureW = fontPtr_->fontTexture_->getW();

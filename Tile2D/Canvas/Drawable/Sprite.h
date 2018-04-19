@@ -28,18 +28,17 @@
 #include "Texture.h"
 #include "DrawableBase.h"
 #include "Rect.h"
+#include "SpriteBase.h"
 
 class ColliderShape;
 
-class Sprite : public DrawableBase {
+class Sprite : public SpriteBase {
 
 public:
     Sprite();
 
     // getters and setters
 
-    const Rect &getRect() const;
-    void setRect(const Rect &rect);
     Texture *getTexturePtr() const;
     void setTexturePtr(Texture *texturePtr);
 
@@ -49,9 +48,6 @@ protected:
 private:
     Rect rect_;
     Texture* texturePtr_;
-
-    void drawRect_();
-    void drawSpriteHavingTexture_();
 };
 
 
