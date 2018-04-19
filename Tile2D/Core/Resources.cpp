@@ -28,6 +28,7 @@
 void Resources::init(const std::string& resourcesFile) {
     auto obj = JsonFileManager::load(resourcesFile);
     textures.init(        obj["textures"]       );
+    animations.init(      obj["animations"]     );
     sfx.init(             obj["sfx"]            );
     music.init(           obj["music"]          );
     fonts.init(           obj["fonts"]          );

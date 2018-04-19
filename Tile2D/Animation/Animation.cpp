@@ -21,35 +21,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
-#ifndef __RESOURCES_H
-#define __RESOURCES_H
-
-#include <map>
+#include "JsonFileManager.h"
 #include "Animation.h"
-#include "TileMap.h"
-#include "AudioClip.h"
-#include "Music.h"
-#include "TileSet.h"
-#include "Font.h"
-#include "ResourceContainer.h"
-#include "Texture.h"
 
-class Resources {
-    friend class Tile2D;
+int Animation::getFrames() const {
+    return frames_;
+}
 
-private:
-    Resources() = default;
-    ~Resources() = default;
+Animation::Animation(std::string filepath) {
+    auto jsonObj = JsonFileManager::load(std::move(filepath));
 
-    void init(const std::string& resourcesFile);
+    spriteWidth_ = jsonObj["spriteWidth"].ToInt();
+    spriteHeight_ = jsonObj["spriteHeight"].ToInt();
+    frames_ = jsonObj["frames"].ToInt();
 
-public:
-    ResourceContainer<Texture> textures;
-    ResourceContainer<Animation> animations;
-    ResourceContainer<Font> fonts;
-    ResourceContainer<AudioClip> sfx;
-    ResourceContainer<Music> music;
-};
+    auto texturePath = jsonObj["texture"].ToString();
+    texture_ = new Texture(texturePath);
+}
 
-#endif //__RESOURCES_H
+Animation::~Animation() {
+    delete texture_;
+}
+
+Rect Animation::GetTexCoords(int frame) const {
+    int framesPerRow = texture_->getW() / spriteWidth_;
+    int framesPerColumn = texture_->getH() / spriteHeight_;
+
+    float frameTexWidth = 1.0f / framesPerRow;
+    float frameTexHeight = 1.0f / framesPerColumn;
+
+    float x1 = (frame % framesPerRow) * frameTexWidth;
+    float y1 = (frame / framesPerRow) * frameTexHeight;
+    float x2 = x1 + spriteWidth_;
+    float y2 = y1 + spriteHeight_;
+
+    // margins
+
+    x1 += 0.001;
+    y1 -= 0.001;
+    x2 += 0.001;
+    y2 -= 0.001;
+
+    return {x1, y1, x2, y2};
+}

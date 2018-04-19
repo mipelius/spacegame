@@ -21,35 +21,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_ANIMATION_H
+#define SPACEGAME_ANIMATION_H
 
-#ifndef __RESOURCES_H
-#define __RESOURCES_H
-
-#include <map>
-#include "Animation.h"
-#include "TileMap.h"
-#include "AudioClip.h"
-#include "Music.h"
-#include "TileSet.h"
-#include "Font.h"
-#include "ResourceContainer.h"
+#include <Tile2D/Util/Primitives/Rect.h>
 #include "Texture.h"
 
-class Resources {
-    friend class Tile2D;
-
+class Animation {
 private:
-    Resources() = default;
-    ~Resources() = default;
-
-    void init(const std::string& resourcesFile);
+    Texture* texture_;
+    int spriteWidth_;
+    int spriteHeight_;
+    int frames_;
 
 public:
-    ResourceContainer<Texture> textures;
-    ResourceContainer<Animation> animations;
-    ResourceContainer<Font> fonts;
-    ResourceContainer<AudioClip> sfx;
-    ResourceContainer<Music> music;
+    explicit Animation(std::string filepath);
+    ~Animation();
+
+    Rect GetTexCoords(int frame) const;
+    int getFrames() const;
 };
 
-#endif //__RESOURCES_H
+
+#endif //SPACEGAME_ANIMATION_H
