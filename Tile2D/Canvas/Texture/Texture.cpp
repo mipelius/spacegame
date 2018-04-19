@@ -96,14 +96,14 @@ Texture::Texture(
 
 }
 
-void Texture::glBind() {
+void Texture::glBind() const {
     glBindTexture(GL_TEXTURE_2D, texture_);
 }
 
-int Texture::getW() {
+int Texture::getW() const {
     return this->w_;
 }
 
-int Texture::getH() {
+int Texture::getH() const {
     return this->h_;
 }

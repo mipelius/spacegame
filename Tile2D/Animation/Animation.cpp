@@ -43,7 +43,7 @@ Animation::~Animation() {
     delete texture_;
 }
 
-Rect Animation::GetTexCoords(int frame) const {
+Rect Animation::getTexCoords(int frame) const {
     int framesPerRow = texture_->getW() / spriteWidth_;
     int framesPerColumn = texture_->getH() / spriteHeight_;
 
@@ -52,8 +52,8 @@ Rect Animation::GetTexCoords(int frame) const {
 
     float x1 = (frame % framesPerRow) * frameTexWidth;
     float y1 = (frame / framesPerRow) * frameTexHeight;
-    float x2 = x1 + spriteWidth_;
-    float y2 = y1 + spriteHeight_;
+    float x2 = x1 + frameTexWidth;
+    float y2 = y1 + frameTexHeight;
 
     // margins
 
@@ -63,4 +63,8 @@ Rect Animation::GetTexCoords(int frame) const {
     y2 -= 0.001;
 
     return {x1, y1, x2, y2};
+}
+
+const Texture *Animation::getTexture() const {
+    return texture_;
 }

@@ -35,8 +35,8 @@ private:
     int h_;
 
 public:
-    int getW();
-    int getH();
+    int getW() const;
+    int getH() const;
 
     explicit Texture(
             std::string filename,
@@ -44,7 +44,7 @@ public:
             GLint       magFilter = GL_LINEAR
     );
 
-    void glBind();
+    void glBind() const;
 };
 
 

@@ -39,7 +39,7 @@ void SpriteBase::setRect(const Rect &rect) {
     rect_ = rect;
 }
 
-void SpriteBase::drawTexture_(Texture *texture, const Rect &texCoords) {
+void SpriteBase::drawTexture_(const Texture *texture, const Rect &texCoords) {
     if (texture != nullptr) {
         glEnable(GL_TEXTURE_2D);
         texture->glBind();

@@ -28,6 +28,7 @@
 #include "Texture.h"
 
 class Animation {
+
 private:
     Texture* texture_;
     int spriteWidth_;
@@ -38,7 +39,8 @@ public:
     explicit Animation(std::string filepath);
     ~Animation();
 
-    Rect GetTexCoords(int frame) const;
+    const Texture *getTexture() const;
+    Rect getTexCoords(int frame) const;
     int getFrames() const;
 };
 

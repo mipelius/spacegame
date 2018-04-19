@@ -38,7 +38,7 @@ public:
     void setRect(const Rect &rect);
 
 protected:
-    void drawTexture_(Texture* texture, const Rect& texCoords);
+    void drawTexture_(const Texture* texture, const Rect& texCoords);
 
 private:
     Rect rect_;
