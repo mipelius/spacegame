@@ -67,13 +67,6 @@ include_directories(
 set(SOURCE_FILES
         3rdParty/json.cpp
         3rdParty/json.h
-        Tile2D/Animation/AnimatedTexture.cpp
-        Tile2D/Animation/AnimatedTexture.h
-        Tile2D/Animation/AnimationBase.cpp
-        Tile2D/Animation/AnimationBase.h
-        Tile2D/Animation/AnimationManager.cpp
-        Tile2D/Animation/AnimationManager.h
-        Tile2D/Animation/IAnimation.h
         Tile2D/Canvas/Drawable/Background.cpp
         Tile2D/Canvas/Drawable/Background.h
         Tile2D/Canvas/Drawable/Color.cpp
@@ -98,7 +91,6 @@ set(SOURCE_FILES
         Tile2D/Canvas/ParticleSystem/Particle.h
         Tile2D/Canvas/ParticleSystem/ParticleSystem.cpp
         Tile2D/Canvas/ParticleSystem/ParticleSystem.h
-        Tile2D/Canvas/Texture/ITexture.h
         Tile2D/Canvas/Texture/MapTexture.cpp
         Tile2D/Canvas/Texture/MapTexture.h
         Tile2D/Canvas/Texture/Texture.cpp
