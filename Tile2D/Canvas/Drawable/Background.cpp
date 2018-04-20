@@ -40,6 +40,7 @@ void Background::drawActual(const Canvas& canvas) {
     Rect rect = canvas.getCamera()->getAreaRect();
 
     if (texturePtr_ != nullptr) {
+        glEnable(GL_TEXTURE_2D);
         texturePtr_->glBind();
 
         Vecf position = canvas.getCamera()->getPosition();
