@@ -23,6 +23,7 @@
 
 
 #include <cfloat>
+#include "AnimatedSprite.h"
 #include "Scenes.h"
 #include "Prefabs.h"
 #include "PolygonCollider.h"
@@ -134,25 +135,49 @@ GameObject *Prefabs::boss() {
 }
 
 GameObject *Prefabs::sentry() {
-    auto enemy = spawnEnemy_(
-            "sentry",
-            {
-                    {-10, -25},
-                    {10, -25},
-                    {10, 15},
-                    {5, 25},
-                    {-5, 25},
-                    {-10, 15}
-            },
-            {-30, -25, 30, 25},
-            2.0f
-    );
+    auto enemy = Tile2D::createGameObject();
+    enemy->transform().setRotation(0.0f);
 
-    enemy->getComponent<PolygonCollider>()->setSweepingStrategyThreshold(FLT_MAX);
+    enemy->tag = Tags::enemy;
+
+    auto enemyBody = enemy->attachComponent<Body>();
+    enemyBody->setMass(100.0);
+    enemyBody->setGravityFactor(2.0f);
+
+    auto polygonCollider = enemy->attachComponent<PolygonCollider>();
+    polygonCollider->setPoints({
+           {-10, -25},
+           {10, -25},
+           {10, 15},
+           {5, 25},
+           {-5, 25},
+           {-10, 15}
+    });
+    polygonCollider->setLayer(ColliderLayers::enemy);
+    polygonCollider->setSweepingStrategyThreshold(FLT_MAX);
+
+    auto enemySpriteHead = enemy->attachComponent<Sprite>();
+    enemySpriteHead->setSortingLayer(SortingLayers::enemy);
+    enemySpriteHead->setRect({-20, -25, 20, 0});
+    enemySpriteHead->setTexturePtr(Tile2D::resources().textures["sentry_head_side"]);
+    enemySpriteHead->setColor({1, 1, 1});
+
+    auto enemyAnimLegs = enemy->attachComponent<AnimatedSprite>();
+    enemyAnimLegs->setSortingLayer(SortingLayers::enemyBackground);
+    enemyAnimLegs->setRect({-25, -30, 25, 30});
+    enemyAnimLegs->setAnimationPtr(Tile2D::resources().animations["sentry_walk_anim"]);
+    enemyAnimLegs->play();
+
+    auto health = enemy->attachComponent<Health>();
+    health->setMaxHealth(100);
+    health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
+        health->gameObject()->destroy();
+        GameObject* newBloodBurst = bloodBurst();
+        newBloodBurst->transform().setPosition(health->transform()->getPosition());
+    });
 
     auto AI = enemy->attachComponent<WalkingEnemyAI>();
     AI->setMaxDistance(1500);
-
     AI->setGroundCheckSensors(
             {
                     {-10, 26.0f},

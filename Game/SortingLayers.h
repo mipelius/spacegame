@@ -29,7 +29,8 @@
 namespace SortingLayers {
     enum {
         background = -100,
-        ammo = -4,
+        ammo = -5,
+        enemyBackground = -4,
         enemy = -3,
         player = -2,
         particles = -1,
