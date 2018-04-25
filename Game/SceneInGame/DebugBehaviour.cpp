@@ -35,6 +35,8 @@
 void DebugBehaviour::awake() {
     body_ = gameObject()->getComponent<Body>();
     sprite_ = gameObject()->getComponent<Sprite>();
+
+    checkpointsUpdate_();
 }
 
 void DebugBehaviour::update() {
@@ -77,10 +79,11 @@ void DebugBehaviour::update() {
         std::cout << transform()->getPosition().x << "," << transform()->getPosition().y << "\n";
     }
     if (keyboard.keyPressed(SDL_SCANCODE_Q)) {
-        transform()->setPosition({500.0, 250.0});
+        moveToNextCheckpoint_();
     }
     if (keyboard.keyPressed(SDL_SCANCODE_R)) {
         Tile2D::tileMap().load("data/maps/map.bmp", "data/maps/tileset.json");
+        checkpointsUpdate_();
     }
     if (keyboard.keyPressed(SDL_SCANCODE_A)) {
         Tile2D::lightSystem().setEnabled(!Tile2D::lightSystem().isEnabled());
@@ -98,4 +101,33 @@ void DebugBehaviour::update() {
 
 void DebugBehaviour::lateUpdate() {
 
+}
+
+void DebugBehaviour::checkpointsUpdate_() {
+    checkpoints_.clear();
+    auto w = Tile2D::tileMap().getW();
+    auto h = Tile2D::tileMap().getH();
+    for (auto y = 0u; y < h; ++y) {
+        for (auto x = 0u; x < w; ++x) {
+            auto tile = Tile2D::tileMap().getValue(x, y);
+            if (tile != nullptr && tile->getName() == "checkpoint") {
+                checkpoints_.push_back(Tile2D::tileMap().getWorldCoords(Veci(x, y)));
+            }
+        }
+    }
+    nextCheckpoint_ = 0;
+    moveToNextCheckpoint_();
+}
+
+void DebugBehaviour::moveToNextCheckpoint_() {
+    if (checkpoints_.empty()) {
+        transform()->setPosition({500.0, 250.0});
+    }
+    else {
+        transform()->setPosition(checkpoints_[nextCheckpoint_]);
+        nextCheckpoint_++;
+        if (nextCheckpoint_ >= checkpoints_.size()) {
+            nextCheckpoint_ = 0;
+        }
+    }
 }

@@ -39,6 +39,12 @@ protected:
 private:
     Body* body_ = nullptr;
     Sprite* sprite_ = nullptr;
+
+    std::vector<Vecf> checkpoints_;
+    int nextCheckpoint_;
+
+    void checkpointsUpdate_();
+    void moveToNextCheckpoint_();
 };
 
 
