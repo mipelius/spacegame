@@ -122,8 +122,8 @@ private:
     static bool isLoaded_;
 
     std::set<GameObject*> objects_;
-    std::set<GameObject*> objectsToDestroy_;
     std::list<GameObject*> objectsToInit_;
+    std::list<GameObject*> objectsToDestroy_;
 
     struct DelayedFunction {
         GameObject* gameObject;

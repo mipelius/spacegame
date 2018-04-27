@@ -61,7 +61,10 @@ private:
     bool isActive_ = true;
 
 private:
+    bool isAlive_ = true;
+    bool canBeDestroyed_ = false;
 
+    void prepareDestroy_();
     void initializeComponents_();
 };
 

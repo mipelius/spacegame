@@ -137,19 +137,33 @@ void Tile2D::mainLoop_() {
 
 void Tile2D::cleanUp_() {
     for (auto obj : objects_) {
-        instance_().objectsToDestroy_.insert(obj);
+        obj->destroy();
     }
-    objects_.clear();
+    removeDestroyedObjects_();
     objectsToInit_.clear();
     delayedFunctions_.clear();
-    removeDestroyedObjects_();
 }
 
 void Tile2D::removeDestroyedObjects_() {
-    for (auto obj : objectsToDestroy_) {
-        delete obj;
+    for (auto obj : objects_) {
+        if (!obj->isAlive_) {
+            obj->prepareDestroy_();
+        }
     }
-    objectsToDestroy_.clear();
+
+    auto it = objects_.begin();
+    while (it != objects_.end())
+    {
+        if ((*it)->canBeDestroyed_)
+        {
+            delete *it;
+            objects_.erase(it++);
+        }
+        else
+        {
+            ++it;
+        }
+    }
 }
 
 void Tile2D::initGameObjects_() {
@@ -173,16 +187,6 @@ void Tile2D::lateUpdateBehaviours_() {
             obj->lateUpdate();
         }
     }
-}
-
-void Tile2D::destroy_(GameObject* obj) {
-	auto it = instance_().objects_.find(obj);
-	
-    if (it != objects_.end()) {
-        instance_().objects_.erase((*it));
-    }
-
-    instance_().objectsToDestroy_.insert(obj);
 }
 
 Window &Tile2D::window() {

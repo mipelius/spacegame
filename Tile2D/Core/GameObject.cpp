@@ -34,7 +34,7 @@ void GameObject::initializeComponents_() {
 }
 
 void GameObject::destroy() {
-    Tile2D::instance_().destroy_(this);
+    isAlive_ = false;
 }
 
 GameObject::GameObject() {
@@ -46,9 +46,6 @@ GameObject::~GameObject() {
         delete component;
     }
     for (auto& component : components_) {
-        component->onDestroy();
-    }
-    for (auto& component : components_) {
         delete component;
     }
 }
@@ -58,10 +55,17 @@ Transform &GameObject::transform() {
 }
 
 bool GameObject::isActive() const {
-    return isActive_;
+    return isActive_ && isAlive_;
 }
 
 void GameObject::setIsActive(bool isActive) {
     isActive_ = isActive;
+}
+
+void GameObject::prepareDestroy_() {
+    for (auto& component : components_) {
+        component->onDestroy();
+    }
+    canBeDestroyed_ = true;
 }
 
