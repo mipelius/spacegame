@@ -87,18 +87,14 @@ GameObject *Prefabs::player() {
         GameObject* spaceShipExplosion = explosion();
         spaceShipExplosion->transform().setPosition(health->transform()->getPosition());
         health->gameObject()->setIsActive(false);
-        health->gameObject()->getComponent<HUD>()->hide();
 
         Tile2D::executeDelayedFunction(health->gameObject(), 2000, [] (GameObject* gameObject) {
             gameObject->transform().setPosition({500.0f, 250.0f});
             gameObject->getComponent<Body>()->setVelocity({0.0f, 0.0f});
             gameObject->setIsActive(true);
             gameObject->getComponent<Health>()->reset();
-            gameObject->getComponent<HUD>()->show();
         });
     });
-
-    auto hud = player->attachComponent<HUD>();
 
     return player;
 }
@@ -629,5 +625,11 @@ GameObject *Prefabs::spawner(Rect area, GameObject* target, GameObject* (*spawnf
     spawnerBehaviour->setOuterRect({-1000.0f, -800.0f, 1000.0f, 800.0f});
 
     return spawnerObj;
+}
+
+GameObject *Prefabs::hud(GameObject* player) {
+    auto hud = Tile2D::createGameObject();
+    auto hudBehaviour = hud->attachComponent<HUD>();
+    hudBehaviour->setPlayer(player);
 }
 

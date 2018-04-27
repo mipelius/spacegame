@@ -32,9 +32,7 @@
 class HUD : public Tile2DBehaviour {
 
 public:
-    void setHealthSprite(Sprite *healthSprite);
-    void hide();
-    void show();
+    void setPlayer(GameObject* player);
 
 protected:
     void awake() override;
@@ -43,8 +41,12 @@ protected:
 
 private:
     Sprite* healthSprite_;
-    Health* health_;
+    Sprite* powerSprite_;
+    GameObject* player_;
+    std::list<Sprite*> weaponSlotSprites_;
 
+protected:
+    void onDestroy() override;
 };
 
 #endif //SPACEGAME_HUD_H

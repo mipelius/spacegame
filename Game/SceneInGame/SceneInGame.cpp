@@ -47,19 +47,12 @@ void SceneInGame::init() {
     Prefabs::background({0.0f, 2400.0f, 3300.0f, 4800.0f},    "bg1", {0.6f, 0.3f, 0.3f}); // bottom left corner
     Prefabs::background({3300.0f, 2400.0f, 6400.0f, 4800.0f}, "bg1", {0.3f, 0.3f, 0.6f}); // bottom right corner
 
-    // healthbar
-    GameObject* healthBar = Tile2D::createGameObject();
-    healthBar->transform().setPosition({20.0f, 20.0f});
-
-    auto healthBarSprite = healthBar->attachComponent<Sprite>();
-    healthBarSprite->setRect({0.0f, -5.0f, 0.0f, 5.0f});
-    healthBarSprite->setColor({1.0f, 0.0f, 0.0f});
-    healthBarSprite->setIsUIDrawable(true);
-
     // player
     auto player = Prefabs::player();
     player->transform().setPosition({500.0f, 250.0f});
-    player->getComponent<HUD>()->setHealthSprite(healthBarSprite);
+
+    // hud
+    auto hud = Prefabs::hud(player);
 
     // camera
     camera_ = new Camera;

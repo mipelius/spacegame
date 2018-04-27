@@ -59,6 +59,7 @@ public:
     static void pulseLight(Vecf position);
 
     // other
+    static GameObject* hud(GameObject* player);
     static GameObject* background(Rect area, const char* texture, Color color);
     static GameObject* spawner(Rect area, GameObject* target, GameObject* (*spawnFunction)());
 
