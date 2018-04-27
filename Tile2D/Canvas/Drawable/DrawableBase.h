@@ -48,6 +48,8 @@ public:
     bool isUIDrawable() const;
     void setIsUIDrawable(bool isUIDrawable);
 
+    Transform &localTransform();
+
 protected:
     virtual void drawActual(const Canvas& canvas) = 0;
 
@@ -55,6 +57,7 @@ protected:
     void onDestroy() override;
 
 private:
+    Transform localTransform_;
     bool isVisible_;
     float opacity_;
     Color color_;

@@ -58,7 +58,9 @@ void DrawableBase::draw(const Canvas& canvas) {
     glLoadIdentity();
 
     transform()->glTransform();
+    localTransform_.glTransform();
     drawActual(canvas);
+    localTransform_.glInvTransform();
     transform()->glInvTransform();
 }
 
@@ -102,4 +104,8 @@ bool DrawableBase::isUIDrawable() const {
 
 void DrawableBase::setIsUIDrawable(bool isUIDrawable) {
     isUIDrawable_ = isUIDrawable;
+}
+
+Transform &DrawableBase::localTransform() {
+    return localTransform_;
 }
