@@ -116,13 +116,13 @@ void LightSystem::update(const Canvas& canvas) {
         return;
     }
     // turn projection upside down
-
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0, w, 0, h, -1, 1);
 
     // draw shadow map to texture
 
+    glDisable(GL_TEXTURE_2D);
     glColor4d(0, 0, 0, 1.0);
     glRectd(0, 0, w, h);
 
