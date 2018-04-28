@@ -127,7 +127,7 @@ GameObject *Prefabs::boss() {
     AI->setSpeed(150.0f);
     AI->setRotates(false);
 
-    Timer shootingTimer;
+    CountDownTimer shootingTimer;
     shootingTimer.setInterval(200);
     AI->setShootingTimer(shootingTimer);
     AI->setMaxPathFindingDistance(1500);
@@ -211,7 +211,7 @@ GameObject *Prefabs::crabKindOf() {
 
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
 
-    Timer pathUpdateTimer;
+    CountDownTimer pathUpdateTimer;
     pathUpdateTimer.setInterval(200);
     AI->setPathUpdateTimer(pathUpdateTimer);
 
@@ -221,7 +221,7 @@ GameObject *Prefabs::crabKindOf() {
 
     AI->setSpeed(300);
 
-    Timer shootingTimer;
+    CountDownTimer shootingTimer;
     shootingTimer.setInterval(5000);
     shootingTimer.setIntervalRandomness(2000);
     AI->setShootingTimer(shootingTimer);
@@ -239,13 +239,13 @@ GameObject *Prefabs::fourwayCyclops() {
             0.0f
     );
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
-    Timer pathUpdateTimer;
+    CountDownTimer pathUpdateTimer;
     pathUpdateTimer.setInterval(1000);
     AI->setPathUpdateTimer(pathUpdateTimer);
 
     AI->setMaxPathFindingDistance(1500);
 
-    Timer shootingTimer;
+    CountDownTimer shootingTimer;
     shootingTimer.setInterval(500);
     shootingTimer.setIntervalRandomness(200);
     AI->setShootingTimer(shootingTimer);

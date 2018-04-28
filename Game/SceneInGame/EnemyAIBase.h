@@ -28,7 +28,7 @@
 
 #include "Tile2DBehaviour.h"
 #include "Body.h"
-#include "Timer.h"
+#include "CountDownTimer.h"
 #include "SpawnerBehaviour.h"
 
 class EnemyAIBase : public Tile2DBehaviour {
@@ -38,8 +38,8 @@ public:
     Transform *getTarget() const;
     void setSpawnerBehaviour(SpawnerBehaviour *spawnerBehaviour);
 
-    const Timer &getShootingTimer() const;
-    void setShootingTimer(const Timer &shootingTimer);
+    const CountDownTimer &getShootingTimer() const;
+    void setShootingTimer(const CountDownTimer &shootingTimer);
     float getMaxDistance() const;
     void setMaxDistance(float maxDistance);
 
@@ -48,7 +48,7 @@ protected:
     Transform* target_ = nullptr;
 
     void shootTarget_(bool useTimer = true);
-    Timer shootingTimer_;
+    CountDownTimer shootingTimer_;
 
     float maxDistance_;
 

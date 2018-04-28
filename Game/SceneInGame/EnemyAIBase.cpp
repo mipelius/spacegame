@@ -79,11 +79,11 @@ void EnemyAIBase::onDestroy() {
     }
 }
 
-const Timer &EnemyAIBase::getShootingTimer() const {
+const CountDownTimer &EnemyAIBase::getShootingTimer() const {
     return shootingTimer_;
 }
 
-void EnemyAIBase::setShootingTimer(const Timer &shootingTimer) {
+void EnemyAIBase::setShootingTimer(const CountDownTimer &shootingTimer) {
     shootingTimer_ = shootingTimer;
 }
 

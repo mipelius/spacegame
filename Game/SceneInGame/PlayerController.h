@@ -28,7 +28,7 @@
 #include "Body.h"
 #include "Sprite.h"
 #include "Tile2DBehaviour.h"
-#include "Timer.h"
+#include "CountDownTimer.h"
 
 class PlayerController : public Tile2DBehaviour {
 
@@ -41,9 +41,9 @@ protected:
     void lateUpdate() override;
 
 private:
-    Timer shootTimer;
-    Timer bombTimer;
-    Timer lightTimer;
+    CountDownTimer shootTimer;
+    CountDownTimer bombTimer;
+    CountDownTimer lightTimer;
 
     Body* body_;
     Sprite* sprite_;

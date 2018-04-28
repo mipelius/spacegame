@@ -28,7 +28,7 @@
 #include "precompile.h"
 #include <cfloat>
 #include "Tile2DBehaviour.h"
-#include "Timer.h"
+#include "CountDownTimer.h"
 
 class LimitedLifetimeBehaviour : public Tile2DBehaviour {
 
@@ -37,10 +37,10 @@ protected:
     void update() override;
     void lateUpdate() override;
 
-    Timer timer;
+    CountDownTimer timer;
 
 public:
-    Timer &getTimer();
+    CountDownTimer &getTimer();
 };
 
 

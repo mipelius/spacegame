@@ -27,15 +27,15 @@
 #define SPACEGAME_FLYINGENEMYAI_H
 
 #include "EnemyAIBase.h"
-#include "Timer.h"
+#include "CountDownTimer.h"
 #include "PolygonCollider.h"
 
 class FlyingEnemyAI : public EnemyAIBase {
 public:
     float getMaxPathFindingDistance() const;
     void setMaxPathFindingDistance(float maxPathFindingDistance);
-    const Timer &getPathUpdateTimer() const;
-    void setPathUpdateTimer(const Timer &pathUpdateTimer);
+    const CountDownTimer &getPathUpdateTimer() const;
+    void setPathUpdateTimer(const CountDownTimer &pathUpdateTimer);
     unsigned int getMaxNodesPathFinderExplores() const;
     void setMaxNodesPathFinderExplores(unsigned int maxNodesPathFinderExplores);
     float getMinPathFindingDistance() const;
@@ -65,7 +65,7 @@ private:
 
     unsigned int maxNodesPathFinderExplores_ = 1000;
     void updateNextPoint_();
-    Timer pathUpdateTimer_;
+    CountDownTimer pathUpdateTimer_;
 };
 
 #endif //SPACEGAME_FLYINGENEMYAI_H

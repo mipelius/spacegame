@@ -27,7 +27,7 @@
 
 #include "Tile2DBehaviour.h"
 #include "Rect.h"
-#include "Timer.h"
+#include "CountDownTimer.h"
 
 class SpawnerBehaviour : public Tile2DBehaviour {
 public:
@@ -56,7 +56,7 @@ protected:
     void lateUpdate() override;
 
 private:
-    Timer spawningTimer_;
+    CountDownTimer spawningTimer_;
 
     unsigned int maxSpawnedObjects_ = 5;
 

@@ -21,39 +21,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
-
 #ifndef SPACEGAME_TIMER_H
 #define SPACEGAME_TIMER_H
-
 
 #include "precompile.h"
 
 class Timer {
-
 public:
     Timer();
-    Timer(Uint32 interval, Uint32 intervalRandomness);
-
-    ~Timer();
 
     void reset();
-    bool resetIfTimeIntervalPassed();
-
-    Uint32 getInterval() const;
-    void setInterval(Uint32 interval);
-    Uint32 getIntervalRandomness() const;
-    void setIntervalRandomness(Uint32 intervalRandomness);
-    bool timeIntervalPassed();
-
     Uint32 getTime();
 
-private:
+protected:
     Uint32 resetTimeStamp_ = 0;
-
-    Uint32 interval_ = 0;
-    Uint32 intervalRandomness_ = 0;
-
 };
 
 

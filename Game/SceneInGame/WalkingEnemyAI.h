@@ -30,7 +30,7 @@
 #include "Transform.h"
 #include "Body.h"
 #include "EnemyAIBase.h"
-#include "Timer.h"
+#include "CountDownTimer.h"
 
 class WalkingEnemyAI : public EnemyAIBase {
 public:
@@ -44,8 +44,8 @@ protected:
 private:
     std::vector<Vecf> groundSensors_;
 
-    Timer jumpTimer_;
-    Timer reactionTimer_;
+    CountDownTimer jumpTimer_;
+    CountDownTimer reactionTimer_;
 
     float xDirection_;
 

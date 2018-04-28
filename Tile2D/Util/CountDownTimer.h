@@ -21,22 +21,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_COUNTDOWNTIMER_H
+#define SPACEGAME_COUNTDOWNTIMER_H
 
+#include "precompile.h"
+#include "Timer.h"
 
-#ifndef SPACEGAME_MOVINGCAMERABEHAVIOUR_H
-#define SPACEGAME_MOVINGCAMERABEHAVIOUR_H
+class CountDownTimer : public Timer {
 
+public:
+    CountDownTimer();
+    CountDownTimer(Uint32 interval, Uint32 intervalRandomness);
 
-#include "Tile2DBehaviour.h"
-#include "CountDownTimer.h"
+    bool resetIfTimeIntervalPassed();
 
-class MovingCameraBehaviour : public Tile2DBehaviour {
-protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
+    Uint32 getInterval() const;
+    void setInterval(Uint32 interval);
+    Uint32 getIntervalRandomness() const;
+    void setIntervalRandomness(Uint32 intervalRandomness);
+    bool timeIntervalPassed();
+
+private:
+    Uint32 interval_ = 0;
+    Uint32 intervalRandomness_ = 0;
 
 };
 
 
-#endif //SPACEGAME_MOVINGCAMERABEHAVIOUR_H
+#endif //SPACEGAME_COUNTDOWNTIMER_H

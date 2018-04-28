@@ -124,11 +124,11 @@ void FlyingEnemyAI::setMaxPathFindingDistance(float maxPathFindingDistance_) {
     FlyingEnemyAI::maxPathFindingDistance_ = maxPathFindingDistance_;
 }
 
-const Timer &FlyingEnemyAI::getPathUpdateTimer() const {
+const CountDownTimer &FlyingEnemyAI::getPathUpdateTimer() const {
     return pathUpdateTimer_;
 }
 
-void FlyingEnemyAI::setPathUpdateTimer(const Timer &pathUpdateTimer_) {
+void FlyingEnemyAI::setPathUpdateTimer(const CountDownTimer &pathUpdateTimer_) {
     FlyingEnemyAI::pathUpdateTimer_ = pathUpdateTimer_;
 }
 

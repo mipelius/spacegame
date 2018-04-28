@@ -138,8 +138,8 @@ set(SOURCE_FILES
         Tile2D/Util/gl_utils.h
         Tile2D/Util/Pool.h
         Tile2D/Util/Tile2DMath.h
-        Tile2D/Util/Timer.cpp
-        Tile2D/Util/Timer.h
+        Tile2D/Util/CountDownTimer.cpp
+        Tile2D/Util/CountDownTimer.h
         Tile2D/Core/Tile2D.cpp
         Tile2D/Core/Tile2D.h
         Tile2D/Core/SceneManager.cpp
@@ -220,7 +220,20 @@ set(SOURCE_FILES
         Game/SceneQuickTesting/QuickTestingBehaviour.cpp
         Game/SceneQuickTesting/QuickTestingBehaviour.h
         Tile2D/Animation/Animation.cpp
-        Tile2D/Animation/Animation.h Tile2D/Canvas/Drawable/SpriteBase.cpp Tile2D/Canvas/Drawable/SpriteBase.h Tile2D/Animation/AnimatedSprite.cpp Tile2D/Animation/AnimatedSprite.h Game/SceneInGame/Power.cpp Game/SceneInGame/Power.h)
+        Tile2D/Animation/Animation.h
+
+        Tile2D/Canvas/Drawable/SpriteBase.cpp
+        Tile2D/Canvas/Drawable/SpriteBase.h
+        Tile2D/Animation/AnimatedSprite.cpp
+        Tile2D/Animation/AnimatedSprite.h
+
+        Game/SceneInGame/Power.cpp
+        Game/SceneInGame/Power.h
+        Game/SceneInGame/Weapons/WeaponSystem.cpp
+        Game/SceneInGame/Weapons/WeaponSystem.h
+        Game/SceneInGame/Weapons/IWeapon.h
+        Game/SceneInGame/Weapons/ReloadingWeaponBase.cpp
+        Game/SceneInGame/Weapons/ReloadingWeaponBase.h Game/SceneInGame/Weapons/WeaponBase.cpp Game/SceneInGame/Weapons/WeaponBase.h Tile2D/Util/Timer.cpp Tile2D/Util/Timer.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

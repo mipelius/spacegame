@@ -21,22 +21,50 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
-
-#ifndef SPACEGAME_MOVINGCAMERABEHAVIOUR_H
-#define SPACEGAME_MOVINGCAMERABEHAVIOUR_H
-
-
-#include "Tile2DBehaviour.h"
+#include "precompile.h"
 #include "CountDownTimer.h"
 
-class MovingCameraBehaviour : public Tile2DBehaviour {
-protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
+Uint32 CountDownTimer::getInterval() const {
+    return interval_;
+}
 
-};
+void CountDownTimer::setInterval(Uint32 interval) {
+    interval_ = interval;
+}
 
+Uint32 CountDownTimer::getIntervalRandomness() const {
+    return intervalRandomness_;
+}
 
-#endif //SPACEGAME_MOVINGCAMERABEHAVIOUR_H
+void CountDownTimer::setIntervalRandomness(Uint32 intervalRandomness) {
+    intervalRandomness_ = intervalRandomness;
+}
+
+bool CountDownTimer::resetIfTimeIntervalPassed() {
+    bool needToReset = timeIntervalPassed();
+    if (needToReset) {
+        reset();
+    }
+    return needToReset;
+}
+
+CountDownTimer::CountDownTimer(Uint32 interval, Uint32 intervalRandomness) :
+        interval_(interval),
+        intervalRandomness_(intervalRandomness)
+{
+    Timer();
+}
+
+bool CountDownTimer::timeIntervalPassed() {
+    Uint32 ticks = SDL_GetTicks();
+
+    Uint32 interval = interval_;
+
+    if (intervalRandomness_ > 0) {
+        interval += (intervalRandomness_ - rand() % (2 * intervalRandomness_));
+    }
+
+    return ticks - resetTimeStamp_ >= interval;
+}
+
+CountDownTimer::CountDownTimer() : Timer() { }

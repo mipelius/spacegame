@@ -37,6 +37,6 @@ void LimitedLifetimeBehaviour::update() {
 
 void LimitedLifetimeBehaviour::lateUpdate() { }
 
-Timer &LimitedLifetimeBehaviour::getTimer() {
+CountDownTimer &LimitedLifetimeBehaviour::getTimer() {
     return timer;
 }
