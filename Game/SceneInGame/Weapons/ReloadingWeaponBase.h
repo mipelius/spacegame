@@ -21,35 +21,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_RELOADINGWEAPONBASE_H
+#define SPACEGAME_RELOADINGWEAPONBASE_H
 
-#ifndef __PlayerController_H
-#define __PlayerController_H
+#include "Timer.h"
+#include "WeaponBase.h"
 
-#include "WeaponSystem.h"
-#include "Body.h"
-#include "Sprite.h"
-#include "Tile2DBehaviour.h"
-#include "CountDownTimer.h"
-
-class PlayerController : public Tile2DBehaviour {
-
+class ReloadingWeaponBase : public WeaponBase {
 public:
-    float moveForce;
+    bool tryShoot(const Vecf& from, const Vecf& direction, const Vecf& shooterVelocity) final;
+
+    int getReloadDelay() const;
+    void setReloadDelay(int reloadDelay);
 
 protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
+    virtual void shootActual(const Vecf& from, const Vecf& direction, const Vecf& shooterVelocity) = 0;
 
 private:
-    CountDownTimer lightTimer;
-
-    Body* body_;
-    Sprite* sprite_;
-    WeaponSystem* weaponSystem_;
-
-    void dropLight_();
-
+    Timer timer;
+    int reloadDelay = 0;
 };
 
-#endif //__PlayerController_H
+#endif //SPACEGAME_RELOADINGWEAPONBASE_H

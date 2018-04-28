@@ -38,9 +38,8 @@
 void PlayerController::awake() {
     body_ = gameObject()->getComponent<Body>();
     sprite_ = gameObject()->getComponent<Sprite>();
+    weaponSystem_ = gameObject()->getComponent<WeaponSystem>();
 
-    shootTimer.setInterval(100);
-    bombTimer.setInterval(100);
     lightTimer.setInterval(500);
 }
 
@@ -62,10 +61,6 @@ void PlayerController::update() {
 
     body_->setAngularVelocity(angularVelocity);
 
-    if (keyboard.keyState(SDL_SCANCODE_LSHIFT)) {
-        dropBomb_();
-    }
-
     if (keyboard.keyState(SDL_SCANCODE_LCTRL)) {
         dropLight_();
     }
@@ -73,50 +68,27 @@ void PlayerController::update() {
     if (keyboard.keyPressed(SDL_SCANCODE_ESCAPE)) {
         Tile2D::sceneManager().loadScene(Scenes::titleScreen);
     }
-}
 
-void PlayerController::shoot_() {
-    if (!shootTimer.resetIfTimeIntervalPassed()) {
-        return;
+    // weapon slot selection
+
+    if (keyboard.keyPressed(SDL_SCANCODE_1)) {
+        weaponSystem_->setCurrentWeaponSlot(0);
     }
-
-    auto power = gameObject()->getComponent<Power>();
-    if (!power->consume(50)) {
-        return;
+    if (keyboard.keyPressed(SDL_SCANCODE_2)) {
+        weaponSystem_->setCurrentWeaponSlot(1);
     }
-
-    shootOnce_(Vecf(-10, -13).rotated(transform()->getRotation()));
-    shootOnce_(Vecf(-10, 13).rotated(transform()->getRotation()));
-}
-
-void PlayerController::shootOnce_(Vecf offset) {
-    auto laser = Prefabs::laser();
-    laser->transform().setPosition(transform()->getPosition() + offset);
-    laser->transform().setRotation(transform()->getRotation());
-
-    auto laserBody = laser->getComponent<Body>();
-    laserBody->setVelocity(Vecf::byAngle(transform()->getRotation(), 2000.0) + body_->getVelocity());
-
-    auto laserCollider = laser->getComponent<PolygonCollider>();
-    laserCollider->setLayer(ColliderLayers::playerAmmo);
-}
-
-void PlayerController::dropBomb_() {
-    if (!bombTimer.resetIfTimeIntervalPassed()) {
-        return;
+    if (keyboard.keyPressed(SDL_SCANCODE_3)) {
+        weaponSystem_->setCurrentWeaponSlot(2);
     }
-
-    auto power = gameObject()->getComponent<Power>();
-    if (!power->consume(200)) {
-        return;
+    if (keyboard.keyPressed(SDL_SCANCODE_4)) {
+        weaponSystem_->setCurrentWeaponSlot(3);
     }
-
-    auto bomb = Prefabs::bomb();
-    bomb->transform() = *transform();
-    bomb->getComponent<Body>()->setVelocity(body_->getVelocity() / 2 + Vecf(0, 100));
-
-    auto bombCollider = bomb->getComponent<PolygonCollider>();
-    bombCollider->setLayer(ColliderLayers::playerAmmo);
+    if (keyboard.keyPressed(SDL_SCANCODE_5)) {
+        weaponSystem_->setCurrentWeaponSlot(4);
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_6)) {
+        weaponSystem_->setCurrentWeaponSlot(5);
+    }
 }
 
 void PlayerController::dropLight_() {
@@ -131,10 +103,8 @@ void PlayerController::dropLight_() {
 
 
 void PlayerController::lateUpdate() {
-    const Uint8 *state = SDL_GetKeyboardState(NULL);
-
-    if (state[SDL_SCANCODE_SPACE]) {
-        shoot_();
+    if (Tile2D::input().keyboard().keyState(SDL_SCANCODE_SPACE)) {
+        weaponSystem_->shoot();
     }
 
     // prevent player from going outside the world

@@ -23,6 +23,10 @@
 
 
 #include <cfloat>
+#include <Game/SceneInGame/Weapons/Laser.h>
+#include <Game/SceneInGame/Weapons/BombDropper.h>
+#include <Game/SceneInGame/Weapons/Weapons.h>
+#include "WeaponSystem.h"
 #include "AnimatedSprite.h"
 #include "Scenes.h"
 #include "Prefabs.h"
@@ -100,6 +104,20 @@ GameObject *Prefabs::player() {
     auto power = player->attachComponent<Power>();
     power->setMaxPower(600);
     power->setReloadSpeed(200);
+
+    // --- WEAPONS ---
+
+    auto weaponSystem = player->attachComponent<WeaponSystem>();
+
+    auto laser = weaponSystem->attachWeapon<Laser>(nullptr, nullptr, Weapons::laser);
+    laser->setPowerConsumption(50);
+    laser->setReloadDelay(100);
+    laser->setIsActivated(true);
+
+    auto bombDropper = weaponSystem->attachWeapon<BombDropper>(nullptr, nullptr, Weapons::bomb);
+    bombDropper->setPowerConsumption(200);
+    bombDropper->setReloadDelay(200);
+    bombDropper->setIsActivated(true);
 
     return player;
 }

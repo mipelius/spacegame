@@ -21,35 +21,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "ColliderLayers.h"
+#include "Prefabs.h"
+#include "BombDropper.h"
 
-#ifndef __PlayerController_H
-#define __PlayerController_H
+void BombDropper::shootActual(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) {
+    auto bomb = Prefabs::bomb();
+    bomb->transform().setPosition(from);
+    bomb->getComponent<Body>()->setVelocity(shooterVelocity / 2 + Vecf(0, 100));
 
-#include "WeaponSystem.h"
-#include "Body.h"
-#include "Sprite.h"
-#include "Tile2DBehaviour.h"
-#include "CountDownTimer.h"
-
-class PlayerController : public Tile2DBehaviour {
-
-public:
-    float moveForce;
-
-protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
-
-private:
-    CountDownTimer lightTimer;
-
-    Body* body_;
-    Sprite* sprite_;
-    WeaponSystem* weaponSystem_;
-
-    void dropLight_();
-
-};
-
-#endif //__PlayerController_H
+    auto bombCollider = bomb->getComponent<PolygonCollider>();
+    bombCollider->setLayer(ColliderLayers::playerAmmo);
+}

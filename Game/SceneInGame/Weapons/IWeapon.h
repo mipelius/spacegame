@@ -21,35 +21,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_IWEAPON_H
+#define SPACEGAME_IWEAPON_H
 
-#ifndef __PlayerController_H
-#define __PlayerController_H
-
-#include "WeaponSystem.h"
 #include "Body.h"
-#include "Sprite.h"
-#include "Tile2DBehaviour.h"
-#include "CountDownTimer.h"
+#include "Power.h"
 
-class PlayerController : public Tile2DBehaviour {
-
+class IWeapon {
 public:
-    float moveForce;
-
-protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
-
-private:
-    CountDownTimer lightTimer;
-
-    Body* body_;
-    Sprite* sprite_;
-    WeaponSystem* weaponSystem_;
-
-    void dropLight_();
+    virtual bool shoot(Power* power, const Vecf& from, const Vecf& direction, const Vecf& shooterVelocity) = 0;
 
 };
 
-#endif //__PlayerController_H
+
+#endif //SPACEGAME_IWEAPON_H

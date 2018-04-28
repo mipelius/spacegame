@@ -21,35 +21,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "WeaponBase.h"
 
-#ifndef __PlayerController_H
-#define __PlayerController_H
+bool WeaponBase::shoot(Power *power, const Vecf& from, const Vecf& direction, const Vecf& shooterVelocity) {
+    if (!isActivated_) {
+        return false;
+    }
+    if (power == nullptr) {
+        return tryShoot(from, direction, shooterVelocity);
+    }
+    if (power->getPower() < powerConsumption_) {
+        return false;
+    }
+    if (tryShoot(from, direction, shooterVelocity)) {
+        power->consume(powerConsumption_);
+        return true;
+    }
+    return false;
+}
 
-#include "WeaponSystem.h"
-#include "Body.h"
-#include "Sprite.h"
-#include "Tile2DBehaviour.h"
-#include "CountDownTimer.h"
+int WeaponBase::getPowerConsumption() const {
+    return powerConsumption_;
+}
 
-class PlayerController : public Tile2DBehaviour {
+void WeaponBase::setPowerConsumption(int powerConsumption) {
+    powerConsumption_ = powerConsumption;
+}
 
-public:
-    float moveForce;
+bool WeaponBase::isActivated() const {
+    return isActivated_;
+}
 
-protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
+void WeaponBase::setIsActivated(bool isActivated) {
+    isActivated_ = isActivated;
+}
 
-private:
-    CountDownTimer lightTimer;
-
-    Body* body_;
-    Sprite* sprite_;
-    WeaponSystem* weaponSystem_;
-
-    void dropLight_();
-
-};
-
-#endif //__PlayerController_H

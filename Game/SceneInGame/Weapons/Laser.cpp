@@ -21,35 +21,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "ColliderLayers.h"
+#include "Prefabs.h"
+#include "Laser.h"
 
-#ifndef __PlayerController_H
-#define __PlayerController_H
+void Laser::shootActual(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) {
+    Vecf from1 = from + Vecf(-10, -13).rotated(direction.angle());
+    Vecf from2 = from + Vecf(-10, 13).rotated(direction.angle());
 
-#include "WeaponSystem.h"
-#include "Body.h"
-#include "Sprite.h"
-#include "Tile2DBehaviour.h"
-#include "CountDownTimer.h"
+    shootOnce_(from1, direction, shooterVelocity);
+    shootOnce_(from2, direction, shooterVelocity);
+}
 
-class PlayerController : public Tile2DBehaviour {
+void Laser::shootOnce_(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) {
+    auto laser = Prefabs::laser();
+    laser->transform().setPosition(from);
+    laser->transform().setRotation(direction.angle());
 
-public:
-    float moveForce;
+    auto laserBody = laser->getComponent<Body>();
+    laserBody->setVelocity(direction.normalized() * 2000.0 + shooterVelocity);
 
-protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
-
-private:
-    CountDownTimer lightTimer;
-
-    Body* body_;
-    Sprite* sprite_;
-    WeaponSystem* weaponSystem_;
-
-    void dropLight_();
-
-};
-
-#endif //__PlayerController_H
+    auto laserCollider = laser->getComponent<PolygonCollider>();
+    laserCollider->setLayer(ColliderLayers::playerAmmo);
+}

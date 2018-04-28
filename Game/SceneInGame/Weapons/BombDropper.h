@@ -21,35 +21,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_BOMBDROPPER_H
+#define SPACEGAME_BOMBDROPPER_H
 
-#ifndef __PlayerController_H
-#define __PlayerController_H
+#include "ReloadingWeaponBase.h"
 
-#include "WeaponSystem.h"
-#include "Body.h"
-#include "Sprite.h"
-#include "Tile2DBehaviour.h"
-#include "CountDownTimer.h"
-
-class PlayerController : public Tile2DBehaviour {
-
-public:
-    float moveForce;
-
+class BombDropper : public ReloadingWeaponBase {
 protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
-
-private:
-    CountDownTimer lightTimer;
-
-    Body* body_;
-    Sprite* sprite_;
-    WeaponSystem* weaponSystem_;
-
-    void dropLight_();
-
+    void shootActual(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) override;
 };
 
-#endif //__PlayerController_H
+
+#endif //SPACEGAME_BOMBDROPPER_H

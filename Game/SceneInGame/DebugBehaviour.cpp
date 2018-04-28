@@ -42,27 +42,27 @@ void DebugBehaviour::awake() {
 void DebugBehaviour::update() {
     auto& keyboard = Tile2D::input().keyboard();
 
-    if (keyboard.keyPressed(SDL_SCANCODE_1)) {
+    if (keyboard.keyPressed(SDL_SCANCODE_G)) {
         auto walkingEnemy = Prefabs::sentry();
         walkingEnemy->transform().setPosition(transform()->getPosition());
         walkingEnemy->getComponent<EnemyAIBase>()->setTarget(transform());
     }
-    if (keyboard.keyPressed(SDL_SCANCODE_2)) {
+    if (keyboard.keyPressed(SDL_SCANCODE_H)) {
         auto crabKindOf = Prefabs::crabKindOf();
         crabKindOf->transform().setPosition(transform()->getPosition());
         crabKindOf->getComponent<EnemyAIBase>()->setTarget(transform());
     }
-    if (keyboard.keyPressed(SDL_SCANCODE_3)) {
+    if (keyboard.keyPressed(SDL_SCANCODE_J)) {
         auto fourwayCyclops = Prefabs::fourwayCyclops();
         fourwayCyclops->transform().setPosition(transform()->getPosition());
         fourwayCyclops->getComponent<EnemyAIBase>()->setTarget(transform());
     }
-    if (keyboard.keyPressed(SDL_SCANCODE_4)) {
+    if (keyboard.keyPressed(SDL_SCANCODE_K)) {
         auto twoHorn = Prefabs::twoHorn();
         twoHorn->transform().setPosition(transform()->getPosition());
         twoHorn->getComponent<EnemyAIBase>()->setTarget(transform());
     }
-    if (keyboard.keyPressed(SDL_SCANCODE_5)) {
+    if (keyboard.keyPressed(SDL_SCANCODE_L)) {
         auto boss = Prefabs::boss();
         boss->transform().setPosition(transform()->getPosition());
         boss->getComponent<EnemyAIBase>()->setTarget(transform());

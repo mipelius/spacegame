@@ -21,35 +21,54 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_WEAPONSYSTEM_H
+#define SPACEGAME_WEAPONSYSTEM_H
 
-#ifndef __PlayerController_H
-#define __PlayerController_H
+#include <vector>
+#include "Texture.h"
+#include "Tile2DComponent.h"
+#include "IWeapon.h"
 
-#include "WeaponSystem.h"
-#include "Body.h"
-#include "Sprite.h"
-#include "Tile2DBehaviour.h"
-#include "CountDownTimer.h"
-
-class PlayerController : public Tile2DBehaviour {
-
-public:
-    float moveForce;
-
-protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
-
-private:
-    CountDownTimer lightTimer;
-
-    Body* body_;
-    Sprite* sprite_;
-    WeaponSystem* weaponSystem_;
-
-    void dropLight_();
-
+struct WeaponSlot {
+    IWeapon* weapon;
+    Texture* inventoryTexturePtr;
+    Texture* inWorldTexturePtr;
+    int tag;
 };
 
-#endif //__PlayerController_H
+class WeaponSystem : public Tile2DComponent {
+public:
+    void shoot();
+
+    template <class T>
+    T* attachWeapon(Texture* inventoryTexturePtr, Texture* inWorldTexturePtr, int tag);
+
+    const std::vector<WeaponSlot>& getWeaponSlots() const;
+
+    int getCurrentWeaponSlot() const;
+    void setCurrentWeaponSlot(int currentWeapon);
+
+protected:
+    void init() override;
+    void onDestroy() override;
+
+private:
+    std::vector<WeaponSlot> weaponSlots_;
+    int currentWeapon_ = 0;
+    Power* power_;
+    Body* body_;
+};
+
+// --- Template method implemention ---
+
+template <class T>
+T* WeaponSystem::attachWeapon(Texture* inventoryTexturePtr, Texture* inWorldTexturePtr, int tag) {
+    auto weapon = new T();
+
+    WeaponSlot weaponSlot = {weapon, inventoryTexturePtr, inWorldTexturePtr, tag};
+    weaponSlots_.push_back(weaponSlot);
+
+    return weapon;
+}
+
+#endif //SPACEGAME_WEAPONSYSTEM_H

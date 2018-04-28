@@ -21,35 +21,45 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
-#ifndef __PlayerController_H
-#define __PlayerController_H
-
+#include "Tile2DMath.h"
 #include "WeaponSystem.h"
-#include "Body.h"
-#include "Sprite.h"
-#include "Tile2DBehaviour.h"
-#include "CountDownTimer.h"
 
-class PlayerController : public Tile2DBehaviour {
+void WeaponSystem::shoot() {
+    if (weaponSlots_.empty()) {
+        return;
+    }
+    auto weaponSlot = weaponSlots_[currentWeapon_];
 
-public:
-    float moveForce;
+    auto weapon = weaponSlot.weapon;
 
-protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
+    weapon->shoot(
+            power_,
+            transform()->getPosition(),
+            Vecf::byAngle(transform()->getRotation(), 1.0f),
+            body_->getVelocity()
+    );
+}
 
-private:
-    CountDownTimer lightTimer;
+const std::vector<WeaponSlot> &WeaponSystem::getWeaponSlots() const {
+    return weaponSlots_;
+}
 
-    Body* body_;
-    Sprite* sprite_;
-    WeaponSystem* weaponSystem_;
+void WeaponSystem::init() {
+    power_ = gameObject()->getComponent<Power>();
+    body_ = gameObject()->getComponent<Body>();
+}
 
-    void dropLight_();
+void WeaponSystem::onDestroy() {
+    for (auto weaponSlot : weaponSlots_) {
+        delete weaponSlot.weapon;
+    }
+}
 
-};
+int WeaponSystem::getCurrentWeaponSlot() const {
+    return currentWeapon_;
+}
 
-#endif //__PlayerController_H
+void WeaponSystem::setCurrentWeaponSlot(int currentWeapon) {
+    currentWeapon_ = currentWeapon;
+    Mathi::clamp(currentWeapon_, 0, (int)(weaponSlots_.size()) -1);
+}

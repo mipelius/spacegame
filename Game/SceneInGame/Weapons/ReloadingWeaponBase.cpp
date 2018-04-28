@@ -21,35 +21,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "ReloadingWeaponBase.h"
 
-#ifndef __PlayerController_H
-#define __PlayerController_H
+bool ReloadingWeaponBase::tryShoot(const Vecf& from, const Vecf& direction, const Vecf& shooterVelocity) {
+    if (timer.getTime() >= reloadDelay) {
+        timer.reset();
+        shootActual(from, direction, shooterVelocity);
+        return true;
+    }
+    return false;
+}
 
-#include "WeaponSystem.h"
-#include "Body.h"
-#include "Sprite.h"
-#include "Tile2DBehaviour.h"
-#include "CountDownTimer.h"
+int ReloadingWeaponBase::getReloadDelay() const {
+    return reloadDelay;
+}
 
-class PlayerController : public Tile2DBehaviour {
-
-public:
-    float moveForce;
-
-protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
-
-private:
-    CountDownTimer lightTimer;
-
-    Body* body_;
-    Sprite* sprite_;
-    WeaponSystem* weaponSystem_;
-
-    void dropLight_();
-
-};
-
-#endif //__PlayerController_H
+void ReloadingWeaponBase::setReloadDelay(int reloadDelay) {
+    ReloadingWeaponBase::reloadDelay = reloadDelay;
+}

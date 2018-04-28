@@ -21,35 +21,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_WEAPONS_H
+#define SPACEGAME_WEAPONS_H
 
-#ifndef __PlayerController_H
-#define __PlayerController_H
+namespace Weapons {
+    enum {
+        laser,
+        bomb
+    };
+}
 
-#include "WeaponSystem.h"
-#include "Body.h"
-#include "Sprite.h"
-#include "Tile2DBehaviour.h"
-#include "CountDownTimer.h"
-
-class PlayerController : public Tile2DBehaviour {
-
-public:
-    float moveForce;
-
-protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
-
-private:
-    CountDownTimer lightTimer;
-
-    Body* body_;
-    Sprite* sprite_;
-    WeaponSystem* weaponSystem_;
-
-    void dropLight_();
-
-};
-
-#endif //__PlayerController_H
+#endif //SPACEGAME_WEAPONS_H
