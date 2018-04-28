@@ -28,6 +28,7 @@
 #include "Tile2D.h"
 #include "HUD.h"
 #include "resources.h"
+#include "Power.h"
 
 void HUD::awake() {
     // -- weapon slots --
@@ -86,9 +87,17 @@ void HUD::update() {
     if (!player_) {
         return;
     }
-    Rect rect = healthSprite_->getRect();
-    rect.x2 = (float)player_->getComponent<Health>()->getHealth();
-    healthSprite_->setRect(rect);
+    {   // HEALTH
+        Rect rect = healthSprite_->getRect();
+        rect.x2 = (float)player_->getComponent<Health>()->getHealth();
+        healthSprite_->setRect(rect);
+    }
+    {   // POWER
+        Rect rect = powerSprite_->getRect();
+        rect.x2 = (float)player_->getComponent<Power>()->getPower();
+        powerSprite_->setRect(rect);
+    }
+
 }
 
 void HUD::lateUpdate() {

@@ -21,38 +21,50 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "Tile2D.h"
+#include "t2Time.h"
+#include "Power.h"
 
-#ifndef __PlayerController_H
-#define __PlayerController_H
+void Power::awake() {
+    power_ = maxPower_;
+}
 
-#include "Body.h"
-#include "Sprite.h"
-#include "Tile2DBehaviour.h"
-#include "Timer.h"
+void Power::update() {
+    power_ += Tile2D::time().getDeltaTime() * reloadSpeed_;
+    if (power_ > maxPower_) {
+        power_ = maxPower_;
+    }
+}
 
-class PlayerController : public Tile2DBehaviour {
+void Power::lateUpdate() {
 
-public:
-    float moveForce;
+}
 
-protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
+bool Power::consume(int powerConsumption) {
+    if (power_ >= powerConsumption) {
+        power_ -= powerConsumption;
+        return true;
+    }
+    return false;
+}
 
-private:
-    Timer shootTimer;
-    Timer bombTimer;
-    Timer lightTimer;
+int Power::getPower() const {
+    return (int)power_;
+}
 
-    Body* body_;
-    Sprite* sprite_;
+int Power::getReloadSpeed() const {
+    return reloadSpeed_;
+}
 
-    void shoot_();
-    void shootOnce_(Vecf offset);
-    void dropBomb_();
-    void dropLight_();
+void Power::setReloadSpeed(int reloadSpeed) {
+    reloadSpeed_ = reloadSpeed;
+}
 
-};
+int Power::getMaxPower() const {
+    return maxPower_;
+}
 
-#endif //__PlayerController_H
+void Power::setMaxPower(int maxPower) {
+    maxPower_ = maxPower;
+    power_ = maxPower_;
+}

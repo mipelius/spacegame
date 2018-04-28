@@ -33,6 +33,7 @@
 #include "Tilemap.h"
 #include "LightSystem.h"
 #include "Camera.h"
+#include "Power.h"
 
 void PlayerController::awake() {
     body_ = gameObject()->getComponent<Body>();
@@ -62,7 +63,7 @@ void PlayerController::update() {
     body_->setAngularVelocity(angularVelocity);
 
     if (keyboard.keyState(SDL_SCANCODE_LSHIFT)) {
-        dropBomp_();
+        dropBomb_();
     }
 
     if (keyboard.keyState(SDL_SCANCODE_LCTRL)) {
@@ -76,6 +77,11 @@ void PlayerController::update() {
 
 void PlayerController::shoot_() {
     if (!shootTimer.resetIfTimeIntervalPassed()) {
+        return;
+    }
+
+    auto power = gameObject()->getComponent<Power>();
+    if (!power->consume(50)) {
         return;
     }
 
@@ -95,8 +101,13 @@ void PlayerController::shootOnce_(Vecf offset) {
     laserCollider->setLayer(ColliderLayers::playerAmmo);
 }
 
-void PlayerController::dropBomp_() {
+void PlayerController::dropBomb_() {
     if (!bombTimer.resetIfTimeIntervalPassed()) {
+        return;
+    }
+
+    auto power = gameObject()->getComponent<Power>();
+    if (!power->consume(200)) {
         return;
     }
 

@@ -47,6 +47,7 @@
 #include "Resources.h"
 #include "SceneManager.h"
 #include "t2Time.h"
+#include "Power.h"
 
 GameObject *Prefabs::player() {
     auto player = Tile2D::createGameObject();
@@ -95,6 +96,10 @@ GameObject *Prefabs::player() {
             gameObject->getComponent<Health>()->reset();
         });
     });
+
+    auto power = player->attachComponent<Power>();
+    power->setMaxPower(600);
+    power->setReloadSpeed(200);
 
     return player;
 }

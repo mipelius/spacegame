@@ -21,19 +21,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_POWER_H
+#define SPACEGAME_POWER_H
 
-#ifndef __PlayerController_H
-#define __PlayerController_H
-
-#include "Body.h"
-#include "Sprite.h"
 #include "Tile2DBehaviour.h"
-#include "Timer.h"
 
-class PlayerController : public Tile2DBehaviour {
+class Power : public Tile2DBehaviour {
 
 public:
-    float moveForce;
+    bool consume(int powerConsumption);
+    int getPower() const;
+
+    int getReloadSpeed() const;
+    void setReloadSpeed(int reloadSpeed);
+    int getMaxPower() const;
+    void setMaxPower(int maxPower);
 
 protected:
     void awake() override;
@@ -41,18 +43,9 @@ protected:
     void lateUpdate() override;
 
 private:
-    Timer shootTimer;
-    Timer bombTimer;
-    Timer lightTimer;
-
-    Body* body_;
-    Sprite* sprite_;
-
-    void shoot_();
-    void shootOnce_(Vecf offset);
-    void dropBomb_();
-    void dropLight_();
-
+    float power_ = 0;
+    int reloadSpeed_ = 120;
+    int maxPower_ = 100;
 };
 
-#endif //__PlayerController_H
+#endif //SPACEGAME_POWER_H
