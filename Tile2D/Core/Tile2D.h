@@ -135,7 +135,6 @@ private:
     std::list<Tile2DBehaviour*> behaviours_;
     std::list<DelayedFunction> delayedFunctions_;
 
-    void destroy_(GameObject* obj);
     void executeDelayedFunctions_();
 
     Pool<Particle> particlePool_;
