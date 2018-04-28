@@ -36,7 +36,10 @@ namespace SortingLayers {
         particles = -1,
         UI = 100,
         UI_Button = 101,
-        UI_ButtonText = 102
+        UI_ButtonText = 102,
+        HUD_WeaponSlot = 103,
+        HUD_Weapon = 104,
+        HUD_Text = 105
     };
 }
 

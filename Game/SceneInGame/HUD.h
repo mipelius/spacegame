@@ -25,9 +25,11 @@
 #ifndef SPACEGAME_HUD_H
 #define SPACEGAME_HUD_H
 
+#include "WeaponSystem.h"
 #include "Sprite.h"
 #include "Tile2DBehaviour.h"
 #include "Health.h"
+#include "Text.h"
 
 class HUD : public Tile2DBehaviour {
 
@@ -40,10 +42,19 @@ protected:
     void lateUpdate() override;
 
 private:
+    struct WeaponSlot {
+        Sprite* weaponSlotSprite;
+        Sprite* weaponSprite;
+        Text* weaponSlotText;
+    };
+
     Sprite* healthSprite_;
     Sprite* powerSprite_;
-    GameObject* player_;
-    std::list<Sprite*> weaponSlotSprites_;
+    GameObject* player_ = nullptr;
+
+    std::vector<WeaponSlot> weaponSlots_;
+
+    WeaponSystem* weaponSystem_ = nullptr;
 
 protected:
     void onDestroy() override;

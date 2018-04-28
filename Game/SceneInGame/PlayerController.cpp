@@ -101,7 +101,6 @@ void PlayerController::dropLight_() {
     light->transform().setRotation(0.0f);
 }
 
-
 void PlayerController::lateUpdate() {
     if (Tile2D::input().keyboard().keyState(SDL_SCANCODE_SPACE)) {
         weaponSystem_->shoot();

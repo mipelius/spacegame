@@ -27,10 +27,11 @@
 #include <vector>
 #include "Texture.h"
 #include "Tile2DComponent.h"
-#include "IWeapon.h"
+#include "WeaponBase.h"
+#include "Body.h"
 
-struct WeaponSlot {
-    IWeapon* weapon;
+struct WeaponInfo {
+    WeaponBase* weapon;
     Texture* inventoryTexturePtr;
     Texture* inWorldTexturePtr;
     int tag;
@@ -43,7 +44,7 @@ public:
     template <class T>
     T* attachWeapon(Texture* inventoryTexturePtr, Texture* inWorldTexturePtr, int tag);
 
-    const std::vector<WeaponSlot>& getWeaponSlots() const;
+    const std::vector<WeaponInfo>& getWeaponInfos() const;
 
     int getCurrentWeaponSlot() const;
     void setCurrentWeaponSlot(int currentWeapon);
@@ -53,7 +54,7 @@ protected:
     void onDestroy() override;
 
 private:
-    std::vector<WeaponSlot> weaponSlots_;
+    std::vector<WeaponInfo> weaponInfos_;
     int currentWeapon_ = 0;
     Power* power_;
     Body* body_;
@@ -65,8 +66,8 @@ template <class T>
 T* WeaponSystem::attachWeapon(Texture* inventoryTexturePtr, Texture* inWorldTexturePtr, int tag) {
     auto weapon = new T();
 
-    WeaponSlot weaponSlot = {weapon, inventoryTexturePtr, inWorldTexturePtr, tag};
-    weaponSlots_.push_back(weaponSlot);
+    WeaponInfo weaponSlot = {weapon, inventoryTexturePtr, inWorldTexturePtr, tag};
+    weaponInfos_.push_back(weaponSlot);
 
     return weapon;
 }

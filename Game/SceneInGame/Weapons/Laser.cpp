@@ -24,6 +24,8 @@
 #include "ColliderLayers.h"
 #include "Prefabs.h"
 #include "Laser.h"
+#include "Body.h"
+#include "PolygonCollider.h"
 
 void Laser::shootActual(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) {
     Vecf from1 = from + Vecf(-10, -13).rotated(direction.angle());

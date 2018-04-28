@@ -21,6 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "Body.h"
 #include "ColliderLayers.h"
 #include "Prefabs.h"
 #include "BombDropper.h"

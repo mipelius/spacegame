@@ -109,15 +109,41 @@ GameObject *Prefabs::player() {
 
     auto weaponSystem = player->attachComponent<WeaponSystem>();
 
-    auto laser = weaponSystem->attachWeapon<Laser>(nullptr, nullptr, Weapons::laser);
+    auto laser = weaponSystem->attachWeapon<Laser>(
+            Tile2D::resources().textures["laser_cannon"],
+            nullptr,
+            Weapons::laser
+    );
     laser->setPowerConsumption(50);
     laser->setReloadDelay(100);
     laser->setIsActivated(true);
 
-    auto bombDropper = weaponSystem->attachWeapon<BombDropper>(nullptr, nullptr, Weapons::bomb);
+    auto bombDropper = weaponSystem->attachWeapon<BombDropper>(
+            Tile2D::resources().textures["bomb"],
+            nullptr,
+            Weapons::bomb
+    );
     bombDropper->setPowerConsumption(200);
     bombDropper->setReloadDelay(200);
     bombDropper->setIsActivated(true);
+
+    auto placeholderWeapon1 = weaponSystem->attachWeapon<Laser>(
+            Tile2D::resources().textures["laser_cannon"],
+            nullptr,
+            Weapons::laser
+    );
+    placeholderWeapon1->setPowerConsumption(50);
+    placeholderWeapon1->setReloadDelay(100);
+    placeholderWeapon1->setIsActivated(false);
+
+    auto placeholderWeapon2 = weaponSystem->attachWeapon<Laser>(
+            Tile2D::resources().textures["laser_cannon"],
+            nullptr,
+            Weapons::laser
+    );
+    placeholderWeapon2->setPowerConsumption(50);
+    placeholderWeapon2->setReloadDelay(100);
+    placeholderWeapon2->setIsActivated(false);
 
     return player;
 }

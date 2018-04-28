@@ -27,60 +27,11 @@
 #include "t2Time.h"
 #include "Tile2D.h"
 #include "HUD.h"
-#include "resources.h"
+#include "Resources.h"
 #include "Power.h"
 
 void HUD::awake() {
-    // -- weapon slots --
-    int weaponSlots = 10;
-    float width = 40;
-    float height = 40;
-    float margin = 2;
-    Vecf offset = {20.0f, 20.0f};
 
-    for (auto i = 0u; i < weaponSlots; ++i) {
-        GameObject *weaponSlot = Tile2D::createGameObject();
-        weaponSlot->transform().setPosition(Vecf((width + margin) * i, 0) + offset);
-
-        auto weaponSlotSprite = weaponSlot->attachComponent<Sprite>();
-        weaponSlotSprite->setRect({0.0f, 0.0f, width, height});
-        weaponSlotSprite->setIsUIDrawable(true);
-        weaponSlotSprite->setTexturePtr(Tile2D::resources().textures["inventory_slot"]);
-        weaponSlotSprite->setSortingLayer(SortingLayers::UI_Button);
-
-        auto weaponSlotText = weaponSlot->attachComponent<Text>();
-        weaponSlotText->setFontPtr(Tile2D::resources().fonts["smallfont"]);
-        weaponSlotText->setIsUIDrawable(true);
-        weaponSlotText->setString(std::to_string(i));
-        weaponSlotSprite->setSortingLayer(0);
-        weaponSlotText->setSortingLayer(SortingLayers::UI_ButtonText);
-        weaponSlotText->setFontSize(1.0f);
-        weaponSlotText->setHorizontalAlignment(Text::HorizontalAlignment::right);
-        weaponSlotText->setVerticalAlignment(Text::VerticalAlignment::bottom);
-        weaponSlotText->localTransform().setPosition({width - 4.0f, height - 4.0f});
-
-        weaponSlotSprites_.push_back(weaponSlotSprite);
-    }
-
-    offset += Vecf((width + margin) * weaponSlots + 10.0f, 0.0);
-
-    // -- health bar --
-    GameObject *healthBar = Tile2D::createGameObject();
-    healthBar->transform().setPosition(offset + Vecf(0.0f, 5.0f));
-
-    healthSprite_ = healthBar->attachComponent<Sprite>();
-    healthSprite_->setRect({0.0f, 0.0f, 10.0f, 10.0f});
-    healthSprite_->setColor({0.7f, 0.0f, 0.0f});
-    healthSprite_->setIsUIDrawable(true);
-
-    // -- power bar --
-    GameObject *powerBar = Tile2D::createGameObject();
-    powerBar->transform().setPosition(offset + Vecf(0.0f, height - 15.0f));
-
-    powerSprite_ = powerBar->attachComponent<Sprite>();
-    powerSprite_->setRect({0.0f, 0.0f, 200.0f, 10.0f});
-    powerSprite_->setColor({0.3f, 0.7f, 0.0f});
-    powerSprite_->setIsUIDrawable(true);
 }
 
 void HUD::update() {
@@ -97,6 +48,22 @@ void HUD::update() {
         rect.x2 = (float)player_->getComponent<Power>()->getPower();
         powerSprite_->setRect(rect);
     }
+    {   // WEAPON SLOTS
+        auto weaponSlotInfos_ = weaponSystem_->getWeaponInfos();
+        auto currentWeaponSlot = weaponSystem_->getCurrentWeaponSlot();
+
+        for (auto i = 0u; i < weaponSlotInfos_.size(); ++i) {
+            auto weaponInfo = weaponSlotInfos_[i];
+            auto isActivated = weaponInfo.weapon->isActivated();
+            auto texture = i == currentWeaponSlot ?
+               Tile2D::resources().textures["inventory_selected_slot"] :
+               Tile2D::resources().textures["inventory_slot"];
+
+            weaponSlots_[i].weaponSlotSprite->setTexturePtr(texture);
+            weaponSlots_[i].weaponSlotText->setIsVisible(isActivated);
+            weaponSlots_[i].weaponSprite->setIsVisible(isActivated);
+        }
+    }
 
 }
 
@@ -105,14 +72,78 @@ void HUD::lateUpdate() {
 }
 
 void HUD::setPlayer(GameObject *player) {
+    if (player_ != nullptr) {
+        throw "HUD: cannot set player twice!";
+    }
     player_ = player;
+
+    weaponSystem_ = player->getComponent<WeaponSystem>();
+
+    // -- weapon slots --
+    auto weaponSlots = (int)weaponSystem_->getWeaponInfos().size();
+    float width = 40.0f;
+    float height = 40.0f;
+    float margin = 2.0f;
+    Vecf offset = {20.0f, 20.0f};
+
+    for (auto i = 0u; i < weaponSlots; ++i) {
+        GameObject *weaponSlot = Tile2D::createGameObject();
+        weaponSlot->transform().setPosition(Vecf((width + margin) * i, 0) + offset);
+
+        auto weaponSlotSprite = weaponSlot->attachComponent<Sprite>();
+        weaponSlotSprite->setRect({0.0f, 0.0f, width, height});
+        weaponSlotSprite->setIsUIDrawable(true);
+        weaponSlotSprite->setTexturePtr(Tile2D::resources().textures["inventory_slot"]);
+        weaponSlotSprite->setSortingLayer(SortingLayers::HUD_WeaponSlot);
+
+        auto weaponSprite = weaponSlot->attachComponent<Sprite>();
+        weaponSprite->setRect({5.0f, 5.0f, width - 5.0f, height - 5.0f});
+        weaponSprite->setIsUIDrawable(true);
+        weaponSprite->setTexturePtr(weaponSystem_->getWeaponInfos()[i].inventoryTexturePtr);
+        weaponSprite->setSortingLayer(SortingLayers::HUD_Weapon);
+
+        auto weaponSlotText = weaponSlot->attachComponent<Text>();
+        weaponSlotText->setFontPtr(Tile2D::resources().fonts["smallfont"]);
+        weaponSlotText->setIsUIDrawable(true);
+        weaponSlotText->setString(std::to_string(i + 1));
+        weaponSlotSprite->setSortingLayer(0);
+        weaponSlotText->setSortingLayer(SortingLayers::HUD_Text);
+        weaponSlotText->setFontSize(1.0f);
+        weaponSlotText->setHorizontalAlignment(Text::HorizontalAlignment::right);
+        weaponSlotText->setVerticalAlignment(Text::VerticalAlignment::bottom);
+        weaponSlotText->localTransform().setPosition({width - 4.0f, height - 4.0f});
+
+        weaponSlots_.push_back({weaponSlotSprite, weaponSprite, weaponSlotText});
+    }
+
+    offset += Vecf((width + margin) * weaponSlots + 10.0f, 0.0);
+
+    // -- health bar --
+    GameObject *healthBar = Tile2D::createGameObject();
+    healthBar->transform().setPosition(offset + Vecf(0.0f, 5.0f));
+
+    healthSprite_ = healthBar->attachComponent<Sprite>();
+    healthSprite_->setRect({0.0f, 0.0f, 10.0f, 10.0f});
+    healthSprite_->setColor({0.7f, 0.0f, 0.0f});
+    healthSprite_->setIsUIDrawable(true);
+    healthSprite_->setOpacity(0.75f);
+
+    // -- power bar --
+    GameObject *powerBar = Tile2D::createGameObject();
+    powerBar->transform().setPosition(offset + Vecf(0.0f, height - 15.0f));
+
+    powerSprite_ = powerBar->attachComponent<Sprite>();
+    powerSprite_->setRect({0.0f, 0.0f, 200.0f, 10.0f});
+    powerSprite_->setColor({0.3f, 0.7f, 0.0f});
+    powerSprite_->setIsUIDrawable(true);
+    powerSprite_->setOpacity(0.75f);
 }
 
 void HUD::onDestroy() {
     Tile2DBehaviour::onDestroy();
     healthSprite_->gameObject()->destroy();
     powerSprite_->gameObject()->destroy();
-    for (auto weaponSlotSprite : weaponSlotSprites_) {
-        weaponSlotSprite->gameObject()->destroy();
+    for (auto weaponSlot : weaponSlots_) {
+        weaponSlot.weaponSlotSprite->gameObject()->destroy();
     }
 }

@@ -21,16 +21,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "Power.h"
+#include "Body.h"
 #include "Tile2DMath.h"
 #include "WeaponSystem.h"
 
 void WeaponSystem::shoot() {
-    if (weaponSlots_.empty()) {
+    if (weaponInfos_.empty()) {
         return;
     }
-    auto weaponSlot = weaponSlots_[currentWeapon_];
+    auto weaponInfo = weaponInfos_[currentWeapon_];
 
-    auto weapon = weaponSlot.weapon;
+    auto weapon = weaponInfo.weapon;
 
     weapon->shoot(
             power_,
@@ -40,8 +42,8 @@ void WeaponSystem::shoot() {
     );
 }
 
-const std::vector<WeaponSlot> &WeaponSystem::getWeaponSlots() const {
-    return weaponSlots_;
+const std::vector<WeaponInfo> &WeaponSystem::getWeaponInfos() const {
+    return weaponInfos_;
 }
 
 void WeaponSystem::init() {
@@ -50,8 +52,8 @@ void WeaponSystem::init() {
 }
 
 void WeaponSystem::onDestroy() {
-    for (auto weaponSlot : weaponSlots_) {
-        delete weaponSlot.weapon;
+    for (auto weaponInfo : weaponInfos_) {
+        delete weaponInfo.weapon;
     }
 }
 
@@ -60,6 +62,9 @@ int WeaponSystem::getCurrentWeaponSlot() const {
 }
 
 void WeaponSystem::setCurrentWeaponSlot(int currentWeapon) {
-    currentWeapon_ = currentWeapon;
-    Mathi::clamp(currentWeapon_, 0, (int)(weaponSlots_.size()) -1);
+    currentWeapon;
+    Mathi::clamp(currentWeapon, 0, (int)(weaponInfos_.size()) -1);
+    if (weaponInfos_[currentWeapon].weapon->isActivated()) {
+        currentWeapon_ = currentWeapon;
+    }
 }

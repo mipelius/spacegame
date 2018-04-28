@@ -24,11 +24,11 @@
 #ifndef SPACEGAME_WEAPONBASE_H
 #define SPACEGAME_WEAPONBASE_H
 
-#include "IWeapon.h"
+#include "Power.h"
 
-class WeaponBase : public IWeapon {
+class WeaponBase {
 public:
-    bool shoot(Power *power, const Vecf& from, const Vecf& direction, const Vecf& shooterVelocity) final;
+    bool shoot(Power *power, const Vecf& from, const Vecf& direction, const Vecf& shooterVelocity);
 
     int getPowerConsumption() const;
     void setPowerConsumption(int powerConsumption);
