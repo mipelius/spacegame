@@ -141,9 +141,9 @@ GameObject *Prefabs::player() {
             nullptr,
             Weapons::laser
     );
-    placeholderWeapon2->setPowerConsumption(50);
-    placeholderWeapon2->setReloadDelay(100);
-    placeholderWeapon2->setIsActivated(false);
+    placeholderWeapon2->setPowerConsumption(10);
+    placeholderWeapon2->setReloadDelay(20);
+    placeholderWeapon2->setIsActivated(true);
 
     return player;
 }
@@ -152,7 +152,7 @@ GameObject *Prefabs::player() {
 
 GameObject *Prefabs::boss() {
     auto enemy = spawnEnemy_(
-            "fourwaycyclops",
+            "evil_eye",
             {{-50, -50}, {50, -50}, {50, 50}, {-50, 50}},
             {-80, -80, 80, 80},
             0.0f
@@ -237,11 +237,11 @@ GameObject *Prefabs::sentry() {
 }
 
 
-GameObject *Prefabs::crabKindOf() {
+GameObject *Prefabs::wurm() {
     auto enemy = spawnEnemy_(
-            "crab_kindof",
-            {{-25, -15}, {25, -15}, {25, 15}, {-25, 15}},
-            {-25, -25, 25, 25},
+            "wurm",
+            {{-50, -15}, {50, -15}, {50, 15}, {-50, 15}},
+            {-50, -25, 50, 25},
             0.0f
     );
     auto collider = enemy->getComponent<PolygonCollider>();
@@ -275,9 +275,9 @@ GameObject *Prefabs::crabKindOf() {
     return enemy;
 }
 
-GameObject *Prefabs::fourwayCyclops() {
+GameObject *Prefabs::evilEye() {
     auto enemy = spawnEnemy_(
-            "fourwaycyclops",
+            "evil_eye",
             {{-20, -20}, {20, -20}, {20, 20}, {-20, 20}},
             {-30, -30, 30, 30},
             0.0f
@@ -434,6 +434,14 @@ GameObject *Prefabs::light() {
 }
 
 GameObject *Prefabs::laser() {
+    return ammo(Tile2D::resources().textures["laser"]);
+}
+
+GameObject *Prefabs::enemyLaser() {
+    return ammo(Tile2D::resources().textures["ammo_evil_eye"]);
+}
+
+GameObject *Prefabs::ammo(Texture* texturePtr) {
     auto laser = Tile2D::createGameObject();
 
     auto laserBody = laser->attachComponent<Body>();
@@ -442,7 +450,7 @@ GameObject *Prefabs::laser() {
 
     auto laserSprite = laser->attachComponent<Sprite>();
     laserSprite->setRect({-20,-5,20,5});
-    laserSprite->setTexturePtr(Tile2D::resources().textures["laser"]);
+    laserSprite->setTexturePtr(texturePtr);
     laserSprite->setSortingLayer(SortingLayers::ammo);
 
     auto laserLifetime = laser->attachComponent<LimitedLifetimeBehaviour>();

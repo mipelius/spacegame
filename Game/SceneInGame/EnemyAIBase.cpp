@@ -47,7 +47,7 @@ void EnemyAIBase::shootTarget_(bool useTimer) {
             return;
         }
         Vecf direction = target_->getPosition() - transform()->getPosition();
-        auto laser = Prefabs::laser();
+        auto laser = Prefabs::enemyLaser();
 
         laser->transform().setPosition(transform()->getPosition() + direction.normalized());
         laser->transform().setRotation(direction.angle());

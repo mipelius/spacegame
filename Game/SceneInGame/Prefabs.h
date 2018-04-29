@@ -30,6 +30,7 @@
 #include "GameObject.h"
 #include "Rect.h"
 #include "Color.h"
+#include "Texture.h"
 
 class Prefabs {
 
@@ -37,21 +38,20 @@ public:
     static GameObject* player();
 
     // enemies
-
     static GameObject* boss();
-    static GameObject* fourwayCyclops();
-    static GameObject* crabKindOf();
+    static GameObject* evilEye();
+    static GameObject* wurm();
     static GameObject* sentry();
     static GameObject* twoHorn();
 
     // player stuff to drop / shoot
-
+    static GameObject* ammo(Texture* texturePtr);
+    static GameObject* enemyLaser();
     static GameObject* laser();
     static GameObject* bomb();
     static GameObject* light();
 
     // effects
-
     static GameObject* bloodBurst();
     static GameObject* explosion();
     static void sparkles(Vecf position, Vecf normal, Color color);

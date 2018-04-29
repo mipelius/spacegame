@@ -48,12 +48,12 @@ void DebugBehaviour::update() {
         walkingEnemy->getComponent<EnemyAIBase>()->setTarget(transform());
     }
     if (keyboard.keyPressed(SDL_SCANCODE_H)) {
-        auto crabKindOf = Prefabs::crabKindOf();
+        auto crabKindOf = Prefabs::wurm();
         crabKindOf->transform().setPosition(transform()->getPosition());
         crabKindOf->getComponent<EnemyAIBase>()->setTarget(transform());
     }
     if (keyboard.keyPressed(SDL_SCANCODE_J)) {
-        auto fourwayCyclops = Prefabs::fourwayCyclops();
+        auto fourwayCyclops = Prefabs::evilEye();
         fourwayCyclops->transform().setPosition(transform()->getPosition());
         fourwayCyclops->getComponent<EnemyAIBase>()->setTarget(transform());
     }
