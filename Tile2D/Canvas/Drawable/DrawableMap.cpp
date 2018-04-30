@@ -78,15 +78,22 @@ void DrawableMap::draw(const Canvas &canvas) {
         for (int j = jStart; j < jEnd; j++) {
             Tile* block = map_->getValue(i, j);
 
-            if (block == nullptr || block->getMapTextureId() == -1) continue;
+            if (block == nullptr) {
+                continue;
+            }
+
+            auto info = block->getMapTextureInfo();
+            if (info.columns < 1 || info.rows < 1) {
+                continue;
+            }
+            int offset = info.offset + i % info.columns + (j % info.rows) * info.columns;
 
             mapTexture_->glVertices(
                     i * map_->getTileSet()->getTileW(),
                     j * map_->getTileSet()->getTileH(),
                     map_->getTileSet()->getTileW(),
                     map_->getTileSet()->getTileH(),
-                    block->getMapTextureId(),
-                    MapTexture::CORNER_ROUNDING_NONE
+                    offset
             );
         }
     }

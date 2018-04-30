@@ -29,14 +29,22 @@ class MapTexture;
 
 #include <string>
 #include "json.h"
+#include "MapTexture.h"
 
 class Tile {
 
 public:
-    Tile(std::string name, float density, float translucency, float opacity, MapTexture* mapTexture, int mapTextureId);
+    Tile(
+        std::string name,
+        float density,
+        float translucency,
+        float opacity,
+        MapTexture::MapTextureInfo mapTextureInfo
+    );
+
     Tile(json::Object object, MapTexture* mapTexture);
 
-    int getMapTextureId();
+    const MapTexture::MapTextureInfo& getMapTextureInfo();
 
     // getters
 
@@ -51,11 +59,15 @@ private:
     float translucency_;
     float opacity_;
 
-    MapTexture* mapTexture_;
-    int mapTextureId_;
+    MapTexture::MapTextureInfo mapTextureInfo_ = {0, 0, 0, nullptr};
 
-    void initialize_(std::string name, float density, float translucency, float opacity, MapTexture *mapTexture,
-                     int mapTextureId);
+    void initialize_(
+            std::string name,
+            float density,
+            float translucency,
+            float opacity,
+            MapTexture::MapTextureInfo mapTextureInfo
+    );
 
 };
 

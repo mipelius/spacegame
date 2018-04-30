@@ -85,7 +85,7 @@ private:
     void drawLightMap(const Canvas &canvas);
 
     static void createShadowTexture();
-    static const int LIGHT_TEXTURE_SIZE = 8;
+    static const int LIGHT_TEXTURE_SIZE = 16;
     static const int MAX_LIGHT_RADIUS = 100; // measured in tiles
 
     void updateLightMap(Rect *areaRect);

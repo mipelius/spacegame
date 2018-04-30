@@ -31,7 +31,7 @@
 TileSet::TileSet(std::string jsonFilename) :
         blocks_(std::vector<Tile*>(256))
 {
-    emptyBlock_ = new Tile("empty block", 0.0, 1.0, 1.0, nullptr, -1);
+    emptyBlock_ = new Tile("empty block", 0.0, 1.0, 1.0, {-1, 0, 0, nullptr});
 
     for (int i = 0; i < 256; i++) {
         blocks_[i] = nullptr;

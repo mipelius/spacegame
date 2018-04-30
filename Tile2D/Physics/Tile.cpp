@@ -25,22 +25,24 @@
 #include "Tile.h"
 #include "MapTexture.h"
 
-Tile::Tile(std::string name, float density, float translucency, float opacity, MapTexture *mapTexture, int mapTextureId)
-{
-    initialize_(std::move(name), density, translucency, opacity, mapTexture, mapTextureId);
+Tile::Tile(
+        std::string name,
+        float density,
+        float translucency,
+        float opacity,
+        MapTexture::MapTextureInfo mapTextureInfo
+) {
+    initialize_(std::move(name), density, translucency, opacity, mapTextureInfo);
 }
 
 Tile::Tile(json::Object object, MapTexture* mapTexture)
 {
-    MapTexture* mapTextureToUse = nullptr;
-    int mapTextureId = -1;
+    MapTexture::MapTextureInfo mapTextureInfo = {-1, 0, 0, nullptr};
 
     json::Value nullValue;
 
     if (object["texture"] != nullValue) {
-        mapTextureToUse = mapTexture;
-
-        mapTextureId = mapTexture->addTexture(
+        mapTextureInfo = mapTexture->addTexture(
                 object["texture"].ToString(), object["opacity"].ToFloat()
         );
     }
@@ -50,26 +52,25 @@ Tile::Tile(json::Object object, MapTexture* mapTexture)
             object["density"].ToFloat(),
             object["translucency"].ToFloat(),
             object["opacity"].ToFloat(),
-            mapTextureToUse,
-            mapTextureId
+            mapTextureInfo
     );
 }
 
-void Tile::initialize_(std::string name, float density, float translucency, float opacity, MapTexture *mapTexture,
-                        int mapTextureId) {
+void Tile::initialize_(
+        std::string name,
+        float density,
+        float translucency,
+        float opacity,
+        MapTexture::MapTextureInfo mapTextureInfo
+) {
     name_ = std::move(name);
     density_ = density;
     translucency_ = translucency;
     opacity_ = opacity;
-    mapTexture_ = mapTexture;
-    mapTextureId_ = mapTextureId;
+    mapTextureInfo_ = mapTextureInfo;
 }
 
 // getters
-
-int Tile::getMapTextureId() {
-    return mapTextureId_;
-}
 
 const std::string &Tile::getName() const {
     return name_;
@@ -85,4 +86,8 @@ float Tile::getTranslucency() const {
 
 float Tile::getOpacity() const {
     return opacity_;
+}
+
+const MapTexture::MapTextureInfo &Tile::getMapTextureInfo() {
+    return mapTextureInfo_;
 }

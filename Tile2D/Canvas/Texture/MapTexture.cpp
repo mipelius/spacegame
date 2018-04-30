@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 
+#include <Tile2D/Physics/Tile.h>
 #include "precompile.h"
 #include "MapTexture.h"
 
@@ -60,12 +61,21 @@ void MapTexture::glUnbind() {
     glDisable(GL_TEXTURE_2D);
 }
 
-void MapTexture::glVertices(float x, float y, float w, float h, int textureNumber, int cornerRounding) {
+void MapTexture::glVertices(
+        float x,
+        float y,
+        float w,
+        float h,
+        int offset
+) {
+    if (offset == -1) {
+        return;
+    }
     float textureW = blockW_ / (float)GL_TEXTURE_SIZE;
     float textureH = blockH_ / (float)GL_TEXTURE_SIZE;
 
-    float texX1 = ((textureNumber * blockInternalSize_) % GL_TEXTURE_SIZE) / (float)GL_TEXTURE_SIZE;
-    float texY1 = ((textureNumber * blockInternalSize_) / GL_TEXTURE_SIZE) / (float)GL_TEXTURE_SIZE;
+    float texX1 = ((offset * blockInternalSize_) % GL_TEXTURE_SIZE) / (float)GL_TEXTURE_SIZE;
+    float texY1 = (((offset * blockInternalSize_) / GL_TEXTURE_SIZE) * blockInternalSize_) / (float)GL_TEXTURE_SIZE;
     float texX2 = texX1 + textureW;
     float texY2 = texY1 + textureH;
 
@@ -75,6 +85,9 @@ void MapTexture::glVertices(float x, float y, float w, float h, int textureNumbe
     texY1 += margin;
     texX2 -= margin;
     texY2 -= margin;
+
+    w += 0.01;
+    h += 0.01;
 
     glTexCoord2f((GLfloat)texX1, (GLfloat)texY1);    glVertex2f((GLfloat) x     , (GLfloat) y     );
     glTexCoord2f((GLfloat)texX2, (GLfloat)texY1);    glVertex2f((GLfloat)(x + w), (GLfloat) y     );
@@ -102,7 +115,9 @@ MapTexture::MapTexture(int blockW, int blockH) {
     createGlTexture();
 }
 
-int MapTexture::addTexture(std::string filename, float opacity) {
+MapTexture::MapTextureInfo MapTexture::addTexture(std::string filename, float opacity) {
+    MapTextureInfo mapTextureInfo = {0, 0, 0, this};
+
 	SDL_Surface *surface;    // This surface will tell us the details of the image
 	GLenum texture_format = GL_NONE;
 	GLint nOfColors;
@@ -113,11 +128,6 @@ int MapTexture::addTexture(std::string filename, float opacity) {
         std::fprintf(stderr, "SDL could not load %s: %s\n", filename.data(), SDL_GetError());
         SDL_Quit();
         exit(1);
-    }
-    if (surface->w != blockW_ || surface->h != blockH_) {
-        std::fprintf(stderr, "Image has invalid size (%s)\n", filename.data());
-		SDL_Quit();
-    	exit(1);
     }
 
 	nOfColors = surface->format->BytesPerPixel;
@@ -141,14 +151,47 @@ int MapTexture::addTexture(std::string filename, float opacity) {
     glBindTexture(GL_TEXTURE_2D, glTextureId_);
 
     // Update texture
-    int offsetX = (blockInternalSize_ * count) % GL_TEXTURE_SIZE;
-    int offsetY = (blockInternalSize_ * count) / GL_TEXTURE_SIZE;
-	
-    glTexSubImage2D(GL_TEXTURE_2D, 0, offsetX, offsetY, blockW_, blockH_, texture_format, GL_UNSIGNED_BYTE, surface->pixels);
+    mapTextureInfo.columns = surface->w / blockW_;
+    mapTextureInfo.rows = surface->h / blockH_;
+    auto tiles = mapTextureInfo.columns * mapTextureInfo.rows;
+
+    mapTextureInfo.offset = count;
+
+    auto tempPixels = new Uint32[blockW_ * blockH_];
+
+    for (auto i = 0u; i < tiles; ++i) {
+        int offsetX = (blockInternalSize_ * count) % GL_TEXTURE_SIZE;
+        int offsetY = ((blockInternalSize_ * count) / GL_TEXTURE_SIZE) * blockInternalSize_;
+
+        for (auto x = 0u; x < blockW_; ++x) {
+            for (auto y = 0u; y < blockH_; ++y) {
+                tempPixels[x + y * blockW_] =
+                        ((Uint32*)surface->pixels)[
+                                x + y * surface->w +
+                                (i % mapTextureInfo.columns) * blockW_ +
+                                (i / mapTextureInfo.rows) * blockH_ * surface->w
+                        ];
+            }
+        }
+
+        glTexSubImage2D(
+                GL_TEXTURE_2D,
+                0,
+                offsetX,
+                offsetY,
+                blockW_,
+                blockH_,
+                texture_format,
+                GL_UNSIGNED_BYTE,
+                tempPixels
+        );
+
+        count++;
+    }
+
+    delete[] tempPixels;
 
 	SDL_FreeSurface(surface);
 
-    count++;
-
-    return count - 1;
+    return mapTextureInfo;
 }

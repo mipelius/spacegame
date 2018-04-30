@@ -29,7 +29,7 @@
 
 class MapTexture {
 private:
-    static const int GL_TEXTURE_SIZE = 1024; // Width == Height
+    static const int GL_TEXTURE_SIZE = 2048; // Width == Height
 
     GLuint glTextureId_;
     int blockW_;
@@ -42,21 +42,28 @@ private:
     void createGlTexture();
 
 public:
-    static const unsigned int CORNER_ROUNDING_NONE           =   0;         // 00000000
-    static const unsigned int CORNER_ROUNDING_TOP_LEFT       =   1 << 0;    // 00000001
-    static const unsigned int CORNER_ROUNDING_TOP_RIGHT      =   1 << 1;    // 00000010
-    static const unsigned int CORNER_ROUNDING_BOTTOM_LEFT    =   1 << 2;    // 00000100
-    static const unsigned int CORNER_ROUNDING_BOTTOM_RIGHT   =   1 << 3;    // 00001000
+    struct MapTextureInfo {
+        int offset;
+        int columns;
+        int rows;
+        MapTexture* mapTexturePtr;
+    };
 
     MapTexture(int blockW, int blockH);
 
-    int addTexture(std::string filename, float opacity);
-
-    void glVertices(float x, float y, float w, float h, int textureNumber, int cornerRounding);
+    MapTextureInfo addTexture(std::string filename, float opacity);
 
     void glUnbind();
 
     void glBind();
+
+    void glVertices(
+            float x,
+            float y,
+            float w,
+            float h,
+            int offset
+    );
 };
 
 
