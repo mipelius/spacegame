@@ -147,11 +147,5 @@ void PlayerController::lateUpdate() {
         Mathf::clamp(cameraPos, cameraBounds);
 
         camera->setPosition(cameraPos);
-
-        float ambientLight = 1.0f - cameraPos.y / (Tile2D::tileMap().getActualH() / 2.0f);
-        ambientLight /= 3.0f;
-        Mathf::clamp(ambientLight, 0.0f, 0.1f);
-
-        Tile2D::lightSystem().setAmbientLight(ambientLight);
     }
 }
