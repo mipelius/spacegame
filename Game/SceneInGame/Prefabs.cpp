@@ -76,7 +76,7 @@ GameObject *Prefabs::player() {
 
     auto spaceshipSprite = player->attachComponent<Sprite>();
     spaceshipSprite->setSortingLayer(SortingLayers::player);
-    spaceshipSprite->setRect({-30, -30, 30, 30});
+    spaceshipSprite->setRect({-20, -20, 20, 20});
     spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship"]);
 
     auto light = player->attachComponent<PointLight>();
