@@ -415,10 +415,10 @@ GameObject *Prefabs::light() {
 
     auto collider = light->attachComponent<PolygonCollider>();
     collider->setPoints({
-            {-6, -6},
-            {6,  -6},
-            {6,  6},
-            {-6, 6}
+            {-5, -5},
+            {5,  -5},
+            {5,  5},
+            {-5, 5}
     });
 
     auto lightSprite = light->attachComponent<Sprite>();

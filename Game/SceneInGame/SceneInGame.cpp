@@ -42,7 +42,7 @@ void SceneInGame::init() {
     Tile2D::physicsWorld().setGForce({0, 100.0f});
 
     // backgrounds
-    Prefabs::background({0.0f, 0.0f, 3300.0f, 2400.0f},       "bg2", {0.8f, 1.0f, 0.5f}); // upper left corner
+    Prefabs::background({0.0f, 0.0f, 3300.0f, 2400.0f},       "bg2", {0.8f, 0.8f, 0.5f}); // upper left corner
     Prefabs::background({3300.0f, 0.0f, 6400.0f, 2400.0f},    "bg2", {0.2f, 0.8f, 1.0f}); // upper right corner
     Prefabs::background({0.0f, 2400.0f, 3300.0f, 4800.0f},    "bg1", {0.6f, 0.3f, 0.3f}); // bottom left corner
     Prefabs::background({3300.0f, 2400.0f, 6400.0f, 4800.0f}, "bg1", {0.3f, 0.3f, 0.6f}); // bottom right corner
@@ -59,7 +59,7 @@ void SceneInGame::init() {
     camera_->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
     Tile2D::canvas().setCamera(camera_);
 
-//    // spawners
+    // spawners
     Prefabs::spawner({0.0f, 0.0f, 3300.0f, 2400.0f}, player, Prefabs::sentry);
     Prefabs::spawner({3300.0f, 0.0f, 6400.0f, 2400.0f}, player, Prefabs::wurm);
     Prefabs::spawner({3300.0f, 2400.0f, 6400.0f, 4800.0f}, player, Prefabs::evilEye);
