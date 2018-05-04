@@ -39,7 +39,7 @@ public:
 
     // enemies
     static GameObject* boss();
-    static GameObject* evilEye();
+    static GameObject* trifly();
     static GameObject* fish();
     static GameObject* walker();
     static GameObject* twoHorn();
@@ -65,7 +65,7 @@ public:
 
 private:
     static GameObject* spawnEnemy_(
-            std::string textureName,
+            std::string animationName,
             std::vector<Vecf> colliderPoints,
             Rect spriteRect,
             float gravityFactor

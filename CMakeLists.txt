@@ -232,7 +232,6 @@ set(SOURCE_FILES
         Game/SceneInGame/Power.h
         Game/SceneInGame/Weapons/WeaponSystem.cpp
         Game/SceneInGame/Weapons/WeaponSystem.h
-        Game/SceneInGame/Weapons/IWeapon.h
         Game/SceneInGame/Weapons/ReloadingWeaponBase.cpp
         Game/SceneInGame/Weapons/ReloadingWeaponBase.h
         Game/SceneInGame/Weapons/WeaponBase.cpp
@@ -242,7 +241,11 @@ set(SOURCE_FILES
         Game/SceneInGame/Weapons/Laser.cpp
         Game/SceneInGame/Weapons/Laser.h
         Game/SceneInGame/Weapons/BombDropper.cpp
-        Game/SceneInGame/Weapons/BombDropper.h Game/SceneInGame/Weapons/Weapons.h)
+        Game/SceneInGame/Weapons/BombDropper.h
+        Game/SceneInGame/Weapons/Weapons.h
+        Game/SceneInGame/SwirlingBehaviour.cpp
+        Game/SceneInGame/SwirlingBehaviour.h
+        )
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

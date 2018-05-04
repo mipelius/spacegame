@@ -53,7 +53,7 @@ void DebugBehaviour::update() {
         crabKindOf->getComponent<EnemyAIBase>()->setTarget(transform());
     }
     if (keyboard.keyPressed(SDL_SCANCODE_J)) {
-        auto fourwayCyclops = Prefabs::evilEye();
+        auto fourwayCyclops = Prefabs::trifly();
         fourwayCyclops->transform().setPosition(transform()->getPosition());
         fourwayCyclops->getComponent<EnemyAIBase>()->setTarget(transform());
     }

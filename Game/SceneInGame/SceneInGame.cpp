@@ -62,7 +62,7 @@ void SceneInGame::init() {
     // spawners
     Prefabs::spawner({0.0f, 0.0f, 3300.0f, 2400.0f}, player, Prefabs::walker);
     Prefabs::spawner({3300.0f, 0.0f, 6400.0f, 2400.0f}, player, Prefabs::fish);
-    Prefabs::spawner({3300.0f, 2400.0f, 6400.0f, 4800.0f}, player, Prefabs::evilEye);
+    Prefabs::spawner({3300.0f, 2400.0f, 6400.0f, 4800.0f}, player, Prefabs::trifly);
     Prefabs::spawner({0.0f, 2400.0f, 3300.0f, 4800.0f}, player, Prefabs::walker);
 
     // boss

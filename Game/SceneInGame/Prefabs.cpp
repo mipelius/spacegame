@@ -23,9 +23,9 @@
 
 
 #include <cfloat>
-#include <Game/SceneInGame/Weapons/Laser.h>
-#include <Game/SceneInGame/Weapons/BombDropper.h>
-#include <Game/SceneInGame/Weapons/Weapons.h>
+#include "Laser.h"
+#include "BombDropper.h"
+#include "Weapons.h"
 #include "WeaponSystem.h"
 #include "AnimatedSprite.h"
 #include "Scenes.h"
@@ -52,6 +52,7 @@
 #include "SceneManager.h"
 #include "t2Time.h"
 #include "Power.h"
+#include "SwirlingBehaviour.h"
 
 GameObject *Prefabs::player() {
     auto player = Tile2D::createGameObject();
@@ -152,7 +153,7 @@ GameObject *Prefabs::player() {
 
 GameObject *Prefabs::boss() {
     auto enemy = spawnEnemy_(
-            "evil_eye",
+            "trifly",
             {{-50, -50}, {50, -50}, {50, 50}, {-50, 50}},
             {-80, -80, 80, 80},
             0.0f
@@ -288,11 +289,11 @@ GameObject *Prefabs::fish() {
     return enemy;
 }
 
-GameObject *Prefabs::evilEye() {
+GameObject *Prefabs::trifly() {
     auto enemy = spawnEnemy_(
-            "evil_eye",
-            {{-20, -20}, {20, -20}, {20, 20}, {-20, 20}},
-            {-30, -30, 30, 30},
+            "trifly",
+            {{-30, -30}, {30, -30}, {30, 30}, {-30, 30}},
+            {-40, -40, 40, 40},
             0.0f
     );
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
@@ -309,8 +310,9 @@ GameObject *Prefabs::evilEye() {
 
     AI->setSpeed(300);
     AI->setRotates(false);
-
     AI->setMaxDistance(1500);
+
+    auto swirlingBehaviour = enemy->attachComponent<SwirlingBehaviour>();
 
     return enemy;
 }
@@ -330,7 +332,7 @@ GameObject *Prefabs::twoHorn() {
 }
 
 GameObject *Prefabs::spawnEnemy_(
-        std::string textureName,
+        std::string animationName,
         std::vector<Vecf> colliderPoints,
         Rect spriteRect,
         float gravityFactor
@@ -348,11 +350,12 @@ GameObject *Prefabs::spawnEnemy_(
     polygonCollider->setPoints(colliderPoints);
     polygonCollider->setLayer(ColliderLayers::enemy);
 
-    auto enemySprite = enemy->attachComponent<Sprite>();
+    auto enemySprite = enemy->attachComponent<AnimatedSprite>();
     enemySprite->setSortingLayer(SortingLayers::enemy);
-    enemySprite->setRect(spriteRect);
-    enemySprite->setTexturePtr(Tile2D::resources().textures[textureName]);
-    enemySprite->setColor({1, 1, 1});
+    enemySprite->setRect({spriteRect});
+    enemySprite->setAnimationPtr(Tile2D::resources().animations[animationName]);
+    enemySprite->setFramesPerSecond(50);
+    enemySprite->play();
 
     auto health = enemy->attachComponent<Health>();
     health->setMaxHealth(100);
