@@ -231,20 +231,40 @@ GameObject *Prefabs::walker() {
 }
 
 
-GameObject *Prefabs::wurm() {
-    auto enemy = spawnEnemy_(
-            "wurm",
-            {{-50, -15}, {50, -15}, {50, 15}, {-50, 15}},
-            {-50, -25, 50, 25},
-            0.0f
-    );
-    auto collider = enemy->getComponent<PolygonCollider>();
-    collider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
+GameObject *Prefabs::fish() {
+    auto enemy = Tile2D::createGameObject();
+    enemy->transform().setRotation(0.0f);
+
+    enemy->tag = Tags::enemy;
+
+    auto enemyBody = enemy->attachComponent<Body>();
+    enemyBody->setMass(100.0);
+    enemyBody->setGravityFactor(0.0f);
+
+    auto polygonCollider = enemy->attachComponent<PolygonCollider>();
+    polygonCollider->setPoints({{-42, -15}, {42, -15}, {42, 15}, {-42, 15}});
+    polygonCollider->setLayer(ColliderLayers::enemy);
+    polygonCollider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
         if (args.otherCollider->gameObject()->tag == Tags::player) {
             auto playerHealth = args.otherCollider->gameObject()->getComponent<Health>();
             playerHealth->damage(Tile2D::time().getDeltaTimeMS() / 2, collider->gameObject());
             sparkles(args.otherCollider->transform()->getPosition(), args.contactNormal, {0.0f, 1.0f, 0.0f});
         }
+    });
+
+    auto enemySprite = enemy->attachComponent<AnimatedSprite>();
+    enemySprite->setSortingLayer(SortingLayers::enemy);
+    enemySprite->setRect({-42, -42, 42, 42});
+    enemySprite->setAnimationPtr(Tile2D::resources().animations["fish"]);
+    enemySprite->setFramesPerSecond(50);
+    enemySprite->play();
+
+    auto health = enemy->attachComponent<Health>();
+    health->setMaxHealth(100);
+    health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
+        health->gameObject()->destroy();
+        GameObject* newBloodBurst = bloodBurst();
+        newBloodBurst->transform().setPosition(health->transform()->getPosition());
     });
 
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
@@ -265,7 +285,6 @@ GameObject *Prefabs::wurm() {
     AI->setShootingTimer(shootingTimer);
 
     AI->setMaxDistance(1500);
-
     return enemy;
 }
 

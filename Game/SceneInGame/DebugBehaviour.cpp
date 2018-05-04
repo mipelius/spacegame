@@ -48,7 +48,7 @@ void DebugBehaviour::update() {
         walkingEnemy->getComponent<EnemyAIBase>()->setTarget(transform());
     }
     if (keyboard.keyPressed(SDL_SCANCODE_H)) {
-        auto crabKindOf = Prefabs::wurm();
+        auto crabKindOf = Prefabs::fish();
         crabKindOf->transform().setPosition(transform()->getPosition());
         crabKindOf->getComponent<EnemyAIBase>()->setTarget(transform());
     }

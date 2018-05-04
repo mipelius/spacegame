@@ -40,7 +40,7 @@ public:
     // enemies
     static GameObject* boss();
     static GameObject* evilEye();
-    static GameObject* wurm();
+    static GameObject* fish();
     static GameObject* walker();
     static GameObject* twoHorn();
 
