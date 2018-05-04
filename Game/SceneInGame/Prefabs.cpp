@@ -191,19 +191,19 @@ GameObject *Prefabs::walker() {
 
     auto polygonCollider = enemy->attachComponent<PolygonCollider>();
     polygonCollider->setPoints({
-           {-15, -21},
-           {15, -21},
-           {15, 11},
-           {10, 21},
-           {-10, 21},
-           {-15, 11}
+           {-18, -12},
+           {18, -12},
+           {18, 11},
+           {11, 22},
+           {-11, 22},
+           {-18, 11}
     });
     polygonCollider->setLayer(ColliderLayers::enemy);
     polygonCollider->setSweepingStrategyThreshold(FLT_MAX);
 
     auto enemyAnim = enemy->attachComponent<AnimatedSprite>();
     enemyAnim->setSortingLayer(SortingLayers::enemyBackground);
-    enemyAnim->setRect({-32, -32, 32, 32});
+    enemyAnim->setRect({-24, -18, 24, 30});
     enemyAnim->setAnimationPtr(Tile2D::resources().animations["walker"]);
     enemyAnim->play();
 
@@ -219,11 +219,11 @@ GameObject *Prefabs::walker() {
     AI->setMaxDistance(1500);
     AI->setGroundCheckSensors(
             {
-                    {-15, 23.0f},
+                    {-16, 23.0f},
                     {-8, 23.0f},
                     {0, 23.0f},
                     {8, 23.0f},
-                    {15, 23.0f}
+                    {16, 23.0f}
             }
     );
 
