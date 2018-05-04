@@ -43,7 +43,7 @@ void DebugBehaviour::update() {
     auto& keyboard = Tile2D::input().keyboard();
 
     if (keyboard.keyPressed(SDL_SCANCODE_G)) {
-        auto walkingEnemy = Prefabs::sentry();
+        auto walkingEnemy = Prefabs::walker();
         walkingEnemy->transform().setPosition(transform()->getPosition());
         walkingEnemy->getComponent<EnemyAIBase>()->setTarget(transform());
     }

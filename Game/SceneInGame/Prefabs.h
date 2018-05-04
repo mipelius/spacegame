@@ -41,7 +41,7 @@ public:
     static GameObject* boss();
     static GameObject* evilEye();
     static GameObject* wurm();
-    static GameObject* sentry();
+    static GameObject* walker();
     static GameObject* twoHorn();
 
     // player stuff to drop / shoot

@@ -78,9 +78,9 @@ void WalkingEnemyAI::updateDirection_() {
     Vecf scale = transform()->getScale();
 
     if (xDirection_ > 0) {
-        scale.x = -abs(scale.x);
-    } else {
         scale.x = abs(scale.x);
+    } else {
+        scale.x = -abs(scale.x);
     }
 
     transform()->setScale(scale);

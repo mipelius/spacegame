@@ -179,7 +179,7 @@ GameObject *Prefabs::boss() {
     return enemy;
 }
 
-GameObject *Prefabs::sentry() {
+GameObject *Prefabs::walker() {
     auto enemy = Tile2D::createGameObject();
     enemy->transform().setRotation(0.0f);
 
@@ -191,27 +191,21 @@ GameObject *Prefabs::sentry() {
 
     auto polygonCollider = enemy->attachComponent<PolygonCollider>();
     polygonCollider->setPoints({
-           {-10, -25},
-           {10, -25},
-           {10, 15},
-           {5, 25},
-           {-5, 25},
-           {-10, 15}
+           {-15, -21},
+           {15, -21},
+           {15, 11},
+           {10, 21},
+           {-10, 21},
+           {-15, 11}
     });
     polygonCollider->setLayer(ColliderLayers::enemy);
     polygonCollider->setSweepingStrategyThreshold(FLT_MAX);
 
-    auto enemySpriteHead = enemy->attachComponent<Sprite>();
-    enemySpriteHead->setSortingLayer(SortingLayers::enemy);
-    enemySpriteHead->setRect({-20, -25, 20, 0});
-    enemySpriteHead->setTexturePtr(Tile2D::resources().textures["sentry_head_side"]);
-    enemySpriteHead->setColor({1, 1, 1});
-
-    auto enemyAnimLegs = enemy->attachComponent<AnimatedSprite>();
-    enemyAnimLegs->setSortingLayer(SortingLayers::enemyBackground);
-    enemyAnimLegs->setRect({-25, -30, 25, 30});
-    enemyAnimLegs->setAnimationPtr(Tile2D::resources().animations["sentry_walk_anim"]);
-    enemyAnimLegs->play();
+    auto enemyAnim = enemy->attachComponent<AnimatedSprite>();
+    enemyAnim->setSortingLayer(SortingLayers::enemyBackground);
+    enemyAnim->setRect({-32, -32, 32, 32});
+    enemyAnim->setAnimationPtr(Tile2D::resources().animations["walker"]);
+    enemyAnim->play();
 
     auto health = enemy->attachComponent<Health>();
     health->setMaxHealth(100);
@@ -225,11 +219,11 @@ GameObject *Prefabs::sentry() {
     AI->setMaxDistance(1500);
     AI->setGroundCheckSensors(
             {
-                    {-10, 26.0f},
-                    {-5, 26.0f},
-                    {0, 26.0f},
-                    {5, 26.0f},
-                    {10, 26.0f}
+                    {-15, 23.0f},
+                    {-8, 23.0f},
+                    {0, 23.0f},
+                    {8, 23.0f},
+                    {15, 23.0f}
             }
     );
 
