@@ -30,8 +30,7 @@ void SwirlingBehaviour::awake() {
 }
 
 void SwirlingBehaviour::update() {
-    phase_ += Tile2D::time().getDeltaTime() * 7.0f;
-    body_->setAngularVelocity(200.0f + abs(sin(phase_)) * 100.0f);
+    body_->setAngularVelocity(200.0f);
 }
 
 void SwirlingBehaviour::lateUpdate() {

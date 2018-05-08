@@ -34,7 +34,6 @@ protected:
 
 private:
     Body* body_;
-    float phase_ = 0.0f;
 };
 
 
