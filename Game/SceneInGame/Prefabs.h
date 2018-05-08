@@ -27,6 +27,7 @@
 
 #include <string>
 #include <vector>
+#include <Game/SortingLayers.h>
 #include "GameObject.h"
 #include "Rect.h"
 #include "Color.h"
@@ -70,7 +71,8 @@ private:
             std::vector<Vecf> colliderPoints,
             Rect spriteRect,
             float gravityFactor,
-            float mass
+            float mass,
+            int sortingLayer = SortingLayers::enemy
     );
 };
 

@@ -338,18 +338,24 @@ GameObject *Prefabs::rider() {
     auto enemy = createEnemy_(
             "lizard",
             {
-                    {-15, -15},
-                    {15, -15},
-                    {15, 13},
-                    {5, 23},
-                    {-5, 23},
-                    {-15, 13}
+                    {-40, -32},
+                    {40, -32},
+                    {40, 20},
+                    {-40, 20}
             },
-            {-32, -32, 32, 32},
-            2.0f,
-            100.0f
+            {-64, -32, 64, 32},
+            0.0f,
+            100.0f,
+            SortingLayers::enemyBackground
     );
 
+    auto enemySprite = enemy->attachComponent<AnimatedSprite>();
+    enemySprite->setSortingLayer(SortingLayers::enemy);
+    enemySprite->setRect({-32, -32, 32, 32});
+    enemySprite->localTransform().setPosition({0.0f, -12.0f});
+    enemySprite->setAnimationPtr(Tile2D::resources().animations["wanderer"]);
+    enemySprite->setFramesPerSecond(50);
+    enemySprite->play();
 
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
     CountDownTimer pathUpdateTimer;
@@ -364,7 +370,7 @@ GameObject *Prefabs::rider() {
     AI->setShootingTimer(shootingTimer);
 
     AI->setSpeed(300);
-    AI->setRotates(false);
+    AI->setRotates(true);
     AI->setMaxDistance(1500);
 
     return enemy;
@@ -375,7 +381,8 @@ GameObject *Prefabs::createEnemy_(
         std::vector<Vecf> colliderPoints,
         Rect spriteRect,
         float gravityFactor,
-        float mass
+        float mass,
+        int sortingLayer
 ) {
     auto enemy = Tile2D::createGameObject();
     enemy->transform().setRotation(0.0f);
@@ -391,7 +398,7 @@ GameObject *Prefabs::createEnemy_(
     polygonCollider->setLayer(ColliderLayers::enemy);
 
     auto enemySprite = enemy->attachComponent<AnimatedSprite>();
-    enemySprite->setSortingLayer(SortingLayers::enemy);
+    enemySprite->setSortingLayer(sortingLayer);
     enemySprite->setRect({spriteRect});
     enemySprite->setAnimationPtr(Tile2D::resources().animations[animationName]);
     enemySprite->setFramesPerSecond(50);
