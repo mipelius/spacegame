@@ -40,7 +40,8 @@ void FlyingEnemyAI::update() {
     EnemyAIBase::update();
     shootTarget_();
 
-    float distanceToTarget = (target_->getPosition() - transform()->getPosition()).length();
+    Vecf targetDirection = target_->getPosition() - transform()->getPosition();
+    float distanceToTarget = targetDirection.length();
 
     bool canSeeTarget = canSeeTarget_();
 
@@ -48,6 +49,7 @@ void FlyingEnemyAI::update() {
             (distanceToTarget < minPathFindingDistance_ && canSeeTarget) ||
             distanceToTarget > maxPathFindingDistance_
     ) {
+        rotateTowards_(targetDirection);
         return;
     }
 
@@ -81,20 +83,7 @@ void FlyingEnemyAI::update() {
     Vecf movement = direction * Tile2D::time().getDeltaTime() * speed;
 
     if (rotates_) {
-        float currentRotation = transform()->getRotation();
-        float targetRotation = movement.angle();
-        float deltaAngle = Mathf::deltaAngle(currentRotation, targetRotation);
-
-        if (!Mathf::approx(deltaAngle, 0.0f)) {
-            auto angularDirection = (float)Mathf::sign(deltaAngle);
-            float rotate = angularDirection * Tile2D::time().getDeltaTime() * angularSpeed_;
-            if (fabsf(rotate) > fabsf(deltaAngle)) {
-                transform()->setRotation(targetRotation);
-            } else {
-                transform()->setRotation(currentRotation + rotate);
-            }
-        }
-
+        auto deltaAngle = rotateTowards_(movement);
         if (fabsf(deltaAngle) < 45.0f) {
             transform()->setPosition(currentPosition + movement);
         }
@@ -104,7 +93,18 @@ void FlyingEnemyAI::update() {
 }
 
 void FlyingEnemyAI::lateUpdate() {
+    if (flips_) {
+        Vecf scale = {
+            transform()->getScale().x,
+            abs(transform()->getScale().y)
+        };
 
+        if (abs(Mathf::deltaAngle(0.0f, transform()->getRotation())) > 90.0f) {
+            scale.y *= -1.0f;
+        }
+
+        transform()->setScale(scale);
+    }
 }
 
 void FlyingEnemyAI::updateNextPoint_() {
@@ -170,5 +170,31 @@ bool FlyingEnemyAI::rotates() const {
 
 void FlyingEnemyAI::setRotates(bool rotates) {
     rotates_ = rotates;
+}
+
+float FlyingEnemyAI::rotateTowards_(Vecf target) {
+    float currentRotation = transform()->getRotation();
+    float targetRotation = target.angle();
+    float deltaAngle = Mathf::deltaAngle(currentRotation, targetRotation);
+
+    if (!Mathf::approx(deltaAngle, 0.0f)) {
+        auto angularDirection = (float)Mathf::sign(deltaAngle);
+        float rotate = angularDirection * Tile2D::time().getDeltaTime() * angularSpeed_;
+        if (fabsf(rotate) > fabsf(deltaAngle)) {
+            transform()->setRotation(targetRotation);
+        } else {
+            transform()->setRotation(currentRotation + rotate);
+        }
+    }
+
+    return deltaAngle;
+}
+
+bool FlyingEnemyAI::flips() const {
+    return flips_;
+}
+
+void FlyingEnemyAI::setFlips(bool flips) {
+    flips_ = flips;
 }
 

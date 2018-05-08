@@ -46,6 +46,8 @@ public:
     void setAngularSpeed(float angularSpeed);
     bool rotates() const;
     void setRotates(bool rotates);
+    bool flips() const;
+    void setFlips(bool flips);
 
 protected:
     void awake() override;
@@ -55,6 +57,8 @@ protected:
     std::list<Vecf> pathToTarget_;
     Vecf nextPoint_;
 
+    float rotateTowards_(Vecf direction);
+
 private:
     PolygonCollider* collider_;
     float minPathFindingDistance_ = 350.0f;
@@ -62,6 +66,7 @@ private:
     float speed = 20;
     float angularSpeed_ = 100.0f;
     bool rotates_ = true;
+    bool flips_ = false;
 
     unsigned int maxNodesPathFinderExplores_ = 1000;
     void updateNextPoint_();
