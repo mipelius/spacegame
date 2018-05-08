@@ -56,12 +56,12 @@ void DebugBehaviour::update() {
     };
 
     static const std::list<DebugEnemyCreationSetting> debugEnemyCreationSettings = {
+            {SDL_SCANCODE_F, Prefabs::rider},
             {SDL_SCANCODE_G, Prefabs::walker},
             {SDL_SCANCODE_H, Prefabs::fish},
             {SDL_SCANCODE_J, Prefabs::trifly},
             {SDL_SCANCODE_K, Prefabs::wanderer},
-            {SDL_SCANCODE_L, Prefabs::boss},
-            {SDL_SCANCODE_G, Prefabs::walker}
+            {SDL_SCANCODE_L, Prefabs::boss}
     };
 
     for (auto debugEnemyCreationSetting : debugEnemyCreationSettings) {
