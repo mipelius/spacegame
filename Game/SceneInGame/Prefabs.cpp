@@ -743,5 +743,6 @@ GameObject *Prefabs::hud(GameObject* player) {
     auto hud = Tile2D::createGameObject();
     auto hudBehaviour = hud->attachComponent<HUD>();
     hudBehaviour->setPlayer(player);
+    return hud;
 }
 
