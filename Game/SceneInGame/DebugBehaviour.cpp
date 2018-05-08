@@ -58,9 +58,9 @@ void DebugBehaviour::update() {
         fourwayCyclops->getComponent<EnemyAIBase>()->setTarget(transform());
     }
     if (keyboard.keyPressed(SDL_SCANCODE_K)) {
-        auto twoHorn = Prefabs::twoHorn();
-        twoHorn->transform().setPosition(transform()->getPosition());
-        twoHorn->getComponent<EnemyAIBase>()->setTarget(transform());
+        auto wanderer = Prefabs::wanderer();
+        wanderer->transform().setPosition(transform()->getPosition());
+        wanderer->getComponent<EnemyAIBase>()->setTarget(transform());
     }
     if (keyboard.keyPressed(SDL_SCANCODE_L)) {
         auto boss = Prefabs::boss();

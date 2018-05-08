@@ -231,6 +231,59 @@ GameObject *Prefabs::walker() {
     return enemy;
 }
 
+GameObject *Prefabs::wanderer() {
+    auto enemy = Tile2D::createGameObject();
+    enemy->transform().setRotation(0.0f);
+
+    enemy->tag = Tags::enemy;
+
+    auto enemyBody = enemy->attachComponent<Body>();
+    enemyBody->setMass(100.0);
+    enemyBody->setGravityFactor(2.0f);
+
+    auto polygonCollider = enemy->attachComponent<PolygonCollider>();
+    polygonCollider->setPoints({
+                                       {-15, -15},
+                                       {15, -15},
+                                       {15, 13},
+                                       {5, 23},
+                                       {-5, 23},
+                                       {-15, 13}
+                               });
+
+    polygonCollider->setLayer(ColliderLayers::enemy);
+    polygonCollider->setSweepingStrategyThreshold(FLT_MAX);
+
+    auto enemyAnim = enemy->attachComponent<AnimatedSprite>();
+    enemyAnim->setSortingLayer(SortingLayers::enemyBackground);
+    enemyAnim->setRect({-32, -32, 32, 32});
+    enemyAnim->setAnimationPtr(Tile2D::resources().animations["wanderer"]);
+    enemyAnim->play();
+
+    auto health = enemy->attachComponent<Health>();
+    health->setMaxHealth(100);
+    health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
+        health->gameObject()->destroy();
+        GameObject* newBloodBurst = bloodBurst();
+        newBloodBurst->transform().setPosition(health->transform()->getPosition());
+    });
+
+    auto AI = enemy->attachComponent<WalkingEnemyAI>();
+    AI->setMaxDistance(1500);
+    AI->setGroundCheckSensors(
+            {
+                    {-24, 24.0f},
+                    {-16, 24.0f},
+                    {-8, 24.0f},
+                    {0, 24.0f},
+                    {8, 24.0f},
+                    {16, 24.0f},
+                    {24, 24.0f}
+            }
+    );
+
+    return enemy;
+}
 
 GameObject *Prefabs::fish() {
     auto enemy = Tile2D::createGameObject();
@@ -313,20 +366,6 @@ GameObject *Prefabs::trifly() {
     AI->setMaxDistance(1500);
 
     auto swirlingBehaviour = enemy->attachComponent<SwirlingBehaviour>();
-
-    return enemy;
-}
-
-GameObject *Prefabs::twoHorn() {
-    auto enemy = spawnEnemy_(
-            "twohorn",
-            {{-10, -25}, {10, -25}, {10, 25}, {-10, 25}},
-            {-25, -25, 25, 25},
-            0.0f
-    );
-
-    auto AI = enemy->attachComponent<FlyingEnemyAI>();
-    AI->setMaxDistance(1500);
 
     return enemy;
 }
