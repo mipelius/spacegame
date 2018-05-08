@@ -371,6 +371,7 @@ GameObject *Prefabs::rider() {
 
     AI->setSpeed(300);
     AI->setRotates(true);
+    AI->setFlips(true);
     AI->setMaxDistance(1500);
 
     return enemy;
@@ -416,7 +417,6 @@ GameObject *Prefabs::createEnemy_(
 }
 
 // ---- PLAYER STUFF TO DROP / SHOOT ----
-
 
 GameObject *Prefabs::bomb() {
     static const int explosionRadius = 10; // tiles
