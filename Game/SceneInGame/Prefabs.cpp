@@ -152,11 +152,17 @@ GameObject *Prefabs::player() {
 // ---- ENEMIES ----
 
 GameObject *Prefabs::boss() {
-    auto enemy = spawnEnemy_(
+    auto enemy = createEnemy_(
             "trifly",
-            {{-50, -50}, {50, -50}, {50, 50}, {-50, 50}},
+            {
+                {-50, -50},
+                {50,  -50},
+                {50,  50},
+                {-50, 50}
+            },
             {-80, -80, 80, 80},
-            0.0f
+            0.0f,
+            100.0f
     );
     auto health = enemy->getComponent<Health>();
     health->setMaxHealth(1000);
@@ -181,50 +187,33 @@ GameObject *Prefabs::boss() {
 }
 
 GameObject *Prefabs::walker() {
-    auto enemy = Tile2D::createGameObject();
-    enemy->transform().setRotation(0.0f);
+    auto enemy = createEnemy_(
+            "walker",
+            {
+                {-18, -12},
+                {18, -12},
+                {18, 11},
+                {11, 22},
+                {-11, 22},
+                {-18, 11}
+            },
+            {-24, -18, 24, 30},
+            2.0f,
+            100.0f
+    );
 
-    enemy->tag = Tags::enemy;
-
-    auto enemyBody = enemy->attachComponent<Body>();
-    enemyBody->setMass(100.0);
-    enemyBody->setGravityFactor(2.0f);
-
-    auto polygonCollider = enemy->attachComponent<PolygonCollider>();
-    polygonCollider->setPoints({
-           {-18, -12},
-           {18, -12},
-           {18, 11},
-           {11, 22},
-           {-11, 22},
-           {-18, 11}
-    });
-    polygonCollider->setLayer(ColliderLayers::enemy);
+    auto polygonCollider = enemy->getComponent<PolygonCollider>();
     polygonCollider->setSweepingStrategyThreshold(FLT_MAX);
-
-    auto enemyAnim = enemy->attachComponent<AnimatedSprite>();
-    enemyAnim->setSortingLayer(SortingLayers::enemyBackground);
-    enemyAnim->setRect({-24, -18, 24, 30});
-    enemyAnim->setAnimationPtr(Tile2D::resources().animations["walker"]);
-    enemyAnim->play();
-
-    auto health = enemy->attachComponent<Health>();
-    health->setMaxHealth(100);
-    health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
-        health->gameObject()->destroy();
-        GameObject* newBloodBurst = bloodBurst();
-        newBloodBurst->transform().setPosition(health->transform()->getPosition());
-    });
 
     auto AI = enemy->attachComponent<WalkingEnemyAI>();
     AI->setMaxDistance(1500);
     AI->setGroundCheckSensors(
             {
-                    {-16, 23.0f},
-                    {-8, 23.0f},
-                    {0, 23.0f},
-                    {8, 23.0f},
-                    {16, 23.0f}
+                {-16, 23.0f},
+                {-8, 23.0f},
+                {0, 23.0f},
+                {8, 23.0f},
+                {16, 23.0f}
             }
     );
 
@@ -232,53 +221,35 @@ GameObject *Prefabs::walker() {
 }
 
 GameObject *Prefabs::wanderer() {
-    auto enemy = Tile2D::createGameObject();
-    enemy->transform().setRotation(0.0f);
+    auto enemy = createEnemy_(
+            "wanderer",
+            {
+                {-15, -15},
+                {15, -15},
+                {15, 13},
+                {5, 23},
+                {-5, 23},
+                {-15, 13}
+            },
+            {-32, -32, 32, 32},
+            2.0f,
+            100.0f
+    );
 
-    enemy->tag = Tags::enemy;
-
-    auto enemyBody = enemy->attachComponent<Body>();
-    enemyBody->setMass(100.0);
-    enemyBody->setGravityFactor(2.0f);
-
-    auto polygonCollider = enemy->attachComponent<PolygonCollider>();
-    polygonCollider->setPoints({
-                                       {-15, -15},
-                                       {15, -15},
-                                       {15, 13},
-                                       {5, 23},
-                                       {-5, 23},
-                                       {-15, 13}
-                               });
-
-    polygonCollider->setLayer(ColliderLayers::enemy);
+    auto polygonCollider = enemy->getComponent<PolygonCollider>();
     polygonCollider->setSweepingStrategyThreshold(FLT_MAX);
-
-    auto enemyAnim = enemy->attachComponent<AnimatedSprite>();
-    enemyAnim->setSortingLayer(SortingLayers::enemyBackground);
-    enemyAnim->setRect({-32, -32, 32, 32});
-    enemyAnim->setAnimationPtr(Tile2D::resources().animations["wanderer"]);
-    enemyAnim->play();
-
-    auto health = enemy->attachComponent<Health>();
-    health->setMaxHealth(100);
-    health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
-        health->gameObject()->destroy();
-        GameObject* newBloodBurst = bloodBurst();
-        newBloodBurst->transform().setPosition(health->transform()->getPosition());
-    });
 
     auto AI = enemy->attachComponent<WalkingEnemyAI>();
     AI->setMaxDistance(1500);
     AI->setGroundCheckSensors(
             {
-                    {-24, 24.0f},
-                    {-16, 24.0f},
-                    {-8, 24.0f},
-                    {0, 24.0f},
-                    {8, 24.0f},
-                    {16, 24.0f},
-                    {24, 24.0f}
+                {-24, 24.0f},
+                {-16, 24.0f},
+                {-8, 24.0f},
+                {0, 24.0f},
+                {8, 24.0f},
+                {16, 24.0f},
+                {24, 24.0f}
             }
     );
 
@@ -286,18 +257,20 @@ GameObject *Prefabs::wanderer() {
 }
 
 GameObject *Prefabs::fish() {
-    auto enemy = Tile2D::createGameObject();
-    enemy->transform().setRotation(0.0f);
+    auto fish = createEnemy_(
+            "fish",
+            {
+                {-42, -15},
+                {42, -15},
+                {42, 15},
+                {-42, 15}
+            },
+            {-42, -42, 42, 42},
+            0,
+            100
+    );
 
-    enemy->tag = Tags::enemy;
-
-    auto enemyBody = enemy->attachComponent<Body>();
-    enemyBody->setMass(100.0);
-    enemyBody->setGravityFactor(0.0f);
-
-    auto polygonCollider = enemy->attachComponent<PolygonCollider>();
-    polygonCollider->setPoints({{-42, -15}, {42, -15}, {42, 15}, {-42, 15}});
-    polygonCollider->setLayer(ColliderLayers::enemy);
+    auto polygonCollider = fish->getComponent<PolygonCollider>();
     polygonCollider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
         if (args.otherCollider->gameObject()->tag == Tags::player) {
             auto playerHealth = args.otherCollider->gameObject()->getComponent<Health>();
@@ -306,22 +279,7 @@ GameObject *Prefabs::fish() {
         }
     });
 
-    auto enemySprite = enemy->attachComponent<AnimatedSprite>();
-    enemySprite->setSortingLayer(SortingLayers::enemy);
-    enemySprite->setRect({-42, -42, 42, 42});
-    enemySprite->setAnimationPtr(Tile2D::resources().animations["fish"]);
-    enemySprite->setFramesPerSecond(50);
-    enemySprite->play();
-
-    auto health = enemy->attachComponent<Health>();
-    health->setMaxHealth(100);
-    health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
-        health->gameObject()->destroy();
-        GameObject* newBloodBurst = bloodBurst();
-        newBloodBurst->transform().setPosition(health->transform()->getPosition());
-    });
-
-    auto AI = enemy->attachComponent<FlyingEnemyAI>();
+    auto AI = fish->attachComponent<FlyingEnemyAI>();
 
     CountDownTimer pathUpdateTimer;
     pathUpdateTimer.setInterval(200);
@@ -339,15 +297,21 @@ GameObject *Prefabs::fish() {
     AI->setShootingTimer(shootingTimer);
 
     AI->setMaxDistance(1500);
-    return enemy;
+    return fish;
 }
 
 GameObject *Prefabs::trifly() {
-    auto enemy = spawnEnemy_(
+    auto enemy = createEnemy_(
             "trifly",
-            {{-30, -30}, {30, -30}, {30, 30}, {-30, 30}},
+            {
+                {-30, -30},
+                {30, -30},
+                {30, 30},
+                {-30, 30}
+            },
             {-40, -40, 40, 40},
-            0.0f
+            0.0f,
+            100
     );
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
     CountDownTimer pathUpdateTimer;
@@ -370,11 +334,12 @@ GameObject *Prefabs::trifly() {
     return enemy;
 }
 
-GameObject *Prefabs::spawnEnemy_(
+GameObject *Prefabs::createEnemy_(
         std::string animationName,
         std::vector<Vecf> colliderPoints,
         Rect spriteRect,
-        float gravityFactor
+        float gravityFactor,
+        float mass
 ) {
     auto enemy = Tile2D::createGameObject();
     enemy->transform().setRotation(0.0f);
@@ -382,7 +347,7 @@ GameObject *Prefabs::spawnEnemy_(
     enemy->tag = Tags::enemy;
 
     auto enemyBody = enemy->attachComponent<Body>();
-    enemyBody->setMass(100.0);
+    enemyBody->setMass(mass);
     enemyBody->setGravityFactor(gravityFactor);
 
     auto polygonCollider = enemy->attachComponent<PolygonCollider>();

@@ -64,11 +64,12 @@ public:
     static GameObject* spawner(Rect area, GameObject* target, GameObject* (*spawnFunction)());
 
 private:
-    static GameObject* spawnEnemy_(
+    static GameObject* createEnemy_(
             std::string animationName,
             std::vector<Vecf> colliderPoints,
             Rect spriteRect,
-            float gravityFactor
+            float gravityFactor,
+            float mass
     );
 };
 
