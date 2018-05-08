@@ -334,6 +334,42 @@ GameObject *Prefabs::trifly() {
     return enemy;
 }
 
+GameObject *Prefabs::rider() {
+    auto enemy = createEnemy_(
+            "lizard",
+            {
+                    {-15, -15},
+                    {15, -15},
+                    {15, 13},
+                    {5, 23},
+                    {-5, 23},
+                    {-15, 13}
+            },
+            {-32, -32, 32, 32},
+            2.0f,
+            100.0f
+    );
+
+
+    auto AI = enemy->attachComponent<FlyingEnemyAI>();
+    CountDownTimer pathUpdateTimer;
+    pathUpdateTimer.setInterval(1000);
+    AI->setPathUpdateTimer(pathUpdateTimer);
+
+    AI->setMaxPathFindingDistance(1500);
+
+    CountDownTimer shootingTimer;
+    shootingTimer.setInterval(500);
+    shootingTimer.setIntervalRandomness(200);
+    AI->setShootingTimer(shootingTimer);
+
+    AI->setSpeed(300);
+    AI->setRotates(false);
+    AI->setMaxDistance(1500);
+
+    return enemy;
+}
+
 GameObject *Prefabs::createEnemy_(
         std::string animationName,
         std::vector<Vecf> colliderPoints,

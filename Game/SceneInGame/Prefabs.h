@@ -43,6 +43,7 @@ public:
     static GameObject* fish();
     static GameObject* walker();
     static GameObject* wanderer();
+    static GameObject* rider();
 
     // player stuff to drop / shoot
     static GameObject* ammo(Texture* texturePtr);

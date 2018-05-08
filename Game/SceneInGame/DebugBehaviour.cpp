@@ -42,31 +42,36 @@ void DebugBehaviour::awake() {
 void DebugBehaviour::update() {
     auto& keyboard = Tile2D::input().keyboard();
 
-    if (keyboard.keyPressed(SDL_SCANCODE_G)) {
-        auto walkingEnemy = Prefabs::walker();
-        walkingEnemy->transform().setPosition(transform()->getPosition());
-        walkingEnemy->getComponent<EnemyAIBase>()->setTarget(transform());
+    // --- create enemies ---
+
+    auto createEnemy = [] (GameObject* player, GameObject* (*prefabFunctionPtr)()) {
+        auto enemy = prefabFunctionPtr();
+        enemy->transform().setPosition(player->transform().getPosition());
+        enemy->getComponent<EnemyAIBase>()->setTarget(&player->transform());
+    };
+
+    struct DebugEnemyCreationSetting {
+        SDL_Scancode scancode;
+        GameObject* (*prefabFunctionPtr)();
+    };
+
+    static const std::list<DebugEnemyCreationSetting> debugEnemyCreationSettings = {
+            {SDL_SCANCODE_G, Prefabs::walker},
+            {SDL_SCANCODE_H, Prefabs::fish},
+            {SDL_SCANCODE_J, Prefabs::trifly},
+            {SDL_SCANCODE_K, Prefabs::wanderer},
+            {SDL_SCANCODE_L, Prefabs::boss},
+            {SDL_SCANCODE_G, Prefabs::walker}
+    };
+
+    for (auto debugEnemyCreationSetting : debugEnemyCreationSettings) {
+        if (keyboard.keyPressed(debugEnemyCreationSetting.scancode)) {
+            createEnemy(gameObject(), debugEnemyCreationSetting.prefabFunctionPtr);
+        }
     }
-    if (keyboard.keyPressed(SDL_SCANCODE_H)) {
-        auto crabKindOf = Prefabs::fish();
-        crabKindOf->transform().setPosition(transform()->getPosition());
-        crabKindOf->getComponent<EnemyAIBase>()->setTarget(transform());
-    }
-    if (keyboard.keyPressed(SDL_SCANCODE_J)) {
-        auto fourwayCyclops = Prefabs::trifly();
-        fourwayCyclops->transform().setPosition(transform()->getPosition());
-        fourwayCyclops->getComponent<EnemyAIBase>()->setTarget(transform());
-    }
-    if (keyboard.keyPressed(SDL_SCANCODE_K)) {
-        auto wanderer = Prefabs::wanderer();
-        wanderer->transform().setPosition(transform()->getPosition());
-        wanderer->getComponent<EnemyAIBase>()->setTarget(transform());
-    }
-    if (keyboard.keyPressed(SDL_SCANCODE_L)) {
-        auto boss = Prefabs::boss();
-        boss->transform().setPosition(transform()->getPosition());
-        boss->getComponent<EnemyAIBase>()->setTarget(transform());
-    }
+
+    // --- other debugging tools --- //
+
     if (keyboard.keyPressed(SDL_SCANCODE_RETURN)) {
         Tile2D::setIsDebugMode(!Tile2D::isDebugMode());
         if (Tile2D::isDebugMode()) {
