@@ -28,6 +28,8 @@
 
 class ItemBase {
 public:
+    static const int COUNT_INFINITY = -1;
+
     bool use(GameObject* user);
 
     int getPowerConsumption() const;
@@ -36,13 +38,18 @@ public:
     bool isActivated() const;
     void setIsActivated(bool isActivated);
 
+    int getCount() const;
+    void setCount(int count);
+
 protected:
     virtual bool useActual(GameObject* user) = 0;
 
 private:
+    bool use_(GameObject* user);
     bool isActivated_ = false;
     int powerConsumption_ = 0;
 
+    int count_ = COUNT_INFINITY;
 };
 
 

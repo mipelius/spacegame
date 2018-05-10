@@ -30,17 +30,19 @@ bool ItemBase::use(GameObject *user) {
         return false;
     }
     if (power == nullptr) {
-        return useActual(user);
+        return use_(user);
     }
     if (power->getPower() < powerConsumption_) {
         return false;
     }
-    if (useActual(user)) {
+    if (use_(user)) {
         power->consume(powerConsumption_);
         return true;
     }
     return false;
 }
+
+
 
 int ItemBase::getPowerConsumption() const {
     return powerConsumption_;
@@ -56,4 +58,25 @@ bool ItemBase::isActivated() const {
 
 void ItemBase::setIsActivated(bool isActivated) {
     isActivated_ = isActivated;
+}
+
+int ItemBase::getCount() const {
+    return count_;
+}
+
+void ItemBase::setCount(int count) {
+    count_ = count;
+}
+
+bool ItemBase::use_(GameObject *user) {
+    if (count_ > 0 || count_ == COUNT_INFINITY) {
+        if (useActual(user)) {
+            if (count_ > 0) {
+                count_--;
+            }
+            return true;
+        }
+    }
+
+    return false;
 }

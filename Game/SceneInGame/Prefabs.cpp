@@ -115,10 +115,12 @@ GameObject *Prefabs::player() {
     laser->setPowerConsumption(50);
     laser->setReloadDelay(100);
     laser->setIsActivated(true);
+    laser->setCount(Laser::COUNT_INFINITY);
 
     auto bombDropper = inventory->attachItem<BombDropper>(Tile2D::resources().textures["bomb"]);
     bombDropper->setPowerConsumption(200);
     bombDropper->setReloadDelay(200);
+    bombDropper->setCount(30);
     bombDropper->setIsActivated(true);
 
     auto placeholderWeapon1 = inventory->attachItem<Laser>(Tile2D::resources().textures["laser_cannon"]);
@@ -130,11 +132,13 @@ GameObject *Prefabs::player() {
     placeholderWeapon2->setPowerConsumption(10);
     placeholderWeapon2->setReloadDelay(20);
     placeholderWeapon2->setIsActivated(true);
+    placeholderWeapon2->setCount(100);
 
     auto healer = inventory->attachItem<Healer>(Tile2D::resources().textures["healer"]);
     healer->setPowerConsumption(100);
     healer->setHealingAmount(100);
     healer->setIsActivated(true);
+    healer->setCount(5);
 
     return player;
 }

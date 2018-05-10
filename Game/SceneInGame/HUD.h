@@ -46,6 +46,7 @@ private:
         Sprite* itemSlotSprite;
         Sprite* itemSprite;
         Text* itemSlotText;
+        Text* itemCountText;
     };
 
     Sprite* healthSprite_;

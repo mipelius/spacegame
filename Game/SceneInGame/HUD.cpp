@@ -62,6 +62,13 @@ void HUD::update() {
             itemSlots_[i].itemSlotSprite->setTexturePtr(texture);
             itemSlots_[i].itemSlotText->setIsVisible(isActivated);
             itemSlots_[i].itemSprite->setIsVisible(isActivated);
+            itemSlots_[i].itemCountText->setIsVisible(isActivated);
+
+            if (isActivated) {
+                const auto& count = itemInfo.item->getCount();
+                auto itemCountString = count >= 0 ? std::to_string(count) : "";
+                itemSlots_[i].itemCountText->setString(itemCountString);
+            }
         }
     }
 
@@ -112,7 +119,16 @@ void HUD::setPlayer(GameObject *player) {
         itemSlotText->setVerticalAlignment(Text::VerticalAlignment::bottom);
         itemSlotText->localTransform().setPosition({width - 4.0f, height - 4.0f});
 
-        itemSlots_.push_back({itemSlotSprite, itemSprite, itemSlotText});
+        auto itemCountText = itemSlot->attachComponent<Text>();
+        itemCountText->setFontPtr(Tile2D::resources().fonts["smallfont"]);
+        itemCountText->setIsUIDrawable(true);
+        itemCountText->setSortingLayer(SortingLayers::HUD_Text);
+        itemCountText->setFontSize(1.0f);
+        itemCountText->setHorizontalAlignment(Text::HorizontalAlignment::right);
+        itemCountText->setVerticalAlignment(Text::VerticalAlignment::top);
+        itemCountText->localTransform().setPosition({width - 4.0f, 4.0f});
+
+        itemSlots_.push_back({itemSlotSprite, itemSprite, itemSlotText, itemCountText});
     }
 
     offset += Vecf((width + margin) * weaponSlots + 10.0f, 0.0);
