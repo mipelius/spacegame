@@ -48,20 +48,20 @@ void HUD::update() {
         rect.x2 = (float)player_->getComponent<Power>()->getPower();
         powerSprite_->setRect(rect);
     }
-    {   // WEAPON SLOTS
-        auto weaponSlotInfos_ = weaponSystem_->getWeaponInfos();
-        auto currentWeaponSlot = weaponSystem_->getCurrentWeaponSlot();
+    {   // ITEM SLOTS
+        auto itemSlotInfos = inventory->getItemInfos();
+        auto selectedItemSlot = inventory->getSelectedItem();
 
-        for (auto i = 0u; i < weaponSlotInfos_.size(); ++i) {
-            auto weaponInfo = weaponSlotInfos_[i];
-            auto isActivated = weaponInfo.weapon->isActivated();
-            auto texture = i == currentWeaponSlot ?
+        for (auto i = 0u; i < itemSlotInfos.size(); ++i) {
+            auto itemInfo = itemSlotInfos[i];
+            auto isActivated = itemInfo.item->isActivated();
+            auto texture = i == selectedItemSlot ?
                Tile2D::resources().textures["inventory_selected_slot"] :
                Tile2D::resources().textures["inventory_slot"];
 
-            weaponSlots_[i].weaponSlotSprite->setTexturePtr(texture);
-            weaponSlots_[i].weaponSlotText->setIsVisible(isActivated);
-            weaponSlots_[i].weaponSprite->setIsVisible(isActivated);
+            itemSlots_[i].itemSlotSprite->setTexturePtr(texture);
+            itemSlots_[i].itemSlotText->setIsVisible(isActivated);
+            itemSlots_[i].itemSprite->setIsVisible(isActivated);
         }
     }
 
@@ -77,43 +77,42 @@ void HUD::setPlayer(GameObject *player) {
     }
     player_ = player;
 
-    weaponSystem_ = player->getComponent<WeaponSystem>();
+    inventory = player->getComponent<Inventory>();
 
     // -- weapon slots --
-    auto weaponSlots = (int)weaponSystem_->getWeaponInfos().size();
+    auto weaponSlots = (int) inventory->getItemInfos().size();
     float width = 40.0f;
     float height = 40.0f;
     float margin = 2.0f;
     Vecf offset = {20.0f, 20.0f};
 
     for (auto i = 0u; i < weaponSlots; ++i) {
-        GameObject *weaponSlot = Tile2D::createGameObject();
-        weaponSlot->transform().setPosition(Vecf((width + margin) * i, 0) + offset);
+        GameObject *itemSlot = Tile2D::createGameObject();
+        itemSlot->transform().setPosition(Vecf((width + margin) * i, 0) + offset);
 
-        auto weaponSlotSprite = weaponSlot->attachComponent<Sprite>();
-        weaponSlotSprite->setRect({0.0f, 0.0f, width, height});
-        weaponSlotSprite->setIsUIDrawable(true);
-        weaponSlotSprite->setTexturePtr(Tile2D::resources().textures["inventory_slot"]);
-        weaponSlotSprite->setSortingLayer(SortingLayers::HUD_WeaponSlot);
+        auto itemSlotSprite = itemSlot->attachComponent<Sprite>();
+        itemSlotSprite->setRect({0.0f, 0.0f, width, height});
+        itemSlotSprite->setIsUIDrawable(true);
+        itemSlotSprite->setTexturePtr(Tile2D::resources().textures["inventory_slot"]);
+        itemSlotSprite->setSortingLayer(SortingLayers::HUD_WeaponSlot);
 
-        auto weaponSprite = weaponSlot->attachComponent<Sprite>();
-        weaponSprite->setRect({5.0f, 5.0f, width - 5.0f, height - 5.0f});
-        weaponSprite->setIsUIDrawable(true);
-        weaponSprite->setTexturePtr(weaponSystem_->getWeaponInfos()[i].inventoryTexturePtr);
-        weaponSprite->setSortingLayer(SortingLayers::HUD_Weapon);
+        auto itemSprite = itemSlot->attachComponent<Sprite>();
+        itemSprite->setRect({5.0f, 5.0f, width - 5.0f, height - 5.0f});
+        itemSprite->setIsUIDrawable(true);
+        itemSprite->setTexturePtr(inventory->getItemInfos()[i].inventoryTexturePtr);
+        itemSprite->setSortingLayer(SortingLayers::HUD_Weapon);
 
-        auto weaponSlotText = weaponSlot->attachComponent<Text>();
-        weaponSlotText->setFontPtr(Tile2D::resources().fonts["smallfont"]);
-        weaponSlotText->setIsUIDrawable(true);
-        weaponSlotText->setString(std::to_string(i + 1));
-        weaponSlotSprite->setSortingLayer(0);
-        weaponSlotText->setSortingLayer(SortingLayers::HUD_Text);
-        weaponSlotText->setFontSize(1.0f);
-        weaponSlotText->setHorizontalAlignment(Text::HorizontalAlignment::right);
-        weaponSlotText->setVerticalAlignment(Text::VerticalAlignment::bottom);
-        weaponSlotText->localTransform().setPosition({width - 4.0f, height - 4.0f});
+        auto itemSlotText = itemSlot->attachComponent<Text>();
+        itemSlotText->setFontPtr(Tile2D::resources().fonts["smallfont"]);
+        itemSlotText->setIsUIDrawable(true);
+        itemSlotText->setString(std::to_string(i + 1));
+        itemSlotText->setSortingLayer(SortingLayers::HUD_Text);
+        itemSlotText->setFontSize(1.0f);
+        itemSlotText->setHorizontalAlignment(Text::HorizontalAlignment::right);
+        itemSlotText->setVerticalAlignment(Text::VerticalAlignment::bottom);
+        itemSlotText->localTransform().setPosition({width - 4.0f, height - 4.0f});
 
-        weaponSlots_.push_back({weaponSlotSprite, weaponSprite, weaponSlotText});
+        itemSlots_.push_back({itemSlotSprite, itemSprite, itemSlotText});
     }
 
     offset += Vecf((width + margin) * weaponSlots + 10.0f, 0.0);
@@ -143,7 +142,7 @@ void HUD::onDestroy() {
     Tile2DBehaviour::onDestroy();
     healthSprite_->gameObject()->destroy();
     powerSprite_->gameObject()->destroy();
-    for (auto weaponSlot : weaponSlots_) {
-        weaponSlot.weaponSlotSprite->gameObject()->destroy();
+    for (auto itemSlot : itemSlots_) {
+        itemSlot.itemSlotSprite->gameObject()->destroy();
     }
 }

@@ -46,7 +46,7 @@ include_directories(
         Game/SceneTitleScreen
         Game/SceneEndScreen
         Game/SceneQuickTesting
-        Game/SceneInGame/Weapons
+        Game/SceneInGame/Items
         Tile2D/Animation
         Tile2D/LightSystem
         Tile2D/Canvas/ParticleSystem
@@ -230,22 +230,21 @@ set(SOURCE_FILES
 
         Game/SceneInGame/Power.cpp
         Game/SceneInGame/Power.h
-        Game/SceneInGame/Weapons/WeaponSystem.cpp
-        Game/SceneInGame/Weapons/WeaponSystem.h
-        Game/SceneInGame/Weapons/ReloadingWeaponBase.cpp
-        Game/SceneInGame/Weapons/ReloadingWeaponBase.h
-        Game/SceneInGame/Weapons/WeaponBase.cpp
-        Game/SceneInGame/Weapons/WeaponBase.h
+        Game/SceneInGame/Items/Inventory.cpp
+        Game/SceneInGame/Items/Inventory.h
+        Game/SceneInGame/Items/ReloadingWeaponBase.cpp
+        Game/SceneInGame/Items/ReloadingWeaponBase.h
+        Game/SceneInGame/Items/ItemBase.cpp
+        Game/SceneInGame/Items/ItemBase.h
         Tile2D/Util/Timer.cpp
         Tile2D/Util/Timer.h
-        Game/SceneInGame/Weapons/Laser.cpp
-        Game/SceneInGame/Weapons/Laser.h
-        Game/SceneInGame/Weapons/BombDropper.cpp
-        Game/SceneInGame/Weapons/BombDropper.h
-        Game/SceneInGame/Weapons/Weapons.h
+        Game/SceneInGame/Items/Laser.cpp
+        Game/SceneInGame/Items/Laser.h
+        Game/SceneInGame/Items/BombDropper.cpp
+        Game/SceneInGame/Items/BombDropper.h
         Game/SceneInGame/SwirlingBehaviour.cpp
         Game/SceneInGame/SwirlingBehaviour.h
-        )
+        Game/SceneInGame/Items/Healer.cpp Game/SceneInGame/Items/Healer.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

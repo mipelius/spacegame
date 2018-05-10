@@ -21,18 +21,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_LASER_H
-#define SPACEGAME_LASER_H
+#include "Health.h"
+#include "Healer.h"
 
-#include "ReloadingWeaponBase.h"
+bool Healer::useActual(GameObject *user) {
+    auto health = user->getComponent<Health>();
+    if (health == nullptr) {
+        return false;
+    }
+    health->heal(healingAmount_);
+    return true;
+}
 
-class Laser : public ReloadingWeaponBase {
-protected:
-    void shootActual(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) override;
+int Healer::getHealingAmount() const {
+    return healingAmount_;
+}
 
-private:
-    void shootOnce_(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity);
-};
+void Healer::setHealingAmount(int healingAmount) {
+    Healer::healingAmount_ = healingAmount;
+}
 
-
-#endif //SPACEGAME_LASER_H

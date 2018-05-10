@@ -21,14 +21,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_WEAPONS_H
-#define SPACEGAME_WEAPONS_H
+#ifndef SPACEGAME_LASER_H
+#define SPACEGAME_LASER_H
 
-namespace Weapons {
-    enum {
-        laser,
-        bomb
-    };
-}
+#include "ReloadingWeaponBase.h"
 
-#endif //SPACEGAME_WEAPONS_H
+class Laser : public ReloadingWeaponBase {
+protected:
+    void shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) override;
+
+private:
+    void shootOnce_(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity);
+};
+
+
+#endif //SPACEGAME_LASER_H

@@ -21,38 +21,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "WeaponBase.h"
+#ifndef SPACEGAME_RELOADINGWEAPONBASE_H
+#define SPACEGAME_RELOADINGWEAPONBASE_H
 
-bool WeaponBase::shoot(Power *power, const Vecf& from, const Vecf& direction, const Vecf& shooterVelocity) {
-    if (!isActivated_) {
-        return false;
-    }
-    if (power == nullptr) {
-        return tryShoot(from, direction, shooterVelocity);
-    }
-    if (power->getPower() < powerConsumption_) {
-        return false;
-    }
-    if (tryShoot(from, direction, shooterVelocity)) {
-        power->consume(powerConsumption_);
-        return true;
-    }
-    return false;
-}
+#include "Timer.h"
+#include "ItemBase.h"
 
-int WeaponBase::getPowerConsumption() const {
-    return powerConsumption_;
-}
+class ReloadingWeaponBase : public ItemBase {
+public:
+    bool useActual(GameObject* user) final;
 
-void WeaponBase::setPowerConsumption(int powerConsumption) {
-    powerConsumption_ = powerConsumption;
-}
+    int getReloadDelay() const;
+    void setReloadDelay(int reloadDelay);
 
-bool WeaponBase::isActivated() const {
-    return isActivated_;
-}
+protected:
+    virtual void shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) = 0;
 
-void WeaponBase::setIsActivated(bool isActivated) {
-    isActivated_ = isActivated;
-}
+private:
+    Timer timer;
+    int reloadDelay = 0;
+};
 
+#endif //SPACEGAME_RELOADINGWEAPONBASE_H

@@ -21,29 +21,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_WEAPONBASE_H
-#define SPACEGAME_WEAPONBASE_H
+#ifndef SPACEGAME_BOMBDROPPER_H
+#define SPACEGAME_BOMBDROPPER_H
 
-#include "Power.h"
+#include "ReloadingWeaponBase.h"
 
-class WeaponBase {
-public:
-    bool shoot(Power *power, const Vecf& from, const Vecf& direction, const Vecf& shooterVelocity);
-
-    int getPowerConsumption() const;
-    void setPowerConsumption(int powerConsumption);
-
-    bool isActivated() const;
-    void setIsActivated(bool isActivated);
-
+class BombDropper : public ReloadingWeaponBase {
 protected:
-    virtual bool tryShoot(const Vecf& from, const Vecf& direction, const Vecf& shooterVelocity) = 0;
-
-private:
-    bool isActivated_ = false;
-    int powerConsumption_ = 0;
-
+    void shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) override;
 };
 
 
-#endif //SPACEGAME_WEAPONBASE_H
+#endif //SPACEGAME_BOMBDROPPER_H

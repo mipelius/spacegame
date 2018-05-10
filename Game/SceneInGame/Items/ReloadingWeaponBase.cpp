@@ -21,28 +21,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "ColliderLayers.h"
-#include "Prefabs.h"
-#include "Laser.h"
 #include "Body.h"
-#include "PolygonCollider.h"
+#include "ReloadingWeaponBase.h"
 
-void Laser::shootActual(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) {
-    Vecf from1 = from + Vecf(-10, -13).rotated(direction.angle());
-    Vecf from2 = from + Vecf(-10, 13).rotated(direction.angle());
+bool ReloadingWeaponBase::useActual(GameObject* user) {
+    if (timer.getTime() >= reloadDelay) {
+        timer.reset();
+        auto body = user->getComponent<Body>();
 
-    shootOnce_(from1, direction, shooterVelocity);
-    shootOnce_(from2, direction, shooterVelocity);
+        if (body == nullptr) {
+            return false;
+        }
+
+        shoot(
+                user->transform().getPosition(),
+                Vecf::byAngle(user->transform().getRotation(), 1.0f),
+                body->getVelocity()
+        );
+
+        return true;
+    }
+    return false;
 }
 
-void Laser::shootOnce_(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) {
-    auto laser = Prefabs::laser();
-    laser->transform().setPosition(from);
-    laser->transform().setRotation(direction.angle());
+int ReloadingWeaponBase::getReloadDelay() const {
+    return reloadDelay;
+}
 
-    auto laserBody = laser->getComponent<Body>();
-    laserBody->setVelocity(direction.normalized() * 2000.0 + shooterVelocity);
-
-    auto laserCollider = laser->getComponent<PolygonCollider>();
-    laserCollider->setLayer(ColliderLayers::playerAmmo);
+void ReloadingWeaponBase::setReloadDelay(int reloadDelay) {
+    ReloadingWeaponBase::reloadDelay = reloadDelay;
 }

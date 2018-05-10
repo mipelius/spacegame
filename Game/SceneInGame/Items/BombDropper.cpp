@@ -21,25 +21,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_RELOADINGWEAPONBASE_H
-#define SPACEGAME_RELOADINGWEAPONBASE_H
+#include "Body.h"
+#include "ColliderLayers.h"
+#include "Prefabs.h"
+#include "BombDropper.h"
 
-#include "Timer.h"
-#include "WeaponBase.h"
+void BombDropper::shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) {
+    auto bomb = Prefabs::bomb();
+    bomb->transform().setPosition(from);
+    bomb->getComponent<Body>()->setVelocity(shooterVelocity / 2 + Vecf(0, 100));
 
-class ReloadingWeaponBase : public WeaponBase {
-public:
-    bool tryShoot(const Vecf& from, const Vecf& direction, const Vecf& shooterVelocity) final;
-
-    int getReloadDelay() const;
-    void setReloadDelay(int reloadDelay);
-
-protected:
-    virtual void shootActual(const Vecf& from, const Vecf& direction, const Vecf& shooterVelocity) = 0;
-
-private:
-    Timer timer;
-    int reloadDelay = 0;
-};
-
-#endif //SPACEGAME_RELOADINGWEAPONBASE_H
+    auto bombCollider = bomb->getComponent<PolygonCollider>();
+    bombCollider->setLayer(ColliderLayers::playerAmmo);
+}

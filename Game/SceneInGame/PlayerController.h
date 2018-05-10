@@ -25,7 +25,7 @@
 #ifndef __PlayerController_H
 #define __PlayerController_H
 
-#include "WeaponSystem.h"
+#include "Inventory.h"
 #include "Body.h"
 #include "Sprite.h"
 #include "Tile2DBehaviour.h"
@@ -46,7 +46,7 @@ private:
 
     Body* body_;
     Sprite* sprite_;
-    WeaponSystem* weaponSystem_;
+    Inventory* weaponSystem_;
 
     void dropLight_();
 

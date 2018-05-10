@@ -21,50 +21,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Power.h"
-#include "Body.h"
-#include "Tile2DMath.h"
-#include "WeaponSystem.h"
+#include "ItemBase.h"
 
-void WeaponSystem::shoot() {
-    if (weaponInfos_.empty()) {
-        return;
+bool ItemBase::use(GameObject *user) {
+    auto power = user->getComponent<Power>();
+
+    if (!isActivated_) {
+        return false;
     }
-    auto weaponInfo = weaponInfos_[currentWeapon_];
-
-    auto weapon = weaponInfo.weapon;
-
-    weapon->shoot(
-            power_,
-            transform()->getPosition(),
-            Vecf::byAngle(transform()->getRotation(), 1.0f),
-            body_->getVelocity()
-    );
-}
-
-const std::vector<WeaponInfo> &WeaponSystem::getWeaponInfos() const {
-    return weaponInfos_;
-}
-
-void WeaponSystem::init() {
-    power_ = gameObject()->getComponent<Power>();
-    body_ = gameObject()->getComponent<Body>();
-}
-
-void WeaponSystem::onDestroy() {
-    for (auto weaponInfo : weaponInfos_) {
-        delete weaponInfo.weapon;
+    if (power == nullptr) {
+        return useActual(user);
     }
-}
-
-int WeaponSystem::getCurrentWeaponSlot() const {
-    return currentWeapon_;
-}
-
-void WeaponSystem::setCurrentWeaponSlot(int currentWeapon) {
-    currentWeapon;
-    Mathi::clamp(currentWeapon, 0, (int)(weaponInfos_.size()) -1);
-    if (weaponInfos_[currentWeapon].weapon->isActivated()) {
-        currentWeapon_ = currentWeapon;
+    if (power->getPower() < powerConsumption_) {
+        return false;
     }
+    if (useActual(user)) {
+        power->consume(powerConsumption_);
+        return true;
+    }
+    return false;
+}
+
+int ItemBase::getPowerConsumption() const {
+    return powerConsumption_;
+}
+
+void ItemBase::setPowerConsumption(int powerConsumption) {
+    powerConsumption_ = powerConsumption;
+}
+
+bool ItemBase::isActivated() const {
+    return isActivated_;
+}
+
+void ItemBase::setIsActivated(bool isActivated) {
+    isActivated_ = isActivated;
 }

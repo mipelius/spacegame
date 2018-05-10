@@ -21,43 +21,53 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_WEAPONSYSTEM_H
+#define SPACEGAME_WEAPONSYSTEM_H
 
-#ifndef SPACEGAME_HUD_H
-#define SPACEGAME_HUD_H
+#include <vector>
+#include "Texture.h"
+#include "Tile2DComponent.h"
+#include "ItemBase.h"
+#include "Body.h"
 
-#include "Inventory.h"
-#include "Sprite.h"
-#include "Tile2DBehaviour.h"
-#include "Health.h"
-#include "Text.h"
-
-class HUD : public Tile2DBehaviour {
-
-public:
-    void setPlayer(GameObject* player);
-
-protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
-
-private:
-    struct ItemSlot {
-        Sprite* itemSlotSprite;
-        Sprite* itemSprite;
-        Text* itemSlotText;
-    };
-
-    Sprite* healthSprite_;
-    Sprite* powerSprite_;
-    GameObject* player_ = nullptr;
-
-    std::vector<ItemSlot> itemSlots_;
-
-    Inventory* inventory = nullptr;
-
-protected:
-    void onDestroy() override;
+struct ItemInfo {
+    ItemBase* item;
+    Texture* inventoryTexturePtr;
 };
 
-#endif //SPACEGAME_HUD_H
+class Inventory : public Tile2DComponent {
+public:
+    void useSelectedItem();
+
+    template <class T>
+    T *attachItem(Texture *inventoryTexturePtr);
+
+    const std::vector<ItemInfo>& getItemInfos() const;
+
+    int getSelectedItem() const;
+    void selectItem(int itemNumber);
+
+protected:
+    void init() override;
+    void onDestroy() override;
+
+private:
+    std::vector<ItemInfo> itemInfos_;
+    int selectedItem_ = 0;
+    Power* power_;
+    Body* body_;
+};
+
+// --- Template method implementation ---
+
+template <class T>
+T * Inventory::attachItem(Texture *inventoryTexturePtr) {
+    auto item = new T();
+
+    ItemInfo itemInfo = {item, inventoryTexturePtr};
+    itemInfos_.push_back(itemInfo);
+
+    return item;
+}
+
+#endif //SPACEGAME_WEAPONSYSTEM_H

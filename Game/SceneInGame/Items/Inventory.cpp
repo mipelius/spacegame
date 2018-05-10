@@ -21,55 +21,45 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_WEAPONSYSTEM_H
-#define SPACEGAME_WEAPONSYSTEM_H
-
-#include <vector>
-#include "Texture.h"
-#include "Tile2DComponent.h"
-#include "WeaponBase.h"
+#include "Power.h"
 #include "Body.h"
+#include "Tile2DMath.h"
+#include "Inventory.h"
 
-struct WeaponInfo {
-    WeaponBase* weapon;
-    Texture* inventoryTexturePtr;
-    Texture* inWorldTexturePtr;
-    int tag;
-};
+void Inventory::useSelectedItem() {
+    if (itemInfos_.empty()) {
+        return;
+    }
+    auto itemInfo = itemInfos_[selectedItem_];
 
-class WeaponSystem : public Tile2DComponent {
-public:
-    void shoot();
+    auto item = itemInfo.item;
 
-    template <class T>
-    T* attachWeapon(Texture* inventoryTexturePtr, Texture* inWorldTexturePtr, int tag);
-
-    const std::vector<WeaponInfo>& getWeaponInfos() const;
-
-    int getCurrentWeaponSlot() const;
-    void setCurrentWeaponSlot(int currentWeapon);
-
-protected:
-    void init() override;
-    void onDestroy() override;
-
-private:
-    std::vector<WeaponInfo> weaponInfos_;
-    int currentWeapon_ = 0;
-    Power* power_;
-    Body* body_;
-};
-
-// --- Template method implementation ---
-
-template <class T>
-T* WeaponSystem::attachWeapon(Texture* inventoryTexturePtr, Texture* inWorldTexturePtr, int tag) {
-    auto weapon = new T();
-
-    WeaponInfo weaponSlot = {weapon, inventoryTexturePtr, inWorldTexturePtr, tag};
-    weaponInfos_.push_back(weaponSlot);
-
-    return weapon;
+    item->use(gameObject());
 }
 
-#endif //SPACEGAME_WEAPONSYSTEM_H
+const std::vector<ItemInfo> &Inventory::getItemInfos() const {
+    return itemInfos_;
+}
+
+void Inventory::init() {
+    power_ = gameObject()->getComponent<Power>();
+    body_ = gameObject()->getComponent<Body>();
+}
+
+void Inventory::onDestroy() {
+    for (auto weaponInfo : itemInfos_) {
+        delete weaponInfo.item;
+    }
+}
+
+int Inventory::getSelectedItem() const {
+    return selectedItem_;
+}
+
+void Inventory::selectItem(int itemNumber) {
+    itemNumber;
+    Mathi::clamp(itemNumber, 0, (int)(itemInfos_.size()) -1);
+    if (itemInfos_[itemNumber].item->isActivated()) {
+        selectedItem_ = itemNumber;
+    }
+}

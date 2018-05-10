@@ -23,10 +23,10 @@
 
 
 #include <cfloat>
+#include <Game/SceneInGame/Items/Healer.h>
 #include "Laser.h"
 #include "BombDropper.h"
-#include "Weapons.h"
-#include "WeaponSystem.h"
+#include "Inventory.h"
 #include "AnimatedSprite.h"
 #include "Scenes.h"
 #include "Prefabs.h"
@@ -53,6 +53,7 @@
 #include "t2Time.h"
 #include "Power.h"
 #include "SwirlingBehaviour.h"
+#include "Healer.h"
 
 GameObject *Prefabs::player() {
     auto player = Tile2D::createGameObject();
@@ -106,45 +107,34 @@ GameObject *Prefabs::player() {
     power->setMaxPower(600);
     power->setReloadSpeed(200);
 
-    // --- WEAPONS ---
+    // --- ITEMS ---
 
-    auto weaponSystem = player->attachComponent<WeaponSystem>();
+    auto inventory = player->attachComponent<Inventory>();
 
-    auto laser = weaponSystem->attachWeapon<Laser>(
-            Tile2D::resources().textures["laser_cannon"],
-            nullptr,
-            Weapons::laser
-    );
+    auto laser = inventory->attachItem<Laser>(Tile2D::resources().textures["laser_cannon"]);
     laser->setPowerConsumption(50);
     laser->setReloadDelay(100);
     laser->setIsActivated(true);
 
-    auto bombDropper = weaponSystem->attachWeapon<BombDropper>(
-            Tile2D::resources().textures["bomb"],
-            nullptr,
-            Weapons::bomb
-    );
+    auto bombDropper = inventory->attachItem<BombDropper>(Tile2D::resources().textures["bomb"]);
     bombDropper->setPowerConsumption(200);
     bombDropper->setReloadDelay(200);
     bombDropper->setIsActivated(true);
 
-    auto placeholderWeapon1 = weaponSystem->attachWeapon<Laser>(
-            Tile2D::resources().textures["laser_cannon"],
-            nullptr,
-            Weapons::laser
-    );
+    auto placeholderWeapon1 = inventory->attachItem<Laser>(Tile2D::resources().textures["laser_cannon"]);
     placeholderWeapon1->setPowerConsumption(50);
     placeholderWeapon1->setReloadDelay(100);
     placeholderWeapon1->setIsActivated(false);
 
-    auto placeholderWeapon2 = weaponSystem->attachWeapon<Laser>(
-            Tile2D::resources().textures["laser_cannon"],
-            nullptr,
-            Weapons::laser
-    );
+    auto placeholderWeapon2 = inventory->attachItem<Laser>(Tile2D::resources().textures["laser_cannon"]);
     placeholderWeapon2->setPowerConsumption(10);
     placeholderWeapon2->setReloadDelay(20);
     placeholderWeapon2->setIsActivated(true);
+
+    auto healer = inventory->attachItem<Healer>(Tile2D::resources().textures["healer"]);
+    healer->setPowerConsumption(100);
+    healer->setHealingAmount(100);
+    healer->setIsActivated(true);
 
     return player;
 }

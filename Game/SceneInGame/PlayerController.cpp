@@ -38,7 +38,7 @@
 void PlayerController::awake() {
     body_ = gameObject()->getComponent<Body>();
     sprite_ = gameObject()->getComponent<Sprite>();
-    weaponSystem_ = gameObject()->getComponent<WeaponSystem>();
+    weaponSystem_ = gameObject()->getComponent<Inventory>();
 
     lightTimer.setInterval(500);
 }
@@ -72,22 +72,22 @@ void PlayerController::update() {
     // weapon slot selection
 
     if (keyboard.keyPressed(SDL_SCANCODE_1)) {
-        weaponSystem_->setCurrentWeaponSlot(0);
+        weaponSystem_->selectItem(0);
     }
     if (keyboard.keyPressed(SDL_SCANCODE_2)) {
-        weaponSystem_->setCurrentWeaponSlot(1);
+        weaponSystem_->selectItem(1);
     }
     if (keyboard.keyPressed(SDL_SCANCODE_3)) {
-        weaponSystem_->setCurrentWeaponSlot(2);
+        weaponSystem_->selectItem(2);
     }
     if (keyboard.keyPressed(SDL_SCANCODE_4)) {
-        weaponSystem_->setCurrentWeaponSlot(3);
+        weaponSystem_->selectItem(3);
     }
     if (keyboard.keyPressed(SDL_SCANCODE_5)) {
-        weaponSystem_->setCurrentWeaponSlot(4);
+        weaponSystem_->selectItem(4);
     }
     if (keyboard.keyPressed(SDL_SCANCODE_6)) {
-        weaponSystem_->setCurrentWeaponSlot(5);
+        weaponSystem_->selectItem(5);
     }
 }
 
@@ -103,7 +103,7 @@ void PlayerController::dropLight_() {
 
 void PlayerController::lateUpdate() {
     if (Tile2D::input().keyboard().keyState(SDL_SCANCODE_SPACE)) {
-        weaponSystem_->shoot();
+        weaponSystem_->useSelectedItem();
     }
 
     // prevent player from going outside the world
