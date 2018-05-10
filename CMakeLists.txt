@@ -232,19 +232,19 @@ set(SOURCE_FILES
         Game/SceneInGame/Power.h
         Game/SceneInGame/Items/Inventory.cpp
         Game/SceneInGame/Items/Inventory.h
-        Game/SceneInGame/Items/ReloadingWeaponBase.cpp
-        Game/SceneInGame/Items/ReloadingWeaponBase.h
+        Game/SceneInGame/Items/WeaponBase.cpp
+        Game/SceneInGame/Items/WeaponBase.h
         Game/SceneInGame/Items/ItemBase.cpp
         Game/SceneInGame/Items/ItemBase.h
         Tile2D/Util/Timer.cpp
         Tile2D/Util/Timer.h
-        Game/SceneInGame/Items/Laser.cpp
-        Game/SceneInGame/Items/Laser.h
+        Game/SceneInGame/Items/Cannon.cpp
+        Game/SceneInGame/Items/Cannon.h
         Game/SceneInGame/Items/BombDropper.cpp
         Game/SceneInGame/Items/BombDropper.h
         Game/SceneInGame/SwirlingBehaviour.cpp
         Game/SceneInGame/SwirlingBehaviour.h
-        Game/SceneInGame/Items/Healer.cpp Game/SceneInGame/Items/Healer.h)
+        Game/SceneInGame/Items/Healer.cpp Game/SceneInGame/Items/Healer.h Game/SceneInGame/TargetingComponentBase.cpp Game/SceneInGame/TargetingComponentBase.h Game/SceneInGame/PlayerTargetingComponent.cpp Game/SceneInGame/PlayerTargetingComponent.h Game/SceneInGame/EnemyTargetingComponent.cpp Game/SceneInGame/EnemyTargetingComponent.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

@@ -24,6 +24,7 @@
 #ifndef SPACEGAME_WEAPONBASE_H
 #define SPACEGAME_WEAPONBASE_H
 
+#include "Timer.h"
 #include "Power.h"
 
 class ItemBase {
@@ -41,15 +42,20 @@ public:
     int getCount() const;
     void setCount(int count);
 
+    int getReloadDelay() const;
+    void setReloadDelay(int reloadDelay);
+
 protected:
     virtual bool useActual(GameObject* user) = 0;
 
 private:
     bool use_(GameObject* user);
-    bool isActivated_ = false;
+    bool isActivated_ = true;
     int powerConsumption_ = 0;
-
     int count_ = COUNT_INFINITY;
+
+    Timer timer_;
+    int reloadDelay_ = 0;
 };
 
 

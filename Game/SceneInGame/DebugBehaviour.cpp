@@ -31,6 +31,7 @@
 #include "LightSystem.h"
 #include "TileMap.h"
 #include "Window.h"
+#include "EnemyTargetingComponent.h"
 
 void DebugBehaviour::awake() {
     body_ = gameObject()->getComponent<Body>();

@@ -21,51 +21,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_WEAPONSYSTEM_H
-#define SPACEGAME_WEAPONSYSTEM_H
+#ifndef SPACEGAME_RELOADINGWEAPONBASE_H
+#define SPACEGAME_RELOADINGWEAPONBASE_H
 
-#include <vector>
-#include "Texture.h"
-#include "Tile2DComponent.h"
+#include "Timer.h"
 #include "ItemBase.h"
-#include "Body.h"
 
-struct ItemInfo {
-    ItemBase* item;
-    Texture* inventoryTexturePtr;
-};
-
-class Inventory : public Tile2DComponent {
-public:
-    void useSelectedItem();
-
-    template <class T>
-    T *attachItem(Texture *inventoryTexturePtr);
-
-    const std::vector<ItemInfo>& getItemInfos() const;
-
-    int getSelectedItem() const;
-    void selectItem(int itemNumber);
+class WeaponBase : public ItemBase {
 
 protected:
-    void init() override;
-    void onDestroy() override;
-
-private:
-    std::vector<ItemInfo> itemInfos_;
-    int selectedItem_ = 0;
+    bool useActual(GameObject* user) final;
+    virtual void shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) = 0;
 };
 
-// --- Template method implementation ---
-
-template <class T>
-T * Inventory::attachItem(Texture *inventoryTexturePtr) {
-    auto item = new T();
-
-    ItemInfo itemInfo = {item, inventoryTexturePtr};
-    itemInfos_.push_back(itemInfo);
-
-    return item;
-}
-
-#endif //SPACEGAME_WEAPONSYSTEM_H
+#endif //SPACEGAME_RELOADINGWEAPONBASE_H

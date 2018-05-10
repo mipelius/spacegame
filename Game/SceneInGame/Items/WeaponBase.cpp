@@ -21,25 +21,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_RELOADINGWEAPONBASE_H
-#define SPACEGAME_RELOADINGWEAPONBASE_H
+#include "TargetingComponentBase.h"
+#include "Body.h"
+#include "WeaponBase.h"
 
-#include "Timer.h"
-#include "ItemBase.h"
+bool WeaponBase::useActual(GameObject* user) {
+    auto body = user->getComponent<Body>();
 
-class ReloadingWeaponBase : public ItemBase {
-public:
-    bool useActual(GameObject* user) final;
+    if (body == nullptr) {
+        return false;
+    }
 
-    int getReloadDelay() const;
-    void setReloadDelay(int reloadDelay);
+    auto targetingComponent = user->getComponent<TargetingComponentBase>();
 
-protected:
-    virtual void shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) = 0;
+    if (targetingComponent == nullptr) {
+        return false;
+    }
 
-private:
-    Timer timer;
-    int reloadDelay = 0;
-};
+    shoot(
+            user->transform().getPosition(),
+            targetingComponent->getTargetPosition() - user->transform().getPosition(),
+            body->getVelocity()
+    );
 
-#endif //SPACEGAME_RELOADINGWEAPONBASE_H
+    return true;
+}

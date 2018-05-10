@@ -24,7 +24,7 @@
 
 #include <cfloat>
 #include <Game/SceneInGame/Items/Healer.h>
-#include "Laser.h"
+#include "Cannon.h"
 #include "BombDropper.h"
 #include "Inventory.h"
 #include "AnimatedSprite.h"
@@ -54,6 +54,8 @@
 #include "Power.h"
 #include "SwirlingBehaviour.h"
 #include "Healer.h"
+#include "PlayerTargetingComponent.h"
+#include "EnemyTargetingComponent.h"
 
 GameObject *Prefabs::player() {
     auto player = Tile2D::createGameObject();
@@ -107,15 +109,22 @@ GameObject *Prefabs::player() {
     power->setMaxPower(600);
     power->setReloadSpeed(200);
 
+    auto targetingComponent = player->attachComponent<PlayerTargetingComponent>();
+
     // --- ITEMS ---
 
     auto inventory = player->attachComponent<Inventory>();
 
-    auto laser = inventory->attachItem<Laser>(Tile2D::resources().textures["laser_cannon"]);
-    laser->setPowerConsumption(50);
-    laser->setReloadDelay(100);
-    laser->setIsActivated(true);
-    laser->setCount(Laser::COUNT_INFINITY);
+    auto laserCannon = inventory->attachItem<Cannon>(Tile2D::resources().textures["laser_cannon"]);
+    laserCannon->setAmmoFunction(laser);
+    laserCannon->setCannonOffsets({
+          {-10, -13},
+          {-10, 13}
+    });
+    laserCannon->setPowerConsumption(50);
+    laserCannon->setReloadDelay(100);
+    laserCannon->setIsActivated(true);
+    laserCannon->setCount(Cannon::COUNT_INFINITY);
 
     auto bombDropper = inventory->attachItem<BombDropper>(Tile2D::resources().textures["bomb"]);
     bombDropper->setPowerConsumption(200);
@@ -123,12 +132,19 @@ GameObject *Prefabs::player() {
     bombDropper->setCount(30);
     bombDropper->setIsActivated(true);
 
-    auto placeholderWeapon1 = inventory->attachItem<Laser>(Tile2D::resources().textures["laser_cannon"]);
+    auto placeholderWeapon1 = inventory->attachItem<Cannon>(Tile2D::resources().textures["laser_cannon"]);
+    placeholderWeapon1->setAmmoFunction(laser);
     placeholderWeapon1->setPowerConsumption(50);
     placeholderWeapon1->setReloadDelay(100);
     placeholderWeapon1->setIsActivated(false);
 
-    auto placeholderWeapon2 = inventory->attachItem<Laser>(Tile2D::resources().textures["laser_cannon"]);
+    auto placeholderWeapon2 = inventory->attachItem<Cannon>(Tile2D::resources().textures["laser_cannon"]);
+    placeholderWeapon2->setAmmoFunction(laser);
+    placeholderWeapon2->setCannonOffsets({
+          {-10, -13},
+          {0, 0},
+          {-10, 13}
+    });
     placeholderWeapon2->setPowerConsumption(10);
     placeholderWeapon2->setReloadDelay(20);
     placeholderWeapon2->setIsActivated(true);
@@ -172,10 +188,11 @@ GameObject *Prefabs::boss() {
     AI->setSpeed(150.0f);
     AI->setRotates(false);
 
-    CountDownTimer shootingTimer;
-    shootingTimer.setInterval(200);
-    AI->setShootingTimer(shootingTimer);
     AI->setMaxPathFindingDistance(1500);
+
+    auto laserCannon = AI->setWeapon<Cannon>();
+    laserCannon->setAmmoFunction(enemyLaser);
+    laserCannon->setReloadDelay(200);
 
     return enemy;
 }
@@ -210,6 +227,10 @@ GameObject *Prefabs::walker() {
                 {16, 23.0f}
             }
     );
+
+    auto laserCannon = AI->setWeapon<Cannon>();
+    laserCannon->setAmmoFunction(enemyLaser);
+    laserCannon->setReloadDelay(200);
 
     return enemy;
 }
@@ -246,6 +267,10 @@ GameObject *Prefabs::wanderer() {
                 {24, 24.0f}
             }
     );
+
+    auto laserCannon = AI->setWeapon<Cannon>();
+    laserCannon->setAmmoFunction(enemyLaser);
+    laserCannon->setReloadDelay(200);
 
     return enemy;
 }
@@ -285,10 +310,9 @@ GameObject *Prefabs::fish() {
 
     AI->setSpeed(300);
 
-    CountDownTimer shootingTimer;
-    shootingTimer.setInterval(5000);
-    shootingTimer.setIntervalRandomness(2000);
-    AI->setShootingTimer(shootingTimer);
+    auto laserCannon = AI->setWeapon<Cannon>();
+    laserCannon->setAmmoFunction(enemyLaser);
+    laserCannon->setReloadDelay(200);
 
     AI->setMaxDistance(1500);
     return fish;
@@ -314,10 +338,9 @@ GameObject *Prefabs::trifly() {
 
     AI->setMaxPathFindingDistance(1500);
 
-    CountDownTimer shootingTimer;
-    shootingTimer.setInterval(500);
-    shootingTimer.setIntervalRandomness(200);
-    AI->setShootingTimer(shootingTimer);
+    auto laserCannon = AI->setWeapon<Cannon>();
+    laserCannon->setAmmoFunction(enemyLaser);
+    laserCannon->setReloadDelay(200);
 
     AI->setSpeed(300);
     AI->setRotates(false);
@@ -358,10 +381,9 @@ GameObject *Prefabs::rider() {
 
     AI->setMaxPathFindingDistance(1500);
 
-    CountDownTimer shootingTimer;
-    shootingTimer.setInterval(500);
-    shootingTimer.setIntervalRandomness(200);
-    AI->setShootingTimer(shootingTimer);
+    auto laserCannon = AI->setWeapon<Cannon>();
+    laserCannon->setAmmoFunction(enemyLaser);
+    laserCannon->setReloadDelay(200);
 
     AI->setSpeed(300);
     AI->setRotates(true);
@@ -406,6 +428,8 @@ GameObject *Prefabs::createEnemy_(
         GameObject* newBloodBurst = bloodBurst();
         newBloodBurst->transform().setPosition(health->transform()->getPosition());
     });
+
+    auto targetingComponent = enemy->attachComponent<EnemyTargetingComponent>();
 
     return enemy;
 }
@@ -491,17 +515,17 @@ GameObject *Prefabs::light() {
 }
 
 GameObject *Prefabs::laser() {
-    return ammo(Tile2D::resources().textures["laser"]);
+    return ammo(Tile2D::resources().textures["laser"], ColliderLayers::playerAmmo);
 }
 
 GameObject *Prefabs::enemyLaser() {
-    auto laser = ammo(Tile2D::resources().textures["laser"]);
+    auto laser = ammo(Tile2D::resources().textures["laser"], ColliderLayers::enemyAmmo);
     laser->getComponent<Sprite>()->setColor({0.0f, 1.0f, 0.3f});
 
     return laser;
 }
 
-GameObject *Prefabs::ammo(Texture* texturePtr) {
+GameObject *Prefabs::ammo(Texture* texturePtr, unsigned int colliderLayer) {
     auto laser = Tile2D::createGameObject();
 
     auto laserBody = laser->attachComponent<Body>();
@@ -565,6 +589,8 @@ GameObject *Prefabs::ammo(Texture* texturePtr) {
             pulseLight(collider->transform()->getPosition());
         }
     });
+    collider->setLayer(colliderLayer);
+
     return laser;
 }
 

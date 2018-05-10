@@ -23,26 +23,36 @@
 
 #include "ColliderLayers.h"
 #include "Prefabs.h"
-#include "Laser.h"
+#include "Cannon.h"
 #include "Body.h"
 #include "PolygonCollider.h"
 
-void Laser::shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) {
-    Vecf from1 = from + Vecf(-10, -13).rotated(direction.angle());
-    Vecf from2 = from + Vecf(-10, 13).rotated(direction.angle());
-
-    shootOnce_(from1, direction, shooterVelocity);
-    shootOnce_(from2, direction, shooterVelocity);
+void Cannon::shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) {
+    if (cannonOffsets_.empty()) {
+        shootOnce_(from, direction, shooterVelocity);
+    }
+    for (auto cannonOffset : cannonOffsets_) {
+        Vecf fromActual = from + cannonOffset.rotated(direction.angle());
+        shootOnce_(fromActual, direction, shooterVelocity);
+    }
 }
 
-void Laser::shootOnce_(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) {
-    auto laser = Prefabs::laser();
+void Cannon::shootOnce_(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) {
+    if (ammoFunction_ == nullptr) {
+        return;
+    }
+    auto laser = ammoFunction_();
     laser->transform().setPosition(from);
     laser->transform().setRotation(direction.angle());
 
     auto laserBody = laser->getComponent<Body>();
     laserBody->setVelocity(direction.normalized() * 2000.0 + shooterVelocity);
+}
 
-    auto laserCollider = laser->getComponent<PolygonCollider>();
-    laserCollider->setLayer(ColliderLayers::playerAmmo);
+void Cannon::setAmmoFunction(GameObject *(*ammoFunction)()) {
+    ammoFunction_ = ammoFunction;
+}
+
+void Cannon::setCannonOffsets(const std::list<Vecf> &cannonOffsets) {
+    cannonOffsets_ = cannonOffsets;
 }

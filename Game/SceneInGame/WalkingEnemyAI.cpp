@@ -35,9 +35,6 @@ void WalkingEnemyAI::awake() {
     reactionTimer_.setInterval(500);
     reactionTimer_.setIntervalRandomness(200);
 
-    shootingTimer_.setInterval(1000);
-    shootingTimer_.setIntervalRandomness(200);
-
     body_ = gameObject()->getComponent<Body>();
 }
 

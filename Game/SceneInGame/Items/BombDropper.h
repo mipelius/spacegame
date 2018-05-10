@@ -24,9 +24,9 @@
 #ifndef SPACEGAME_BOMBDROPPER_H
 #define SPACEGAME_BOMBDROPPER_H
 
-#include "ReloadingWeaponBase.h"
+#include "WeaponBase.h"
 
-class BombDropper : public ReloadingWeaponBase {
+class BombDropper : public WeaponBase {
 protected:
     void shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) override;
 };

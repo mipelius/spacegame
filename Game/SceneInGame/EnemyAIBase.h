@@ -26,6 +26,7 @@
 #ifndef SPACEGAME_ENEMYAIBASE_H
 #define SPACEGAME_ENEMYAIBASE_H
 
+#include "WeaponBase.h"
 #include "Tile2DBehaviour.h"
 #include "Body.h"
 #include "CountDownTimer.h"
@@ -38,17 +39,17 @@ public:
     Transform *getTarget() const;
     void setSpawnerBehaviour(SpawnerBehaviour *spawnerBehaviour);
 
-    const CountDownTimer &getShootingTimer() const;
-    void setShootingTimer(const CountDownTimer &shootingTimer);
     float getMaxDistance() const;
     void setMaxDistance(float maxDistance);
+
+    template <class T>
+    T* setWeapon();
 
 protected:
     Body* body_;
     Transform* target_ = nullptr;
 
-    void shootTarget_(bool useTimer = true);
-    CountDownTimer shootingTimer_;
+    void shootTarget_();
 
     float maxDistance_;
 
@@ -59,6 +60,17 @@ protected:
     void update() override;
 
     bool canSeeTarget_();
+
+private:
+    WeaponBase* weapon_ = nullptr;
 };
+
+template<class T>
+T* EnemyAIBase::setWeapon() {
+    delete weapon_;
+    auto weapon = new T();
+    weapon_ = weapon;
+    return weapon;
+}
 
 #endif //SPACEGAME_ENEMYAIBASE_H

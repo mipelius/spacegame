@@ -41,10 +41,7 @@ const std::vector<ItemInfo> &Inventory::getItemInfos() const {
     return itemInfos_;
 }
 
-void Inventory::init() {
-    power_ = gameObject()->getComponent<Power>();
-    body_ = gameObject()->getComponent<Body>();
-}
+void Inventory::init() { }
 
 void Inventory::onDestroy() {
     for (auto weaponInfo : itemInfos_) {

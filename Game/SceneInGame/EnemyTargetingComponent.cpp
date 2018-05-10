@@ -21,18 +21,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_LASER_H
-#define SPACEGAME_LASER_H
+#include "EnemyTargetingComponent.h"
+#include "EnemyAIBase.h"
 
-#include "ReloadingWeaponBase.h"
-
-class Laser : public ReloadingWeaponBase {
-protected:
-    void shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) override;
-
-private:
-    void shootOnce_(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity);
-};
-
-
-#endif //SPACEGAME_LASER_H
+Vecf EnemyTargetingComponent::getTargetPosition() {
+    auto AI = gameObject()->getComponent<EnemyAIBase>();
+    return AI->getTarget()->getPosition();
+}

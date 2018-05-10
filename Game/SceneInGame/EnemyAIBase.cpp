@@ -41,22 +41,9 @@ void EnemyAIBase::setTarget(Transform *target) {
     target_ = target;
 }
 
-void EnemyAIBase::shootTarget_(bool useTimer) {
-    if (shootingTimer_.resetIfTimeIntervalPassed() || !useTimer) {
-        if (!canSeeTarget_()) {
-            return;
-        }
-        Vecf direction = target_->getPosition() - transform()->getPosition();
-        auto laser = Prefabs::enemyLaser();
-
-        laser->transform().setPosition(transform()->getPosition() + direction.normalized());
-        laser->transform().setRotation(direction.angle());
-
-        auto laserBody = laser->getComponent<Body>();
-        laserBody->setVelocity(direction.normalized() * 2000.0 + body_->getVelocity());
-
-        auto laserCollider = laser->getComponent<PolygonCollider>();
-        laserCollider->setLayer(ColliderLayers::enemyAmmo);
+void EnemyAIBase::shootTarget_() {
+    if (weapon_ != nullptr && canSeeTarget_()) {
+        weapon_->use(gameObject());
     }
 }
 
@@ -79,14 +66,6 @@ void EnemyAIBase::onDestroy() {
     }
 }
 
-const CountDownTimer &EnemyAIBase::getShootingTimer() const {
-    return shootingTimer_;
-}
-
-void EnemyAIBase::setShootingTimer(const CountDownTimer &shootingTimer) {
-    shootingTimer_ = shootingTimer;
-}
-
 float EnemyAIBase::getMaxDistance() const {
     return maxDistance_;
 }
@@ -103,3 +82,4 @@ bool EnemyAIBase::canSeeTarget_() {
             collisionPoint
     );
 }
+

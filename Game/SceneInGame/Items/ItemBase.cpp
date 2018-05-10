@@ -24,6 +24,11 @@
 #include "ItemBase.h"
 
 bool ItemBase::use(GameObject *user) {
+    if (timer_.getTime() < reloadDelay_) {
+        return false;
+    }
+    timer_.reset();
+
     auto power = user->getComponent<Power>();
 
     if (!isActivated_) {
@@ -67,6 +72,15 @@ int ItemBase::getCount() const {
 void ItemBase::setCount(int count) {
     count_ = count;
 }
+
+int ItemBase::getReloadDelay() const {
+    return reloadDelay_;
+}
+
+void ItemBase::setReloadDelay(int reloadDelay) {
+    reloadDelay_ = reloadDelay;
+}
+
 
 bool ItemBase::use_(GameObject *user) {
     if (count_ > 0 || count_ == COUNT_INFINITY) {

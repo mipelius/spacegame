@@ -21,51 +21,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_WEAPONSYSTEM_H
-#define SPACEGAME_WEAPONSYSTEM_H
+#ifndef SPACEGAME_CANNON_H
+#define SPACEGAME_CANNON_H
 
-#include <vector>
-#include "Texture.h"
-#include "Tile2DComponent.h"
-#include "ItemBase.h"
-#include "Body.h"
+#include "WeaponBase.h"
 
-struct ItemInfo {
-    ItemBase* item;
-    Texture* inventoryTexturePtr;
-};
-
-class Inventory : public Tile2DComponent {
+class Cannon : public WeaponBase {
 public:
-    void useSelectedItem();
-
-    template <class T>
-    T *attachItem(Texture *inventoryTexturePtr);
-
-    const std::vector<ItemInfo>& getItemInfos() const;
-
-    int getSelectedItem() const;
-    void selectItem(int itemNumber);
+    void setAmmoFunction(GameObject *(*ammoFunction)());
+    void setCannonOffsets(const std::list<Vecf> &cannonOffsets);
 
 protected:
-    void init() override;
-    void onDestroy() override;
+    void shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) override;
 
 private:
-    std::vector<ItemInfo> itemInfos_;
-    int selectedItem_ = 0;
+    std::list<Vecf> cannonOffsets_;
+    GameObject* (*ammoFunction_)() = nullptr;
+    void shootOnce_(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity);
 };
 
-// --- Template method implementation ---
 
-template <class T>
-T * Inventory::attachItem(Texture *inventoryTexturePtr) {
-    auto item = new T();
-
-    ItemInfo itemInfo = {item, inventoryTexturePtr};
-    itemInfos_.push_back(itemInfo);
-
-    return item;
-}
-
-#endif //SPACEGAME_WEAPONSYSTEM_H
+#endif //SPACEGAME_LASER_H

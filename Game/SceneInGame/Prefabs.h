@@ -46,12 +46,11 @@ public:
     static GameObject* wanderer();
     static GameObject* rider();
 
-    // player stuff to drop / shoot
-    static GameObject* ammo(Texture* texturePtr);
+    // ammo
+    static GameObject* ammo(Texture* texturePtr, unsigned int colliderLayer);
     static GameObject* enemyLaser();
     static GameObject* laser();
     static GameObject* bomb();
-    static GameObject* light();
 
     // effects
     static GameObject* bloodBurst();
@@ -61,6 +60,7 @@ public:
     static void pulseLight(Vecf position);
 
     // other
+    static GameObject* light();
     static GameObject* hud(GameObject* player);
     static GameObject* background(Rect area, const char* texture, Color color);
     static GameObject* spawner(Rect area, GameObject* target, GameObject* (*spawnFunction)());

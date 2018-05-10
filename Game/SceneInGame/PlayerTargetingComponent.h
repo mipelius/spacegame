@@ -21,33 +21,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Body.h"
-#include "ReloadingWeaponBase.h"
+#ifndef SPACEGAME_PLAYERTARGETINGCOMPONENT_H
+#define SPACEGAME_PLAYERTARGETINGCOMPONENT_H
 
-bool ReloadingWeaponBase::useActual(GameObject* user) {
-    if (timer.getTime() >= reloadDelay) {
-        timer.reset();
-        auto body = user->getComponent<Body>();
+#include "TargetingComponentBase.h"
 
-        if (body == nullptr) {
-            return false;
-        }
+class PlayerTargetingComponent : public TargetingComponentBase {
+public:
+    Vecf getTargetPosition() override;
+};
 
-        shoot(
-                user->transform().getPosition(),
-                Vecf::byAngle(user->transform().getRotation(), 1.0f),
-                body->getVelocity()
-        );
 
-        return true;
-    }
-    return false;
-}
-
-int ReloadingWeaponBase::getReloadDelay() const {
-    return reloadDelay;
-}
-
-void ReloadingWeaponBase::setReloadDelay(int reloadDelay) {
-    ReloadingWeaponBase::reloadDelay = reloadDelay;
-}
+#endif //SPACEGAME_PLAYERTARGETINGCOMPONENT_H

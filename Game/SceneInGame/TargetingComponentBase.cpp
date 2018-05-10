@@ -21,51 +21,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_WEAPONSYSTEM_H
-#define SPACEGAME_WEAPONSYSTEM_H
+#include "TargetingComponentBase.h"
 
-#include <vector>
-#include "Texture.h"
-#include "Tile2DComponent.h"
-#include "ItemBase.h"
-#include "Body.h"
+void TargetingComponentBase::init() {
 
-struct ItemInfo {
-    ItemBase* item;
-    Texture* inventoryTexturePtr;
-};
-
-class Inventory : public Tile2DComponent {
-public:
-    void useSelectedItem();
-
-    template <class T>
-    T *attachItem(Texture *inventoryTexturePtr);
-
-    const std::vector<ItemInfo>& getItemInfos() const;
-
-    int getSelectedItem() const;
-    void selectItem(int itemNumber);
-
-protected:
-    void init() override;
-    void onDestroy() override;
-
-private:
-    std::vector<ItemInfo> itemInfos_;
-    int selectedItem_ = 0;
-};
-
-// --- Template method implementation ---
-
-template <class T>
-T * Inventory::attachItem(Texture *inventoryTexturePtr) {
-    auto item = new T();
-
-    ItemInfo itemInfo = {item, inventoryTexturePtr};
-    itemInfos_.push_back(itemInfo);
-
-    return item;
 }
 
-#endif //SPACEGAME_WEAPONSYSTEM_H
+void TargetingComponentBase::onDestroy() {
+
+}
