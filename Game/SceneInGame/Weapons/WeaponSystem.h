@@ -60,7 +60,7 @@ private:
     Body* body_;
 };
 
-// --- Template method implemention ---
+// --- Template method implementation ---
 
 template <class T>
 T* WeaponSystem::attachWeapon(Texture* inventoryTexturePtr, Texture* inWorldTexturePtr, int tag) {

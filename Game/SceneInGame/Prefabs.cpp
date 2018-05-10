@@ -82,7 +82,7 @@ GameObject *Prefabs::player() {
 
     auto light = player->attachComponent<PointLight>();
     light->setIntensity(1.0);
-    light->setRadius(500.0);
+    light->setRadius(600.0);
 
     auto playerController = player->attachComponent<PlayerController>();
     playerController->moveForce = 100000.0f;
@@ -153,7 +153,7 @@ GameObject *Prefabs::player() {
 
 GameObject *Prefabs::boss() {
     auto enemy = createEnemy_(
-            "trifly",
+            "boss",
             {
                 {-50, -50},
                 {50,  -50},
@@ -501,7 +501,10 @@ GameObject *Prefabs::laser() {
 }
 
 GameObject *Prefabs::enemyLaser() {
-    return ammo(Tile2D::resources().textures["ammo_evil_eye"]);
+    auto laser = ammo(Tile2D::resources().textures["laser"]);
+    laser->getComponent<Sprite>()->setColor({0.0f, 1.0f, 0.3f});
+
+    return laser;
 }
 
 GameObject *Prefabs::ammo(Texture* texturePtr) {
