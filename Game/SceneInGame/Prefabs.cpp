@@ -56,6 +56,7 @@
 #include "Healer.h"
 #include "PlayerTargetingComponent.h"
 #include "EnemyTargetingComponent.h"
+#include "AmmoComponent.h"
 
 GameObject *Prefabs::player() {
     auto player = Tile2D::createGameObject();
@@ -515,52 +516,57 @@ GameObject *Prefabs::light() {
 }
 
 GameObject *Prefabs::laser() {
-    return ammo(Tile2D::resources().textures["laser"], ColliderLayers::playerAmmo);
+    return ammo(Tile2D::resources().textures["laser"], ColliderLayers::playerAmmo, 20);
 }
 
 GameObject *Prefabs::enemyLaser() {
-    auto laser = ammo(Tile2D::resources().textures["laser"], ColliderLayers::enemyAmmo);
+    auto laser = ammo(Tile2D::resources().textures["laser"], ColliderLayers::enemyAmmo, 10);
     laser->getComponent<Sprite>()->setColor({0.0f, 1.0f, 0.3f});
 
     return laser;
 }
 
-GameObject *Prefabs::ammo(Texture* texturePtr, unsigned int colliderLayer) {
-    auto laser = Tile2D::createGameObject();
+GameObject *Prefabs::ammo(Texture* texturePtr, unsigned int colliderLayer, int damage) {
+    auto ammo = Tile2D::createGameObject();
 
-    auto laserBody = laser->attachComponent<Body>();
-    laserBody->setMass(10.0f);
-    laserBody->setDrag(0.0f);
+    auto ammoBody = ammo->attachComponent<Body>();
+    ammoBody->setMass(10.0f);
+    ammoBody->setDrag(0.0f);
 
-    auto laserSprite = laser->attachComponent<Sprite>();
-    laserSprite->setRect({-20,-5,20,5});
-    laserSprite->setTexturePtr(texturePtr);
-    laserSprite->setSortingLayer(SortingLayers::ammo);
+    auto ammoSprite = ammo->attachComponent<Sprite>();
+    ammoSprite->setRect({-20,-5,20,5});
+    ammoSprite->setTexturePtr(texturePtr);
+    ammoSprite->setSortingLayer(SortingLayers::ammo);
 
-    auto laserLifetime = laser->attachComponent<LimitedLifetimeBehaviour>();
-    laserLifetime->getTimer().setInterval(1000);
+    auto ammoLifetime = ammo->attachComponent<LimitedLifetimeBehaviour>();
+    ammoLifetime->getTimer().setInterval(1000);
 
-    auto laserLight = laser->attachComponent<PointLight>();
-    laserLight->setRadius(80.0);
-    laserLight->setIntensity(1.0);
+    auto ammoLight = ammo->attachComponent<PointLight>();
+    ammoLight->setRadius(80.0);
+    ammoLight->setIntensity(1.0);
 
-    auto collider = laser->attachComponent<PolygonCollider>();
-    collider->setPoints({
+    auto ammoCollider = ammo->attachComponent<PolygonCollider>();
+    ammoCollider->setPoints({
             {-18, -5},
             {18,  -5},
             {18,  5},
             {-18, 5}
     });
-    collider->terrainCollision.add([] (PolygonCollider* collider, TerrainCollisionEventArgs args) {
+    ammoCollider->terrainCollision.add([] (PolygonCollider* collider, TerrainCollisionEventArgs args) {
         collider->gameObject()->destroy();
         Tile2D::tileMap().setValueScaled(args.tileCoordinates, Tile2D::tileMap().getTileSet()->getEmptyBlock());
 
         sparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
         pulseLight(collider->transform()->getPosition());
     });
-    collider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
+
+    ammoCollider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
         auto otherBody = args.otherCollider->gameObject()->getComponent<Body>();
         auto laserBody = collider->gameObject()->getComponent<Body>();
+
+        int ammoDamage = collider->gameObject()->getComponent<AmmoComponent>()->getDamage();
+
+        int tag = args.otherCollider->gameObject()->tag;
 
         if (args.otherCollider->gameObject()->tag == Tags::enemy) {
             otherBody->setVelocity(otherBody->getVelocity() + laserBody->getVelocity() / 100.0);
@@ -570,7 +576,7 @@ GameObject *Prefabs::ammo(Texture* texturePtr, unsigned int colliderLayer) {
             auto health = args.otherCollider->gameObject()->getComponent<Health>();
 
             if (health != nullptr) {
-                health->damage(10, laserBody->gameObject());
+                health->damage(ammoDamage, laserBody->gameObject());
             }
 
             pulseLight(collider->transform()->getPosition());
@@ -583,15 +589,18 @@ GameObject *Prefabs::ammo(Texture* texturePtr, unsigned int colliderLayer) {
             auto health = args.otherCollider->gameObject()->getComponent<Health>();
 
             if (health != nullptr) {
-                health->damage(10, laserBody->gameObject());
+                health->damage(ammoDamage, laserBody->gameObject());
             }
 
             pulseLight(collider->transform()->getPosition());
         }
     });
-    collider->setLayer(colliderLayer);
+    ammoCollider->setLayer(colliderLayer);
 
-    return laser;
+    auto ammoDamage = ammo->attachComponent<AmmoComponent>();
+    ammoDamage->setDamage(damage);
+
+    return ammo;
 }
 
 // ---- EFFECTS ----

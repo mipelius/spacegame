@@ -244,7 +244,7 @@ set(SOURCE_FILES
         Game/SceneInGame/Items/BombDropper.h
         Game/SceneInGame/SwirlingBehaviour.cpp
         Game/SceneInGame/SwirlingBehaviour.h
-        Game/SceneInGame/Items/Healer.cpp Game/SceneInGame/Items/Healer.h Game/SceneInGame/TargetingComponentBase.cpp Game/SceneInGame/TargetingComponentBase.h Game/SceneInGame/PlayerTargetingComponent.cpp Game/SceneInGame/PlayerTargetingComponent.h Game/SceneInGame/EnemyTargetingComponent.cpp Game/SceneInGame/EnemyTargetingComponent.h)
+        Game/SceneInGame/Items/Healer.cpp Game/SceneInGame/Items/Healer.h Game/SceneInGame/TargetingComponentBase.cpp Game/SceneInGame/TargetingComponentBase.h Game/SceneInGame/PlayerTargetingComponent.cpp Game/SceneInGame/PlayerTargetingComponent.h Game/SceneInGame/EnemyTargetingComponent.cpp Game/SceneInGame/EnemyTargetingComponent.h Game/SceneInGame/AmmoComponent.cpp Game/SceneInGame/AmmoComponent.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

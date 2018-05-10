@@ -47,7 +47,7 @@ public:
     static GameObject* rider();
 
     // ammo
-    static GameObject* ammo(Texture* texturePtr, unsigned int colliderLayer);
+    static GameObject* ammo(Texture* texturePtr, unsigned int colliderLayer, int damage);
     static GameObject* enemyLaser();
     static GameObject* laser();
     static GameObject* bomb();
