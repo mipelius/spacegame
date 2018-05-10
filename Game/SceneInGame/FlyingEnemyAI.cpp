@@ -49,7 +49,9 @@ void FlyingEnemyAI::update() {
             (distanceToTarget < minPathFindingDistance_ && canSeeTarget) ||
             distanceToTarget > maxPathFindingDistance_
     ) {
-        rotateTowards_(targetDirection);
+        if (rotates_) {
+            rotateTowards_(targetDirection);
+        }
         return;
     }
 
