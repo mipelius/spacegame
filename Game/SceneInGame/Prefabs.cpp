@@ -94,6 +94,7 @@ GameObject *Prefabs::player() {
 
     auto health = player->attachComponent<Health>();
     health->setMaxHealth(600);
+    health->setAutoHealingRate(30);
     health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
         GameObject* spaceShipExplosion = explosion();
         spaceShipExplosion->transform().setPosition(health->transform()->getPosition());

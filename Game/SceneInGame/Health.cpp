@@ -23,6 +23,8 @@
 
 
 
+#include "Tile2D.h"
+#include "t2Time.h"
 #include "Health.h"
 #include "Tile2DMath.h"
 
@@ -30,7 +32,9 @@ void Health::awake() {
     health_ = maxHealth_;
 }
 
-void Health::update() { }
+void Health::update() {
+    heal(Tile2D::time().getDeltaTime() * autoHealingRate_);
+}
 
 void Health::lateUpdate() { }
 
@@ -64,8 +68,13 @@ void Health::heal(int amount) {
     clampHealth_();
 }
 
+void Health::heal(float amount) {
+    health_ += amount;
+    clampHealth_();
+}
+
 void Health::clampHealth_() {
-    Mathi::clamp(health_, 0, maxHealth_);
+    Mathf::clamp(health_, 0, maxHealth_);
 }
 
 Health::Health() : onDeath(this) {
@@ -73,5 +82,13 @@ Health::Health() : onDeath(this) {
 }
 
 int Health::getHealth() const {
-    return health_;
+    return (int)health_;
+}
+
+int Health::getAutoHealingRate() const {
+    return autoHealingRate_;
+}
+
+void Health::setAutoHealingRate(int autoHealingRate) {
+    autoHealingRate_ = autoHealingRate;
 }

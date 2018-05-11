@@ -42,12 +42,16 @@ public:
 
     void damage(int amount, GameObject* whoDamaged);
     void heal(int amount);
+    void heal(float amount);
     void reset();
 
     int getHealth() const;
 
     int getMaxHealth() const;
     void setMaxHealth(int maxHealth);
+
+    int getAutoHealingRate() const;
+    void setAutoHealingRate(int autoHealingRate);
 
     const Event<Health, GameObjectDiedEventArgs> onDeath;
 
@@ -57,8 +61,10 @@ protected:
     void lateUpdate() override;
 
 private:
-    int health_;
+    float health_;
     int maxHealth_;
+
+    int autoHealingRate_ = 0;
 
     void clampHealth_();
 
