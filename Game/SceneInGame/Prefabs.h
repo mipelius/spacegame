@@ -47,9 +47,14 @@ public:
     static GameObject* rider();
 
     // ammo
-    static GameObject* ammo(Texture* texturePtr, unsigned int colliderLayer, int damage);
+    static GameObject* ammo(
+        Texture* texturePtr,
+        Rect spriteRect,
+        std::vector<Vecf> colliderPoints,
+        unsigned int colliderLayer,
+        int damage
+    );
     static GameObject* enemyLaser();
-    static GameObject* laser();
     static GameObject* bomb();
 
     // effects

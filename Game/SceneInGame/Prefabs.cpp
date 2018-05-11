@@ -117,7 +117,22 @@ GameObject *Prefabs::player() {
     auto inventory = player->attachComponent<Inventory>();
 
     auto laserCannon = inventory->attachItem<Cannon>(Tile2D::resources().textures["laser_cannon"]);
-    laserCannon->setAmmoFunction(laser);
+    laserCannon->setAmmoFunction([] () {
+        auto laser = ammo(
+                Tile2D::resources().textures["laser"],
+                {-20, -5, 20, 5},
+                {
+                        {-18, -5},
+                        {18,  -5},
+                        {18,  5},
+                        {-18, 5}
+                },
+                ColliderLayers::playerAmmo,
+                20
+        );
+
+        return laser;
+    });
     laserCannon->setCannonOffsets({
           {-10, -13},
           {-10, 13}
@@ -125,7 +140,31 @@ GameObject *Prefabs::player() {
     laserCannon->setPowerConsumption(50);
     laserCannon->setReloadDelay(100);
     laserCannon->setIsActivated(true);
-    laserCannon->setCount(Cannon::COUNT_INFINITY);
+
+    auto gatlingGun = inventory->attachItem<Cannon>(Tile2D::resources().textures["gatling"]);
+    gatlingGun->setAmmoFunction([] () {
+        auto plasma = ammo(
+                Tile2D::resources().textures["gatling_ammo"],
+                {-8, -8, 8, 8},
+                {
+                        {-8, -8},
+                        {8, -8},
+                        {8, 8},
+                        {-8, 8}
+                },
+                ColliderLayers::playerAmmo,
+                5
+        );
+        return plasma;
+    });
+    gatlingGun->setCannonOffsets({
+        {-10, -13},
+        {0, 0},
+        {-10, 13}
+    });
+    gatlingGun->setPowerConsumption(20);
+    gatlingGun->setReloadDelay(10);
+    gatlingGun->setIsActivated(true);
 
     auto bombDropper = inventory->attachItem<BombDropper>(Tile2D::resources().textures["bomb"]);
     bombDropper->setPowerConsumption(200);
@@ -133,23 +172,25 @@ GameObject *Prefabs::player() {
     bombDropper->setCount(30);
     bombDropper->setIsActivated(true);
 
-    auto placeholderWeapon1 = inventory->attachItem<Cannon>(Tile2D::resources().textures["laser_cannon"]);
-    placeholderWeapon1->setAmmoFunction(laser);
-    placeholderWeapon1->setPowerConsumption(50);
-    placeholderWeapon1->setReloadDelay(100);
-    placeholderWeapon1->setIsActivated(false);
-
-    auto placeholderWeapon2 = inventory->attachItem<Cannon>(Tile2D::resources().textures["laser_cannon"]);
-    placeholderWeapon2->setAmmoFunction(laser);
-    placeholderWeapon2->setCannonOffsets({
-          {-10, -13},
-          {0, 0},
-          {-10, 13}
+    auto plasmaCannon = inventory->attachItem<Cannon>(Tile2D::resources().textures["plasma_cannon"]);
+    plasmaCannon->setAmmoFunction([] () {
+        auto plasma = ammo(
+                Tile2D::resources().textures["plasma"],
+                {-30, -30, 30, 30},
+                {
+                        {-18, -18},
+                        {18, -18},
+                        {18, 18},
+                        {-18, 18}
+                },
+                ColliderLayers::playerAmmo,
+                400
+        );
+        return plasma;
     });
-    placeholderWeapon2->setPowerConsumption(10);
-    placeholderWeapon2->setReloadDelay(20);
-    placeholderWeapon2->setIsActivated(true);
-    placeholderWeapon2->setCount(100);
+    plasmaCannon->setPowerConsumption(600);
+    plasmaCannon->setReloadDelay(200);
+    plasmaCannon->setIsActivated(true);
 
     auto healer = inventory->attachItem<Healer>(Tile2D::resources().textures["healer"]);
     healer->setPowerConsumption(100);
@@ -515,18 +556,32 @@ GameObject *Prefabs::light() {
     return light;
 }
 
-GameObject *Prefabs::laser() {
-    return ammo(Tile2D::resources().textures["laser"], ColliderLayers::playerAmmo, 20);
-}
-
 GameObject *Prefabs::enemyLaser() {
-    auto laser = ammo(Tile2D::resources().textures["laser"], ColliderLayers::enemyAmmo, 10);
+    auto laser = ammo(
+        Tile2D::resources().textures["laser"],
+        {-20,-5,20,5},
+        {
+            {-18, -5},
+            {18,  -5},
+            {18,  5},
+            {-18, 5}
+        },
+        ColliderLayers::enemyAmmo,
+        10
+    );
+
     laser->getComponent<Sprite>()->setColor({0.0f, 1.0f, 0.3f});
 
     return laser;
 }
 
-GameObject *Prefabs::ammo(Texture* texturePtr, unsigned int colliderLayer, int damage) {
+GameObject *Prefabs::ammo(
+        Texture* texturePtr,
+        Rect spriteRect,
+        std::vector<Vecf> colliderPoints,
+        unsigned int colliderLayer,
+        int damage
+) {
     auto ammo = Tile2D::createGameObject();
 
     auto ammoBody = ammo->attachComponent<Body>();
@@ -534,7 +589,7 @@ GameObject *Prefabs::ammo(Texture* texturePtr, unsigned int colliderLayer, int d
     ammoBody->setDrag(0.0f);
 
     auto ammoSprite = ammo->attachComponent<Sprite>();
-    ammoSprite->setRect({-20,-5,20,5});
+    ammoSprite->setRect(spriteRect);
     ammoSprite->setTexturePtr(texturePtr);
     ammoSprite->setSortingLayer(SortingLayers::ammo);
 
@@ -546,12 +601,8 @@ GameObject *Prefabs::ammo(Texture* texturePtr, unsigned int colliderLayer, int d
     ammoLight->setIntensity(1.0);
 
     auto ammoCollider = ammo->attachComponent<PolygonCollider>();
-    ammoCollider->setPoints({
-            {-18, -5},
-            {18,  -5},
-            {18,  5},
-            {-18, 5}
-    });
+    ammoCollider->setPoints(colliderPoints);
+
     ammoCollider->terrainCollision.add([] (PolygonCollider* collider, TerrainCollisionEventArgs args) {
         collider->gameObject()->destroy();
         Tile2D::tileMap().setValueScaled(args.tileCoordinates, Tile2D::tileMap().getTileSet()->getEmptyBlock());
@@ -565,8 +616,6 @@ GameObject *Prefabs::ammo(Texture* texturePtr, unsigned int colliderLayer, int d
         auto laserBody = collider->gameObject()->getComponent<Body>();
 
         int ammoDamage = collider->gameObject()->getComponent<AmmoComponent>()->getDamage();
-
-        int tag = args.otherCollider->gameObject()->tag;
 
         if (args.otherCollider->gameObject()->tag == Tags::enemy) {
             otherBody->setVelocity(otherBody->getVelocity() + laserBody->getVelocity() / 100.0);
