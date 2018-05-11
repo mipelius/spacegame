@@ -463,7 +463,7 @@ GameObject *Prefabs::createEnemy_(
     return enemy;
 }
 
-// ---- PLAYER STUFF TO DROP / SHOOT ----
+// ---- AMMO ----
 
 GameObject *Prefabs::bomb() {
     static const int explosionRadius = 10; // tiles
@@ -514,33 +514,6 @@ GameObject *Prefabs::bomb() {
     auto bombBehaviour = bomb->attachComponent<BombBehaviour>();
 
     return bomb;
-}
-
-GameObject *Prefabs::light() {
-    auto light = Tile2D::createGameObject();
-
-    auto lightBody = light->attachComponent<Body>();
-    lightBody->setMass(10.0);
-    lightBody->setVelocity(Vecf(0, 0));
-
-    auto collider = light->attachComponent<PolygonCollider>();
-    collider->setPoints({
-            {-5, -5},
-            {5,  -5},
-            {5,  5},
-            {-5, 5}
-    });
-
-    auto lightSprite = light->attachComponent<Sprite>();
-    lightSprite->setSortingLayer(SortingLayers::ammo);
-    lightSprite->setRect({-40, -40, 40, 40});
-    lightSprite->setTexturePtr(Tile2D::resources().textures["light"]);
-
-    auto lightLight = light->attachComponent<PointLight>();
-    lightLight->setRadius(100.0);
-    lightLight->setIntensity(1.0);
-
-    return light;
 }
 
 GameObject* Prefabs::plasma() {
@@ -690,7 +663,81 @@ GameObject *Prefabs::createAmmo_(
     return ammo;
 }
 
+// ---- PICK UPS ----
+
+GameObject *Prefabs::gatlingPickup() {
+    return createPickup_(
+            Tile2D::resources().textures["gatling_box"],
+            [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
+                if (args.otherCollider->gameObject()->tag == Tags::player) {
+                    auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
+                    auto item = inventory->getItem(ItemTags::gatling);
+                    item->setIsActivated(true);
+                }
+            }
+    );
+}
+
+GameObject* Prefabs::createPickup_(
+        Texture *pickupTexture,
+        void (*onCollisionFunctionPtr)(PolygonCollider *, CollisionEventArgs)
+) {
+    auto pickup = Tile2D::createGameObject();
+
+    auto pickupSprite = pickup->attachComponent<Sprite>();
+    pickupSprite->setTexturePtr(pickupTexture);
+    pickupSprite->setRect({-20.0f, -20.0f, 20.0f, 20.0f});
+
+    auto pickupBody = pickup->attachComponent<Body>();
+    pickupBody->setMass(100.0f);
+    pickupBody->setDrag(1.0f);
+
+    auto pickupCollider = pickup->attachComponent<PolygonCollider>();
+    pickupCollider->setPoints({
+                                      {-20, -20},
+                                      {20, -20},
+                                      {20, 20},
+                                      {-20, 20}
+                              });
+    pickupCollider->setLayer(ColliderLayers::playerPickup);
+    pickupCollider->collision.add(onCollisionFunctionPtr);
+    pickupCollider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
+        if (args.otherCollider->gameObject()->tag == Tags::player) {
+            collider->gameObject()->destroy();
+        }
+    });
+
+    return pickup;
+}
+
 // ---- EFFECTS ----
+
+GameObject *Prefabs::light() {
+    auto light = Tile2D::createGameObject();
+
+    auto lightBody = light->attachComponent<Body>();
+    lightBody->setMass(10.0);
+    lightBody->setVelocity(Vecf(0, 0));
+
+    auto collider = light->attachComponent<PolygonCollider>();
+    collider->setPoints({
+                                {-5, -5},
+                                {5,  -5},
+                                {5,  5},
+                                {-5, 5}
+                        });
+
+    auto lightSprite = light->attachComponent<Sprite>();
+    lightSprite->setSortingLayer(SortingLayers::ammo);
+    lightSprite->setRect({-40, -40, 40, 40});
+    lightSprite->setTexturePtr(Tile2D::resources().textures["light"]);
+
+    auto lightLight = light->attachComponent<PointLight>();
+    lightLight->setRadius(100.0);
+    lightLight->setIntensity(1.0);
+
+    return light;
+}
 
 GameObject* Prefabs::bloodBurst() {
     auto bloodBurst = Tile2D::createGameObject();
@@ -841,6 +888,8 @@ void Prefabs::sparkles(Vecf position, Vecf normal, Color color) {
     sparkle(position, (perp + random) * -100, color);
 }
 
+// --- OTHER ---
+
 GameObject *Prefabs::background(Rect area, const char *texture, Color color) {
     auto background = Tile2D::createGameObject();
     auto bg = background->attachComponent<Background>();
@@ -872,7 +921,3 @@ GameObject *Prefabs::hud(GameObject* player) {
     hudBehaviour->setPlayer(player);
     return hud;
 }
-
-
-
-static GameObject* box();

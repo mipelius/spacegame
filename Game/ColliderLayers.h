@@ -28,7 +28,7 @@
 
 namespace ColliderLayers {
     enum {
-        playerAmmo, enemyAmmo, player, enemy
+        playerAmmo, enemyAmmo, player, enemy, playerPickup
     };
 }
 

@@ -32,6 +32,7 @@
 #include "Rect.h"
 #include "Color.h"
 #include "Texture.h"
+#include "PolygonCollider.h"
 
 class Prefabs {
 
@@ -52,14 +53,17 @@ public:
     static GameObject* plasma();
 
     // effects
+    static GameObject* light();
     static GameObject* bloodBurst();
     static GameObject* explosion();
     static void sparkles(Vecf position, Vecf normal, Color color);
     static void sparkle(Vecf position, Vecf velocity, Color color);
     static void pulseLight(Vecf position);
 
+    // player pickups
+    static GameObject* gatlingPickup();
+
     // other
-    static GameObject* light();
     static GameObject* hud(GameObject* player);
     static GameObject* background(Rect area, const char* texture, Color color);
     static GameObject* spawner(Rect area, GameObject* target, GameObject* (*spawnFunction)());
@@ -83,6 +87,11 @@ private:
     );
 
     static void createPlasmaExplosion_(const Vecf &position);
+
+    static GameObject* createPickup_(
+        Texture* pickupTexture,
+        void (*onCollisionFunctionPtr)(PolygonCollider* collider, CollisionEventArgs args)
+    );
 };
 
 #endif //SPACEGAME_PREFABS_H

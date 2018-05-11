@@ -120,6 +120,9 @@ void SceneInGame::init() {
         auto light = Prefabs::light();
         light->transform().setPosition(lightPosition);
     }
+
+    auto box = Prefabs::gatlingPickup();
+    box->transform().setPosition({200.0f, 2000.0f});
 }
 
 void SceneInGame::destroy() {

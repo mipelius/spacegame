@@ -47,15 +47,21 @@ int main(int argc, const char *argv[]) {
                     {ColliderLayers::playerAmmo, ColliderLayers::enemyAmmo, false},
                     {ColliderLayers::playerAmmo, ColliderLayers::player, false},
                     {ColliderLayers::playerAmmo, ColliderLayers::enemy, true},
+                    {ColliderLayers::playerAmmo, ColliderLayers::playerPickup, false},
 
                     {ColliderLayers::enemyAmmo, ColliderLayers::enemyAmmo, false},
                     {ColliderLayers::enemyAmmo, ColliderLayers::player, true},
                     {ColliderLayers::enemyAmmo, ColliderLayers::enemy, false},
+                    {ColliderLayers::enemyAmmo, ColliderLayers::playerPickup, false},
 
                     {ColliderLayers::player, ColliderLayers::player, false},
                     {ColliderLayers::player, ColliderLayers::enemy, true},
+                    {ColliderLayers::player, ColliderLayers::playerPickup, true},
 
-                    {ColliderLayers::enemy, ColliderLayers::enemy, false}
+                    {ColliderLayers::enemy, ColliderLayers::enemy, false},
+                    {ColliderLayers::enemy, ColliderLayers::playerPickup, false},
+
+                    {ColliderLayers::playerPickup, ColliderLayers::playerPickup, false}
             }
     );
 
