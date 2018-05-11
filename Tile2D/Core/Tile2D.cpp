@@ -125,7 +125,7 @@ void Tile2D::mainLoop_() {
         sceneManager_->update_();
         initGameObjects_();
         removeDestroyedObjects_();
-        PollSDL_Events();
+        input_->PollSDL_Events_();
         updateBehaviours_();
         executeDelayedFunctions_();
         physicsWorld_->step(time_->deltaTime_ / 1000.0f);
@@ -257,24 +257,6 @@ void Tile2D::setIsDebugMode(bool isDebugMode) {
 
 void Tile2D::quit() {
     instance_().quit_ = true;
-}
-
-void Tile2D::PollSDL_Events() {
-    SDL_Event event;
-
-    instance_().input_->keyboard_.keyboardEvents_.clear();
-    instance_().input_->mouse_.mouseButtonEvents_.clear();
-
-    while(SDL_PollEvent(&event)) {
-        if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
-            instance_().input_->keyboard_.keyboardEvents_.push_back(event.key);
-        }
-        if (event.type == SDL_MOUSEBUTTONUP || event.type == SDL_MOUSEBUTTONDOWN) {
-            instance_().input_->mouse_.mouseButtonEvents_.push_back(event.button);
-        }
-    }
-
-    instance_().input_->keyboard_.keyboardState_ = SDL_GetKeyboardState(0);
 }
 
 const Input &Tile2D::input() {

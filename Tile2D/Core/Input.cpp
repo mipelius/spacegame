@@ -53,7 +53,11 @@ Veci Input::Mouse::getMousePosition() const {
 
 bool Input::Keyboard::keyPressed(SDL_Scancode scancode) const {
     for (auto& keyboardEvent : keyboardEvents_) {
-        if (keyboardEvent.keysym.scancode == scancode && keyboardEvent.state == SDL_PRESSED) {
+        if (
+                keyboardEvent.keysym.scancode   == scancode &&
+                keyboardEvent.type              == SDL_KEYDOWN &&
+                keyboardEvent.repeat            == 0
+        ) {
             return true;
         }
     }
@@ -62,7 +66,7 @@ bool Input::Keyboard::keyPressed(SDL_Scancode scancode) const {
 
 bool Input::Keyboard::keyReleased(SDL_Scancode scancode) const {
     for (auto& keyboardEvent : keyboardEvents_) {
-        if (keyboardEvent.keysym.scancode == scancode && keyboardEvent.state == SDL_RELEASED) {
+        if (keyboardEvent.keysym.scancode == scancode && keyboardEvent.type == SDL_KEYUP) {
             return true;
         }
     }
@@ -79,4 +83,24 @@ const Input::Mouse &Input::mouse() const {
 
 const Input::Keyboard &Input::keyboard() const {
     return keyboard_;
+}
+
+void Input::PollSDL_Events_() {
+    SDL_Event event;
+
+    keyboard_.keyboardEvents_.clear();
+    mouse_.mouseButtonEvents_.clear();
+
+    while(SDL_PollEvent(&event)) {
+        if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
+            keyboard_.keyboardEvents_.push_back(event.key);
+        }
+        if (event.type == SDL_MOUSEBUTTONUP || event.type == SDL_MOUSEBUTTONDOWN) {
+            mouse_.mouseButtonEvents_.push_back(event.button);
+        }
+    }
+
+
+
+    keyboard_.keyboardState_ = SDL_GetKeyboardState(0);
 }

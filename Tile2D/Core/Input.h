@@ -33,7 +33,7 @@ class Input {
     friend class Tile2D;
 public:
     class Mouse {
-        friend class Tile2D;
+        friend class Input;
     public:
         bool buttonPressed(Uint8 SDL_mousebutton, Veci& position) const;
         bool buttonReleased(Uint8 SDL_mousebutton, Veci& position) const;
@@ -44,7 +44,7 @@ public:
     };
 
     class Keyboard {
-        friend class Tile2D;
+        friend class Input;
     public:
         bool keyPressed(SDL_Scancode scancode) const;
         bool keyReleased(SDL_Scancode scancode) const;
@@ -60,6 +60,8 @@ public:
 private:
     Input() = default;
     ~Input() = default;
+
+    void PollSDL_Events_();
 
     Mouse mouse_;
     Keyboard keyboard_;

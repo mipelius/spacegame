@@ -112,7 +112,6 @@ private:
     void initGameObjects_();
     void updateBehaviours_();
     void lateUpdateBehaviours_();
-    void PollSDL_Events();
 
     Tile2D();
     ~Tile2D();
