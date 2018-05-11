@@ -122,15 +122,20 @@ void SceneInGame::init() {
     }
 
     auto box1 = Prefabs::gatlingPickup();
-    box1->transform().setPosition({200.0f, 2500.0f});
+    box1->transform().setPosition({200.0f, 3000.0f});
 
     auto box2 = Prefabs::plasmaCannonPickup();
-    box2->transform().setPosition({300.0f, 2500.0f});
+    box2->transform().setPosition({300.0f, 3000.0f});
 
     auto box3 = Prefabs::bombPickup();
-    box3->transform().setPosition({400.0f, 2500.0f});
+    box3->transform().setPosition({400.0f, 3000.0f});
     auto box4 = Prefabs::bombPickup();
-    box4->transform().setPosition({500.0f, 2500.0f});
+    box4->transform().setPosition({500.0f, 3000.0f});
+
+    auto box5 = Prefabs::healerPickup();
+    box5->transform().setPosition({600.0f, 3000.0f});
+    auto box6 = Prefabs::healerPickup();
+    box6->transform().setPosition({700.0f, 3000.0f});
 
 }
 

@@ -697,7 +697,7 @@ GameObject *Prefabs::plasmaCannonPickup() {
 }
 
 
-GameObject *Prefabs::bombPickup() {
+GameObject* Prefabs::bombPickup() {
     return createPickup_(
             Tile2D::resources().textures["bomb_box"],
             [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
@@ -712,6 +712,20 @@ GameObject *Prefabs::bombPickup() {
     );
 }
 
+GameObject* Prefabs::healerPickup() {
+    return createPickup_(
+            Tile2D::resources().textures["healer_box"],
+            [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
+                if (args.otherCollider->gameObject()->tag == Tags::player) {
+                    auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
+                    auto item = inventory->getItem(ItemTags::healer);
+                    item->setIsActivated(true);
+                    int countBefore = item->getCount();
+                    item->setCount(countBefore + 5);
+                }
+            }
+    );
+}
 
 GameObject* Prefabs::createPickup_(
         Texture *pickupTexture,
