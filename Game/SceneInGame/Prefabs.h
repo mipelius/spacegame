@@ -47,15 +47,9 @@ public:
     static GameObject* rider();
 
     // ammo
-    static GameObject* ammo(
-        Texture* texturePtr,
-        Rect spriteRect,
-        std::vector<Vecf> colliderPoints,
-        unsigned int colliderLayer,
-        int damage
-    );
     static GameObject* enemyLaser();
     static GameObject* bomb();
+    static GameObject* plasma();
 
     // effects
     static GameObject* bloodBurst();
@@ -71,6 +65,14 @@ public:
     static GameObject* spawner(Rect area, GameObject* target, GameObject* (*spawnFunction)());
 
 private:
+    static GameObject* createAmmo_(
+            Texture *texturePtr,
+            Rect spriteRect,
+            std::vector<Vecf> colliderPoints,
+            unsigned int colliderLayer,
+            int damage
+    );
+
     static GameObject* createEnemy_(
             std::string animationName,
             std::vector<Vecf> colliderPoints,
@@ -79,6 +81,8 @@ private:
             float mass,
             int sortingLayer = SortingLayers::enemy
     );
+
+    static void createPlasmaExplosion_(const Vecf &position);
 };
 
 #endif //SPACEGAME_PREFABS_H

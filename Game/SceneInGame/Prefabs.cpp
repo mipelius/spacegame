@@ -118,7 +118,7 @@ GameObject *Prefabs::player() {
 
     auto laserCannon = inventory->attachItem<Cannon>(Tile2D::resources().textures["laser_cannon"]);
     laserCannon->setAmmoFunction([] () {
-        auto laser = ammo(
+        auto laser = createAmmo_(
                 Tile2D::resources().textures["laser"],
                 {-20, -5, 20, 5},
                 {
@@ -143,19 +143,19 @@ GameObject *Prefabs::player() {
 
     auto gatlingGun = inventory->attachItem<Cannon>(Tile2D::resources().textures["gatling"]);
     gatlingGun->setAmmoFunction([] () {
-        auto plasma = ammo(
+        auto gatlingAmmo = createAmmo_(
                 Tile2D::resources().textures["gatling_ammo"],
                 {-8, -8, 8, 8},
                 {
                         {-8, -8},
-                        {8, -8},
-                        {8, 8},
+                        {8,  -8},
+                        {8,  8},
                         {-8, 8}
                 },
                 ColliderLayers::playerAmmo,
                 5
         );
-        return plasma;
+        return gatlingAmmo;
     });
     gatlingGun->setCannonOffsets({
         {-10, -13},
@@ -173,23 +173,9 @@ GameObject *Prefabs::player() {
     bombDropper->setIsActivated(true);
 
     auto plasmaCannon = inventory->attachItem<Cannon>(Tile2D::resources().textures["plasma_cannon"]);
-    plasmaCannon->setAmmoFunction([] () {
-        auto plasma = ammo(
-                Tile2D::resources().textures["plasma"],
-                {-30, -30, 30, 30},
-                {
-                        {-18, -18},
-                        {18, -18},
-                        {18, 18},
-                        {-18, 18}
-                },
-                ColliderLayers::playerAmmo,
-                400
-        );
-        return plasma;
-    });
-    plasmaCannon->setPowerConsumption(600);
-    plasmaCannon->setReloadDelay(200);
+    plasmaCannon->setAmmoFunction(Prefabs::plasma);
+    plasmaCannon->setPowerConsumption(300);
+    plasmaCannon->setReloadDelay(500);
     plasmaCannon->setIsActivated(true);
 
     auto healer = inventory->attachItem<Healer>(Tile2D::resources().textures["healer"]);
@@ -556,18 +542,69 @@ GameObject *Prefabs::light() {
     return light;
 }
 
+GameObject* Prefabs::plasma() {
+    auto plasma = createAmmo_(
+            Tile2D::resources().textures["plasma"],
+            {-30, -30, 30, 30},
+            {
+                    {-18, -18},
+                    {18,  -18},
+                    {18,  18},
+                    {-18, 18}
+            },
+            ColliderLayers::playerAmmo,
+            400
+    );
+
+    auto plasmaCollider = plasma->getComponent<PolygonCollider>();
+    plasmaCollider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
+        createPlasmaExplosion_(collider->transform()->getPosition());
+    });
+    plasmaCollider->terrainCollision.add([] (PolygonCollider* collider, TerrainCollisionEventArgs args) {
+        createPlasmaExplosion_(collider->transform()->getPosition());
+    });
+
+    return plasma;
+}
+
+void Prefabs::createPlasmaExplosion_(const Vecf &position) {
+    auto count = 40u;
+    for (auto i = 0u; i < count; ++i) {
+        auto smallPlasma = createAmmo_(
+                Tile2D::resources().textures["plasma"],
+                {-15, -15, 15, 15},
+                {
+                        {-10, -10},
+                        {10,  -10},
+                        {10,  10},
+                        {-10, 10}
+                },
+                ColliderLayers::playerAmmo,
+                40
+        );
+
+        auto rotation = 360.0f * ((float)i / count);
+
+        smallPlasma->transform().setPosition(position);
+        smallPlasma->transform().setRotation(rotation);
+
+        auto velocity = Vecf::byAngle(rotation, 1000);
+        smallPlasma->getComponent<Body>()->setVelocity(velocity);
+    }
+}
+
 GameObject *Prefabs::enemyLaser() {
-    auto laser = ammo(
-        Tile2D::resources().textures["laser"],
-        {-20,-5,20,5},
-        {
-            {-18, -5},
-            {18,  -5},
-            {18,  5},
-            {-18, 5}
-        },
-        ColliderLayers::enemyAmmo,
-        10
+    auto laser = createAmmo_(
+            Tile2D::resources().textures["laser"],
+            {-20, -5, 20, 5},
+            {
+                    {-18, -5},
+                    {18,  -5},
+                    {18,  5},
+                    {-18, 5}
+            },
+            ColliderLayers::enemyAmmo,
+            10
     );
 
     laser->getComponent<Sprite>()->setColor({0.0f, 1.0f, 0.3f});
@@ -575,8 +612,8 @@ GameObject *Prefabs::enemyLaser() {
     return laser;
 }
 
-GameObject *Prefabs::ammo(
-        Texture* texturePtr,
+GameObject *Prefabs::createAmmo_(
+        Texture *texturePtr,
         Rect spriteRect,
         std::vector<Vecf> colliderPoints,
         unsigned int colliderLayer,
