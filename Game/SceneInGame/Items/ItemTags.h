@@ -21,54 +21,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_WEAPONSYSTEM_H
-#define SPACEGAME_WEAPONSYSTEM_H
+#ifndef SPACEGAME_ITEMTAGS_H
+#define SPACEGAME_ITEMTAGS_H
 
-#include <vector>
-#include "Texture.h"
-#include "Tile2DComponent.h"
-#include "ItemBase.h"
-#include "Body.h"
-
-struct ItemInfo {
-    ItemBase* item;
-    Texture* inventoryTexturePtr;
-    int tag;
-};
-
-class Inventory : public Tile2DComponent {
-public:
-    void useSelectedItem();
-
-    template <class T>
-    T *attachItem(Texture *inventoryTexturePtr, int tag);
-
-    const std::vector<ItemInfo>& getItemInfos() const;
-
-    int getSelectedItem() const;
-    void selectItem(int itemNumber);
-
-    ItemBase* getItem(int tag);
-
-protected:
-    void init() override;
-    void onDestroy() override;
-
-private:
-    std::vector<ItemInfo> itemInfos_;
-    int selectedItem_ = 0;
-};
-
-// --- Template method implementation ---
-
-template <class T>
-T* Inventory::attachItem(Texture *inventoryTexturePtr, int tag) {
-    auto item = new T();
-
-    ItemInfo itemInfo = {item, inventoryTexturePtr, tag};
-    itemInfos_.push_back(itemInfo);
-
-    return item;
+namespace ItemTags {
+    enum {
+        laser,
+        gatling,
+        bombDropper,
+        healer,
+        plasmaCannon
+    };
 }
 
-#endif //SPACEGAME_WEAPONSYSTEM_H
+#endif //SPACEGAME_ITEMTAGS_H

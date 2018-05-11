@@ -60,3 +60,12 @@ void Inventory::selectItem(int itemNumber) {
         selectedItem_ = itemNumber;
     }
 }
+
+ItemBase *Inventory::getItem(int tag) {
+    for (auto itemInfo : itemInfos_) {
+        if (itemInfo.tag == tag) {
+            return itemInfo.item;
+        }
+    }
+    return nullptr;
+}
