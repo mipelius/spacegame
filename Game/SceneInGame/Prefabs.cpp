@@ -727,6 +727,25 @@ GameObject* Prefabs::healerPickup() {
     );
 }
 
+GameObject* Prefabs::laserCannonUpgradePickup() {
+    return createPickup_(
+            Tile2D::resources().textures["laser_cannon_upgrade_box"],
+            [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
+                if (args.otherCollider->gameObject()->tag == Tags::player) {
+                    auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
+                    auto item = inventory->getItem(ItemTags::laser);
+                    auto laserCannon = dynamic_cast<Cannon*>(item);
+
+                    laserCannon->setCannonOffsets({
+                        {-10, -13},
+                        {0, 0},
+                        {-10, 13}
+                    });
+                }
+            }
+    );
+}
+
 GameObject* Prefabs::createPickup_(
         Texture *pickupTexture,
         void (*onCollisionFunctionPtr)(PolygonCollider *, CollisionEventArgs)

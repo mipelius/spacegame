@@ -65,6 +65,7 @@ public:
     static GameObject* plasmaCannonPickup();
     static GameObject* bombPickup();
     static GameObject* healerPickup();
+    static GameObject *laserCannonUpgradePickup();
 
     // other
     static GameObject* hud(GameObject* player);
