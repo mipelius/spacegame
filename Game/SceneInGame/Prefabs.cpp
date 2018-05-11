@@ -117,6 +117,7 @@ GameObject *Prefabs::player() {
 
     auto inventory = player->attachComponent<Inventory>();
 
+    // -- 1 -- LASER
     auto laserCannon = inventory->attachItem<Cannon>(Tile2D::resources().textures["laser_cannon"], ItemTags::laser);
     laserCannon->setAmmoFunction([] () {
         auto laser = createAmmo_(
@@ -142,6 +143,7 @@ GameObject *Prefabs::player() {
     laserCannon->setReloadDelay(100);
     laserCannon->setIsActivated(true);
 
+    // -- 2 -- GATLING
     auto gatlingGun = inventory->attachItem<Cannon>(Tile2D::resources().textures["gatling"], ItemTags::gatling);
     gatlingGun->setAmmoFunction([] () {
         auto gatlingAmmo = createAmmo_(
@@ -167,23 +169,26 @@ GameObject *Prefabs::player() {
     gatlingGun->setReloadDelay(10);
     gatlingGun->setIsActivated(false);
 
+    // -- 3 -- BOMBS
     auto bombDropper = inventory->attachItem<BombDropper>(Tile2D::resources().textures["bomb"], ItemTags::bombDropper);
     bombDropper->setPowerConsumption(200);
     bombDropper->setReloadDelay(200);
     bombDropper->setCount(30);
-    bombDropper->setIsActivated(true);
+    bombDropper->setIsActivated(false);
 
+    // -- 4 -- PLASMA
     auto plasmaCannon = inventory->attachItem<Cannon>(Tile2D::resources().textures["plasma_cannon"], ItemTags::plasmaCannon);
     plasmaCannon->setAmmoFunction(Prefabs::plasma);
     plasmaCannon->setPowerConsumption(300);
     plasmaCannon->setReloadDelay(500);
-    plasmaCannon->setIsActivated(true);
+    plasmaCannon->setIsActivated(false);
 
+    // -- 5 -- HEALER
     auto healer = inventory->attachItem<Healer>(Tile2D::resources().textures["healer"], ItemTags::healer);
     healer->setPowerConsumption(100);
     healer->setHealingAmount(100);
-    healer->setIsActivated(true);
-    healer->setCount(5);
+    healer->setIsActivated(false);
+    healer->setCount(0);
 
     return player;
 }
@@ -677,6 +682,20 @@ GameObject *Prefabs::gatlingPickup() {
             }
     );
 }
+
+GameObject *Prefabs::plasmaCannonPickup() {
+    return createPickup_(
+            Tile2D::resources().textures["plasma_cannon_box"],
+            [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
+                if (args.otherCollider->gameObject()->tag == Tags::player) {
+                    auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
+                    auto item = inventory->getItem(ItemTags::plasmaCannon);
+                    item->setIsActivated(true);
+                }
+            }
+    );
+}
+
 
 GameObject* Prefabs::createPickup_(
         Texture *pickupTexture,
