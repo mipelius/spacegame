@@ -26,7 +26,7 @@
 
 #include <vector>
 #include "Texture.h"
-#include "Tile2DComponent.h"
+#include "Tile2DBehaviour.h"
 #include "ItemBase.h"
 #include "Body.h"
 
@@ -34,14 +34,13 @@ struct ItemInfo {
     ItemBase* item;
     Texture* inventoryTexturePtr;
     int tag;
+    bool automatic;
 };
 
-class Inventory : public Tile2DComponent {
+class Inventory : public Tile2DBehaviour {
 public:
-    void useSelectedItem();
-
     template <class T>
-    T *attachItem(Texture *inventoryTexturePtr, int tag);
+    T *attachItem(Texture *inventoryTexturePtr, int tag, bool automatic);
 
     const std::vector<ItemInfo>& getItemInfos() const;
 
@@ -51,21 +50,26 @@ public:
     ItemBase* getItem(int tag);
 
 protected:
-    void init() override;
+    void awake() override;
+    void update() override;
+    void lateUpdate() override;
+
     void onDestroy() override;
 
 private:
     std::vector<ItemInfo> itemInfos_;
     int selectedItem_ = 0;
+
+    void useSelectedItem_();
 };
 
 // --- Template method implementation ---
 
 template <class T>
-T* Inventory::attachItem(Texture *inventoryTexturePtr, int tag) {
+T* Inventory::attachItem(Texture *inventoryTexturePtr, int tag, bool automatic) {
     auto item = new T();
 
-    ItemInfo itemInfo = {item, inventoryTexturePtr, tag};
+    ItemInfo itemInfo = {item, inventoryTexturePtr, tag, automatic};
     itemInfos_.push_back(itemInfo);
 
     return item;

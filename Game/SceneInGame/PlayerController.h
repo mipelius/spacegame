@@ -46,7 +46,6 @@ private:
 
     Body* body_;
     Sprite* sprite_;
-    Inventory* weaponSystem_;
 
     void dropLight_();
 

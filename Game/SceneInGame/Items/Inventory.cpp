@@ -21,17 +21,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "Tile2D.h"
 #include "Power.h"
-#include "Body.h"
+#include "Input.h"
 #include "Tile2DMath.h"
 #include "Inventory.h"
 
-void Inventory::useSelectedItem() {
+void Inventory::useSelectedItem_() {
     if (itemInfos_.empty()) {
         return;
     }
     auto itemInfo = itemInfos_[selectedItem_];
-
     auto item = itemInfo.item;
 
     item->use(gameObject());
@@ -41,9 +41,9 @@ const std::vector<ItemInfo> &Inventory::getItemInfos() const {
     return itemInfos_;
 }
 
-void Inventory::init() { }
-
 void Inventory::onDestroy() {
+    Tile2DBehaviour::onDestroy();
+
     for (auto weaponInfo : itemInfos_) {
         delete weaponInfo.item;
     }
@@ -68,4 +68,45 @@ ItemBase *Inventory::getItem(int tag) {
         }
     }
     return nullptr;
+}
+
+void Inventory::awake() {
+
+}
+
+void Inventory::update() {
+    // weapon slot selection
+    const auto& keyboard = Tile2D::input().keyboard();
+
+    if (keyboard.keyPressed(SDL_SCANCODE_1)) {
+        selectItem(0);
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_2)) {
+        selectItem(1);
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_3)) {
+        selectItem(2);
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_4)) {
+        selectItem(3);
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_5)) {
+        selectItem(4);
+    }
+    if (keyboard.keyPressed(SDL_SCANCODE_6)) {
+        selectItem(5);
+    }
+}
+
+void Inventory::lateUpdate() {
+    if (itemInfos_[selectedItem_].automatic) {
+        if (Tile2D::input().keyboard().keyState(SDL_SCANCODE_SPACE)) {
+            useSelectedItem_();
+        }
+    }
+    else {
+        if (Tile2D::input().keyboard().keyPressed(SDL_SCANCODE_SPACE)) {
+            useSelectedItem_();
+        }
+    }
 }

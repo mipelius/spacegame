@@ -118,7 +118,11 @@ GameObject *Prefabs::player() {
     auto inventory = player->attachComponent<Inventory>();
 
     // -- 1 -- LASER
-    auto laserCannon = inventory->attachItem<Cannon>(Tile2D::resources().textures["laser_cannon"], ItemTags::laser);
+    auto laserCannon = inventory->attachItem<Cannon>(
+            Tile2D::resources().textures["laser_cannon"],
+            ItemTags::laser,
+            true
+    );
     laserCannon->setAmmoFunction([] () {
         auto laser = createAmmo_(
                 Tile2D::resources().textures["laser"],
@@ -144,7 +148,11 @@ GameObject *Prefabs::player() {
     laserCannon->setIsActivated(true);
 
     // -- 2 -- GATLING
-    auto gatlingGun = inventory->attachItem<Cannon>(Tile2D::resources().textures["gatling"], ItemTags::gatling);
+    auto gatlingGun = inventory->attachItem<Cannon>(
+            Tile2D::resources().textures["gatling"],
+            ItemTags::gatling,
+            true
+    );
     gatlingGun->setAmmoFunction([] () {
         auto gatlingAmmo = createAmmo_(
                 Tile2D::resources().textures["gatling_ammo"],
@@ -170,21 +178,33 @@ GameObject *Prefabs::player() {
     gatlingGun->setIsActivated(false);
 
     // -- 3 -- BOMBS
-    auto bombDropper = inventory->attachItem<BombDropper>(Tile2D::resources().textures["bomb"], ItemTags::bombDropper);
+    auto bombDropper = inventory->attachItem<BombDropper>(
+            Tile2D::resources().textures["bomb"],
+            ItemTags::bombDropper,
+            false
+    );
     bombDropper->setPowerConsumption(200);
     bombDropper->setReloadDelay(200);
     bombDropper->setCount(0);
     bombDropper->setIsActivated(false);
 
     // -- 4 -- PLASMA
-    auto plasmaCannon = inventory->attachItem<Cannon>(Tile2D::resources().textures["plasma_cannon"], ItemTags::plasmaCannon);
+    auto plasmaCannon = inventory->attachItem<Cannon>(
+            Tile2D::resources().textures["plasma_cannon"],
+            ItemTags::plasmaCannon,
+            true
+    );
     plasmaCannon->setAmmoFunction(Prefabs::plasma);
     plasmaCannon->setPowerConsumption(300);
     plasmaCannon->setReloadDelay(500);
     plasmaCannon->setIsActivated(false);
 
     // -- 5 -- HEALER
-    auto healer = inventory->attachItem<Healer>(Tile2D::resources().textures["healer"], ItemTags::healer);
+    auto healer = inventory->attachItem<Healer>(
+            Tile2D::resources().textures["healer"],
+            ItemTags::healer,
+            false
+    );
     healer->setPowerConsumption(100);
     healer->setHealingAmount(100);
     healer->setIsActivated(false);
