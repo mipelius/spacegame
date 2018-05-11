@@ -173,7 +173,7 @@ GameObject *Prefabs::player() {
     auto bombDropper = inventory->attachItem<BombDropper>(Tile2D::resources().textures["bomb"], ItemTags::bombDropper);
     bombDropper->setPowerConsumption(200);
     bombDropper->setReloadDelay(200);
-    bombDropper->setCount(30);
+    bombDropper->setCount(0);
     bombDropper->setIsActivated(false);
 
     // -- 4 -- PLASMA
@@ -691,6 +691,22 @@ GameObject *Prefabs::plasmaCannonPickup() {
                     auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
                     auto item = inventory->getItem(ItemTags::plasmaCannon);
                     item->setIsActivated(true);
+                }
+            }
+    );
+}
+
+
+GameObject *Prefabs::bombPickup() {
+    return createPickup_(
+            Tile2D::resources().textures["bomb_box"],
+            [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
+                if (args.otherCollider->gameObject()->tag == Tags::player) {
+                    auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
+                    auto item = inventory->getItem(ItemTags::bombDropper);
+                    item->setIsActivated(true);
+                    int countBefore = item->getCount();
+                    item->setCount(countBefore + 10);
                 }
             }
     );

@@ -63,6 +63,7 @@ public:
     // player pickups
     static GameObject* gatlingPickup();
     static GameObject* plasmaCannonPickup();
+    static GameObject *bombPickup();
 
     // other
     static GameObject* hud(GameObject* player);
