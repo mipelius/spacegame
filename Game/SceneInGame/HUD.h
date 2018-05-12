@@ -40,6 +40,7 @@ protected:
     void awake() override;
     void update() override;
     void lateUpdate() override;
+    void onDestroy() override;
 
 private:
     struct ItemSlot {
@@ -55,10 +56,10 @@ private:
 
     std::vector<ItemSlot> itemSlots_;
 
-    Inventory* inventory = nullptr;
+    Inventory* inventory_ = nullptr;
 
-protected:
-    void onDestroy() override;
+    void updateItemSlots_();
+
 };
 
 #endif //SPACEGAME_HUD_H

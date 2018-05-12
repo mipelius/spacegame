@@ -31,7 +31,23 @@
 #include "Power.h"
 
 void HUD::awake() {
+    GameObject *healthBar = Tile2D::createGameObject();
 
+    healthSprite_ = healthBar->attachComponent<Sprite>();
+    healthSprite_->setRect({0.0f, 0.0f, 10.0f, 10.0f});
+    healthSprite_->setColor({0.7f, 0.0f, 0.0f});
+    healthSprite_->setIsUIDrawable(true);
+    healthSprite_->setOpacity(0.75f);
+
+    GameObject *powerBar = Tile2D::createGameObject();
+
+    powerSprite_ = powerBar->attachComponent<Sprite>();
+    powerSprite_->setRect({0.0f, 0.0f, 200.0f, 10.0f});
+    powerSprite_->setColor({0.3f, 0.7f, 0.0f});
+    powerSprite_->setIsUIDrawable(true);
+    powerSprite_->setOpacity(0.75f);
+
+    updateItemSlots_();
 }
 
 void HUD::update() {
@@ -49,27 +65,7 @@ void HUD::update() {
         powerSprite_->setRect(rect);
     }
     {   // ITEM SLOTS
-        auto itemSlotInfos = inventory->getItemInfos();
-        auto selectedItemSlot = inventory->getSelectedItem();
-
-        for (auto i = 0u; i < itemSlotInfos.size(); ++i) {
-            auto itemInfo = itemSlotInfos[i];
-            auto isActivated = itemInfo.item->isActivated();
-            auto texture = i == selectedItemSlot ?
-               Tile2D::resources().textures["inventory_selected_slot"] :
-               Tile2D::resources().textures["inventory_slot"];
-
-            itemSlots_[i].itemSlotSprite->setTexturePtr(texture);
-            itemSlots_[i].itemSlotText->setIsVisible(isActivated);
-            itemSlots_[i].itemSprite->setIsVisible(isActivated);
-            itemSlots_[i].itemCountText->setIsVisible(isActivated);
-
-            if (isActivated) {
-                const auto& count = itemInfo.item->getCount();
-                auto itemCountString = count >= 0 ? std::to_string(count) : "";
-                itemSlots_[i].itemCountText->setString(itemCountString);
-            }
-        }
+        updateItemSlots_();
     }
 
 }
@@ -79,79 +75,8 @@ void HUD::lateUpdate() {
 }
 
 void HUD::setPlayer(GameObject *player) {
-    if (player_ != nullptr) {
-        throw "HUD: cannot set player twice!";
-    }
     player_ = player;
-
-    inventory = player->getComponent<Inventory>();
-
-    // -- weapon slots --
-    auto weaponSlots = (int) inventory->getItemInfos().size();
-    float width = 40.0f;
-    float height = 40.0f;
-    float margin = 2.0f;
-    Vecf offset = {20.0f, 20.0f};
-
-    for (auto i = 0u; i < weaponSlots; ++i) {
-        GameObject *itemSlot = Tile2D::createGameObject();
-        itemSlot->transform().setPosition(Vecf((width + margin) * i, 0) + offset);
-
-        auto itemSlotSprite = itemSlot->attachComponent<Sprite>();
-        itemSlotSprite->setRect({0.0f, 0.0f, width, height});
-        itemSlotSprite->setIsUIDrawable(true);
-        itemSlotSprite->setTexturePtr(Tile2D::resources().textures["inventory_slot"]);
-        itemSlotSprite->setSortingLayer(SortingLayers::HUD_WeaponSlot);
-
-        auto itemSprite = itemSlot->attachComponent<Sprite>();
-        itemSprite->setRect({5.0f, 5.0f, width - 5.0f, height - 5.0f});
-        itemSprite->setIsUIDrawable(true);
-        itemSprite->setTexturePtr(inventory->getItemInfos()[i].inventoryTexturePtr);
-        itemSprite->setSortingLayer(SortingLayers::HUD_Weapon);
-
-        auto itemSlotText = itemSlot->attachComponent<Text>();
-        itemSlotText->setFontPtr(Tile2D::resources().fonts["smallfont"]);
-        itemSlotText->setIsUIDrawable(true);
-        itemSlotText->setString(std::to_string(i + 1));
-        itemSlotText->setSortingLayer(SortingLayers::HUD_Text);
-        itemSlotText->setFontSize(1.0f);
-        itemSlotText->setHorizontalAlignment(Text::HorizontalAlignment::right);
-        itemSlotText->setVerticalAlignment(Text::VerticalAlignment::bottom);
-        itemSlotText->localTransform().setPosition({width - 4.0f, height - 4.0f});
-
-        auto itemCountText = itemSlot->attachComponent<Text>();
-        itemCountText->setFontPtr(Tile2D::resources().fonts["smallfont"]);
-        itemCountText->setIsUIDrawable(true);
-        itemCountText->setSortingLayer(SortingLayers::HUD_Text);
-        itemCountText->setFontSize(1.0f);
-        itemCountText->setHorizontalAlignment(Text::HorizontalAlignment::right);
-        itemCountText->setVerticalAlignment(Text::VerticalAlignment::top);
-        itemCountText->localTransform().setPosition({width - 4.0f, 4.0f});
-
-        itemSlots_.push_back({itemSlotSprite, itemSprite, itemSlotText, itemCountText});
-    }
-
-    offset += Vecf((width + margin) * weaponSlots + 10.0f, 0.0);
-
-    // -- health bar --
-    GameObject *healthBar = Tile2D::createGameObject();
-    healthBar->transform().setPosition(offset + Vecf(0.0f, 5.0f));
-
-    healthSprite_ = healthBar->attachComponent<Sprite>();
-    healthSprite_->setRect({0.0f, 0.0f, 10.0f, 10.0f});
-    healthSprite_->setColor({0.7f, 0.0f, 0.0f});
-    healthSprite_->setIsUIDrawable(true);
-    healthSprite_->setOpacity(0.75f);
-
-    // -- power bar --
-    GameObject *powerBar = Tile2D::createGameObject();
-    powerBar->transform().setPosition(offset + Vecf(0.0f, height - 15.0f));
-
-    powerSprite_ = powerBar->attachComponent<Sprite>();
-    powerSprite_->setRect({0.0f, 0.0f, 200.0f, 10.0f});
-    powerSprite_->setColor({0.3f, 0.7f, 0.0f});
-    powerSprite_->setIsUIDrawable(true);
-    powerSprite_->setOpacity(0.75f);
+    inventory_ = player->getComponent<Inventory>();
 }
 
 void HUD::onDestroy() {
@@ -160,5 +85,90 @@ void HUD::onDestroy() {
     powerSprite_->gameObject()->destroy();
     for (auto itemSlot : itemSlots_) {
         itemSlot.itemSlotSprite->gameObject()->destroy();
+    }
+}
+
+void HUD::updateItemSlots_() {
+    if (inventory_ == nullptr) {
+        return;
+    }
+
+    auto itemCount = (int) inventory_->getItemInfos().size();
+
+    if (itemCount != itemSlots_.size()) {
+        for (auto itemSlot : itemSlots_) {
+            itemSlot.itemCountText->gameObject()->destroy();
+        }
+        itemSlots_.clear();
+
+        float width = 40.0f;
+        float height = 40.0f;
+        float margin = 2.0f;
+        Vecf offset = {20.0f, 20.0f};
+
+        for (auto i = 0u; i < itemCount; ++i) {
+            GameObject *itemSlot = Tile2D::createGameObject();
+            itemSlot->transform().setPosition(Vecf((width + margin) * i, 0) + offset);
+
+            auto itemSlotSprite = itemSlot->attachComponent<Sprite>();
+            itemSlotSprite->setRect({0.0f, 0.0f, width, height});
+            itemSlotSprite->setIsUIDrawable(true);
+            itemSlotSprite->setTexturePtr(Tile2D::resources().textures["inventory_slot"]);
+            itemSlotSprite->setSortingLayer(SortingLayers::HUD_WeaponSlot);
+
+            auto itemSprite = itemSlot->attachComponent<Sprite>();
+            itemSprite->setRect({5.0f, 5.0f, width - 5.0f, height - 5.0f});
+            itemSprite->setIsUIDrawable(true);
+            itemSprite->setSortingLayer(SortingLayers::HUD_Weapon);
+
+            auto itemSlotText = itemSlot->attachComponent<Text>();
+            itemSlotText->setFontPtr(Tile2D::resources().fonts["smallfont"]);
+            itemSlotText->setIsUIDrawable(true);
+            itemSlotText->setString(std::to_string(i + 1));
+            itemSlotText->setSortingLayer(SortingLayers::HUD_Text);
+            itemSlotText->setFontSize(1.0f);
+            itemSlotText->setHorizontalAlignment(Text::HorizontalAlignment::right);
+            itemSlotText->setVerticalAlignment(Text::VerticalAlignment::bottom);
+            itemSlotText->localTransform().setPosition({width - 4.0f, height - 4.0f});
+
+            auto itemCountText = itemSlot->attachComponent<Text>();
+            itemCountText->setFontPtr(Tile2D::resources().fonts["smallfont"]);
+            itemCountText->setIsUIDrawable(true);
+            itemCountText->setSortingLayer(SortingLayers::HUD_Text);
+            itemCountText->setFontSize(1.0f);
+            itemCountText->setHorizontalAlignment(Text::HorizontalAlignment::right);
+            itemCountText->setVerticalAlignment(Text::VerticalAlignment::top);
+            itemCountText->localTransform().setPosition({width - 4.0f, 4.0f});
+
+            itemSlots_.push_back({itemSlotSprite, itemSprite, itemSlotText, itemCountText});
+        }
+
+        offset += Vecf((width + margin) * itemCount + 10.0f, 0.0);
+        healthSprite_->transform()->setPosition(offset + Vecf(0.0f, 5.0f));
+        powerSprite_->transform()->setPosition(offset + Vecf(0.0f, height - 15.0f));
+    }
+
+    auto itemSlotInfos = inventory_->getItemInfos();
+    auto selectedItemSlot = inventory_->getSelectedItem();
+
+    for (auto i = 0u; i < itemSlotInfos.size(); ++i) {
+        auto itemInfo = itemSlotInfos[i];
+        auto isActivated = itemInfo.item->isActivated();
+        auto texture = i == selectedItemSlot ?
+                       Tile2D::resources().textures["inventory_selected_slot"] :
+                       Tile2D::resources().textures["inventory_slot"];
+
+        itemSlots_[i].itemSlotSprite->setTexturePtr(texture);
+        itemSlots_[i].itemSprite->setTexturePtr(inventory_->getItemInfos()[i].inventoryTexturePtr);
+
+        itemSlots_[i].itemSlotText->setIsVisible(isActivated);
+        itemSlots_[i].itemSprite->setIsVisible(isActivated);
+        itemSlots_[i].itemCountText->setIsVisible(isActivated);
+
+        if (isActivated) {
+            const auto& count = itemInfo.item->getCount();
+            auto itemCountString = count >= 0 ? std::to_string(count) : "";
+            itemSlots_[i].itemCountText->setString(itemCountString);
+        }
     }
 }
