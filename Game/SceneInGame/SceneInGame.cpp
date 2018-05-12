@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 
+#include "ItemTags.h"
 #include "DrawableMap.h"
 #include "SceneInGame.h"
 #include "Sprite.h"
@@ -59,11 +60,14 @@ void SceneInGame::init() {
     camera_->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
     Tile2D::canvas().setCamera(camera_);
 
-    // spawners
+    // enemy spawners
     Prefabs::enemySpawner({0.0f, 0.0f, 3300.0f, 2400.0f}, player, Prefabs::walker, 3000);
     Prefabs::enemySpawner({3300.0f, 0.0f, 6400.0f, 2400.0f}, player, Prefabs::fish, 3000);
     Prefabs::enemySpawner({3300.0f, 2400.0f, 6400.0f, 4800.0f}, player, Prefabs::trifly, 3000);
     Prefabs::enemySpawner({0.0f, 2400.0f, 3300.0f, 4800.0f}, player, Prefabs::walker, 3000);
+
+    // pickup spawners
+    Prefabs::pickupSpawner({0.0f, 0.0f, 3300.0f, 2400.0f}, player, Prefabs::bombPickup, 3000, ItemTags::bombDropper, 30, 2000);
 
     // boss
     auto boss = Prefabs::boss();

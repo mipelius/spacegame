@@ -259,6 +259,8 @@ set(SOURCE_FILES
         Game/SceneInGame/SpawnerBase.h
         Game/SceneInGame/Spawnable.cpp
         Game/SceneInGame/Spawnable.h
+        Game/SceneInGame/PickupSpawner.cpp
+        Game/SceneInGame/PickupSpawner.h
         )
 
 add_executable(SpaceGame ${SOURCE_FILES})

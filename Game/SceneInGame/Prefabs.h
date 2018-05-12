@@ -76,6 +76,15 @@ public:
             GameObject *(*spawnFunction)(),
             Uint32 spawningDelay
     );
+    static static GameObject* pickupSpawner(
+            Rect area,
+            GameObject *target,
+            GameObject *(*spawnFunction)(),
+            Uint32 spawningDelay,
+            int itemTag,
+            int maxItemCount,
+            float minDistanceToTarget
+    );
 
 private:
     static GameObject* createAmmo_(

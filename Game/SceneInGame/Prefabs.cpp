@@ -57,6 +57,7 @@
 #include "PlayerTargetingComponent.h"
 #include "EnemyTargetingComponent.h"
 #include "AmmoComponent.h"
+#include "PickupSpawner.h"
 
 GameObject *Prefabs::player() {
     auto player = Tile2D::createGameObject();
@@ -1009,6 +1010,27 @@ GameObject *Prefabs::enemySpawner(
     spawnerBehaviour->setAreaRect(area);
     spawnerBehaviour->setInnerRect({-600.0f, -400.0f, 600.0f, 400.0f});
     spawnerBehaviour->setOuterRect({-1000.0f, -800.0f, 1000.0f, 800.0f});
+
+    return spawnerObj;
+}
+GameObject* Prefabs::pickupSpawner(
+        Rect area,
+        GameObject *target,
+        GameObject *(*spawnFunction)(),
+        Uint32 spawningDelay,
+        int itemTag,
+        int maxItemCount,
+        float minDistanceToTarget
+) {
+    GameObject* spawnerObj = Tile2D::createGameObject();
+    auto spawnerBehaviour = spawnerObj->attachComponent<PickupSpawner>();
+    spawnerBehaviour->setPlayer(target);
+    spawnerBehaviour->setSpawnFunction(spawnFunction);
+    spawnerBehaviour->setSpawningDelay(spawningDelay);
+    spawnerBehaviour->setItemTag(itemTag);
+    spawnerBehaviour->setMaxItemCount(maxItemCount);
+    spawnerBehaviour->setMinDistanceToTarget(minDistanceToTarget);
+    spawnerBehaviour->setAreaRect(area);
 
     return spawnerObj;
 }
