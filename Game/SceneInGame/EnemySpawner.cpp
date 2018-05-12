@@ -25,16 +25,9 @@
 
 #include "EnemySpawner.h"
 #include "EnemyAIBase.h"
-#include "Prefabs.h"
 #include "Tile2D.h"
 #include "Tile2DMath.h"
 #include "TileMap.h"
-
-EnemySpawner::EnemySpawner() :
-        outerRect_({0.0f, 0.0f, 0.0f, 0.0f}),
-        innerRect_({0.0f, 0.0f, 0.0f, 0.0f}),
-        areaRect_({0.0f, 0.0f, 0.0f, 0.0f})
-{ }
 
 void EnemySpawner::awake() { }
 
@@ -111,13 +104,5 @@ const Rect &EnemySpawner::getInnerRect() const {
 
 void EnemySpawner::setInnerRect(const Rect &innerRect) {
     innerRect_ = innerRect;
-}
-
-const Rect &EnemySpawner::getAreaRect() const {
-    return areaRect_;
-}
-
-void EnemySpawner::setAreaRect(const Rect &areaRect) {
-    areaRect_ = areaRect;
 }
 

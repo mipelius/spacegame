@@ -26,6 +26,7 @@
 
 #include "Tile2DBehaviour.h"
 #include "CountDownTimer.h"
+#include "Rect.h"
 
 class SpawnerBase : public Tile2DBehaviour {
 
@@ -37,12 +38,15 @@ public:
     unsigned int getMaxSpawnedObjects() const;
     void setMaxSpawnedObjects(unsigned int maxSpawnedObjects);
     void setSpawningDelay(Uint32 milliseconds);
+    const Rect &getAreaRect() const;
+    void setAreaRect(const Rect &areaRect);
 
 protected:
     void onDestroy() override;
     unsigned int maxSpawnedObjects_ = 5;
     GameObject* player_;
     CountDownTimer timer_ = {};
+    Rect areaRect_ = {};
 
     GameObject* spawn();
 

@@ -32,14 +32,10 @@
 
 class EnemySpawner : public SpawnerBase {
 public:
-    EnemySpawner();
-
 	const Rect &getOuterRect() const;
     void setOuterRect(const Rect &outerRect);
     const Rect &getInnerRect() const;
     void setInnerRect(const Rect &innerRect);
-    const Rect &getAreaRect() const;
-    void setAreaRect(const Rect &areaRect);
 
 protected:
 	void awake() override;
@@ -47,9 +43,8 @@ protected:
     void lateUpdate() override;
 
 private:
-	Rect outerRect_;
-    Rect innerRect_;
-    Rect areaRect_;
+	Rect outerRect_ = {};
+    Rect innerRect_ = {};
 };
 
 

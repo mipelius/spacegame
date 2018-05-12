@@ -78,3 +78,11 @@ GameObject* SpawnerBase::spawn() {
 void SpawnerBase::setSpawningDelay(Uint32 milliseconds) {
     timer_.setInterval(milliseconds);
 }
+
+const Rect &SpawnerBase::getAreaRect() const {
+    return areaRect_;
+}
+
+void SpawnerBase::setAreaRect(const Rect &areaRect) {
+    areaRect_ = areaRect;
+}
