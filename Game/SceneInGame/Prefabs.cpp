@@ -185,7 +185,6 @@ GameObject *Prefabs::player() {
             false
     );
     bombDropper->setPowerConsumption(200);
-    bombDropper->setReloadDelay(200);
     bombDropper->setCount(0);
     bombDropper->setIsActivated(false);
 
