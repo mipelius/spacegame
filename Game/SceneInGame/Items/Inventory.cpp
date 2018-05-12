@@ -70,6 +70,8 @@ ItemBase *Inventory::getItem(int tag) {
     return nullptr;
 }
 
+
+
 void Inventory::awake() {
 
 }
@@ -107,6 +109,14 @@ void Inventory::lateUpdate() {
     else {
         if (Tile2D::input().keyboard().keyPressed(SDL_SCANCODE_SPACE)) {
             useSelectedItem_();
+        }
+    }
+}
+
+void Inventory::setItemTexture(int tag, Texture *inventoryTexturePtr) {
+    for (auto& itemInfo : itemInfos_) {
+        if (itemInfo.tag == tag) {
+            itemInfo.inventoryTexturePtr = inventoryTexturePtr;
         }
     }
 }

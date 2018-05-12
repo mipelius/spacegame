@@ -48,6 +48,7 @@ public:
     void selectItem(int itemNumber);
 
     ItemBase* getItem(int tag);
+    void setItemTexture(int tag, Texture *inventoryTexturePtr);
 
 protected:
     void awake() override;

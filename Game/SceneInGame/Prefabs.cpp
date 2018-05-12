@@ -762,6 +762,11 @@ GameObject* Prefabs::laserCannonUpgradePickup() {
                         {0, 0},
                         {-10, 13}
                     });
+
+                    inventory->setItemTexture(
+                            ItemTags::laser,
+                            Tile2D::resources().textures["laser_cannon_upgraded"]
+                    );
                 }
             }
     );
