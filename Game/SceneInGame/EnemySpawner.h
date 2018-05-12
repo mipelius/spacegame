@@ -28,48 +28,28 @@
 #include "Tile2DBehaviour.h"
 #include "Rect.h"
 #include "CountDownTimer.h"
+#include "SpawnerBase.h"
 
-class SpawnerBehaviour : public Tile2DBehaviour {
+class EnemySpawner : public SpawnerBase {
 public:
-    SpawnerBehaviour();
-	
-    GameObject *getTarget() const;
-    void setTarget(GameObject *target);
-    const Rect &getOuterRect() const;
+    EnemySpawner();
+
+	const Rect &getOuterRect() const;
     void setOuterRect(const Rect &outerRect);
     const Rect &getInnerRect() const;
     void setInnerRect(const Rect &innerRect);
     const Rect &getAreaRect() const;
     void setAreaRect(const Rect &areaRect);
-    unsigned int getMaxSpawnedObjects() const;
-    void setMaxSpawnedObjects(unsigned int maxSpawnedObjects);
-
-    void setSpawnFunction(GameObject *(*spawnFunction)());
-
-    void remove(GameObject *gameObject);
 
 protected:
-	void onDestroy() override;
-
-    void awake() override;
+	void awake() override;
     void update() override;
     void lateUpdate() override;
 
 private:
-    CountDownTimer spawningTimer_;
-
-    unsigned int maxSpawnedObjects_ = 5;
-
-    std::list<GameObject*> spawnedGameObjects_;
-
-    GameObject* (*spawnFunction_)();
-
-    GameObject* target_;
-    Rect outerRect_;
+	Rect outerRect_;
     Rect innerRect_;
-
     Rect areaRect_;
-
 };
 
 

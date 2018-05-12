@@ -139,6 +139,8 @@ set(SOURCE_FILES
         Tile2D/Util/gl_utils.h
         Tile2D/Util/Pool.h
         Tile2D/Util/Tile2DMath.h
+        Tile2D/Util/Timer.cpp
+        Tile2D/Util/Timer.h
         Tile2D/Util/CountDownTimer.cpp
         Tile2D/Util/CountDownTimer.h
         Tile2D/Core/Tile2D.cpp
@@ -203,8 +205,8 @@ set(SOURCE_FILES
         Game/SceneInGame/PulseLightBehaviour.h
         Game/SceneInGame/SparkleBehaviour.cpp
         Game/SceneInGame/SparkleBehaviour.h
-        Game/SceneInGame/SpawnerBehaviour.cpp
-        Game/SceneInGame/SpawnerBehaviour.h
+        Game/SceneInGame/EnemySpawner.cpp
+        Game/SceneInGame/EnemySpawner.h
         Game/SceneInGame/WalkingEnemyAI.cpp
         Game/SceneInGame/WalkingEnemyAI.h
 
@@ -236,15 +238,28 @@ set(SOURCE_FILES
         Game/SceneInGame/Items/WeaponBase.h
         Game/SceneInGame/Items/ItemBase.cpp
         Game/SceneInGame/Items/ItemBase.h
-        Tile2D/Util/Timer.cpp
-        Tile2D/Util/Timer.h
         Game/SceneInGame/Items/Cannon.cpp
         Game/SceneInGame/Items/Cannon.h
         Game/SceneInGame/Items/BombDropper.cpp
         Game/SceneInGame/Items/BombDropper.h
+        Game/SceneInGame/Items/Healer.cpp
+        Game/SceneInGame/Items/Healer.h
+        Game/SceneInGame/Items/ItemTags.h
         Game/SceneInGame/SwirlingBehaviour.cpp
         Game/SceneInGame/SwirlingBehaviour.h
-        Game/SceneInGame/Items/Healer.cpp Game/SceneInGame/Items/Healer.h Game/SceneInGame/TargetingComponentBase.cpp Game/SceneInGame/TargetingComponentBase.h Game/SceneInGame/PlayerTargetingComponent.cpp Game/SceneInGame/PlayerTargetingComponent.h Game/SceneInGame/EnemyTargetingComponent.cpp Game/SceneInGame/EnemyTargetingComponent.h Game/SceneInGame/AmmoComponent.cpp Game/SceneInGame/AmmoComponent.h Game/SceneInGame/Items/ItemTags.h)
+        Game/SceneInGame/TargetingComponentBase.cpp
+        Game/SceneInGame/TargetingComponentBase.h
+        Game/SceneInGame/PlayerTargetingComponent.cpp
+        Game/SceneInGame/PlayerTargetingComponent.h
+        Game/SceneInGame/EnemyTargetingComponent.cpp
+        Game/SceneInGame/EnemyTargetingComponent.h
+        Game/SceneInGame/AmmoComponent.cpp
+        Game/SceneInGame/AmmoComponent.h
+        Game/SceneInGame/SpawnerBase.cpp
+        Game/SceneInGame/SpawnerBase.h
+        Game/SceneInGame/Spawnable.cpp
+        Game/SceneInGame/Spawnable.h
+        )
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

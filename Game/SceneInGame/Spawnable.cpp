@@ -21,54 +21,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "Spawnable.h"
 
-#include "EnemyAIBase.h"
+void Spawnable::init() { }
 
-#include "Tile2D.h"
-#include "Prefabs.h"
-#include "ColliderLayers.h"
-#include "TileMap.h"
-
-void EnemyAIBase::awake() {
-    body_ = gameObject()->getComponent<Body>();
-}
-
-Transform *EnemyAIBase::getTarget() const {
-    return target_;
-}
-
-void EnemyAIBase::setTarget(Transform *target) {
-    target_ = target;
-}
-
-void EnemyAIBase::shootTarget_() {
-    if (weapon_ != nullptr && canSeeTarget_()) {
-        weapon_->use(gameObject());
+void Spawnable::onDestroy() {
+    if (spawner_ != nullptr) {
+        spawner_->remove(gameObject());
     }
 }
 
-void EnemyAIBase::update() {
-    float distanceSqr = (target_->getPosition() - transform()->getPosition()).lengthSqr();
-
-    if (distanceSqr > (maxDistance_ * maxDistance_)) {
-        gameObject()->destroy();
-    }
+void Spawnable::setSpawner(SpawnerBase *spawner) {
+    spawner_ = spawner;
 }
-
-float EnemyAIBase::getMaxDistance() const {
-    return maxDistance_;
-}
-
-void EnemyAIBase::setMaxDistance(float maxDistance) {
-    maxDistance_ = maxDistance;
-}
-
-bool EnemyAIBase::canSeeTarget_() {
-    Vecf collisionPoint;
-    return !Tile2D::tileMap().castLine(
-            transform()->getPosition(),
-            target_->getPosition(),
-            collisionPoint
-    );
-}
-

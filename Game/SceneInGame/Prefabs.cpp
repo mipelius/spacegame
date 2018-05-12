@@ -23,8 +23,8 @@
 
 
 #include <cfloat>
-#include <Game/SceneInGame/Items/Healer.h>
-#include <Game/SceneInGame/Items/ItemTags.h>
+#include "Healer.h"
+#include "ItemTags.h"
 #include "Cannon.h"
 #include "BombDropper.h"
 #include "Inventory.h"
@@ -54,7 +54,6 @@
 #include "t2Time.h"
 #include "Power.h"
 #include "SwirlingBehaviour.h"
-#include "Healer.h"
 #include "PlayerTargetingComponent.h"
 #include "EnemyTargetingComponent.h"
 #include "AmmoComponent.h"
@@ -996,11 +995,17 @@ GameObject *Prefabs::background(Rect area, const char *texture, Color color) {
     return background;
 }
 
-GameObject *Prefabs::spawner(Rect area, GameObject* target, GameObject* (*spawnfunction)()) {
+GameObject *Prefabs::enemySpawner(
+        Rect area,
+        GameObject *target,
+        GameObject *(*spawnFunction)(),
+        Uint32 spawningDelay)
+{
     GameObject* spawnerObj = Tile2D::createGameObject();
-    auto spawnerBehaviour = spawnerObj->attachComponent<SpawnerBehaviour>();
-    spawnerBehaviour->setTarget(target);
-    spawnerBehaviour->setSpawnFunction(spawnfunction);
+    auto spawnerBehaviour = spawnerObj->attachComponent<EnemySpawner>();
+    spawnerBehaviour->setPlayer(target);
+    spawnerBehaviour->setSpawnFunction(spawnFunction);
+    spawnerBehaviour->setSpawningDelay(spawningDelay);
     spawnerBehaviour->setAreaRect(area);
     spawnerBehaviour->setInnerRect({-600.0f, -400.0f, 600.0f, 400.0f});
     spawnerBehaviour->setOuterRect({-1000.0f, -800.0f, 1000.0f, 800.0f});

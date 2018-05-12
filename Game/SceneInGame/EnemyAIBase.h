@@ -30,14 +30,13 @@
 #include "Tile2DBehaviour.h"
 #include "Body.h"
 #include "CountDownTimer.h"
-#include "SpawnerBehaviour.h"
+#include "EnemySpawner.h"
 
 class EnemyAIBase : public Tile2DBehaviour {
 
 public:
     void setTarget(Transform *target);
     Transform *getTarget() const;
-    void setSpawnerBehaviour(SpawnerBehaviour *spawnerBehaviour);
 
     float getMaxDistance() const;
     void setMaxDistance(float maxDistance);
@@ -54,9 +53,7 @@ protected:
     float maxDistance_;
 
     void awake() override;
-    SpawnerBehaviour* spawnerBehaviour_ = nullptr;
 
-    void onDestroy() override;
     void update() override;
 
     bool canSeeTarget_();

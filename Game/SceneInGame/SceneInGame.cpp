@@ -26,7 +26,7 @@
 #include "SceneInGame.h"
 #include "Sprite.h"
 #include "Prefabs.h"
-#include "SpawnerBehaviour.h"
+#include "EnemySpawner.h"
 #include "EnemyAIBase.h"
 #include "HUD.h"
 #include "TileMap.h"
@@ -60,10 +60,10 @@ void SceneInGame::init() {
     Tile2D::canvas().setCamera(camera_);
 
     // spawners
-//    Prefabs::spawner({0.0f, 0.0f, 3300.0f, 2400.0f}, player, Prefabs::walker);
-//    Prefabs::spawner({3300.0f, 0.0f, 6400.0f, 2400.0f}, player, Prefabs::fish);
-//    Prefabs::spawner({3300.0f, 2400.0f, 6400.0f, 4800.0f}, player, Prefabs::trifly);
-//    Prefabs::spawner({0.0f, 2400.0f, 3300.0f, 4800.0f}, player, Prefabs::walker);
+    Prefabs::enemySpawner({0.0f, 0.0f, 3300.0f, 2400.0f}, player, Prefabs::walker, 3000);
+    Prefabs::enemySpawner({3300.0f, 0.0f, 6400.0f, 2400.0f}, player, Prefabs::fish, 3000);
+    Prefabs::enemySpawner({3300.0f, 2400.0f, 6400.0f, 4800.0f}, player, Prefabs::trifly, 3000);
+    Prefabs::enemySpawner({0.0f, 2400.0f, 3300.0f, 4800.0f}, player, Prefabs::walker, 3000);
 
     // boss
     auto boss = Prefabs::boss();

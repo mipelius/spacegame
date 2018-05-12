@@ -21,54 +21,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_SPAWNABLE_H
+#define SPACEGAME_SPAWNABLE_H
 
-#include "EnemyAIBase.h"
+#include "Tile2DComponent.h"
+#include "SpawnerBase.h"
 
-#include "Tile2D.h"
-#include "Prefabs.h"
-#include "ColliderLayers.h"
-#include "TileMap.h"
+class Spawnable : public Tile2DComponent {
+public:
+    void setSpawner(SpawnerBase *spawner);
 
-void EnemyAIBase::awake() {
-    body_ = gameObject()->getComponent<Body>();
-}
+protected:
+    void init() override;
+    void onDestroy() override;
 
-Transform *EnemyAIBase::getTarget() const {
-    return target_;
-}
+protected:
+    SpawnerBase* spawner_;
 
-void EnemyAIBase::setTarget(Transform *target) {
-    target_ = target;
-}
+};
 
-void EnemyAIBase::shootTarget_() {
-    if (weapon_ != nullptr && canSeeTarget_()) {
-        weapon_->use(gameObject());
-    }
-}
-
-void EnemyAIBase::update() {
-    float distanceSqr = (target_->getPosition() - transform()->getPosition()).lengthSqr();
-
-    if (distanceSqr > (maxDistance_ * maxDistance_)) {
-        gameObject()->destroy();
-    }
-}
-
-float EnemyAIBase::getMaxDistance() const {
-    return maxDistance_;
-}
-
-void EnemyAIBase::setMaxDistance(float maxDistance) {
-    maxDistance_ = maxDistance;
-}
-
-bool EnemyAIBase::canSeeTarget_() {
-    Vecf collisionPoint;
-    return !Tile2D::tileMap().castLine(
-            transform()->getPosition(),
-            target_->getPosition(),
-            collisionPoint
-    );
-}
-
+#endif //SPACEGAME_SPAWNABLE_H

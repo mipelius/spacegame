@@ -21,54 +21,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_SPAWNERBASE_H
+#define SPACEGAME_SPAWNERBASE_H
 
-#include "EnemyAIBase.h"
+#include "Tile2DBehaviour.h"
+#include "CountDownTimer.h"
 
-#include "Tile2D.h"
-#include "Prefabs.h"
-#include "ColliderLayers.h"
-#include "TileMap.h"
+class SpawnerBase : public Tile2DBehaviour {
 
-void EnemyAIBase::awake() {
-    body_ = gameObject()->getComponent<Body>();
-}
+public:
+    GameObject *getPlayer() const;
+    void setPlayer(GameObject *player);
+    void remove(GameObject *gameObject);
+    void setSpawnFunction(GameObject *(*spawnFunction)());
+    unsigned int getMaxSpawnedObjects() const;
+    void setMaxSpawnedObjects(unsigned int maxSpawnedObjects);
+    void setSpawningDelay(Uint32 milliseconds);
 
-Transform *EnemyAIBase::getTarget() const {
-    return target_;
-}
+protected:
+    void onDestroy() override;
+    unsigned int maxSpawnedObjects_ = 5;
+    GameObject* player_;
+    CountDownTimer timer_ = {};
 
-void EnemyAIBase::setTarget(Transform *target) {
-    target_ = target;
-}
+    GameObject* spawn();
 
-void EnemyAIBase::shootTarget_() {
-    if (weapon_ != nullptr && canSeeTarget_()) {
-        weapon_->use(gameObject());
-    }
-}
+private:
+    GameObject* (*spawnFunction_)();
+    std::list<GameObject*> spawnedGameObjects_;
 
-void EnemyAIBase::update() {
-    float distanceSqr = (target_->getPosition() - transform()->getPosition()).lengthSqr();
+};
 
-    if (distanceSqr > (maxDistance_ * maxDistance_)) {
-        gameObject()->destroy();
-    }
-}
 
-float EnemyAIBase::getMaxDistance() const {
-    return maxDistance_;
-}
-
-void EnemyAIBase::setMaxDistance(float maxDistance) {
-    maxDistance_ = maxDistance;
-}
-
-bool EnemyAIBase::canSeeTarget_() {
-    Vecf collisionPoint;
-    return !Tile2D::tileMap().castLine(
-            transform()->getPosition(),
-            target_->getPosition(),
-            collisionPoint
-    );
-}
-
+#endif //SPACEGAME_SPAWNERBASE_H

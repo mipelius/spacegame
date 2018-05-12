@@ -70,7 +70,12 @@ public:
     // other
     static GameObject* hud(GameObject* player);
     static GameObject* background(Rect area, const char* texture, Color color);
-    static GameObject* spawner(Rect area, GameObject* target, GameObject* (*spawnFunction)());
+    static GameObject* enemySpawner(
+            Rect area,
+            GameObject *target,
+            GameObject *(*spawnFunction)(),
+            Uint32 spawningDelay
+    );
 
 private:
     static GameObject* createAmmo_(
