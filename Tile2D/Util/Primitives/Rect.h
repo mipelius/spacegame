@@ -29,6 +29,8 @@
 
 class Rect {
 public:
+    Rect();
+
     float x1;
     float y1;
     float x2;

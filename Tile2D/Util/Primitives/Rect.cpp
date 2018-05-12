@@ -32,3 +32,10 @@ Rect::Rect(float x1, float y1, float x2, float y2) {
     this->y2 = y2;
 }
 
+
+Rect::Rect() {
+    this->x1 = 0.0f;
+    this->y1 = 0.0f;
+    this->x2 = 0.0f;
+    this->y2 = 0.0f;
+}
