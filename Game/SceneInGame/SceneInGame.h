@@ -36,6 +36,10 @@ class SceneInGame : public IScene {
 
 private:
     Camera* camera_ = nullptr;
+    void initSnowWorld_(GameObject* player);
+    void initGreenWorld_(GameObject* player);
+    void initBlueWorld_(GameObject* player);
+    void initRedWorld_(GameObject* player);
 };
 
 

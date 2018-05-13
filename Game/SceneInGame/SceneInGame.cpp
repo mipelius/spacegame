@@ -42,12 +42,6 @@ void SceneInGame::init() {
     Tile2D::physicsWorld().setAirDensity(0.2f);
     Tile2D::physicsWorld().setGForce({0, 100.0f});
 
-    // backgrounds
-    Prefabs::background({0.0f, 0.0f, 3300.0f, 2400.0f},       "bg2", {0.8f, 0.8f, 0.5f}); // upper left corner
-    Prefabs::background({3300.0f, 0.0f, 6400.0f, 2400.0f},    "bg2", {0.2f, 0.8f, 1.0f}); // upper right corner
-    Prefabs::background({0.0f, 2400.0f, 3300.0f, 4800.0f},    "bg1", {0.6f, 0.3f, 0.3f}); // bottom left corner
-    Prefabs::background({3300.0f, 2400.0f, 6400.0f, 4800.0f}, "bg1", {0.3f, 0.3f, 0.6f}); // bottom right corner
-
     // player
     auto player = Prefabs::player();
     player->transform().setPosition({500.0f, 250.0f});
@@ -55,24 +49,20 @@ void SceneInGame::init() {
     // hud
     auto hud = Prefabs::hud(player);
 
+    // worlds
+    initSnowWorld_(player);
+    initGreenWorld_(player);
+    initBlueWorld_(player);
+    initRedWorld_(player);
+
     // camera
     camera_ = new Camera;
     camera_->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
     Tile2D::canvas().setCamera(camera_);
 
-    // enemy spawners
-    Prefabs::enemySpawner({0.0f, 0.0f, 3300.0f, 2400.0f}, player, Prefabs::walker, 3000);
-    Prefabs::enemySpawner({3300.0f, 0.0f, 6400.0f, 2400.0f}, player, Prefabs::fish, 3000);
-    Prefabs::enemySpawner({3300.0f, 2400.0f, 6400.0f, 4800.0f}, player, Prefabs::trifly, 3000);
-    Prefabs::enemySpawner({0.0f, 2400.0f, 3300.0f, 4800.0f}, player, Prefabs::walker, 3000);
-
     // pickup spawners
     Prefabs::pickupSpawner({0.0f, 0.0f, 3300.0f, 2400.0f}, player, Prefabs::bombPickup, 3000, ItemTags::bombDropper, 30, 2000);
 
-    // boss
-    auto boss = Prefabs::boss();
-    boss->transform().setPosition({2622.0f ,3880.0f});
-    boss->getComponent<EnemyAIBase>()->setTarget(&player->transform());
 
     // lights
     std::vector<Vecf> lightPositions = {
@@ -150,3 +140,30 @@ void SceneInGame::destroy() {
     Tile2D::tileMap().unload();
     delete camera_;
 }
+
+
+void SceneInGame::initSnowWorld_(GameObject* player) {
+    Prefabs::enemySpawner({0.0f, 0.0f, 6400.0f, 2640.0f}, player, Prefabs::fish, 3000);
+    Prefabs::background({0.0f, 0.0f, 6400.0f, 2640.0f},       "bg2", {0.2f, 0.8f, 1.0f});
+}
+
+void SceneInGame::initGreenWorld_(GameObject* player) {
+    Prefabs::enemySpawner({0.0f, 2640.0f, 6400.0f, 6512.0f}, player, Prefabs::walker, 3000);
+    Prefabs::background({0.0f, 2640.0f, 6400.0f, 6512.0f},    "bg2", {0.8f, 0.8f, 0.5f});
+}
+
+void SceneInGame::initBlueWorld_(GameObject* player) {
+    Prefabs::enemySpawner({0.0f, 6512.0f, 6400.0f, 10392.0f}, player, Prefabs::trifly, 3000);
+    Prefabs::background({0.0f, 6512.0f, 6400.0f, 10392.0f},   "bg1", {0.3f, 0.3f, 0.6f});
+}
+
+void SceneInGame::initRedWorld_(GameObject* player) {
+    Prefabs::enemySpawner({0.0f, 10392.0f, 6400.0f, 14400.0f}, player, Prefabs::walker, 3000);
+    Prefabs::background({0.0f, 10392.0f, 6400.0f, 14400.0f},  "bg1", {0.6f, 0.3f, 0.3f});
+
+    // boss
+    auto boss = Prefabs::boss();
+    boss->transform().setPosition({3016.0f, 13088.0f});
+    boss->getComponent<EnemyAIBase>()->setTarget(&player->transform());
+}
+
