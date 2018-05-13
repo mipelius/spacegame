@@ -27,7 +27,7 @@
 
 #include <string>
 #include <vector>
-#include <Game/SortingLayers.h>
+#include "SortingLayers.h"
 #include "GameObject.h"
 #include "Rect.h"
 #include "Color.h"

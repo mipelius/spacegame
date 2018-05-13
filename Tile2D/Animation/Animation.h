@@ -24,7 +24,7 @@
 #ifndef SPACEGAME_ANIMATION_H
 #define SPACEGAME_ANIMATION_H
 
-#include <Tile2D/Util/Primitives/Rect.h>
+#include "Rect.h"
 #include "Texture.h"
 
 class Animation {

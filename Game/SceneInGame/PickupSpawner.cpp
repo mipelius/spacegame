@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <Game/SceneInGame/Items/Inventory.h>
+#include "Inventory.h"
 #include "Tile2D.h"
 #include "TileMap.h"
 #include "Tile2DMath.h"

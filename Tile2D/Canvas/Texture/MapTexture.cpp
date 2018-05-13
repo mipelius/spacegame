@@ -22,7 +22,7 @@
 // SOFTWARE.
 
 
-#include <Tile2D/Physics/Tile.h>
+#include "Tile.h"
 #include "precompile.h"
 #include "MapTexture.h"
 
