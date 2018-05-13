@@ -25,6 +25,7 @@
 #include "PathFinder.h"
 
 #include <cfloat>
+#include "Tile2DMath.h"
 #include "Tile2D.h"
 #include "TileMap.h"
 
@@ -63,7 +64,7 @@ std::list<Vecf> PathFinder::getPath(
 
     if (
             !Tile2D::tileMap().canMove(start, {0, 0}, {0, 0}) ||
-            !Tile2D::tileMap().canMove(goal,  boundingBoxTopLeftCorner, boundingBoxBottomRightCorner)
+            !Tile2D::tileMap().canMove(goal,  {0, 0}, {0, 0})
     ) {
         return path;
     }
@@ -119,7 +120,17 @@ std::list<Vecf> PathFinder::getPath(
                 currentNeighbour->fCost = 0;
                 currentNeighbour->cameFrom = nullptr;
 
-                if (!Tile2D::tileMap().canMove(pos, boundingBoxTopLeftCorner, boundingBoxBottomRightCorner)) {
+                // bounding box will be squeezed near the start and near the goal
+                Veci currentBoundingBoxTopLeftCorner = getCurrentBoundingBoxCorner(
+                        boundingBoxTopLeftCorner, pos, start, goal);
+                Veci currentBoundingBoxBottomRightCorner = getCurrentBoundingBoxCorner(
+                        boundingBoxBottomRightCorner, pos, start, goal);
+
+                if (!Tile2D::tileMap().canMove(
+                        pos,
+                        currentBoundingBoxTopLeftCorner,
+                        currentBoundingBoxBottomRightCorner)
+                ) {
                     closedSet.add(currentNeighbour);
                     continue;
                 }

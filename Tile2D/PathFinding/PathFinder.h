@@ -29,6 +29,7 @@
 #include <map>
 #include <queue>
 #include <list>
+#include "Tile2DMath.h"
 #include "Tile.h"
 #include "Vec.h"
 #include "Pool.h"
@@ -48,6 +49,30 @@ public:
 private:
     PathFinder() = default;
     ~PathFinder() = default;
+
+    inline Veci getCurrentBoundingBoxCorner(
+            Veci originalBoundingBoxCorner,
+            const Veci& pos,
+            const Veci& start,
+            const Veci& goal
+    ) {
+        auto distanceToStart = (int)heuristicCost_(pos, start) - 1;
+        auto distanceToGoal = (int)heuristicCost_(pos, goal) - 1;
+
+        auto threshold = Mathi::min(distanceToStart, distanceToGoal);
+        if (threshold < 0) {
+            threshold = 0;
+        }
+
+        if (threshold < abs(originalBoundingBoxCorner.x)) {
+            originalBoundingBoxCorner.x = Mathi::sign(originalBoundingBoxCorner.x) * threshold;
+        }
+        if (threshold < abs(originalBoundingBoxCorner.y)) {
+            originalBoundingBoxCorner.y = Mathi::sign(originalBoundingBoxCorner.y) * threshold;
+        }
+
+        return originalBoundingBoxCorner;
+    }
 
     struct Node {
         Node *cameFrom;
