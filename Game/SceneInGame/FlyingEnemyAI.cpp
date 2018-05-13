@@ -98,7 +98,7 @@ void FlyingEnemyAI::lateUpdate() {
     if (flips_) {
         Vecf scale = {
             transform()->getScale().x,
-            abs(transform()->getScale().y)
+            fabsf(transform()->getScale().y)
         };
 
         if (abs(Mathf::deltaAngle(0.0f, transform()->getRotation())) > 90.0f) {
