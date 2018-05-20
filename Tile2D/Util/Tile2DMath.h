@@ -39,8 +39,8 @@ public:
     inline static void clamp(T& value, const T& min, const T& max);
     inline static void clamp(Vec<T>& vec, const Rect& rect);
 
-    inline static T min(T& value1, T& value2);
-    inline static T max(T& value1, T& value2);
+    inline static T min(const T& value1, const T& value2);
+    inline static T max(const T& value1, const T& value2);
 
     inline static bool approx(const T& value1, const T& value2);
 
@@ -70,12 +70,12 @@ inline void Math<T>::clamp(T& value, const T& min, const T& max) {
 }
 
 template <typename T>
-inline T Math<T>::min(T& value1, T& value2) {
+inline T Math<T>::min(const T& value1, const T& value2) {
     return value1 < value2 ? value1 : value2;
 }
 
 template <typename T>
-inline T Math<T>::max(T& value1, T& value2) {
+inline T Math<T>::max(const T& value1, const T& value2) {
     return value1 > value2 ? value1 : value2;
 }
 
