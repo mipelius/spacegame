@@ -34,8 +34,6 @@ class FlyingEnemyAI : public EnemyAIBase {
 public:
     float getMaxPathFindingDistance() const;
     void setMaxPathFindingDistance(float maxPathFindingDistance);
-    const CountDownTimer &getPathUpdateTimer() const;
-    void setPathUpdateTimer(const CountDownTimer &pathUpdateTimer);
     unsigned int getMaxNodesPathFinderExplores() const;
     void setMaxNodesPathFinderExplores(unsigned int maxNodesPathFinderExplores);
     float getMinPathFindingDistance() const;
@@ -48,6 +46,8 @@ public:
     void setRotates(bool rotates);
     bool flips() const;
     void setFlips(bool flips);
+
+    void setPathFindingInterval(Uint32 millisec);
 
 protected:
     void awake() override;

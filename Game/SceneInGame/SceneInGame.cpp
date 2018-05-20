@@ -50,10 +50,10 @@ void SceneInGame::init() {
     auto hud = Prefabs::hud(player);
 
     // worlds
-    initSnowWorld_(player);
-    initGreenWorld_(player);
-    initBlueWorld_(player);
-    initRedWorld_(player);
+//    initSnowWorld_(player);
+//    initGreenWorld_(player);
+//    initBlueWorld_(player);
+//    initRedWorld_(player);
 
     // camera
     camera_ = new Camera;

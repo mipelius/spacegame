@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 
+#include "PathValidator.h"
 #include "Tile2DMath.h"
 #include "FlyingEnemyAI.h"
 #include "Tile2D.h"
@@ -32,7 +33,6 @@ void FlyingEnemyAI::awake() {
     EnemyAIBase::awake();
 
     nextPoint_ = transform()->getPosition();
-
     collider_ = gameObject()->getComponent<PolygonCollider>();
 }
 
@@ -60,17 +60,22 @@ void FlyingEnemyAI::update() {
         pathToTarget_.push_back(target_->getPosition());
     }
     else if (pathUpdateTimer_.resetIfTimeIntervalPassed()) {
-        pathToTarget_ = Tile2D::pathFinder().getPath(
+        PathValidator validator(
+                collider_->boundingBox(),
+                transform()->getPosition(),
+                target_->getPosition()
+        );
+
+        std::list<Vecf> pathToTarget = Tile2D::pathFinder().constructPath(
                 transform()->getPosition(),
                 target_->getPosition(),
                 maxNodesPathFinderExplores_,
-                true,
-                collider_->boundingBox()
+                &validator
         );
-    }
 
-    if (pathToTarget_.empty()) {
-        return;
+        if (!pathToTarget.empty()) {
+            pathToTarget_ = pathToTarget;
+        }
     }
 
     for (auto i = 0u; i < 10; ++i) {
@@ -124,14 +129,6 @@ float FlyingEnemyAI::getMaxPathFindingDistance() const {
 
 void FlyingEnemyAI::setMaxPathFindingDistance(float maxPathFindingDistance_) {
     FlyingEnemyAI::maxPathFindingDistance_ = maxPathFindingDistance_;
-}
-
-const CountDownTimer &FlyingEnemyAI::getPathUpdateTimer() const {
-    return pathUpdateTimer_;
-}
-
-void FlyingEnemyAI::setPathUpdateTimer(const CountDownTimer &pathUpdateTimer_) {
-    FlyingEnemyAI::pathUpdateTimer_ = pathUpdateTimer_;
 }
 
 unsigned int FlyingEnemyAI::getMaxNodesPathFinderExplores() const {
@@ -198,5 +195,9 @@ bool FlyingEnemyAI::flips() const {
 
 void FlyingEnemyAI::setFlips(bool flips) {
     flips_ = flips;
+}
+
+void FlyingEnemyAI::setPathFindingInterval(Uint32 millisec) {
+    pathUpdateTimer_.setInterval(millisec);
 }
 

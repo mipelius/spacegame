@@ -261,6 +261,10 @@ set(SOURCE_FILES
         Game/SceneInGame/Spawnable.h
         Game/SceneInGame/PickupSpawner.cpp
         Game/SceneInGame/PickupSpawner.h
+        Tile2D/PathFinding/IPathValidator.cpp
+        Tile2D/PathFinding/IPathValidator.h
+        Tile2D/PathFinding/PathValidator.cpp
+        Tile2D/PathFinding/PathValidator.h
         )
 
 add_executable(SpaceGame ${SOURCE_FILES})

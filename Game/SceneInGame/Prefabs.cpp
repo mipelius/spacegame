@@ -219,12 +219,16 @@ GameObject *Prefabs::boss() {
     auto enemy = createEnemy_(
             "boss",
             {
-                {-50, -50},
-                {50,  -50},
-                {50,  50},
-                {-50, 50}
+                {-40, -80},
+                {40,  -80},
+                {80,  -40},
+                {80,  40},
+                {40,  80},
+                {-40,  80},
+                {-80, 40},
+                {-80, -40}
             },
-            {-80, -80, 80, 80},
+            {-100, -100, 100, 100},
             0.0f,
             100.0f
     );
@@ -238,11 +242,14 @@ GameObject *Prefabs::boss() {
 
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
     AI->setMaxDistance(100000);
-    AI->setMaxNodesPathFinderExplores(2000);
-    AI->setSpeed(150.0f);
+    AI->setSpeed(300.0f);
     AI->setRotates(false);
 
-    AI->setMaxPathFindingDistance(1500);
+    AI->setMinPathFindingDistance(0);
+    AI->setMaxPathFindingDistance(2000);
+    AI->setMaxNodesPathFinderExplores(2000);
+    AI->setPathFindingInterval(1000);
+
 
     auto laserCannon = AI->setWeapon<Cannon>();
     laserCannon->setAmmoFunction(enemyLaser);
@@ -354,13 +361,10 @@ GameObject *Prefabs::fish() {
 
     auto AI = fish->attachComponent<FlyingEnemyAI>();
 
-    CountDownTimer pathUpdateTimer;
-    pathUpdateTimer.setInterval(200);
-    AI->setPathUpdateTimer(pathUpdateTimer);
-
-    AI->setMaxPathFindingDistance(3000);
     AI->setMinPathFindingDistance(0);
+    AI->setMaxPathFindingDistance(2000);
     AI->setMaxNodesPathFinderExplores(2000);
+    AI->setPathFindingInterval(1000);
 
     AI->setSpeed(300);
 
@@ -386,11 +390,6 @@ GameObject *Prefabs::trifly() {
             100
     );
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
-    CountDownTimer pathUpdateTimer;
-    pathUpdateTimer.setInterval(1000);
-    AI->setPathUpdateTimer(pathUpdateTimer);
-
-    AI->setMaxPathFindingDistance(1500);
 
     auto laserCannon = AI->setWeapon<Cannon>();
     laserCannon->setAmmoFunction(enemyLaser);
@@ -429,11 +428,6 @@ GameObject *Prefabs::rider() {
     enemySprite->play();
 
     auto AI = enemy->attachComponent<FlyingEnemyAI>();
-    CountDownTimer pathUpdateTimer;
-    pathUpdateTimer.setInterval(1000);
-    AI->setPathUpdateTimer(pathUpdateTimer);
-
-    AI->setMaxPathFindingDistance(1500);
 
     auto laserCannon = AI->setWeapon<Cannon>();
     laserCannon->setAmmoFunction(enemyLaser);

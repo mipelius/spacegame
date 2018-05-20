@@ -24,29 +24,19 @@
 
 #include "PathFinder.h"
 
-#include <cfloat>
-#include "Tile2DMath.h"
 #include "Tile2D.h"
 #include "TileMap.h"
+#include "IPathValidator.h"
 
-float PathFinder::heuristicCost_(Veci start, Veci goal) {
-    float dx = (float)(start.x - goal.x);
-    float dy = (float)(start.y - goal.y);
-    return fabsf(dx) + fabsf(dy);
-}
-
-std::list<Vecf> PathFinder::getPath(
+std::list<Vecf> PathFinder::constructPath(
         const Vecf &startPoint,
         const Vecf &goalPoint,
         const unsigned int &maxNodesToExplore,
-        const bool &useInnerBounding,
-        const Rect &boundingBox
+        const IPathValidator *validator
 ) {
-    std::list<Vecf> path;
+    // --- set up data structures ---
 
-    if (!Tile2D::tileMap().isLoaded()) {
-        return path;
-    }
+    std::list<Vecf> path;
 
     const int& w = Tile2D::tileMap().getTileSet()->getTileW();
     const int& h = Tile2D::tileMap().getTileSet()->getTileH();
@@ -54,24 +44,11 @@ std::list<Vecf> PathFinder::getPath(
     Veci start          = {(int)(startPoint.x   / w), (int)(startPoint.y    / h)};
     Veci goal           = {(int)(goalPoint.x    / w), (int)(goalPoint.y     / h)};
 
-    Veci boundingBoxTopLeftCorner       = {(int)floor(boundingBox.x1 / w), (int)floor(boundingBox.y1 / h)};
-    Veci boundingBoxBottomRightCorner   = {(int)ceil(boundingBox.x2 / w),  (int)ceil(boundingBox.y2 / h)};
-
-    if (useInnerBounding) {
-        boundingBoxTopLeftCorner        += {1, 1};
-        boundingBoxBottomRightCorner    -= {1, 1};
-    }
-
-    if (
-            !Tile2D::tileMap().canMove(start, {0, 0}, {0, 0}) ||
-            !Tile2D::tileMap().canMove(goal,  {0, 0}, {0, 0})
-    ) {
-        return path;
-    }
-
     std::list<Node*> allocatedNodes;
     OpenSet openSet;
     ClosedSet closedSet;
+
+    // --- set up start node ---
 
     auto startNode = nodePool_.malloc(); allocatedNodes.push_back(startNode);
     startNode->cameFrom = nullptr;
@@ -81,12 +58,11 @@ std::list<Vecf> PathFinder::getPath(
 
     openSet.add(startNode);
 
-    static const float NONDIAGONAL_COST = 1.0;
-    static const float DIAGONAL_COST = sqrtf(2.0);
-
     Node *goalNode = nullptr;
 
-    Veci neighbourPositions[neighbourPositionCount] = {};
+    Veci neighbourPositions[NEIGHBOUR_POSITION_COUNT] = {};
+
+    // --- find the path ---
 
     while (!openSet.empty()) {
         Node* current = openSet.popBestOut();
@@ -104,37 +80,28 @@ std::list<Vecf> PathFinder::getPath(
 
         calculateNeigbourPositions_(neighbourPositions, current->position);
 
-        for (auto i = 0u; i < neighbourPositionCount; ++i) {
-            Veci &pos = neighbourPositions[i];
-            bool isDiagonalNeighbour = i % 2 == 0;
+        for (auto i = 0u; i < NEIGHBOUR_POSITION_COUNT; ++i) {
+            Veci &neighbourPosition = neighbourPositions[i];
 
-            if (closedSet.has(pos)) {
+            if (closedSet.has(neighbourPosition)) {
                 continue;
             }
 
-            Node *currentNeighbour = openSet.get(pos);
+            Node *currentNeighbour = openSet.get(neighbourPosition);
             if (currentNeighbour == nullptr) {
                 currentNeighbour = nodePool_.malloc(); allocatedNodes.push_back(currentNeighbour);
-                currentNeighbour->position = pos;
+                currentNeighbour->position = neighbourPosition;
                 currentNeighbour->gCost = FLT_MAX;
-                currentNeighbour->fCost = 0;
+                currentNeighbour->fCost = FLT_MAX;
                 currentNeighbour->cameFrom = nullptr;
 
-                // bounding box will be squeezed near the start and near the goal
-                Veci currentBoundingBoxTopLeftCorner = getCurrentBoundingBoxCorner(
-                        boundingBoxTopLeftCorner, pos, start, goal);
-                Veci currentBoundingBoxBottomRightCorner = getCurrentBoundingBoxCorner(
-                        boundingBoxBottomRightCorner, pos, start, goal);
-
-                if (!Tile2D::tileMap().canMove(
-                        pos,
-                        currentBoundingBoxTopLeftCorner,
-                        currentBoundingBoxBottomRightCorner)
-                ) {
+                if (!validator->validate(neighbourPosition, start, goal)) {
                     closedSet.add(currentNeighbour);
                     continue;
                 }
             }
+
+            bool isDiagonalNeighbour = i % 2 == 0;
 
             float tentative_gCost =
                     current->gCost + (isDiagonalNeighbour ? DIAGONAL_COST : NONDIAGONAL_COST);
@@ -145,16 +112,18 @@ std::list<Vecf> PathFinder::getPath(
 
             currentNeighbour->cameFrom = current;
             currentNeighbour->gCost = tentative_gCost;
-            currentNeighbour->fCost = tentative_gCost + heuristicCost_(pos, goal);
+            currentNeighbour->fCost = tentative_gCost + heuristicCost_(neighbourPosition, goal);
 
             openSet.add(currentNeighbour);
         }
     }
 
-    Node* current = goalNode;
+    // --- trace back (if path was found) and clean up ---
 
-    float offsetX = w / 2;
-    float offsetY = h / 2;
+    float offsetX = w / 2.0f;
+    float offsetY = h / 2.0f;
+
+    Node* current = goalNode;
 
     while (current != nullptr) {
         Vecf position = {w * current->position.x + offsetX, h * current->position.y + offsetY};
