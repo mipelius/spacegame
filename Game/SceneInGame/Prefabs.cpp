@@ -58,6 +58,7 @@
 #include "EnemyTargetingComponent.h"
 #include "AmmoComponent.h"
 #include "PickupSpawner.h"
+#include "Pickup.h"
 
 GameObject *Prefabs::player() {
     auto player = Tile2D::createGameObject();
@@ -774,6 +775,18 @@ GameObject* Prefabs::createPickup_(
     auto pickupSprite = pickup->attachComponent<Sprite>();
     pickupSprite->setTexturePtr(pickupTexture);
     pickupSprite->setRect({-20.0f, -20.0f, 20.0f, 20.0f});
+    pickupSprite->setSortingLayer(SortingLayers::pickup);
+
+    auto pickupBgSprite = pickup->attachComponent<Sprite>();
+    pickupBgSprite->setTexturePtr(
+            Tile2D::resources().textures["pickup_bg"]
+    );
+    pickupBgSprite->setRect({-32.0f, -32.0f, 32.0f, 32.0f});
+    pickupBgSprite->setSortingLayer(SortingLayers::pickupBackground);
+
+    auto pickupBehaviour = pickup->attachComponent<Pickup>();
+    pickupBehaviour->setPickupBgSprite(pickupBgSprite);
+    pickupBehaviour->setBlinkingSpeed(1.0f);
 
     auto pickupBody = pickup->attachComponent<Body>();
     pickupBody->setMass(100.0f);

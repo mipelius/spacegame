@@ -21,28 +21,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_PICKUP_H
+#define SPACEGAME_PICKUP_H
 
 
-#ifndef SPACEGAME_SORTINGLAYERS_H
-#define SPACEGAME_SORTINGLAYERS_H
+#include "Sprite.h"
+#include "Tile2DBehaviour.h"
 
-namespace SortingLayers {
-    enum {
-        background = -100,
-        pickupBackground = -11,
-        pickup = -10,
-        ammo = -5,
-        enemyBackground = -4,
-        enemy = -3,
-        player = -2,
-        particles = -1,
-        UI = 100,
-        UI_Button = 101,
-        UI_ButtonText = 102,
-        HUD_WeaponSlot = 103,
-        HUD_Weapon = 104,
-        HUD_Text = 105
-    };
-}
+class Pickup : public Tile2DBehaviour {
 
-#endif //SPACEGAME_SORTINGLAYERS_H
+public:
+    void setPickupBgSprite(Sprite *pickupSprite);
+    float getBlinkingSpeed() const;
+    void setBlinkingSpeed(float blinkingSpeed);
+
+protected:
+    void awake() override;
+    void update() override;
+    void lateUpdate() override;
+
+private:
+    Sprite* pickupSprite_ = nullptr;
+    float phase_ = 0.0f;
+    float blinkingSpeed_ = 1.0f;
+
+};
+
+
+#endif //SPACEGAME_PICKUP_H

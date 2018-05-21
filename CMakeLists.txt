@@ -265,7 +265,7 @@ set(SOURCE_FILES
         Tile2D/PathFinding/IPathValidator.h
         Tile2D/PathFinding/PathValidator.cpp
         Tile2D/PathFinding/PathValidator.h
-        )
+        Game/SceneInGame/Pickup.cpp Game/SceneInGame/Pickup.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

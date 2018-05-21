@@ -21,28 +21,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "Tile2D.h"
+#include "t2Time.h"
+#include "Pickup.h"
 
+void Pickup::awake() {
 
-#ifndef SPACEGAME_SORTINGLAYERS_H
-#define SPACEGAME_SORTINGLAYERS_H
-
-namespace SortingLayers {
-    enum {
-        background = -100,
-        pickupBackground = -11,
-        pickup = -10,
-        ammo = -5,
-        enemyBackground = -4,
-        enemy = -3,
-        player = -2,
-        particles = -1,
-        UI = 100,
-        UI_Button = 101,
-        UI_ButtonText = 102,
-        HUD_WeaponSlot = 103,
-        HUD_Weapon = 104,
-        HUD_Text = 105
-    };
 }
 
-#endif //SPACEGAME_SORTINGLAYERS_H
+void Pickup::update() {
+    if (pickupSprite_) {
+        phase_ += Tile2D::time().getDeltaTime();
+        auto opacity = blinkingSpeed_ * (1.0f + sin(phase_ * 2 * M_PI)) / 2.0f;
+        pickupSprite_->setOpacity(opacity);
+    }
+}
+
+void Pickup::lateUpdate() { }
+
+void Pickup::setPickupBgSprite(Sprite *pickupSprite) {
+    pickupSprite_ = pickupSprite;
+}
+
+float Pickup::getBlinkingSpeed() const {
+    return blinkingSpeed_;
+}
+
+void Pickup::setBlinkingSpeed(float blinkingSpeed) {
+    blinkingSpeed_ = blinkingSpeed;
+}
