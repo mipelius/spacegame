@@ -133,6 +133,16 @@ void SceneInGame::init() {
 
     auto box7 = Prefabs::laserCannonUpgradePickup();
     box7->transform().setPosition({800.0f, 3300.0f});
+
+    auto box8 = Prefabs::healthUpgradePickup();
+    box8->transform().setPosition({900.0f, 3300.0f});
+    auto box9 = Prefabs::healthUpgradePickup();
+    box9->transform().setPosition({1000.0f, 3300.0f});
+
+    auto box10 = Prefabs::powerUpgradePickup();
+    box10->transform().setPosition({1100.0f, 3300.0f});
+    auto box11 = Prefabs::powerUpgradePickup();
+    box11->transform().setPosition({1200.0f, 3300.0f});
 }
 
 void SceneInGame::destroy() {

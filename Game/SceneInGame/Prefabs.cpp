@@ -766,6 +766,34 @@ GameObject* Prefabs::laserCannonUpgradePickup() {
     );
 }
 
+GameObject* Prefabs::healthUpgradePickup() {
+    return createPickup_(
+            Tile2D::resources().textures["health_upgrade"],
+            [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
+                if (args.otherCollider->gameObject()->tag == Tags::player) {
+                    auto health = args.otherCollider->gameObject()->getComponent<Health>();
+                    auto currentMaxHealth = health->getMaxHealth();
+                    health->setMaxHealth(currentMaxHealth + 100);
+                    health->reset();
+                }
+            }
+    );
+}
+
+GameObject* Prefabs::powerUpgradePickup() {
+    return createPickup_(
+            Tile2D::resources().textures["power_upgrade"],
+            [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
+                if (args.otherCollider->gameObject()->tag == Tags::player) {
+                    auto power = args.otherCollider->gameObject()->getComponent<Power>();
+                    auto currentMaxPower = power->getMaxPower();
+                    power->setMaxPower(currentMaxPower + 100);
+                }
+            }
+    );
+}
+
+
 GameObject* Prefabs::createPickup_(
         Texture *pickupTexture,
         void (*onCollisionFunctionPtr)(PolygonCollider *, CollisionEventArgs)

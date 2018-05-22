@@ -66,6 +66,8 @@ public:
     static GameObject* bombPickup();
     static GameObject* healerPickup();
     static GameObject* laserCannonUpgradePickup();
+    static GameObject* healthUpgradePickup();
+    static GameObject* powerUpgradePickup();
 
     // other
     static GameObject* hud(GameObject* player);
@@ -76,7 +78,7 @@ public:
             GameObject *(*spawnFunction)(),
             Uint32 spawningDelay
     );
-    static static GameObject* pickupSpawner(
+    static GameObject* pickupSpawner(
             Rect area,
             GameObject *target,
             GameObject *(*spawnFunction)(),
