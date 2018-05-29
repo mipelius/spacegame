@@ -27,3 +27,9 @@
 Color::Color(float red, float green, float blue) : red(red), green(green), blue(blue) {
 
 }
+
+void Color::deserialize(const json::Object &jsonObject) {
+    red = jsonObject["r"].ToFloat();
+    green = jsonObject["g"].ToFloat();
+    blue = jsonObject["b"].ToFloat();
+}

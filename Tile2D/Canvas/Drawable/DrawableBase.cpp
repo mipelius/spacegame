@@ -111,5 +111,22 @@ Transform &DrawableBase::localTransform() {
 }
 
 void DrawableBase::deserialize(const json::Object &jsonObject) {
-    std::cout << "Warning: DrawableBase deserialization not implemented!\n";
+    if (jsonObject.HasKey("localTransform")) {
+        localTransform_.deserialize(jsonObject["localTransform"]);
+    }
+    if (jsonObject.HasKey("isVisible")) {
+        setIsVisible(jsonObject["isVisible"].ToBool());
+    }
+    if (jsonObject.HasKey("opacity")) {
+        setOpacity(jsonObject["opacity"].ToFloat());
+    }
+    if (jsonObject.HasKey("color")) {
+        color_.deserialize(jsonObject["color"]);
+    }
+    if (jsonObject.HasKey("sortingLayer")) {
+        setSortingLayer(jsonObject["sortingLayer"].ToInt());
+    }
+    if (jsonObject.HasKey("isUIDrawable")) {
+        setIsUIDrawable(jsonObject["isUIDrawable"].ToBool());
+    }
 }

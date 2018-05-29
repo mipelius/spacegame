@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 
+#include "JsonFileManager.h"
 #include "precompile.h"
 #include "DebugBehaviour.h"
 #include "Tile2D.h"
@@ -72,6 +73,11 @@ void DebugBehaviour::update() {
     }
 
     // --- other debugging tools --- //
+
+    if (keyboard.keyPressed(SDL_SCANCODE_O)) {
+        auto jsonObject = JsonFileManager::load("data/prefabs/prefabTest.json");
+        Tile2D::createGameObject(jsonObject);
+    }
 
     if (keyboard.keyPressed(SDL_SCANCODE_RETURN)) {
         Tile2D::setIsDebugMode(!Tile2D::isDebugMode());

@@ -34,9 +34,6 @@
 #include "Window.h"
 
 void SceneInGame::init() {
-    auto jsonObject = JsonFileManager::load("data/prefabs/prefabTest.json");
-    Tile2D::createGameObject(jsonObject);
-
     // Scene setup: tile map, physics, light system
     Tile2D::tileMap().load("data/maps/map.bmp", "data/maps/tileset.json");
     Tile2D::lightSystem().setAmbientLight(0.0f);

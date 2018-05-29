@@ -25,13 +25,15 @@
 #ifndef __Color_H_
 #define __Color_H_
 
-class Color {
+#include "ISerializable.h"
+
+class Color : ISerializable {
 
 public:
     Color(float red, float green, float blue);
+    void deserialize(const json::Object &jsonObject) override;
 
     float red, green, blue;
-
 };
 
 #endif //__Color_H_
