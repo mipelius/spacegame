@@ -28,6 +28,7 @@
 #include "Tile2D.h"
 #include "Tile2DMath.h"
 #include "TileMap.h"
+#include "GameObject.h"
 
 void EnemySpawner::awake() { }
 

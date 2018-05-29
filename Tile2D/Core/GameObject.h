@@ -26,8 +26,10 @@
 #define __GameObject_H
 
 #include <list>
+#include <map>
 #include "Transform.h"
 
+class ITile2DComponentReflector;
 class Tile2DComponent;
 
 class GameObject {
@@ -50,6 +52,10 @@ public:
     void setIsActive(bool isActive);
 
 private:
+    GameObject(
+            const json::Object&                                         jsonObject,
+            const std::map<std::string, ITile2DComponentReflector*>&    componentBindings
+    );
     GameObject();
     ~GameObject();
 
@@ -66,6 +72,7 @@ private:
 
     void prepareDestroy_();
     void initializeComponents_();
+    void attachComponentInternal(Tile2DComponent* component);
 };
 
 // template function
@@ -92,8 +99,7 @@ T* GameObject::getComponent() {
 template<class T>
 T *GameObject::attachComponent() {
     auto component = new T();
-    component->gameObject_ = this;
-    uninitializedComponents_.push_back(component);
+    attachComponentInternal(component);
     return component;
 }
 

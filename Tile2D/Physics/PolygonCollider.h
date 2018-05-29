@@ -26,6 +26,7 @@
 #define __PolygonCollider_H
 
 #include <vector>
+#include "ISerializable.h"
 #include "Tile2DComponent.h"
 #include "Vec.h"
 #include "Rect.h"
@@ -48,7 +49,7 @@ struct TerrainCollisionEventArgs {
     Vecf velocityBeforeCollision;
 };
 
-class PolygonCollider : public Tile2DComponent {
+class PolygonCollider : public Tile2DComponent, public ISerializable {
     friend class PhysicsWorld;
     friend class PolygonCollider;
     friend class Projection;
@@ -84,6 +85,8 @@ public:
             Vecf&                    contactNormal,
             float&                   penetration
     ) const;
+
+    void deserialize(const json::Object &jsonObject) override;
 
 protected:
     void init() override;

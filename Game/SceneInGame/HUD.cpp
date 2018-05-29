@@ -29,6 +29,7 @@
 #include "HUD.h"
 #include "Resources.h"
 #include "Power.h"
+#include "GameObject.h"
 
 void HUD::awake() {
     GameObject *healthBar = Tile2D::createGameObject();

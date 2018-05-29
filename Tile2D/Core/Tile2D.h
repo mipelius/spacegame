@@ -33,6 +33,7 @@
 #include "Particle.h"
 #include "Pool.h"
 
+class ITile2DComponentReflector;
 class PathFinder;
 class Window;
 class SceneManager;
@@ -46,6 +47,9 @@ class Resources;
 class IScene;
 class GameObject;
 class Time;
+namespace json {
+    class Object;
+}
 
 class Tile2D {
     friend class Tile2DObject;
@@ -62,10 +66,11 @@ public:
     Tile2D& operator=(Tile2D &&)        = delete;
 
     void static load(
-            const std::string&                      configFile,
-            const std::string&                      resourcesFile,
-            std::map<unsigned, IScene*>             scenes,
-            std::vector<ColliderLayerMatrix::Rule>  colliderLayerRules
+            const std::string&                                  configFile,
+            const std::string&                                  resourcesFile,
+            std::map<unsigned, IScene*>                         scenes,
+            std::vector<ColliderLayerMatrix::Rule>              colliderLayerRules,
+            std::map<std::string, ITile2DComponentReflector*>   componentBindings
     );
 
     static std::string getResourcePath();
@@ -88,10 +93,11 @@ public:
     );
 
     static GameObject* createGameObject();
+    static GameObject* createGameObject(const json::Object& jsonObject);
 
     static bool isDebugMode();
     static void setIsDebugMode(bool isDebugMode);
-
+    static bool isLoaded();
     static void quit();
 
 private:
@@ -124,6 +130,8 @@ private:
     std::list<GameObject*> objectsToInit_;
     std::list<GameObject*> objectsToDestroy_;
 
+    std::map<std::string, ITile2DComponentReflector*> componentBindings_;
+
     struct DelayedFunction {
         GameObject* gameObject;
         Uint32 delay;
@@ -140,6 +148,8 @@ private:
 
     bool isDebugMode_;
     bool quit_;
+
+    void onGameObjectCreated_(GameObject *gameObject);
 
     static const unsigned int MAX_PARTICLES = 10000;
 };

@@ -37,6 +37,8 @@
 #include "PathFinder.h"
 #include "Input.h"
 #include "t2Time.h"
+#include "Tile2DComponentReflector.h"
+#include "json.h"
 
 bool Tile2D::isLoaded_ = false;
 
@@ -71,6 +73,11 @@ Tile2D::~Tile2D() {
     delete resources_;
     delete window_;
 
+    for (auto binding : instance_().componentBindings_) {
+        auto reflector = binding.second;
+        delete reflector;
+    }
+
     SDL_Quit();
 }
 
@@ -84,10 +91,11 @@ Tile2D &Tile2D::instance_() {
 }
 
 void Tile2D::load(
-        const std::string&                      configFile,
-        const std::string&                      resourcesFile,
-        std::map<unsigned, IScene*>             scenes,
-        std::vector<ColliderLayerMatrix::Rule>  colliderLayerRules
+        const std::string&                                  configFile,
+        const std::string&                                  resourcesFile,
+        std::map<unsigned, IScene*>                         scenes,
+        std::vector<ColliderLayerMatrix::Rule>              colliderLayerRules,
+        std::map<std::string, ITile2DComponentReflector*>   componentBindings
 ) {
     // LOAD
 
@@ -104,8 +112,10 @@ void Tile2D::load(
     Tile2D::resources().init(resourcesFile);
     Tile2D::sceneManager().init(scenes);
     Tile2D::lightSystem().init();
-    Tile2D::physicsWorld().init(colliderLayerRules);
+    Tile2D::physicsWorld().init(std::move(colliderLayerRules));
     Tile2D::setIsDebugMode(false);
+
+    instance_().componentBindings_ = std::move(componentBindings);
 
     // START LOOP
 
@@ -227,7 +237,13 @@ const Time &Tile2D::time() {
 
 GameObject *Tile2D::createGameObject() {
     auto gameObject = new GameObject();
-    instance_().objects_.insert(gameObject);
+    instance_().onGameObjectCreated_(gameObject);
+    return gameObject;
+}
+
+GameObject *Tile2D::createGameObject(const json::Object& jsonObject) {
+    auto gameObject = new GameObject(jsonObject, instance_().componentBindings_);
+    instance_().onGameObjectCreated_(gameObject);
     return gameObject;
 }
 
@@ -283,4 +299,13 @@ void Tile2D::executeDelayedFunctions_() {
             ++it;
         }
     }
+}
+
+bool Tile2D::isLoaded() {
+    return isLoaded_;
+}
+
+void Tile2D::onGameObjectCreated_(GameObject *gameObject) {
+    instance_().objectsToInit_.push_back(gameObject);
+    instance_().objects_.insert(gameObject);
 }

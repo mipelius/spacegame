@@ -25,17 +25,17 @@
 #ifndef __IComponent_H
 #define __IComponent_H
 
-#include "GameObject.h"
+class GameObject;
+class Transform;
 
 class Tile2DComponent {
     friend class GameObject;
 
 public:
-    GameObject* gameObject() { return gameObject_; }
-    Transform* transform() const { return &(gameObject_->transform()); }
+    GameObject* gameObject();
+    Transform* transform() const;
 
     Tile2DComponent() = default;
-
     virtual ~Tile2DComponent() = default;
 
 protected:
@@ -44,7 +44,6 @@ protected:
 
 private:
     GameObject* gameObject_ = nullptr;
-
 };
 
 #endif //__IComponent_H

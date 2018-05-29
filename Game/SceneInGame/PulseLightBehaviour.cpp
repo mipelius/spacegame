@@ -23,6 +23,7 @@
 
 
 #include "PulseLightBehaviour.h"
+#include "GameObject.h"
 
 void PulseLightBehaviour::awake() {
     LimitedLifetimeBehaviour::awake();

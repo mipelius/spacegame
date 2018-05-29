@@ -28,6 +28,7 @@
 #include "Tile2D.h"
 #include "PathFinder.h"
 #include "t2Time.h"
+#include "GameObject.h"
 
 void FlyingEnemyAI::awake() {
     EnemyAIBase::awake();

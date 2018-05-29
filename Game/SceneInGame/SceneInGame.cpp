@@ -22,20 +22,21 @@
 // SOFTWARE.
 
 
+#include "JsonFileManager.h"
 #include "ItemTags.h"
 #include "DrawableMap.h"
 #include "SceneInGame.h"
-#include "Sprite.h"
 #include "Prefabs.h"
-#include "EnemySpawner.h"
 #include "EnemyAIBase.h"
-#include "HUD.h"
 #include "TileMap.h"
 #include "LightSystem.h"
 #include "PhysicsWorld.h"
 #include "Window.h"
 
 void SceneInGame::init() {
+    auto jsonObject = JsonFileManager::load("data/prefabs/prefabTest.json");
+    Tile2D::createGameObject(jsonObject);
+
     // Scene setup: tile map, physics, light system
     Tile2D::tileMap().load("data/maps/map.bmp", "data/maps/tileset.json");
     Tile2D::lightSystem().setAmbientLight(0.0f);

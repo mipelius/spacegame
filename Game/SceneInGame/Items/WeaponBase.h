@@ -26,6 +26,7 @@
 
 #include "Timer.h"
 #include "ItemBase.h"
+#include "Vec.h"
 
 class WeaponBase : public ItemBase {
 

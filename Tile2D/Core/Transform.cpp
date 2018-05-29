@@ -23,7 +23,6 @@
 
 
 #include "Transform.h"
-#include "precompile.h"
 
 // getters and setters
 
@@ -65,4 +64,21 @@ const Vecf &Transform::getScale() const {
 
 void Transform::setScale(const Vecf &scale) {
     scale_ = scale;
+}
+
+void Transform::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("scale")) {
+        Vecf scale;
+        scale.deserialize(jsonObject["scale"]);
+        setPosition(scale);
+    }
+    if (jsonObject.HasKey("position")) {
+        Vecf position;
+        position.deserialize(jsonObject["position"]);
+        setPosition(position);
+    }
+    if (jsonObject.HasKey("rotation")) {
+        setRotation(jsonObject["rotation"].ToFloat());
+    }
+
 }

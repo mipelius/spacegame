@@ -25,11 +25,12 @@
 #ifndef __Body_H_
 #define __Body_H_
 
+#include "ISerializable.h"
 #include "Tile2DComponent.h"
 #include "Vec.h"
 #include "PolygonCollider.h"
 
-class Body : public Tile2DComponent {
+class Body : public Tile2DComponent, public ISerializable {
     friend class PhysicsWorld;
     friend class PolygonCollider;
 
@@ -50,6 +51,8 @@ public:
     void setDrag(float drag);
     float getGravityFactor() const;
     void setGravityFactor(float gravityFactor);
+
+    void deserialize(const json::Object &jsonObject) override;
 
 private:
     void init() override;

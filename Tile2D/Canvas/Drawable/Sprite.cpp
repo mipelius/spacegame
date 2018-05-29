@@ -21,6 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "Tile2D.h"
+#include "Resources.h"
 #include "precompile.h"
 #include "Sprite.h"
 
@@ -45,3 +47,11 @@ void Sprite::setTexturePtr(Texture *texturePtr) {
     texturePtr_ = texturePtr;
 }
 
+void Sprite::deserialize(const json::Object &jsonObject) {
+    SpriteBase::deserialize(jsonObject);
+
+    if (jsonObject.HasKey("texture")) {
+        auto textureString = jsonObject["texture"].ToString();
+        texturePtr_ = Tile2D::resources().textures[textureString];
+    }
+}

@@ -21,20 +21,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_TARGETINGCOMPONENTBASE_H
-#define SPACEGAME_TARGETINGCOMPONENTBASE_H
+#ifndef SPACEGAME_TILE2DCOMPONENTREFLECTOR_H
+#define SPACEGAME_TILE2DCOMPONENTREFLECTOR_H
 
 #include "Tile2DComponent.h"
-#include "Vec.h"
+#include "ISerializable.h"
 
-class TargetingComponentBase : public Tile2DComponent {
+class ITile2DComponentReflector {
 public:
-    virtual Vecf getTargetPosition() = 0;
+    virtual Tile2DComponent* create(json::Object componentPropertiesJsonObject) = 0;
+};
 
-protected:
-    void init() override;
-    void onDestroy() override;
+template <class T>
+class Tile2DComponentReflector : public ITile2DComponentReflector {
+public:
+    Tile2DComponent* create(json::Object componentPropertiesJsonObject) override {
+        auto component = new T();
+        ((ISerializable*)component)->deserialize(componentPropertiesJsonObject);
+
+        return component;
+    }
 };
 
 
-#endif //SPACEGAME_TARGETINGCOMPONENTBASE_H
+#endif //SPACEGAME_TILE2DCOMPONENTREFLECTOR_H

@@ -27,6 +27,7 @@
 #include "Tile2D.h"
 #include "Tile2DMath.h"
 #include "Camera.h"
+#include "GameObject.h"
 
 void BackgroundBehaviour::awake() {
     bg = gameObject()->getComponent<Background>();

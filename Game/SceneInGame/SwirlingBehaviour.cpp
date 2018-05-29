@@ -24,6 +24,7 @@
 #include "Tile2D.h"
 #include "t2Time.h"
 #include "SwirlingBehaviour.h"
+#include "GameObject.h"
 
 void SwirlingBehaviour::awake() {
     body_ = gameObject()->getComponent<Body>();

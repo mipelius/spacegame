@@ -30,6 +30,7 @@
 #include "LightSystem.h"
 #include "Camera.h"
 #include "Window.h"
+#include "GameObject.h"
 
 void SceneQuickTesting::init() {
     Tile2D::tileMap().load("data/maps/map.bmp", "data/maps/tileset.json");

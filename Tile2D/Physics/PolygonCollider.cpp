@@ -29,6 +29,7 @@
 #include "TileSet.h"
 #include "TileMap.h"
 #include "PhysicsWorld.h"
+#include "GameObject.h"
 
 class Projection {
 
@@ -433,4 +434,20 @@ const Rect PolygonCollider::boundingBoxWorldCoordinates() {
             boundingBox_.x2 + transform()->getPosition().x,
             boundingBox_.y2 + transform()->getPosition().y
     };
+}
+
+void PolygonCollider::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("points")) {
+        std::vector<Vecf> points;
+
+        auto pointsJsonArray = jsonObject["points"].ToArray();
+
+        for (auto& pointJson : pointsJsonArray) {
+            auto point = Vecf();
+            point.deserialize(pointJson);
+            points.push_back(point);
+        }
+
+        setPoints(points);
+    }
 }

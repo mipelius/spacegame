@@ -25,11 +25,12 @@
 #ifndef __DrawableBase_H_
 #define __DrawableBase_H_
 
+#include "Transform.h"
 #include "Tile2DComponent.h"
 #include "Canvas.h"
 #include "Color.h"
 
-class DrawableBase : public Tile2DComponent {
+class DrawableBase : public Tile2DComponent, public ISerializable {
     friend class Canvas;
 public:
     DrawableBase();
@@ -49,6 +50,8 @@ public:
     void setIsUIDrawable(bool isUIDrawable);
 
     Transform &localTransform();
+
+    void deserialize(const json::Object &jsonObject) override;
 
 protected:
     virtual void drawActual(const Canvas& canvas) = 0;

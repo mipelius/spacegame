@@ -24,6 +24,7 @@
 
 #include "Tile2D.h"
 #include "PhysicsWorld.h"
+#include "GameObject.h"
 
 Body::Body() :
     velocity_       (   Vecf(0,0) ),
@@ -124,4 +125,16 @@ float Body::getGravityFactor() const {
 
 void Body::setGravityFactor(float gravityFactor) {
     gravityFactor_ = gravityFactor;
+}
+
+void Body::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("mass")) {
+        setMass(jsonObject["mass"].ToFloat());
+    }
+    if (jsonObject.HasKey("gravityFactor")) {
+        setGravityFactor(jsonObject["gravityFactor"].ToFloat());
+    }
+    if (jsonObject.HasKey("drag")) {
+        setDrag(jsonObject["drag"].ToFloat());
+    }
 }

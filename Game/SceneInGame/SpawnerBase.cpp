@@ -24,6 +24,7 @@
 #include "Tile2D.h"
 #include "SpawnerBase.h"
 #include "Spawnable.h"
+#include "GameObject.h"
 
 void SpawnerBase::onDestroy() {
 	Tile2DBehaviour::onDestroy();

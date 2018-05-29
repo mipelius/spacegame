@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 #include "PlayerTargetingComponent.h"
+#include "GameObject.h"
 
 Vecf PlayerTargetingComponent::getTargetPosition() {
     return transform()->getPosition() + Vecf::byAngle(transform()->getRotation(), 1.0f);

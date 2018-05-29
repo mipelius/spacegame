@@ -26,6 +26,7 @@
 #include "TileMap.h"
 #include "Tile2DMath.h"
 #include "PickupSpawner.h"
+#include "GameObject.h"
 
 void PickupSpawner::awake() { }
 

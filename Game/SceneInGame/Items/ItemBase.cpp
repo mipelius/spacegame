@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 #include "ItemBase.h"
+#include "GameObject.h"
 
 bool ItemBase::use(GameObject *user) {
     if (timer_.getTime() < reloadDelay_) {

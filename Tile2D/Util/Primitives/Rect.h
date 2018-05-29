@@ -27,7 +27,7 @@
 
 #include "Vec.h"
 
-class Rect {
+class Rect : ISerializable {
 public:
     Rect();
 
@@ -49,6 +49,8 @@ public:
     inline bool intersectsWithLine(const float &x1, const float &y1, const float &x2, const float &y2) const;
 
     inline void copy(Rect rect);
+
+    inline void deserialize(const json::Object &jsonObject) override;
 };
 
 // inline functions
@@ -149,6 +151,13 @@ inline void Rect::copy(Rect rect) {
 inline bool Rect::hasPointInside(const Vecf &point) const {
     return (point.x >= this->x1 && point.x <= this->x2) &&
            (point.y >= this->y1 && point.y <= this->y2);
+}
+
+void Rect::deserialize(const json::Object &jsonObject) {
+    x1 = jsonObject["x1"].ToFloat();
+    y1 = jsonObject["y1"].ToFloat();
+    x2 = jsonObject["x2"].ToFloat();
+    y2 = jsonObject["y2"].ToFloat();
 }
 
 #endif //__Rect_H_

@@ -60,3 +60,13 @@ void SpriteBase::drawTexture_(const Texture *texture, const Rect &texCoords) {
 
     glEnd();
 }
+
+void SpriteBase::deserialize(const json::Object &jsonObject) {
+    DrawableBase::deserialize(jsonObject);
+
+    if (jsonObject.HasKey("rect")) {
+        Rect rect;
+        rect.deserialize(jsonObject["rect"]);
+        setRect(rect);
+    }
+}

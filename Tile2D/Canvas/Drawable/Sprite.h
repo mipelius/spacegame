@@ -42,6 +42,8 @@ public:
     Texture *getTexturePtr() const;
     void setTexturePtr(Texture *texturePtr);
 
+    void deserialize(const json::Object& jsonObject) override;
+
 protected:
     void drawActual(const Canvas &canvas) override;
 

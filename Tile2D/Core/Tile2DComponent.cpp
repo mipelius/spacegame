@@ -21,20 +21,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_TARGETINGCOMPONENTBASE_H
-#define SPACEGAME_TARGETINGCOMPONENTBASE_H
-
 #include "Tile2DComponent.h"
-#include "Vec.h"
+#include "GameObject.h"
 
-class TargetingComponentBase : public Tile2DComponent {
-public:
-    virtual Vecf getTargetPosition() = 0;
+GameObject* Tile2DComponent::gameObject() {
+    return gameObject_;
+}
 
-protected:
-    void init() override;
-    void onDestroy() override;
-};
-
-
-#endif //SPACEGAME_TARGETINGCOMPONENTBASE_H
+Transform* Tile2DComponent::transform() const {
+    return &(gameObject_->transform());
+}

@@ -24,6 +24,7 @@
 
 #include "precompile.h"
 #include "SparkleBehaviour.h"
+#include "GameObject.h"
 
 void SparkleBehaviour::awake() {
     LimitedLifetimeBehaviour::awake();

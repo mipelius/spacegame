@@ -26,6 +26,7 @@
 #include "Tile2DMath.h"
 #include "Tile2D.h"
 #include "TileMap.h"
+#include "GameObject.h"
 
 void WalkingEnemyAI::awake() {
     EnemyAIBase::awake();

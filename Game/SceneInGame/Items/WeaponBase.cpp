@@ -24,6 +24,7 @@
 #include "TargetingComponentBase.h"
 #include "Body.h"
 #include "WeaponBase.h"
+#include "GameObject.h"
 
 bool WeaponBase::useActual(GameObject* user) {
     auto body = user->getComponent<Body>();

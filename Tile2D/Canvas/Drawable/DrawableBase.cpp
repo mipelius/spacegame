@@ -109,3 +109,7 @@ void DrawableBase::setIsUIDrawable(bool isUIDrawable) {
 Transform &DrawableBase::localTransform() {
     return localTransform_;
 }
+
+void DrawableBase::deserialize(const json::Object &jsonObject) {
+    std::cout << "Warning: DrawableBase deserialization not implemented!\n";
+}

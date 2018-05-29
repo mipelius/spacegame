@@ -21,20 +21,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_TARGETINGCOMPONENTBASE_H
-#define SPACEGAME_TARGETINGCOMPONENTBASE_H
+#ifndef SPACEGAME_ISERIALIZABLE_H
+#define SPACEGAME_ISERIALIZABLE_H
 
-#include "Tile2DComponent.h"
-#include "Vec.h"
+#include "json.h"
 
-class TargetingComponentBase : public Tile2DComponent {
+class ISerializable {
 public:
-    virtual Vecf getTargetPosition() = 0;
-
-protected:
-    void init() override;
-    void onDestroy() override;
+    virtual void deserialize(const json::Object &jsonObject) = 0;
+    virtual std::string serialize() { throw "ISerializable: serialize() not implemented"; }
 };
 
-
-#endif //SPACEGAME_TARGETINGCOMPONENTBASE_H
+#endif //SPACEGAME_ISERIALIZABLE_H

@@ -32,6 +32,7 @@
 #include "TileSet.h"
 #include "Camera.h"
 #include "Window.h"
+#include "GameObject.h"
 
 void QuickTestingBehaviour::awake() {
     auto createRect = [] (Color color) {

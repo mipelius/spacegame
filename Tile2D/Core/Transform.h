@@ -27,7 +27,7 @@
 
 #include "Vec.h"
 
-class Transform {
+class Transform : public ISerializable {
     friend class Body;
     friend class PolygonCollider;
 
@@ -44,6 +44,8 @@ public:
 
     void glTransform();
     void glInvTransform();
+
+    void deserialize(const json::Object &jsonObject) override;
 
 private:
     Vecf scale_ = {1.0, 1.0};

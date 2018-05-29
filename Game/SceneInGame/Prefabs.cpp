@@ -94,7 +94,7 @@ GameObject *Prefabs::player() {
     playerController->moveForce = 100000.0f;
 
     auto health = player->attachComponent<Health>();
-    health->setMaxHealth(600);
+    health->setMaxHealth(300);
     health->setAutoHealingRate(30);
     health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
         GameObject* spaceShipExplosion = explosion();
@@ -110,7 +110,7 @@ GameObject *Prefabs::player() {
     });
 
     auto power = player->attachComponent<Power>();
-    power->setMaxPower(600);
+    power->setMaxPower(300);
     power->setReloadSpeed(200);
 
     auto targetingComponent = player->attachComponent<PlayerTargetingComponent>();

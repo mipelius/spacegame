@@ -143,6 +143,11 @@ set(SOURCE_FILES
         Tile2D/Util/Timer.h
         Tile2D/Util/CountDownTimer.cpp
         Tile2D/Util/CountDownTimer.h
+        Tile2D/Core/Tile2DComponentReflector.h
+        Tile2D/Core/Tile2DComponent.cpp
+        Tile2D/Core/Tile2DComponent.h
+        Tile2D/Core/Tile2DBehaviour.cpp
+        Tile2D/Core/Tile2DBehaviour.h
         Tile2D/Core/Tile2D.cpp
         Tile2D/Core/Tile2D.h
         Tile2D/Core/SceneManager.cpp
@@ -153,9 +158,6 @@ set(SOURCE_FILES
         Tile2D/Core/ResourceContainer.h
         Tile2D/Core/GameObject.cpp
         Tile2D/Core/GameObject.h
-        Tile2D/Core/Tile2DComponent.h
-        Tile2D/Core/Tile2DBehaviour.cpp
-        Tile2D/Core/Tile2DBehaviour.h
         Tile2D/Core/Window.cpp
         Tile2D/Core/Window.h
         Tile2D/Core/Input.cpp
@@ -164,6 +166,10 @@ set(SOURCE_FILES
         Tile2D/Core/Transform.h
         Tile2D/PathFinding/PathFinder.cpp
         Tile2D/PathFinding/PathFinder.h
+        Tile2D/PathFinding/IPathValidator.cpp
+        Tile2D/PathFinding/IPathValidator.h
+        Tile2D/PathFinding/PathValidator.cpp
+        Tile2D/PathFinding/PathValidator.h
 
         precompile.h
 
@@ -261,11 +267,10 @@ set(SOURCE_FILES
         Game/SceneInGame/Spawnable.h
         Game/SceneInGame/PickupSpawner.cpp
         Game/SceneInGame/PickupSpawner.h
-        Tile2D/PathFinding/IPathValidator.cpp
-        Tile2D/PathFinding/IPathValidator.h
-        Tile2D/PathFinding/PathValidator.cpp
-        Tile2D/PathFinding/PathValidator.h
-        Game/SceneInGame/Pickup.cpp Game/SceneInGame/Pickup.h)
+        Game/SceneInGame/Pickup.cpp
+        Game/SceneInGame/Pickup.h
+        Tile2D/Core/ISerializable.h
+        )
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

@@ -23,6 +23,7 @@
 
 #include "Health.h"
 #include "Healer.h"
+#include "GameObject.h"
 
 bool Healer::useActual(GameObject *user) {
     auto health = user->getComponent<Health>();

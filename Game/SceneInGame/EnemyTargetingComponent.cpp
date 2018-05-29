@@ -23,6 +23,7 @@
 
 #include "EnemyTargetingComponent.h"
 #include "EnemyAIBase.h"
+#include "GameObject.h"
 
 Vecf EnemyTargetingComponent::getTargetPosition() {
     auto AI = gameObject()->getComponent<EnemyAIBase>();

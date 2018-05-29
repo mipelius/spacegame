@@ -24,6 +24,7 @@
 #ifndef SPACEGAME_SPRITEBASE_H
 #define SPACEGAME_SPRITEBASE_H
 
+#include "ISerializable.h"
 #include "Texture.h"
 #include "DrawableBase.h"
 #include "Rect.h"
@@ -33,9 +34,10 @@ public:
     SpriteBase();
 
     // getters and setters
-
     const Rect &getRect() const;
     void setRect(const Rect &rect);
+
+    void deserialize(const json::Object& jsonObject) override;
 
 protected:
     void drawTexture_(const Texture* texture, const Rect& texCoords);

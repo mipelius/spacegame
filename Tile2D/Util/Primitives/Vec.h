@@ -27,6 +27,8 @@
 
 #include "precompile.h"
 #include <cmath>
+#include "ISerializable.h"
+#include "json.h"
 
 template <typename T>
 class Vec {
@@ -66,8 +68,31 @@ std::ostream& operator<<(std::ostream &strm, const Vec<T> &vec) {
 }
 
 typedef Vec<double> Vecd;
-typedef Vec<float> Vecf;
 typedef Vec<int> Veci;
+
+
+class Vecf : public Vec<float>, public ISerializable
+{
+public:
+    using Vec<float>::Vec;
+
+    Vecf(Vec<float> otherVector) {
+        x = otherVector.x;
+        y = otherVector.y;
+    }
+
+    inline Vecf& operator = (const Vec<float>& otherVector) {
+        x = otherVector.x;
+        y = otherVector.y;
+        return *this;
+    }
+
+    inline void deserialize(const json::Object &jsonObject) override {
+        x = jsonObject["x"].ToFloat();
+        y = jsonObject["y"].ToFloat();
+    }
+};
+
 
 // -------- definitions --------
 

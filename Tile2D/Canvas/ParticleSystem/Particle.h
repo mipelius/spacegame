@@ -26,6 +26,7 @@
 #ifndef SPACEGAME_PARTICLE_H
 #define SPACEGAME_PARTICLE_H
 
+#include "Transform.h"
 #include "precompile.h"
 #include "Body.h"
 #include "Color.h"

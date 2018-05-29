@@ -31,6 +31,7 @@
 #include "LightSystem.h"
 #include "TileMap.h"
 #include "PhysicsWorld.h"
+#include "GameObject.h"
 
 Canvas::Canvas() {
     camera_ = nullptr;

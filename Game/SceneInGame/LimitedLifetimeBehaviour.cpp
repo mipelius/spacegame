@@ -24,6 +24,7 @@
 
 #include "precompile.h"
 #include "LimitedLifetimeBehaviour.h"
+#include "GameObject.h"
 
 void LimitedLifetimeBehaviour::awake() {
     timer.reset();
