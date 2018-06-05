@@ -75,7 +75,7 @@ void DebugBehaviour::update() {
     // --- other debugging tools --- //
 
     if (keyboard.keyPressed(SDL_SCANCODE_O)) {
-        auto jsonObject = JsonFileManager::load("data/prefabs/prefabTest.json");
+        auto jsonObject = JsonFileManager::load("data/prefabs/trifly.json");
         Tile2D::createGameObject(jsonObject);
     }
 

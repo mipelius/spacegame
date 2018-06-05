@@ -31,6 +31,10 @@ class JsonFileManager {
 
 public:
     static json::Object load(std::string filename);
+    static json::Object load(
+            const std::string&  jsonTemplateFilePath,
+            const json::Object& templateReplacementJsonObject
+    );
     static void save(json::Object object, std::string filename);
 
     JsonFileManager() = delete;
@@ -41,6 +45,12 @@ public:
 
     JsonFileManager(JsonFileManager&& other) = delete;
     JsonFileManager& operator=(JsonFileManager&& ) = delete;
+
+
+private:
+    static std::string stringify_(const json::Value& jsonValue);
+
+
 };
 
 

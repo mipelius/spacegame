@@ -71,3 +71,106 @@ void JsonFileManager::save(json::Object object, std::string filename) {
     file << json::Serialize(object);
     file.close();
 }
+
+json::Object JsonFileManager::load(
+        const std::string&      jsonTemplateFilePath,
+        const json::Object&     templateReplacementJsonObject
+) {
+    std::ifstream file(jsonTemplateFilePath);
+
+    std::stringstream templateJsonFilledStringbuffer;
+    std::stringstream tmpBuffer;
+
+    if (file.is_open()) {
+        enum ParserState { DEFAULT, PREPARE_ANALYSIS, TEMPLATE_FIELD_ANALYSIS } parserState;
+        parserState = DEFAULT;
+
+        char currentChar;
+
+        while (!file.get(currentChar).eof()) {
+            switch (parserState)
+            {
+                case DEFAULT: {
+                    if (currentChar == '$') {
+                        parserState = PREPARE_ANALYSIS;
+                    }
+                    else {
+                        templateJsonFilledStringbuffer << currentChar;
+                    }
+                    break;
+                }
+                case PREPARE_ANALYSIS: {
+                    if (currentChar == '{') {
+                        parserState = TEMPLATE_FIELD_ANALYSIS;
+                    }
+                    else {
+                        parserState = DEFAULT;
+                    }
+                    break;
+                }
+                case TEMPLATE_FIELD_ANALYSIS: {
+                    if (currentChar == '}') {
+                        auto key = tmpBuffer.str();
+                        auto replacementJson = templateReplacementJsonObject[key];
+                        auto replacementString = stringify_(replacementJson);
+                        templateJsonFilledStringbuffer << replacementString;
+                        tmpBuffer.str(std::string());
+                        parserState = DEFAULT;
+                    }
+                    else {
+                        tmpBuffer << currentChar;
+                    }
+                    break;
+                }
+            }
+        }
+
+        file.close();
+    }
+    else {
+        std::string error = "file not found: ";
+        error.append(jsonTemplateFilePath);
+        throw std::runtime_error(error);
+    }
+
+    return json::Deserialize(templateJsonFilledStringbuffer.str());
+}
+
+std::string JsonFileManager::stringify_(const json::Value& jsonValue) {
+    std::string result;
+
+    switch (jsonValue.GetType()) {
+        case json::ObjectVal: {
+            result = json::Serialize(jsonValue.ToObject());
+            break;
+        }
+        case json::ArrayVal: {
+            result = json::Serialize(jsonValue.ToArray());
+            break;
+        }
+        case json::StringVal: {
+            result = "\"" + jsonValue.ToString() + "\"";
+            break;
+        }
+        case json::IntVal: {
+            result = std::to_string(jsonValue.ToInt());
+            break;
+        }
+        case json::FloatVal: {
+            result = std::to_string(jsonValue.ToFloat());
+            break;
+        }
+        case json::DoubleVal: {
+            result = std::to_string(jsonValue.ToDouble());
+            break;
+        }
+        case json::BoolVal: {
+            result = std::to_string(jsonValue.ToBool());
+            break;
+        }
+        default:
+            break;
+    }
+
+    return result;
+}

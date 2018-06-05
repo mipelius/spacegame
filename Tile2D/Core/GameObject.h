@@ -59,14 +59,17 @@ private:
     GameObject();
     ~GameObject();
 
+    void deserialize_(
+            const json::Object &jsonObject,
+            const std::map<std::string, ITile2DComponentReflector *> &componentBindings
+    );
+
     Transform transform_;
 
     std::list<Tile2DComponent*> uninitializedComponents_;
     std::list<Tile2DComponent*> components_;
 
     bool isActive_ = true;
-
-private:
     bool isAlive_ = true;
     bool canBeDestroyed_ = false;
 
