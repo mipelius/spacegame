@@ -29,9 +29,10 @@
 #include "Scenes.h"
 #include "ColliderLayers.h"
 #include "SceneQuickTesting.h"
-#include "Tile2DComponentReflector.h"
+#include "ObjectCreator.h"
 
-// SERIALIZABLE TILE2DCOMPONENTS
+// SERIALIZABLE CLASSES
+
 #include "Body.h"
 #include "PolygonCollider.h"
 #include "Sprite.h"
@@ -72,9 +73,9 @@ int main(int argc, const char *argv[]) {
                     {ColliderLayers::playerPickup, ColliderLayers::playerPickup, false}
             },
             {
-                    { "Body",            new Tile2DComponentReflector<Body>()            },
-                    { "PolygonCollider", new Tile2DComponentReflector<PolygonCollider>() },
-                    { "Sprite",          new Tile2DComponentReflector<Sprite>()          }
+                    { "Body",            new ObjectCreator<Body>()            },
+                    { "PolygonCollider", new ObjectCreator<PolygonCollider>() },
+                    { "Sprite",          new ObjectCreator<Sprite>()          }
             }
     );
 

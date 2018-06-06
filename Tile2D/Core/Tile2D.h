@@ -33,7 +33,7 @@
 #include "Particle.h"
 #include "Pool.h"
 
-class ITile2DComponentReflector;
+class IObjectCreator;
 class PathFinder;
 class Window;
 class SceneManager;
@@ -47,6 +47,8 @@ class Resources;
 class IScene;
 class GameObject;
 class Time;
+class Reflector;
+
 namespace json {
     class Object;
 }
@@ -66,11 +68,11 @@ public:
     Tile2D& operator=(Tile2D &&)        = delete;
 
     void static load(
-            const std::string&                                  configFile,
-            const std::string&                                  resourcesFile,
-            std::map<unsigned, IScene*>                         scenes,
-            std::vector<ColliderLayerMatrix::Rule>              colliderLayerRules,
-            std::map<std::string, ITile2DComponentReflector*>   componentBindings
+            const std::string&                          configFile,
+            const std::string&                          resourcesFile,
+            std::map<unsigned, IScene*>                 scenes,
+            std::vector<ColliderLayerMatrix::Rule>      colliderLayerRules,
+            std::map<std::string, IObjectCreator*>      classBindings
     );
 
     static std::string getResourcePath();
@@ -83,8 +85,11 @@ public:
     static LightSystem &lightSystem();
     static TileMap &tileMap();
     static PathFinder &pathFinder();
+    static Reflector &reflector();
+
     static const Input &input();
     static const Time &time();
+
 
     static void executeDelayedFunction(
             GameObject* gameObject,
@@ -101,6 +106,7 @@ public:
     static void quit();
 
 private:
+    Reflector* reflector_;
     Window *window_;
     Resources *resources_;
     SceneManager *sceneManager_;
@@ -129,8 +135,6 @@ private:
     std::set<GameObject*> objects_;
     std::list<GameObject*> objectsToInit_;
     std::list<GameObject*> objectsToDestroy_;
-
-    std::map<std::string, ITile2DComponentReflector*> componentBindings_;
 
     struct DelayedFunction {
         GameObject* gameObject;

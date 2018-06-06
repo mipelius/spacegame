@@ -52,17 +52,11 @@ public:
     void setIsActive(bool isActive);
 
 private:
-    GameObject(
-            const json::Object&                                         jsonObject,
-            const std::map<std::string, ITile2DComponentReflector*>&    componentBindings
-    );
+    GameObject(const json::Object& jsonObject);
     GameObject();
     ~GameObject();
 
-    void deserialize_(
-            const json::Object &jsonObject,
-            const std::map<std::string, ITile2DComponentReflector *> &componentBindings
-    );
+    void deserialize_(const json::Object &jsonObject);
 
     Transform transform_;
 

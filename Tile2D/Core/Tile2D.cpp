@@ -37,8 +37,9 @@
 #include "PathFinder.h"
 #include "Input.h"
 #include "t2Time.h"
-#include "Tile2DComponentReflector.h"
+#include "ObjectCreator.h"
 #include "json.h"
+#include "Reflector.h"
 
 bool Tile2D::isLoaded_ = false;
 
@@ -47,6 +48,7 @@ Tile2D::Tile2D() :
         quit_(false)
 {
     SDL_Init(SDL_INIT_EVERYTHING);
+    reflector_ = new Reflector();
     window_ = new Window();
     resources_ = new Resources();
     physicsWorld_ = new PhysicsWorld();
@@ -72,11 +74,7 @@ Tile2D::~Tile2D() {
     delete physicsWorld_;
     delete resources_;
     delete window_;
-
-    for (auto binding : instance_().componentBindings_) {
-        auto reflector = binding.second;
-        delete reflector;
-    }
+    delete reflector_;
 
     SDL_Quit();
 }
@@ -91,11 +89,11 @@ Tile2D &Tile2D::instance_() {
 }
 
 void Tile2D::load(
-        const std::string&                                  configFile,
-        const std::string&                                  resourcesFile,
-        std::map<unsigned, IScene*>                         scenes,
-        std::vector<ColliderLayerMatrix::Rule>              colliderLayerRules,
-        std::map<std::string, ITile2DComponentReflector*>   componentBindings
+        const std::string&                      configFile,
+        const std::string&                      resourcesFile,
+        std::map<unsigned, IScene*>             scenes,
+        std::vector<ColliderLayerMatrix::Rule>  colliderLayerRules,
+        std::map<std::string, IObjectCreator*>  classBindings
 ) {
     // LOAD
 
@@ -108,14 +106,13 @@ void Tile2D::load(
 
     // INIT
 
+    Tile2D::reflector().init_(classBindings);
     Tile2D::window().init(configFile);
     Tile2D::resources().init(resourcesFile);
     Tile2D::sceneManager().init(scenes);
     Tile2D::lightSystem().init();
     Tile2D::physicsWorld().init(std::move(colliderLayerRules));
     Tile2D::setIsDebugMode(false);
-
-    instance_().componentBindings_ = std::move(componentBindings);
 
     // START LOOP
 
@@ -242,7 +239,7 @@ GameObject *Tile2D::createGameObject() {
 }
 
 GameObject *Tile2D::createGameObject(const json::Object& jsonObject) {
-    auto gameObject = new GameObject(jsonObject, instance_().componentBindings_);
+    auto gameObject = new GameObject(jsonObject);
     instance_().onGameObjectCreated_(gameObject);
     return gameObject;
 }
@@ -308,4 +305,8 @@ bool Tile2D::isLoaded() {
 void Tile2D::onGameObjectCreated_(GameObject *gameObject) {
     instance_().objectsToInit_.push_back(gameObject);
     instance_().objects_.insert(gameObject);
+}
+
+Reflector& Tile2D::reflector() {
+    return *instance_().reflector_;
 }

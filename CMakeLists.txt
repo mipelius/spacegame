@@ -143,7 +143,7 @@ set(SOURCE_FILES
         Tile2D/Util/Timer.h
         Tile2D/Util/CountDownTimer.cpp
         Tile2D/Util/CountDownTimer.h
-        Tile2D/Core/Tile2DComponentReflector.h
+        Tile2D/Core/ObjectCreator.h
         Tile2D/Core/Tile2DComponent.cpp
         Tile2D/Core/Tile2DComponent.h
         Tile2D/Core/Tile2DBehaviour.cpp
@@ -270,7 +270,7 @@ set(SOURCE_FILES
         Game/SceneInGame/Pickup.cpp
         Game/SceneInGame/Pickup.h
         Tile2D/Core/ISerializable.h
-        )
+        Tile2D/Core/Reflector.cpp Tile2D/Core/Reflector.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

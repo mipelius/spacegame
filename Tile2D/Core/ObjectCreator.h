@@ -21,27 +21,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_TILE2DCOMPONENTREFLECTOR_H
-#define SPACEGAME_TILE2DCOMPONENTREFLECTOR_H
+#ifndef SPACEGAME_OBJECTCREATOR_H
+#define SPACEGAME_OBJECTCREATOR_H
 
 #include "Tile2DComponent.h"
 #include "ISerializable.h"
 
-class ITile2DComponentReflector {
+class IObjectCreator {
 public:
-    virtual Tile2DComponent* create(json::Object componentPropertiesJsonObject) = 0;
+    virtual ISerializable* create(json::Object componentPropertiesJsonObject) = 0;
 };
 
 template <class T>
-class Tile2DComponentReflector : public ITile2DComponentReflector {
+class ObjectCreator : public IObjectCreator {
 public:
-    Tile2DComponent* create(json::Object componentPropertiesJsonObject) override {
-        auto component = new T();
-        ((ISerializable*)component)->deserialize(componentPropertiesJsonObject);
-
-        return component;
+    ISerializable* create(json::Object jsonObject) override {
+        auto object = new T();
+        ((ISerializable*)object)->deserialize(jsonObject);
+        return object;
     }
 };
 
 
-#endif //SPACEGAME_TILE2DCOMPONENTREFLECTOR_H
+#endif //SPACEGAME_OBJECTCREATOR_H
