@@ -34,6 +34,7 @@
 #include "Font.h"
 #include "ResourceContainer.h"
 #include "Texture.h"
+#include "Prefab.h"
 
 class Resources {
     friend class Tile2D;
@@ -45,6 +46,7 @@ private:
     void init(const std::string& resourcesFile);
 
 public:
+    ResourceContainer<Prefab> prefabs;
     ResourceContainer<Texture> textures;
     ResourceContainer<Animation> animations;
     ResourceContainer<Font> fonts;

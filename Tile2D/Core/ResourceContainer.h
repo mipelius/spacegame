@@ -37,14 +37,14 @@ class ResourceContainer {
 private:
     std::map<std::string, T*> resourceMap_;
 
-    static_assert(
-            std::is_constructible<T, const std::string&>::value,
-            "T doesn't have constructor (const std::string&)"
-    );
+//    static_assert(
+//            std::is_constructible<T, const std::string&>::value,
+//            "T doesn't have constructor (const std::string&)"
+//    );
 
     ResourceContainer() = default;
 
-    void init(json::Value resourcesJson) {
+    void init(const json::Value& resourcesJson) {
         auto resArray = resourcesJson.ToArray();
 
         for (const auto &resValue : resArray) {

@@ -32,7 +32,8 @@
 #include "LightSystem.h"
 #include "TileMap.h"
 #include "Window.h"
-#include "EnemyTargetingComponent.h"
+#include "Prefab.h"
+#include "Resources.h"
 
 void DebugBehaviour::awake() {
     body_ = gameObject()->getComponent<Body>();
@@ -75,8 +76,7 @@ void DebugBehaviour::update() {
     // --- other debugging tools --- //
 
     if (keyboard.keyPressed(SDL_SCANCODE_O)) {
-        auto jsonObject = JsonFileManager::load("data/prefabs/trifly.json");
-        Tile2D::createGameObject(jsonObject);
+        auto jsonObject = Tile2D::resources().prefabs["trifly"]->instantiate();
     }
 
     if (keyboard.keyPressed(SDL_SCANCODE_RETURN)) {

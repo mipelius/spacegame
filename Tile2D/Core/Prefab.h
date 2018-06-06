@@ -21,19 +21,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_PREFAB_H
+#define SPACEGAME_PREFAB_H
 
-#include "JsonFileManager.h"
-#include "Resources.h"
+class GameObject;
 
-void Resources::init(const std::string& resourcesFile) {
-    auto obj = JsonFileManager::load(resourcesFile);
-    textures.init(        obj["textures"]       );
-    animations.init(      obj["animations"]     );
-    sfx.init(             obj["sfx"]            );
-    music.init(           obj["music"]          );
-    fonts.init(           obj["fonts"]          );
+class Prefab {
 
-    // init prefabs last since it might depend on other resources
-    prefabs.init(         obj["prefabs"]        );
-}
+public:
+    GameObject* instantiate();
 
+    explicit Prefab(const std::string& prefabPath);
+    ~Prefab();
+
+private:
+    GameObject* gameObject_;
+};
+
+
+#endif //SPACEGAME_PREFAB_H

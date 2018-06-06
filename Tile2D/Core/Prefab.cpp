@@ -21,19 +21,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
 #include "JsonFileManager.h"
-#include "Resources.h"
+#include "Prefab.h"
+#include "GameObject.h"
 
-void Resources::init(const std::string& resourcesFile) {
-    auto obj = JsonFileManager::load(resourcesFile);
-    textures.init(        obj["textures"]       );
-    animations.init(      obj["animations"]     );
-    sfx.init(             obj["sfx"]            );
-    music.init(           obj["music"]          );
-    fonts.init(           obj["fonts"]          );
-
-    // init prefabs last since it might depend on other resources
-    prefabs.init(         obj["prefabs"]        );
+Prefab::Prefab(const std::string& prefabPath) {
+    auto prefabJsonObject = JsonFileManager::load(prefabPath);
+    gameObject_ = new GameObject(prefabJsonObject);
 }
 
+Prefab::~Prefab() {
+    // this gameObject is not registered by the Tile2D, so we need to delete it explicitly here
+    delete gameObject_;
+}
+
+GameObject *Prefab::instantiate() {
+    return gameObject_->clone();
+}

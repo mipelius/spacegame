@@ -34,6 +34,7 @@ class Tile2DComponent;
 
 class GameObject {
     friend class Tile2D;
+    friend class Prefab;
 
 public:
     int tag = -1;
@@ -51,8 +52,10 @@ public:
     bool isActive() const;
     void setIsActive(bool isActive);
 
+    GameObject* clone();
+
 private:
-    GameObject(const json::Object& jsonObject);
+    explicit GameObject(const json::Object& jsonObject);
     GameObject();
     ~GameObject();
 

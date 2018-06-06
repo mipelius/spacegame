@@ -30,6 +30,7 @@
 #include "ColliderLayers.h"
 #include "SceneQuickTesting.h"
 #include "ObjectCreator.h"
+#include "GameObject.h"
 
 // SERIALIZABLE CLASSES
 

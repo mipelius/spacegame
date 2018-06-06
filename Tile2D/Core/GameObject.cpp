@@ -117,3 +117,16 @@ void GameObject::deserialize_(const json::Object &jsonObject)
     }
 }
 
+GameObject* GameObject::clone() {
+    auto gameObject = Tile2D::createGameObject();
+
+    for (auto component : uninitializedComponents_) {
+        //gameObject->attachComponentInternal(component->clone());
+    }
+
+    for (auto component : components_) {
+        //gameObject->attachComponentInternal(component->clone());
+    }
+
+    return gameObject;
+}

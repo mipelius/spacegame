@@ -270,7 +270,7 @@ set(SOURCE_FILES
         Game/SceneInGame/Pickup.cpp
         Game/SceneInGame/Pickup.h
         Tile2D/Core/ISerializable.h
-        Tile2D/Core/Reflector.cpp Tile2D/Core/Reflector.h)
+        Tile2D/Core/Reflector.cpp Tile2D/Core/Reflector.h Tile2D/Core/Prefab.cpp Tile2D/Core/Prefab.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 
