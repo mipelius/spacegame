@@ -200,3 +200,13 @@ bool ParticleSystem::playsOnce() const {
 void ParticleSystem::setPlaysOnce(bool playOnce) {
     playsOnce_ = playOnce;
 }
+
+Tile2DComponent *ParticleSystem::clone() {
+    auto particleSystem = ParticleSystem(*this);
+    firstParticle_ = nullptr;
+    particleCount_ = 0;
+    particlesSpawned_ = 0;
+    lastSpawnTimeStamp_ = 0;
+
+    return nullptr;
+}

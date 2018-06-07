@@ -34,3 +34,8 @@ void Spawnable::onDestroy() {
 void Spawnable::setSpawner(SpawnerBase *spawner) {
     spawner_ = spawner;
 }
+
+Tile2DComponent *Spawnable::clone() {
+    throw std::runtime_error("Spawnable: clone() not implemented");
+    return nullptr;
+}

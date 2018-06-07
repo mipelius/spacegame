@@ -38,3 +38,7 @@ int AmmoComponent::getDamage() const {
 void AmmoComponent::setDamage(int damage) {
     damage_ = damage;
 }
+
+Tile2DComponent *AmmoComponent::clone() {
+    return new AmmoComponent(*this);
+}

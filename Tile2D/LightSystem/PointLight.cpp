@@ -133,3 +133,7 @@ float PointLight::getIntensity() const {
 void PointLight::setIntensity(float intensity) {
     intensity_ = intensity;
 }
+
+Tile2DComponent *PointLight::clone() {
+    return new PointLight(*this);
+}

@@ -29,3 +29,7 @@ Vecf EnemyTargetingComponent::getTargetPosition() {
     auto AI = gameObject()->getComponent<EnemyAIBase>();
     return AI->getTarget()->getPosition();
 }
+
+Tile2DComponent *EnemyTargetingComponent::clone() {
+    return new EnemyTargetingComponent(*this);
+}

@@ -35,6 +35,8 @@ protected:
     void init() override;
     void onDestroy() override;
 
+    Tile2DComponent *clone() override;
+
 private:
     int damage_ = 0;
 };

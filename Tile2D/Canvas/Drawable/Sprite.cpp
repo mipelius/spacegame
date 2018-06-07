@@ -55,3 +55,7 @@ void Sprite::deserialize(const json::Object &jsonObject) {
         texturePtr_ = Tile2D::resources().textures[textureString];
     }
 }
+
+Tile2DComponent *Sprite::clone() {
+    return new Sprite(*this);
+}

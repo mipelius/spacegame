@@ -29,6 +29,9 @@
 class PlayerTargetingComponent : public TargetingComponentBase {
 public:
     Vecf getTargetPosition() override;
+
+protected:
+    Tile2DComponent *clone() override;
 };
 
 

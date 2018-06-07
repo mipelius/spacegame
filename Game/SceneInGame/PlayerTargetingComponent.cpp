@@ -27,3 +27,7 @@
 Vecf PlayerTargetingComponent::getTargetPosition() {
     return transform()->getPosition() + Vecf::byAngle(transform()->getRotation(), 1.0f);
 }
+
+Tile2DComponent *PlayerTargetingComponent::clone() {
+    return new PlayerTargetingComponent(*this);
+}

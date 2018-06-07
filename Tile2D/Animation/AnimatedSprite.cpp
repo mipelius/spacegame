@@ -79,3 +79,7 @@ void AnimatedSprite::setFramesPerSecond(int framesPerSecond) {
 bool AnimatedSprite::isPlaying() const {
     return isPlaying_;
 }
+
+Tile2DComponent *AnimatedSprite::clone() {
+    return new AnimatedSprite(*this);
+}

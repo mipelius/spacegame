@@ -31,3 +31,7 @@ GameObject* Tile2DComponent::gameObject() {
 Transform* Tile2DComponent::transform() const {
     return &(gameObject_->transform());
 }
+
+Tile2DComponent *Tile2DComponent::clone() {
+    return nullptr;
+}

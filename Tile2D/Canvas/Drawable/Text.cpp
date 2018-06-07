@@ -192,3 +192,7 @@ void Text::setVerticalAlignment(Text::VerticalAlignment verticalAlignment) {
     verticalAlignment_ = verticalAlignment;
 }
 
+Tile2DComponent *Text::clone() {
+    return new Text(*this);
+}
+

@@ -38,6 +38,8 @@ protected:
 protected:
     SpawnerBase* spawner_;
 
+    Tile2DComponent *clone() override;
+
 };
 
 #endif //SPACEGAME_SPAWNABLE_H

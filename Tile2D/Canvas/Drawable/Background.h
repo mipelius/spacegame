@@ -43,13 +43,12 @@ public:
     float getRatio() const;
     void setRatio(float ratio);
 
+protected:
+    Tile2DComponent *clone() override;
+
 private:
     Texture* texturePtr_;
-
-private:
-
     float ratio_;
-
 };
 
 

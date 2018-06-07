@@ -33,6 +33,7 @@ class Tile2DBehaviour : public Tile2DComponent {
 protected:
     void init() final;
     void onDestroy();
+    Tile2DComponent* clone() override;
 
     virtual void awake() = 0;
     virtual void update() = 0;

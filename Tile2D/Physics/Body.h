@@ -54,6 +54,9 @@ public:
 
     void deserialize(const json::Object &jsonObject) override;
 
+protected:
+    Tile2DComponent *clone() override;
+
 private:
     void init() override;
     void onDestroy() override;

@@ -46,6 +46,7 @@ public:
 
 protected:
     void drawActual(const Canvas &canvas) override;
+    Tile2DComponent* clone() override;
 
 private:
     Rect rect_;

@@ -33,3 +33,8 @@ void Tile2DBehaviour::init() {
 void Tile2DBehaviour::onDestroy() {
     Tile2D::instance_().behaviours_.remove(this);
 }
+
+Tile2DComponent *Tile2DBehaviour::clone() {
+    throw std::runtime_error("Tile2DBehaviour: clone() not implemented!");
+    return nullptr;
+}

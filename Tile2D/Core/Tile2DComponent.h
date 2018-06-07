@@ -41,6 +41,7 @@ public:
 protected:
     virtual void init() = 0;
     virtual void onDestroy() = 0;
+    virtual Tile2DComponent* clone() = 0;
 
 private:
     GameObject* gameObject_ = nullptr;

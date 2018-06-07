@@ -52,7 +52,8 @@ public:
     VerticalAlignment getVerticalAlignment() const;
     void setVerticalAlignment(VerticalAlignment verticalAlignment);
 
-private:
+protected:
+    Tile2DComponent *clone() override;
 
 private:
     Font* fontPtr_;

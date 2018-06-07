@@ -50,6 +50,8 @@ public:
     void stop();
 
 protected:
+    Tile2DComponent *clone() override;
+
     void drawActual(const Canvas &canvas) override;
 };
 

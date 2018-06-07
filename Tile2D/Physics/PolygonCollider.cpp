@@ -451,3 +451,7 @@ void PolygonCollider::deserialize(const json::Object &jsonObject) {
         setPoints(points);
     }
 }
+
+Tile2DComponent *PolygonCollider::clone() {
+    return new PolygonCollider(*this);
+}

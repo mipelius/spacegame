@@ -56,6 +56,11 @@ public:
     bool            playsOnce() const;
     void            setPlaysOnce(bool playOnce);
 
+protected:
+    void onDestroy() override;
+
+    Tile2DComponent *clone() override;
+
 private:
     GLenum          blendSourceFactor_ = GL_SRC_ALPHA;
     GLenum          blendDestinationFactor_ = GL_ONE_MINUS_SRC_ALPHA;
@@ -66,13 +71,6 @@ private:
     void            (*initFunc)(Particle*) = nullptr;
     void            (*updateFunc)(Particle*) = nullptr;
     bool            playsOnce_;
-
-public:
-
-protected:
-    void onDestroy() override;
-
-private:
 
     Particle*       firstParticle_ = nullptr;
     unsigned int    particleCount_ = 0;

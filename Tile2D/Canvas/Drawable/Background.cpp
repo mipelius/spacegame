@@ -89,3 +89,7 @@ float Background::getRatio() const {
 void Background::setRatio(float ratio) {
     ratio_ = ratio;
 }
+
+Tile2DComponent *Background::clone() {
+    return new Background(*this);
+}

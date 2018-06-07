@@ -54,6 +54,7 @@ public:
 protected:
     void init() override;
     void onDestroy() override;
+    Tile2DComponent* clone() override;
 
 private:
     static GLuint glTextureId_;

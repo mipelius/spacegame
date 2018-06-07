@@ -138,3 +138,7 @@ void Body::deserialize(const json::Object &jsonObject) {
         setDrag(jsonObject["drag"].ToFloat());
     }
 }
+
+Tile2DComponent *Body::clone() {
+    return new Body(*this);
+}

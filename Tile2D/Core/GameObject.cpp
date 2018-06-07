@@ -121,12 +121,16 @@ GameObject* GameObject::clone() {
     auto gameObject = Tile2D::createGameObject();
 
     for (auto component : uninitializedComponents_) {
-        //gameObject->attachComponentInternal(component->clone());
+        auto cloneComponent = component->clone();
+        gameObject->attachComponentInternal(cloneComponent);
     }
 
     for (auto component : components_) {
-        //gameObject->attachComponentInternal(component->clone());
+        auto cloneComponent = component->clone();
+        gameObject->attachComponentInternal(cloneComponent);
     }
+
+    gameObject->transform_ = this->transform_;
 
     return gameObject;
 }

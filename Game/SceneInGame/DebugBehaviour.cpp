@@ -76,7 +76,7 @@ void DebugBehaviour::update() {
     // --- other debugging tools --- //
 
     if (keyboard.keyPressed(SDL_SCANCODE_O)) {
-        auto jsonObject = Tile2D::resources().prefabs["trifly"]->instantiate();
+        auto gameObject = Tile2D::resources().prefabs["trifly"]->instantiate();
     }
 
     if (keyboard.keyPressed(SDL_SCANCODE_RETURN)) {
