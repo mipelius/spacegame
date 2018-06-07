@@ -34,8 +34,11 @@ public:
     explicit Prefab(const std::string& prefabPath);
     ~Prefab();
 
+    void reload();
+
 private:
-    GameObject* gameObject_;
+    GameObject* gameObject_ = nullptr;
+    std::string prefabPath_;
 };
 
 

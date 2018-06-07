@@ -26,8 +26,8 @@
 #include "GameObject.h"
 
 Prefab::Prefab(const std::string& prefabPath) {
-    auto prefabJsonObject = JsonFileManager::load(prefabPath);
-    gameObject_ = new GameObject(prefabJsonObject);
+    prefabPath_ = prefabPath;
+    reload();
 }
 
 Prefab::~Prefab() {
@@ -37,4 +37,10 @@ Prefab::~Prefab() {
 
 GameObject *Prefab::instantiate() {
     return gameObject_->clone();
+}
+
+void Prefab::reload() {
+    delete gameObject_;
+    auto prefabJsonObject = JsonFileManager::load(prefabPath_);
+    gameObject_ = new GameObject(prefabJsonObject);
 }

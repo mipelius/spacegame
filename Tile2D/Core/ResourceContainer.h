@@ -37,10 +37,10 @@ class ResourceContainer {
 private:
     std::map<std::string, T*> resourceMap_;
 
-//    static_assert(
-//            std::is_constructible<T, const std::string&>::value,
-//            "T doesn't have constructor (const std::string&)"
-//    );
+    static_assert(
+            std::is_constructible<T, const std::string&>::value,
+            "T doesn't have constructor (const std::string&)"
+    );
 
     ResourceContainer() = default;
 
@@ -62,18 +62,26 @@ private:
     }
 
     ~ResourceContainer() {
-        for (auto &res : resourceMap_) {
-            delete res.second;
+        for (auto pair : resourceMap_) {
+            delete pair.second;
         }
     }
 
 public:
-    T* operator[](std::string str) {
-        auto result = resourceMap_[str];
-        if (result == nullptr) {
+    T* operator[](const std::string& str) {
+        auto it = resourceMap_.find(str);
+
+        if (it == resourceMap_.end()) {
             throw std::runtime_error("no such resource" + str);
         }
-        return result;
+
+        return (*it).second;
+    }
+
+    void reload() {
+        for (auto pair : resourceMap_) {
+            pair.second->reload();
+        }
     }
 };
 
