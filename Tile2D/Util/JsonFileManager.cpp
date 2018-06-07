@@ -30,14 +30,7 @@
 json::Object JsonFileManager::load(std::string filename) {
     json::Object obj;
 
-    filename = Tile2D::getResourcePath() + filename;
-
-#ifdef _WIN32
-	std::replace(filename.begin(), filename.end(), '/', '\\');
-#endif /* _WIN32 */
-#ifdef __APPLE__
-    std::replace(filename.begin(), filename.end(), '\\', '/');
-#endif /* __APPLE__ */
+    formatPath_(filename);
 
     std::ifstream file(filename);
 	
@@ -73,9 +66,11 @@ void JsonFileManager::save(json::Object object, std::string filename) {
 }
 
 json::Object JsonFileManager::load(
-        const std::string&      jsonTemplateFilePath,
+        std::string             jsonTemplateFilePath,
         const json::Object&     templateReplacementJsonObject
 ) {
+    formatPath_(jsonTemplateFilePath);
+
     std::ifstream file(jsonTemplateFilePath);
 
     std::stringstream templateJsonFilledStringbuffer;
@@ -173,4 +168,15 @@ std::string JsonFileManager::stringify_(const json::Value& jsonValue) {
     }
 
     return result;
+}
+
+void JsonFileManager::formatPath_(std::string& path) {
+    path = Tile2D::getResourcePath() + path;
+
+#ifdef _WIN32
+    std::replace(path.begin(), path.end(), '/', '\\');
+#endif /* _WIN32 */
+#ifdef __APPLE__
+    std::replace(path.begin(), path.end(), '\\', '/');
+#endif /* __APPLE__ */
 }

@@ -32,7 +32,7 @@ class JsonFileManager {
 public:
     static json::Object load(std::string filename);
     static json::Object load(
-            const std::string&  jsonTemplateFilePath,
+            std::string         jsonTemplateFilePath,
             const json::Object& templateReplacementJsonObject
     );
     static void save(json::Object object, std::string filename);
@@ -50,7 +50,7 @@ public:
 private:
     static std::string stringify_(const json::Value& jsonValue);
 
-
+    static void formatPath_(std::string& string);
 };
 
 
