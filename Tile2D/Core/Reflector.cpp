@@ -36,12 +36,11 @@ Reflector::~Reflector() {
 ISerializable *Reflector::instantiate(const json::Object &jsonObject) {
     auto className = jsonObject["class"].ToString();
     auto mapResult = bindings_.find(className);
-    auto objectCreator = (*mapResult).second;
-
-    if (objectCreator == nullptr) {
+    if (mapResult == bindings_.end()) {
         throw std::runtime_error("Reflector: No class binding for \"" + className + "\".");
     }
 
+    auto objectCreator = (*mapResult).second;
     auto propertiesJson = jsonObject["properties"].ToObject();
 
     return objectCreator->create(propertiesJson);
