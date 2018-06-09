@@ -28,11 +28,13 @@
 #include "Reflector.h"
 
 void GameObject::initializeComponents_() {
-    for (auto& component : uninitializedComponents_) {
-        component->init();
-        components_.push_back(component);
+    if (isInitialized_) {
+        throw std::runtime_error("GameObject: already initialized!");
     }
-    uninitializedComponents_.clear();
+    for (auto& component : components_) {
+        component->init();
+    }
+    isInitialized_ = true;
 }
 
 void GameObject::destroy() {
@@ -42,9 +44,6 @@ void GameObject::destroy() {
 GameObject::GameObject() { }
 
 GameObject::~GameObject() {
-    for (auto& component : uninitializedComponents_) {
-        delete component;
-    }
     for (auto& component : components_) {
         delete component;
     }
@@ -70,6 +69,50 @@ void GameObject::prepareDestroy_() {
 }
 
 GameObject::GameObject(const json::Object& jsonObject) {
+    struct ComponentInfo {
+        ISerializable*  serializable;
+        json::Object    propertiesJson;
+    };
+
+    std::list<ComponentInfo> componentInfoList;
+
+    // reads jsonData -> creates and attachs components and replaces transform and tag if necessary
+    auto createStub = [this] (std::list<ComponentInfo>& componentInfoList, const json::Object& jsonData) {
+        if (jsonData.HasKey("tag")) {
+            tag = jsonData["tag"].ToInt();
+        }
+        if (jsonData.HasKey("transform")) {
+            transform_.deserialize(jsonData["transform"]);
+        }
+        if (jsonData.HasKey("components")) {
+            for (auto &currentComponentJson : jsonData["components"].ToArray()) {
+                auto classString = currentComponentJson["class"].ToString();
+
+                auto serializable = Tile2D::reflector().instantiate(classString);
+                auto component = dynamic_cast<Tile2DComponent *>(serializable);
+
+                if (component == nullptr) {
+                    std::string error =
+                            "GameObject : \"" +
+                            currentComponentJson["class"].ToString() +
+                            "\" is not bound to a Tile2DComponent.";
+
+                    throw std::runtime_error(error);
+                }
+
+                if (currentComponentJson.HasKey("id")) {
+                    component->id_ = currentComponentJson["id"].ToInt();
+                };
+
+                attachComponentInternal(component);
+
+                auto propertiesJson = currentComponentJson["properties"].ToObject();
+
+                componentInfoList.push_back({serializable, propertiesJson});
+            }
+        }
+    };
+
     if (jsonObject.HasKey("template")) {
         auto templateJsonObject = jsonObject["template"];
         auto templateFilePath = templateJsonObject["file"].ToString();
@@ -80,50 +123,27 @@ GameObject::GameObject(const json::Object& jsonObject) {
                 templateReplacementJsonObject
         );
 
-        deserialize_(jsonObjectFromTemplate);
+        createStub(componentInfoList, jsonObjectFromTemplate);
     }
 
-    deserialize_(jsonObject);
+    createStub(componentInfoList, jsonObject);
+
+    // deserialization phase
+    for (auto componentInfo : componentInfoList) {
+        auto serializable = componentInfo.serializable;
+        const auto& jsonProperties = componentInfo.propertiesJson;
+
+        serializable->deserialize(jsonProperties);
+    }
 }
 
 void GameObject::attachComponentInternal(Tile2DComponent *component) {
     component->gameObject_ = this;
-    uninitializedComponents_.push_back(component);
-}
-
-void GameObject::deserialize_(const json::Object &jsonObject)
-{
-    if (jsonObject.HasKey("transform")) {
-        auto jsonTransformObject = jsonObject["transform"];
-        transform_.deserialize(jsonTransformObject);
-    }
-
-    if (jsonObject.HasKey("components")) {
-        for (auto& currentComponentJson : jsonObject["components"].ToArray()) {
-            auto object = Tile2D::reflector().instantiate(currentComponentJson);
-            auto component = dynamic_cast<Tile2DComponent*>(object);
-
-            if (component == nullptr) {
-                std::string error =
-                        "GameObject : \"" +
-                        currentComponentJson["class"].ToString() +
-                        "is not bound to a Tile2DComponent.";
-
-                throw std::runtime_error(error);
-            }
-
-            attachComponentInternal(component);
-        }
-    }
+    components_.push_back(component);
 }
 
 GameObject* GameObject::clone() {
     auto gameObject = Tile2D::createGameObject();
-
-    for (auto component : uninitializedComponents_) {
-        auto cloneComponent = component->clone();
-        gameObject->attachComponentInternal(cloneComponent);
-    }
 
     for (auto component : components_) {
         auto cloneComponent = component->clone();
@@ -133,4 +153,14 @@ GameObject* GameObject::clone() {
     gameObject->transform_ = this->transform_;
 
     return gameObject;
+}
+
+Tile2DComponent *GameObject::getComponent(int id) {
+    for (auto component : components_) {
+        if (component->id_ == id) {
+            return component;
+        }
+    }
+
+    return nullptr;
 }

@@ -44,6 +44,7 @@ protected:
     virtual Tile2DComponent* clone() = 0;
 
 private:
+    int id_ = -1;
     GameObject* gameObject_ = nullptr;
 };
 

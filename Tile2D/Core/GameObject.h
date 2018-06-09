@@ -45,6 +45,8 @@ public:
     template <class T>
     T* attachComponent();
 
+    Tile2DComponent* getComponent(int id);
+
     void destroy();
 
     Transform& transform();
@@ -53,7 +55,6 @@ public:
     void setIsActive(bool isActive);
 
     GameObject* clone();
-
 private:
     explicit GameObject(const json::Object& jsonObject);
     GameObject();
@@ -63,9 +64,9 @@ private:
 
     Transform transform_;
 
-    std::list<Tile2DComponent*> uninitializedComponents_;
     std::list<Tile2DComponent*> components_;
 
+    bool isInitialized_ = false;
     bool isActive_ = true;
     bool isAlive_ = true;
     bool canBeDestroyed_ = false;
@@ -79,13 +80,6 @@ private:
 
 template <class T>
 T* GameObject::getComponent() {
-    for (auto component : uninitializedComponents_) {
-        auto currentComponent = dynamic_cast<T*>(component);
-        if (currentComponent != nullptr) {
-            return currentComponent;
-        }
-    }
-
     for (auto component : components_) {
         auto currentComponent = dynamic_cast<T*>(component);
         if (currentComponent != nullptr) {

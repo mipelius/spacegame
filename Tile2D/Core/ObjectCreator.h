@@ -29,16 +29,14 @@
 
 class IObjectCreator {
 public:
-    virtual ISerializable* create(json::Object componentPropertiesJsonObject) = 0;
+    virtual ISerializable* create() = 0;
 };
 
 template <class T>
 class ObjectCreator : public IObjectCreator {
 public:
-    ISerializable* create(json::Object jsonObject) override {
-        auto object = new T();
-        ((ISerializable*)object)->deserialize(jsonObject);
-        return object;
+    ISerializable* create() override {
+        return new T();;
     }
 };
 

@@ -32,7 +32,7 @@ class Reflector {
     friend class Tile2D;
 
 public:
-    ISerializable* instantiate(const json::Object& jsonObject);
+    ISerializable* instantiate(const std::string& className);
 
 private:
     Reflector() = default;
