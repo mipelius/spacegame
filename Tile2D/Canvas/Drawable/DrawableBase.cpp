@@ -29,7 +29,7 @@ DrawableBase::DrawableBase() :
 isVisible_      (true       ),
 opacity_        (1.0        ),
 color_          (Color(1.0, 1.0, 1.0)),
-sortingLayer_   (0),
+sortingLayer_   (&defaultSortingLayer),
 isUIDrawable_   (false      )
 {
 
@@ -90,12 +90,12 @@ void DrawableBase::setColor(const Color &color) {
     color_ = color;
 }
 
-int DrawableBase::getSortingLayer() const {
-    return sortingLayer_;
+const SortingLayer& DrawableBase::getSortingLayer() const {
+    return *sortingLayer_;
 }
 
-void DrawableBase::setSortingLayer(int sortingLayer) {
-    sortingLayer_ = sortingLayer;
+void DrawableBase::setSortingLayer(const SortingLayer& sortingLayer) {
+    sortingLayer_ = &sortingLayer;
 }
 
 bool DrawableBase::isUIDrawable() const {
@@ -124,7 +124,19 @@ void DrawableBase::deserialize(const json::Object &jsonObject) {
         color_.deserialize(jsonObject["color"]);
     }
     if (jsonObject.HasKey("sortingLayer")) {
-        setSortingLayer(jsonObject["sortingLayer"].ToInt());
+        int sortingLayerId = jsonObject["sortingLayer"].ToInt();
+
+        const auto& sortingLayers = Tile2D::canvas().getSortingLayers();
+
+        auto it = sortingLayers.find(sortingLayerId);
+
+        if (it == sortingLayers.end()) {
+            throw std::runtime_error(
+                    "DrawableBase: no such sortingLayer: " +  std::to_string(sortingLayerId)
+            );
+        }
+
+        setSortingLayer((*it).second);
     }
     if (jsonObject.HasKey("isUIDrawable")) {
         setIsUIDrawable(jsonObject["isUIDrawable"].ToBool());

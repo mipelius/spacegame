@@ -23,7 +23,6 @@
 
 
 #include "Text.h"
-#include "SortingLayers.h"
 #include "t2Time.h"
 #include "Tile2D.h"
 #include "HUD.h"
@@ -115,18 +114,15 @@ void HUD::updateItemSlots_() {
             itemSlotSprite->setRect({0.0f, 0.0f, width, height});
             itemSlotSprite->setIsUIDrawable(true);
             itemSlotSprite->setTexturePtr(Tile2D::resources().textures["inventory_slot"]);
-            itemSlotSprite->setSortingLayer(SortingLayers::HUD_WeaponSlot);
 
             auto itemSprite = itemSlot->attachComponent<Sprite>();
             itemSprite->setRect({5.0f, 5.0f, width - 5.0f, height - 5.0f});
             itemSprite->setIsUIDrawable(true);
-            itemSprite->setSortingLayer(SortingLayers::HUD_Weapon);
 
             auto itemSlotText = itemSlot->attachComponent<Text>();
             itemSlotText->setFontPtr(Tile2D::resources().fonts["smallfont"]);
             itemSlotText->setIsUIDrawable(true);
             itemSlotText->setString(std::to_string(i + 1));
-            itemSlotText->setSortingLayer(SortingLayers::HUD_Text);
             itemSlotText->setFontSize(1.0f);
             itemSlotText->setHorizontalAlignment(Text::HorizontalAlignment::right);
             itemSlotText->setVerticalAlignment(Text::VerticalAlignment::bottom);
@@ -135,7 +131,6 @@ void HUD::updateItemSlots_() {
             auto itemCountText = itemSlot->attachComponent<Text>();
             itemCountText->setFontPtr(Tile2D::resources().fonts["smallfont"]);
             itemCountText->setIsUIDrawable(true);
-            itemCountText->setSortingLayer(SortingLayers::HUD_Text);
             itemCountText->setFontSize(1.0f);
             itemCountText->setHorizontalAlignment(Text::HorizontalAlignment::right);
             itemCountText->setVerticalAlignment(Text::VerticalAlignment::top);

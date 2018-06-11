@@ -70,6 +70,7 @@ public:
     void static load(
             const std::string&                          configFile,
             const std::string&                          resourcesFile,
+            const std::string&                          sortingLayersFile,
             std::map<unsigned, IScene*>                 scenes,
             std::vector<ColliderLayerMatrix::Rule>      colliderLayerRules,
             std::map<std::string, IObjectCreator*>      classBindings

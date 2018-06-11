@@ -91,6 +91,7 @@ Tile2D &Tile2D::instance_() {
 void Tile2D::load(
         const std::string&                      configFile,
         const std::string&                      resourcesFile,
+        const std::string&                      sortingLayersFile,
         std::map<unsigned, IScene*>             scenes,
         std::vector<ColliderLayerMatrix::Rule>  colliderLayerRules,
         std::map<std::string, IObjectCreator*>  classBindings
@@ -105,14 +106,15 @@ void Tile2D::load(
     instance_();
 
     // INIT
-
-    Tile2D::reflector().init_(classBindings);
+    Tile2D::reflector().init_(std::move(classBindings));
     Tile2D::window().init(configFile);
-    Tile2D::resources().init(resourcesFile);
+    Tile2D::canvas().init(sortingLayersFile);
     Tile2D::sceneManager().init(scenes);
     Tile2D::lightSystem().init();
     Tile2D::physicsWorld().init(std::move(colliderLayerRules));
     Tile2D::setIsDebugMode(false);
+
+    Tile2D::resources().init(resourcesFile);
 
     // START LOOP
 

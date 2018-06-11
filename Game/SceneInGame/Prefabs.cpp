@@ -44,7 +44,6 @@
 #include "SparkleBehaviour.h"
 #include "ColliderLayers.h"
 #include "FlyingEnemyAI.h"
-#include "SortingLayers.h"
 #include "PlayerController.h"
 #include "DebugBehaviour.h"
 #include "BackgroundBehaviour.h"
@@ -82,7 +81,6 @@ GameObject *Prefabs::player() {
     polygonCollider->setLayer(ColliderLayers::player);
 
     auto spaceshipSprite = player->attachComponent<Sprite>();
-    spaceshipSprite->setSortingLayer(SortingLayers::player);
     spaceshipSprite->setRect({-20, -20, 20, 20});
     spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship"]);
 
@@ -251,7 +249,6 @@ GameObject *Prefabs::boss() {
     AI->setMaxNodesPathFinderExplores(2000);
     AI->setPathFindingInterval(1000);
 
-
     auto laserCannon = AI->setWeapon<Cannon>();
     laserCannon->setAmmoFunction(enemyLaser);
     laserCannon->setReloadDelay(200);
@@ -416,12 +413,10 @@ GameObject *Prefabs::rider() {
             },
             {-64, -32, 64, 32},
             0.0f,
-            100.0f,
-            SortingLayers::enemyBackground
+            100.0f
     );
 
     auto enemySprite = enemy->attachComponent<AnimatedSprite>();
-    enemySprite->setSortingLayer(SortingLayers::enemy);
     enemySprite->setRect({-32, -32, 32, 32});
     enemySprite->localTransform().setPosition({0.0f, -12.0f});
     enemySprite->setAnimationPtr(Tile2D::resources().animations["wanderer"]);
@@ -447,8 +442,7 @@ GameObject *Prefabs::createEnemy_(
         std::vector<Vecf> colliderPoints,
         Rect spriteRect,
         float gravityFactor,
-        float mass,
-        int sortingLayer
+        float mass
 ) {
     auto enemy = Tile2D::createGameObject();
     enemy->transform().setRotation(0.0f);
@@ -464,7 +458,6 @@ GameObject *Prefabs::createEnemy_(
     polygonCollider->setLayer(ColliderLayers::enemy);
 
     auto enemySprite = enemy->attachComponent<AnimatedSprite>();
-    enemySprite->setSortingLayer(sortingLayer);
     enemySprite->setRect({spriteRect});
     enemySprite->setAnimationPtr(Tile2D::resources().animations[animationName]);
     enemySprite->setFramesPerSecond(50);
@@ -527,7 +520,6 @@ GameObject *Prefabs::bomb() {
     });
 
     auto sprite = bomb->attachComponent<Sprite>();
-    sprite->setSortingLayer(SortingLayers::ammo);
     sprite->setTexturePtr(Tile2D::resources().textures["bomb"]);
     sprite->setRect({-10, -10, 10, 10});
 
@@ -622,7 +614,6 @@ GameObject *Prefabs::createAmmo_(
     auto ammoSprite = ammo->attachComponent<Sprite>();
     ammoSprite->setRect(spriteRect);
     ammoSprite->setTexturePtr(texturePtr);
-    ammoSprite->setSortingLayer(SortingLayers::ammo);
 
     auto ammoLifetime = ammo->attachComponent<LimitedLifetimeBehaviour>();
     ammoLifetime->getTimer().setInterval(1000);
@@ -803,14 +794,12 @@ GameObject* Prefabs::createPickup_(
     auto pickupSprite = pickup->attachComponent<Sprite>();
     pickupSprite->setTexturePtr(pickupTexture);
     pickupSprite->setRect({-20.0f, -20.0f, 20.0f, 20.0f});
-    pickupSprite->setSortingLayer(SortingLayers::pickup);
 
     auto pickupBgSprite = pickup->attachComponent<Sprite>();
     pickupBgSprite->setTexturePtr(
             Tile2D::resources().textures["pickup_bg"]
     );
     pickupBgSprite->setRect({-32.0f, -32.0f, 32.0f, 32.0f});
-    pickupBgSprite->setSortingLayer(SortingLayers::pickupBackground);
 
     auto pickupBehaviour = pickup->attachComponent<Pickup>();
     pickupBehaviour->setPickupBgSprite(pickupBgSprite);
@@ -856,7 +845,6 @@ GameObject *Prefabs::light() {
                         });
 
     auto lightSprite = light->attachComponent<Sprite>();
-    lightSprite->setSortingLayer(SortingLayers::ammo);
     lightSprite->setRect({-40, -40, 40, 40});
     lightSprite->setTexturePtr(Tile2D::resources().textures["light"]);
 
@@ -881,7 +869,6 @@ GameObject* Prefabs::bloodBurst() {
     pulseLightBehaviour->setIntensityDiminishSpeed(1.5f);
 
     auto particles = bloodBurst->attachComponent<ParticleSystem>();
-    particles->setSortingLayer(SortingLayers::particles);
     particles->setPlaysOnce(true);
     particles->setInitFunc([] (Particle* particle){
         Vecf pos = {(rand() % 10) * 5.0f - 25.0f, (rand() % 10) * 5.0f - 25.0f};
@@ -935,7 +922,6 @@ GameObject *Prefabs::explosion() {
     explosionPulseLightBehaviour->setIntensityDiminishSpeed(1.5f);
 
     auto explosionParticles = explosion->attachComponent<ParticleSystem>();
-    explosionParticles->setSortingLayer(SortingLayers::particles);
     explosionParticles->setPlaysOnce(true);
     explosionParticles->setInitFunc([] (Particle* particle){
         Vecf pos = {(rand() % 10) * 5.0f - 25.0f, (rand() % 10) * 5.0f - 25.0f};
@@ -1025,7 +1011,6 @@ GameObject *Prefabs::background(Rect area, const char *texture, Color color) {
     bg->setTexturePtr(Tile2D::resources().textures[texture]);
     bg->setColor(color);
     bg->setOpacity(0.0f);
-    bg->setSortingLayer(SortingLayers::background);
     auto bgBehaviour = background->attachComponent<BackgroundBehaviour>();
     bgBehaviour->setArea(area);
     return background;

@@ -27,7 +27,6 @@
 
 #include <string>
 #include <vector>
-#include "SortingLayers.h"
 #include "GameObject.h"
 #include "Rect.h"
 #include "Color.h"
@@ -102,8 +101,7 @@ private:
             std::vector<Vecf> colliderPoints,
             Rect spriteRect,
             float gravityFactor,
-            float mass,
-            int sortingLayer = SortingLayers::enemy
+            float mass
     );
 
     static void createPlasmaExplosion_(const Vecf &position);

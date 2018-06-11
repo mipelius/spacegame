@@ -26,9 +26,17 @@
 #define __Canvas_H_
 
 #include <list>
+#include <string>
+#include <map>
 
 class Camera;
 class DrawableBase;
+
+struct SortingLayer {
+    int         id;
+    std::string name;
+    int         order;
+};
 
 class Canvas {
     friend class Tile2D;
@@ -37,6 +45,8 @@ class Canvas {
 public:
     void setCamera(Camera* camera);
     Camera* getCamera() const;
+
+    const std::map<int, SortingLayer>& getSortingLayers();
 
 private:
     Canvas();
@@ -54,6 +64,9 @@ private:
 
     void renderDrawable_(DrawableBase* drawable);
 
+    void init(const std::string& sortingLayersFile);
+
+    std::map<int, SortingLayer> sortingLayers_;
     std::list<DrawableBase*> drawables_;
     Camera* camera_;
 };

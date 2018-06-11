@@ -44,8 +44,8 @@ public:
     void setOpacity(float opacity);
     const Color &getColor() const;
     void setColor(const Color &color);
-    int getSortingLayer() const;
-    void setSortingLayer(int sortingLayer);
+    const SortingLayer& getSortingLayer() const;
+    void setSortingLayer(const SortingLayer& sortingLayer);
     bool isUIDrawable() const;
     void setIsUIDrawable(bool isUIDrawable);
 
@@ -60,11 +60,13 @@ protected:
     void onDestroy() override;
 
 private:
+    const SortingLayer defaultSortingLayer = { -1, "__DEFAULT__", 0 };
+
     Transform localTransform_;
     bool isVisible_;
     float opacity_;
     Color color_;
-    int sortingLayer_;
+    const SortingLayer* sortingLayer_;
     bool isUIDrawable_;
 };
 

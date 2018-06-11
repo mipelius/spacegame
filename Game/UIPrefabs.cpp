@@ -29,7 +29,6 @@
 #include "Button.h"
 #include "Text.h"
 #include "UIPrefabs.h"
-#include "SortingLayers.h"
 #include "Resources.h"
 
 GameObject* UIPrefabs::button(
@@ -56,7 +55,6 @@ GameObject* UIPrefabs::button(
     buttonText->setHorizontalAlignment(Text::HorizontalAlignment::center);
     buttonText->setVerticalAlignment(Text::VerticalAlignment::center);
     buttonText->setIsUIDrawable(true);
-    buttonText->setSortingLayer(SortingLayers::UI_ButtonText);
     buttonText->setString(string);
     buttonText->setFontPtr(Tile2D::resources().fonts["smallfont"]);
     buttonText->setFontSize(4.0f);
@@ -116,7 +114,6 @@ GameObject* UIPrefabs::text(
     text->setHorizontalAlignment(horizontalAlignment);
     text->setVerticalAlignment(verticalAlignment);
     text->setIsUIDrawable(true);
-    text->setSortingLayer(SortingLayers::UI);
     text->setString(string);
     text->setFontPtr(Tile2D::resources().fonts["smallfont"]);
     text->setFontSize(size);

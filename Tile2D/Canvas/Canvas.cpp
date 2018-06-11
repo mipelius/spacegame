@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 
+#include <Tile2D/Util/JsonFileManager.h>
 #include "precompile.h"
 #include "Canvas.h"
 #include "Window.h"
@@ -110,7 +111,7 @@ void Canvas::sortDrawables_() {
         if (drawableA->isUIDrawable_ != drawableB->isUIDrawable_) {
             return !drawableA->isUIDrawable_; // and drawableB->isUIDrawable_
         } else {
-            return drawableA->sortingLayer_ < drawableB->sortingLayer_;
+            return drawableA->sortingLayer_->order < drawableB->sortingLayer_->order;
         }
     });
 }
@@ -143,5 +144,26 @@ void Canvas::renderUIDrawables_(std::list<DrawableBase*>::iterator& it) {
 void Canvas::renderDrawable_(DrawableBase *drawable) {
     if (drawable->gameObject()->isActive()) {
         drawable->draw(*this);
+    }
+}
+
+const std::map<int, SortingLayer> &Canvas::getSortingLayers() {
+    return sortingLayers_;
+}
+
+void Canvas::init(const std::string &sortingLayersFile) {
+    auto jsonObject = JsonFileManager::load(sortingLayersFile);
+
+    auto sortingLayersJson = jsonObject["sortingLayers"].ToArray();
+
+    for (auto sortingLayerJson : sortingLayersJson) {
+        int id = sortingLayerJson["id"].ToInt();
+
+        SortingLayer sortingLayer = {
+                sortingLayerJson["id"].ToInt(),
+                sortingLayerJson["name"].ToString(),
+                sortingLayerJson["order"].ToInt()
+        };
+        sortingLayers_[id] = sortingLayer;
     }
 }
