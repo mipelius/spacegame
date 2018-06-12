@@ -21,8 +21,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "Tile2D.h"
+#include "PhysicsWorld.h"
 #include "Body.h"
-#include "ColliderLayers.h"
 #include "Prefabs.h"
 #include "BombDropper.h"
 
@@ -32,5 +33,5 @@ void BombDropper::shoot(const Vecf &from, const Vecf &direction, const Vecf &sho
     bomb->getComponent<Body>()->setVelocity(shooterVelocity / 2 + Vecf(0, 100));
 
     auto bombCollider = bomb->getComponent<PolygonCollider>();
-    bombCollider->setLayer(ColliderLayers::playerAmmo);
+    bombCollider->setLayer(Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(0));
 }

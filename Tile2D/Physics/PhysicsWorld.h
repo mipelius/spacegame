@@ -50,8 +50,10 @@ public:
     float getAirDensity() const;
     void setAirDensity(float airDensity);
 
+    const ColliderLayerMatrix& getColliderLayerMatrix() const;
+
 private:
-    void init(std::vector<ColliderLayerMatrix::Rule> colliderMatrixRules);
+    void init(const std::string& colliderLayersFile);
 
     PhysicsWorld();
     ~PhysicsWorld();

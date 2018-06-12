@@ -31,25 +31,23 @@
 #include <vector>
 #include "Array2d.h"
 
+struct ColliderLayer {
+    int         id;
+    std::string name;
+};
+
 class ColliderLayerMatrix {
 public:
-    struct Rule {
-        unsigned int    colliderLayer1;
-        unsigned int    colliderLayer2;
-        bool            collides;
-    };
-
-    ColliderLayerMatrix(std::vector<Rule> rules);
+    explicit ColliderLayerMatrix(const std::string& colliderLayersFile);
     ~ColliderLayerMatrix();
 
-    bool getRule(unsigned int layer, unsigned otherLayer);
-    unsigned int getNumLayers() const;
+    bool getRule(const ColliderLayer& layer1, const ColliderLayer& layer2) const;
 
+    const ColliderLayer& getColliderLayer(int id) const;
 
 private:
     Array2d<int>* layerRules_;
-    unsigned int numLayers_;
+    std::map<int, ColliderLayer> colliderLayerMap_;
 };
-
 
 #endif //SPACEGAME_COLLIDERLAYERMATRIX_H

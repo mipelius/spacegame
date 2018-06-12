@@ -71,8 +71,8 @@ public:
             const std::string&                          configFile,
             const std::string&                          resourcesFile,
             const std::string&                          sortingLayersFile,
+            const std::string&                          colliderLayersFile,
             std::map<unsigned, IScene*>                 scenes,
-            std::vector<ColliderLayerMatrix::Rule>      colliderLayerRules,
             std::map<std::string, IObjectCreator*>      classBindings
     );
 

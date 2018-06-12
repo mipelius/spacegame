@@ -156,6 +156,8 @@ PolygonCollider::PolygonCollider() :
         collision           (   Event<PolygonCollider, CollisionEventArgs>(this)            ),
         terrainCollision    (   Event<PolygonCollider, TerrainCollisionEventArgs>(this)     )
 {
+    setLayer(Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(0));
+
     if (Tile2D::tileMap().isLoaded()) {
         TileSet* tileSet = Tile2D::tileMap().getTileSet();
         sweepingStrategyThreshold_ = (float)sqrt(tileSet->getTileW() * tileSet->getTileW()) / 4.0f;
@@ -419,12 +421,12 @@ void PolygonCollider::setSweepingStrategyThreshold(float sweepingStrategyThresho
     }
 }
 
-unsigned int PolygonCollider::getLayer() const {
-    return layer_;
+const ColliderLayer& PolygonCollider::getLayer() const {
+    return *layer_;
 }
 
-void PolygonCollider::setLayer(unsigned int layer) {
-    layer_ = layer;
+void PolygonCollider::setLayer(const ColliderLayer &layer) {
+    layer_ = &layer;
 }
 
 const Rect PolygonCollider::boundingBoxWorldCoordinates() {
@@ -449,6 +451,11 @@ void PolygonCollider::deserialize(const json::Object &jsonObject) {
         }
 
         setPoints(points);
+    }
+
+    if (jsonObject.HasKey("layer")) {
+        int id = jsonObject["layer"].ToInt();
+        layer_ = &Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(id);
     }
 }
 

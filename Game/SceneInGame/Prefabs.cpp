@@ -42,7 +42,6 @@
 #include "Health.h"
 #include "BombBehaviour.h"
 #include "SparkleBehaviour.h"
-#include "ColliderLayers.h"
 #include "FlyingEnemyAI.h"
 #include "PlayerController.h"
 #include "DebugBehaviour.h"
@@ -58,6 +57,7 @@
 #include "AmmoComponent.h"
 #include "PickupSpawner.h"
 #include "Pickup.h"
+#include "PhysicsWorld.h"
 
 GameObject *Prefabs::player() {
     auto player = Tile2D::createGameObject();
@@ -78,7 +78,7 @@ GameObject *Prefabs::player() {
                                        {-5, 18},
                                        {-20, 18}
                                });
-    polygonCollider->setLayer(ColliderLayers::player);
+    polygonCollider->setLayer(Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(2));
 
     auto spaceshipSprite = player->attachComponent<Sprite>();
     spaceshipSprite->setRect({-20, -20, 20, 20});
@@ -133,7 +133,7 @@ GameObject *Prefabs::player() {
                         {18,  5},
                         {-18, 5}
                 },
-                ColliderLayers::playerAmmo,
+                Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(0),
                 20
         );
 
@@ -163,7 +163,7 @@ GameObject *Prefabs::player() {
                         {8,  8},
                         {-8, 8}
                 },
-                ColliderLayers::playerAmmo,
+                Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(0),
                 5
         );
         return gatlingAmmo;
@@ -455,7 +455,7 @@ GameObject *Prefabs::createEnemy_(
 
     auto polygonCollider = enemy->attachComponent<PolygonCollider>();
     polygonCollider->setPoints(colliderPoints);
-    polygonCollider->setLayer(ColliderLayers::enemy);
+    polygonCollider->setLayer(Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(3));
 
     auto enemySprite = enemy->attachComponent<AnimatedSprite>();
     enemySprite->setRect({spriteRect});
@@ -538,7 +538,7 @@ GameObject* Prefabs::plasma() {
                     {18,  18},
                     {-18, 18}
             },
-            ColliderLayers::playerAmmo,
+            Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(0),
             400
     );
 
@@ -565,7 +565,7 @@ void Prefabs::createPlasmaExplosion_(const Vecf &position) {
                         {10,  10},
                         {-10, 10}
                 },
-                ColliderLayers::playerAmmo,
+                Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(0),
                 40
         );
 
@@ -589,7 +589,7 @@ GameObject *Prefabs::enemyLaser() {
                     {18,  5},
                     {-18, 5}
             },
-            ColliderLayers::enemyAmmo,
+            Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(1),
             10
     );
 
@@ -602,7 +602,7 @@ GameObject *Prefabs::createAmmo_(
         Texture *texturePtr,
         Rect spriteRect,
         std::vector<Vecf> colliderPoints,
-        unsigned int colliderLayer,
+        const ColliderLayer& colliderLayer,
         int damage
 ) {
     auto ammo = Tile2D::createGameObject();
@@ -816,7 +816,7 @@ GameObject* Prefabs::createPickup_(
                                       {20, 20},
                                       {-20, 20}
                               });
-    pickupCollider->setLayer(ColliderLayers::playerPickup);
+    pickupCollider->setLayer(Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(4));
     pickupCollider->collision.add(onCollisionFunctionPtr);
     pickupCollider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
         if (args.otherCollider->gameObject()->tag == Tags::player) {

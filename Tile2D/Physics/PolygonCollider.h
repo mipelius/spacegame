@@ -32,6 +32,7 @@
 #include "Rect.h"
 #include "Event.h"
 #include "Tile.h"
+#include "ColliderLayerMatrix.h"
 
 class Body;
 class PolygonCollider;
@@ -62,8 +63,8 @@ public:
 
     float getSweepingStrategyThreshold() const;
     void setSweepingStrategyThreshold(float sweepingStrategyThreshold);
-    unsigned int getLayer() const;
-    void setLayer(unsigned int layer);
+    const ColliderLayer& getLayer() const;
+    void setLayer(const ColliderLayer& layer);
 
     const Event<PolygonCollider, CollisionEventArgs>        collision;
     const Event<PolygonCollider, TerrainCollisionEventArgs> terrainCollision;
@@ -113,7 +114,7 @@ private:
     Rect boundingBox_;
     Body* body_ = nullptr;
     std::vector<Vecf> points_;
-    unsigned int layer_ = 0;
+    const ColliderLayer* layer_ = nullptr;
 };
 
 

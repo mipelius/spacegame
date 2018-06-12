@@ -55,7 +55,7 @@ void PhysicsWorld::step(float timeSeconds) {
             if (
                     !otherCollider->gameObject()->isActive() ||
                     otherCollider == collider ||
-                    !colliderLayerMatrix_->getRule(collider->layer_, otherCollider->layer_)
+                    !colliderLayerMatrix_->getRule(*collider->layer_, *otherCollider->layer_)
             ) {
                 continue;
             }
@@ -88,7 +88,7 @@ void PhysicsWorld::debugDraw() {
 
         // COLLIDER
 
-        Color color = layerColors[collider->layer_ % layerColorsCount];
+        Color color = layerColors[collider->layer_->id % layerColorsCount];
         glColor3f(color.red, color.green, color.blue);
 
         auto& points = collider->points();
@@ -137,10 +137,14 @@ void PhysicsWorld::setAirDensity(float airDensity) {
     airDensity_ = airDensity;
 }
 
-void PhysicsWorld::init(std::vector<ColliderLayerMatrix::Rule> colliderMatrixRules) {
-    colliderLayerMatrix_ = new ColliderLayerMatrix(colliderMatrixRules);
+void PhysicsWorld::init(const std::string& colliderLayersFile) {
+    colliderLayerMatrix_ = new ColliderLayerMatrix(colliderLayersFile);
 }
 
 PhysicsWorld::~PhysicsWorld() {
     delete colliderLayerMatrix_;
+}
+
+const ColliderLayerMatrix& PhysicsWorld::getColliderLayerMatrix() const {
+    return *colliderLayerMatrix_;
 }

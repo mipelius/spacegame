@@ -26,7 +26,6 @@
 
 #include "Tile2D.h"
 #include "Prefabs.h"
-#include "ColliderLayers.h"
 #include "TileMap.h"
 
 void EnemyAIBase::awake() {

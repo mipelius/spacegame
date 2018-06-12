@@ -21,29 +21,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
-
 #include <string>
+#include "JsonFileManager.h"
 #include "ColliderLayerMatrix.h"
 
-ColliderLayerMatrix::ColliderLayerMatrix(std::vector<Rule> rules)
+ColliderLayerMatrix::ColliderLayerMatrix(const std::string &colliderLayersFile)
 {
-    numLayers_ = 0;
-    for (auto rule : rules) {
-    if (rule.colliderLayer1 >= numLayers_) {
-            numLayers_ = rule.colliderLayer1 + 1;
-        }
-        if (rule.colliderLayer2 >= numLayers_) {
-            numLayers_ = rule.colliderLayer2 + 1;
+    auto jsonObject = JsonFileManager::load(colliderLayersFile);
+
+    auto colliderLayersJson = jsonObject["colliderLayers"].ToArray();
+    auto colliderRulesJson = jsonObject["rules"].ToArray();
+
+    int maxId = -1;
+    for (const auto& colliderLayerJson : colliderLayersJson) {
+        int id              = colliderLayerJson["id"].ToInt();
+        std::string name    = colliderLayerJson["name"].ToString();
+
+        colliderLayerMap_[id] = {id, name};
+
+        if (maxId < id) {
+            maxId = id;
         }
     }
-    layerRules_ = new Array2d<int>(numLayers_, numLayers_);
+
+    layerRules_ = new Array2d<int>(maxId + 1, maxId + 1);
     layerRules_->fill(-1); // -1 stands for "unset"
 
-    for (auto rule : rules) {
-        int currentRule = rule.collides ? 1 : 0;
-        layerRules_->setValue(rule.colliderLayer1, rule.colliderLayer2, currentRule);
-        layerRules_->setValue(rule.colliderLayer2, rule.colliderLayer1, currentRule);
+    for (const auto& ruleJson : colliderRulesJson) {
+        auto idFirst    = ruleJson.ToArray()[0].ToInt();
+        auto idSecond   = ruleJson.ToArray()[1].ToInt();
+        auto collides   = ruleJson.ToArray()[2].ToBool();
+
+        int currentRule = collides ? 1 : 0;
+        layerRules_->setValue(idFirst, idSecond, currentRule);
+        layerRules_->setValue(idSecond, idFirst, currentRule);
     }
 }
 
@@ -51,17 +62,18 @@ ColliderLayerMatrix::~ColliderLayerMatrix() {
     delete layerRules_;
 }
 
-bool ColliderLayerMatrix::getRule(unsigned int layer, unsigned otherLayer) {
+bool ColliderLayerMatrix::getRule(const ColliderLayer& layer1, const ColliderLayer& layer2) const {
     int rule = -1;
-    if (layerRules_->isInsideBounds(layer, otherLayer)) {
-        rule = layerRules_->getValue(layer, otherLayer);
+
+    if (layerRules_->isInsideBounds(layer1.id, layer2.id)) {
+        rule = layerRules_->getValue(layer1.id, layer2.id);
     }
 
     if (rule == -1) {
-        std::string error = "No rule for collider layers ";
-        error += std::to_string(layer);
-        error += " and ";
-        error += std::to_string(otherLayer);
+        std::string error = "No rule for collider layers";
+        error += " { " + std::to_string(layer1.id) + ", \"" + layer1.name +"\" } ";
+        error += "and";
+        error += " { " + std::to_string(layer2.id) + ", \"" + layer2.name +"\" } ";
         error += ".";
         throw std::runtime_error(error);
     }
@@ -69,6 +81,11 @@ bool ColliderLayerMatrix::getRule(unsigned int layer, unsigned otherLayer) {
     return rule != 0;
 }
 
-unsigned int ColliderLayerMatrix::getNumLayers() const {
-    return numLayers_;
+const ColliderLayer &ColliderLayerMatrix::getColliderLayer(int id) const {
+    auto it = colliderLayerMap_.find(id);
+    if (it == colliderLayerMap_.end()) {
+        throw std::runtime_error("ColliderLayerMatrix: no collider layer for id " + std::to_string(id));
+    }
+
+    return (*it).second;
 }

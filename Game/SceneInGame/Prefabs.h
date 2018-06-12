@@ -92,7 +92,7 @@ private:
             Texture *texturePtr,
             Rect spriteRect,
             std::vector<Vecf> colliderPoints,
-            unsigned int colliderLayer,
+            const ColliderLayer& colliderLayer,
             int damage
     );
 
