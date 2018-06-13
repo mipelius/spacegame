@@ -27,7 +27,6 @@
 #include "SceneTitleScreen.h"
 #include "SceneEndScreen.h"
 #include "Scenes.h"
-#include "ColliderLayers.h"
 #include "SceneQuickTesting.h"
 #include "ObjectCreator.h"
 #include "GameObject.h"
@@ -37,8 +36,8 @@
 #include "Body.h"
 #include "PolygonCollider.h"
 #include "Sprite.h"
+#include "AnimatedSprite.h"
 // ... etc
-
 
 #undef main
 
@@ -47,6 +46,8 @@ int main(int argc, const char *argv[]) {
             "data/config.json",
             "data/resources.json",
             "data/gameSetup/sortingLayers.json",
+            "data/gameSetup/colliderLayerMatrix.json",
+            "data/gameSetup/tags.json",
             {
                     {Scenes::titleScreen,    new SceneTitleScreen},
                     {Scenes::inGame,         new SceneInGame},
@@ -54,27 +55,7 @@ int main(int argc, const char *argv[]) {
                     {Scenes::quickTesting,   new SceneQuickTesting}
             },
             {
-                    {ColliderLayers::playerAmmo, ColliderLayers::playerAmmo, false},
-                    {ColliderLayers::playerAmmo, ColliderLayers::enemyAmmo, false},
-                    {ColliderLayers::playerAmmo, ColliderLayers::player, false},
-                    {ColliderLayers::playerAmmo, ColliderLayers::enemy, true},
-                    {ColliderLayers::playerAmmo, ColliderLayers::playerPickup, false},
-
-                    {ColliderLayers::enemyAmmo, ColliderLayers::enemyAmmo, false},
-                    {ColliderLayers::enemyAmmo, ColliderLayers::player, true},
-                    {ColliderLayers::enemyAmmo, ColliderLayers::enemy, false},
-                    {ColliderLayers::enemyAmmo, ColliderLayers::playerPickup, false},
-
-                    {ColliderLayers::player, ColliderLayers::player, false},
-                    {ColliderLayers::player, ColliderLayers::enemy, true},
-                    {ColliderLayers::player, ColliderLayers::playerPickup, true},
-
-                    {ColliderLayers::enemy, ColliderLayers::enemy, false},
-                    {ColliderLayers::enemy, ColliderLayers::playerPickup, false},
-
-                    {ColliderLayers::playerPickup, ColliderLayers::playerPickup, false}
-            },
-            {
+                    { "AnimatedSprite",  new ObjectCreator<AnimatedSprite>()  },
                     { "Body",            new ObjectCreator<Body>()            },
                     { "PolygonCollider", new ObjectCreator<PolygonCollider>() },
                     { "Sprite",          new ObjectCreator<Sprite>()          }

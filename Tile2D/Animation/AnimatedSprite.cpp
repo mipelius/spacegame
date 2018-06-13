@@ -22,6 +22,8 @@
 // SOFTWARE.
 
 #include "AnimatedSprite.h"
+#include "Tile2D.h"
+#include "Resources.h"
 
 AnimatedSprite::AnimatedSprite() :
         animationPtr_(nullptr),
@@ -57,9 +59,8 @@ void AnimatedSprite::setAnimationPtr(Animation *animationPtr) {
     animationPtr_ = animationPtr;
 }
 
-void AnimatedSprite::play(bool loop) {
+void AnimatedSprite::play() {
     animationStartedTimestamp_ = SDL_GetTicks();
-    loop_ = loop;
     isPlaying_ = true;
 }
 
@@ -82,4 +83,48 @@ bool AnimatedSprite::isPlaying() const {
 
 Tile2DComponent *AnimatedSprite::clone() {
     return new AnimatedSprite(*this);
+}
+
+void AnimatedSprite::deserialize(const json::Object &jsonObject) {
+    SpriteBase::deserialize(jsonObject);
+
+    if (jsonObject.HasKey("animation")) {
+        auto animationName = jsonObject["animation"].ToString();
+        setAnimationPtr(Tile2D::resources().animations[animationName]);
+    }
+
+    if (jsonObject.HasKey("framesPerSecond")) {
+        setFramesPerSecond(jsonObject["framesPerSecond"].ToInt());
+    }
+
+    if (jsonObject.HasKey("loop")) {
+        setLoop(jsonObject["loop"].ToBool());
+    }
+
+    if (jsonObject.HasKey("playOnInit")) {
+        setPlayOnInit(jsonObject["playOnInit"].ToBool());
+    }
+}
+
+bool AnimatedSprite::isLoop() const {
+    return loop_;
+}
+
+void AnimatedSprite::setLoop(bool loop) {
+    loop_ = loop;
+}
+
+bool AnimatedSprite::playOnInit() const {
+    return playOnInit_;
+}
+
+void AnimatedSprite::setPlayOnInit(bool playOnInit) {
+    playOnInit_ = playOnInit;
+}
+
+void AnimatedSprite::init() {
+    SpriteBase::init();
+    if (playOnInit_) {
+        play();
+    }
 }

@@ -35,6 +35,7 @@ private:
     int framesPerSecond_;
     bool loop_;
     bool isPlaying_;
+    bool playOnInit_;
     Uint32 animationStartedTimestamp_;
 
 public:
@@ -44,13 +45,22 @@ public:
     void setAnimationPtr(Animation *animationPtr);
     int getFramesPerSecond() const;
     void setFramesPerSecond(int framesPerSecond);
+    bool isLoop() const;
+    void setLoop(bool loop);
+    bool playOnInit() const;
+    void setPlayOnInit(bool playOnInit);
+
     bool isPlaying() const;
 
-    void play(bool loop = true);
+    void play();
     void stop();
+
+    void deserialize(const json::Object &jsonObject) override;
 
 protected:
     Tile2DComponent *clone() override;
+
+    void init() override;
 
     void drawActual(const Canvas &canvas) override;
 };
