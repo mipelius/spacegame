@@ -48,6 +48,8 @@ public:
 
     const std::map<int, SortingLayer>& getSortingLayers();
 
+    const SortingLayer& getSortingLayer(int id) const;
+
 private:
     Canvas();
 
@@ -66,7 +68,7 @@ private:
 
     void init(const std::string& sortingLayersFile);
 
-    std::map<int, SortingLayer> sortingLayers_;
+    std::map<int, SortingLayer> sortingLayerMap_;
     std::list<DrawableBase*> drawables_;
     Camera* camera_;
 };

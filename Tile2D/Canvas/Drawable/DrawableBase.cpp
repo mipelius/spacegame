@@ -125,18 +125,8 @@ void DrawableBase::deserialize(const json::Object &jsonObject) {
     }
     if (jsonObject.HasKey("sortingLayer")) {
         int sortingLayerId = jsonObject["sortingLayer"].ToInt();
-
-        const auto& sortingLayers = Tile2D::canvas().getSortingLayers();
-
-        auto it = sortingLayers.find(sortingLayerId);
-
-        if (it == sortingLayers.end()) {
-            throw std::runtime_error(
-                    "DrawableBase: no such sortingLayer: " +  std::to_string(sortingLayerId)
-            );
-        }
-
-        setSortingLayer((*it).second);
+        const auto& sortingLayer = Tile2D::canvas().getSortingLayer(sortingLayerId);
+        setSortingLayer(sortingLayer);
     }
     if (jsonObject.HasKey("isUIDrawable")) {
         setIsUIDrawable(jsonObject["isUIDrawable"].ToBool());

@@ -148,7 +148,7 @@ void Canvas::renderDrawable_(DrawableBase *drawable) {
 }
 
 const std::map<int, SortingLayer> &Canvas::getSortingLayers() {
-    return sortingLayers_;
+    return sortingLayerMap_;
 }
 
 void Canvas::init(const std::string &sortingLayersFile) {
@@ -164,6 +164,16 @@ void Canvas::init(const std::string &sortingLayersFile) {
                 sortingLayerJson["name"].ToString(),
                 sortingLayerJson["order"].ToInt()
         };
-        sortingLayers_[id] = sortingLayer;
+        sortingLayerMap_[id] = sortingLayer;
     }
+}
+
+const SortingLayer &Canvas::getSortingLayer(int id) const {
+    auto it = sortingLayerMap_.find(id);
+
+    if (it == sortingLayerMap_.end()) {
+        throw std::runtime_error("Canvas: no collider layer for id " + std::to_string(id));
+    }
+
+    return (*it).second;
 }
