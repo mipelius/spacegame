@@ -79,12 +79,9 @@ void DebugBehaviour::update() {
         Tile2D::resources().prefabs.reload();
     }
     if (keyboard.keyPressed(SDL_SCANCODE_O)) {
-        //auto json = JsonFileManager::load("/data/prefabs/trifly.json");
-        //Tile2D::createGameObject(json);
-
         auto gameObject = Tile2D::resources().prefabs["trifly"]->instantiate();
-
-
+        auto AI = gameObject->getComponent<EnemyAIBase>();
+        AI->setTarget(transform());
     }
     if (keyboard.keyPressed(SDL_SCANCODE_I)) {
         auto gameObject = Tile2D::resources().prefabs["walker"]->instantiate();

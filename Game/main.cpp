@@ -37,6 +37,7 @@
 #include "PolygonCollider.h"
 #include "Sprite.h"
 #include "AnimatedSprite.h"
+#include "FlyingEnemyAI.h"
 // ... etc
 
 #undef main
@@ -58,7 +59,8 @@ int main(int argc, const char *argv[]) {
                     { "AnimatedSprite",  new ObjectCreator<AnimatedSprite>()  },
                     { "Body",            new ObjectCreator<Body>()            },
                     { "PolygonCollider", new ObjectCreator<PolygonCollider>() },
-                    { "Sprite",          new ObjectCreator<Sprite>()          }
+                    { "Sprite",          new ObjectCreator<Sprite>()          },
+                    { "FlyingEnemyAI",   new ObjectCreator<FlyingEnemyAI>()   }
             }
     );
 

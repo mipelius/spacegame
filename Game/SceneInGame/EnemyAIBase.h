@@ -32,9 +32,11 @@
 #include "CountDownTimer.h"
 #include "EnemySpawner.h"
 
-class EnemyAIBase : public Tile2DBehaviour {
+class EnemyAIBase : public Tile2DBehaviour, public ISerializable {
 
 public:
+    void deserialize(const json::Object &jsonObject) override;
+
     void setTarget(Transform *target);
     Transform *getTarget() const;
 

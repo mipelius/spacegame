@@ -88,7 +88,7 @@ void FlyingEnemyAI::update() {
 
     Vecf currentPosition = transform()->getPosition();
     Vecf direction = (nextPoint_ - currentPosition).normalized();
-    Vecf movement = direction * Tile2D::time().getDeltaTime() * speed;
+    Vecf movement = direction * Tile2D::time().getDeltaTime() * speed_;
 
     if (rotates_) {
         auto deltaAngle = rotateTowards_(movement);
@@ -149,11 +149,11 @@ void FlyingEnemyAI::setMinPathFindingDistance(float minPathFindingDistance) {
 }
 
 float FlyingEnemyAI::getSpeed() const {
-    return speed;
+    return speed_;
 }
 
 void FlyingEnemyAI::setSpeed(float speed) {
-    FlyingEnemyAI::speed = speed;
+    FlyingEnemyAI::speed_ = speed;
 }
 
 float FlyingEnemyAI::getAngularSpeed() const {
@@ -202,3 +202,36 @@ void FlyingEnemyAI::setPathFindingInterval(Uint32 millisec) {
     pathUpdateTimer_.setInterval(millisec);
 }
 
+void FlyingEnemyAI::deserialize(const json::Object &jsonObject) {
+    EnemyAIBase::deserialize(jsonObject);
+
+    if (jsonObject.HasKey("minPathFindingDistance")) {
+        minPathFindingDistance_ = jsonObject["minPathFindingDistance"].ToFloat();
+    }
+    if (jsonObject.HasKey("maxPathFindingDistance")) {
+        maxPathFindingDistance_ = jsonObject["maxPathFindingDistance"].ToFloat();
+    }
+    if (jsonObject.HasKey("speed")) {
+        speed_ = jsonObject["speed"].ToFloat();
+    }
+    if (jsonObject.HasKey("angularSpeed")) {
+        angularSpeed_ = jsonObject["angularSpeed"].ToFloat();
+    }
+    if (jsonObject.HasKey("rotates")) {
+        rotates_ = jsonObject["rotates"].ToBool();
+    }
+    if (jsonObject.HasKey("flips")) {
+        flips_ = jsonObject["flips"].ToBool();
+    }
+    if (jsonObject.HasKey("maxNodesPathFinderExplores")) {
+        auto maxNodes = jsonObject["maxNodesPathFinderExplores"].ToInt();
+        if (maxNodes < 0) {
+            throw std::runtime_error("FlyingEnemyAI: maxNodesPathFinderExplores can't be negative!");
+        }
+        maxNodesPathFinderExplores_ = (unsigned int)maxNodes;
+    }
+}
+
+Tile2DComponent *FlyingEnemyAI::clone() {
+    return new FlyingEnemyAI(*this);
+}

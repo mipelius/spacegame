@@ -71,3 +71,11 @@ bool EnemyAIBase::canSeeTarget_() {
     );
 }
 
+void EnemyAIBase::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("maxDistance")) {
+        maxDistance_ = jsonObject["maxDistance"].ToFloat();
+    }
+    if (jsonObject.HasKey("weapon")) {
+        throw std::runtime_error("EnemyAIBase: weapon deserialization not implemented yet!");
+    }
+}

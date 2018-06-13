@@ -32,6 +32,8 @@
 
 class FlyingEnemyAI : public EnemyAIBase {
 public:
+    void deserialize(const json::Object &jsonObject) override;
+
     float getMaxPathFindingDistance() const;
     void setMaxPathFindingDistance(float maxPathFindingDistance);
     unsigned int getMaxNodesPathFinderExplores() const;
@@ -53,6 +55,7 @@ protected:
     void awake() override;
     void update() override;
     void lateUpdate() override;
+    Tile2DComponent *clone() override;
 
     std::list<Vecf> pathToTarget_;
     Vecf nextPoint_;
@@ -63,7 +66,7 @@ private:
     PolygonCollider* collider_;
     float minPathFindingDistance_ = 350.0f;
     float maxPathFindingDistance_ = 2000.0f;
-    float speed = 20;
+    float speed_ = 20;
     float angularSpeed_ = 100.0f;
     bool rotates_ = true;
     bool flips_ = false;

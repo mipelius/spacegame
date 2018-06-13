@@ -36,7 +36,7 @@ template <class T>
 class ObjectCreator : public IObjectCreator {
 public:
     ISerializable* create() override {
-        return new T();;
+        return new T();
     }
 };
 
