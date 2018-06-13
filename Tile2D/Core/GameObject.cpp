@@ -152,6 +152,7 @@ GameObject* GameObject::clone() {
     }
 
     gameObject->transform_ = this->transform_;
+    gameObject->tag_ = this->tag_;
 
     return gameObject;
 }
