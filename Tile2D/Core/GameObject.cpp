@@ -79,7 +79,8 @@ GameObject::GameObject(const json::Object& jsonObject) {
     // reads jsonData -> creates and attachs components and replaces transform and tag if necessary
     auto createStub = [this] (std::list<ComponentInfo>& componentInfoList, const json::Object& jsonData) {
         if (jsonData.HasKey("tag")) {
-            tag = jsonData["tag"].ToInt();
+            int tagId = jsonData["tag"].ToInt();
+            tag_ = &Tile2D::getTag(tagId);
         }
         if (jsonData.HasKey("transform")) {
             transform_.deserialize(jsonData["transform"]);
@@ -163,4 +164,12 @@ Tile2DComponent *GameObject::getComponent(int id) {
     }
 
     return nullptr;
+}
+
+void GameObject::setTag(const Tag &tag) {
+    tag_ = &tag;
+}
+
+const Tag &GameObject::getTag() {
+    return *tag_;
 }

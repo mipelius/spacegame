@@ -24,6 +24,7 @@
 
 #include <map>
 #include <vector>
+#include <Tile2D/Util/JsonFileManager.h>
 #include "Canvas.h"
 #include "Tile2D.h"
 #include "PathFinder.h"
@@ -93,6 +94,7 @@ void Tile2D::load(
         const std::string&                      resourcesFile,
         const std::string&                      sortingLayersFile,
         const std::string&                      colliderLayersFile,
+        const std::string&                      tagsFile,
         std::map<unsigned, IScene*>             scenes,
         std::map<std::string, IObjectCreator*>  classBindings
 ) {
@@ -109,6 +111,7 @@ void Tile2D::load(
     Tile2D::reflector().init_(std::move(classBindings));
     Tile2D::window().init(configFile);
     Tile2D::canvas().init(sortingLayersFile);
+    Tile2D::instance_().initTags_(tagsFile);
     Tile2D::sceneManager().init(scenes);
     Tile2D::lightSystem().init();
     Tile2D::physicsWorld().init(colliderLayersFile);
@@ -311,4 +314,27 @@ void Tile2D::onGameObjectCreated_(GameObject *gameObject) {
 
 Reflector& Tile2D::reflector() {
     return *instance_().reflector_;
+}
+
+const Tag &Tile2D::getTag(int id) {
+    auto it = instance_().tagMap_.find(id);
+
+    if (it == instance_().tagMap_.end()) {
+        throw std::runtime_error("Tile2D: no tag for id " + std::to_string(id));
+    }
+
+    return (*it).second;
+}
+
+void Tile2D::initTags_(std::string tagsFile) {
+    auto jsonObject = JsonFileManager::load(tagsFile);
+
+    auto tagsJson = jsonObject["tags"].ToArray();
+
+    for (const auto& tagJson : tagsJson) {
+        int         id      = tagJson["id"].ToInt();
+        std::string name    = tagJson["name"].ToString();
+
+        tagMap_[id] = { id, name };
+    }
 }

@@ -53,6 +53,11 @@ namespace json {
     class Object;
 }
 
+struct Tag {
+    int         id;
+    std::string name;
+};
+
 class Tile2D {
     friend class Tile2DObject;
     friend class GameObject;
@@ -72,6 +77,7 @@ public:
             const std::string&                          resourcesFile,
             const std::string&                          sortingLayersFile,
             const std::string&                          colliderLayersFile,
+            const std::string&                          tagsFile,
             std::map<unsigned, IScene*>                 scenes,
             std::map<std::string, IObjectCreator*>      classBindings
     );
@@ -91,7 +97,6 @@ public:
     static const Input &input();
     static const Time &time();
 
-
     static void executeDelayedFunction(
             GameObject* gameObject,
             Uint32      delay,
@@ -105,6 +110,8 @@ public:
     static void setIsDebugMode(bool isDebugMode);
     static bool isLoaded();
     static void quit();
+
+    static const Tag& getTag(int id);
 
 private:
     Reflector* reflector_;
@@ -157,6 +164,10 @@ private:
     void onGameObjectCreated_(GameObject *gameObject);
 
     static const unsigned int MAX_PARTICLES = 10000;
+
+    void initTags_(std::string tagsFile);
+
+    std::map<int, Tag> tagMap_;
 };
 
 #endif //__TILE2D_H

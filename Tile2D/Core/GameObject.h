@@ -31,14 +31,13 @@
 
 class ITile2DComponentReflector;
 class Tile2DComponent;
+class Tag;
 
 class GameObject {
     friend class Tile2D;
     friend class Prefab;
 
 public:
-    int tag = -1;
-
     template <class T>
     T* getComponent();
 
@@ -54,13 +53,15 @@ public:
     bool isActive() const;
     void setIsActive(bool isActive);
 
+    void setTag(const Tag& tag);
+    const Tag& getTag();
+
     GameObject* clone();
+
 private:
     explicit GameObject(const json::Object& jsonObject);
     GameObject();
     ~GameObject();
-
-    void deserialize_(const json::Object &jsonObject);
 
     Transform transform_;
 
@@ -70,6 +71,7 @@ private:
     bool isActive_ = true;
     bool isAlive_ = true;
     bool canBeDestroyed_ = false;
+    const Tag* tag_;
 
     void prepareDestroy_();
     void initializeComponents_();

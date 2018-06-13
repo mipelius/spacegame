@@ -34,7 +34,6 @@
 #include "PolygonCollider.h"
 #include "WalkingEnemyAI.h"
 #include "Tile2D.h"
-#include "Tags.h"
 #include "Sprite.h"
 #include "PulseLightBehaviour.h"
 #include "ParticleSystem.h"
@@ -63,7 +62,7 @@ GameObject *Prefabs::player() {
     auto player = Tile2D::createGameObject();
     player->transform().setRotation(0.0f);
 
-    player->tag = Tags::player;
+    player->setTag(Tile2D::getTag(0));
 
     auto debugBehaviour = player->attachComponent<DebugBehaviour>();
 
@@ -350,7 +349,7 @@ GameObject *Prefabs::fish() {
 
     auto polygonCollider = fish->getComponent<PolygonCollider>();
     polygonCollider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
-        if (args.otherCollider->gameObject()->tag == Tags::player) {
+        if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
             auto playerHealth = args.otherCollider->gameObject()->getComponent<Health>();
             playerHealth->damage(Tile2D::time().getDeltaTimeMS() / 2, collider->gameObject());
             sparkles(args.otherCollider->transform()->getPosition(), args.contactNormal, {0.0f, 1.0f, 0.0f});
@@ -447,7 +446,7 @@ GameObject *Prefabs::createEnemy_(
     auto enemy = Tile2D::createGameObject();
     enemy->transform().setRotation(0.0f);
 
-    enemy->tag = Tags::enemy;
+    enemy->setTag(Tile2D::getTag(1));
 
     auto enemyBody = enemy->attachComponent<Body>();
     enemyBody->setMass(mass);
@@ -639,7 +638,7 @@ GameObject *Prefabs::createAmmo_(
 
         int ammoDamage = collider->gameObject()->getComponent<AmmoComponent>()->getDamage();
 
-        if (args.otherCollider->gameObject()->tag == Tags::enemy) {
+        if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(1)) {
             otherBody->setVelocity(otherBody->getVelocity() + laserBody->getVelocity() / 100.0);
             sparkles(collider->transform()->getPosition(), args.contactNormal, {1, 0, 0});
             laserBody->gameObject()->destroy();
@@ -652,7 +651,7 @@ GameObject *Prefabs::createAmmo_(
 
             pulseLight(collider->transform()->getPosition());
         }
-        if (args.otherCollider->gameObject()->tag == Tags::player) {
+        if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
             otherBody->setVelocity(otherBody->getVelocity() + laserBody->getVelocity() / 100.0);
             sparkles(collider->transform()->getPosition(), args.contactNormal, {0, 1, 0});
             laserBody->gameObject()->destroy();
@@ -680,7 +679,7 @@ GameObject *Prefabs::gatlingPickup() {
     return createPickup_(
             Tile2D::resources().textures["gatling_box"],
             [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
-                if (args.otherCollider->gameObject()->tag == Tags::player) {
+                if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
                     auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
                     auto item = inventory->getItem(ItemTags::gatling);
                     item->setIsActivated(true);
@@ -693,7 +692,7 @@ GameObject *Prefabs::plasmaCannonPickup() {
     return createPickup_(
             Tile2D::resources().textures["plasma_cannon_box"],
             [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
-                if (args.otherCollider->gameObject()->tag == Tags::player) {
+                if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
                     auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
                     auto item = inventory->getItem(ItemTags::plasmaCannon);
                     item->setIsActivated(true);
@@ -707,7 +706,7 @@ GameObject* Prefabs::bombPickup() {
     return createPickup_(
             Tile2D::resources().textures["bomb_box"],
             [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
-                if (args.otherCollider->gameObject()->tag == Tags::player) {
+                if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
                     auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
                     auto item = inventory->getItem(ItemTags::bombDropper);
                     item->setIsActivated(true);
@@ -722,7 +721,7 @@ GameObject* Prefabs::healerPickup() {
     return createPickup_(
             Tile2D::resources().textures["healer_box"],
             [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
-                if (args.otherCollider->gameObject()->tag == Tags::player) {
+                if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
                     auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
                     auto item = inventory->getItem(ItemTags::healer);
                     item->setIsActivated(true);
@@ -737,7 +736,7 @@ GameObject* Prefabs::laserCannonUpgradePickup() {
     return createPickup_(
             Tile2D::resources().textures["laser_cannon_upgrade_box"],
             [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
-                if (args.otherCollider->gameObject()->tag == Tags::player) {
+                if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
                     auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
                     auto item = inventory->getItem(ItemTags::laser);
                     auto laserCannon = dynamic_cast<Cannon*>(item);
@@ -761,7 +760,7 @@ GameObject* Prefabs::healthUpgradePickup() {
     return createPickup_(
             Tile2D::resources().textures["health_upgrade"],
             [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
-                if (args.otherCollider->gameObject()->tag == Tags::player) {
+                if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
                     auto health = args.otherCollider->gameObject()->getComponent<Health>();
                     auto currentMaxHealth = health->getMaxHealth();
                     health->setMaxHealth(currentMaxHealth + 100);
@@ -775,7 +774,7 @@ GameObject* Prefabs::powerUpgradePickup() {
     return createPickup_(
             Tile2D::resources().textures["power_upgrade"],
             [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
-                if (args.otherCollider->gameObject()->tag == Tags::player) {
+                if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
                     auto power = args.otherCollider->gameObject()->getComponent<Power>();
                     auto currentMaxPower = power->getMaxPower();
                     power->setMaxPower(currentMaxPower + 100);
@@ -819,7 +818,7 @@ GameObject* Prefabs::createPickup_(
     pickupCollider->setLayer(Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(4));
     pickupCollider->collision.add(onCollisionFunctionPtr);
     pickupCollider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
-        if (args.otherCollider->gameObject()->tag == Tags::player) {
+        if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
             collider->gameObject()->destroy();
         }
     });
