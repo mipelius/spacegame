@@ -27,9 +27,11 @@
 
 #include "TargetingComponentBase.h"
 
-class EnemyTargetingComponent : public TargetingComponentBase {
+class EnemyTargetingComponent : public TargetingComponentBase, public ISerializable {
 public:
     Vecf getTargetPosition() override;
+
+    void deserialize(const json::Object &jsonObject) override;
 
 protected:
     Tile2DComponent *clone() override;

@@ -31,13 +31,21 @@
 #include "ObjectCreator.h"
 #include "GameObject.h"
 
-// SERIALIZABLE CLASSES
+// --- SERIALIZABLE CLASSES ---
+
+// --- components
 
 #include "Body.h"
 #include "PolygonCollider.h"
 #include "Sprite.h"
 #include "AnimatedSprite.h"
 #include "FlyingEnemyAI.h"
+#include "EnemyTargetingComponent.h"
+
+// --- other
+
+#include "Cannon.h"
+
 // ... etc
 
 #undef main
@@ -56,11 +64,18 @@ int main(int argc, const char *argv[]) {
                     {Scenes::quickTesting,   new SceneQuickTesting}
             },
             {
-                    { "AnimatedSprite",  new ObjectCreator<AnimatedSprite>()  },
-                    { "Body",            new ObjectCreator<Body>()            },
-                    { "PolygonCollider", new ObjectCreator<PolygonCollider>() },
-                    { "Sprite",          new ObjectCreator<Sprite>()          },
-                    { "FlyingEnemyAI",   new ObjectCreator<FlyingEnemyAI>()   }
+                    // components
+
+                    { "AnimatedSprite",          new ObjectCreator<AnimatedSprite>()          },
+                    { "Body",                    new ObjectCreator<Body>()                    },
+                    { "PolygonCollider",         new ObjectCreator<PolygonCollider>()         },
+                    { "Sprite",                  new ObjectCreator<Sprite>()                  },
+                    { "FlyingEnemyAI",           new ObjectCreator<FlyingEnemyAI>()           },
+                    { "EnemyTargetingComponent", new ObjectCreator<EnemyTargetingComponent>() },
+
+                    // other
+
+                    { "Cannon",          new ObjectCreator<Cannon>()          },
             }
     );
 

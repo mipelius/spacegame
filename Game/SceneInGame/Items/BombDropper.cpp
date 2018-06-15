@@ -35,3 +35,7 @@ void BombDropper::shoot(const Vecf &from, const Vecf &direction, const Vecf &sho
     auto bombCollider = bomb->getComponent<PolygonCollider>();
     bombCollider->setLayer(Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(0));
 }
+
+ItemBase *BombDropper::clone() {
+    return new BombDropper(*this);
+}

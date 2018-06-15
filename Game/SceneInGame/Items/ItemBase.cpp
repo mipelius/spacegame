@@ -95,3 +95,27 @@ bool ItemBase::use_(GameObject *user) {
 
     return false;
 }
+
+void ItemBase::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("isActivated")) {
+        isActivated_ = jsonObject["isActivated"].ToBool();
+    }
+    if (jsonObject.HasKey("powerConsumption")) {
+        powerConsumption_ = jsonObject["powerConsumption"].ToInt();
+    }
+    if (jsonObject.HasKey("count")) {
+        auto countJson = jsonObject["count"];
+        if (countJson.GetType() == json::IntVal) {
+            count_ = countJson.ToInt();
+        }
+        else if (countJson.GetType() == json::StringVal) {
+            if (countJson.ToString() != "infinity") {
+                throw std::runtime_error("ItemBase: count has invalid value. It should be int or string \"infinity\"");
+            }
+            count_ = COUNT_INFINITY;
+        }
+    }
+    if (jsonObject.HasKey("reloadDelay")) {
+        reloadDelay_ = jsonObject["reloadDelay"].ToInt();
+    }
+}

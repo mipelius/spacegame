@@ -27,6 +27,9 @@
 #include "WeaponBase.h"
 
 class BombDropper : public WeaponBase {
+public:
+    ItemBase *clone() override;
+
 protected:
     void shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) override;
 };

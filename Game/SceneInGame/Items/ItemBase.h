@@ -24,10 +24,11 @@
 #ifndef SPACEGAME_WEAPONBASE_H
 #define SPACEGAME_WEAPONBASE_H
 
+#include "ISerializable.h"
 #include "Timer.h"
 #include "Power.h"
 
-class ItemBase {
+class ItemBase : public ISerializable {
 public:
     static const int COUNT_INFINITY = -1;
 
@@ -44,6 +45,10 @@ public:
 
     int getReloadDelay() const;
     void setReloadDelay(int reloadDelay);
+
+    void deserialize(const json::Object &jsonObject) override;
+
+    virtual ItemBase* clone() = 0;
 
 protected:
     virtual bool useActual(GameObject* user) = 0;

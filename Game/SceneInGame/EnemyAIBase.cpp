@@ -27,6 +27,7 @@
 #include "Tile2D.h"
 #include "Prefabs.h"
 #include "TileMap.h"
+#include "Reflector.h"
 
 void EnemyAIBase::awake() {
     body_ = gameObject()->getComponent<Body>();
@@ -76,6 +77,17 @@ void EnemyAIBase::deserialize(const json::Object &jsonObject) {
         maxDistance_ = jsonObject["maxDistance"].ToFloat();
     }
     if (jsonObject.HasKey("weapon")) {
-        throw std::runtime_error("EnemyAIBase: weapon deserialization not implemented yet!");
+        auto weaponJson = jsonObject["weapon"];
+        auto className = weaponJson["class"].ToString();
+        auto propertiesJson = weaponJson["properties"].ToObject();
+
+        auto weapon = Tile2D::reflector().instantiate(className);
+        weapon->deserialize(propertiesJson);
+
+        weapon_ = (WeaponBase*)weapon;
     }
+}
+
+EnemyAIBase::~EnemyAIBase() {
+    delete weapon_;
 }

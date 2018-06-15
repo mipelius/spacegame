@@ -35,6 +35,8 @@
 class EnemyAIBase : public Tile2DBehaviour, public ISerializable {
 
 public:
+    ~EnemyAIBase() override;
+
     void deserialize(const json::Object &jsonObject) override;
 
     void setTarget(Transform *target);
@@ -55,12 +57,10 @@ protected:
     float maxDistance_;
 
     void awake() override;
-
     void update() override;
 
     bool canSeeTarget_();
 
-private:
     WeaponBase* weapon_ = nullptr;
 };
 

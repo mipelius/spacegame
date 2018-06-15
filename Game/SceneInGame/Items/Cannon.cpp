@@ -27,10 +27,10 @@
 #include "PolygonCollider.h"
 
 void Cannon::shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) {
-    if (cannonOffsets_.empty()) {
+    if (offsets_.empty()) {
         shootOnce_(from, direction, shooterVelocity);
     }
-    for (auto cannonOffset : cannonOffsets_) {
+    for (auto cannonOffset : offsets_) {
         Vecf fromActual = from + cannonOffset.rotated(direction.angle());
         shootOnce_(fromActual, direction, shooterVelocity);
     }
@@ -52,6 +52,27 @@ void Cannon::setAmmoFunction(GameObject *(*ammoFunction)()) {
     ammoFunction_ = ammoFunction;
 }
 
-void Cannon::setCannonOffsets(const std::list<Vecf> &cannonOffsets) {
-    cannonOffsets_ = cannonOffsets;
+void Cannon::setOffsets(const std::list<Vecf> &offsets) {
+    offsets_ = offsets;
+}
+
+void Cannon::deserialize(const json::Object &jsonObject) {
+    WeaponBase::deserialize(jsonObject);
+
+    if (jsonObject.HasKey("offsets")) {
+        offsets_.clear();
+
+        auto offsetsJson = jsonObject["cannonOffsets"].ToArray();
+        for (const auto& offsetJson : offsetsJson) {
+            auto offset = Vecf();
+            offset.deserialize(offsetJson);
+            offsets_.push_back(offset);
+        }
+    }
+
+    ammoFunction_ = Prefabs::enemyLaser;
+}
+
+ItemBase *Cannon::clone() {
+    return new Cannon(*this);
 }

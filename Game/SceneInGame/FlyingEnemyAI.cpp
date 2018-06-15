@@ -235,3 +235,10 @@ void FlyingEnemyAI::deserialize(const json::Object &jsonObject) {
 Tile2DComponent *FlyingEnemyAI::clone() {
     return new FlyingEnemyAI(*this);
 }
+
+FlyingEnemyAI::FlyingEnemyAI(FlyingEnemyAI& other) {
+    *this = other;
+    auto weaponClone = other.weapon_->clone();
+
+    weapon_ = dynamic_cast<WeaponBase*>(weaponClone);
+}

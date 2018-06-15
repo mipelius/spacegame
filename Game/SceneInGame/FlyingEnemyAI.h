@@ -32,6 +32,8 @@
 
 class FlyingEnemyAI : public EnemyAIBase {
 public:
+    FlyingEnemyAI() = default;
+
     void deserialize(const json::Object &jsonObject) override;
 
     float getMaxPathFindingDistance() const;
@@ -52,18 +54,20 @@ public:
     void setPathFindingInterval(Uint32 millisec);
 
 protected:
+    explicit FlyingEnemyAI(FlyingEnemyAI& other);
+
     void awake() override;
     void update() override;
     void lateUpdate() override;
     Tile2DComponent *clone() override;
 
     std::list<Vecf> pathToTarget_;
-    Vecf nextPoint_;
+    Vecf nextPoint_ = {0, 0};
 
     float rotateTowards_(Vecf direction);
 
 private:
-    PolygonCollider* collider_;
+    PolygonCollider* collider_ = nullptr;
     float minPathFindingDistance_ = 350.0f;
     float maxPathFindingDistance_ = 2000.0f;
     float speed_ = 20;

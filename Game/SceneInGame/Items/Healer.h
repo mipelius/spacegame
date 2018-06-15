@@ -31,6 +31,8 @@ public:
     int getHealingAmount() const;
     void setHealingAmount(int healingAmount);
 
+    ItemBase *clone() override;
+
 protected:
     bool useActual(GameObject *user) override;
 

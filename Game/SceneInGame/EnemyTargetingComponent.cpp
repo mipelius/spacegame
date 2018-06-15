@@ -33,3 +33,5 @@ Vecf EnemyTargetingComponent::getTargetPosition() {
 Tile2DComponent *EnemyTargetingComponent::clone() {
     return new EnemyTargetingComponent(*this);
 }
+
+void EnemyTargetingComponent::deserialize(const json::Object &jsonObject) { }

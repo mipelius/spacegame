@@ -42,3 +42,7 @@ void Healer::setHealingAmount(int healingAmount) {
     Healer::healingAmount_ = healingAmount;
 }
 
+ItemBase *Healer::clone() {
+    return new Healer(*this);
+}
+

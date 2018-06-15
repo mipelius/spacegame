@@ -138,10 +138,10 @@ GameObject *Prefabs::player() {
 
         return laser;
     });
-    laserCannon->setCannonOffsets({
-          {-10, -13},
-          {-10, 13}
-    });
+    laserCannon->setOffsets({
+                                    {-10, -13},
+                                    {-10, 13}
+                            });
     laserCannon->setPowerConsumption(50);
     laserCannon->setReloadDelay(100);
     laserCannon->setIsActivated(true);
@@ -167,11 +167,11 @@ GameObject *Prefabs::player() {
         );
         return gatlingAmmo;
     });
-    gatlingGun->setCannonOffsets({
-        {-10, -13},
-        {0, 0},
-        {-10, 13}
-    });
+    gatlingGun->setOffsets({
+                                   {-10, -13},
+                                   {0,   0},
+                                   {-10, 13}
+                           });
     gatlingGun->setPowerConsumption(20);
     gatlingGun->setReloadDelay(10);
     gatlingGun->setIsActivated(false);
@@ -741,11 +741,11 @@ GameObject* Prefabs::laserCannonUpgradePickup() {
                     auto item = inventory->getItem(ItemTags::laser);
                     auto laserCannon = dynamic_cast<Cannon*>(item);
 
-                    laserCannon->setCannonOffsets({
-                        {-10, -13},
-                        {0, 0},
-                        {-10, 13}
-                    });
+                    laserCannon->setOffsets({
+                                                    {-10, -13},
+                                                    {0,   0},
+                                                    {-10, 13}
+                                            });
 
                     inventory->setItemTexture(
                             ItemTags::laser,

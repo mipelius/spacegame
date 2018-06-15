@@ -29,13 +29,17 @@
 class Cannon : public WeaponBase {
 public:
     void setAmmoFunction(GameObject *(*ammoFunction)());
-    void setCannonOffsets(const std::list<Vecf> &cannonOffsets);
+    void setOffsets(const std::list<Vecf> &offsets);
+
+    void deserialize(const json::Object &jsonObject) override;
+
+    ItemBase *clone() override;
 
 protected:
     void shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) override;
 
 private:
-    std::list<Vecf> cannonOffsets_;
+    std::list<Vecf> offsets_;
     GameObject* (*ammoFunction_)() = nullptr;
     void shootOnce_(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity);
 };
