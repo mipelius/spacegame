@@ -26,6 +26,7 @@
 #define __Event_H_
 
 #include <list>
+#include <functional>
 
 template <typename TOwner, typename TArgs> class IEventHandler;
 
@@ -34,12 +35,13 @@ class Event {
 
 public:
     explicit Event(TOwner* eventOwner);
+    Event(Event<TOwner, TArgs> eventToCopy, TOwner* eventOwner);
 
     void raise(TArgs eventArgs) const;
-    void add(void (*eventHandler)(TOwner*, TArgs)) const;
+    void add(std::function<void(TOwner*, TArgs)> eventHandler) const;
 
 private:
-    mutable std::list<void (*)(TOwner*, TArgs) > eventHandlers_;
+    mutable std::list< std::function<void(TOwner*, TArgs)> > eventHandlers_;
     TOwner* eventOwner_;
 };
 
@@ -56,8 +58,14 @@ void Event<TOwner, TArgs>::raise(TArgs eventArgs) const {
 }
 
 template <typename TOwner, typename TArgs>
-void Event<TOwner, TArgs>::add(void (*eventHandler)(TOwner*, TArgs)) const {
+void Event<TOwner, TArgs>::add(std::function<void(TOwner*, TArgs)> eventHandler) const {
     eventHandlers_.push_back(eventHandler);
+}
+
+template<typename TOwner, typename TArgs>
+Event<TOwner, TArgs>::Event(Event<TOwner, TArgs> eventToCopy, TOwner *eventOwner) {
+    *this = eventToCopy;
+    eventOwner_ = eventOwner;
 }
 
 
