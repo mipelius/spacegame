@@ -30,6 +30,7 @@
 #include "Tile2DBehaviour.h"
 #include "Event.h"
 #include "ISerializable.h"
+#include "GameObject.h"
 
 class GameObjectDiedEventArgs {
 public:
@@ -59,8 +60,6 @@ public:
     void deserialize(const json::Object &jsonObject) override;
 
 protected:
-    explicit Health(Health& otherHealth);
-
     void awake() override;
     void update() override;
     void lateUpdate() override;

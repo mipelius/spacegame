@@ -51,6 +51,22 @@
 
 #undef main
 
+class DeathHandler :
+        public IEventHandler<Health, GameObjectDiedEventArgs>,
+        public ISerializable
+{
+public:
+    void handle(Health* health, GameObjectDiedEventArgs args) const override {
+        health->gameObject()->destroy();
+    }
+
+    void deserialize(const json::Object &jsonObject) override { }
+
+    IEventHandler<Health, GameObjectDiedEventArgs>* clone() {
+        return new DeathHandler(*this);
+    };
+};
+
 int main(int argc, const char *argv[]) {
     Tile2D::load(
             "data/config.json",
@@ -75,9 +91,13 @@ int main(int argc, const char *argv[]) {
                     { "EnemyTargetingComponent", new ObjectCreator<EnemyTargetingComponent>() },
                     { "Health",                  new ObjectCreator<Health>()                  },
 
-                    // other
+                    // EventHandlers
 
-                    { "Cannon",          new ObjectCreator<Cannon>()          },
+                    { "DeathHandler",            new ObjectCreator<DeathHandler>()            },
+
+                    // Items
+
+                    { "Cannon",                  new ObjectCreator<Cannon>()                  },
             }
     );
 

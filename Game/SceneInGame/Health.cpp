@@ -28,6 +28,7 @@
 #include "Health.h"
 #include "Tile2DMath.h"
 #include "GameObject.h"
+#include "Reflector.h"
 
 void Health::awake() {
     reset();
@@ -55,7 +56,7 @@ void Health::damage(int amount, GameObject* damager) {
 
     health_ -= amount;
     if (health_ <= 0) {
-        onDeath.raise({damager});
+        onDeath.raise(this, {damager});
     }
     clampHealth_();
 }
@@ -78,7 +79,7 @@ void Health::clampHealth_() {
     Mathf::clamp(health_, 0, maxHealth_);
 }
 
-Health::Health() : onDeath(this) { }
+Health::Health() : onDeath(Event<Health, GameObjectDiedEventArgs>()) { }
 
 int Health::getHealth() const {
     return (int)health_;
@@ -99,12 +100,19 @@ void Health::deserialize(const json::Object &jsonObject) {
     if (jsonObject.HasKey("autoHealingRate")) {
         autoHealingRate_ = jsonObject["autoHealingRate"].ToInt();
     }
-    reset();
-}
+    if (jsonObject.HasKey("onDeath")) {
+        auto handlerJson = jsonObject["onDeath"];
 
-Health::Health(Health &otherHealth) : onDeath(otherHealth.onDeath, this) {
-    maxHealth_ = otherHealth.maxHealth_;
-    autoHealingRate_ = otherHealth.autoHealingRate_;
+        auto className = handlerJson["class"].ToString();
+        auto propertiesJson = handlerJson["properties"].ToObject();
+
+        auto serializable = Tile2D::reflector().instantiate(className);
+        serializable->deserialize(propertiesJson);
+
+        auto eventhandler = dynamic_cast< IEventHandler<Health, GameObjectDiedEventArgs>* >(serializable);
+
+        onDeath.add(eventhandler);
+    }
     reset();
 }
 
