@@ -153,8 +153,8 @@ bool PolygonCollider::cast(
 
 PolygonCollider::PolygonCollider() :
         boundingBox_        (   {-1, -1, 1, 1}                                              ),
-        collision           (   Event<PolygonCollider, CollisionEventArgs>(this)            ),
-        terrainCollision    (   Event<PolygonCollider, TerrainCollisionEventArgs>(this)     )
+        collision           (   Event<PolygonCollider, CollisionEventArgs>()                ),
+        terrainCollision    (   Event<PolygonCollider, TerrainCollisionEventArgs>()         )
 {
     setLayer(Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(0));
 
@@ -310,6 +310,7 @@ bool PolygonCollider::detectTerrainCollision_(float deltaTime) {
                         collided = true;
 
                         terrainCollision.raise(
+                                this,
                                 {
                                         deltaTime,
                                         contactNormal,
@@ -372,6 +373,7 @@ bool PolygonCollider::detectTerrainCollision_(float deltaTime) {
             transform()->position_ += toCollision * (1.01);
 
             terrainCollision.raise(
+                    this,
                     {
                             deltaTime,
                             n,
@@ -398,7 +400,9 @@ bool PolygonCollider::detectCollisionWith_(PolygonCollider& otherCollider) {
     otherCollider.pos_ = otherCollider.transform()->getPosition();
 
     if (overlap(otherCollider, contactNormal, penetration)) {
+        this,
         collision.raise(
+                this,
                 {
                         &otherCollider,
                         contactNormal

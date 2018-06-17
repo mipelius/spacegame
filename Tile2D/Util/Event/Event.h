@@ -28,44 +28,77 @@
 #include <list>
 #include <functional>
 
-template <typename TOwner, typename TArgs> class IEventHandler;
-
-template <typename TOwner, typename TArgs>
-class Event {
-
+template <typename TOwner, typename TArgs> class IEventHandler {
 public:
-    explicit Event(TOwner* eventOwner);
-    Event(Event<TOwner, TArgs> eventToCopy, TOwner* eventOwner);
-
-    void raise(TArgs eventArgs) const;
-    void add(std::function<void(TOwner*, TArgs)> eventHandler) const;
-
-private:
-    mutable std::list< std::function<void(TOwner*, TArgs)> > eventHandlers_;
-    TOwner* eventOwner_;
+    virtual void handle(TOwner* owner, TArgs args) const = 0;
+    virtual IEventHandler<TOwner, TArgs>* clone() = 0;
 };
 
 template <typename TOwner, typename TArgs>
-Event<TOwner, TArgs>::Event(TOwner *eventOwner) {
-    this->eventOwner_ = eventOwner;
-}
+class EventHandlerWrapper : public IEventHandler<TOwner, TArgs> {
+private:
+    void (*functionPtr_)(TOwner* owner, TArgs args);
+
+public:
+    explicit EventHandlerWrapper(void (*functionPtr)(TOwner* owner, TArgs args)) {
+        functionPtr_ = functionPtr;
+    }
+    void handle(TOwner* owner, TArgs args) const override {
+        functionPtr_(owner, args);
+    }
+
+    IEventHandler<TOwner, TArgs>* clone() {
+        return new EventHandlerWrapper(*this);
+    }
+};
 
 template <typename TOwner, typename TArgs>
-void Event<TOwner, TArgs>::raise(TArgs eventArgs) const {
+class Event {
+public:
+    Event() = default;
+    Event(const Event<TOwner, TArgs>& eventToCopy);
+
+    ~Event();
+
+    void raise(TOwner* owner, TArgs eventArgs) const;
+    void add(IEventHandler<TOwner, TArgs>* handler) const;
+    void add(void (*functionPtr)(TOwner*, TArgs)) const;
+
+private:
+    mutable std::list< IEventHandler<TOwner, TArgs>* > eventHandlers_;
+};
+
+template <typename TOwner, typename TArgs>
+void Event<TOwner, TArgs>::raise(TOwner* owner, TArgs eventArgs) const {
     for (auto eventHandler : eventHandlers_) {
-        eventHandler(eventOwner_, eventArgs);
+        eventHandler->handle(owner, eventArgs);
     }
 }
 
 template <typename TOwner, typename TArgs>
-void Event<TOwner, TArgs>::add(std::function<void(TOwner*, TArgs)> eventHandler) const {
-    eventHandlers_.push_back(eventHandler);
+void Event<TOwner, TArgs>::add(IEventHandler<TOwner, TArgs>* handler) const {
+    eventHandlers_.push_back(handler);
 }
 
 template<typename TOwner, typename TArgs>
-Event<TOwner, TArgs>::Event(Event<TOwner, TArgs> eventToCopy, TOwner *eventOwner) {
-    *this = eventToCopy;
-    eventOwner_ = eventOwner;
+void Event<TOwner, TArgs>::add(void (*functionPtr)(TOwner *, TArgs)) const {
+    auto handler = new EventHandlerWrapper<TOwner, TArgs>(functionPtr);
+    eventHandlers_.push_back(handler);
+}
+
+template<typename TOwner, typename TArgs>
+Event<TOwner, TArgs>::Event(const Event<TOwner, TArgs>& eventToCopy) {
+    for (auto handler : eventToCopy.eventHandlers_) {
+        auto handlerClone = handler->clone();
+        eventHandlers_.push_back(handlerClone);
+    }
+}
+
+template<typename TOwner, typename TArgs>
+Event<TOwner, TArgs>::~Event() {
+    for (auto handler : eventHandlers_) {
+        delete handler;
+    }
 }
 
 

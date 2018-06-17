@@ -31,7 +31,7 @@
 #include "LightSystem.h"
 
 TileMap::TileMap() :
-    modification(this),
+    modification(Event<TileMap, WorldMapModifiedEventArgs>()),
     tiles_(nullptr)
 { }
 
@@ -52,7 +52,7 @@ void TileMap::setValue(int x, int y, Tile* value) {
             args.oldValue = oldValue;
             args.newValue = value;
 
-            modification.raise(args);
+            modification.raise(this, args);
         }
     }
 }

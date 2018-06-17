@@ -28,11 +28,11 @@
 #include "Input.h"
 
 Button::Button() :
-        clicked     (Event<Button, ButtonEventArgs>(this)),
-        pressed     (Event<Button, ButtonEventArgs>(this)),
-        released    (Event<Button, ButtonEventArgs>(this)),
-        mouseOver   (Event<Button, ButtonEventArgs>(this)),
-        mouseOut    (Event<Button, ButtonEventArgs>(this)),
+        clicked     (Event<Button, ButtonEventArgs>()),
+        pressed     (Event<Button, ButtonEventArgs>()),
+        released    (Event<Button, ButtonEventArgs>()),
+        mouseOver   (Event<Button, ButtonEventArgs>()),
+        mouseOut    (Event<Button, ButtonEventArgs>()),
 
         rect_({-1.0f, -1.0f, 1.0f, 1.0f}),
 
@@ -61,7 +61,7 @@ void Button::update() {
     if (mouse.buttonPressed(SDL_BUTTON_LEFT, mousePosition)) {
         if (renderedRect.hasPointInside({(float)mousePosition.x, (float)mousePosition.y})) {
             mousePressedOnThis_ = true;
-            pressed.raise({ mousePressedOnThis_ });
+            pressed.raise(this, { mousePressedOnThis_ });
         }
     }
 
@@ -70,10 +70,10 @@ void Button::update() {
                 renderedRect.hasPointInside({(float)mousePosition.x, (float)mousePosition.y}) &&
                 mousePressedOnThis_
         ) {
-            clicked.raise({ mousePressedOnThis_ });
+            clicked.raise(this, { mousePressedOnThis_ });
         }
         if (mousePressedOnThis_) {
-            released.raise({ mousePressedOnThis_ });
+            released.raise(this, { mousePressedOnThis_ });
         }
         mousePressedOnThis_ = false;
     }
@@ -82,12 +82,12 @@ void Button::update() {
 
     if (renderedRect.hasPointInside({(float)mousePosition.x, (float)mousePosition.y})) {
         if (!mouseOver_) {
-            mouseOver.raise({ mousePressedOnThis_ });
+            mouseOver.raise(this, { mousePressedOnThis_ });
         }
         mouseOver_ = true;
     }
     else if (mouseOver_) {
-        mouseOut.raise({ mousePressedOnThis_ });
+        mouseOut.raise(this, { mousePressedOnThis_ });
         mouseOver_ = false;
     }
 }
