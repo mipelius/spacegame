@@ -146,13 +146,14 @@ void GameObject::attachComponentInternal(Tile2DComponent *component) {
 GameObject* GameObject::clone() {
     auto gameObject = Tile2D::createGameObject();
 
-    for (auto component : components_) {
-        auto cloneComponent = component->clone();
-        gameObject->attachComponentInternal(cloneComponent);
-    }
-
     gameObject->transform_ = this->transform_;
     gameObject->tag_ = this->tag_;
+
+    for (auto component : components_) {
+        auto cloneComponent = component->clone();
+        cloneComponent->gameObject_ = gameObject;
+        gameObject->attachComponentInternal(cloneComponent);
+    }
 
     return gameObject;
 }
