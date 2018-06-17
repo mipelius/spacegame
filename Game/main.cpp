@@ -41,6 +41,7 @@
 #include "AnimatedSprite.h"
 #include "FlyingEnemyAI.h"
 #include "EnemyTargetingComponent.h"
+#include "Health.h"
 
 // --- other
 
@@ -72,6 +73,7 @@ int main(int argc, const char *argv[]) {
                     { "Sprite",                  new ObjectCreator<Sprite>()                  },
                     { "FlyingEnemyAI",           new ObjectCreator<FlyingEnemyAI>()           },
                     { "EnemyTargetingComponent", new ObjectCreator<EnemyTargetingComponent>() },
+                    { "Health",                  new ObjectCreator<Health>()                  },
 
                     // other
 

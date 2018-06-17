@@ -27,9 +27,10 @@
 #include "t2Time.h"
 #include "Health.h"
 #include "Tile2DMath.h"
+#include "GameObject.h"
 
 void Health::awake() {
-    health_ = maxHealth_;
+    reset();
 }
 
 void Health::update() {
@@ -77,9 +78,7 @@ void Health::clampHealth_() {
     Mathf::clamp(health_, 0, maxHealth_);
 }
 
-Health::Health() : onDeath(this) {
-
-}
+Health::Health() : onDeath(this) { }
 
 int Health::getHealth() const {
     return (int)health_;
@@ -91,4 +90,24 @@ int Health::getAutoHealingRate() const {
 
 void Health::setAutoHealingRate(int autoHealingRate) {
     autoHealingRate_ = autoHealingRate;
+}
+
+void Health::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("maxHealth")) {
+        maxHealth_ = jsonObject["maxHealth"].ToInt();
+    }
+    if (jsonObject.HasKey("autoHealingRate")) {
+        autoHealingRate_ = jsonObject["autoHealingRate"].ToInt();
+    }
+    reset();
+}
+
+Health::Health(Health &otherHealth) : onDeath(otherHealth.onDeath, this) {
+    maxHealth_ = otherHealth.maxHealth_;
+    autoHealingRate_ = otherHealth.autoHealingRate_;
+    reset();
+}
+
+Tile2DComponent *Health::clone() {
+    return new Health(*this);
 }

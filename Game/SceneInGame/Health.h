@@ -29,13 +29,14 @@
 
 #include "Tile2DBehaviour.h"
 #include "Event.h"
+#include "ISerializable.h"
 
 class GameObjectDiedEventArgs {
 public:
     GameObject* killer;
 };
 
-class Health : public Tile2DBehaviour {
+class Health : public Tile2DBehaviour, public ISerializable {
 
 public:
     Health();
@@ -55,10 +56,16 @@ public:
 
     const Event<Health, GameObjectDiedEventArgs> onDeath;
 
+    void deserialize(const json::Object &jsonObject) override;
+
 protected:
+    explicit Health(Health& otherHealth);
+
     void awake() override;
     void update() override;
     void lateUpdate() override;
+
+    Tile2DComponent* clone() override;
 
 private:
     float health_;
