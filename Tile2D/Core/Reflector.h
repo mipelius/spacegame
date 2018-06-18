@@ -25,6 +25,7 @@
 #define SPACEGAME_REFLECTOR_H
 
 
+#include <iostream>
 #include "ISerializable.h"
 #include "ObjectCreator.h"
 
@@ -33,6 +34,9 @@ class Reflector {
 
 public:
     ISerializable* instantiate(const std::string& className);
+
+    template <class T>
+    T* instantiate(const json::Object& jsonObject);
 
 private:
     Reflector() = default;
@@ -43,5 +47,21 @@ private:
     std::map<std::string, IObjectCreator*> bindings_;
 };
 
+template<class T>
+T *Reflector::instantiate(const json::Object &jsonObject) {
+    auto className = jsonObject["class"].ToString();
+    auto propertiesJson = jsonObject["properties"].ToObject();
+
+    auto serializable = instantiate(className);
+    serializable->deserialize(propertiesJson);
+
+    auto object = dynamic_cast<T*>(serializable);
+
+    if (object == nullptr) {
+        std::cout << "Reflector: invalid conversion for \"" + className + "\"";
+    }
+
+    return object;
+}
 
 #endif //SPACEGAME_REFLECTOR_H
