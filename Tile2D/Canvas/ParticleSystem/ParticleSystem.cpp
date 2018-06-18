@@ -21,11 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
-
 #include "precompile.h"
 #include "ParticleSystem.h"
 #include "Tile2D.h"
+#include "Resources.h"
+#include "Reflector.h"
 
 ParticleSystem::ParticleSystem() : particleRect_({-10, -10, 10, 10}){
     lastSpawnTimeStamp_ = SDL_GetTicks();
@@ -45,7 +45,7 @@ void ParticleSystem::spawnParticles_() {
     if (playsOnce_ && particlesSpawned_ >= maxParticles_) {
         return;
     }
-    if (initFunc != nullptr) {
+    if (initializer_ != nullptr) {
         Uint32 deltaTime = SDL_GetTicks() - lastSpawnTimeStamp_;
         float threshold = 1000.0f / spawnFrequency_;
         if (deltaTime > threshold) {
@@ -66,7 +66,7 @@ void ParticleSystem::spawnParticles_() {
                 firstParticle_ = newParticle;
 
                 newParticle->spawnTimestamp_ = lastSpawnTimeStamp_;
-                initFunc(newParticle);
+                initializer_->initialize(newParticle);
                 particleCount_++;
                 particlesSpawned_++;
             }
@@ -77,7 +77,7 @@ void ParticleSystem::spawnParticles_() {
 void ParticleSystem::updateParticles_() {
     Particle* currentParticle = firstParticle_;
     while (currentParticle != nullptr) {
-        updateFunc(currentParticle);
+        updater_->update(currentParticle);
         currentParticle = currentParticle->next_;
     }
 }
@@ -150,12 +150,12 @@ void ParticleSystem::setMaxParticles(unsigned int maxParticles) {
     maxParticles_ = maxParticles;
 }
 
-void ParticleSystem::setInitFunc(void (*initFunc)(Particle *)) {
-    ParticleSystem::initFunc = initFunc;
+void ParticleSystem::setInitializer(void (*initFunc)(Particle *)) {
+    initializer_ = new InitializerWrapper(initFunc);
 }
 
-void ParticleSystem::setUpdateFunc(void (*updateFunc)(Particle *)) {
-    ParticleSystem::updateFunc = updateFunc;
+void ParticleSystem::setUpdater(void (*updateFunc)(Particle *)) {
+    updater_ = new UpdaterWrapper(updateFunc);
 }
 
 const Rect &ParticleSystem::getParticleRect() const {
@@ -202,11 +202,81 @@ void ParticleSystem::setPlaysOnce(bool playOnce) {
 }
 
 Tile2DComponent *ParticleSystem::clone() {
-    auto particleSystem = ParticleSystem(*this);
+    return new ParticleSystem(*this);
+}
+
+ParticleSystem::~ParticleSystem() {
+    delete initializer_;
+    delete updater_;
+}
+
+void ParticleSystem::deserialize(const json::Object &jsonObject) {
+    DrawableBase::deserialize(jsonObject);
+
+    if (jsonObject.HasKey("blendSourceFactor")) {
+        auto str = jsonObject["blendSourceFactor"].ToString();
+
+        auto it = stringToGLEnumMap_.find(str);
+        if (it == stringToGLEnumMap_.end()) {
+            throw std::runtime_error("ParticleSystem: invalid blendSourceFactor");
+        }
+        blendSourceFactor_ = (*it).second;
+    }
+    if (jsonObject.HasKey("blendDestinationFactor")) {
+        auto str = jsonObject["blendDestinationFactor"].ToString();
+
+        auto it = stringToGLEnumMap_.find(str);
+        if (it == stringToGLEnumMap_.end()) {
+            throw std::runtime_error("ParticleSystem: invalid blendDestinationFactor_");
+        }
+        blendDestinationFactor_ = (*it).second;
+    }
+    if (jsonObject.HasKey("spawnFrequency")) {
+        spawnFrequency_ = (unsigned int)jsonObject["spawnFrequency"].ToInt();
+    }
+    if (jsonObject.HasKey("maxParticles")) {
+        maxParticles_ = (unsigned int)jsonObject["maxParticles"].ToInt();
+    }
+    if (jsonObject.HasKey("particleRect")) {
+        particleRect_.deserialize(jsonObject["particleRect"].ToObject());
+    }
+    if (jsonObject.HasKey("texture")) {
+        auto textureName = jsonObject["texture"].ToString();
+        texturePtr_ = Tile2D::resources().textures[textureName];
+    }
+    if (jsonObject.HasKey("playsOnce")) {
+        playsOnce_ = jsonObject["playsOnce"].ToBool();
+    }
+    if (jsonObject.HasKey("initializer")) {
+        auto initializerJson = jsonObject["initializer"];
+        auto initializer = Tile2D::reflector().instantiate<IInitializer>(initializerJson);
+        initializer_ = initializer;
+    }
+    if (jsonObject.HasKey("updater")) {
+        auto updaterJson = jsonObject["updater"];
+        auto updater = Tile2D::reflector().instantiate<IUpdater>(updaterJson);
+        updater_ = updater;
+    }
+}
+
+ParticleSystem::ParticleSystem(ParticleSystem &other) {
+    blendSourceFactor_ = other.blendSourceFactor_;
+    blendDestinationFactor_ = other.blendDestinationFactor_;
+    spawnFrequency_ = other.spawnFrequency_;
+    maxParticles_ = other.maxParticles_;
+    particleRect_ = other.particleRect_;
+    texturePtr_ = other.texturePtr_;
+    playsOnce_ = other.playsOnce_;
+
     firstParticle_ = nullptr;
     particleCount_ = 0;
     particlesSpawned_ = 0;
     lastSpawnTimeStamp_ = 0;
 
-    return nullptr;
+    if (other.initializer_ != nullptr) {
+        this->initializer_ = other.initializer_->clone();
+    }
+    if (other.updater_ != nullptr) {
+        this->updater_ = other.updater_->clone();
+    }
 }

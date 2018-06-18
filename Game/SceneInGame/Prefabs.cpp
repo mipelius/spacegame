@@ -869,7 +869,7 @@ GameObject* Prefabs::bloodBurst() {
 
     auto particles = bloodBurst->attachComponent<ParticleSystem>();
     particles->setPlaysOnce(true);
-    particles->setInitFunc([] (Particle* particle){
+    particles->setInitializer([](Particle *particle) {
         Vecf pos = {(rand() % 10) * 5.0f - 25.0f, (rand() % 10) * 5.0f - 25.0f};
         pos *= 2;
         particle->getTransform().setPosition(pos);
@@ -880,7 +880,7 @@ GameObject* Prefabs::bloodBurst() {
         particle->setColor({1.0f, 0.0f, 0.0f});
         particle->setOpacity((rand() % 200) / 400.0f + 0.5f);
     });
-    particles->setUpdateFunc([] (Particle* particle){
+    particles->setUpdater([](Particle *particle) {
         if (particle->getTimeLived() > 2000) {
             particle->destroy();
         } else {
@@ -922,7 +922,7 @@ GameObject *Prefabs::explosion() {
 
     auto explosionParticles = explosion->attachComponent<ParticleSystem>();
     explosionParticles->setPlaysOnce(true);
-    explosionParticles->setInitFunc([] (Particle* particle){
+    explosionParticles->setInitializer([](Particle *particle) {
         Vecf pos = {(rand() % 10) * 5.0f - 25.0f, (rand() % 10) * 5.0f - 25.0f};
         pos *= 2;
         particle->getTransform().setPosition(pos);
@@ -933,7 +933,7 @@ GameObject *Prefabs::explosion() {
         particle->setColor({1.0f, 1.0f, 1.0f});
         particle->setOpacity((rand() % 200) / 400.0f + 0.5f);
     });
-    explosionParticles->setUpdateFunc([] (Particle* particle){
+    explosionParticles->setUpdater([](Particle *particle) {
         if (particle->getTimeLived() > 2000) {
             particle->destroy();
         } else {

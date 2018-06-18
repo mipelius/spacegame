@@ -32,11 +32,57 @@
 #include "DrawableBase.h"
 #include "Texture.h"
 
-class ParticleSystem : public DrawableBase {
+class ParticleSystem :
+        public DrawableBase
+{
     friend class Particle;
 
 public:
+    class IUpdater {
+    public:
+        virtual void update(Particle* particle) = 0;
+        virtual IUpdater* clone() = 0;
+    };
+
+    class IInitializer {
+    public:
+        virtual void initialize(Particle* particle) = 0;
+        virtual IInitializer* clone() = 0;
+    };
+
+    class UpdaterWrapper : public IUpdater {
+    private:
+        void (*updateFunc_)(Particle*) = nullptr;
+    public:
+        explicit UpdaterWrapper(void (*updateFunctionPtr)(Particle *)) {
+            updateFunc_ = updateFunctionPtr;
+        }
+        void update(Particle* particle) override {
+            updateFunc_(particle);
+        }
+        IUpdater* clone() override {
+            return new UpdaterWrapper(*this);
+        }
+    };
+
+    class InitializerWrapper : public IInitializer {
+    private:
+        void (*initFunc_)(Particle*) = nullptr;
+    public:
+        explicit InitializerWrapper(void (*initFunctionPtr)(Particle *)) {
+            initFunc_ = initFunctionPtr;
+        }
+        void initialize(Particle* particle) override {
+            initFunc_(particle);
+        };
+        IInitializer* clone() override {
+            return new InitializerWrapper(*this);
+        };
+    };
+
     ParticleSystem();
+    ParticleSystem(ParticleSystem& other);
+    ~ParticleSystem() override;
 
     // getters and setters
     GLenum          getBlendSourceFactor() const;
@@ -51,14 +97,15 @@ public:
     void            setParticleRect(const Rect &particleRect);
     Texture         *getTexturePtr() const;
     void            setTexturePtr(Texture *texturePtr);
-    void            setInitFunc(void (*initFunc)(Particle *));
-    void            setUpdateFunc(void (*updateFunc)(Particle *));
+    void            setInitializer(void (*initFunc)(Particle *));
+    void            setUpdater(void (*updateFunc)(Particle *));
     bool            playsOnce() const;
     void            setPlaysOnce(bool playOnce);
 
+    void deserialize(const json::Object &jsonObject) override;
+
 protected:
     void onDestroy() override;
-
     Tile2DComponent *clone() override;
 
 private:
@@ -68,21 +115,26 @@ private:
     unsigned int    maxParticles_;
     Rect            particleRect_;
     Texture*        texturePtr_ = nullptr;
-    void            (*initFunc)(Particle*) = nullptr;
-    void            (*updateFunc)(Particle*) = nullptr;
     bool            playsOnce_;
-
     Particle*       firstParticle_ = nullptr;
     unsigned int    particleCount_ = 0;
     unsigned int    particlesSpawned_ = 0;
-
     Uint32          lastSpawnTimeStamp_;
+
+    IUpdater*       updater_ = nullptr;
+    IInitializer*   initializer_ = nullptr;
 
     void drawActual(const Canvas &canvas) override;
 
     void spawnParticles_();
     void updateParticles_();
     void drawParticles_();
+
+    std::map<std::string, GLenum> stringToGLEnumMap_ = {
+            { "GL_SRC_ALPHA",           GL_SRC_ALPHA           },
+            { "GL_ONE_MINUS_SRC_ALPHA", GL_ONE_MINUS_SRC_ALPHA },
+            { "GL_ONE",                 GL_ONE                 },
+    };
 };
 
 #endif //SPACEGAME_PARTICLESYSTEM_H
