@@ -107,7 +107,13 @@ GameObject::GameObject(const json::Object& jsonObject) {
 
                 attachComponentInternal(component);
 
-                auto propertiesJson = currentComponentJson["properties"].ToObject();
+                json::Object propertiesJson;
+
+                if (currentComponentJson.HasKey("properties")) {
+                    if (currentComponentJson["properties"].GetType() == json::ObjectVal) {
+                        propertiesJson = currentComponentJson["properties"].ToObject();
+                    }
+                }
 
                 componentInfoList.push_back({serializable, propertiesJson});
             }

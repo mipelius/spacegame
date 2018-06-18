@@ -50,10 +50,15 @@ private:
 template<class T>
 T *Reflector::instantiate(const json::Object &jsonObject) {
     auto className = jsonObject["class"].ToString();
-    auto propertiesJson = jsonObject["properties"].ToObject();
 
     auto serializable = instantiate(className);
-    serializable->deserialize(propertiesJson);
+
+    if (jsonObject.HasKey("properties")) {
+        if (jsonObject["properties"].GetType() == json::ObjectVal) {
+            auto propertiesJson = jsonObject["properties"].ToObject();
+            serializable->deserialize(propertiesJson);
+        }
+    }
 
     auto object = dynamic_cast<T*>(serializable);
 
