@@ -31,6 +31,7 @@
 #include "Particle.h"
 #include "DrawableBase.h"
 #include "Texture.h"
+#include "Rect.h"
 
 class ParticleSystem :
         public DrawableBase

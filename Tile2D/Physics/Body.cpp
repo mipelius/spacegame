@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
+#include "Body.h"
 #include "Tile2D.h"
 #include "PhysicsWorld.h"
 #include "GameObject.h"

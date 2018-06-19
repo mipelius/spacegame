@@ -24,7 +24,8 @@
 
 #include <map>
 #include <vector>
-#include <Tile2D/Util/JsonFileManager.h>
+#include "ColliderLayerMatrix.h"
+#include "JsonFileManager.h"
 #include "Canvas.h"
 #include "Tile2D.h"
 #include "PathFinder.h"

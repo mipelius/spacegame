@@ -27,6 +27,10 @@
 
 #include <list>
 #include <functional>
+#include "ISerializable.h"
+#include "Tile2D.h"
+#include "Reflector.h"
+#include "json.h"
 
 template <typename TOwner, typename TArgs> class IEventHandler {
 public:
@@ -53,7 +57,7 @@ public:
 };
 
 template <typename TOwner, typename TArgs>
-class Event {
+class Event : public ISerializable {
 public:
     Event() = default;
     Event(const Event<TOwner, TArgs>& eventToCopy);
@@ -61,11 +65,13 @@ public:
     ~Event();
 
     void raise(TOwner* owner, TArgs eventArgs) const;
-    void add(IEventHandler<TOwner, TArgs>* handler) const;
-    void add(void (*functionPtr)(TOwner*, TArgs)) const;
+    void add(IEventHandler<TOwner, TArgs>* handler);
+    void add(void (*functionPtr)(TOwner*, TArgs));
+
+    void deserialize(const json::Object &jsonObject) override;
 
 private:
-    mutable std::list< IEventHandler<TOwner, TArgs>* > eventHandlers_;
+    std::list< IEventHandler<TOwner, TArgs>* > eventHandlers_;
 };
 
 template <typename TOwner, typename TArgs>
@@ -76,12 +82,12 @@ void Event<TOwner, TArgs>::raise(TOwner* owner, TArgs eventArgs) const {
 }
 
 template <typename TOwner, typename TArgs>
-void Event<TOwner, TArgs>::add(IEventHandler<TOwner, TArgs>* handler) const {
+void Event<TOwner, TArgs>::add(IEventHandler<TOwner, TArgs>* handler) {
     eventHandlers_.push_back(handler);
 }
 
 template<typename TOwner, typename TArgs>
-void Event<TOwner, TArgs>::add(void (*functionPtr)(TOwner *, TArgs)) const {
+void Event<TOwner, TArgs>::add(void (*functionPtr)(TOwner *, TArgs)) {
     auto handler = new EventHandlerWrapper<TOwner, TArgs>(functionPtr);
     eventHandlers_.push_back(handler);
 }
@@ -98,6 +104,17 @@ template<typename TOwner, typename TArgs>
 Event<TOwner, TArgs>::~Event() {
     for (auto handler : eventHandlers_) {
         delete handler;
+    }
+}
+
+template<typename TOwner, typename TArgs>
+void Event<TOwner, TArgs>::deserialize(const json::Object &jsonObject) {
+    auto handlersJson = jsonObject["handlers"].ToArray();
+
+    for (const auto& handlerJson : handlersJson) {
+        const auto& handlerJsonObj = handlerJson.ToObject();
+        auto handler = Tile2D::reflector().instantiate< IEventHandler<TOwner, TArgs> >(handlerJsonObj);
+        eventHandlers_.push_back(handler);
     }
 }
 

@@ -25,6 +25,7 @@
 #include "gl_utils.h"
 #include "PhysicsWorld.h"
 #include "GameObject.h"
+#include "Body.h"
 
 PhysicsWorld::PhysicsWorld():
     gForce_(defaultGForce)

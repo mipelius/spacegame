@@ -66,8 +66,8 @@ public:
     const ColliderLayer& getLayer() const;
     void setLayer(const ColliderLayer& layer);
 
-    const Event<PolygonCollider, CollisionEventArgs>        collision;
-    const Event<PolygonCollider, TerrainCollisionEventArgs> terrainCollision;
+Event<PolygonCollider, CollisionEventArgs>        collision;
+Event<PolygonCollider, TerrainCollisionEventArgs> terrainCollision;
 
     bool cast(
             const Vecf&              direction,

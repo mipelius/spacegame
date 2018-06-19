@@ -25,6 +25,7 @@
 #define SPACEGAME_SWIRLINGBEHAVIOUR_H
 
 #include "Tile2DBehaviour.h"
+#include "Body.h"
 
 class SwirlingBehaviour : public Tile2DBehaviour {
 protected:

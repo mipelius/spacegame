@@ -30,6 +30,7 @@
 #include "TileMap.h"
 #include "PhysicsWorld.h"
 #include "GameObject.h"
+#include "Body.h"
 
 class Projection {
 

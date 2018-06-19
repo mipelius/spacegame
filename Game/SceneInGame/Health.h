@@ -55,7 +55,7 @@ public:
     int getAutoHealingRate() const;
     void setAutoHealingRate(int autoHealingRate);
 
-    const Event<Health, GameObjectDiedEventArgs> onDeath;
+Event<Health, GameObjectDiedEventArgs> onDeath;
 
     void deserialize(const json::Object &jsonObject) override;
 

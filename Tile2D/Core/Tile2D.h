@@ -29,7 +29,6 @@
 #include <assert.h>
 #include <set>
 #include "precompile.h"
-#include "ColliderLayerMatrix.h"
 #include "Particle.h"
 #include "Pool.h"
 

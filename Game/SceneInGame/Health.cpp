@@ -101,12 +101,8 @@ void Health::deserialize(const json::Object &jsonObject) {
         autoHealingRate_ = jsonObject["autoHealingRate"].ToInt();
     }
     if (jsonObject.HasKey("onDeath")) {
-        auto handlerJson = jsonObject["onDeath"];
-
-        auto eventHandler =
-                Tile2D::reflector().instantiate< IEventHandler<Health, GameObjectDiedEventArgs> >(handlerJson);
-
-        onDeath.add(eventHandler);
+        auto handlerJson = jsonObject["onDeath"].ToObject();
+        onDeath.deserialize(handlerJson);
     }
     reset();
 }

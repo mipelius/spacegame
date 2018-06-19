@@ -29,6 +29,7 @@
 
 #include <stdexcept>
 #include <vector>
+#include <string>
 #include "Array2d.h"
 
 struct ColliderLayer {

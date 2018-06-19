@@ -28,8 +28,8 @@
 
 #include "Transform.h"
 #include "precompile.h"
-#include "Body.h"
 #include "Color.h"
+
 class ParticleSystem;
 
 class Particle {
