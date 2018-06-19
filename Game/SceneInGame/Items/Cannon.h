@@ -26,9 +26,11 @@
 
 #include "WeaponBase.h"
 
+class Prefab;
+
 class Cannon : public WeaponBase {
 public:
-    void setAmmoFunction(GameObject *(*ammoFunction)());
+    void setAmmoPrefab(Prefab* ammoPrefab);
     void setOffsets(const std::list<Vecf> &offsets);
 
     void deserialize(const json::Object &jsonObject) override;
@@ -40,7 +42,7 @@ protected:
 
 private:
     std::list<Vecf> offsets_;
-    GameObject* (*ammoFunction_)() = nullptr;
+    Prefab* ammoPrefab_ = nullptr;
     void shootOnce_(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity);
 };
 

@@ -28,19 +28,27 @@
 #include "precompile.h"
 #include <cfloat>
 #include "Tile2DBehaviour.h"
-#include "CountDownTimer.h"
+#include "Timer.h"
+#include "ISerializable.h"
 
-class LimitedLifetimeBehaviour : public Tile2DBehaviour {
+class LimitedLifetimeBehaviour : public Tile2DBehaviour, public ISerializable {
 
 protected:
     void awake() override;
     void update() override;
     void lateUpdate() override;
 
-    CountDownTimer timer;
+    Tile2DComponent *clone() override;
+
+    Timer timer;
+
+    Uint32 timeToLive_ = 0;
 
 public:
-    CountDownTimer &getTimer();
+    void deserialize(const json::Object &jsonObject) override;
+
+public:
+    void setTimeToLive(Uint32 timeToLive);
 };
 
 

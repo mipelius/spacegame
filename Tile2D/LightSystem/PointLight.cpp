@@ -137,3 +137,12 @@ void PointLight::setIntensity(float intensity) {
 Tile2DComponent *PointLight::clone() {
     return new PointLight(*this);
 }
+
+void PointLight::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("radius")) {
+        radius_ = jsonObject["radius"].ToFloat();
+    }
+    if (jsonObject.HasKey("intensity")) {
+        intensity_ = jsonObject["intensity"].ToFloat();
+    }
+}

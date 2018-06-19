@@ -26,16 +26,14 @@
 #define __PointLight_H_
 
 class Canvas;
-class LightMap;
 class TileMap;
-class PartialLightMap;
 
 #include "Event.h"
 #include "precompile.h"
 #include "Tile2DComponent.h"
 #include "Vec.h"
 
-class PointLight : public Tile2DComponent {
+class PointLight : public Tile2DComponent, public ISerializable {
     friend class LightSystem;
 
 public:
@@ -50,6 +48,8 @@ public:
     void setRadius(float radius);
     float getIntensity() const;
     void setIntensity(float intensity);
+
+    void deserialize(const json::Object &jsonObject) override;
 
 protected:
     void init() override;

@@ -31,13 +31,23 @@ void LimitedLifetimeBehaviour::awake() {
 }
 
 void LimitedLifetimeBehaviour::update() {
-    if (timer.timeIntervalPassed()) {
+    if (timer.getTime() > timeToLive_) {
         gameObject()->destroy();
     }
 }
 
 void LimitedLifetimeBehaviour::lateUpdate() { }
 
-CountDownTimer &LimitedLifetimeBehaviour::getTimer() {
-    return timer;
+void LimitedLifetimeBehaviour::setTimeToLive(Uint32 timeToLive) {
+    timeToLive_ = timeToLive;
+}
+
+void LimitedLifetimeBehaviour::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("timeToLive")) {
+        timeToLive_ = (Uint32)jsonObject["timeToLive"].ToInt();
+    }
+}
+
+Tile2DComponent *LimitedLifetimeBehaviour::clone() {
+    return new LimitedLifetimeBehaviour(*this);
 }

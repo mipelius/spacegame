@@ -37,7 +37,7 @@ void PulseLightBehaviour::update() {
     if (timer.getTime() < timeToStartDiminish_) {
         return;
     }
-    float scale = (timer.getTime() - timeToStartDiminish_) / (float)(timer.getInterval() - timeToStartDiminish_);
+    float scale = (timer.getTime() - timeToStartDiminish_) / (float)(timeToLive_ - timeToStartDiminish_);
     light->setIntensity((1.0f - scale * intensityDiminishSpeed_) * intensityOnAwake_);
     light->setRadius((1.0f - scale * radiusDiminishSpeed_) * radiusOnAwake_);
 }

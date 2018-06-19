@@ -25,6 +25,8 @@
 #include "Cannon.h"
 #include "Body.h"
 #include "PolygonCollider.h"
+#include "Prefab.h"
+#include "Resources.h"
 
 void Cannon::shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) {
     if (offsets_.empty()) {
@@ -37,19 +39,19 @@ void Cannon::shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterV
 }
 
 void Cannon::shootOnce_(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) {
-    if (ammoFunction_ == nullptr) {
+    if (ammoPrefab_ == nullptr) {
         return;
     }
-    auto laser = ammoFunction_();
-    laser->transform().setPosition(from);
-    laser->transform().setRotation(direction.angle());
+    auto ammo = ammoPrefab_->instantiate();
+    ammo->transform().setPosition(from);
+    ammo->transform().setRotation(direction.angle());
 
-    auto laserBody = laser->getComponent<Body>();
+    auto laserBody = ammo->getComponent<Body>();
     laserBody->setVelocity(direction.normalized() * 2000.0 + shooterVelocity);
 }
 
-void Cannon::setAmmoFunction(GameObject *(*ammoFunction)()) {
-    ammoFunction_ = ammoFunction;
+void Cannon::setAmmoPrefab(Prefab *ammoPrefab) {
+    ammoPrefab_ = ammoPrefab;
 }
 
 void Cannon::setOffsets(const std::list<Vecf> &offsets) {
@@ -65,12 +67,15 @@ void Cannon::deserialize(const json::Object &jsonObject) {
         auto offsetsJson = jsonObject["cannonOffsets"].ToArray();
         for (const auto& offsetJson : offsetsJson) {
             auto offset = Vecf();
-            offset.deserialize(offsetJson);
+            offset.deserialize(offsetJson.ToObject());
             offsets_.push_back(offset);
         }
     }
 
-    ammoFunction_ = Prefabs::enemyLaser;
+    if (jsonObject.HasKey("ammoPrefab")) {
+        auto prefabName = jsonObject["ammoPrefab"].ToString();
+        ammoPrefab_ = Tile2D::resources().prefabs[prefabName];
+    }
 }
 
 ItemBase *Cannon::clone() {

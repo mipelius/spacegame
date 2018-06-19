@@ -29,10 +29,10 @@
 void SparkleBehaviour::awake() {
     LimitedLifetimeBehaviour::awake();
     sprite = gameObject()->getComponent<Sprite>();
-    timer.setInterval(500);
+    timeToLive_ = 500;
 }
 
 void SparkleBehaviour::update() {
     LimitedLifetimeBehaviour::update();
-    sprite->setOpacity(1.0f - timer.getTime() / (float)timer.getInterval());
+    sprite->setOpacity(1.0f - timer.getTime() / (float)timeToLive_);
 }
