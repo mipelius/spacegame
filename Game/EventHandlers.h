@@ -28,6 +28,7 @@
 #include "Health.h"
 #include "Prefabs.h"
 #include "Tile2D.h"
+#include "TileMap.h"
 
 class AmmoCollisionDamageHandler :
         public IEventHandler<PolygonCollider, CollisionEventArgs>,
@@ -63,6 +64,24 @@ public:
 
     IEventHandler<PolygonCollider, CollisionEventArgs> *clone() override {
         return new AmmoCollisionDamageHandler(*this);
+    }
+};
+
+class AmmoTerrainCollisionHandler :
+        public IEventHandler<PolygonCollider, TerrainCollisionEventArgs>,
+        public ISerializable
+{
+
+public:
+    void handle(PolygonCollider* owner, TerrainCollisionEventArgs args) const override {
+        owner->gameObject()->destroy();
+        Tile2D::tileMap().setValueScaled(args.tileCoordinates, Tile2D::tileMap().getTileSet()->getEmptyBlock());
+    }
+
+    void deserialize(const json::Object &jsonObject) override { }
+
+    IEventHandler<PolygonCollider, TerrainCollisionEventArgs> *clone() override {
+        return new AmmoTerrainCollisionHandler(*this);
     }
 };
 
