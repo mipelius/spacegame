@@ -24,8 +24,47 @@
 #ifndef SPACEGAME_EVENTHANDLERS_H
 #define SPACEGAME_EVENTHANDLERS_H
 
+#include "Event.h"
 #include "Health.h"
 #include "Prefabs.h"
+#include "Tile2D.h"
+
+class AmmoCollisionDamageHandler :
+        public IEventHandler<PolygonCollider, CollisionEventArgs>,
+        public ISerializable
+{
+private:
+    const Tag* targetTag_ = nullptr;
+    int damage_ = 0;
+
+public:
+    void handle(PolygonCollider* owner, CollisionEventArgs args) const override {
+        auto otherGameObject = args.otherCollider->gameObject();
+
+        if (&otherGameObject->getTag() == targetTag_) {
+            auto health = otherGameObject->getComponent<Health>();
+            if (health == nullptr) {
+                throw std::runtime_error("AmmoCollisionDamageHandler: target has no health component!");
+            }
+            health->damage(damage_, owner->gameObject());
+            owner->gameObject()->destroy();
+        }
+    }
+
+    void deserialize(const json::Object &jsonObject) override {
+        if (jsonObject.HasKey("damage")) {
+            damage_ = jsonObject["damage"].ToInt();
+        }
+        if (jsonObject.HasKey("targetTag")) {
+            int tagId = jsonObject["targetTag"].ToInt();
+            targetTag_ = &Tile2D::getTag(tagId);
+        }
+    }
+
+    IEventHandler<PolygonCollider, CollisionEventArgs> *clone() override {
+        return new AmmoCollisionDamageHandler(*this);
+    }
+};
 
 class DeathHandler :
         public IEventHandler<Health, GameObjectDiedEventArgs>,
@@ -40,7 +79,7 @@ public:
 
     void deserialize(const json::Object &jsonObject) override { }
 
-    IEventHandler<Health, GameObjectDiedEventArgs>* clone() {
+    IEventHandler<Health, GameObjectDiedEventArgs>* clone() override {
         return new DeathHandler(*this);
     };
 };

@@ -462,6 +462,16 @@ void PolygonCollider::deserialize(const json::Object &jsonObject) {
         int id = jsonObject["layer"].ToInt();
         layer_ = &Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(id);
     }
+
+    if (jsonObject.HasKey("collision")) {
+        auto handlersJson = jsonObject["collision"];
+        collision.deserialize(handlersJson);
+    }
+
+    if (jsonObject.HasKey("terrainCollision")) {
+        auto handlersJson = jsonObject["terrainCollision"];
+        terrainCollision.deserialize(handlersJson);
+    }
 }
 
 Tile2DComponent *PolygonCollider::clone() {
