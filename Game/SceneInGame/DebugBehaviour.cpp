@@ -84,7 +84,8 @@ void DebugBehaviour::update() {
         AI->setTarget(transform());
     }
     if (keyboard.keyPressed(SDL_SCANCODE_I)) {
-        auto gameObject = Tile2D::resources().prefabs["walker"]->instantiate();
+        auto gameObject = Tile2D::resources().prefabs["testParticleSystem"]->instantiate();
+        gameObject->transform().setPosition(transform()->getPosition());
     }
 
     if (keyboard.keyPressed(SDL_SCANCODE_RETURN)) {

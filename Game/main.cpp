@@ -21,51 +21,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
-#include "Resources.h"
 #include "SceneInGame.h"
 #include "SceneTitleScreen.h"
 #include "SceneEndScreen.h"
 #include "Scenes.h"
 #include "SceneQuickTesting.h"
-#include "ObjectCreator.h"
-#include "GameObject.h"
-
-// --- SERIALIZABLE CLASSES ---
-
-// --- components
-
-#include "Body.h"
-#include "PolygonCollider.h"
-#include "Sprite.h"
-#include "AnimatedSprite.h"
-#include "FlyingEnemyAI.h"
-#include "EnemyTargetingComponent.h"
-#include "Health.h"
-
-// --- other
-
-#include "Cannon.h"
-
-// ... etc
+#include "Bindings.h"
 
 #undef main
-
-class DeathHandler :
-        public IEventHandler<Health, GameObjectDiedEventArgs>,
-        public ISerializable
-{
-public:
-    void handle(Health* health, GameObjectDiedEventArgs args) const override {
-        health->gameObject()->destroy();
-    }
-
-    void deserialize(const json::Object &jsonObject) override { }
-
-    IEventHandler<Health, GameObjectDiedEventArgs>* clone() {
-        return new DeathHandler(*this);
-    };
-};
 
 int main(int argc, const char *argv[]) {
     Tile2D::load(
@@ -80,25 +43,7 @@ int main(int argc, const char *argv[]) {
                     {Scenes::gameEndScreen,  new SceneEndScreen},
                     {Scenes::quickTesting,   new SceneQuickTesting}
             },
-            {
-                    // components
-
-                    { "AnimatedSprite",          new ObjectCreator<AnimatedSprite>()          },
-                    { "Body",                    new ObjectCreator<Body>()                    },
-                    { "PolygonCollider",         new ObjectCreator<PolygonCollider>()         },
-                    { "Sprite",                  new ObjectCreator<Sprite>()                  },
-                    { "FlyingEnemyAI",           new ObjectCreator<FlyingEnemyAI>()           },
-                    { "EnemyTargetingComponent", new ObjectCreator<EnemyTargetingComponent>() },
-                    { "Health",                  new ObjectCreator<Health>()                  },
-
-                    // EventHandlers
-
-                    { "DeathHandler",            new ObjectCreator<DeathHandler>()            },
-
-                    // Items
-
-                    { "Cannon",                  new ObjectCreator<Cannon>()                  },
-            }
+            Bindings::createBindings()
     );
 
     return 0;

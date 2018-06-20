@@ -270,7 +270,7 @@ set(SOURCE_FILES
         Tile2D/Core/Reflector.h
         Tile2D/Core/Prefab.cpp
         Tile2D/Core/Prefab.h
-        )
+        Game/Bindings.h Game/EventHandlers.h Game/ParticleSystemComponents.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

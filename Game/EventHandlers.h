@@ -21,27 +21,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_EVENTHANDLERS_H
+#define SPACEGAME_EVENTHANDLERS_H
 
-#ifndef __SceneInGame_H
-#define __SceneInGame_H
+#include "Health.h"
+#include "Prefabs.h"
 
-#include "Tile2D.h"
-#include "IScene.h"
-#include "Vec.h"
-#include "Body.h"
-#include "Camera.h"
+class DeathHandler :
+        public IEventHandler<Health, GameObjectDiedEventArgs>,
+        public ISerializable
+{
+public:
+    void handle(Health* health, GameObjectDiedEventArgs args) const override {
+        health->gameObject()->destroy();
+        auto bloodBurst = Prefabs::bloodBurst();
+        bloodBurst->transform().setPosition(health->transform()->getPosition());
+    }
 
-class SceneInGame : public IScene {
-    void init() override;
-    void destroy() override;
+    void deserialize(const json::Object &jsonObject) override { }
 
-private:
-    Camera* camera_ = nullptr;
-    void initSnowWorld_(GameObject* player);
-    void initGreenWorld_(GameObject* player);
-    void initBlueWorld_(GameObject* player);
-    void initRedWorld_(GameObject* player);
+    IEventHandler<Health, GameObjectDiedEventArgs>* clone() {
+        return new DeathHandler(*this);
+    };
 };
 
-
-#endif //__SceneInGame_H
+#endif //SPACEGAME_EVENTHANDLERS_H
