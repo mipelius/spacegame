@@ -23,6 +23,7 @@
 
 
 #include <cfloat>
+#include <Game/CollisionEffects.h>
 #include "Healer.h"
 #include "ItemTags.h"
 #include "Cannon.h"
@@ -323,7 +324,7 @@ GameObject *Prefabs::fish() {
         if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
             auto playerHealth = args.otherCollider->gameObject()->getComponent<Health>();
             playerHealth->damage(Tile2D::time().getDeltaTimeMS() / 2, collider->gameObject());
-            sparkles(args.otherCollider->transform()->getPosition(), args.contactNormal, {0.0f, 1.0f, 0.0f});
+            CollisionEffects::sparkles(args.otherCollider->transform()->getPosition(), args.contactNormal, {0.0f, 1.0f, 0.0f});
         }
     });
 
@@ -599,8 +600,8 @@ GameObject *Prefabs::createAmmo_(
         collider->gameObject()->destroy();
         Tile2D::tileMap().setValueScaled(args.tileCoordinates, Tile2D::tileMap().getTileSet()->getEmptyBlock());
 
-        sparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
-        pulseLight(collider->transform()->getPosition());
+        CollisionEffects::sparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
+        CollisionEffects::pulseLight(collider->transform()->getPosition());
     });
 
     ammoCollider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
@@ -611,7 +612,7 @@ GameObject *Prefabs::createAmmo_(
 
         if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(1)) {
             otherBody->setVelocity(otherBody->getVelocity() + laserBody->getVelocity() / 100.0);
-            sparkles(collider->transform()->getPosition(), args.contactNormal, {1, 0, 0});
+            CollisionEffects::sparkles(collider->transform()->getPosition(), args.contactNormal, {1, 0, 0});
             laserBody->gameObject()->destroy();
 
             auto health = args.otherCollider->gameObject()->getComponent<Health>();
@@ -620,11 +621,11 @@ GameObject *Prefabs::createAmmo_(
                 health->damage(ammoDamage, laserBody->gameObject());
             }
 
-            pulseLight(collider->transform()->getPosition());
+            CollisionEffects::pulseLight(collider->transform()->getPosition());
         }
         if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
             otherBody->setVelocity(otherBody->getVelocity() + laserBody->getVelocity() / 100.0);
-            sparkles(collider->transform()->getPosition(), args.contactNormal, {0, 1, 0});
+            CollisionEffects::sparkles(collider->transform()->getPosition(), args.contactNormal, {0, 1, 0});
             laserBody->gameObject()->destroy();
 
             auto health = args.otherCollider->gameObject()->getComponent<Health>();
@@ -633,7 +634,7 @@ GameObject *Prefabs::createAmmo_(
                 health->damage(ammoDamage, laserBody->gameObject());
             }
 
-            pulseLight(collider->transform()->getPosition());
+            CollisionEffects::pulseLight(collider->transform()->getPosition());
         }
     });
     ammoCollider->setLayer(colliderLayer);
@@ -927,49 +928,6 @@ GameObject *Prefabs::explosion() {
     explosionParticles->setBlendDestinationFactor(GL_ONE);
 
     return explosion;
-}
-
-void Prefabs::pulseLight(Vecf position) {
-    auto obj = Tile2D::createGameObject();
-    obj->transform().setPosition(position);
-
-    auto light = obj->attachComponent<PointLight>();
-    light->setRadius(80.0);
-    light->setIntensity(1.0);
-
-    auto pulseLightBehaviour = obj->attachComponent<PulseLightBehaviour>();
-    pulseLightBehaviour->setTimeToLive(1000);
-}
-
-void Prefabs::sparkle(Vecf position, Vecf velocity, Color color) {
-    auto sparkle = Tile2D::createGameObject();
-    sparkle->transform().setPosition(position);
-    sparkle->transform().setRotation(velocity.angle());
-
-    auto sparkleBody = sparkle->attachComponent<Body>();
-    sparkleBody->setMass(10.0);
-    sparkleBody->setVelocity(velocity);
-
-    auto sparkleSprite = sparkle->attachComponent<Sprite>();
-    sparkleSprite->setRect({-20, -20, 20, 20});
-    sparkleSprite->setColor(color);
-    sparkleSprite->setTexturePtr(Tile2D::resources().textures["light"]);
-
-    auto sparkleBehaviour = sparkle->attachComponent<SparkleBehaviour>();
-}
-
-void Prefabs::sparkles(Vecf position, Vecf normal, Color color) {
-    Vecf& n = normal;
-    Vecf perp = Vecf(n.y, -n.x);
-
-    float div = 100.0;
-    auto random = Vecf(rand() % 100, rand() % 100) / div;
-
-    sparkle(position, (n + random) * 100, color);
-    sparkle(position, (perp + n + random) * 100, color);
-    sparkle(position, ((perp * -1 + random) + n) * 100, color);
-    sparkle(position, (perp + random) * 100, color);
-    sparkle(position, (perp + random) * -100, color);
 }
 
 // --- OTHER ---

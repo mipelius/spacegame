@@ -29,6 +29,7 @@
 #include "Prefabs.h"
 #include "Tile2D.h"
 #include "TileMap.h"
+#include "CollisionEffects.h"
 
 class AmmoCollisionDamageHandler :
         public IEventHandler<PolygonCollider, CollisionEventArgs>,
@@ -49,6 +50,9 @@ public:
             }
             health->damage(damage_, owner->gameObject());
             owner->gameObject()->destroy();
+
+            CollisionEffects::sparkles(owner->transform()->getPosition(), args.contactNormal, {1, 0, 0});
+            CollisionEffects::pulseLight(owner->transform()->getPosition());
         }
     }
 
@@ -76,6 +80,8 @@ public:
     void handle(PolygonCollider* owner, TerrainCollisionEventArgs args) const override {
         owner->gameObject()->destroy();
         Tile2D::tileMap().setValueScaled(args.tileCoordinates, Tile2D::tileMap().getTileSet()->getEmptyBlock());
+        CollisionEffects::sparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
+        CollisionEffects::pulseLight(owner->transform()->getPosition());
     }
 
     void deserialize(const json::Object &jsonObject) override { }

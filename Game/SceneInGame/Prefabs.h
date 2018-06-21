@@ -55,9 +55,6 @@ public:
     static GameObject* light();
     static GameObject* bloodBurst();
     static GameObject* explosion();
-    static void sparkles(Vecf position, Vecf normal, Color color);
-    static void sparkle(Vecf position, Vecf velocity, Color color);
-    static void pulseLight(Vecf position);
 
     // player pickups
     static GameObject* gatlingPickup();
