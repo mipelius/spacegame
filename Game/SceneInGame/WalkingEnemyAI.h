@@ -32,14 +32,22 @@
 #include "EnemyAIBase.h"
 #include "CountDownTimer.h"
 
-class WalkingEnemyAI : public EnemyAIBase {
+class WalkingEnemyAI : public EnemyAIBase
+{
 public:
+    WalkingEnemyAI() = default;
+
     void setGroundCheckSensors(const std::vector<Vecf> &groundSensors);
+    void deserialize(const json::Object &jsonObject) override;
 
 protected:
     void awake() override;
     void update() override;
     void lateUpdate() override;
+
+    WalkingEnemyAI(WalkingEnemyAI& other);
+
+    Tile2DComponent *clone() override;
 
 private:
     std::vector<Vecf> groundSensors_;

@@ -27,6 +27,7 @@
 #include "Tile2D.h"
 #include "TileMap.h"
 #include "GameObject.h"
+#include "json.h"
 
 void WalkingEnemyAI::awake() {
     EnemyAIBase::awake();
@@ -95,4 +96,28 @@ void WalkingEnemyAI::walkTowardsTarget_() {
     }
 
     body_->setVelocity(vel);
+}
+
+void WalkingEnemyAI::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("groundSensors")) {
+        auto sensorsJson =jsonObject["groundSensors"].ToArray();
+
+        for (const auto& sensorJson : sensorsJson) {
+            Vecf sensorPosition;
+            sensorPosition.deserialize(sensorJson.ToObject());
+
+            groundSensors_.push_back(sensorPosition);
+        }
+    }
+}
+
+Tile2DComponent *WalkingEnemyAI::clone() {
+    return new WalkingEnemyAI(*this);
+}
+
+WalkingEnemyAI::WalkingEnemyAI(WalkingEnemyAI &other) {
+    *this = other;
+    auto weaponClone = other.weapon_->clone();
+
+    weapon_ = dynamic_cast<WeaponBase*>(weaponClone);
 }

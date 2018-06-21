@@ -79,7 +79,7 @@ void DebugBehaviour::update() {
         Tile2D::resources().prefabs.reload();
     }
     if (keyboard.keyPressed(SDL_SCANCODE_O)) {
-        auto gameObject = Tile2D::resources().prefabs["trifly"]->instantiate();
+        auto gameObject = Tile2D::resources().prefabs["walker"]->instantiate();
         auto AI = gameObject->getComponent<EnemyAIBase>();
         AI->setTarget(transform());
     }

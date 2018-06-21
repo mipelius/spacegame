@@ -39,6 +39,7 @@
 #include "PointLight.h"
 #include "Cannon.h"
 #include "ParticleSystem.h"
+#include "WalkingEnemyAI.h"
 
 #include "ParticleSystemComponents.h"
 #include "EventHandlers.h"
@@ -59,6 +60,7 @@ public:
             { "LimitedLifetimeBehaviour",           new ObjectCreator<LimitedLifetimeBehaviour>()       },
             { "SwirlingBehaviour",                  new ObjectCreator<SwirlingBehaviour>()              },
             { "PointLight",                         new ObjectCreator<PointLight>()                     },
+            { "WalkingEnemyAI",                     new ObjectCreator<WalkingEnemyAI>()                 },
 
             // EventHandlers
 
