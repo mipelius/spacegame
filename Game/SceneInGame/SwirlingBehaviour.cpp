@@ -31,9 +31,15 @@ void SwirlingBehaviour::awake() {
 }
 
 void SwirlingBehaviour::update() {
-    body_->setAngularVelocity(200.0f);
+    body_->setAngularVelocity(SPEED_);
 }
 
 void SwirlingBehaviour::lateUpdate() {
 
+}
+
+void SwirlingBehaviour::deserialize(const json::Object &jsonObject) { }
+
+Tile2DComponent* SwirlingBehaviour::clone() {
+    return new SwirlingBehaviour(*this);
 }

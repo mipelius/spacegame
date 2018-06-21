@@ -31,6 +31,7 @@
 #include "PolygonCollider.h"
 #include "Sprite.h"
 #include "AnimatedSprite.h"
+#include "SwirlingBehaviour.h"
 #include "FlyingEnemyAI.h"
 #include "EnemyTargetingComponent.h"
 #include "LimitedLifetimeBehaviour.h"
@@ -56,6 +57,7 @@ public:
             { "Health",                             new ObjectCreator<Health>()                         },
             { "ParticleSystem",                     new ObjectCreator<ParticleSystem>()                 },
             { "LimitedLifetimeBehaviour",           new ObjectCreator<LimitedLifetimeBehaviour>()       },
+            { "SwirlingBehaviour",                  new ObjectCreator<SwirlingBehaviour>()              },
             { "PointLight",                         new ObjectCreator<PointLight>()                     },
 
             // EventHandlers

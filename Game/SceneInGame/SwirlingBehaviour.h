@@ -27,14 +27,22 @@
 #include "Tile2DBehaviour.h"
 #include "Body.h"
 
-class SwirlingBehaviour : public Tile2DBehaviour {
+class SwirlingBehaviour :
+        public Tile2DBehaviour,
+        public ISerializable
+{
 protected:
     void awake() override;
     void update() override;
     void lateUpdate() override;
+    Tile2DComponent* clone() override;
+
+public:
+    void deserialize(const json::Object &jsonObject) override;
 
 private:
-    Body* body_;
+    Body* body_ = nullptr;
+    const float SPEED_ = 200.0f;
 };
 
 
