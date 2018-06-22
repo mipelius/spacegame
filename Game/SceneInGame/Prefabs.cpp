@@ -83,6 +83,7 @@ GameObject *Prefabs::player() {
     auto spaceshipSprite = player->attachComponent<Sprite>();
     spaceshipSprite->setRect({-20, -20, 20, 20});
     spaceshipSprite->setTexturePtr(Tile2D::resources().textures["spaceship"]);
+    spaceshipSprite->setSortingLayer(Tile2D::canvas().getSortingLayer(5));
 
     auto light = player->attachComponent<PointLight>();
     light->setIntensity(1.0);
@@ -939,6 +940,7 @@ GameObject *Prefabs::background(Rect area, const char *texture, Color color) {
     bg->setTexturePtr(Tile2D::resources().textures[texture]);
     bg->setColor(color);
     bg->setOpacity(0.0f);
+    bg->setSortingLayer(Tile2D::canvas().getSortingLayer(0));
     auto bgBehaviour = background->attachComponent<BackgroundBehaviour>();
     bgBehaviour->setArea(area);
     return background;
