@@ -238,7 +238,13 @@ Tile2DComponent *FlyingEnemyAI::clone() {
 
 FlyingEnemyAI::FlyingEnemyAI(FlyingEnemyAI& other) {
     *this = other;
-    auto weaponClone = other.weapon_->clone();
 
-    weapon_ = dynamic_cast<WeaponBase*>(weaponClone);
+    WeaponBase* weaponClone = nullptr;
+
+    if (other.weapon_ != nullptr) {
+        auto itemClone = other.weapon_->clone();
+        weaponClone = dynamic_cast<WeaponBase*>(itemClone);
+    }
+
+    weapon_ = weaponClone;
 }
