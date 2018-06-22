@@ -57,7 +57,7 @@ void WalkingEnemyAI::update() {
 void WalkingEnemyAI::lateUpdate() { }
 
 bool WalkingEnemyAI::isGrounded_() {
-    for (auto groundCheckPoint : groundSensors_) {
+    for (auto groundCheckPoint : groundCheckSensors_) {
         auto tile = Tile2D::tileMap().getValueScaled(transform()->getPosition() + groundCheckPoint);
         if (tile != nullptr && tile->getDensity() > Mathf::epsilon) {
             return true;
@@ -66,8 +66,8 @@ bool WalkingEnemyAI::isGrounded_() {
     return false;
 }
 
-void WalkingEnemyAI::setGroundCheckSensors(const std::vector<Vecf> &groundSensors) {
-    groundSensors_ = groundSensors;
+void WalkingEnemyAI::setGroundCheckSensors(const std::vector<Vecf> &groundCheckSensors) {
+    groundCheckSensors_ = groundCheckSensors;
 }
 
 void WalkingEnemyAI::updateDirection_() {
@@ -99,14 +99,16 @@ void WalkingEnemyAI::walkTowardsTarget_() {
 }
 
 void WalkingEnemyAI::deserialize(const json::Object &jsonObject) {
-    if (jsonObject.HasKey("groundSensors")) {
-        auto sensorsJson =jsonObject["groundSensors"].ToArray();
+    EnemyAIBase::deserialize(jsonObject);
+
+    if (jsonObject.HasKey("groundCheckSensors")) {
+        auto sensorsJson =jsonObject["groundCheckSensors"].ToArray();
 
         for (const auto& sensorJson : sensorsJson) {
             Vecf sensorPosition;
             sensorPosition.deserialize(sensorJson.ToObject());
 
-            groundSensors_.push_back(sensorPosition);
+            groundCheckSensors_.push_back(sensorPosition);
         }
     }
 }
@@ -117,7 +119,13 @@ Tile2DComponent *WalkingEnemyAI::clone() {
 
 WalkingEnemyAI::WalkingEnemyAI(WalkingEnemyAI &other) {
     *this = other;
-    auto weaponClone = other.weapon_->clone();
 
-    weapon_ = dynamic_cast<WeaponBase*>(weaponClone);
+    WeaponBase* weaponClone = nullptr;
+
+    if (other.weapon_ != nullptr) {
+        auto itemClone = other.weapon_->clone();
+        weaponClone = dynamic_cast<WeaponBase*>(itemClone);
+    }
+
+    weapon_ = weaponClone;
 }

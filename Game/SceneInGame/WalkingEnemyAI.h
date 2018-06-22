@@ -37,7 +37,7 @@ class WalkingEnemyAI : public EnemyAIBase
 public:
     WalkingEnemyAI() = default;
 
-    void setGroundCheckSensors(const std::vector<Vecf> &groundSensors);
+    void setGroundCheckSensors(const std::vector<Vecf> &groundCheckSensors);
     void deserialize(const json::Object &jsonObject) override;
 
 protected:
@@ -50,7 +50,7 @@ protected:
     Tile2DComponent *clone() override;
 
 private:
-    std::vector<Vecf> groundSensors_;
+    std::vector<Vecf> groundCheckSensors_;
 
     CountDownTimer jumpTimer_;
     CountDownTimer reactionTimer_;
