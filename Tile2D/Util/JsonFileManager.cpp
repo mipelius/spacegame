@@ -86,7 +86,7 @@ json::Object JsonFileManager::load(
             switch (parserState)
             {
                 case DEFAULT: {
-                    if (currentChar == '$') {
+                    if (currentChar == '"') {
                         parserState = PREPARE_ANALYSIS;
                     }
                     else {
@@ -95,16 +95,17 @@ json::Object JsonFileManager::load(
                     break;
                 }
                 case PREPARE_ANALYSIS: {
-                    if (currentChar == '{') {
+                    if (currentChar == '$') {
                         parserState = TEMPLATE_FIELD_ANALYSIS;
                     }
                     else {
+                        templateJsonFilledStringbuffer << '"' << currentChar;
                         parserState = DEFAULT;
                     }
                     break;
                 }
                 case TEMPLATE_FIELD_ANALYSIS: {
-                    if (currentChar == '}') {
+                    if (currentChar == '"') {
                         auto key = tmpBuffer.str();
                         auto replacementJson = templateReplacementJsonObject[key];
                         auto replacementString = stringify_(replacementJson);
