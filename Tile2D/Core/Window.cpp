@@ -136,7 +136,7 @@ void Window::setH(unsigned int h) {
 }
 
 Rect Window::getRect() {
-    return Rect(x_, y_, w_, h_);
+    return {0.0f, 0.0f, (float)w_, (float)h_};
 }
 
 bool Window::getVsync() const {
