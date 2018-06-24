@@ -47,29 +47,30 @@ void DebugBehaviour::update() {
 
     // --- create enemies ---
 
-    auto createEnemy = [] (GameObject* player, GameObject* (*prefabFunctionPtr)()) {
-        auto enemy = prefabFunctionPtr();
-        enemy->transform().setPosition(player->transform().getPosition());
-        enemy->getComponent<EnemyAIBase>()->setTarget(&player->transform());
+    auto createEnemy = [] (GameObject* player, const std::string& prefabName) {
+        auto gameObject = Tile2D::resources().prefabs[prefabName]->instantiate();
+        gameObject->transform().setPosition(player->transform().getPosition());
+        auto AI = gameObject->getComponent<EnemyAIBase>();
+        AI->setTarget(&player->transform());
     };
 
     struct DebugEnemyCreationSetting {
         SDL_Scancode scancode;
-        GameObject* (*prefabFunctionPtr)();
+        std::string prefabName;
     };
 
     static const std::list<DebugEnemyCreationSetting> debugEnemyCreationSettings = {
-            {SDL_SCANCODE_F, Prefabs::rider},
-            {SDL_SCANCODE_G, Prefabs::walker},
-            {SDL_SCANCODE_H, Prefabs::fish},
-            {SDL_SCANCODE_J, Prefabs::trifly},
-            {SDL_SCANCODE_K, Prefabs::wanderer},
-            {SDL_SCANCODE_L, Prefabs::boss}
+            { SDL_SCANCODE_F, "rider"    },
+            { SDL_SCANCODE_G, "walker"   },
+            { SDL_SCANCODE_H, "fish"     },
+            { SDL_SCANCODE_J, "trifly"   },
+            { SDL_SCANCODE_K, "wanderer" },
+            { SDL_SCANCODE_L, "boss"     }
     };
 
     for (auto debugEnemyCreationSetting : debugEnemyCreationSettings) {
         if (keyboard.keyPressed(debugEnemyCreationSetting.scancode)) {
-            createEnemy(gameObject(), debugEnemyCreationSetting.prefabFunctionPtr);
+            createEnemy(gameObject(), debugEnemyCreationSetting.prefabName);
         }
     }
 
@@ -77,22 +78,6 @@ void DebugBehaviour::update() {
 
     if (keyboard.keyPressed(SDL_SCANCODE_U)) {
         Tile2D::resources().prefabs.reload();
-    }
-    if (keyboard.keyPressed(SDL_SCANCODE_O)) {
-        auto gameObject = Tile2D::resources().prefabs["walker"]->instantiate();
-        gameObject->transform().setPosition(transform()->getPosition());
-        auto AI = gameObject->getComponent<EnemyAIBase>();
-        AI->setTarget(transform());
-    }
-    if (keyboard.keyPressed(SDL_SCANCODE_O)) {
-        auto gameObject = Tile2D::resources().prefabs["trifly"]->instantiate();
-        gameObject->transform().setPosition(transform()->getPosition());
-        auto AI = gameObject->getComponent<EnemyAIBase>();
-        AI->setTarget(transform());
-    }
-    if (keyboard.keyPressed(SDL_SCANCODE_I)) {
-        auto gameObject = Tile2D::resources().prefabs["testParticleSystem"]->instantiate();
-        gameObject->transform().setPosition(transform()->getPosition());
     }
 
     if (keyboard.keyPressed(SDL_SCANCODE_RETURN)) {
