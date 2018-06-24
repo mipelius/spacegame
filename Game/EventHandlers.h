@@ -30,14 +30,17 @@
 #include "Tile2D.h"
 #include "TileMap.h"
 #include "CollisionEffects.h"
+#include "t2Time.h"
 
-class AmmoCollisionDamageHandler :
+class CollisionDamageHandlerBase :
         public IEventHandler<PolygonCollider, CollisionEventArgs>,
         public ISerializable
 {
-private:
+
+protected:
     const Tag* targetTag_ = nullptr;
     int damage_ = 0;
+    virtual void damage(Health* targetHealth, PolygonCollider* owner, CollisionEventArgs args) const = 0;
 
 public:
     void handle(PolygonCollider* owner, CollisionEventArgs args) const override {
@@ -46,13 +49,9 @@ public:
         if (&otherGameObject->getTag() == targetTag_) {
             auto health = otherGameObject->getComponent<Health>();
             if (health == nullptr) {
-                throw std::runtime_error("AmmoCollisionDamageHandler: target has no health component!");
+                throw std::runtime_error("CollisionDamageHandlerBase: target has no health component!");
             }
-            health->damage(damage_, owner->gameObject());
-            owner->gameObject()->destroy();
-
-            CollisionEffects::sparkles(owner->transform()->getPosition(), args.contactNormal, {1, 0, 0});
-            CollisionEffects::pulseLight(owner->transform()->getPosition());
+            damage(health, owner, args);
         }
     }
 
@@ -64,6 +63,29 @@ public:
             int tagId = jsonObject["targetTag"].ToInt();
             targetTag_ = &Tile2D::getTag(tagId);
         }
+    }
+};
+
+class ContinuousCollisionDamageHandler : public CollisionDamageHandlerBase {
+protected:
+    void damage(Health *targetHealth, PolygonCollider *owner, CollisionEventArgs args) const override {
+        targetHealth->damage((int)(damage_ * Tile2D::time().getDeltaTime()), owner->gameObject());
+        CollisionEffects::sparkles(owner->transform()->getPosition(), args.contactNormal, {1, 0, 0});
+    }
+
+    IEventHandler<PolygonCollider, CollisionEventArgs> *clone() override {
+        return new ContinuousCollisionDamageHandler(*this);
+    }
+};
+
+class AmmoCollisionDamageHandler : public CollisionDamageHandlerBase {
+public:
+    void damage(Health *targetHealth, PolygonCollider *owner, CollisionEventArgs args) const override {
+        targetHealth->damage(damage_, owner->gameObject());
+        owner->gameObject()->destroy();
+
+        CollisionEffects::sparkles(owner->transform()->getPosition(), args.contactNormal, {1, 0, 0});
+        CollisionEffects::pulseLight(owner->transform()->getPosition());
     }
 
     IEventHandler<PolygonCollider, CollisionEventArgs> *clone() override {

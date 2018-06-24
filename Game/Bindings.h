@@ -48,34 +48,34 @@ class Bindings {
 public:
     static std::map<std::string, IObjectCreator*> createBindings() {
         return {
-            // components
-            { "AnimatedSprite",                     new ObjectCreator<AnimatedSprite>()                 },
-            { "Body",                               new ObjectCreator<Body>()                           },
-            { "PolygonCollider",                    new ObjectCreator<PolygonCollider>()                },
-            { "Sprite",                             new ObjectCreator<Sprite>()                         },
-            { "FlyingEnemyAI",                      new ObjectCreator<FlyingEnemyAI>()                  },
-            { "EnemyTargetingComponent",            new ObjectCreator<EnemyTargetingComponent>()        },
-            { "Health",                             new ObjectCreator<Health>()                         },
-            { "ParticleSystem",                     new ObjectCreator<ParticleSystem>()                 },
-            { "LimitedLifetimeBehaviour",           new ObjectCreator<LimitedLifetimeBehaviour>()       },
-            { "SwirlingBehaviour",                  new ObjectCreator<SwirlingBehaviour>()              },
-            { "PointLight",                         new ObjectCreator<PointLight>()                     },
-            { "WalkingEnemyAI",                     new ObjectCreator<WalkingEnemyAI>()                 },
+                // components
+                {"AnimatedSprite",                   new ObjectCreator<AnimatedSprite>()},
+                {"Body",                             new ObjectCreator<Body>()},
+                {"PolygonCollider",                  new ObjectCreator<PolygonCollider>()},
+                {"Sprite",                           new ObjectCreator<Sprite>()},
+                {"FlyingEnemyAI",                    new ObjectCreator<FlyingEnemyAI>()},
+                {"EnemyTargetingComponent",          new ObjectCreator<EnemyTargetingComponent>()},
+                {"Health",                           new ObjectCreator<Health>()},
+                {"ParticleSystem",                   new ObjectCreator<ParticleSystem>()},
+                {"LimitedLifetimeBehaviour",         new ObjectCreator<LimitedLifetimeBehaviour>()},
+                {"SwirlingBehaviour",                new ObjectCreator<SwirlingBehaviour>()},
+                {"PointLight",                       new ObjectCreator<PointLight>()},
+                {"WalkingEnemyAI",                   new ObjectCreator<WalkingEnemyAI>()},
 
-            // EventHandlers
+                // EventHandlers
 
-            { "DeathHandler",                       new ObjectCreator<DeathHandler>()                   },
-            { "AmmoCollisionDamageHandler",         new ObjectCreator<AmmoCollisionDamageHandler>()     },
-            { "AmmoTerrainCollisionHandler",        new ObjectCreator<AmmoTerrainCollisionHandler>()    },
+                {"DeathHandler",                     new ObjectCreator<DeathHandler>()},
+                {"AmmoCollisionDamageHandler",       new ObjectCreator<AmmoCollisionDamageHandler>()},
+                {"AmmoTerrainCollisionHandler",      new ObjectCreator<AmmoTerrainCollisionHandler>()},
+                {"ContinuousCollisionDamageHandler", new ObjectCreator<ContinuousCollisionDamageHandler>()},
+                // Particle settings
 
-            // Particle settings
+                {"ParticleInitializer",              new ObjectCreator<ParticleInitializer>()},
+                {"ParticleUpdater",                  new ObjectCreator<ParticleUpdater>()},
 
-            { "ParticleInitializer",                new ObjectCreator<ParticleInitializer>()            },
-            { "ParticleUpdater",                    new ObjectCreator<ParticleUpdater>()                },
+                // Items
 
-            // Items
-
-            { "Cannon",                             new ObjectCreator<Cannon>()                         }
+                {"Cannon",                           new ObjectCreator<Cannon>()}
         };
     }
 };
