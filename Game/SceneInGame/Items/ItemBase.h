@@ -34,8 +34,8 @@ public:
 
     bool use(GameObject* user);
 
-    int getPowerConsumption() const;
-    void setPowerConsumption(int powerConsumption);
+    float getPowerConsumption() const;
+    void setPowerConsumption(float powerConsumption);
 
     bool isActivated() const;
     void setIsActivated(bool isActivated);
@@ -56,7 +56,7 @@ protected:
 private:
     bool use_(GameObject* user);
     bool isActivated_ = true;
-    int powerConsumption_ = 0;
+    float powerConsumption_ = 0.0f;
     int count_ = COUNT_INFINITY;
 
     Timer timer_;

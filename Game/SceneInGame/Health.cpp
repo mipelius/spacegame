@@ -40,22 +40,22 @@ void Health::update() {
 
 void Health::lateUpdate() { }
 
-int Health::getMaxHealth() const {
+float Health::getMaxHealth() const {
     return maxHealth_;
 }
 
-void Health::setMaxHealth(int maxHealth) {
+void Health::setMaxHealth(float maxHealth) {
     maxHealth_ = maxHealth;
     clampHealth_();
 }
 
-void Health::damage(int amount, GameObject* damager) {
-    if (health_ <= 0) { // if already dead, do nothing
+void Health::damage(float amount, GameObject* damager) {
+    if (health_ <= 0.0) { // if already dead, do nothing
         return;
     }
 
     health_ -= amount;
-    if (health_ <= 0) {
+    if (health_ <= 0.0) {
         onDeath.raise(this, {damager});
     }
     clampHealth_();
@@ -65,40 +65,35 @@ void Health::reset() {
     health_ = maxHealth_;
 }
 
-void Health::heal(int amount) {
-    health_ += amount;
-    clampHealth_();
-}
-
 void Health::heal(float amount) {
     health_ += amount;
     clampHealth_();
 }
 
 void Health::clampHealth_() {
-    Mathf::clamp(health_, 0, maxHealth_);
+    Mathf::clamp(health_, 0.0f, maxHealth_);
 }
 
 Health::Health() : onDeath(Event<Health, GameObjectDiedEventArgs>()) { }
 
-int Health::getHealth() const {
-    return (int)health_;
+float Health::getHealth() const {
+    return health_;
 }
 
-int Health::getAutoHealingRate() const {
+float Health::getAutoHealingRate() const {
     return autoHealingRate_;
 }
 
-void Health::setAutoHealingRate(int autoHealingRate) {
+void Health::setAutoHealingRate(float autoHealingRate) {
     autoHealingRate_ = autoHealingRate;
 }
 
 void Health::deserialize(const json::Object &jsonObject) {
     if (jsonObject.HasKey("maxHealth")) {
-        maxHealth_ = jsonObject["maxHealth"].ToInt();
+        maxHealth_ = jsonObject["maxHealth"].ToFloat();
     }
     if (jsonObject.HasKey("autoHealingRate")) {
-        autoHealingRate_ = jsonObject["autoHealingRate"].ToInt();
+        autoHealingRate_ = jsonObject["autoHealingRate"].ToFloat();
     }
     if (jsonObject.HasKey("onDeath")) {
         auto handlerJson = jsonObject["onDeath"].ToObject();

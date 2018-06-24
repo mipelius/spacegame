@@ -50,11 +50,11 @@ bool ItemBase::use(GameObject *user) {
 
 
 
-int ItemBase::getPowerConsumption() const {
+float ItemBase::getPowerConsumption() const {
     return powerConsumption_;
 }
 
-void ItemBase::setPowerConsumption(int powerConsumption) {
+void ItemBase::setPowerConsumption(float powerConsumption) {
     powerConsumption_ = powerConsumption;
 }
 
@@ -101,7 +101,7 @@ void ItemBase::deserialize(const json::Object &jsonObject) {
         isActivated_ = jsonObject["isActivated"].ToBool();
     }
     if (jsonObject.HasKey("powerConsumption")) {
-        powerConsumption_ = jsonObject["powerConsumption"].ToInt();
+        powerConsumption_ = jsonObject["powerConsumption"].ToFloat();
     }
     if (jsonObject.HasKey("count")) {
         auto countJson = jsonObject["count"];

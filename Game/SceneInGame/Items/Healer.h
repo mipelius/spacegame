@@ -28,8 +28,8 @@
 
 class Healer : public ItemBase {
 public:
-    int getHealingAmount() const;
-    void setHealingAmount(int healingAmount);
+    float getHealingAmount() const;
+    void setHealingAmount(float healingAmount);
 
     ItemBase *clone() override;
 
@@ -37,7 +37,7 @@ protected:
     bool useActual(GameObject *user) override;
 
 private:
-    int healingAmount_ = 0;
+    float healingAmount_ = 0;
 
 };
 

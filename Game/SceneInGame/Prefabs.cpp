@@ -324,7 +324,7 @@ GameObject *Prefabs::fish() {
     polygonCollider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
         if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
             auto playerHealth = args.otherCollider->gameObject()->getComponent<Health>();
-            playerHealth->damage(Tile2D::time().getDeltaTimeMS() / 2, collider->gameObject());
+            playerHealth->damage(Tile2D::time().getDeltaTimeMS() / 2.0f, collider->gameObject());
             CollisionEffects::sparkles(args.otherCollider->transform()->getPosition(), args.contactNormal, {0.0f, 1.0f, 0.0f});
         }
     });

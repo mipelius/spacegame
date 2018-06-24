@@ -34,11 +34,11 @@ bool Healer::useActual(GameObject *user) {
     return true;
 }
 
-int Healer::getHealingAmount() const {
+float Healer::getHealingAmount() const {
     return healingAmount_;
 }
 
-void Healer::setHealingAmount(int healingAmount) {
+void Healer::setHealingAmount(float healingAmount) {
     Healer::healingAmount_ = healingAmount;
 }
 

@@ -39,7 +39,7 @@ class CollisionDamageHandlerBase :
 
 protected:
     const Tag* targetTag_ = nullptr;
-    int damage_ = 0;
+    float damage_ = 0;
     virtual void damage(Health* targetHealth, PolygonCollider* owner, CollisionEventArgs args) const = 0;
 
 public:
@@ -57,7 +57,7 @@ public:
 
     void deserialize(const json::Object &jsonObject) override {
         if (jsonObject.HasKey("damage")) {
-            damage_ = jsonObject["damage"].ToInt();
+            damage_ = jsonObject["damage"].ToFloat();
         }
         if (jsonObject.HasKey("targetTag")) {
             int tagId = jsonObject["targetTag"].ToInt();
@@ -69,7 +69,7 @@ public:
 class ContinuousCollisionDamageHandler : public CollisionDamageHandlerBase {
 protected:
     void damage(Health *targetHealth, PolygonCollider *owner, CollisionEventArgs args) const override {
-        targetHealth->damage((int)(damage_ * Tile2D::time().getDeltaTime()), owner->gameObject());
+        targetHealth->damage(damage_ * Tile2D::time().getDeltaTime(), owner->gameObject());
         CollisionEffects::sparkles(owner->transform()->getPosition(), args.contactNormal, {1, 0, 0});
     }
 

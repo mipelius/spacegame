@@ -29,13 +29,13 @@
 class Power : public Tile2DBehaviour {
 
 public:
-    bool consume(int powerConsumption);
-    int getPower() const;
+    bool consume(float powerConsumption);
+    float getPower() const;
 
-    int getReloadSpeed() const;
-    void setReloadSpeed(int reloadSpeed);
-    int getMaxPower() const;
-    void setMaxPower(int maxPower);
+    float getReloadSpeed() const;
+    void setReloadSpeed(float reloadSpeed);
+    float getMaxPower() const;
+    void setMaxPower(float maxPower);
 
 protected:
     void awake() override;
@@ -44,8 +44,8 @@ protected:
 
 private:
     float power_ = 0;
-    int reloadSpeed_ = 120;
-    int maxPower_ = 100;
+    float reloadSpeed_ = 120;
+    float maxPower_ = 100;
 };
 
 #endif //SPACEGAME_POWER_H

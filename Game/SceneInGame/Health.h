@@ -42,18 +42,17 @@ class Health : public Tile2DBehaviour, public ISerializable {
 public:
     Health();
 
-    void damage(int amount, GameObject* whoDamaged);
-    void heal(int amount);
+    void damage(float amount, GameObject* whoDamaged);
     void heal(float amount);
     void reset();
 
-    int getHealth() const;
+    float getHealth() const;
 
-    int getMaxHealth() const;
-    void setMaxHealth(int maxHealth);
+    float getMaxHealth() const;
+    void setMaxHealth(float maxHealth);
 
-    int getAutoHealingRate() const;
-    void setAutoHealingRate(int autoHealingRate);
+    float getAutoHealingRate() const;
+    void setAutoHealingRate(float autoHealingRate);
 
 Event<Health, GameObjectDiedEventArgs> onDeath;
 
@@ -68,9 +67,9 @@ protected:
 
 private:
     float health_;
-    int maxHealth_;
+    float maxHealth_;
 
-    int autoHealingRate_ = 0;
+    float autoHealingRate_ = 0;
 
     void clampHealth_();
 

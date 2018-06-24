@@ -40,7 +40,7 @@ void Power::lateUpdate() {
 
 }
 
-bool Power::consume(int powerConsumption) {
+bool Power::consume(float powerConsumption) {
     if (power_ >= powerConsumption) {
         power_ -= powerConsumption;
         return true;
@@ -48,23 +48,23 @@ bool Power::consume(int powerConsumption) {
     return false;
 }
 
-int Power::getPower() const {
-    return (int)power_;
+float Power::getPower() const {
+    return power_;
 }
 
-int Power::getReloadSpeed() const {
+float Power::getReloadSpeed() const {
     return reloadSpeed_;
 }
 
-void Power::setReloadSpeed(int reloadSpeed) {
+void Power::setReloadSpeed(float reloadSpeed) {
     reloadSpeed_ = reloadSpeed;
 }
 
-int Power::getMaxPower() const {
+float Power::getMaxPower() const {
     return maxPower_;
 }
 
-void Power::setMaxPower(int maxPower) {
+void Power::setMaxPower(float maxPower) {
     maxPower_ = maxPower;
     power_ = maxPower_;
 }
