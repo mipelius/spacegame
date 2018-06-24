@@ -74,10 +74,17 @@ json::Object JsonFileManager::load(
     std::ifstream file(jsonTemplateFilePath);
 
     std::stringstream templateJsonFilledStringbuffer;
-    std::stringstream tmpBuffer;
+    std::stringstream templateFieldBuffer;
+    std::stringstream templateDefaultValueBuffer;
 
     if (file.is_open()) {
-        enum ParserState { DEFAULT, PREPARE_ANALYSIS, TEMPLATE_FIELD_ANALYSIS } parserState;
+        enum ParserState {
+            DEFAULT,
+            PREPARE_ANALYSIS,
+            TEMPLATE_FIELD_ANALYSIS,
+            TEMPLATE_DEFAULT_VALUE_ANALYSIS
+        } parserState;
+
         parserState = DEFAULT;
 
         char currentChar;
@@ -86,7 +93,23 @@ json::Object JsonFileManager::load(
             switch (parserState)
             {
                 case DEFAULT: {
-                    if (currentChar == '"') {
+                    if (!templateFieldBuffer.str().empty()) {
+                        auto key = templateFieldBuffer.str();
+
+                        if (templateReplacementJsonObject.HasKey(key)) {
+                            auto replacementJson = templateReplacementJsonObject[key];
+                            auto replacementString = stringify_(replacementJson);
+                            templateJsonFilledStringbuffer << replacementString;
+                        }
+                        else {
+                            templateJsonFilledStringbuffer << templateDefaultValueBuffer.str();
+                        }
+
+                        // clean up buffers
+                        templateDefaultValueBuffer.str(std::string());
+                        templateFieldBuffer.str(std::string());
+                    }
+                    if (currentChar == '$') {
                         parserState = PREPARE_ANALYSIS;
                     }
                     else {
@@ -95,26 +118,33 @@ json::Object JsonFileManager::load(
                     break;
                 }
                 case PREPARE_ANALYSIS: {
-                    if (currentChar == '$') {
+                    if (currentChar == '(') {
                         parserState = TEMPLATE_FIELD_ANALYSIS;
                     }
                     else {
-                        templateJsonFilledStringbuffer << '"' << currentChar;
+                        templateJsonFilledStringbuffer << '$' << currentChar;
                         parserState = DEFAULT;
                     }
                     break;
                 }
                 case TEMPLATE_FIELD_ANALYSIS: {
-                    if (currentChar == '"') {
-                        auto key = tmpBuffer.str();
-                        auto replacementJson = templateReplacementJsonObject[key];
-                        auto replacementString = stringify_(replacementJson);
-                        templateJsonFilledStringbuffer << replacementString;
-                        tmpBuffer.str(std::string());
+                    if (currentChar == ')') {
+                        parserState = DEFAULT;
+                    }
+                    else if (currentChar == ':') {
+                        parserState = TEMPLATE_DEFAULT_VALUE_ANALYSIS;
+                    }
+                    else {
+                        templateFieldBuffer << currentChar;
+                    }
+                    break;
+                }
+                case TEMPLATE_DEFAULT_VALUE_ANALYSIS: {
+                    if (currentChar == ')') {
                         parserState = DEFAULT;
                     }
                     else {
-                        tmpBuffer << currentChar;
+                        templateDefaultValueBuffer << currentChar;
                     }
                     break;
                 }
