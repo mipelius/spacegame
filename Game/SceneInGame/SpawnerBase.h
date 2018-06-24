@@ -34,7 +34,7 @@ public:
     GameObject *getPlayer() const;
     void setPlayer(GameObject *player);
     void remove(GameObject *gameObject);
-    void setSpawnFunction(GameObject *(*spawnFunction)());
+    void setPrefab(const std::string& prefabString);
     unsigned int getMaxSpawnedObjects() const;
     void setMaxSpawnedObjects(unsigned int maxSpawnedObjects);
     void setSpawningDelay(Uint32 milliseconds);
@@ -51,7 +51,7 @@ protected:
     GameObject* spawn();
 
 private:
-    GameObject* (*spawnFunction_)();
+    std::string prefabString_;
     std::list<GameObject*> spawnedGameObjects_;
 
 };

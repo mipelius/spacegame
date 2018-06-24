@@ -32,6 +32,8 @@
 #include "LightSystem.h"
 #include "PhysicsWorld.h"
 #include "Window.h"
+#include "Prefab.h"
+#include "Resources.h"
 
 void SceneInGame::init() {
     // Scene setup: tile map, physics, light system
@@ -48,10 +50,10 @@ void SceneInGame::init() {
     auto hud = Prefabs::hud(player);
 
     // worlds
-//    initSnowWorld_(player);
-//    initGreenWorld_(player);
-//    initBlueWorld_(player);
-//    initRedWorld_(player);
+    initSnowWorld_(player);
+    initGreenWorld_(player);
+    initBlueWorld_(player);
+    initRedWorld_(player);
 
     // camera
     camera_ = new Camera;
@@ -59,7 +61,7 @@ void SceneInGame::init() {
     Tile2D::canvas().setCamera(camera_);
 
     // pickup spawners
-    Prefabs::pickupSpawner({0.0f, 0.0f, 3300.0f, 2400.0f}, player, Prefabs::bombPickup, 3000, ItemTags::bombDropper, 30, 2000);
+    //Prefabs::pickupSpawner({0.0f, 0.0f, 3300.0f, 2400.0f}, player, Prefabs::bombPickup, 3000, ItemTags::bombDropper, 30, 2000);
 
     // lights
     std::vector<Vecf> lightPositions = {
@@ -150,26 +152,26 @@ void SceneInGame::destroy() {
 
 
 void SceneInGame::initSnowWorld_(GameObject* player) {
-    Prefabs::enemySpawner({0.0f, 0.0f, 6400.0f, 2640.0f}, player, Prefabs::fish, 3000);
+    Prefabs::enemySpawner({0.0f, 0.0f, 6400.0f, 2640.0f}, player, "fish", 3000);
     Prefabs::background({0.0f, 0.0f, 6400.0f, 2640.0f},       "bg2", {0.2f, 0.8f, 1.0f});
 }
 
 void SceneInGame::initGreenWorld_(GameObject* player) {
-    Prefabs::enemySpawner({0.0f, 2640.0f, 6400.0f, 6512.0f}, player, Prefabs::walker, 3000);
+    Prefabs::enemySpawner({0.0f, 2640.0f, 6400.0f, 6512.0f}, player, "walker", 3000);
     Prefabs::background({0.0f, 2640.0f, 6400.0f, 6512.0f},    "bg2", {0.8f, 0.8f, 0.5f});
 }
 
 void SceneInGame::initBlueWorld_(GameObject* player) {
-    Prefabs::enemySpawner({0.0f, 6512.0f, 6400.0f, 10392.0f}, player, Prefabs::trifly, 3000);
+    Prefabs::enemySpawner({0.0f, 6512.0f, 6400.0f, 10392.0f}, player, "trifly", 3000);
     Prefabs::background({0.0f, 6512.0f, 6400.0f, 10392.0f},   "bg1", {0.3f, 0.3f, 0.6f});
 }
 
 void SceneInGame::initRedWorld_(GameObject* player) {
-    Prefabs::enemySpawner({0.0f, 10392.0f, 6400.0f, 14400.0f}, player, Prefabs::walker, 3000);
+    Prefabs::enemySpawner({0.0f, 10392.0f, 6400.0f, 14400.0f}, player, "walker", 3000);
     Prefabs::background({0.0f, 10392.0f, 6400.0f, 14400.0f},  "bg1", {0.6f, 0.3f, 0.3f});
 
     // boss
-    auto boss = Prefabs::boss();
+    auto boss = Tile2D::resources().prefabs["boss"]->instantiate();
     boss->transform().setPosition({3016.0f, 13088.0f});
     boss->getComponent<EnemyAIBase>()->setTarget(&player->transform());
 }

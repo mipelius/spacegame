@@ -25,6 +25,8 @@
 #include "SpawnerBase.h"
 #include "Spawnable.h"
 #include "GameObject.h"
+#include "Resources.h"
+#include "Prefab.h"
 
 void SpawnerBase::onDestroy() {
 	Tile2DBehaviour::onDestroy();
@@ -46,8 +48,8 @@ void SpawnerBase::remove(GameObject *gameObject) {
     spawnedGameObjects_.remove(gameObject);
 }
 
-void SpawnerBase::setSpawnFunction(GameObject* (*spawnFunction)()) {
-    spawnFunction_ = spawnFunction;
+void SpawnerBase::setPrefab(const std::string& prefabString) {
+    prefabString_ = prefabString;
 }
 
 unsigned int SpawnerBase::getMaxSpawnedObjects() const {
@@ -67,7 +69,7 @@ GameObject* SpawnerBase::spawn() {
         return nullptr;
     }
 
-    auto gameObject = spawnFunction_();
+    auto gameObject = Tile2D::resources().prefabs[prefabString_]->instantiate();
     auto spawnable = gameObject->attachComponent<Spawnable>();
     spawnable->setSpawner(this);
     spawnedGameObjects_.push_back(gameObject);

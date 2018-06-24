@@ -184,271 +184,6 @@ GameObject *Prefabs::player() {
     return player;
 }
 
-// ---- ENEMIES ----
-
-GameObject *Prefabs::boss() {
-    auto enemy = createEnemy_(
-            "boss",
-            {
-                {-40, -80},
-                {40,  -80},
-                {80,  -40},
-                {80,  40},
-                {40,  80},
-                {-40,  80},
-                {-80, 40},
-                {-80, -40}
-            },
-            {-100, -100, 100, 100},
-            0.0f,
-            100.0f
-    );
-    auto health = enemy->getComponent<Health>();
-    health->setMaxHealth(1000);
-    health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
-        Tile2D::executeDelayedFunction(nullptr, 2000, [] (GameObject* gameObject) {
-            Tile2D::sceneManager().loadScene(Scenes::gameEndScreen);
-        });
-    });
-
-    auto AI = enemy->attachComponent<FlyingEnemyAI>();
-    AI->setMaxDistance(100000);
-    AI->setSpeed(300.0f);
-    AI->setRotates(false);
-
-    AI->setMinPathFindingDistance(0);
-    AI->setMaxPathFindingDistance(2000);
-    AI->setMaxNodesPathFinderExplores(2000);
-    AI->setPathFindingInterval(1000);
-
-    auto laserCannon = AI->setWeapon<Cannon>();
-    laserCannon->setAmmoPrefab(Tile2D::resources().prefabs["enemyLaserAmmo"]);
-    laserCannon->setReloadDelay(200);
-
-    return enemy;
-}
-
-GameObject *Prefabs::walker() {
-    auto enemy = createEnemy_(
-            "walker",
-            {
-                {-18, -12},
-                {18, -12},
-                {18, 11},
-                {11, 22},
-                {-11, 22},
-                {-18, 11}
-            },
-            {-24, -18, 24, 30},
-            2.0f,
-            100.0f
-    );
-
-    auto polygonCollider = enemy->getComponent<PolygonCollider>();
-    polygonCollider->setSweepingStrategyThreshold(FLT_MAX);
-
-    auto AI = enemy->attachComponent<WalkingEnemyAI>();
-    AI->setMaxDistance(1500);
-    AI->setGroundCheckSensors(
-            {
-                {-16, 23.0f},
-                {-8, 23.0f},
-                {0, 23.0f},
-                {8, 23.0f},
-                {16, 23.0f}
-            }
-    );
-
-    auto laserCannon = AI->setWeapon<Cannon>();
-    laserCannon->setAmmoPrefab(Tile2D::resources().prefabs["enemyLaserAmmo"]);
-    laserCannon->setReloadDelay(200);
-
-    return enemy;
-}
-
-GameObject *Prefabs::wanderer() {
-    auto enemy = createEnemy_(
-            "wanderer",
-            {
-                {-15, -15},
-                {15, -15},
-                {15, 13},
-                {5, 23},
-                {-5, 23},
-                {-15, 13}
-            },
-            {-32, -32, 32, 32},
-            2.0f,
-            100.0f
-    );
-
-    auto polygonCollider = enemy->getComponent<PolygonCollider>();
-    polygonCollider->setSweepingStrategyThreshold(FLT_MAX);
-
-    auto AI = enemy->attachComponent<WalkingEnemyAI>();
-    AI->setMaxDistance(1500);
-    AI->setGroundCheckSensors(
-            {
-                {-24, 24.0f},
-                {-16, 24.0f},
-                {-8, 24.0f},
-                {0, 24.0f},
-                {8, 24.0f},
-                {16, 24.0f},
-                {24, 24.0f}
-            }
-    );
-
-    auto laserCannon = AI->setWeapon<Cannon>();
-    laserCannon->setAmmoPrefab(Tile2D::resources().prefabs["enemyLaserAmmo"]);
-    laserCannon->setReloadDelay(200);
-
-    return enemy;
-}
-
-GameObject *Prefabs::fish() {
-    auto fish = createEnemy_(
-            "fish",
-            {
-                {-42, -15},
-                {42, -15},
-                {42, 15},
-                {-42, 15}
-            },
-            {-42, -42, 42, 42},
-            0,
-            100
-    );
-
-    auto polygonCollider = fish->getComponent<PolygonCollider>();
-    polygonCollider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
-        if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
-            auto playerHealth = args.otherCollider->gameObject()->getComponent<Health>();
-            playerHealth->damage(Tile2D::time().getDeltaTimeMS() / 2.0f, collider->gameObject());
-            CollisionEffects::sparkles(args.otherCollider->transform()->getPosition(), args.contactNormal, {0.0f, 1.0f, 0.0f});
-        }
-    });
-
-    auto AI = fish->attachComponent<FlyingEnemyAI>();
-
-    AI->setMinPathFindingDistance(0);
-    AI->setMaxPathFindingDistance(2000);
-    AI->setMaxNodesPathFinderExplores(2000);
-    AI->setPathFindingInterval(1000);
-
-    AI->setSpeed(300);
-
-    auto laserCannon = AI->setWeapon<Cannon>();
-    laserCannon->setAmmoPrefab(Tile2D::resources().prefabs["enemyLaserAmmo"]);
-    laserCannon->setReloadDelay(200);
-
-    AI->setMaxDistance(1500);
-    return fish;
-}
-
-GameObject *Prefabs::trifly() {
-    auto enemy = createEnemy_(
-            "trifly",
-            {
-                {-30, -30},
-                {30, -30},
-                {30, 30},
-                {-30, 30}
-            },
-            {-40, -40, 40, 40},
-            0.0f,
-            100
-    );
-    auto AI = enemy->attachComponent<FlyingEnemyAI>();
-
-    auto laserCannon = AI->setWeapon<Cannon>();
-    laserCannon->setAmmoPrefab(Tile2D::resources().prefabs["enemyLaserAmmo"]);
-    laserCannon->setReloadDelay(200);
-
-    AI->setSpeed(300);
-    AI->setRotates(false);
-    AI->setMaxDistance(1500);
-
-    auto swirlingBehaviour = enemy->attachComponent<SwirlingBehaviour>();
-
-    return enemy;
-}
-
-GameObject *Prefabs::rider() {
-    auto enemy = createEnemy_(
-            "lizard",
-            {
-                    {-40, -32},
-                    {40, -32},
-                    {40, 20},
-                    {-40, 20}
-            },
-            {-64, -32, 64, 32},
-            0.0f,
-            100.0f
-    );
-
-    auto enemySprite = enemy->attachComponent<AnimatedSprite>();
-    enemySprite->setRect({-32, -32, 32, 32});
-    enemySprite->localTransform().setPosition({0.0f, -12.0f});
-    enemySprite->setAnimationPtr(Tile2D::resources().animations["wanderer"]);
-    enemySprite->setFramesPerSecond(50);
-    enemySprite->play();
-
-    auto AI = enemy->attachComponent<FlyingEnemyAI>();
-
-    auto laserCannon = AI->setWeapon<Cannon>();
-    laserCannon->setAmmoPrefab(Tile2D::resources().prefabs["enemyLaserAmmo"]);
-    laserCannon->setReloadDelay(200);
-
-    AI->setSpeed(300);
-    AI->setRotates(true);
-    AI->setFlips(true);
-    AI->setMaxDistance(1500);
-
-    return enemy;
-}
-
-GameObject *Prefabs::createEnemy_(
-        std::string animationName,
-        std::vector<Vecf> colliderPoints,
-        Rect spriteRect,
-        float gravityFactor,
-        float mass
-) {
-    auto enemy = Tile2D::createGameObject();
-    enemy->transform().setRotation(0.0f);
-
-    enemy->setTag(Tile2D::getTag(1));
-
-    auto enemyBody = enemy->attachComponent<Body>();
-    enemyBody->setMass(mass);
-    enemyBody->setGravityFactor(gravityFactor);
-
-    auto polygonCollider = enemy->attachComponent<PolygonCollider>();
-    polygonCollider->setPoints(colliderPoints);
-    polygonCollider->setLayer(Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(3));
-
-    auto enemySprite = enemy->attachComponent<AnimatedSprite>();
-    enemySprite->setRect({spriteRect});
-    enemySprite->setAnimationPtr(Tile2D::resources().animations[animationName]);
-    enemySprite->setFramesPerSecond(50);
-    enemySprite->play();
-
-    auto health = enemy->attachComponent<Health>();
-    health->setMaxHealth(100);
-    health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
-        health->gameObject()->destroy();
-        GameObject* newBloodBurst = bloodBurst();
-        newBloodBurst->transform().setPosition(health->transform()->getPosition());
-    });
-
-    auto targetingComponent = enemy->attachComponent<EnemyTargetingComponent>();
-
-    return enemy;
-}
-
-// ---- AMMO ----
 
 GameObject *Prefabs::bomb() {
     static const int explosionRadius = 10; // tiles
@@ -485,7 +220,7 @@ GameObject *Prefabs::bomb() {
         explosion->transform() = *(collider->transform());
         explosion->transform().setPosition(
                 explosion->transform().getPosition() +
-                        args.velocityBeforeCollision.normalized() * 30.0f
+                args.velocityBeforeCollision.normalized() * 30.0f
         );
 
         explosion->transform().setScale({0.75, 0.75});
@@ -498,152 +233,6 @@ GameObject *Prefabs::bomb() {
     auto bombBehaviour = bomb->attachComponent<BombBehaviour>();
 
     return bomb;
-}
-
-GameObject* Prefabs::plasma() {
-    auto plasma = createAmmo_(
-            Tile2D::resources().textures["plasma"],
-            {-30, -30, 30, 30},
-            {
-                    {-18, -18},
-                    {18,  -18},
-                    {18,  18},
-                    {-18, 18}
-            },
-            Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(0),
-            400
-    );
-
-    auto plasmaCollider = plasma->getComponent<PolygonCollider>();
-    plasmaCollider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
-        createPlasmaExplosion_(collider->transform()->getPosition());
-    });
-    plasmaCollider->terrainCollision.add([] (PolygonCollider* collider, TerrainCollisionEventArgs args) {
-        createPlasmaExplosion_(collider->transform()->getPosition());
-    });
-
-    return plasma;
-}
-
-void Prefabs::createPlasmaExplosion_(const Vecf &position) {
-    auto count = 40u;
-    for (auto i = 0u; i < count; ++i) {
-        auto smallPlasma = createAmmo_(
-                Tile2D::resources().textures["plasma"],
-                {-15, -15, 15, 15},
-                {
-                        {-10, -10},
-                        {10,  -10},
-                        {10,  10},
-                        {-10, 10}
-                },
-                Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(0),
-                40
-        );
-
-        auto rotation = 360.0f * ((float)i / count);
-
-        smallPlasma->transform().setPosition(position);
-        smallPlasma->transform().setRotation(rotation);
-
-        auto velocity = Vecf::byAngle(rotation, 1000);
-        smallPlasma->getComponent<Body>()->setVelocity(velocity);
-    }
-}
-
-GameObject *Prefabs::enemyLaser() {
-    auto laser = createAmmo_(
-            Tile2D::resources().textures["laser"],
-            {-20, -5, 20, 5},
-            {
-                    {-18, -5},
-                    {18,  -5},
-                    {18,  5},
-                    {-18, 5}
-            },
-            Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(1),
-            10
-    );
-
-    laser->getComponent<Sprite>()->setColor({0.0f, 1.0f, 0.3f});
-
-    return laser;
-}
-
-GameObject *Prefabs::createAmmo_(
-        Texture *texturePtr,
-        Rect spriteRect,
-        std::vector<Vecf> colliderPoints,
-        const ColliderLayer& colliderLayer,
-        int damage
-) {
-    auto ammo = Tile2D::createGameObject();
-
-    auto ammoBody = ammo->attachComponent<Body>();
-    ammoBody->setMass(10.0f);
-    ammoBody->setDrag(0.0f);
-
-    auto ammoSprite = ammo->attachComponent<Sprite>();
-    ammoSprite->setRect(spriteRect);
-    ammoSprite->setTexturePtr(texturePtr);
-
-    auto ammoLifetime = ammo->attachComponent<LimitedLifetimeBehaviour>();
-    ammoLifetime->setTimeToLive(1000);
-
-    auto ammoLight = ammo->attachComponent<PointLight>();
-    ammoLight->setRadius(80.0);
-    ammoLight->setIntensity(1.0);
-
-    auto ammoCollider = ammo->attachComponent<PolygonCollider>();
-    ammoCollider->setPoints(colliderPoints);
-
-    ammoCollider->terrainCollision.add([] (PolygonCollider* collider, TerrainCollisionEventArgs args) {
-        collider->gameObject()->destroy();
-        Tile2D::tileMap().setValueScaled(args.tileCoordinates, Tile2D::tileMap().getTileSet()->getEmptyBlock());
-
-        CollisionEffects::sparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
-        CollisionEffects::pulseLight(collider->transform()->getPosition());
-    });
-
-    ammoCollider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
-        auto otherBody = args.otherCollider->gameObject()->getComponent<Body>();
-        auto laserBody = collider->gameObject()->getComponent<Body>();
-
-        int ammoDamage = collider->gameObject()->getComponent<AmmoComponent>()->getDamage();
-
-        if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(1)) {
-            otherBody->setVelocity(otherBody->getVelocity() + laserBody->getVelocity() / 100.0);
-            CollisionEffects::sparkles(collider->transform()->getPosition(), args.contactNormal, {1, 0, 0});
-            laserBody->gameObject()->destroy();
-
-            auto health = args.otherCollider->gameObject()->getComponent<Health>();
-
-            if (health != nullptr) {
-                health->damage(ammoDamage, laserBody->gameObject());
-            }
-
-            CollisionEffects::pulseLight(collider->transform()->getPosition());
-        }
-        if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
-            otherBody->setVelocity(otherBody->getVelocity() + laserBody->getVelocity() / 100.0);
-            CollisionEffects::sparkles(collider->transform()->getPosition(), args.contactNormal, {0, 1, 0});
-            laserBody->gameObject()->destroy();
-
-            auto health = args.otherCollider->gameObject()->getComponent<Health>();
-
-            if (health != nullptr) {
-                health->damage(ammoDamage, laserBody->gameObject());
-            }
-
-            CollisionEffects::pulseLight(collider->transform()->getPosition());
-        }
-    });
-    ammoCollider->setLayer(colliderLayer);
-
-    auto ammoDamage = ammo->attachComponent<AmmoComponent>();
-    ammoDamage->setDamage(damage);
-
-    return ammo;
 }
 
 // ---- PICK UPS ----
@@ -949,13 +538,13 @@ GameObject *Prefabs::background(Rect area, const char *texture, Color color) {
 GameObject *Prefabs::enemySpawner(
         Rect area,
         GameObject *target,
-        GameObject *(*spawnFunction)(),
+        const std::string& prefabString,
         Uint32 spawningDelay)
 {
     GameObject* spawnerObj = Tile2D::createGameObject();
     auto spawnerBehaviour = spawnerObj->attachComponent<EnemySpawner>();
     spawnerBehaviour->setPlayer(target);
-    spawnerBehaviour->setSpawnFunction(spawnFunction);
+    spawnerBehaviour->setPrefab(prefabString);
     spawnerBehaviour->setSpawningDelay(spawningDelay);
     spawnerBehaviour->setAreaRect(area);
     spawnerBehaviour->setInnerRect({-600.0f, -400.0f, 600.0f, 400.0f});
@@ -966,7 +555,7 @@ GameObject *Prefabs::enemySpawner(
 GameObject* Prefabs::pickupSpawner(
         Rect area,
         GameObject *target,
-        GameObject *(*spawnFunction)(),
+        const std::string& prefabString,
         Uint32 spawningDelay,
         int itemTag,
         int maxItemCount,
@@ -975,7 +564,7 @@ GameObject* Prefabs::pickupSpawner(
     GameObject* spawnerObj = Tile2D::createGameObject();
     auto spawnerBehaviour = spawnerObj->attachComponent<PickupSpawner>();
     spawnerBehaviour->setPlayer(target);
-    spawnerBehaviour->setSpawnFunction(spawnFunction);
+    spawnerBehaviour->setPrefab(prefabString);
     spawnerBehaviour->setSpawningDelay(spawningDelay);
     spawnerBehaviour->setItemTag(itemTag);
     spawnerBehaviour->setMaxItemCount(maxItemCount);

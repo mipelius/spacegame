@@ -38,19 +38,6 @@ class Prefabs {
 public:
     static GameObject* player();
 
-    // enemies
-    static GameObject* boss();
-    static GameObject* trifly();
-    static GameObject* fish();
-    static GameObject* walker();
-    static GameObject* wanderer();
-    static GameObject* rider();
-
-    // ammo
-    static GameObject* enemyLaser();
-    static GameObject* bomb();
-    static GameObject* plasma();
-
     // effects
     static GameObject* light();
     static GameObject* bloodBurst();
@@ -71,38 +58,22 @@ public:
     static GameObject* enemySpawner(
             Rect area,
             GameObject *target,
-            GameObject *(*spawnFunction)(),
+            const std::string& prefabString,
             Uint32 spawningDelay
     );
     static GameObject* pickupSpawner(
             Rect area,
             GameObject *target,
-            GameObject *(*spawnFunction)(),
+            const std::string& prefabString,
             Uint32 spawningDelay,
             int itemTag,
             int maxItemCount,
             float minDistanceToTarget
     );
 
+    static GameObject* bomb();
+
 private:
-    static GameObject* createAmmo_(
-            Texture *texturePtr,
-            Rect spriteRect,
-            std::vector<Vecf> colliderPoints,
-            const ColliderLayer& colliderLayer,
-            int damage
-    );
-
-    static GameObject* createEnemy_(
-            std::string animationName,
-            std::vector<Vecf> colliderPoints,
-            Rect spriteRect,
-            float gravityFactor,
-            float mass
-    );
-
-    static void createPlasmaExplosion_(const Vecf &position);
-
     static GameObject* createPickup_(
         Texture* pickupTexture,
         void (*onCollisionFunctionPtr)(PolygonCollider* collider, CollisionEventArgs args)
