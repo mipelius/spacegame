@@ -48,10 +48,10 @@ void SceneInGame::init() {
     auto hud = Prefabs::hud(player);
 
     // worlds
-    initSnowWorld_(player);
-    initGreenWorld_(player);
-    initBlueWorld_(player);
-    initRedWorld_(player);
+//    initSnowWorld_(player);
+//    initGreenWorld_(player);
+//    initBlueWorld_(player);
+//    initRedWorld_(player);
 
     // camera
     camera_ = new Camera;
@@ -60,7 +60,6 @@ void SceneInGame::init() {
 
     // pickup spawners
     Prefabs::pickupSpawner({0.0f, 0.0f, 3300.0f, 2400.0f}, player, Prefabs::bombPickup, 3000, ItemTags::bombDropper, 30, 2000);
-
 
     // lights
     std::vector<Vecf> lightPositions = {

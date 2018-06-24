@@ -472,6 +472,28 @@ void PolygonCollider::deserialize(const json::Object &jsonObject) {
         auto handlersJson = jsonObject["terrainCollision"];
         terrainCollision.deserialize(handlersJson);
     }
+
+    if (jsonObject.HasKey("sweepingStrategyThreshold")) {
+        bool fail = true;
+
+        auto sweepingStrategyJson = jsonObject["sweepingStrategyThreshold"];
+
+        if (sweepingStrategyJson.GetType() == json::StringVal) {
+            auto sweepingStrategyString = sweepingStrategyJson.ToString();
+            if (sweepingStrategyString == "max") {
+                sweepingStrategyThreshold_ = FLT_MAX;
+                fail = false;
+            }
+        }
+        else if (sweepingStrategyJson.IsNumeric()) {
+            sweepingStrategyThreshold_ = jsonObject["sweepingStrategyThreshold"].ToFloat();
+            fail = false;
+        }
+
+        if (fail) {
+            throw std::runtime_error("PolygonCollider: sweepingStrategyThreshold must be numeric or string \"max\"");
+        }
+    }
 }
 
 Tile2DComponent *PolygonCollider::clone() {
