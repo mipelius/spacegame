@@ -61,7 +61,15 @@ void SceneInGame::init() {
     Tile2D::canvas().setCamera(camera_);
 
     // pickup spawners
-    //Prefabs::pickupSpawner({0.0f, 0.0f, 3300.0f, 2400.0f}, player, Prefabs::bombPickup, 3000, ItemTags::bombDropper, 30, 2000);
+    Prefabs::pickupSpawner(
+            {0.0f, 0.0f, 3300.0f, 2400.0f},
+            player,
+            "pickup_bomb",
+            3000,
+            ItemTags::bombDropper,
+            30,
+            2000
+    );
 
     // lights
     std::vector<Vecf> lightPositions = {
@@ -114,33 +122,33 @@ void SceneInGame::init() {
         light->transform().setPosition(lightPosition);
     }
 
-    auto box1 = Prefabs::gatlingPickup();
+    auto box1 = Tile2D::resources().prefabs["pickup_gatling"]->instantiate();
     box1->transform().setPosition({200.0f, 3300.0f});
 
-    auto box2 = Prefabs::plasmaCannonPickup();
+    auto box2 = Tile2D::resources().prefabs["pickup_plasma_cannon"]->instantiate();
     box2->transform().setPosition({300.0f, 3300.0f});
 
-    auto box3 = Prefabs::bombPickup();
+    auto box3 = Tile2D::resources().prefabs["pickup_bomb"]->instantiate();
     box3->transform().setPosition({400.0f, 3300.0f});
-    auto box4 = Prefabs::bombPickup();
+    auto box4 = Tile2D::resources().prefabs["pickup_bomb"]->instantiate();
     box4->transform().setPosition({500.0f, 3300.0f});
 
-    auto box5 = Prefabs::healerPickup();
+    auto box5 = Tile2D::resources().prefabs["pickup_medikit"]->instantiate();
     box5->transform().setPosition({600.0f, 3300.0f});
-    auto box6 = Prefabs::healerPickup();
+    auto box6 = Tile2D::resources().prefabs["pickup_medikit"]->instantiate();
     box6->transform().setPosition({700.0f, 3300.0f});
 
-    auto box7 = Prefabs::laserCannonUpgradePickup();
+    auto box7 = Tile2D::resources().prefabs["pickup_laser_cannon_upgrade"]->instantiate();
     box7->transform().setPosition({800.0f, 3300.0f});
 
-    auto box8 = Prefabs::healthUpgradePickup();
+    auto box8 = Tile2D::resources().prefabs["pickup_health_upgrade"]->instantiate();
     box8->transform().setPosition({900.0f, 3300.0f});
-    auto box9 = Prefabs::healthUpgradePickup();
+    auto box9 = Tile2D::resources().prefabs["pickup_health_upgrade"]->instantiate();
     box9->transform().setPosition({1000.0f, 3300.0f});
 
-    auto box10 = Prefabs::powerUpgradePickup();
+    auto box10 = Tile2D::resources().prefabs["pickup_power_upgrade"]->instantiate();
     box10->transform().setPosition({1100.0f, 3300.0f});
-    auto box11 = Prefabs::powerUpgradePickup();
+    auto box11 = Tile2D::resources().prefabs["pickup_power_upgrade"]->instantiate();
     box11->transform().setPosition({1200.0f, 3300.0f});
 }
 

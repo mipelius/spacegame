@@ -22,10 +22,10 @@
 // SOFTWARE.
 
 #include "Health.h"
-#include "Healer.h"
+#include "Medikit.h"
 #include "GameObject.h"
 
-bool Healer::useActual(GameObject *user) {
+bool Medikit::useActual(GameObject *user) {
     auto health = user->getComponent<Health>();
     if (health == nullptr) {
         return false;
@@ -34,15 +34,15 @@ bool Healer::useActual(GameObject *user) {
     return true;
 }
 
-float Healer::getHealingAmount() const {
+float Medikit::getHealingAmount() const {
     return healingAmount_;
 }
 
-void Healer::setHealingAmount(float healingAmount) {
-    Healer::healingAmount_ = healingAmount;
+void Medikit::setHealingAmount(float healingAmount) {
+    Medikit::healingAmount_ = healingAmount;
 }
 
-ItemBase *Healer::clone() {
-    return new Healer(*this);
+ItemBase *Medikit::clone() {
+    return new Medikit(*this);
 }
 

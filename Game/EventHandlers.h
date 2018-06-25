@@ -24,6 +24,8 @@
 #ifndef SPACEGAME_EVENTHANDLERS_H
 #define SPACEGAME_EVENTHANDLERS_H
 
+#include <Game/SceneInGame/Items/Cannon.h>
+#include "Inventory.h"
 #include "Event.h"
 #include "Health.h"
 #include "Prefabs.h"
@@ -31,6 +33,8 @@
 #include "TileMap.h"
 #include "CollisionEffects.h"
 #include "t2Time.h"
+#include "Texture.h"
+#include "Resources.h"
 
 class CollisionDamageHandlerBase :
         public IEventHandler<PolygonCollider, CollisionEventArgs>,
@@ -129,6 +133,137 @@ public:
     IEventHandler<Health, GameObjectDiedEventArgs>* clone() override {
         return new DeathHandler(*this);
     };
+};
+
+class ItemPickupCollisionEventHandler :
+        public IEventHandler<PolygonCollider, CollisionEventArgs>,
+        public ISerializable
+{
+private:
+    int itemIdToActivate_;
+    int count_ = -1;
+
+public:
+    void deserialize(const json::Object &jsonObject) override {
+        if (jsonObject.HasKey("itemIdToActivate")) {
+            itemIdToActivate_ = jsonObject["itemIdToActivate"].ToInt();
+        }
+        if (jsonObject.HasKey("count")) {
+            count_ = jsonObject["count"].ToInt();
+        }
+    }
+
+    void handle(PolygonCollider *owner, CollisionEventArgs args) const override {
+        owner->gameObject()->destroy();
+        auto item = args.otherCollider->gameObject()->getComponent<Inventory>()->getItem(itemIdToActivate_);
+        item->setIsActivated(true);
+        if (count_ != -1) {
+            item->setCount(item->getCount() + count_);
+        }
+    }
+
+    IEventHandler<PolygonCollider, CollisionEventArgs> *clone() override {
+        return new ItemPickupCollisionEventHandler(*this);
+    }
+};
+
+class CannonUpgradeCollisionEventHandler :
+        public IEventHandler<PolygonCollider, CollisionEventArgs>,
+        public ISerializable
+{
+private:
+    std::list<Vecf> cannonOffsets_;
+    int cannonItemId_ = -1;
+    Texture* upgradedCannonTexture_;
+
+public:
+    void deserialize(const json::Object &jsonObject) override {
+        if (jsonObject.HasKey("cannonOffsets")) {
+            auto cannonOffsetsJson = jsonObject["cannonOffsets"].ToArray();
+            for (auto cannonOffsetJson : cannonOffsetsJson) {
+                Vecf offset;
+                offset.deserialize(cannonOffsetJson.ToObject());
+                cannonOffsets_.push_back(offset);
+            }
+        }
+
+        if (jsonObject.HasKey("cannonItemId")) {
+            cannonItemId_ = jsonObject["cannonItemId"].ToInt();
+        }
+
+        if (jsonObject.HasKey("upgradedCannonTexture")) {
+            auto textureName = jsonObject["upgradedCannonTexture"].ToString();
+            upgradedCannonTexture_ = Tile2D::resources().textures[textureName];
+        }
+    }
+
+    void handle(PolygonCollider *owner, CollisionEventArgs args) const override {
+        owner->gameObject()->destroy();
+        auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
+        auto item = inventory->getItem(cannonItemId_);
+        auto cannon = dynamic_cast<Cannon*>(item);
+        cannon->setOffsets(cannonOffsets_);
+        inventory->setItemTexture(
+                cannonItemId_,
+                upgradedCannonTexture_
+        );
+    }
+
+    IEventHandler<PolygonCollider, CollisionEventArgs> *clone() override {
+        return new CannonUpgradeCollisionEventHandler(*this);
+    }
+};
+
+
+
+class PowerUpgradeCollisionHandler:
+        public IEventHandler<PolygonCollider, CollisionEventArgs>,
+        public ISerializable
+{
+private:
+    float upgrade_;
+
+public:
+    void deserialize(const json::Object &jsonObject) override {
+        if (jsonObject.HasKey("upgrade")) {
+            upgrade_ = jsonObject["upgrade"].ToFloat();
+        }
+    }
+
+    void handle(PolygonCollider *owner, CollisionEventArgs args) const override {
+        owner->gameObject()->destroy();
+        auto power = args.otherCollider->gameObject()->getComponent<Power>();
+        power->setMaxPower(power->getMaxPower() + upgrade_);
+    }
+
+    IEventHandler<PolygonCollider, CollisionEventArgs> *clone() override {
+        return new PowerUpgradeCollisionHandler(*this);
+    }
+};
+
+class HealthUpgradeCollisionHandler:
+        public IEventHandler<PolygonCollider, CollisionEventArgs>,
+        public ISerializable
+{
+private:
+    float upgrade_;
+
+public:
+    void deserialize(const json::Object &jsonObject) override {
+        if (jsonObject.HasKey("upgrade")) {
+            upgrade_ = jsonObject["upgrade"].ToFloat();
+        }
+    }
+
+    void handle(PolygonCollider *owner, CollisionEventArgs args) const override {
+        owner->gameObject()->destroy();
+        auto health = args.otherCollider->gameObject()->getComponent<Health>();
+        health->setMaxHealth(health->getMaxHealth() + upgrade_);
+    }
+
+    IEventHandler<PolygonCollider, CollisionEventArgs> *clone() override {
+        return new HealthUpgradeCollisionHandler(*this);
+    }
 };
 
 #endif //SPACEGAME_EVENTHANDLERS_H

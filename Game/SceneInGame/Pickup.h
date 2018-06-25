@@ -28,20 +28,25 @@
 #include "Sprite.h"
 #include "Tile2DBehaviour.h"
 
-class Pickup : public Tile2DBehaviour {
-
+class Pickup :
+        public Tile2DBehaviour,
+        public ISerializable
+{
 public:
     void setPickupBgSprite(Sprite *pickupSprite);
     float getBlinkingSpeed() const;
     void setBlinkingSpeed(float blinkingSpeed);
+    void deserialize(const json::Object &jsonObject) override;
 
 protected:
     void awake() override;
     void update() override;
     void lateUpdate() override;
+    Tile2DComponent *clone() override;
 
 private:
-    Sprite* pickupSprite_ = nullptr;
+    int pickupBackgroundSpriteId_ = -1;
+    Sprite* pickupBackgroundSprite_ = nullptr;
     float phase_ = 0.0f;
     float blinkingSpeed_ = 1.0f;
 

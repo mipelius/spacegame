@@ -46,6 +46,7 @@ float Health::getMaxHealth() const {
 
 void Health::setMaxHealth(float maxHealth) {
     maxHealth_ = maxHealth;
+    reset();
     clampHealth_();
 }
 

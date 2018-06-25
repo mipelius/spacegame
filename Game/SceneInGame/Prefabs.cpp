@@ -24,7 +24,7 @@
 
 #include <cfloat>
 #include <Game/CollisionEffects.h>
-#include "Healer.h"
+#include "Medikit.h"
 #include "ItemTags.h"
 #include "Cannon.h"
 #include "BombDropper.h"
@@ -170,16 +170,16 @@ GameObject *Prefabs::player() {
     plasmaCannon->setReloadDelay(500);
     plasmaCannon->setIsActivated(false);
 
-    // -- 5 -- HEALER
-    auto healer = inventory->attachItem<Healer>(
-            Tile2D::resources().textures["inventory_healer"],
-            ItemTags::healer,
+    // -- 5 -- MEDIKIT
+    auto medikit = inventory->attachItem<Medikit>(
+            Tile2D::resources().textures["inventory_medikit"],
+            ItemTags::medikit,
             false
     );
-    healer->setPowerConsumption(100);
-    healer->setHealingAmount(100);
-    healer->setIsActivated(false);
-    healer->setCount(0);
+    medikit->setPowerConsumption(100);
+    medikit->setHealingAmount(100);
+    medikit->setIsActivated(false);
+    medikit->setCount(0);
 
     return player;
 }
@@ -233,159 +233,6 @@ GameObject *Prefabs::bomb() {
     auto bombBehaviour = bomb->attachComponent<BombBehaviour>();
 
     return bomb;
-}
-
-// ---- PICK UPS ----
-
-GameObject *Prefabs::gatlingPickup() {
-    return createPickup_(
-            Tile2D::resources().textures["pickup_gatling"],
-            [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
-                if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
-                    auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
-                    auto item = inventory->getItem(ItemTags::gatling);
-                    item->setIsActivated(true);
-                }
-            }
-    );
-}
-
-GameObject *Prefabs::plasmaCannonPickup() {
-    return createPickup_(
-            Tile2D::resources().textures["pickup_plasma_cannon"],
-            [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
-                if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
-                    auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
-                    auto item = inventory->getItem(ItemTags::plasmaCannon);
-                    item->setIsActivated(true);
-                }
-            }
-    );
-}
-
-
-GameObject* Prefabs::bombPickup() {
-    return createPickup_(
-            Tile2D::resources().textures["pickup_bomb"],
-            [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
-                if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
-                    auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
-                    auto item = inventory->getItem(ItemTags::bombDropper);
-                    item->setIsActivated(true);
-                    int countBefore = item->getCount();
-                    item->setCount(countBefore + 10);
-                }
-            }
-    );
-}
-
-GameObject* Prefabs::healerPickup() {
-    return createPickup_(
-            Tile2D::resources().textures["pickup_healer"],
-            [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
-                if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
-                    auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
-                    auto item = inventory->getItem(ItemTags::healer);
-                    item->setIsActivated(true);
-                    int countBefore = item->getCount();
-                    item->setCount(countBefore + 5);
-                }
-            }
-    );
-}
-
-GameObject* Prefabs::laserCannonUpgradePickup() {
-    return createPickup_(
-            Tile2D::resources().textures["pickup_laser_cannon_upgrade"],
-            [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
-                if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
-                    auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
-                    auto item = inventory->getItem(ItemTags::laser);
-                    auto laserCannon = dynamic_cast<Cannon*>(item);
-
-                    laserCannon->setOffsets({
-                                                    {-10, -13},
-                                                    {0,   0},
-                                                    {-10, 13}
-                                            });
-
-                    inventory->setItemTexture(
-                            ItemTags::laser,
-                            Tile2D::resources().textures["inventory_laser_cannon_upgraded"]
-                    );
-                }
-            }
-    );
-}
-
-GameObject* Prefabs::healthUpgradePickup() {
-    return createPickup_(
-            Tile2D::resources().textures["pickup_health_upgrade"],
-            [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
-                if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
-                    auto health = args.otherCollider->gameObject()->getComponent<Health>();
-                    auto currentMaxHealth = health->getMaxHealth();
-                    health->setMaxHealth(currentMaxHealth + 100);
-                    health->reset();
-                }
-            }
-    );
-}
-
-GameObject* Prefabs::powerUpgradePickup() {
-    return createPickup_(
-            Tile2D::resources().textures["pickup_power_upgrade"],
-            [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
-                if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
-                    auto power = args.otherCollider->gameObject()->getComponent<Power>();
-                    auto currentMaxPower = power->getMaxPower();
-                    power->setMaxPower(currentMaxPower + 100);
-                }
-            }
-    );
-}
-
-
-GameObject* Prefabs::createPickup_(
-        Texture *pickupTexture,
-        void (*onCollisionFunctionPtr)(PolygonCollider *, CollisionEventArgs)
-) {
-    auto pickup = Tile2D::createGameObject();
-
-    auto pickupSprite = pickup->attachComponent<Sprite>();
-    pickupSprite->setTexturePtr(pickupTexture);
-    pickupSprite->setRect({-20.0f, -20.0f, 20.0f, 20.0f});
-
-    auto pickupBgSprite = pickup->attachComponent<Sprite>();
-    pickupBgSprite->setTexturePtr(
-            Tile2D::resources().textures["pickup_bg"]
-    );
-    pickupBgSprite->setRect({-32.0f, -32.0f, 32.0f, 32.0f});
-
-    auto pickupBehaviour = pickup->attachComponent<Pickup>();
-    pickupBehaviour->setPickupBgSprite(pickupBgSprite);
-    pickupBehaviour->setBlinkingSpeed(1.0f);
-
-    auto pickupBody = pickup->attachComponent<Body>();
-    pickupBody->setMass(100.0f);
-    pickupBody->setDrag(1.0f);
-
-    auto pickupCollider = pickup->attachComponent<PolygonCollider>();
-    pickupCollider->setPoints({
-                                      {-20, -20},
-                                      {20, -20},
-                                      {20, 20},
-                                      {-20, 20}
-                              });
-    pickupCollider->setLayer(Tile2D::physicsWorld().getColliderLayerMatrix().getColliderLayer(4));
-    pickupCollider->collision.add(onCollisionFunctionPtr);
-    pickupCollider->collision.add([] (PolygonCollider* collider, CollisionEventArgs args) {
-        if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
-            collider->gameObject()->destroy();
-        }
-    });
-
-    return pickup;
 }
 
 // ---- EFFECTS ----

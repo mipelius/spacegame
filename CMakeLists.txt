@@ -244,8 +244,8 @@ set(SOURCE_FILES
         Game/SceneInGame/Items/Cannon.h
         Game/SceneInGame/Items/BombDropper.cpp
         Game/SceneInGame/Items/BombDropper.h
-        Game/SceneInGame/Items/Healer.cpp
-        Game/SceneInGame/Items/Healer.h
+        Game/SceneInGame/Items/Medikit.cpp
+        Game/SceneInGame/Items/Medikit.h
         Game/SceneInGame/Items/ItemTags.h
         Game/SceneInGame/SwirlingBehaviour.cpp
         Game/SceneInGame/SwirlingBehaviour.h

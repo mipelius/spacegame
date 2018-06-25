@@ -21,12 +21,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_HEALER_H
-#define SPACEGAME_HEALER_H
+#ifndef SPACEGAME_MEDIKIT_H
+#define SPACEGAME_MEDIKIT_H
 
 #include "ItemBase.h"
 
-class Healer : public ItemBase {
+class Medikit : public ItemBase {
 public:
     float getHealingAmount() const;
     void setHealingAmount(float healingAmount);
@@ -42,4 +42,4 @@ private:
 };
 
 
-#endif //SPACEGAME_HEALER_H
+#endif //SPACEGAME_MEDIKIT_H

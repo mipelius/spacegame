@@ -36,48 +36,38 @@
 class Prefabs {
 
 public:
-    static GameObject* player();
+    static GameObject *player();
 
     // effects
-    static GameObject* light();
-    static GameObject* bloodBurst();
-    static GameObject* explosion();
+    static GameObject *light();
 
-    // player pickups
-    static GameObject* gatlingPickup();
-    static GameObject* plasmaCannonPickup();
-    static GameObject* bombPickup();
-    static GameObject* healerPickup();
-    static GameObject* laserCannonUpgradePickup();
-    static GameObject* healthUpgradePickup();
-    static GameObject* powerUpgradePickup();
+    static GameObject *bloodBurst();
+
+    static GameObject *explosion();
 
     // other
-    static GameObject* hud(GameObject* player);
-    static GameObject* background(Rect area, const char* texture, Color color);
-    static GameObject* enemySpawner(
+    static GameObject *hud(GameObject *player);
+
+    static GameObject *background(Rect area, const char *texture, Color color);
+
+    static GameObject *enemySpawner(
             Rect area,
             GameObject *target,
-            const std::string& prefabString,
+            const std::string &prefabString,
             Uint32 spawningDelay
     );
-    static GameObject* pickupSpawner(
+
+    static GameObject *pickupSpawner(
             Rect area,
             GameObject *target,
-            const std::string& prefabString,
+            const std::string &prefabString,
             Uint32 spawningDelay,
             int itemTag,
             int maxItemCount,
             float minDistanceToTarget
     );
 
-    static GameObject* bomb();
-
-private:
-    static GameObject* createPickup_(
-        Texture* pickupTexture,
-        void (*onCollisionFunctionPtr)(PolygonCollider* collider, CollisionEventArgs args)
-    );
+    static GameObject *bomb();
 };
 
 #endif //SPACEGAME_PREFABS_H

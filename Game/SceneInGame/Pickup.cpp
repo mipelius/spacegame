@@ -24,23 +24,26 @@
 #include "Tile2D.h"
 #include "t2Time.h"
 #include "Pickup.h"
+#include "GameObject.h"
 
 void Pickup::awake() {
-
+    pickupBackgroundSprite_ = dynamic_cast<Sprite*>(
+        gameObject()->getComponent(pickupBackgroundSpriteId_)
+    );
 }
 
 void Pickup::update() {
-    if (pickupSprite_) {
+    if (pickupBackgroundSprite_) {
         phase_ += Tile2D::time().getDeltaTime();
         auto opacity = blinkingSpeed_ * (1.0f + sin(phase_ * 2 * M_PI)) / 2.0f;
-        pickupSprite_->setOpacity(opacity);
+        pickupBackgroundSprite_->setOpacity(opacity);
     }
 }
 
 void Pickup::lateUpdate() { }
 
 void Pickup::setPickupBgSprite(Sprite *pickupSprite) {
-    pickupSprite_ = pickupSprite;
+    pickupBackgroundSprite_ = pickupSprite;
 }
 
 float Pickup::getBlinkingSpeed() const {
@@ -49,4 +52,17 @@ float Pickup::getBlinkingSpeed() const {
 
 void Pickup::setBlinkingSpeed(float blinkingSpeed) {
     blinkingSpeed_ = blinkingSpeed;
+}
+
+Tile2DComponent *Pickup::clone() {
+    return new Pickup(*this);
+}
+
+void Pickup::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("pickupBackgroundSpriteId")) {
+        pickupBackgroundSpriteId_ = jsonObject["pickupBackgroundSpriteId"];
+    }
+    if (jsonObject.HasKey("blinkingSpeed")) {
+        blinkingSpeed_ = jsonObject["blinkingSpeed"];
+    }
 }

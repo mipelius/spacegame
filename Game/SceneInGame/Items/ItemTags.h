@@ -26,11 +26,11 @@
 
 namespace ItemTags {
     enum {
-        laser,
-        gatling,
-        bombDropper,
-        healer,
-        plasmaCannon
+        laser = 1,
+        gatling = 2,
+        bombDropper = 3,
+        medikit = 4,
+        plasmaCannon = 5
     };
 }
 
