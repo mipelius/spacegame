@@ -60,12 +60,12 @@ void DebugBehaviour::update() {
     };
 
     static const std::list<DebugEnemyCreationSetting> debugEnemyCreationSettings = {
-            { SDL_SCANCODE_F, "rider"    },
-            { SDL_SCANCODE_G, "walker"   },
-            { SDL_SCANCODE_H, "fish"     },
-            { SDL_SCANCODE_J, "trifly"   },
-            { SDL_SCANCODE_K, "wanderer" },
-            { SDL_SCANCODE_L, "boss"     }
+            { SDL_SCANCODE_F, "enemy_rider"    },
+            { SDL_SCANCODE_G, "enemy_walker"   },
+            { SDL_SCANCODE_H, "enemy_fish"     },
+            { SDL_SCANCODE_J, "enemy_trifly"   },
+            { SDL_SCANCODE_K, "enemy_wanderer" },
+            { SDL_SCANCODE_L, "enemy_boss"     }
     };
 
     for (auto debugEnemyCreationSetting : debugEnemyCreationSettings) {

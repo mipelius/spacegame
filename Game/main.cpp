@@ -34,8 +34,8 @@ int main(int argc, const char *argv[]) {
     Tile2D::load(
             "data/config.json",
             "data/resources.json",
-            "data/gameSetup/sortingLayers.json",
-            "data/gameSetup/colliderLayerMatrix.json",
+            "data/gameSetup/sorting_layers.json",
+            "data/gameSetup/collider_layer_matrix.json",
             "data/gameSetup/tags.json",
             {
                     {Scenes::titleScreen,    new SceneTitleScreen},

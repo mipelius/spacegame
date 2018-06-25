@@ -120,11 +120,11 @@ GameObject *Prefabs::player() {
 
     // -- 1 -- LASER
     auto laserCannon = inventory->attachItem<Cannon>(
-            Tile2D::resources().textures["laser_cannon"],
+            Tile2D::resources().textures["inventory_laser_cannon"],
             ItemTags::laser,
             true
     );
-    laserCannon->setAmmoPrefab(Tile2D::resources().prefabs["laserAmmo"]);
+    laserCannon->setAmmoPrefab(Tile2D::resources().prefabs["ammo_laser"]);
     laserCannon->setOffsets({
                                     {-10, -13},
                                     {-10, 13}
@@ -135,11 +135,11 @@ GameObject *Prefabs::player() {
 
     // -- 2 -- GATLING
     auto gatlingGun = inventory->attachItem<Cannon>(
-            Tile2D::resources().textures["gatling"],
+            Tile2D::resources().textures["inventory_gatling"],
             ItemTags::gatling,
             true
     );
-    gatlingGun->setAmmoPrefab(Tile2D::resources().prefabs["gatlingAmmo"]);
+    gatlingGun->setAmmoPrefab(Tile2D::resources().prefabs["ammo_gatling"]);
     gatlingGun->setOffsets({
                                    {-10, -13},
                                    {0,   0},
@@ -151,7 +151,7 @@ GameObject *Prefabs::player() {
 
     // -- 3 -- BOMBS
     auto bombDropper = inventory->attachItem<BombDropper>(
-            Tile2D::resources().textures["bomb"],
+            Tile2D::resources().textures["inventory_bomb"],
             ItemTags::bombDropper,
             false
     );
@@ -161,18 +161,18 @@ GameObject *Prefabs::player() {
 
     // -- 4 -- PLASMA
     auto plasmaCannon = inventory->attachItem<Cannon>(
-            Tile2D::resources().textures["plasma_cannon"],
+            Tile2D::resources().textures["inventory_plasma_cannon"],
             ItemTags::plasmaCannon,
             true
     );
-    plasmaCannon->setAmmoPrefab(Tile2D::resources().prefabs["plasmaAmmo"]);
+    plasmaCannon->setAmmoPrefab(Tile2D::resources().prefabs["ammo_plasma"]);
     plasmaCannon->setPowerConsumption(300);
     plasmaCannon->setReloadDelay(500);
     plasmaCannon->setIsActivated(false);
 
     // -- 5 -- HEALER
     auto healer = inventory->attachItem<Healer>(
-            Tile2D::resources().textures["healer"],
+            Tile2D::resources().textures["inventory_healer"],
             ItemTags::healer,
             false
     );
@@ -227,7 +227,7 @@ GameObject *Prefabs::bomb() {
     });
 
     auto sprite = bomb->attachComponent<Sprite>();
-    sprite->setTexturePtr(Tile2D::resources().textures["bomb"]);
+    sprite->setTexturePtr(Tile2D::resources().textures["ammo_bomb"]);
     sprite->setRect({-10, -10, 10, 10});
 
     auto bombBehaviour = bomb->attachComponent<BombBehaviour>();
@@ -239,7 +239,7 @@ GameObject *Prefabs::bomb() {
 
 GameObject *Prefabs::gatlingPickup() {
     return createPickup_(
-            Tile2D::resources().textures["gatling_box"],
+            Tile2D::resources().textures["pickup_gatling"],
             [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
                 if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
                     auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
@@ -252,7 +252,7 @@ GameObject *Prefabs::gatlingPickup() {
 
 GameObject *Prefabs::plasmaCannonPickup() {
     return createPickup_(
-            Tile2D::resources().textures["plasma_cannon_box"],
+            Tile2D::resources().textures["pickup_plasma_cannon"],
             [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
                 if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
                     auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
@@ -266,7 +266,7 @@ GameObject *Prefabs::plasmaCannonPickup() {
 
 GameObject* Prefabs::bombPickup() {
     return createPickup_(
-            Tile2D::resources().textures["bomb_box"],
+            Tile2D::resources().textures["pickup_bomb"],
             [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
                 if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
                     auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
@@ -281,7 +281,7 @@ GameObject* Prefabs::bombPickup() {
 
 GameObject* Prefabs::healerPickup() {
     return createPickup_(
-            Tile2D::resources().textures["healer_box"],
+            Tile2D::resources().textures["pickup_healer"],
             [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
                 if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
                     auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
@@ -296,7 +296,7 @@ GameObject* Prefabs::healerPickup() {
 
 GameObject* Prefabs::laserCannonUpgradePickup() {
     return createPickup_(
-            Tile2D::resources().textures["laser_cannon_upgrade_box"],
+            Tile2D::resources().textures["pickup_laser_cannon_upgrade"],
             [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
                 if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
                     auto inventory = args.otherCollider->gameObject()->getComponent<Inventory>();
@@ -311,7 +311,7 @@ GameObject* Prefabs::laserCannonUpgradePickup() {
 
                     inventory->setItemTexture(
                             ItemTags::laser,
-                            Tile2D::resources().textures["laser_cannon_upgraded"]
+                            Tile2D::resources().textures["inventory_laser_cannon_upgraded"]
                     );
                 }
             }
@@ -320,7 +320,7 @@ GameObject* Prefabs::laserCannonUpgradePickup() {
 
 GameObject* Prefabs::healthUpgradePickup() {
     return createPickup_(
-            Tile2D::resources().textures["health_upgrade"],
+            Tile2D::resources().textures["pickup_health_upgrade"],
             [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
                 if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
                     auto health = args.otherCollider->gameObject()->getComponent<Health>();
@@ -334,7 +334,7 @@ GameObject* Prefabs::healthUpgradePickup() {
 
 GameObject* Prefabs::powerUpgradePickup() {
     return createPickup_(
-            Tile2D::resources().textures["power_upgrade"],
+            Tile2D::resources().textures["pickup_power_upgrade"],
             [] (PolygonCollider* polygonCollider, CollisionEventArgs args) {
                 if (&args.otherCollider->gameObject()->getTag() == &Tile2D::getTag(0)) {
                     auto power = args.otherCollider->gameObject()->getComponent<Power>();
@@ -407,7 +407,7 @@ GameObject *Prefabs::light() {
 
     auto lightSprite = light->attachComponent<Sprite>();
     lightSprite->setRect({-40, -40, 40, 40});
-    lightSprite->setTexturePtr(Tile2D::resources().textures["light"]);
+    lightSprite->setTexturePtr(Tile2D::resources().textures["fx_light"]);
 
     auto lightLight = light->attachComponent<PointLight>();
     lightLight->setRadius(100.0);
@@ -458,7 +458,7 @@ GameObject* Prefabs::bloodBurst() {
         }
     });
     particles->setParticleRect({-32, -32, 32, 32});
-    particles->setTexturePtr(Tile2D::resources().textures["explosion_particle"]);
+    particles->setTexturePtr(Tile2D::resources().textures["fx_explosion_particle"]);
     particles->setMaxParticles(100);
     particles->setSpawnFrequency(300);
     particles->setBlendSourceFactor(GL_SRC_ALPHA);
@@ -511,7 +511,7 @@ GameObject *Prefabs::explosion() {
         }
     });
     explosionParticles->setParticleRect({-64, -64, 64, 64});
-    explosionParticles->setTexturePtr(Tile2D::resources().textures["explosion_particle"]);
+    explosionParticles->setTexturePtr(Tile2D::resources().textures["fx_explosion_particle"]);
     explosionParticles->setMaxParticles(100);
     explosionParticles->setSpawnFrequency(300);
     explosionParticles->setBlendSourceFactor(GL_SRC_ALPHA);

@@ -152,26 +152,26 @@ void SceneInGame::destroy() {
 
 
 void SceneInGame::initSnowWorld_(GameObject* player) {
-    Prefabs::enemySpawner({0.0f, 0.0f, 6400.0f, 2640.0f}, player, "fish", 3000);
+    Prefabs::enemySpawner({0.0f, 0.0f, 6400.0f, 2640.0f}, player, "enemy_fish", 3000);
     Prefabs::background({0.0f, 0.0f, 6400.0f, 2640.0f},       "bg2", {0.2f, 0.8f, 1.0f});
 }
 
 void SceneInGame::initGreenWorld_(GameObject* player) {
-    Prefabs::enemySpawner({0.0f, 2640.0f, 6400.0f, 6512.0f}, player, "walker", 3000);
+    Prefabs::enemySpawner({0.0f, 2640.0f, 6400.0f, 6512.0f}, player, "enemy_walker", 3000);
     Prefabs::background({0.0f, 2640.0f, 6400.0f, 6512.0f},    "bg2", {0.8f, 0.8f, 0.5f});
 }
 
 void SceneInGame::initBlueWorld_(GameObject* player) {
-    Prefabs::enemySpawner({0.0f, 6512.0f, 6400.0f, 10392.0f}, player, "trifly", 3000);
+    Prefabs::enemySpawner({0.0f, 6512.0f, 6400.0f, 10392.0f}, player, "enemy_trifly", 3000);
     Prefabs::background({0.0f, 6512.0f, 6400.0f, 10392.0f},   "bg1", {0.3f, 0.3f, 0.6f});
 }
 
 void SceneInGame::initRedWorld_(GameObject* player) {
-    Prefabs::enemySpawner({0.0f, 10392.0f, 6400.0f, 14400.0f}, player, "walker", 3000);
+    Prefabs::enemySpawner({0.0f, 10392.0f, 6400.0f, 14400.0f}, player, "enemy_walker", 3000);
     Prefabs::background({0.0f, 10392.0f, 6400.0f, 14400.0f},  "bg1", {0.6f, 0.3f, 0.3f});
 
     // boss
-    auto boss = Tile2D::resources().prefabs["boss"]->instantiate();
+    auto boss = Tile2D::resources().prefabs["enemy_boss"]->instantiate();
     boss->transform().setPosition({3016.0f, 13088.0f});
     boss->getComponent<EnemyAIBase>()->setTarget(&player->transform());
 }

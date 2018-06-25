@@ -50,7 +50,7 @@ void CollisionEffects::sparkle(const Vecf& position, const Vecf& velocity, const
     auto sparkleSprite = sparkle->attachComponent<Sprite>();
     sparkleSprite->setRect({-20, -20, 20, 20});
     sparkleSprite->setColor(color);
-    sparkleSprite->setTexturePtr(Tile2D::resources().textures["light"]);
+    sparkleSprite->setTexturePtr(Tile2D::resources().textures["fx_light"]);
 
     auto sparkleBehaviour = sparkle->attachComponent<SparkleBehaviour>();
 }
