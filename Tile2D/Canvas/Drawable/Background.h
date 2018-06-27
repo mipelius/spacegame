@@ -29,13 +29,14 @@
 
 class Texture;
 
-class Background : public DrawableBase {
-
+class Background : public DrawableBase
+{
 public:
     Background();
 
     void drawActual(const Canvas& canvas) override;
 
+    void deserialize(const json::Object &jsonObject) override;
     // getters and setters
 
     Texture *getTexturePtr() const;

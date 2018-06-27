@@ -30,21 +30,25 @@
 #include "Rect.h"
 #include "Background.h"
 
-class BackgroundBehaviour : public Tile2DBehaviour {
+class BackgroundBehaviour :
+    public Tile2DBehaviour,
+    public ISerializable
+{
 public:
     void setArea(const Rect &area);
-
-    BackgroundBehaviour() : area_ {0,0,0,0} { };
+    void deserialize(const json::Object &jsonObject) override;
 
 protected:
     void awake() override;
     void update() override;
     void lateUpdate() override;
 
+    Tile2DComponent *clone() override;
+
 private:
-    Background* bg;
-    float fadeInOutSpeed = 1.0;
-    Rect area_;
+    Background* bg_ = nullptr;
+    float fadeInOutSpeed_ = 1.0f;
+    Rect area_ = {0.0f, 0.0f, 0.0f, 0.0f};
 };
 
 #endif //SPACEGAME_BACKGROUNDBEHAVIOUR_H

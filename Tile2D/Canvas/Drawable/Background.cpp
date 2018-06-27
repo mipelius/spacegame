@@ -22,6 +22,8 @@
 // SOFTWARE.
 
 
+#include "Tile2D.h"
+#include "Resources.h"
 #include "precompile.h"
 #include "Background.h"
 #include "Texture.h"
@@ -92,4 +94,16 @@ void Background::setRatio(float ratio) {
 
 Tile2DComponent *Background::clone() {
     return new Background(*this);
+}
+
+void Background::deserialize(const json::Object &jsonObject) {
+    DrawableBase::deserialize(jsonObject);
+
+    if (jsonObject.HasKey("texture")) {
+        auto textureName = jsonObject["texture"].ToString();
+        texturePtr_ = Tile2D::resources().textures[textureName];
+    }
+    if (jsonObject.HasKey("ratio")) {
+        ratio_ = jsonObject["ratio"].ToFloat();
+    }
 }

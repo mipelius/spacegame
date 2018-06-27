@@ -30,7 +30,7 @@
 #include "GameObject.h"
 
 void BackgroundBehaviour::awake() {
-    bg = gameObject()->getComponent<Background>();
+    bg_ = gameObject()->getComponent<Background>();
 }
 
 void BackgroundBehaviour::update() {
@@ -40,19 +40,32 @@ void BackgroundBehaviour::update() {
 void BackgroundBehaviour::lateUpdate() {
     Camera* camera = Tile2D::canvas().getCamera();
 
-    float opacity = bg->getOpacity();
+    float opacity = bg_->getOpacity();
 
     if (area_.hasPointInside(camera->getPosition())) {
-        opacity += fadeInOutSpeed / 60;
+        opacity += fadeInOutSpeed_ / 60.0f;
     } else {
-        opacity -= fadeInOutSpeed / 60;
+        opacity -= fadeInOutSpeed_ / 60.0f;
     }
 
     Mathf::clamp(opacity, 0.0f, 1.0f);
 
-    bg->setOpacity(opacity);
+    bg_->setOpacity(opacity);
 }
 
 void BackgroundBehaviour::setArea(const Rect &area) {
     BackgroundBehaviour::area_ = area;
+}
+
+void BackgroundBehaviour::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("area")) {
+        area_.deserialize(jsonObject["area"].ToObject());
+    }
+    if (jsonObject.HasKey("fadeOutSpeed")) {
+        fadeInOutSpeed_ = jsonObject["fadeOutSpeed"].ToFloat();
+    }
+}
+
+Tile2DComponent *BackgroundBehaviour::clone() {
+    return new BackgroundBehaviour(*this);
 }

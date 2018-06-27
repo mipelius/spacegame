@@ -25,6 +25,9 @@
 #define SPACEGAME_BINDINGS_H
 
 #include <map>
+
+#include "Background.h"
+#include "BackgroundBehaviour.h"
 #include "Pickup.h"
 #include "ObjectCreator.h"
 
@@ -52,6 +55,8 @@ public:
                 // components
 
                 {"AnimatedSprite",                      new ObjectCreator<AnimatedSprite>()},
+                {"Background",                          new ObjectCreator<Background>()},
+                {"BackgroundBehaviour",                 new ObjectCreator<BackgroundBehaviour>()},
                 {"Body",                                new ObjectCreator<Body>()},
                 {"PolygonCollider",                     new ObjectCreator<PolygonCollider>()},
                 {"Sprite",                              new ObjectCreator<Sprite>()},
