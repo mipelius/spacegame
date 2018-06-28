@@ -38,6 +38,8 @@ public:
     explicit Font(std::string filename);
     ~Font();
 
+    void reload();
+
 private:
     class Letter {
     public:
@@ -56,6 +58,8 @@ private:
     Letter* getLetter(const char& ch);
 
     std::map<unsigned char, Letter*> mappings;
+
+    std::string filename_;
 };
 
 

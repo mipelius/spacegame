@@ -32,9 +32,12 @@
 class Music {
     friend class MusicPlayer;
 private:
-    Mix_Music* music;
+    Mix_Music* music_;
+    std::string filename_;
+
 public:
     explicit Music(std::string filename);
+    void reload();
     ~Music();
 };
 

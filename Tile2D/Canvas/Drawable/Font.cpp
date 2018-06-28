@@ -29,11 +29,35 @@
 #include "JsonFileManager.h"
 
 Font::Font(std::string filename) {
-    json::Object object = JsonFileManager::load(std::move(filename));
+    filename_ = filename;
+}
+
+Font::~Font() {
+    std::set<Letter*> lettersToDelete;
+
+    for (auto& pair : mappings) {
+        if (lettersToDelete.find(pair.second) == lettersToDelete.end()) {
+            lettersToDelete.insert(pair.second);
+        }
+    }
+
+    for (auto& letter : lettersToDelete) {
+        delete letter;
+    }
+}
+
+
+Font::Letter *Font::getLetter(const char& ch) {
+    return mappings[ch];
+}
+
+void Font::reload() {
+    json::Object object = JsonFileManager::load(std::move(filename_));
 
     std::string fontTextureFilename = object["imgFile"];
 
     fontTexture_ = new Texture(fontTextureFilename, GL_NEAREST, GL_NEAREST);
+    fontTexture_->reload();
 
     json::Array mappingsArray = object["mappings"];
 
@@ -55,24 +79,5 @@ Font::Font(std::string filename) {
             mappings.insert(pair);
         }
     }
-
 }
 
-Font::~Font() {
-    std::set<Letter*> lettersToDelete;
-
-    for (auto& pair : mappings) {
-        if (lettersToDelete.find(pair.second) == lettersToDelete.end()) {
-            lettersToDelete.insert(pair.second);
-        }
-    }
-
-    for (auto& letter : lettersToDelete) {
-        delete letter;
-    }
-}
-
-
-Font::Letter *Font::getLetter(const char& ch) {
-    return mappings[ch];
-}

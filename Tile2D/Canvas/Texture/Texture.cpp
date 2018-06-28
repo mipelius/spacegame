@@ -31,19 +31,39 @@ Texture::Texture(
         GLint       minFilter,
         GLint       magFilter
 ) {
+    filepath_ = filename;
+    minFilter_ = minFilter;
+    magFilter_ = magFilter;
+}
+
+void Texture::glBind() const {
+    glBindTexture(GL_TEXTURE_2D, texture_);
+}
+
+int Texture::getW() const {
+    return this->w_;
+}
+
+int Texture::getH() const {
+    return this->h_;
+}
+
+void Texture::reload() {
     SDL_Surface *surface;    // This surface will tell us the details of the image
     GLenum texture_format = GL_NONE;
     GLint nOfColors;
 
-	surface = IMG_Load((Tile2D::getResourcePath() + filename).data());
+    surface = IMG_Load((Tile2D::getResourcePath() + filepath_).data());
     if (!surface)
-	{
-		std::string error = "Could not load texture file: ";
-		error=error.append(SDL_GetError());
-		throw std::exception();
-	}
+    {
+        std::string error = "Could not load texture file: ";
+        error=error.append(SDL_GetError());
+        throw std::exception();
+    }
 
-	this->w_ = surface->w;
+    std::cout << filepath_ << "\n";
+
+    this->w_ = surface->w;
     this->h_ = surface->h;
 
 #ifdef DEBUG
@@ -84,26 +104,14 @@ Texture::Texture(
     glBindTexture(GL_TEXTURE_2D, texture_);
 
     // Set the texture's stretching properties
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter_);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter_);
 
     // Edit the texture object's image data using the information SDL_Surface gives us
     glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, surface->w, surface->h, 0,
-            texture_format, GL_UNSIGNED_BYTE, surface->pixels);
+                 texture_format, GL_UNSIGNED_BYTE, surface->pixels);
 
     // Free the SDL_Surface only if it was successfully created
     SDL_FreeSurface(surface);
 
-}
-
-void Texture::glBind() const {
-    glBindTexture(GL_TEXTURE_2D, texture_);
-}
-
-int Texture::getW() const {
-    return this->w_;
-}
-
-int Texture::getH() const {
-    return this->h_;
 }

@@ -29,7 +29,7 @@ class GameObject;
 class Prefab {
 
 public:
-    GameObject* instantiate();
+    GameObject* instantiate() const;
 
     explicit Prefab(const std::string& prefabPath);
     ~Prefab();

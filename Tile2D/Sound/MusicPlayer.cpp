@@ -32,7 +32,7 @@ MusicPlayer* MusicPlayer::instance_ = nullptr;
 
 void MusicPlayer::musicFinished() {
     if (!nextMusic_) return;
-    Mix_FadeInMusic(nextMusic_->music, -1, FADING_MS);
+    Mix_FadeInMusic(nextMusic_->music_, -1, FADING_MS);
 }
 
 MusicPlayer::MusicPlayer() : Player() {
@@ -45,7 +45,7 @@ void MusicPlayer::play(Music *music) {
         Mix_FadeOutMusic(FADING_MS);
     }
     else {
-        Mix_PlayMusic(music->music, -1);
+        Mix_PlayMusic(music->music_, -1);
     }
 }
 

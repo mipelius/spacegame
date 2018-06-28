@@ -32,8 +32,13 @@ void Resources::init(const std::string& resourcesFile) {
     sfx.init(             obj["sfx"]            );
     music.init(           obj["music"]          );
     fonts.init(           obj["fonts"]          );
-
-    // init prefabs last since it might depend on other resources
     prefabs.init(         obj["prefabs"]        );
+
+    textures.reload();
+    animations.reload();
+    sfx.reload();
+    music.reload();
+    fonts.reload();
+    prefabs.reload();
 }
 

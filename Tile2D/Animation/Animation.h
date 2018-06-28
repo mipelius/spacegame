@@ -30,14 +30,17 @@
 class Animation {
 
 private:
-    Texture* texture_;
+    Texture* texture_ = nullptr;
     int spriteWidth_;
     int spriteHeight_;
     int frames_;
+    std::string filepath_;
 
 public:
     explicit Animation(std::string filepath);
     ~Animation();
+
+    void reload();
 
     const Texture *getTexture() const;
     Rect getTexCoords(int frame) const;

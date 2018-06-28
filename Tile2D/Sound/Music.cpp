@@ -27,9 +27,14 @@
 #include "Tile2D.h"
 
 Music::Music(std::string filename) {
-    this->music = Mix_LoadMUS((Tile2D::getResourcePath() + filename).data());
+    filename_ = filename;
+    this->music_ = Mix_LoadMUS((Tile2D::getResourcePath() + filename).data());
 }
 
 Music::~Music() {
-    Mix_FreeMusic(music);
+    Mix_FreeMusic(music_);
+}
+
+void Music::reload() {
+    this->music_ = Mix_LoadMUS((Tile2D::getResourcePath() + filename_).data());
 }

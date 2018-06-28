@@ -29,14 +29,7 @@ int Animation::getFrames() const {
 }
 
 Animation::Animation(std::string filepath) {
-    auto jsonObj = JsonFileManager::load(std::move(filepath));
-
-    spriteWidth_ = jsonObj["spriteWidth"].ToInt();
-    spriteHeight_ = jsonObj["spriteHeight"].ToInt();
-    frames_ = jsonObj["frames"].ToInt();
-
-    auto texturePath = jsonObj["texture"].ToString();
-    texture_ = new Texture(texturePath);
+    filepath_ = filepath;
 }
 
 Animation::~Animation() {
@@ -67,4 +60,18 @@ Rect Animation::getTexCoords(int frame) const {
 
 const Texture *Animation::getTexture() const {
     return texture_;
+}
+
+void Animation::reload() {
+    delete texture_;
+
+    auto jsonObj = JsonFileManager::load(filepath_);
+
+    spriteWidth_ = jsonObj["spriteWidth"].ToInt();
+    spriteHeight_ = jsonObj["spriteHeight"].ToInt();
+    frames_ = jsonObj["frames"].ToInt();
+
+    auto texturePath = jsonObj["texture"].ToString();
+    texture_ = new Texture(texturePath);
+    texture_->reload();
 }

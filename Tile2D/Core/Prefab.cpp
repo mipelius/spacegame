@@ -27,7 +27,6 @@
 
 Prefab::Prefab(const std::string& prefabPath) {
     prefabPath_ = prefabPath;
-    reload();
 }
 
 Prefab::~Prefab() {
@@ -35,7 +34,7 @@ Prefab::~Prefab() {
     delete gameObject_;
 }
 
-GameObject *Prefab::instantiate() {
+GameObject *Prefab::instantiate() const{
     return gameObject_->clone();
 }
 

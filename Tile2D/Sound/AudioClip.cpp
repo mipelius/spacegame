@@ -27,9 +27,13 @@
 #include "Tile2D.h"
 
 AudioClip::AudioClip(std::string filename) {
-    chunk_ = Mix_LoadWAV((Tile2D::getResourcePath() + filename).data());
+    filepath_ = filename;
 }
 
 AudioClip::~AudioClip() {
     Mix_FreeChunk(this->chunk_);
+}
+
+void AudioClip::reload() {
+    chunk_ = Mix_LoadWAV((Tile2D::getResourcePath() + filepath_).data());
 }

@@ -34,8 +34,11 @@ public:
     explicit AudioClip(std::string filename);
     ~AudioClip();
 
+    void reload();
+
 private:
     Mix_Chunk* chunk_;
+    std::string filepath_;
 
 };
 

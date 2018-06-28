@@ -33,6 +33,9 @@ private:
     GLuint texture_;
     int w_;
     int h_;
+    std::string filepath_;
+    GLint minFilter_;
+    GLint magFilter_;
 
 public:
     int getW() const;
@@ -43,6 +46,8 @@ public:
             GLint       minFilter = GL_LINEAR,
             GLint       magFilter = GL_LINEAR
     );
+
+    void reload();
 
     void glBind() const;
 };
