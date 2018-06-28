@@ -41,3 +41,9 @@ void BombBehaviour::update() {
 void BombBehaviour::lateUpdate() {
     transform()->setRotation(body_->getVelocity().angle());
 }
+
+void BombBehaviour::deserialize(const json::Object &jsonObject) { }
+
+Tile2DComponent *BombBehaviour::clone() {
+    return new BombBehaviour(*this);
+}

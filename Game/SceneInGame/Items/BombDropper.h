@@ -25,13 +25,20 @@
 #define SPACEGAME_BOMBDROPPER_H
 
 #include "WeaponBase.h"
+#include "Prefab.h"
 
-class BombDropper : public WeaponBase {
+class BombDropper : public WeaponBase
+{
 public:
     ItemBase *clone() override;
+    void deserialize(const json::Object &jsonObject) override;
+    Prefab *getBombPrefab_() const;
+    void setBombPrefab_(Prefab *bombPrefab_);
 
 protected:
     void shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) override;
+    Prefab* bombPrefab_ = nullptr;
+
 };
 
 

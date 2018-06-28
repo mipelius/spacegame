@@ -25,6 +25,8 @@
 #define SPACEGAME_BINDINGS_H
 
 #include <map>
+#include "BombBehaviour.h"
+#include "BombDropper.h"
 
 #include "Background.h"
 #include "BackgroundBehaviour.h"
@@ -58,6 +60,8 @@ public:
                 {"Background",                          new ObjectCreator<Background>()},
                 {"BackgroundBehaviour",                 new ObjectCreator<BackgroundBehaviour>()},
                 {"Body",                                new ObjectCreator<Body>()},
+                {"BombDropper",                         new ObjectCreator<BombDropper>()},
+                {"BombBehaviour",                       new ObjectCreator<BombBehaviour>()},
                 {"PolygonCollider",                     new ObjectCreator<PolygonCollider>()},
                 {"Sprite",                              new ObjectCreator<Sprite>()},
                 {"FlyingEnemyAI",                       new ObjectCreator<FlyingEnemyAI>()},
@@ -69,9 +73,12 @@ public:
                 {"PointLight",                          new ObjectCreator<PointLight>()},
                 {"WalkingEnemyAI",                      new ObjectCreator<WalkingEnemyAI>()},
                 {"Pickup",                              new ObjectCreator<Pickup>()},
+                {"PulseLightBehaviour",                 new ObjectCreator<PulseLightBehaviour>()},
 
                 // EventHandlers
 
+                {"BombCollisionHandler",                new ObjectCreator<BombCollisionHandler>()},
+                {"BombTerrainCollisionHandler",         new ObjectCreator<BombTerrainCollisionHandler>()},
                 {"DeathHandler",                        new ObjectCreator<DeathHandler>()},
                 {"AmmoCollisionDamageHandler",          new ObjectCreator<AmmoCollisionDamageHandler>()},
                 {"AmmoTerrainCollisionHandler",         new ObjectCreator<AmmoTerrainCollisionHandler>()},

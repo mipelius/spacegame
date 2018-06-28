@@ -158,6 +158,7 @@ GameObject *Prefabs::player() {
     bombDropper->setPowerConsumption(200);
     bombDropper->setCount(0);
     bombDropper->setIsActivated(false);
+    bombDropper->setBombPrefab_(Tile2D::resources().prefabs["ammo_bomb"]);
 
     // -- 4 -- PLASMA
     auto plasmaCannon = inventory->attachItem<Cannon>(

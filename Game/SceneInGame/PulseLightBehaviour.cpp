@@ -67,3 +67,21 @@ Uint32 PulseLightBehaviour::getTimeToStartDiminish() const {
 void PulseLightBehaviour::setTimeToStartDiminish(Uint32 timeToStartDiminish) {
     timeToStartDiminish_ = timeToStartDiminish;
 }
+
+void PulseLightBehaviour::deserialize(const json::Object &jsonObject) {
+    LimitedLifetimeBehaviour::deserialize(jsonObject);
+
+    if (jsonObject.HasKey("radiusDiminishSpeed")) {
+        radiusDiminishSpeed_ = jsonObject["radiusDiminishSpeed"].ToFloat();
+    }
+    if (jsonObject.HasKey("intensityDiminishSpeed")) {
+        intensityDiminishSpeed_ = jsonObject["intensityDiminishSpeed"].ToFloat();
+    }
+    if (jsonObject.HasKey("timeToStartDiminish")) {
+        timeToStartDiminish_ = (Uint32)jsonObject["timeToStartDiminish"].ToInt();
+    }
+}
+
+Tile2DComponent *PulseLightBehaviour::clone() {
+    return new PulseLightBehaviour(*this);
+}

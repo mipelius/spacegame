@@ -30,7 +30,10 @@
 #include "Body.h"
 #include "Sprite.h"
 
-class BombBehaviour : public Tile2DBehaviour {
+class BombBehaviour :
+        public Tile2DBehaviour,
+        public ISerializable
+{
 
 protected:
     void awake() override;
@@ -38,6 +41,11 @@ protected:
     void lateUpdate() override;
 
     Body* body_;
+
+    Tile2DComponent *clone() override;
+
+public:
+    void deserialize(const json::Object &jsonObject) override;
 };
 
 #endif //SPACEGAME_BOMBBEHAVIOUR_H

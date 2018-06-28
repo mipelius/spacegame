@@ -28,7 +28,9 @@
 #include "PointLight.h"
 #include "LimitedLifetimeBehaviour.h"
 
-class PulseLightBehaviour : public LimitedLifetimeBehaviour {
+class PulseLightBehaviour :
+        public LimitedLifetimeBehaviour
+{
 public:
     float getRadiusDiminishSpeed() const;
     void setRadiusDiminishSpeed(float radiusDiminishSpeed);
@@ -37,11 +39,15 @@ public:
     Uint32 getTimeToStartDiminish() const;
     void setTimeToStartDiminish(Uint32 timeToStartDiminish);
 
+    void deserialize(const json::Object &jsonObject) override;
+
 protected:
     void awake() override;
     void update() override;
 
     void lateUpdate() override;
+
+    Tile2DComponent *clone() override;
 
 private:
     float radiusDiminishSpeed_ = 1.0f;

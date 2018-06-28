@@ -24,11 +24,13 @@
 #include "Tile2D.h"
 #include "PhysicsWorld.h"
 #include "Body.h"
-#include "Prefabs.h"
+#include "Prefab.h"
+#include "Resources.h"
 #include "BombDropper.h"
+#include "GameObject.h"
 
 void BombDropper::shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) {
-    auto bomb = Prefabs::bomb();
+    auto bomb = bombPrefab_->instantiate();
     bomb->transform().setPosition(from);
     bomb->getComponent<Body>()->setVelocity(shooterVelocity / 2 + Vecf(0, 100));
 
@@ -38,4 +40,19 @@ void BombDropper::shoot(const Vecf &from, const Vecf &direction, const Vecf &sho
 
 ItemBase *BombDropper::clone() {
     return new BombDropper(*this);
+}
+
+void BombDropper::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("bombPrefab")) {
+        auto bombPrefabName = jsonObject["bombPrefab"].ToString();
+        bombPrefab_ = Tile2D::resources().prefabs[bombPrefabName];
+    }
+}
+
+Prefab *BombDropper::getBombPrefab_() const {
+    return bombPrefab_;
+}
+
+void BombDropper::setBombPrefab_(Prefab *bombPrefab_) {
+    BombDropper::bombPrefab_ = bombPrefab_;
 }
