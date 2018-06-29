@@ -25,6 +25,7 @@
 #define SPACEGAME_BINDINGS_H
 
 #include <map>
+#include "ExplosionBehaviour.h"
 #include "BombBehaviour.h"
 #include "BombDropper.h"
 
@@ -74,6 +75,7 @@ public:
                 {"WalkingEnemyAI",                      new ObjectCreator<WalkingEnemyAI>()},
                 {"Pickup",                              new ObjectCreator<Pickup>()},
                 {"PulseLightBehaviour",                 new ObjectCreator<PulseLightBehaviour>()},
+                {"ExplosionBehaviour",                  new ObjectCreator<ExplosionBehaviour>()},
 
                 // EventHandlers
 

@@ -117,41 +117,14 @@ public:
     }
 };
 
-class Explode {
-
-public:
-    void operator() (const Vecf& position, int explosionRadius) const {
-        auto tileW = Tile2D::tileMap().getTileSet()->getTileW();
-        auto tileH = Tile2D::tileMap().getTileSet()->getTileH();
-
-        for (auto x=-explosionRadius; x<explosionRadius; ++x) {
-            for (auto y=-explosionRadius; y<explosionRadius; ++y) {
-                if (Vecf((float)x, (float)y).length() > explosionRadius) {
-                    continue;
-                }
-                Vecf offset = {
-                        (float)(x * tileW),
-                        (float)(y * tileH)
-                };
-                Tile2D::tileMap().setValueScaled(
-                        position + offset,
-                        Tile2D::tileMap().getTileSet()->getEmptyBlock()
-                );
-            }
-        }
-    };
-};
-
 class BombCollisionHandler : public AmmoCollisionDamageHandler {
 private:
     int explosionRadius_ = 5;
-    Explode explode_;
     Prefab* explosionPrefab_;
 
 public:
     void handle(PolygonCollider* owner, CollisionEventArgs args) const override {
         AmmoCollisionDamageHandler::handle(owner, args);
-        explode_(owner->transform()->getPosition(), explosionRadius_);
         auto explosion = explosionPrefab_->instantiate();
         explosion->transform().setPosition(owner->transform()->getPosition());
     }
@@ -159,9 +132,7 @@ public:
 
     void deserialize(const json::Object &jsonObject) override {
         AmmoCollisionDamageHandler::deserialize(jsonObject);
-        if (jsonObject.HasKey("explosionRadius")) {
-            explosionRadius_ = jsonObject["explosionRadius"];
-        }
+
         if (jsonObject.HasKey("explosionPrefab")) {
             auto explosionPrefabName = jsonObject["explosionPrefab"].ToString();
             explosionPrefab_ = Tile2D::resources().prefabs[explosionPrefabName];
@@ -178,22 +149,16 @@ class BombTerrainCollisionHandler :
         public ISerializable
 {
 private:
-    int explosionRadius_ = 5;
-    Explode explode_;
     Prefab* explosionPrefab_;
 
 public:
     void handle(PolygonCollider* owner, TerrainCollisionEventArgs args) const override {
         owner->gameObject()->destroy();
-        explode_(owner->transform()->getPosition(), explosionRadius_);
         auto explosion = explosionPrefab_->instantiate();
         explosion->transform().setPosition(owner->transform()->getPosition());
     }
 
     void deserialize(const json::Object &jsonObject) override {
-        if (jsonObject.HasKey("explosionRadius")) {
-            explosionRadius_ = jsonObject["explosionRadius"];
-        }
         if (jsonObject.HasKey("explosionPrefab")) {
             auto explosionPrefabName = jsonObject["explosionPrefab"].ToString();
             explosionPrefab_ = Tile2D::resources().prefabs[explosionPrefabName];
