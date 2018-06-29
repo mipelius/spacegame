@@ -58,10 +58,8 @@ void Texture::reload() {
     {
         std::string error = "Could not load texture file: ";
         error=error.append(SDL_GetError());
-        throw std::exception();
+        throw std::runtime_error(error);
     }
-
-    std::cout << filepath_ << "\n";
 
     this->w_ = surface->w;
     this->h_ = surface->h;
