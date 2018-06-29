@@ -96,7 +96,7 @@ GameObject *Prefabs::player() {
     health->setMaxHealth(300);
     health->setAutoHealingRate(30);
     health->onDeath.add([] (Health* health, GameObjectDiedEventArgs args) {
-        GameObject* spaceShipExplosion = explosion();
+        GameObject* spaceShipExplosion = Tile2D::resources().prefabs["fx_explosion"]->instantiate();
         spaceShipExplosion->transform().setPosition(health->transform()->getPosition());
         health->gameObject()->setIsActive(false);
 
@@ -185,57 +185,6 @@ GameObject *Prefabs::player() {
     return player;
 }
 
-
-GameObject *Prefabs::bomb() {
-    static const int explosionRadius = 10; // tiles
-
-    auto bomb = Tile2D::createGameObject();
-
-    auto body = bomb->attachComponent<Body>();
-    body->setMass(50);
-
-    auto collider = bomb->attachComponent<PolygonCollider>();
-    collider->setPoints({{-9, -4}, {9, -4}, {9, 4}, {-9, 4}});
-    collider->terrainCollision.add([] (PolygonCollider* collider, TerrainCollisionEventArgs args) {
-        for (auto x=-explosionRadius; x<explosionRadius; ++x) {
-            for (auto y=-explosionRadius; y<explosionRadius; ++y) {
-                if (Vecf((float)x, (float)y).length() > explosionRadius) {
-                    continue;
-                }
-                Vecf offset = {
-                        (float)(x * Tile2D::tileMap().getTileSet()->getTileW()),
-                        (float)(y * Tile2D::tileMap().getTileSet()->getTileH())
-                };
-                Tile2D::tileMap().setValueScaled(
-                        args.tileCoordinates + offset + args.velocityBeforeCollision.normalized() * 30.0f,
-                        Tile2D::tileMap().getTileSet()->getEmptyBlock()
-                );
-            }
-        }
-
-        collider->gameObject()->getComponent<Sprite>()->setIsVisible(false);
-        collider->gameObject()->destroy();
-
-        auto explosion = Prefabs::explosion();
-
-        explosion->transform() = *(collider->transform());
-        explosion->transform().setPosition(
-                explosion->transform().getPosition() +
-                args.velocityBeforeCollision.normalized() * 30.0f
-        );
-
-        explosion->transform().setScale({0.75, 0.75});
-    });
-
-    auto sprite = bomb->attachComponent<Sprite>();
-    sprite->setTexturePtr(Tile2D::resources().textures["ammo_bomb"]);
-    sprite->setRect({-10, -10, 10, 10});
-
-    auto bombBehaviour = bomb->attachComponent<BombBehaviour>();
-
-    return bomb;
-}
-
 // ---- EFFECTS ----
 
 GameObject *Prefabs::light() {
@@ -264,124 +213,7 @@ GameObject *Prefabs::light() {
     return light;
 }
 
-GameObject* Prefabs::bloodBurst() {
-    auto bloodBurst = Tile2D::createGameObject();
-
-    auto light = bloodBurst->attachComponent<PointLight>();
-    light->setRadius(300.0f);
-    light->setIntensity(1.0f);
-
-    auto pulseLightBehaviour = bloodBurst->attachComponent<PulseLightBehaviour>();
-    pulseLightBehaviour->setTimeToLive(2000);
-    pulseLightBehaviour->setTimeToStartDiminish(1000);
-    pulseLightBehaviour->setRadiusDiminishSpeed(0.5f);
-    pulseLightBehaviour->setIntensityDiminishSpeed(1.5f);
-
-    auto particles = bloodBurst->attachComponent<ParticleSystem>();
-    particles->setPlaysOnce(true);
-    particles->setInitializer([](Particle *particle) {
-        Vecf pos = {(rand() % 10) * 5.0f - 25.0f, (rand() % 10) * 5.0f - 25.0f};
-        pos *= 2;
-        particle->getTransform().setPosition(pos);
-        particle->getTransform().setRotation(rand() % 360);
-        float size = 0.25f + (rand() % 255) / 255.0f;
-        particle->getTransform().setScale({size, size});
-        particle->setVelocity(pos.normalized() * (rand() % 2 + 3.0f));
-        particle->setColor({1.0f, 0.0f, 0.0f});
-        particle->setOpacity((rand() % 200) / 400.0f + 0.5f);
-    });
-    particles->setUpdater([](Particle *particle) {
-        if (particle->getTimeLived() > 2000) {
-            particle->destroy();
-        } else {
-            auto deltaTime = Tile2D::time().getDeltaTime() * 60.0f;
-
-            Vecf pos = particle->getTransform().getPosition();
-            particle->getTransform().setRotation(particle->getTransform().getRotation() + 1.0f * deltaTime);
-            particle->getTransform().setPosition(pos + particle->getVelocity() * deltaTime);
-            particle->setOpacity(particle->getOpacity() - 0.01f * deltaTime);
-            float newSize = particle->getTransform().getScale().x - 0.007f * deltaTime;
-            Mathf::clamp(newSize, 0.0f, 100.0f);
-            particle->getTransform().setScale({newSize, newSize});
-        }
-    });
-    particles->setParticleRect({-32, -32, 32, 32});
-    particles->setTexturePtr(Tile2D::resources().textures["fx_explosion_particle"]);
-    particles->setMaxParticles(100);
-    particles->setSpawnFrequency(300);
-    particles->setBlendSourceFactor(GL_SRC_ALPHA);
-    particles->setBlendDestinationFactor(GL_ONE);
-
-    bloodBurst->transform().setScale({0.5, 0.5});
-
-    return bloodBurst;
-}
-
-GameObject *Prefabs::explosion() {
-    auto explosion = Tile2D::createGameObject();
-
-    auto explosionLight = explosion->attachComponent<PointLight>();
-    explosionLight->setRadius(300.0f);
-    explosionLight->setIntensity(1.0f);
-
-    auto explosionPulseLightBehaviour = explosion->attachComponent<PulseLightBehaviour>();
-    explosionPulseLightBehaviour->setTimeToLive(2000);
-    explosionPulseLightBehaviour->setTimeToStartDiminish(1000);
-    explosionPulseLightBehaviour->setRadiusDiminishSpeed(0.5f);
-    explosionPulseLightBehaviour->setIntensityDiminishSpeed(1.5f);
-
-    auto explosionParticles = explosion->attachComponent<ParticleSystem>();
-    explosionParticles->setPlaysOnce(true);
-    explosionParticles->setInitializer([](Particle *particle) {
-        Vecf pos = {(rand() % 10) * 5.0f - 25.0f, (rand() % 10) * 5.0f - 25.0f};
-        pos *= 2;
-        particle->getTransform().setPosition(pos);
-        particle->getTransform().setRotation(rand() % 360);
-        float size = 0.5f + (rand() % 255) / 255.0f;
-        particle->getTransform().setScale({size, size});
-        particle->setVelocity(pos.normalized() * (rand() % 2 + 3.0f));
-        particle->setColor({1.0f, 1.0f, 1.0f});
-        particle->setOpacity((rand() % 200) / 400.0f + 0.5f);
-    });
-    explosionParticles->setUpdater([](Particle *particle) {
-        if (particle->getTimeLived() > 2000) {
-            particle->destroy();
-        } else {
-            auto deltaTime = Tile2D::time().getDeltaTime() * 60.0f;
-
-            Vecf pos = particle->getTransform().getPosition();
-            particle->getTransform().setRotation(particle->getTransform().getRotation() + 1.0f * deltaTime);
-            particle->getTransform().setPosition(pos + (particle->getVelocity() * deltaTime));
-            particle->setOpacity(particle->getOpacity() - (0.01f * deltaTime));
-            float newSize = particle->getTransform().getScale().x - 0.007f * deltaTime;
-            Mathf::clamp(newSize, 0.0f, 100.0f);
-            particle->getTransform().setScale({newSize, newSize});
-        }
-    });
-    explosionParticles->setParticleRect({-64, -64, 64, 64});
-    explosionParticles->setTexturePtr(Tile2D::resources().textures["fx_explosion_particle"]);
-    explosionParticles->setMaxParticles(100);
-    explosionParticles->setSpawnFrequency(300);
-    explosionParticles->setBlendSourceFactor(GL_SRC_ALPHA);
-    explosionParticles->setBlendDestinationFactor(GL_ONE);
-
-    return explosion;
-}
-
 // --- OTHER ---
-
-GameObject *Prefabs::background(Rect area, const char *texture, Color color) {
-    auto background = Tile2D::createGameObject();
-    auto bg = background->attachComponent<Background>();
-    bg->setRatio(0.5f);
-    bg->setTexturePtr(Tile2D::resources().textures[texture]);
-    bg->setColor(color);
-    bg->setOpacity(0.0f);
-    bg->setSortingLayer(Tile2D::canvas().getSortingLayer(0));
-    auto bgBehaviour = background->attachComponent<BackgroundBehaviour>();
-    bgBehaviour->setArea(area);
-    return background;
-}
 
 GameObject *Prefabs::enemySpawner(
         Rect area,

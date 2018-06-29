@@ -150,14 +150,22 @@ class DeathHandler :
         public IEventHandler<Health, GameObjectDiedEventArgs>,
         public ISerializable
 {
+private:
+    Prefab* bloodBurstPrefab_;
+
 public:
     void handle(Health* health, GameObjectDiedEventArgs args) const override {
         health->gameObject()->destroy();
-        auto bloodBurst = Prefabs::bloodBurst();
+        auto bloodBurst = bloodBurstPrefab_->instantiate();
         bloodBurst->transform().setPosition(health->transform()->getPosition());
     }
 
-    void deserialize(const json::Object &jsonObject) override { }
+    void deserialize(const json::Object &jsonObject) override {
+        if (jsonObject.HasKey("bloodBurstPrefab")) {
+            auto explosionPrefabName = jsonObject["bloodBurstPrefab"].ToString();
+            bloodBurstPrefab_ = Tile2D::resources().prefabs[explosionPrefabName];
+        }
+    }
 
     IEventHandler<Health, GameObjectDiedEventArgs>* clone() override {
         return new DeathHandler(*this);
