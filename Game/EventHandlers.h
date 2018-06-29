@@ -83,6 +83,9 @@ protected:
 };
 
 class AmmoCollisionDamageHandler : public CollisionDamageHandlerBase {
+private:
+    Prefab* explosionPrefab_ = nullptr;
+
 public:
     void damage(Health *targetHealth, PolygonCollider *owner, CollisionEventArgs args) const override {
         targetHealth->damage(damage_, owner->gameObject());
@@ -90,6 +93,20 @@ public:
 
         CollisionEffects::sparkles(owner->transform()->getPosition(), args.contactNormal, {1, 0, 0});
         CollisionEffects::pulseLight(owner->transform()->getPosition());
+
+        if (explosionPrefab_ != nullptr) {
+            auto explosion = explosionPrefab_->instantiate();
+            explosion->transform().setPosition(owner->transform()->getPosition());
+        }
+    }
+
+    void deserialize(const json::Object &jsonObject) override {
+        CollisionDamageHandlerBase::deserialize(jsonObject);
+
+        if (jsonObject.HasKey("explosionPrefab")) {
+            auto explosionPrefabName = jsonObject["explosionPrefab"].ToString();
+            explosionPrefab_ = Tile2D::resources().prefabs[explosionPrefabName];
+        }
     }
 
     IEventHandler<PolygonCollider, CollisionEventArgs> *clone() override {
@@ -101,6 +118,8 @@ class AmmoTerrainCollisionHandler :
         public IEventHandler<PolygonCollider, TerrainCollisionEventArgs>,
         public ISerializable
 {
+private:
+    Prefab* explosionPrefab_ = nullptr;
 
 public:
     void handle(PolygonCollider* owner, TerrainCollisionEventArgs args) const override {
@@ -108,65 +127,22 @@ public:
         Tile2D::tileMap().setValueScaled(args.tileCoordinates, Tile2D::tileMap().getTileSet()->getEmptyBlock());
         CollisionEffects::sparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
         CollisionEffects::pulseLight(owner->transform()->getPosition());
+
+        if (explosionPrefab_ != nullptr) {
+            auto explosion = explosionPrefab_->instantiate();
+            explosion->transform().setPosition(owner->transform()->getPosition());
+        }
     }
 
-    void deserialize(const json::Object &jsonObject) override { }
+    void deserialize(const json::Object &jsonObject) override {
+        if (jsonObject.HasKey("explosionPrefab")) {
+            auto explosionPrefabName = jsonObject["explosionPrefab"].ToString();
+            explosionPrefab_ = Tile2D::resources().prefabs[explosionPrefabName];
+        }
+    }
 
     IEventHandler<PolygonCollider, TerrainCollisionEventArgs> *clone() override {
         return new AmmoTerrainCollisionHandler(*this);
-    }
-};
-
-class BombCollisionHandler : public AmmoCollisionDamageHandler {
-private:
-    int explosionRadius_ = 5;
-    Prefab* explosionPrefab_;
-
-public:
-    void handle(PolygonCollider* owner, CollisionEventArgs args) const override {
-        AmmoCollisionDamageHandler::handle(owner, args);
-        auto explosion = explosionPrefab_->instantiate();
-        explosion->transform().setPosition(owner->transform()->getPosition());
-    }
-
-
-    void deserialize(const json::Object &jsonObject) override {
-        AmmoCollisionDamageHandler::deserialize(jsonObject);
-
-        if (jsonObject.HasKey("explosionPrefab")) {
-            auto explosionPrefabName = jsonObject["explosionPrefab"].ToString();
-            explosionPrefab_ = Tile2D::resources().prefabs[explosionPrefabName];
-        }
-    }
-
-    IEventHandler<PolygonCollider, CollisionEventArgs> *clone() override {
-        return new BombCollisionHandler(*this);
-    }
-};
-
-class BombTerrainCollisionHandler :
-        public IEventHandler<PolygonCollider, TerrainCollisionEventArgs>,
-        public ISerializable
-{
-private:
-    Prefab* explosionPrefab_;
-
-public:
-    void handle(PolygonCollider* owner, TerrainCollisionEventArgs args) const override {
-        owner->gameObject()->destroy();
-        auto explosion = explosionPrefab_->instantiate();
-        explosion->transform().setPosition(owner->transform()->getPosition());
-    }
-
-    void deserialize(const json::Object &jsonObject) override {
-        if (jsonObject.HasKey("explosionPrefab")) {
-            auto explosionPrefabName = jsonObject["explosionPrefab"].ToString();
-            explosionPrefab_ = Tile2D::resources().prefabs[explosionPrefabName];
-        }
-    }
-
-    IEventHandler<PolygonCollider, TerrainCollisionEventArgs> *clone() override {
-        return new BombTerrainCollisionHandler(*this);
     }
 };
 

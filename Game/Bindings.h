@@ -79,8 +79,6 @@ public:
 
                 // EventHandlers
 
-                {"BombCollisionHandler",                new ObjectCreator<BombCollisionHandler>()},
-                {"BombTerrainCollisionHandler",         new ObjectCreator<BombTerrainCollisionHandler>()},
                 {"DeathHandler",                        new ObjectCreator<DeathHandler>()},
                 {"AmmoCollisionDamageHandler",          new ObjectCreator<AmmoCollisionDamageHandler>()},
                 {"AmmoTerrainCollisionHandler",         new ObjectCreator<AmmoTerrainCollisionHandler>()},
