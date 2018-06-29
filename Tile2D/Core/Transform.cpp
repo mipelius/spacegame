@@ -70,7 +70,7 @@ void Transform::deserialize(const json::Object &jsonObject) {
     if (jsonObject.HasKey("scale")) {
         Vecf scale;
         scale.deserialize(jsonObject["scale"]);
-        setPosition(scale);
+        setScale(scale);
     }
     if (jsonObject.HasKey("position")) {
         Vecf position;
