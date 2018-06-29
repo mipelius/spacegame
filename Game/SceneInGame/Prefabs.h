@@ -41,14 +41,8 @@ public:
     // effects
     static GameObject *light();
 
-    static GameObject *bloodBurst();
-
-    static GameObject *explosion();
-
     // other
     static GameObject *hud(GameObject *player);
-
-    static GameObject *background(Rect area, const char *texture, Color color);
 
     static GameObject *enemySpawner(
             Rect area,
@@ -66,8 +60,6 @@ public:
             int maxItemCount,
             float minDistanceToTarget
     );
-
-    static GameObject *bomb();
 };
 
 #endif //SPACEGAME_PREFABS_H
