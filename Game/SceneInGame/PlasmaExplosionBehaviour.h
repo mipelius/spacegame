@@ -22,21 +22,20 @@
 // SOFTWARE.
 
 
-#ifndef SPACEGAME_EXPLOSIONBEHAVIOUR_H
-#define SPACEGAME_EXPLOSIONBEHAVIOUR_H
+#ifndef SPACEGAME_PLASMAEXPLOSIONBEHAVIOUR_H
+#define SPACEGAME_PLASMAEXPLOSIONBEHAVIOUR_H
+
 
 #include "ISerializable.h"
+#include "Prefab.h"
 #include "Tile2DBehaviour.h"
 
-class ExplosionBehaviour :
+class PlasmaExplosionBehaviour :
         public Tile2DBehaviour,
         public ISerializable
 {
 public:
     void deserialize(const json::Object &jsonObject) override;
-
-    int getRadius_() const;
-    void setRadius_(int radius_);
 
 protected:
     Tile2DComponent *clone() override;
@@ -45,8 +44,10 @@ protected:
     void update() override;
     void lateUpdate() override;
 
-private:
-    int radius_ = 10;
+protected:
+    int count_ = 0;
+    Prefab* prefabToInstantiate_ = nullptr;
 };
 
-#endif //SPACEGAME_EXPLOSIONBEHAVIOUR_H
+
+#endif //SPACEGAME_PLASMAEXPLOSIONBEHAVIOUR_H

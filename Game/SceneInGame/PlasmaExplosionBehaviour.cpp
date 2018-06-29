@@ -21,32 +21,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "PlasmaExplosionBehaviour.h"
+#include "GameObject.h"
+#include "Body.h"
+#include "Tile2D.h"
+#include "Resources.h"
 
-#ifndef SPACEGAME_EXPLOSIONBEHAVIOUR_H
-#define SPACEGAME_EXPLOSIONBEHAVIOUR_H
+void PlasmaExplosionBehaviour::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("count")) {
+        count_ = jsonObject["count"].ToInt();
+    }
+    if (jsonObject.HasKey("prefabToInstantiate")) {
+        auto prefabName = jsonObject["prefabToInstantiate"].ToString();
+        prefabToInstantiate_ = Tile2D::resources().prefabs[prefabName];
+    }
+}
 
-#include "ISerializable.h"
-#include "Tile2DBehaviour.h"
+Tile2DComponent *PlasmaExplosionBehaviour::clone() {
+    return new PlasmaExplosionBehaviour(*this);
+}
 
-class ExplosionBehaviour :
-        public Tile2DBehaviour,
-        public ISerializable
-{
-public:
-    void deserialize(const json::Object &jsonObject) override;
+void PlasmaExplosionBehaviour::awake() {
+    for (auto i = 0u; i < count_; ++i) {
+        auto smallPlasma = prefabToInstantiate_->instantiate();
+        auto rotation = 360.0f * ((float) i / count_);
 
-    int getRadius_() const;
-    void setRadius_(int radius_);
+        smallPlasma->transform().setPosition(transform()->getPosition());
+        smallPlasma->transform().setRotation(rotation);
 
-protected:
-    Tile2DComponent *clone() override;
+        auto velocity = Vecf::byAngle(rotation, 1000);
+        smallPlasma->getComponent<Body>()->setVelocity(velocity);
+    }
+}
 
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
+void PlasmaExplosionBehaviour::update() { }
 
-private:
-    int radius_ = 10;
-};
-
-#endif //SPACEGAME_EXPLOSIONBEHAVIOUR_H
+void PlasmaExplosionBehaviour::lateUpdate() { }

@@ -84,7 +84,7 @@ protected:
 
 class AmmoCollisionDamageHandler : public CollisionDamageHandlerBase {
 private:
-    Prefab* explosionPrefab_ = nullptr;
+    Prefab* prefabToInstantiate_ = nullptr;
 
 public:
     void damage(Health *targetHealth, PolygonCollider *owner, CollisionEventArgs args) const override {
@@ -94,8 +94,8 @@ public:
         CollisionEffects::sparkles(owner->transform()->getPosition(), args.contactNormal, {1, 0, 0});
         CollisionEffects::pulseLight(owner->transform()->getPosition());
 
-        if (explosionPrefab_ != nullptr) {
-            auto explosion = explosionPrefab_->instantiate();
+        if (prefabToInstantiate_ != nullptr) {
+            auto explosion = prefabToInstantiate_->instantiate();
             explosion->transform().setPosition(owner->transform()->getPosition());
         }
     }
@@ -103,9 +103,9 @@ public:
     void deserialize(const json::Object &jsonObject) override {
         CollisionDamageHandlerBase::deserialize(jsonObject);
 
-        if (jsonObject.HasKey("explosionPrefab")) {
-            auto explosionPrefabName = jsonObject["explosionPrefab"].ToString();
-            explosionPrefab_ = Tile2D::resources().prefabs[explosionPrefabName];
+        if (jsonObject.HasKey("prefabToInstantiate")) {
+            auto explosionPrefabName = jsonObject["prefabToInstantiate"].ToString();
+            prefabToInstantiate_ = Tile2D::resources().prefabs[explosionPrefabName];
         }
     }
 
@@ -119,7 +119,7 @@ class AmmoTerrainCollisionHandler :
         public ISerializable
 {
 private:
-    Prefab* explosionPrefab_ = nullptr;
+    Prefab* prefabToInstantiate_ = nullptr;
 
 public:
     void handle(PolygonCollider* owner, TerrainCollisionEventArgs args) const override {
@@ -128,16 +128,16 @@ public:
         CollisionEffects::sparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
         CollisionEffects::pulseLight(owner->transform()->getPosition());
 
-        if (explosionPrefab_ != nullptr) {
-            auto explosion = explosionPrefab_->instantiate();
+        if (prefabToInstantiate_ != nullptr) {
+            auto explosion = prefabToInstantiate_->instantiate();
             explosion->transform().setPosition(owner->transform()->getPosition());
         }
     }
 
     void deserialize(const json::Object &jsonObject) override {
-        if (jsonObject.HasKey("explosionPrefab")) {
-            auto explosionPrefabName = jsonObject["explosionPrefab"].ToString();
-            explosionPrefab_ = Tile2D::resources().prefabs[explosionPrefabName];
+        if (jsonObject.HasKey("prefabToInstantiate")) {
+            auto explosionPrefabName = jsonObject["prefabToInstantiate"].ToString();
+            prefabToInstantiate_ = Tile2D::resources().prefabs[explosionPrefabName];
         }
     }
 

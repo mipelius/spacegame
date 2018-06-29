@@ -25,6 +25,7 @@
 #define SPACEGAME_BINDINGS_H
 
 #include <map>
+#include "PlasmaExplosionBehaviour.h"
 #include "ExplosionBehaviour.h"
 #include "BombBehaviour.h"
 #include "BombDropper.h"
@@ -76,6 +77,7 @@ public:
                 {"Pickup",                              new ObjectCreator<Pickup>()},
                 {"PulseLightBehaviour",                 new ObjectCreator<PulseLightBehaviour>()},
                 {"ExplosionBehaviour",                  new ObjectCreator<ExplosionBehaviour>()},
+                {"PlasmaExplosionBehaviour",            new ObjectCreator<PlasmaExplosionBehaviour>()},
 
                 // EventHandlers
 

@@ -33,16 +33,20 @@ class ParticleInitializer :
         public ParticleSystem::IInitializer,
         public ISerializable
 {
+private:
+    Color color_ = {1.0f, 1.0f, 1.0f};
+    float velocityCoefficient_ = 80.0f;
+
 public:
     void initialize(Particle *particle) override {
         Vecf pos = {(rand() % 10) * 5.0f - 25.0f, (rand() % 10) * 5.0f - 25.0f};
-        pos *= 2;
+        pos = pos.normalized();
         particle->getTransform().setPosition(pos);
         particle->getTransform().setRotation(rand() % 360);
         float size = 0.5f + (rand() % 255) / 255.0f;
         particle->getTransform().setScale({size, size});
-        particle->setVelocity(pos.normalized() * (rand() % 2 + 3.0f));
-        particle->setColor({1.0f, 1.0f, 1.0f});
+        particle->setVelocity(pos * ((rand() % 2 + 3.0f) * velocityCoefficient_));
+        particle->setColor(color_);
         particle->setOpacity((rand() % 200) / 400.0f + 0.5f);
     }
 
@@ -50,24 +54,35 @@ public:
         return new ParticleInitializer(*this);
     }
 
-    void deserialize(const json::Object &jsonObject) override { }
+    void deserialize(const json::Object &jsonObject) override {
+        if (jsonObject.HasKey("color")) {
+            auto colorJson = jsonObject["color"].ToObject();
+            color_.deserialize(colorJson);
+        }
+        if (jsonObject.HasKey("velocityCoefficient")) {
+            velocityCoefficient_ = jsonObject["velocityCoefficient"].ToFloat();
+        }
+    }
 };
 
 class ParticleUpdater :
         public ParticleSystem::IUpdater,
         public ISerializable
 {
+private:
+    Uint32 timeToLive_ = 2000;
+
 public:
     void update(Particle *particle) override {
-        if (particle->getTimeLived() > 2000) {
+        if (particle->getTimeLived() > timeToLive_) {
             particle->destroy();
         } else {
-            auto deltaTime = Tile2D::time().getDeltaTime() * 60.0f;
+            auto deltaTime = Tile2D::time().getDeltaTime();
 
             Vecf pos = particle->getTransform().getPosition();
             particle->getTransform().setRotation(particle->getTransform().getRotation() + 1.0f * deltaTime);
             particle->getTransform().setPosition(pos + (particle->getVelocity() * deltaTime));
-            particle->setOpacity(particle->getOpacity() - (0.01f * deltaTime));
+            particle->setOpacity(particle->getOpacity() - (deltaTime / (timeToLive_ / 1000.0f)));
             float newSize = particle->getTransform().getScale().x - 0.007f * deltaTime;
             Mathf::clamp(newSize, 0.0f, 100.0f);
             particle->getTransform().setScale({newSize, newSize});
@@ -78,7 +93,11 @@ public:
         return new ParticleUpdater(*this);
     }
 
-    void deserialize(const json::Object &jsonObject) override { }
+    void deserialize(const json::Object &jsonObject) override {
+        if (jsonObject.HasKey("timeToLive")) {
+            timeToLive_ = (Uint32)jsonObject["timeToLive"].ToInt();
+        }
+    }
 };
 
 #endif //SPACEGAME_PARTICLESYSTEMCOMPONENTS_H

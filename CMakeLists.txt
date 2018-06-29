@@ -270,7 +270,7 @@ set(SOURCE_FILES
         Tile2D/Core/Reflector.h
         Tile2D/Core/Prefab.cpp
         Tile2D/Core/Prefab.h
-        Game/Bindings.h Game/EventHandlers.h Game/ParticleSystemComponents.h Game/CollisionEffects.cpp Game/CollisionEffects.h Game/SceneInGame/ExplosionBehaviour.cpp Game/SceneInGame/ExplosionBehaviour.h)
+        Game/Bindings.h Game/EventHandlers.h Game/ParticleSystemComponents.h Game/CollisionEffects.cpp Game/CollisionEffects.h Game/SceneInGame/ExplosionBehaviour.cpp Game/SceneInGame/ExplosionBehaviour.h Game/SceneInGame/PlasmaExplosionBehaviour.cpp Game/SceneInGame/PlasmaExplosionBehaviour.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 
