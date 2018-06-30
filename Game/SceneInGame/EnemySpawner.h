@@ -30,17 +30,22 @@
 #include "CountDownTimer.h"
 #include "SpawnerBase.h"
 
-class EnemySpawner : public SpawnerBase {
+class EnemySpawner : public SpawnerBase
+{
 public:
 	const Rect &getOuterRect() const;
     void setOuterRect(const Rect &outerRect);
     const Rect &getInnerRect() const;
     void setInnerRect(const Rect &innerRect);
 
+    void deserialize(const json::Object &jsonObject) override;
+
 protected:
 	void awake() override;
     void update() override;
     void lateUpdate() override;
+
+    Tile2DComponent *clone() override;
 
 private:
 	Rect outerRect_ = {};

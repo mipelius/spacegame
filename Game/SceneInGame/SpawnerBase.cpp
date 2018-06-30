@@ -89,3 +89,19 @@ const Rect &SpawnerBase::getAreaRect() const {
 void SpawnerBase::setAreaRect(const Rect &areaRect) {
     areaRect_ = areaRect;
 }
+
+void SpawnerBase::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("prefab")) {
+        setPrefab(jsonObject["prefab"].ToString());
+    }
+    if (jsonObject.HasKey("maxSpawnedObjects")) {
+        maxSpawnedObjects_ = (unsigned int)jsonObject["maxSpawnedObjects"].ToInt();
+    }
+    if (jsonObject.HasKey("spawningDelay")) {
+        setSpawningDelay((Uint32)jsonObject["spawningDelay"].ToInt());
+    }
+    if (jsonObject.HasKey("areaRect")) {
+        auto areaRectJson = jsonObject["areaRect"].ToObject();
+        areaRect_.deserialize(areaRectJson);
+    }
+}

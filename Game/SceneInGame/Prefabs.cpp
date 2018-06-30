@@ -215,44 +215,6 @@ GameObject *Prefabs::light() {
 
 // --- OTHER ---
 
-GameObject *Prefabs::enemySpawner(
-        Rect area,
-        GameObject *target,
-        const std::string& prefabString,
-        Uint32 spawningDelay)
-{
-    GameObject* spawnerObj = Tile2D::createGameObject();
-    auto spawnerBehaviour = spawnerObj->attachComponent<EnemySpawner>();
-    spawnerBehaviour->setPlayer(target);
-    spawnerBehaviour->setPrefab(prefabString);
-    spawnerBehaviour->setSpawningDelay(spawningDelay);
-    spawnerBehaviour->setAreaRect(area);
-    spawnerBehaviour->setInnerRect({-600.0f, -400.0f, 600.0f, 400.0f});
-    spawnerBehaviour->setOuterRect({-1000.0f, -800.0f, 1000.0f, 800.0f});
-
-    return spawnerObj;
-}
-GameObject* Prefabs::pickupSpawner(
-        Rect area,
-        GameObject *target,
-        const std::string& prefabString,
-        Uint32 spawningDelay,
-        int itemTag,
-        int maxItemCount,
-        float minDistanceToTarget
-) {
-    GameObject* spawnerObj = Tile2D::createGameObject();
-    auto spawnerBehaviour = spawnerObj->attachComponent<PickupSpawner>();
-    spawnerBehaviour->setPlayer(target);
-    spawnerBehaviour->setPrefab(prefabString);
-    spawnerBehaviour->setSpawningDelay(spawningDelay);
-    spawnerBehaviour->setItemTag(itemTag);
-    spawnerBehaviour->setMaxItemCount(maxItemCount);
-    spawnerBehaviour->setMinDistanceToTarget(minDistanceToTarget);
-    spawnerBehaviour->setAreaRect(area);
-
-    return spawnerObj;
-}
 
 GameObject *Prefabs::hud(GameObject* player) {
     auto hud = Tile2D::createGameObject();

@@ -34,6 +34,7 @@
 #include "Window.h"
 #include "Prefab.h"
 #include "Resources.h"
+#include "PickupSpawner.h"
 
 void SceneInGame::init() {
     // Scene setup: tile map, physics, light system
@@ -61,15 +62,8 @@ void SceneInGame::init() {
     Tile2D::canvas().setCamera(camera_);
 
     // pickup spawners
-    Prefabs::pickupSpawner(
-            {0.0f, 0.0f, 3300.0f, 2400.0f},
-            player,
-            "pickup_bomb",
-            3000,
-            ItemTags::bombDropper,
-            30,
-            2000
-    );
+    auto pickupSpawner = Tile2D::resources().prefabs["pickup_spawner_bomb"]->instantiate();
+    pickupSpawner->getComponent<PickupSpawner>()->setPlayer(player);
 
     // lights
     std::vector<Vecf> lightPositions = {
@@ -160,22 +154,26 @@ void SceneInGame::destroy() {
 
 
 void SceneInGame::initSnowWorld_(GameObject* player) {
-    Prefabs::enemySpawner({0.0f, 0.0f, 6400.0f, 2640.0f}, player, "enemy_fish", 3000);
+    auto spawner = Tile2D::resources().prefabs["enemy_spawner_fish"]->instantiate();
+    spawner->getComponent<EnemySpawner>()->setPlayer(player);
     Tile2D::resources().prefabs["bg_snow"]->instantiate();
 }
 
 void SceneInGame::initGreenWorld_(GameObject* player) {
-    Prefabs::enemySpawner({0.0f, 2640.0f, 6400.0f, 6512.0f}, player, "enemy_walker", 3000);
+    auto spawner = Tile2D::resources().prefabs["enemy_spawner_walker"]->instantiate();
+    spawner->getComponent<EnemySpawner>()->setPlayer(player);
     Tile2D::resources().prefabs["bg_green"]->instantiate();
 }
 
 void SceneInGame::initBlueWorld_(GameObject* player) {
-    Prefabs::enemySpawner({0.0f, 6512.0f, 6400.0f, 10392.0f}, player, "enemy_trifly", 3000);
+    auto spawner = Tile2D::resources().prefabs["enemy_spawner_trifly"]->instantiate();
+    spawner->getComponent<EnemySpawner>()->setPlayer(player);
     Tile2D::resources().prefabs["bg_blue"]->instantiate();
 }
 
 void SceneInGame::initRedWorld_(GameObject* player) {
-    Prefabs::enemySpawner({0.0f, 10392.0f, 6400.0f, 14400.0f}, player, "enemy_walker", 3000);
+    auto spawner = Tile2D::resources().prefabs["enemy_spawner_wanderer"]->instantiate();
+    spawner->getComponent<EnemySpawner>()->setPlayer(player);
     Tile2D::resources().prefabs["bg_red"]->instantiate();
 
     // boss

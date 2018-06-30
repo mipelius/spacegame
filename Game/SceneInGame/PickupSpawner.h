@@ -38,10 +38,14 @@ public:
     int getItemTag() const;
     void setItemTag(int itemTag);
 
+    void deserialize(const json::Object& jsonObject);
+
 protected:
     void awake() override;
     void update() override;
     void lateUpdate() override;
+
+    Tile2DComponent *clone() override;
 
 private:
     float minDistanceToTarget_ = 0.0f;

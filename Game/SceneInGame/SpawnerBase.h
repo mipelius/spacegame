@@ -28,8 +28,10 @@
 #include "CountDownTimer.h"
 #include "Rect.h"
 
-class SpawnerBase : public Tile2DBehaviour {
-
+class SpawnerBase :
+        public Tile2DBehaviour,
+        public ISerializable
+{
 public:
     GameObject *getPlayer() const;
     void setPlayer(GameObject *player);
@@ -40,6 +42,8 @@ public:
     void setSpawningDelay(Uint32 milliseconds);
     const Rect &getAreaRect() const;
     void setAreaRect(const Rect &areaRect);
+
+    void deserialize(const json::Object &jsonObject) override;
 
 protected:
     void onDestroy() override;
@@ -53,7 +57,6 @@ protected:
 private:
     std::string prefabString_;
     std::list<GameObject*> spawnedGameObjects_;
-
 };
 
 

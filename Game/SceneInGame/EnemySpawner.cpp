@@ -107,3 +107,18 @@ void EnemySpawner::setInnerRect(const Rect &innerRect) {
     innerRect_ = innerRect;
 }
 
+Tile2DComponent *EnemySpawner::clone() {
+    return new EnemySpawner(*this);
+}
+
+void EnemySpawner::deserialize(const json::Object &jsonObject) {
+    SpawnerBase::deserialize(jsonObject);
+
+    if (jsonObject.HasKey("innerRect")) {
+        innerRect_.deserialize(jsonObject["innerRect"].ToObject());
+    }
+    if (jsonObject.HasKey("outerRect")) {
+        outerRect_.deserialize(jsonObject["outerRect"].ToObject());
+    }
+}
+

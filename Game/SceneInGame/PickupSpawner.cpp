@@ -86,3 +86,21 @@ int PickupSpawner::getItemTag() const {
 void PickupSpawner::setItemTag(int itemTag) {
     itemTag_ = itemTag;
 }
+
+void PickupSpawner::deserialize(const json::Object &jsonObject) {
+    SpawnerBase::deserialize(jsonObject);
+
+    if (jsonObject.HasKey("minDistanceToTarget")) {
+        minDistanceToTarget_ = jsonObject["minDistanceToTarget"].ToFloat();
+    }
+    if (jsonObject.HasKey("maxItemCount")) {
+        maxItemCount_ = jsonObject["maxItemCount"].ToInt();
+    }
+    if (jsonObject.HasKey("itemTag")) {
+        itemTag_ = jsonObject["itemTag"].ToInt();
+    }
+}
+
+Tile2DComponent *PickupSpawner::clone() {
+    return new PickupSpawner(*this);
+}
