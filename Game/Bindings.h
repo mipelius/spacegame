@@ -25,6 +25,9 @@
 #define SPACEGAME_BINDINGS_H
 
 #include <map>
+#include "Medikit.h"
+#include "PlayerTargetingComponent.h"
+#include "PlayerController.h"
 #include "PickupSpawner.h"
 #include "PlasmaExplosionBehaviour.h"
 #include "ExplosionBehaviour.h"
@@ -52,6 +55,8 @@
 
 #include "ParticleSystemComponents.h"
 #include "EventHandlers.h"
+
+#include "Inventory.h"
 
 class Bindings {
 public:
@@ -81,10 +86,15 @@ public:
                 {"PlasmaExplosionBehaviour",            new ObjectCreator<PlasmaExplosionBehaviour>()},
                 {"EnemySpawner",                        new ObjectCreator<EnemySpawner>()},
                 {"PickupSpawner",                       new ObjectCreator<PickupSpawner>()},
+                {"PlayerController",                    new ObjectCreator<PlayerController>()},
+                {"Power",                               new ObjectCreator<Power>()},
+                {"PlayerTargetingComponent",            new ObjectCreator<PlayerTargetingComponent>()},
+                {"Inventory",                           new ObjectCreator<Inventory>()},
 
                 // EventHandlers
 
-                {"DeathHandler",                        new ObjectCreator<DeathHandler>()},
+                {"EnemyDeathHandler",                   new ObjectCreator<EnemyDeathHandler>()},
+                {"PlayerDeathHandler",                  new ObjectCreator<PlayerDeathHandler>()},
                 {"AmmoCollisionDamageHandler",          new ObjectCreator<AmmoCollisionDamageHandler>()},
                 {"AmmoTerrainCollisionHandler",         new ObjectCreator<AmmoTerrainCollisionHandler>()},
                 {"ContinuousCollisionDamageHandler",    new ObjectCreator<ContinuousCollisionDamageHandler>()},
@@ -100,7 +110,8 @@ public:
 
                 // Items
 
-                {"Cannon",                              new ObjectCreator<Cannon>()}
+                {"Cannon",                              new ObjectCreator<Cannon>()},
+                {"Medikit",                             new ObjectCreator<Medikit>()}
         };
     }
 };

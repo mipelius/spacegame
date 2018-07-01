@@ -68,3 +68,18 @@ void Power::setMaxPower(float maxPower) {
     maxPower_ = maxPower;
     power_ = maxPower_;
 }
+
+void Power::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("maxPower")) {
+        maxPower_ = jsonObject["maxPower"].ToFloat();
+    }
+    if (jsonObject.HasKey("reloadSpeed")) {
+        reloadSpeed_ = jsonObject["reloadSpeed"].ToFloat();
+    }
+
+    power_ = maxPower_;
+}
+
+Tile2DComponent *Power::clone() {
+    return new Power(*this);
+}

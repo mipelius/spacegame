@@ -37,8 +37,6 @@
 void PlayerController::awake() {
     body_ = gameObject()->getComponent<Body>();
     sprite_ = gameObject()->getComponent<Sprite>();
-
-    lightTimer.setInterval(500);
 }
 
 void PlayerController::update() {
@@ -47,7 +45,7 @@ void PlayerController::update() {
     float angularVelocity = 0;
 
     if (keyboard.keyState(SDL_SCANCODE_UP)) {
-        Vecf force = Vecf::byAngle(transform()->getRotation(), moveForce);
+        Vecf force = Vecf::byAngle(transform()->getRotation(), moveForce_);
         body_->applyForce(force);
     }
     if (keyboard.keyState(SDL_SCANCODE_LEFT)) {
@@ -59,27 +57,14 @@ void PlayerController::update() {
 
     body_->setAngularVelocity(angularVelocity);
 
-    if (keyboard.keyState(SDL_SCANCODE_LCTRL)) {
-        dropLight_();
-    }
-
     if (keyboard.keyPressed(SDL_SCANCODE_ESCAPE)) {
         Tile2D::sceneManager().loadScene(Scenes::titleScreen);
     }
 }
 
-void PlayerController::dropLight_() {
-    if (!lightTimer.resetIfTimeIntervalPassed()) {
-        return;
-    }
-
-    auto light = Prefabs::light();
-    light->transform().setPosition(transform()->getPosition());
-    light->transform().setRotation(0.0f);
-}
-
 void PlayerController::lateUpdate() {
     // prevent player from going outside the world
+
     Vecf pos = transform()->getPosition();
     Vecf vel = body_->getVelocity();
 
@@ -120,5 +105,23 @@ void PlayerController::lateUpdate() {
         Mathf::clamp(cameraPos, cameraBounds);
 
         camera->setPosition(cameraPos);
+    }
+}
+
+float PlayerController::getMoveForce() const {
+    return moveForce_;
+}
+
+void PlayerController::setMoveForce(float moveForce_) {
+    PlayerController::moveForce_ = moveForce_;
+}
+
+Tile2DComponent *PlayerController::clone() {
+    return new PlayerController(*this);
+}
+
+void PlayerController::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("moveForce")) {
+        moveForce_ = jsonObject["moveForce"].ToFloat();
     }
 }

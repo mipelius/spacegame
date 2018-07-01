@@ -64,7 +64,7 @@ void Cannon::deserialize(const json::Object &jsonObject) {
     if (jsonObject.HasKey("offsets")) {
         offsets_.clear();
 
-        auto offsetsJson = jsonObject["cannonOffsets"].ToArray();
+        auto offsetsJson = jsonObject["offsets"].ToArray();
         for (const auto& offsetJson : offsetsJson) {
             auto offset = Vecf();
             offset.deserialize(offsetJson.ToObject());

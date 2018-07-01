@@ -26,6 +26,7 @@
 #include "Input.h"
 #include "Tile2DMath.h"
 #include "Inventory.h"
+#include "Resources.h"
 
 void Inventory::useSelectedItem_() {
     if (itemInfos_.empty()) {
@@ -118,5 +119,53 @@ void Inventory::setItemTexture(int tag, Texture *inventoryTexturePtr) {
         if (itemInfo.tag == tag) {
             itemInfo.inventoryTexturePtr = inventoryTexturePtr;
         }
+    }
+}
+
+void Inventory::deserialize(const json::Object &jsonObject) {
+    if (jsonObject.HasKey("itemInfos")) {
+        itemInfos_.clear();
+
+        auto itemInfosJson = jsonObject["itemInfos"].ToArray();
+        for (const json::Value& itemInfoJsonValue : itemInfosJson) {
+            auto itemInfoJsonObject = itemInfoJsonValue.ToObject();
+
+            auto itemJsonObject = itemInfoJsonObject["item"].ToObject();
+            auto item = Tile2D::reflector().instantiate<ItemBase>(itemJsonObject);
+
+            auto inventoryTextureName = itemInfoJsonObject["inventoryTexture"].ToString();
+            auto inventoryTexture = Tile2D::resources().textures[inventoryTextureName];
+
+            auto tag = itemInfoJsonObject["tag"].ToInt();
+
+            auto automatic = itemInfoJsonObject["automatic"].ToBool();
+
+            ItemInfo itemInfo = {
+                    item,
+                    inventoryTexture,
+                    tag,
+                    automatic
+            };
+
+            itemInfos_.push_back(itemInfo);
+        }
+    }
+}
+
+Tile2DComponent *Inventory::clone() {
+    return new Inventory(*this);
+}
+
+Inventory::Inventory(Inventory &other) {
+    *this = other;
+    itemInfos_.clear();
+    for (auto itemInfo : other.itemInfos_) {
+        ItemInfo itemInfoCopy = {
+                itemInfo.item->clone(),
+                itemInfo.inventoryTexturePtr,
+                itemInfo.tag,
+                itemInfo.automatic
+        };
+        itemInfos_.push_back(itemInfoCopy);
     }
 }

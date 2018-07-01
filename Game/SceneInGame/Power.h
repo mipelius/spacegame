@@ -26,8 +26,10 @@
 
 #include "Tile2DBehaviour.h"
 
-class Power : public Tile2DBehaviour {
-
+class Power :
+        public Tile2DBehaviour,
+        public ISerializable
+{
 public:
     bool consume(float powerConsumption);
     float getPower() const;
@@ -37,10 +39,14 @@ public:
     float getMaxPower() const;
     void setMaxPower(float maxPower);
 
+    void deserialize(const json::Object &jsonObject) override;
+
 protected:
     void awake() override;
     void update() override;
     void lateUpdate() override;
+
+    Tile2DComponent *clone() override;
 
 private:
     float power_ = 0;

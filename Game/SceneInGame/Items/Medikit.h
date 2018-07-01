@@ -31,10 +31,13 @@ public:
     float getHealingAmount() const;
     void setHealingAmount(float healingAmount);
 
+    void deserialize(const json::Object &jsonObject) override;
+
     ItemBase *clone() override;
 
 protected:
     bool useActual(GameObject *user) override;
+
 
 private:
     float healingAmount_ = 0;

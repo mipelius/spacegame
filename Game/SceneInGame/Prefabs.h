@@ -36,30 +36,11 @@
 class Prefabs {
 
 public:
-    static GameObject *player();
-
     // effects
     static GameObject *light();
 
     // other
     static GameObject *hud(GameObject *player);
-
-    static GameObject *enemySpawner(
-            Rect area,
-            GameObject *target,
-            const std::string &prefabString,
-            Uint32 spawningDelay
-    );
-
-    static GameObject *pickupSpawner(
-            Rect area,
-            GameObject *target,
-            const std::string &prefabString,
-            Uint32 spawningDelay,
-            int itemTag,
-            int maxItemCount,
-            float minDistanceToTarget
-    );
 };
 
 #endif //SPACEGAME_PREFABS_H

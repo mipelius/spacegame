@@ -146,7 +146,7 @@ public:
     }
 };
 
-class DeathHandler :
+class EnemyDeathHandler :
         public IEventHandler<Health, GameObjectDiedEventArgs>,
         public ISerializable
 {
@@ -168,7 +168,41 @@ public:
     }
 
     IEventHandler<Health, GameObjectDiedEventArgs>* clone() override {
-        return new DeathHandler(*this);
+        return new EnemyDeathHandler(*this);
+    };
+};
+
+class PlayerDeathHandler :
+        public IEventHandler<Health, GameObjectDiedEventArgs>,
+        public ISerializable
+{
+private:
+    Prefab* explosionPrefab_;
+
+public:
+    void handle(Health* health, GameObjectDiedEventArgs args) const override {
+        health->gameObject()->setIsActive(false);
+
+        auto explosion = explosionPrefab_->instantiate();
+        explosion->transform().setPosition(health->transform()->getPosition());
+
+        Tile2D::executeDelayedFunction(health->gameObject(), 2000, [] (GameObject* gameObject) {
+            gameObject->transform().setPosition({500.0f, 250.0f});
+            gameObject->getComponent<Body>()->setVelocity({0.0f, 0.0f});
+            gameObject->setIsActive(true);
+            gameObject->getComponent<Health>()->reset();
+        });
+    }
+
+    void deserialize(const json::Object &jsonObject) override {
+        if (jsonObject.HasKey("explosionPrefab")) {
+            auto explosionPrefabName = jsonObject["explosionPrefab"].ToString();
+            explosionPrefab_ = Tile2D::resources().prefabs[explosionPrefabName];
+        }
+    }
+
+    IEventHandler<Health, GameObjectDiedEventArgs>* clone() override {
+        return new PlayerDeathHandler(*this);
     };
 };
 

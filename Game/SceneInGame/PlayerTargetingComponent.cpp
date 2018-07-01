@@ -31,3 +31,5 @@ Vecf PlayerTargetingComponent::getTargetPosition() {
 Tile2DComponent *PlayerTargetingComponent::clone() {
     return new PlayerTargetingComponent(*this);
 }
+
+void PlayerTargetingComponent::deserialize(const json::Object &jsonObject) { }

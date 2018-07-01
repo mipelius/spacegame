@@ -37,8 +37,13 @@ struct ItemInfo {
     bool automatic;
 };
 
-class Inventory : public Tile2DBehaviour {
+class Inventory :
+        public Tile2DBehaviour,
+        public ISerializable
+{
 public:
+    Inventory() = default;
+
     template <class T>
     T *attachItem(Texture *inventoryTexturePtr, int tag, bool automatic);
 
@@ -50,10 +55,15 @@ public:
     ItemBase* getItem(int tag);
     void setItemTexture(int tag, Texture *inventoryTexturePtr);
 
+    void deserialize(const json::Object &jsonObject) override;
+
 protected:
+    Inventory(Inventory& other);
     void awake() override;
     void update() override;
     void lateUpdate() override;
+
+    Tile2DComponent *clone() override;
 
     void onDestroy() override;
 

@@ -46,3 +46,11 @@ ItemBase *Medikit::clone() {
     return new Medikit(*this);
 }
 
+void Medikit::deserialize(const json::Object &jsonObject) {
+    ItemBase::deserialize(jsonObject);
+
+    if (jsonObject.HasKey("healingAmount")) {
+        healingAmount_ = jsonObject["healingAmount"];
+    }
+}
+

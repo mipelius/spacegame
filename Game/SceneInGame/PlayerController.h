@@ -31,24 +31,27 @@
 #include "Tile2DBehaviour.h"
 #include "CountDownTimer.h"
 
-class PlayerController : public Tile2DBehaviour {
-
+class PlayerController :
+        public Tile2DBehaviour,
+        public ISerializable
+{
 public:
-    float moveForce;
+    float getMoveForce() const;
+    void setMoveForce(float moveForce);
+
+    void deserialize(const json::Object &jsonObject) override;
 
 protected:
     void awake() override;
     void update() override;
     void lateUpdate() override;
 
+    Tile2DComponent *clone() override;
+
 private:
-    CountDownTimer lightTimer;
-
-    Body* body_;
-    Sprite* sprite_;
-
-    void dropLight_();
-
+    float moveForce_    = 0.0f;
+    Body* body_         = nullptr;
+    Sprite* sprite_     = nullptr;
 };
 
 #endif //__PlayerController_H

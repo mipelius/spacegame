@@ -35,6 +35,7 @@
 #include "Prefab.h"
 #include "Resources.h"
 #include "PickupSpawner.h"
+#include "DebugBehaviour.h"
 
 void SceneInGame::init() {
     // Scene setup: tile map, physics, light system
@@ -44,7 +45,8 @@ void SceneInGame::init() {
     Tile2D::physicsWorld().setGForce({0, 100.0f});
 
     // player
-    auto player = Prefabs::player();
+    auto player = Tile2D::resources().prefabs["player"]->instantiate();
+    player->attachComponent<DebugBehaviour>();
     player->transform().setPosition({500.0f, 250.0f});
 
     // hud
