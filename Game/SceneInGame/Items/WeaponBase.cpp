@@ -47,3 +47,7 @@ bool WeaponBase::useActual(GameObject* user) {
 
     return true;
 }
+
+void WeaponBase::deserialize(const json::Object &jsonObject) {
+    ItemBase::deserialize(jsonObject);
+}

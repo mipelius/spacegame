@@ -43,6 +43,8 @@ ItemBase *BombDropper::clone() {
 }
 
 void BombDropper::deserialize(const json::Object &jsonObject) {
+    WeaponBase::deserialize(jsonObject);
+
     if (jsonObject.HasKey("bombPrefab")) {
         auto bombPrefabName = jsonObject["bombPrefab"].ToString();
         bombPrefab_ = Tile2D::resources().prefabs[bombPrefabName];

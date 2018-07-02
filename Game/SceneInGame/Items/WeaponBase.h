@@ -29,10 +29,13 @@
 #include "Vec.h"
 
 class WeaponBase : public ItemBase {
+public:
+    void deserialize(const json::Object &jsonObject) override;
 
 protected:
     bool useActual(GameObject* user) final;
     virtual void shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterVelocity) = 0;
+
 };
 
 #endif //SPACEGAME_RELOADINGWEAPONBASE_H

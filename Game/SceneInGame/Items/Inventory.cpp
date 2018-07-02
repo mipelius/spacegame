@@ -156,7 +156,7 @@ Tile2DComponent *Inventory::clone() {
     return new Inventory(*this);
 }
 
-Inventory::Inventory(Inventory &other) {
+Inventory::Inventory(Inventory &other) : Tile2DBehaviour(other) {
     *this = other;
     itemInfos_.clear();
     for (auto itemInfo : other.itemInfos_) {
