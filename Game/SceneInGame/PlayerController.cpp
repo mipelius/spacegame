@@ -25,7 +25,7 @@
 #include "Tile2D.h"
 #include "PlayerController.h"
 #include "Tile2DMath.h"
-#include "Prefabs.h"
+#include "GameObject.h"
 #include "Scenes.h"
 #include "Input.h"
 #include "SceneManager.h"

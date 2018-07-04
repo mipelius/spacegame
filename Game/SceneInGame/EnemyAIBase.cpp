@@ -25,7 +25,7 @@
 #include "EnemyAIBase.h"
 
 #include "Tile2D.h"
-#include "Prefabs.h"
+#include "GameObject.h"
 #include "TileMap.h"
 #include "Reflector.h"
 

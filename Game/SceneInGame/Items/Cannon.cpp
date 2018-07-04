@@ -21,8 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Prefabs.h"
 #include "Cannon.h"
+#include "GameObject.h"
 #include "Body.h"
 #include "PolygonCollider.h"
 #include "Prefab.h"
@@ -32,7 +32,7 @@ void Cannon::shoot(const Vecf &from, const Vecf &direction, const Vecf &shooterV
     if (offsets_.empty()) {
         shootOnce_(from, direction, shooterVelocity);
     }
-    for (auto cannonOffset : offsets_) {
+    for (const auto& cannonOffset : offsets_) {
         Vecf fromActual = from + cannonOffset.rotated(direction.angle());
         shootOnce_(fromActual, direction, shooterVelocity);
     }

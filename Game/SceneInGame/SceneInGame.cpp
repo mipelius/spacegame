@@ -26,7 +26,7 @@
 #include "ItemTags.h"
 #include "DrawableMap.h"
 #include "SceneInGame.h"
-#include "Prefabs.h"
+#include "GameObject.h"
 #include "EnemyAIBase.h"
 #include "TileMap.h"
 #include "LightSystem.h"
@@ -36,6 +36,8 @@
 #include "Resources.h"
 #include "PickupSpawner.h"
 #include "DebugBehaviour.h"
+#include "HUD.h"
+#include "Tile2D.h"
 
 void SceneInGame::init() {
     // Scene setup: tile map, physics, light system
@@ -50,7 +52,9 @@ void SceneInGame::init() {
     player->transform().setPosition({500.0f, 250.0f});
 
     // hud
-    auto hud = Prefabs::hud(player);
+    auto hudObject = Tile2D::createGameObject();
+    auto hud = hudObject->attachComponent<HUD>();
+    hud->setPlayer(player);
 
     // worlds
     initSnowWorld_(player);
@@ -113,8 +117,8 @@ void SceneInGame::init() {
             {2100.41f, 4450.53f}
     };
 
-    for (auto lightPosition : lightPositions) {
-        auto light = Prefabs::light();
+    for (const auto& lightPosition : lightPositions) {
+        auto light = Tile2D::resources().prefabs["fx_light"]->instantiate();
         light->transform().setPosition(lightPosition);
     }
 

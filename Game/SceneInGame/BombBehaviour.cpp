@@ -28,7 +28,7 @@
 #include "Tile2DMath.h"
 #include "ParticleSystem.h"
 #include "PulseLightBehaviour.h"
-#include "Prefabs.h"
+#include "GameObject.h"
 
 void BombBehaviour::awake() {
     body_ = gameObject()->getComponent<Body>();

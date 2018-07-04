@@ -201,8 +201,6 @@ set(SOURCE_FILES
         Game/SceneInGame/LimitedLifetimeBehaviour.h
         Game/SceneInGame/PlayerController.cpp
         Game/SceneInGame/PlayerController.h
-        Game/SceneInGame/Prefabs.cpp
-        Game/SceneInGame/Prefabs.h
         Game/SceneInGame/PulseLightBehaviour.cpp
         Game/SceneInGame/PulseLightBehaviour.h
         Game/SceneInGame/SparkleBehaviour.cpp

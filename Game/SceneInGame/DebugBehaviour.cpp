@@ -26,7 +26,7 @@
 #include "precompile.h"
 #include "DebugBehaviour.h"
 #include "Tile2D.h"
-#include "Prefabs.h"
+#include "GameObject.h"
 #include "EnemyAIBase.h"
 #include "Input.h"
 #include "LightSystem.h"
