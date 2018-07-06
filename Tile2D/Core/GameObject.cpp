@@ -178,6 +178,6 @@ void GameObject::setTag(const Tag &tag) {
     tag_ = &tag;
 }
 
-const Tag &GameObject::getTag() {
+const Tag &GameObject::getTag() const {
     return *tag_;
 }
