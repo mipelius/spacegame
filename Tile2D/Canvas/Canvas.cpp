@@ -22,7 +22,7 @@
 // SOFTWARE.
 
 
-#include <Tile2D/Util/JsonFileManager.h>
+#include "JsonFileManager.h"
 #include "precompile.h"
 #include "Canvas.h"
 #include "Window.h"

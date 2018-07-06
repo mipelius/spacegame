@@ -24,7 +24,7 @@
 #ifndef SPACEGAME_EVENTHANDLERS_H
 #define SPACEGAME_EVENTHANDLERS_H
 
-#include <Game/SceneInGame/Items/Cannon.h>
+#include "Cannon.h"
 #include "Inventory.h"
 #include "Event.h"
 #include "Health.h"
