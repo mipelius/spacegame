@@ -26,14 +26,13 @@
 #include "MovingCameraBehaviour.h"
 #include "UIPrefabs.h"
 #include "Tile2D.h"
-#include "Scenes.h"
-#include "SceneEndScreen.h"
+#include "SceneVictory.h"
 #include "Window.h"
 #include "SceneManager.h"
 #include "Camera.h"
 #include "Resources.h"
 
-void SceneEndScreen::init() {
+void SceneVictory::init() {
     Vecf center = {Tile2D::window().getW() / 2.0f, Tile2D::window().getH() / 2.0f};
 
     auto youWonText = UIPrefabs::text(
@@ -47,7 +46,7 @@ void SceneEndScreen::init() {
             "Back to main menu",
             700.0f,
             [] (Button* button, Button::ButtonEventArgs args){
-                Tile2D::sceneManager().loadScene(Scenes::titleScreen);
+                Tile2D::sceneManager().loadScene(0);
             }
     );
 
@@ -66,7 +65,11 @@ void SceneEndScreen::init() {
 
 }
 
-void SceneEndScreen::destroy() {
+void SceneVictory::destroy() {
     delete camera_;
     Tile2D::canvas().setCamera(nullptr);
+}
+
+void SceneVictory::deserialize(const json::Object &jsonObject) {
+
 }

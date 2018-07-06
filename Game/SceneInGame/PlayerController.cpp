@@ -26,7 +26,6 @@
 #include "PlayerController.h"
 #include "Tile2DMath.h"
 #include "GameObject.h"
-#include "Scenes.h"
 #include "Input.h"
 #include "SceneManager.h"
 #include "Tilemap.h"
@@ -58,7 +57,7 @@ void PlayerController::update() {
     body_->setAngularVelocity(angularVelocity);
 
     if (keyboard.keyPressed(SDL_SCANCODE_ESCAPE)) {
-        Tile2D::sceneManager().loadScene(Scenes::titleScreen);
+        Tile2D::sceneManager().loadScene(0);
     }
 }
 

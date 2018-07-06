@@ -188,3 +188,7 @@ void SceneInGame::initRedWorld_(GameObject* player) {
     boss->getComponent<EnemyAIBase>()->setTarget(&player->transform());
 }
 
+void SceneInGame::deserialize(const json::Object &jsonObject) {
+
+}
+

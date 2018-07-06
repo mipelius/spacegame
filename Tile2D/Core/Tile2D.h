@@ -43,7 +43,7 @@ class Tile2DBehaviour;
 class Canvas;
 class LightSystem;
 class Resources;
-class IScene;
+class SceneBase;
 class GameObject;
 class Time;
 class Reflector;
@@ -77,7 +77,7 @@ public:
             const std::string&                          sortingLayersFile,
             const std::string&                          colliderLayersFile,
             const std::string&                          tagsFile,
-            std::map<unsigned, IScene*>                 scenes,
+            const std::string&                          scenesFile,
             std::map<std::string, IObjectCreator*>      classBindings
     );
 

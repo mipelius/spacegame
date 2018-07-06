@@ -22,16 +22,25 @@
 // SOFTWARE.
 
 
-#ifndef SPACEGAME_SCENES_H
-#define SPACEGAME_SCENES_H
+#ifndef __SceneGameOver_H
+#define __SceneGameOver_H
 
-namespace Scenes {
-    enum {
-        titleScreen,
-        inGame,
-        gameEndScreen,
-        quickTesting
-    };
-}
+#include "IScene.h"
+#include "ISerializable.h"
 
-#endif //SPACEGAME_SCENES_H
+class Camera;
+
+class SceneVictory :
+        public IScene,
+        public ISerializable
+{
+public:
+    void deserialize(const json::Object &jsonObject) override;
+
+private:
+    void init() override;
+    void destroy() override;
+    Camera* camera_ = nullptr;
+};
+
+#endif //__SceneGameOver_H

@@ -31,11 +31,17 @@
 #include "Body.h"
 #include "Camera.h"
 
-class SceneInGame : public IScene {
+class SceneInGame :
+        public IScene,
+        public ISerializable
+{
+public:
+    void deserialize(const json::Object &jsonObject) override;
+
+private:
     void init() override;
     void destroy() override;
 
-private:
     Camera* camera_ = nullptr;
     void initSnowWorld_(GameObject* player);
     void initGreenWorld_(GameObject* player);

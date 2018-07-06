@@ -23,8 +23,10 @@
 
 
 #include <iostream>
+#include "JsonFileManager.h"
 #include "SceneManager.h"
 #include "Tile2D.h"
+#include "Reflector.h"
 
 SceneManager::SceneManager() {
     sceneToLoad_ = -1;
@@ -36,7 +38,7 @@ SceneManager::~SceneManager() {
         scenes_[currentScene_]->destroy();
     }
     for (auto& scene : scenes_) {
-        delete scene.second;
+        delete scene;
     }
 }
 
@@ -44,8 +46,18 @@ void SceneManager::loadScene(unsigned scene) {
     sceneToLoad_ = scene;
 }
 
-void SceneManager::init(std::map<unsigned, IScene *> &scenes) {
-    scenes_ = scenes;
+
+void SceneManager::init(const std::string &scenesFile) {
+    auto json = JsonFileManager::load(scenesFile);
+    auto scenesJson = json["scenes"].ToArray();
+
+    for (const json::Value& sceneJsonValue : scenesJson) {
+        auto sceneFilePath = sceneJsonValue.ToString();
+        auto sceneJson = JsonFileManager::load(sceneFilePath);
+        auto scene = Tile2D::reflector().instantiate<IScene>(sceneJson);
+        scenes_.push_back(scene);
+    }
+
     loadScene(0);
 }
 

@@ -26,7 +26,6 @@
 #include "Resources.h"
 #include "Tile2D.h"
 #include "SceneTitleScreen.h"
-#include "Scenes.h"
 #include "Text.h"
 #include "MovingCameraBehaviour.h"
 #include "Button.h"
@@ -75,7 +74,7 @@ void SceneTitleScreen::init() {
             "Start game",
             400.0f,
             [] (Button* button, Button::ButtonEventArgs args) {
-                Tile2D::sceneManager().loadScene(Scenes::inGame);
+                Tile2D::sceneManager().loadScene(1);
             }
     );
     auto buttonQuit = UIPrefabs::button(
@@ -93,3 +92,5 @@ void SceneTitleScreen::destroy() {
     delete camera_;
     Tile2D::canvas().setCamera(nullptr);
 }
+
+void SceneTitleScreen::deserialize(const json::Object &jsonObject) { }

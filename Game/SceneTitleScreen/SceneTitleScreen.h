@@ -29,11 +29,17 @@
 
 class Camera;
 
-class SceneTitleScreen : public IScene {
+class SceneTitleScreen :
+        public IScene,
+        public ISerializable
+{
+public:
+    void deserialize(const json::Object &jsonObject) override;
+
+private:
     void init() override;
     void destroy() override;
 
-private:
     Camera* camera_ = nullptr;
 };
 

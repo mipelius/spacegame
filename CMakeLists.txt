@@ -44,7 +44,7 @@ include_directories(
         Game
         Game/SceneInGame
         Game/SceneTitleScreen
-        Game/SceneEndScreen
+        Game/SceneVictory
         Game/SceneQuickTesting
         Game/SceneInGame/Items
         Tile2D/Animation
@@ -174,9 +174,8 @@ set(SOURCE_FILES
         precompile.h
 
         Game/main.cpp
-        Game/Scenes.h
-        Game/SceneEndScreen/SceneEndScreen.cpp
-        Game/SceneEndScreen/SceneEndScreen.h
+        Game/SceneVictory/SceneVictory.cpp
+        Game/SceneVictory/SceneVictory.h
 
         Game/SceneTitleScreen/SceneTitleScreen.cpp
         Game/SceneTitleScreen/SceneTitleScreen.h

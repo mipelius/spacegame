@@ -26,7 +26,7 @@
 #define __SCENEMANAGER_H
 
 #include "IScene.h"
-#include <map>
+#include <vector>
 
 class SceneManager {
     friend class Tile2D;
@@ -40,12 +40,12 @@ private:
 
     void update_();
 
-    void init(std::map<unsigned, IScene*>& scenes);
+    void init(const std::string& scenesFile);
 
     int currentScene_;
     int sceneToLoad_;
 
-    std::map<unsigned, IScene*> scenes_;
+    std::vector<IScene*> scenes_;
 };
 
 

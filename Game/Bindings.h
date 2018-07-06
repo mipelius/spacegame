@@ -25,6 +25,11 @@
 #define SPACEGAME_BINDINGS_H
 
 #include <map>
+
+#include "SceneInGame.h"
+#include "SceneTitleScreen.h"
+#include "SceneVictory.h"
+
 #include "Medikit.h"
 #include "PlayerTargetingComponent.h"
 #include "PlayerController.h"
@@ -62,6 +67,12 @@ class Bindings {
 public:
     static std::map<std::string, IObjectCreator*> createBindings() {
         return {
+                // Scenes
+
+                {"SceneTitleScreen",                    new ObjectCreator<SceneTitleScreen>()},
+                {"SceneInGame",                         new ObjectCreator<SceneInGame>()},
+                {"SceneVictory",                        new ObjectCreator<SceneVictory>()},
+
                 // components
 
                 {"AnimatedSprite",                      new ObjectCreator<AnimatedSprite>()},

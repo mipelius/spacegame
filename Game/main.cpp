@@ -21,11 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "SceneInGame.h"
-#include "SceneTitleScreen.h"
-#include "SceneEndScreen.h"
-#include "Scenes.h"
-#include "SceneQuickTesting.h"
 #include "Bindings.h"
 
 #undef main
@@ -33,16 +28,11 @@
 int main(int argc, const char *argv[]) {
     Tile2D::load(
             "data/config.json",
-            "data/resources.json",
-            "data/gameSetup/sorting_layers.json",
-            "data/gameSetup/collider_layer_matrix.json",
-            "data/gameSetup/tags.json",
-            {
-                    {Scenes::titleScreen,    new SceneTitleScreen},
-                    {Scenes::inGame,         new SceneInGame},
-                    {Scenes::gameEndScreen,  new SceneEndScreen},
-                    {Scenes::quickTesting,   new SceneQuickTesting}
-            },
+            "data/game_setup/resources.json",
+            "data/game_setup/sorting_layers.json",
+            "data/game_setup/collider_layer_matrix.json",
+            "data/game_setup/tags.json",
+            "data/game_setup/scenes.json",
             Bindings::createBindings()
     );
 
