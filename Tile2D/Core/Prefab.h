@@ -24,6 +24,8 @@
 #ifndef SPACEGAME_PREFAB_H
 #define SPACEGAME_PREFAB_H
 
+#include <string>
+
 class GameObject;
 
 class Prefab {

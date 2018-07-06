@@ -25,6 +25,7 @@
 #ifndef __SceneInGame_H
 #define __SceneInGame_H
 
+#include "Prefab.h"
 #include "Tile2D.h"
 #include "IScene.h"
 #include "Vec.h"
@@ -39,14 +40,22 @@ public:
     void deserialize(const json::Object &jsonObject) override;
 
 private:
+    struct PrefabSetup {
+        Prefab* prefab;
+        Vecf    position;
+    };
+
     void init() override;
     void destroy() override;
 
     Camera* camera_ = nullptr;
-    void initSnowWorld_(GameObject* player);
-    void initGreenWorld_(GameObject* player);
-    void initBlueWorld_(GameObject* player);
-    void initRedWorld_(GameObject* player);
+
+    std::string mapPath_;
+    std::string tileSetPath_;
+
+    Prefab* playerPrefab_;
+    std::vector<Prefab*> spawnerPrefabs_;
+    std::vector<PrefabSetup> otherPrefabs_;
 };
 
 

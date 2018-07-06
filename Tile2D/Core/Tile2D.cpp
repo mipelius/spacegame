@@ -113,12 +113,11 @@ void Tile2D::load(
     Tile2D::window().init(configFile);
     Tile2D::canvas().init(sortingLayersFile);
     Tile2D::instance_().initTags_(tagsFile);
-    Tile2D::sceneManager().init(scenesFile);
     Tile2D::lightSystem().init();
     Tile2D::physicsWorld().init(colliderLayersFile);
     Tile2D::setIsDebugMode(false);
-
     Tile2D::resources().init(resourcesFile);
+    Tile2D::sceneManager().init(scenesFile);
 
     // START LOOP
 
