@@ -76,6 +76,8 @@ class Vecf : public Vec<float>, public ISerializable
 public:
     using Vec<float>::Vec;
 
+	Vecf() = default;
+
     Vecf(Vec<float> otherVector) {
         x = otherVector.x;
         y = otherVector.y;

@@ -20,54 +20,73 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3rdParty\json.h" />
-    <ClInclude Include="Game\ColliderLayers.h" />
-    <ClInclude Include="Game\SceneEndScreen\SceneEndScreen.h" />
+    <ClInclude Include="Game\Bindings.h" />
+    <ClInclude Include="Game\CollisionEffects.h" />
+    <ClInclude Include="Game\EventHandlers.h" />
+    <ClInclude Include="Game\ParticleSystemComponents.h" />
+    <ClInclude Include="Game\SceneInGame\AmmoComponent.h" />
     <ClInclude Include="Game\SceneInGame\BackgroundBehaviour.h" />
     <ClInclude Include="Game\SceneInGame\BombBehaviour.h" />
     <ClInclude Include="Game\SceneInGame\DebugBehaviour.h" />
     <ClInclude Include="Game\SceneInGame\EnemyAIBase.h" />
+    <ClInclude Include="Game\SceneInGame\EnemySpawner.h" />
+    <ClInclude Include="Game\SceneInGame\EnemyTargetingComponent.h" />
+    <ClInclude Include="Game\SceneInGame\ExplosionBehaviour.h" />
     <ClInclude Include="Game\SceneInGame\FlyingEnemyAI.h" />
     <ClInclude Include="Game\SceneInGame\Health.h" />
     <ClInclude Include="Game\SceneInGame\HUD.h" />
+    <ClInclude Include="Game\SceneInGame\Items\BombDropper.h" />
+    <ClInclude Include="Game\SceneInGame\Items\Cannon.h" />
+    <ClInclude Include="Game\SceneInGame\Items\Inventory.h" />
+    <ClInclude Include="Game\SceneInGame\Items\ItemBase.h" />
+    <ClInclude Include="Game\SceneInGame\Items\ItemTags.h" />
+    <ClInclude Include="Game\SceneInGame\Items\Medikit.h" />
+    <ClInclude Include="Game\SceneInGame\Items\WeaponBase.h" />
     <ClInclude Include="Game\SceneInGame\LimitedLifetimeBehaviour.h" />
+    <ClInclude Include="Game\SceneInGame\Pickup.h" />
+    <ClInclude Include="Game\SceneInGame\PickupSpawner.h" />
+    <ClInclude Include="Game\SceneInGame\PlasmaExplosionBehaviour.h" />
     <ClInclude Include="Game\SceneInGame\PlayerController.h" />
-    <ClInclude Include="Game\SceneInGame\Prefabs.h" />
+    <ClInclude Include="Game\SceneInGame\PlayerTargetingComponent.h" />
+    <ClInclude Include="Game\SceneInGame\Power.h" />
     <ClInclude Include="Game\SceneInGame\PulseLightBehaviour.h" />
     <ClInclude Include="Game\SceneInGame\SceneInGame.h" />
     <ClInclude Include="Game\SceneInGame\SparkleBehaviour.h" />
-    <ClInclude Include="Game\SceneInGame\SpawnerBehaviour.h" />
+    <ClInclude Include="Game\SceneInGame\Spawnable.h" />
+    <ClInclude Include="Game\SceneInGame\SpawnerBase.h" />
+    <ClInclude Include="Game\SceneInGame\SwirlingBehaviour.h" />
+    <ClInclude Include="Game\SceneInGame\TargetingComponentBase.h" />
     <ClInclude Include="Game\SceneInGame\WalkingEnemyAI.h" />
     <ClInclude Include="Game\SceneQuickTesting\QuickTestingBehaviour.h" />
     <ClInclude Include="Game\SceneQuickTesting\SceneQuickTesting.h" />
-    <ClInclude Include="Game\Scenes.h" />
     <ClInclude Include="Game\SceneTitleScreen\MovingCameraBehaviour.h" />
     <ClInclude Include="Game\SceneTitleScreen\SceneTitleScreen.h" />
-    <ClInclude Include="Game\SortingLayers.h" />
-    <ClInclude Include="Game\Tags.h" />
+    <ClInclude Include="Game\SceneVictory\SceneVictory.h" />
     <ClInclude Include="Game\UIPrefabs.h" />
     <ClInclude Include="precompile.h" />
-    <ClInclude Include="Tile2D\Animation\AnimatedTexture.h" />
-    <ClInclude Include="Tile2D\Animation\AnimationBase.h" />
-    <ClInclude Include="Tile2D\Animation\AnimationManager.h" />
-    <ClInclude Include="Tile2D\Animation\IAnimation.h" />
+    <ClInclude Include="Tile2D\Animation\AnimatedSprite.h" />
+    <ClInclude Include="Tile2D\Animation\Animation.h" />
     <ClInclude Include="Tile2D\Canvas\Camera.h" />
     <ClInclude Include="Tile2D\Canvas\Canvas.h" />
     <ClInclude Include="Tile2D\Canvas\Drawable\Background.h" />
     <ClInclude Include="Tile2D\Canvas\Drawable\Color.h" />
     <ClInclude Include="Tile2D\Canvas\Drawable\DrawableBase.h" />
-    <ClInclude Include="Tile2D\Canvas\Drawable\DrawableGroup.h" />
     <ClInclude Include="Tile2D\Canvas\Drawable\DrawableMap.h" />
     <ClInclude Include="Tile2D\Canvas\Drawable\Font.h" />
     <ClInclude Include="Tile2D\Canvas\Drawable\Sprite.h" />
+    <ClInclude Include="Tile2D\Canvas\Drawable\SpriteBase.h" />
     <ClInclude Include="Tile2D\Canvas\Drawable\Text.h" />
     <ClInclude Include="Tile2D\Canvas\ParticleSystem\Particle.h" />
     <ClInclude Include="Tile2D\Canvas\ParticleSystem\ParticleSystem.h" />
-    <ClInclude Include="Tile2D\Canvas\Texture\ITexture.h" />
     <ClInclude Include="Tile2D\Canvas\Texture\MapTexture.h" />
     <ClInclude Include="Tile2D\Canvas\Texture\Texture.h" />
     <ClInclude Include="Tile2D\Core\GameObject.h" />
     <ClInclude Include="Tile2D\Core\Input.h" />
     <ClInclude Include="Tile2D\Core\IScene.h" />
+    <ClInclude Include="Tile2D\Core\ISerializable.h" />
+    <ClInclude Include="Tile2D\Core\ObjectCreator.h" />
+    <ClInclude Include="Tile2D\Core\Prefab.h" />
+    <ClInclude Include="Tile2D\Core\Reflector.h" />
     <ClInclude Include="Tile2D\Core\ResourceContainer.h" />
     <ClInclude Include="Tile2D\Core\Resources.h" />
     <ClInclude Include="Tile2D\Core\SceneManager.h" />
@@ -79,7 +98,9 @@
     <ClInclude Include="Tile2D\Core\Window.h" />
     <ClInclude Include="Tile2D\LightSystem\LightSystem.h" />
     <ClInclude Include="Tile2D\LightSystem\PointLight.h" />
+    <ClInclude Include="Tile2D\PathFinding\IPathValidator.h" />
     <ClInclude Include="Tile2D\PathFinding\PathFinder.h" />
+    <ClInclude Include="Tile2D\PathFinding\PathValidator.h" />
     <ClInclude Include="Tile2D\Physics\Body.h" />
     <ClInclude Include="Tile2D\Physics\ColliderLayerMatrix.h" />
     <ClInclude Include="Tile2D\Physics\PhysicsWorld.h" />
@@ -95,6 +116,7 @@
     <ClInclude Include="Tile2D\Sound\Player.h" />
     <ClInclude Include="Tile2D\Sound\SamplePlayer.h" />
     <ClInclude Include="Tile2D\UI\Button.h" />
+    <ClInclude Include="Tile2D\Util\CountDownTimer.h" />
     <ClInclude Include="Tile2D\Util\DataStructures\Array2d.h" />
     <ClInclude Include="Tile2D\Util\Event\Event.h" />
     <ClInclude Include="Tile2D\Util\gl_utils.h" />
@@ -108,40 +130,57 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3rdParty\json.cpp" />
+    <ClCompile Include="Game\CollisionEffects.cpp" />
     <ClCompile Include="Game\main.cpp" />
-    <ClCompile Include="Game\SceneEndScreen\SceneEndScreen.cpp" />
+    <ClCompile Include="Game\SceneInGame\AmmoComponent.cpp" />
     <ClCompile Include="Game\SceneInGame\BackgroundBehaviour.cpp" />
     <ClCompile Include="Game\SceneInGame\BombBehaviour.cpp" />
     <ClCompile Include="Game\SceneInGame\DebugBehaviour.cpp" />
     <ClCompile Include="Game\SceneInGame\EnemyAIBase.cpp" />
+    <ClCompile Include="Game\SceneInGame\EnemySpawner.cpp" />
+    <ClCompile Include="Game\SceneInGame\EnemyTargetingComponent.cpp" />
+    <ClCompile Include="Game\SceneInGame\ExplosionBehaviour.cpp" />
     <ClCompile Include="Game\SceneInGame\FlyingEnemyAI.cpp" />
     <ClCompile Include="Game\SceneInGame\Health.cpp" />
     <ClCompile Include="Game\SceneInGame\HUD.cpp" />
+    <ClCompile Include="Game\SceneInGame\Items\BombDropper.cpp" />
+    <ClCompile Include="Game\SceneInGame\Items\Cannon.cpp" />
+    <ClCompile Include="Game\SceneInGame\Items\Inventory.cpp" />
+    <ClCompile Include="Game\SceneInGame\Items\ItemBase.cpp" />
+    <ClCompile Include="Game\SceneInGame\Items\Medikit.cpp" />
+    <ClCompile Include="Game\SceneInGame\Items\WeaponBase.cpp" />
     <ClCompile Include="Game\SceneInGame\LimitedLifetimeBehaviour.cpp" />
+    <ClCompile Include="Game\SceneInGame\Pickup.cpp" />
+    <ClCompile Include="Game\SceneInGame\PickupSpawner.cpp" />
+    <ClCompile Include="Game\SceneInGame\PlasmaExplosionBehaviour.cpp" />
     <ClCompile Include="Game\SceneInGame\PlayerController.cpp" />
-    <ClCompile Include="Game\SceneInGame\Prefabs.cpp" />
+    <ClCompile Include="Game\SceneInGame\PlayerTargetingComponent.cpp" />
+    <ClCompile Include="Game\SceneInGame\Power.cpp" />
     <ClCompile Include="Game\SceneInGame\PulseLightBehaviour.cpp" />
     <ClCompile Include="Game\SceneInGame\SceneInGame.cpp" />
     <ClCompile Include="Game\SceneInGame\SparkleBehaviour.cpp" />
-    <ClCompile Include="Game\SceneInGame\SpawnerBehaviour.cpp" />
+    <ClCompile Include="Game\SceneInGame\Spawnable.cpp" />
+    <ClCompile Include="Game\SceneInGame\SpawnerBase.cpp" />
+    <ClCompile Include="Game\SceneInGame\SwirlingBehaviour.cpp" />
+    <ClCompile Include="Game\SceneInGame\TargetingComponentBase.cpp" />
     <ClCompile Include="Game\SceneInGame\WalkingEnemyAI.cpp" />
     <ClCompile Include="Game\SceneQuickTesting\QuickTestingBehaviour.cpp" />
     <ClCompile Include="Game\SceneQuickTesting\SceneQuickTesting.cpp" />
     <ClCompile Include="Game\SceneTitleScreen\MovingCameraBehaviour.cpp" />
     <ClCompile Include="Game\SceneTitleScreen\SceneTitleScreen.cpp" />
+    <ClCompile Include="Game\SceneVictory\SceneVictory.cpp" />
     <ClCompile Include="Game\UIPrefabs.cpp" />
-    <ClCompile Include="Tile2D\Animation\AnimatedTexture.cpp" />
-    <ClCompile Include="Tile2D\Animation\AnimationBase.cpp" />
-    <ClCompile Include="Tile2D\Animation\AnimationManager.cpp" />
+    <ClCompile Include="Tile2D\Animation\AnimatedSprite.cpp" />
+    <ClCompile Include="Tile2D\Animation\Animation.cpp" />
     <ClCompile Include="Tile2D\Canvas\Camera.cpp" />
     <ClCompile Include="Tile2D\Canvas\Canvas.cpp" />
     <ClCompile Include="Tile2D\Canvas\Drawable\Background.cpp" />
     <ClCompile Include="Tile2D\Canvas\Drawable\Color.cpp" />
     <ClCompile Include="Tile2D\Canvas\Drawable\DrawableBase.cpp" />
-    <ClCompile Include="Tile2D\Canvas\Drawable\DrawableGroup.cpp" />
     <ClCompile Include="Tile2D\Canvas\Drawable\DrawableMap.cpp" />
     <ClCompile Include="Tile2D\Canvas\Drawable\Font.cpp" />
     <ClCompile Include="Tile2D\Canvas\Drawable\Sprite.cpp" />
+    <ClCompile Include="Tile2D\Canvas\Drawable\SpriteBase.cpp" />
     <ClCompile Include="Tile2D\Canvas\Drawable\Text.cpp" />
     <ClCompile Include="Tile2D\Canvas\ParticleSystem\Particle.cpp" />
     <ClCompile Include="Tile2D\Canvas\ParticleSystem\ParticleSystem.cpp" />
@@ -149,16 +188,21 @@
     <ClCompile Include="Tile2D\Canvas\Texture\Texture.cpp" />
     <ClCompile Include="Tile2D\Core\GameObject.cpp" />
     <ClCompile Include="Tile2D\Core\Input.cpp" />
+    <ClCompile Include="Tile2D\Core\Prefab.cpp" />
+    <ClCompile Include="Tile2D\Core\Reflector.cpp" />
     <ClCompile Include="Tile2D\Core\Resources.cpp" />
     <ClCompile Include="Tile2D\Core\SceneManager.cpp" />
     <ClCompile Include="Tile2D\Core\t2Time.cpp" />
     <ClCompile Include="Tile2D\Core\Tile2D.cpp" />
     <ClCompile Include="Tile2D\Core\Tile2DBehaviour.cpp" />
+    <ClCompile Include="Tile2D\Core\Tile2DComponent.cpp" />
     <ClCompile Include="Tile2D\Core\Transform.cpp" />
     <ClCompile Include="Tile2D\Core\Window.cpp" />
     <ClCompile Include="Tile2D\LightSystem\LightSystem.cpp" />
     <ClCompile Include="Tile2D\LightSystem\PointLight.cpp" />
+    <ClCompile Include="Tile2D\PathFinding\IPathValidator.cpp" />
     <ClCompile Include="Tile2D\PathFinding\PathFinder.cpp" />
+    <ClCompile Include="Tile2D\PathFinding\PathValidator.cpp" />
     <ClCompile Include="Tile2D\Physics\Body.cpp" />
     <ClCompile Include="Tile2D\Physics\ColliderLayerMatrix.cpp" />
     <ClCompile Include="Tile2D\Physics\PhysicsWorld.cpp" />
@@ -173,6 +217,7 @@
     <ClCompile Include="Tile2D\Sound\Player.cpp" />
     <ClCompile Include="Tile2D\Sound\SamplePlayer.cpp" />
     <ClCompile Include="Tile2D\UI\Button.cpp" />
+    <ClCompile Include="Tile2D\Util\CountDownTimer.cpp" />
     <ClCompile Include="Tile2D\Util\JsonFileManager.cpp" />
     <ClCompile Include="Tile2D\Util\Primitives\LineSegment.cpp" />
     <ClCompile Include="Tile2D\Util\Primitives\Rect.cpp" />
@@ -248,10 +293,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)SDL2\include;$(ProjectDir)SDL2_image\include;$(ProjectDir)SDL2_mixer\include;$(ProjectDir)Tile2D\Animation;$(ProjectDir)Tile2D\Core;$(ProjectDir)Tile2D\GUI;$(ProjectDir)Tile2D\LightSystem;$(ProjectDir)Tile2D\PathFinding;$(ProjectDir)Tile2D\Physics;$(ProjectDir)Tile2D\Sound;$(ProjectDir)Tile2D\Util;$(ProjectDir)Tile2D\Canvas;$(ProjectDir)Tile2D\Canvas\Drawable;$(ProjectDir)Tile2D\Canvas\ParticleSystem;$(ProjectDir)Tile2D\Canvas\Texture;$(ProjectDir)Tile2D\Util\DataStructures;$(ProjectDir)Tile2D\Util\Event;$(ProjectDir)Tile2D\Util\Primitives;$(ProjectDir)Game;$(ProjectDir)Game\SceneEndScreen;$(ProjectDir)Game\SceneInGame;$(ProjectDir)Game\SceneTitleScreen;$(ProjectDir)3rdParty;$(ProjectDir);$(ProjectDir)Game\SceneQuickTesting;$(ProjectDir)Tile2D\UI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)SDL2\include;$(ProjectDir)SDL2_image\include;$(ProjectDir)SDL2_mixer\include;$(ProjectDir)Tile2D\Animation;$(ProjectDir)Tile2D\Core;$(ProjectDir)Tile2D\GUI;$(ProjectDir)Tile2D\LightSystem;$(ProjectDir)Tile2D\PathFinding;$(ProjectDir)Tile2D\Physics;$(ProjectDir)Tile2D\Sound;$(ProjectDir)Tile2D\Util;$(ProjectDir)Tile2D\Canvas;$(ProjectDir)Tile2D\Canvas\Drawable;$(ProjectDir)Tile2D\Canvas\ParticleSystem;$(ProjectDir)Tile2D\Canvas\Texture;$(ProjectDir)Tile2D\Util\DataStructures;$(ProjectDir)Tile2D\Util\Event;$(ProjectDir)Tile2D\Util\Primitives;$(ProjectDir)Game;$(ProjectDir)Game\SceneVictory;$(ProjectDir)Game\SceneInGame;$(ProjectDir)Game\SceneTitleScreen;$(ProjectDir)3rdParty;$(ProjectDir);$(ProjectDir)Game\SceneQuickTesting;$(ProjectDir)Tile2D\UI;$(ProjectDir)Game\SceneInGame\Items;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2\lib\x86\SDL2.lib;SDL2_mixer\lib\x86\SDL2_mixer.lib;SDL2_image\lib\x86\SDL2_image.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(ProjectDir)SDL2\lib\x86\SDL2.lib;$(ProjectDir)SDL2_mixer\lib\x86\SDL2_mixer.lib;$(ProjectDir)SDL2_image\lib\x86\SDL2_image.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -259,14 +304,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)SDL2\include;$(ProjectDir)SDL2_image\include;$(ProjectDir)SDL2_mixer\include;$(ProjectDir)Tile2D\Animation;$(ProjectDir)Tile2D\Core;$(ProjectDir)Tile2D\GUI;$(ProjectDir)Tile2D\LightSystem;$(ProjectDir)Tile2D\PathFinding;$(ProjectDir)Tile2D\Physics;$(ProjectDir)Tile2D\Sound;$(ProjectDir)Tile2D\Util;$(ProjectDir)Tile2D\Canvas;$(ProjectDir)Tile2D\Canvas\Drawable;$(ProjectDir)Tile2D\Canvas\ParticleSystem;$(ProjectDir)Tile2D\Canvas\Texture;$(ProjectDir)Tile2D\Util\DataStructures;$(ProjectDir)Tile2D\Util\Event;$(ProjectDir)Tile2D\Util\Primitives;$(ProjectDir)Game;$(ProjectDir)Game\SceneEndScreen;$(ProjectDir)Game\SceneInGame;$(ProjectDir)Game\SceneTitleScreen;$(ProjectDir)3rdParty;$(ProjectDir);$(ProjectDir)Game\SceneQuickTesting;$(ProjectDir)Tile2D\UI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)SDL2\include;$(ProjectDir)SDL2_image\include;$(ProjectDir)SDL2_mixer\include;$(ProjectDir)Tile2D\Animation;$(ProjectDir)Tile2D\Core;$(ProjectDir)Tile2D\GUI;$(ProjectDir)Tile2D\LightSystem;$(ProjectDir)Tile2D\PathFinding;$(ProjectDir)Tile2D\Physics;$(ProjectDir)Tile2D\Sound;$(ProjectDir)Tile2D\Util;$(ProjectDir)Tile2D\Canvas;$(ProjectDir)Tile2D\Canvas\Drawable;$(ProjectDir)Tile2D\Canvas\ParticleSystem;$(ProjectDir)Tile2D\Canvas\Texture;$(ProjectDir)Tile2D\Util\DataStructures;$(ProjectDir)Tile2D\Util\Event;$(ProjectDir)Tile2D\Util\Primitives;$(ProjectDir)Game;$(ProjectDir)Game\SceneVictory;$(ProjectDir)Game\SceneInGame;$(ProjectDir)Game\SceneTitleScreen;$(ProjectDir)3rdParty;$(ProjectDir);$(ProjectDir)Game\SceneQuickTesting;$(ProjectDir)Tile2D\UI;$(ProjectDir)Game\SceneInGame\Items;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>
       </AdditionalOptions>
       <UndefinePreprocessorDefinitions>%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2\lib\x64\SDL2.lib;SDL2_mixer\lib\x64\SDL2_mixer.lib;SDL2_image\lib\x64\SDL2_image.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(ProjectDir)SDL2\lib\x64\SDL2.lib;$(ProjectDir)SDL2_mixer\lib\x64\SDL2_mixer.lib;$(ProjectDir)SDL2_image\lib\x64\SDL2_image.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -276,12 +321,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)SDL2\include;$(ProjectDir)SDL2_image\include;$(ProjectDir)SDL2_mixer\include;$(ProjectDir)Tile2D\Animation;$(ProjectDir)Tile2D\Core;$(ProjectDir)Tile2D\GUI;$(ProjectDir)Tile2D\LightSystem;$(ProjectDir)Tile2D\PathFinding;$(ProjectDir)Tile2D\Physics;$(ProjectDir)Tile2D\Sound;$(ProjectDir)Tile2D\Util;$(ProjectDir)Tile2D\Canvas;$(ProjectDir)Tile2D\Canvas\Drawable;$(ProjectDir)Tile2D\Canvas\ParticleSystem;$(ProjectDir)Tile2D\Canvas\Texture;$(ProjectDir)Tile2D\Util\DataStructures;$(ProjectDir)Tile2D\Util\Event;$(ProjectDir)Tile2D\Util\Primitives;$(ProjectDir)Game;$(ProjectDir)Game\SceneEndScreen;$(ProjectDir)Game\SceneInGame;$(ProjectDir)Game\SceneTitleScreen;$(ProjectDir)3rdParty;$(ProjectDir);$(ProjectDir)Game\SceneQuickTesting;$(ProjectDir)Tile2D\UI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)SDL2\include;$(ProjectDir)SDL2_image\include;$(ProjectDir)SDL2_mixer\include;$(ProjectDir)Tile2D\Animation;$(ProjectDir)Tile2D\Core;$(ProjectDir)Tile2D\GUI;$(ProjectDir)Tile2D\LightSystem;$(ProjectDir)Tile2D\PathFinding;$(ProjectDir)Tile2D\Physics;$(ProjectDir)Tile2D\Sound;$(ProjectDir)Tile2D\Util;$(ProjectDir)Tile2D\Canvas;$(ProjectDir)Tile2D\Canvas\Drawable;$(ProjectDir)Tile2D\Canvas\ParticleSystem;$(ProjectDir)Tile2D\Canvas\Texture;$(ProjectDir)Tile2D\Util\DataStructures;$(ProjectDir)Tile2D\Util\Event;$(ProjectDir)Tile2D\Util\Primitives;$(ProjectDir)Game;$(ProjectDir)Game\SceneVictory;$(ProjectDir)Game\SceneInGame;$(ProjectDir)Game\SceneTitleScreen;$(ProjectDir)3rdParty;$(ProjectDir);$(ProjectDir)Game\SceneQuickTesting;$(ProjectDir)Tile2D\UI;$(ProjectDir)Game\SceneInGame\Items;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2\lib\x86\SDL2.lib;SDL2_mixer\lib\x86\SDL2_mixer.lib;SDL2_image\lib\x86\SDL2_image.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(ProjectDir)SDL2\lib\x86\SDL2.lib;$(ProjectDir)SDL2_mixer\lib\x86\SDL2_mixer.lib;$(ProjectDir)SDL2_image\lib\x86\SDL2_image.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -291,12 +336,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)SDL2\include;$(ProjectDir)SDL2_image\include;$(ProjectDir)SDL2_mixer\include;$(ProjectDir)Tile2D\Animation;$(ProjectDir)Tile2D\Core;$(ProjectDir)Tile2D\GUI;$(ProjectDir)Tile2D\LightSystem;$(ProjectDir)Tile2D\PathFinding;$(ProjectDir)Tile2D\Physics;$(ProjectDir)Tile2D\Sound;$(ProjectDir)Tile2D\Util;$(ProjectDir)Tile2D\Canvas;$(ProjectDir)Tile2D\Canvas\Drawable;$(ProjectDir)Tile2D\Canvas\ParticleSystem;$(ProjectDir)Tile2D\Canvas\Texture;$(ProjectDir)Tile2D\Util\DataStructures;$(ProjectDir)Tile2D\Util\Event;$(ProjectDir)Tile2D\Util\Primitives;$(ProjectDir)Game;$(ProjectDir)Game\SceneEndScreen;$(ProjectDir)Game\SceneInGame;$(ProjectDir)Game\SceneTitleScreen;$(ProjectDir)3rdParty;$(ProjectDir);$(ProjectDir)Game\SceneQuickTesting;$(ProjectDir)Tile2D\UI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)SDL2\include;$(ProjectDir)SDL2_image\include;$(ProjectDir)SDL2_mixer\include;$(ProjectDir)Tile2D\Animation;$(ProjectDir)Tile2D\Core;$(ProjectDir)Tile2D\GUI;$(ProjectDir)Tile2D\LightSystem;$(ProjectDir)Tile2D\PathFinding;$(ProjectDir)Tile2D\Physics;$(ProjectDir)Tile2D\Sound;$(ProjectDir)Tile2D\Util;$(ProjectDir)Tile2D\Canvas;$(ProjectDir)Tile2D\Canvas\Drawable;$(ProjectDir)Tile2D\Canvas\ParticleSystem;$(ProjectDir)Tile2D\Canvas\Texture;$(ProjectDir)Tile2D\Util\DataStructures;$(ProjectDir)Tile2D\Util\Event;$(ProjectDir)Tile2D\Util\Primitives;$(ProjectDir)Game;$(ProjectDir)Game\SceneVictory;$(ProjectDir)Game\SceneInGame;$(ProjectDir)Game\SceneTitleScreen;$(ProjectDir)3rdParty;$(ProjectDir);$(ProjectDir)Game\SceneQuickTesting;$(ProjectDir)Tile2D\UI;$(ProjectDir)Game\SceneInGame\Items;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2\lib\x64\SDL2.lib;SDL2_mixer\lib\x64\SDL2_mixer.lib;SDL2_image\lib\x64\SDL2_image.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(ProjectDir)SDL2\lib\x64\SDL2.lib;$(ProjectDir)SDL2_mixer\lib\x64\SDL2_mixer.lib;$(ProjectDir)SDL2_image\lib\x64\SDL2_image.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

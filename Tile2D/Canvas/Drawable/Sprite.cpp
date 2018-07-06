@@ -27,7 +27,7 @@
 #include "Sprite.h"
 
 void Sprite::drawActual(const Canvas &canvas) {
-    drawTexture_(texturePtr_, {0.01, 0.01, 0.99, 0.99});
+    drawTexture_(texturePtr_, {0.01f, 0.01f, 0.99f, 0.99f});
 }
 
 Sprite::Sprite() :

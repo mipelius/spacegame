@@ -15,148 +15,115 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Tile2D\Util\gl_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="precompile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="3rdParty\json.h">
+    <ClInclude Include="Tile2D\Util\Tile2DMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneEndScreen\SceneEndScreen.h">
+    <ClInclude Include="Tile2D\Util\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\BackgroundBehaviour.h">
+    <ClInclude Include="Tile2D\Util\Primitives\Vec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\BombBehaviour.h">
+    <ClInclude Include="Tile2D\Util\DataStructures\Array2d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\DebugBehaviour.h">
+    <ClInclude Include="Tile2D\Sound\AudioClip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\EnemyAIBase.h">
+    <ClInclude Include="Tile2D\UI\Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\FlyingEnemyAI.h">
+    <ClInclude Include="Tile2D\Physics\ColliderLayerMatrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\Health.h">
+    <ClInclude Include="Tile2D\Util\CountDownTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\HUD.h">
+    <ClInclude Include="Tile2D\Sound\Ears.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\LimitedLifetimeBehaviour.h">
+    <ClInclude Include="Tile2D\Util\Event\Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\PlayerController.h">
+    <ClInclude Include="Tile2D\Util\JsonFileManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\Prefabs.h">
+    <ClInclude Include="Tile2D\Util\Primitives\LineSegment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\PulseLightBehaviour.h">
+    <ClInclude Include="Tile2D\Sound\Music.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\SceneInGame.h">
+    <ClInclude Include="Tile2D\Sound\MusicPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\SparkleBehaviour.h">
+    <ClInclude Include="Tile2D\Physics\PhysicsWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\SpawnerBehaviour.h">
+    <ClInclude Include="Tile2D\Sound\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\WalkingEnemyAI.h">
+    <ClInclude Include="Tile2D\Physics\PolygonCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneQuickTesting\QuickTestingBehaviour.h">
+    <ClInclude Include="Tile2D\Util\Pool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneQuickTesting\SceneQuickTesting.h">
+    <ClInclude Include="Tile2D\Util\Primitives\Rect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneTitleScreen\SceneTitleScreen.h">
+    <ClInclude Include="Tile2D\Sound\SamplePlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\ColliderLayers.h">
+    <ClInclude Include="Tile2D\Physics\Tile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Scenes.h">
+    <ClInclude Include="Tile2D\Physics\TileMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SortingLayers.h">
+    <ClInclude Include="Tile2D\Physics\TileSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Tags.h">
+    <ClInclude Include="Tile2D\Physics\WorldMapModifiedEventArgs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\UIPrefabs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Animation\AnimatedTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Animation\AnimationBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Animation\AnimationManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Animation\IAnimation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Canvas\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Canvas\Canvas.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Canvas\Drawable\Background.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Canvas\Drawable\Color.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Canvas\Drawable\DrawableBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Canvas\Drawable\DrawableGroup.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Canvas\Drawable\DrawableMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Canvas\Drawable\Font.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Canvas\Drawable\Sprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Canvas\Drawable\Text.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Canvas\ParticleSystem\Particle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Canvas\ParticleSystem\ParticleSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Canvas\Texture\ITexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Canvas\Texture\MapTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Canvas\Texture\Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Core\GameObject.h">
+    <ClInclude Include="Tile2D\Physics\Body.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tile2D\Core\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Core\IScene.h">
+    <ClInclude Include="Tile2D\PathFinding\IPathValidator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile2D\Core\ISerializable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile2D\LightSystem\LightSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile2D\Core\ObjectCreator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile2D\PathFinding\PathFinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile2D\PathFinding\PathValidator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile2D\LightSystem\PointLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile2D\Core\Prefab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile2D\Core\Reflector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tile2D\Core\ResourceContainer.h">
@@ -186,216 +153,273 @@
     <ClInclude Include="Tile2D\Core\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\LightSystem\LightSystem.h">
+    <ClInclude Include="Tile2D\Animation\AnimatedSprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\LightSystem\PointLight.h">
+    <ClInclude Include="Tile2D\Animation\Animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\PathFinding\PathFinder.h">
+    <ClInclude Include="Tile2D\Canvas\Drawable\Background.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Physics\Body.h">
+    <ClInclude Include="Tile2D\Canvas\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Physics\ColliderLayerMatrix.h">
+    <ClInclude Include="Tile2D\Canvas\Canvas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Physics\PhysicsWorld.h">
+    <ClInclude Include="Tile2D\Canvas\Drawable\Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Physics\PolygonCollider.h">
+    <ClInclude Include="Tile2D\Canvas\Drawable\DrawableBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Physics\Tile.h">
+    <ClInclude Include="Tile2D\Canvas\Drawable\DrawableMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Physics\TileMap.h">
+    <ClInclude Include="Tile2D\Canvas\Drawable\Font.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Physics\TileSet.h">
+    <ClInclude Include="Tile2D\Core\GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Physics\WorldMapModifiedEventArgs.h">
+    <ClInclude Include="Tile2D\Core\IScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Sound\AudioClip.h">
+    <ClInclude Include="Tile2D\Canvas\Texture\MapTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Sound\Ears.h">
+    <ClInclude Include="Tile2D\Canvas\ParticleSystem\Particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Sound\Music.h">
+    <ClInclude Include="Tile2D\Canvas\ParticleSystem\ParticleSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Sound\MusicPlayer.h">
+    <ClInclude Include="Tile2D\Canvas\Drawable\Sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Sound\Player.h">
+    <ClInclude Include="Tile2D\Canvas\Drawable\SpriteBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Sound\SamplePlayer.h">
+    <ClInclude Include="Tile2D\Canvas\Drawable\Text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\UI\Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Util\gl_utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Util\JsonFileManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Util\Pool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Util\Tile2DMath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Util\Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Util\Primitives\LineSegment.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Util\Primitives\Rect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Util\Primitives\Vec.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Util\Event\Event.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Util\DataStructures\Array2d.h">
+    <ClInclude Include="Tile2D\Canvas\Texture\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\SceneTitleScreen\MovingCameraBehaviour.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Game\SceneQuickTesting\QuickTestingBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneQuickTesting\SceneQuickTesting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneTitleScreen\SceneTitleScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneVictory\SceneVictory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\SwirlingBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\TargetingComponentBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIPrefabs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\WalkingEnemyAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\Items\Cannon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\Items\Inventory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\Items\ItemBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\Items\ItemTags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\LimitedLifetimeBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\Items\Medikit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\Pickup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\PickupSpawner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\PlasmaExplosionBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\PlayerController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\PlayerTargetingComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\Power.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\PulseLightBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\SceneInGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\SparkleBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\Spawnable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\SpawnerBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\Items\WeaponBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\AmmoComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\BackgroundBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Bindings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\BombBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\Items\BombDropper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\CollisionEffects.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\DebugBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\EnemyAIBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\EnemySpawner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\EnemyTargetingComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\EventHandlers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\ExplosionBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\FlyingEnemyAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\Health.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\HUD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\ParticleSystemComponents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="3rdParty\json.cpp">
+    <ClCompile Include="Tile2D\Util\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneEndScreen\SceneEndScreen.cpp">
+    <ClCompile Include="Tile2D\Sound\AudioClip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\BackgroundBehaviour.cpp">
+    <ClCompile Include="Tile2D\UI\Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\BombBehaviour.cpp">
+    <ClCompile Include="Tile2D\Physics\ColliderLayerMatrix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\DebugBehaviour.cpp">
+    <ClCompile Include="Tile2D\Util\CountDownTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\EnemyAIBase.cpp">
+    <ClCompile Include="Tile2D\Sound\Ears.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\FlyingEnemyAI.cpp">
+    <ClCompile Include="Tile2D\Util\JsonFileManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\Health.cpp">
+    <ClCompile Include="Tile2D\Util\Primitives\LineSegment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\HUD.cpp">
+    <ClCompile Include="Tile2D\Sound\Music.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\LimitedLifetimeBehaviour.cpp">
+    <ClCompile Include="Tile2D\Sound\MusicPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\PlayerController.cpp">
+    <ClCompile Include="Tile2D\Physics\PhysicsWorld.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\Prefabs.cpp">
+    <ClCompile Include="Tile2D\Sound\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\PulseLightBehaviour.cpp">
+    <ClCompile Include="Tile2D\Physics\PolygonCollider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\SceneInGame.cpp">
+    <ClCompile Include="Tile2D\Util\Primitives\Rect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\SparkleBehaviour.cpp">
+    <ClCompile Include="Tile2D\Sound\SamplePlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\SpawnerBehaviour.cpp">
+    <ClCompile Include="Tile2D\Physics\Tile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\WalkingEnemyAI.cpp">
+    <ClCompile Include="Tile2D\Physics\TileMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneQuickTesting\QuickTestingBehaviour.cpp">
+    <ClCompile Include="Tile2D\Physics\TileSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneQuickTesting\SceneQuickTesting.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneTitleScreen\SceneTitleScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\UIPrefabs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Animation\AnimatedTexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Animation\AnimationBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Animation\AnimationManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Canvas\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Canvas\Canvas.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Canvas\Drawable\Background.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Canvas\Drawable\Color.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Canvas\Drawable\DrawableBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Canvas\Drawable\DrawableGroup.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Canvas\Drawable\DrawableMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Canvas\Drawable\Font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Canvas\Drawable\Sprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Canvas\Drawable\Text.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Canvas\ParticleSystem\Particle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Canvas\ParticleSystem\ParticleSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Canvas\Texture\MapTexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Canvas\Texture\Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Core\GameObject.cpp">
+    <ClCompile Include="Tile2D\Physics\Body.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Tile2D\Core\Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile2D\PathFinding\IPathValidator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile2D\LightSystem\LightSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile2D\PathFinding\PathFinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile2D\PathFinding\PathValidator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile2D\LightSystem\PointLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile2D\Core\Prefab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile2D\Core\Reflector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Tile2D\Core\Resources.cpp">
@@ -413,76 +437,187 @@
     <ClCompile Include="Tile2D\Core\Tile2DBehaviour.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Tile2D\Core\Tile2DComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Tile2D\Core\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Tile2D\Core\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\LightSystem\LightSystem.cpp">
+    <ClCompile Include="Tile2D\Animation\Animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\LightSystem\PointLight.cpp">
+    <ClCompile Include="Tile2D\Canvas\Drawable\Background.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\PathFinding\PathFinder.cpp">
+    <ClCompile Include="Tile2D\Canvas\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Physics\Body.cpp">
+    <ClCompile Include="Tile2D\Canvas\Canvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Physics\ColliderLayerMatrix.cpp">
+    <ClCompile Include="Tile2D\Canvas\Drawable\Color.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Physics\PhysicsWorld.cpp">
+    <ClCompile Include="Tile2D\Canvas\Drawable\DrawableBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Physics\PolygonCollider.cpp">
+    <ClCompile Include="Tile2D\Canvas\Drawable\DrawableMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Physics\Tile.cpp">
+    <ClCompile Include="Tile2D\Canvas\Drawable\Font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Physics\TileMap.cpp">
+    <ClCompile Include="Tile2D\Core\GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Physics\TileSet.cpp">
+    <ClCompile Include="Tile2D\Canvas\Texture\MapTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Sound\AudioClip.cpp">
+    <ClCompile Include="Tile2D\Canvas\ParticleSystem\Particle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Sound\Ears.cpp">
+    <ClCompile Include="Tile2D\Canvas\ParticleSystem\ParticleSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Sound\Music.cpp">
+    <ClCompile Include="Tile2D\Canvas\Drawable\Sprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Sound\MusicPlayer.cpp">
+    <ClCompile Include="Tile2D\Canvas\Drawable\SpriteBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Sound\Player.cpp">
+    <ClCompile Include="Tile2D\Canvas\Drawable\Text.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Sound\SamplePlayer.cpp">
+    <ClCompile Include="Tile2D\Canvas\Texture\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\UI\Button.cpp">
+    <ClCompile Include="Tile2D\Animation\AnimatedSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Util\JsonFileManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Util\Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Util\Primitives\LineSegment.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Util\Primitives\Rect.cpp">
+    <ClCompile Include="Game\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game\SceneTitleScreen\MovingCameraBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneQuickTesting\QuickTestingBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneQuickTesting\SceneQuickTesting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneTitleScreen\SceneTitleScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneVictory\SceneVictory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\TargetingComponentBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIPrefabs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\WalkingEnemyAI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Items\Cannon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Items\Inventory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Items\ItemBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\LimitedLifetimeBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Items\Medikit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Pickup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\PickupSpawner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\PlasmaExplosionBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\PlayerController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\PlayerTargetingComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Power.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\PulseLightBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\SceneInGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\SparkleBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Spawnable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\SpawnerBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\SwirlingBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Items\WeaponBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\AmmoComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\BackgroundBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\BombBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Items\BombDropper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CollisionEffects.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\DebugBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\EnemyAIBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\EnemySpawner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\EnemyTargetingComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\ExplosionBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\FlyingEnemyAI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Health.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\HUD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\json.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

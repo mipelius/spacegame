@@ -31,7 +31,7 @@
 
 class ITile2DComponentReflector;
 class Tile2DComponent;
-class Tag;
+struct Tag;
 
 class GameObject {
     friend class Tile2D;
@@ -54,7 +54,7 @@ public:
     void setIsActive(bool isActive);
 
     void setTag(const Tag& tag);
-    const Tag& getTag();
+    const Tag& getTag() const;
 
     GameObject* clone();
 
