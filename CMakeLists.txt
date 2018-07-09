@@ -252,8 +252,6 @@ set(SOURCE_FILES
         Game/SceneInGame/PlayerTargetingComponent.h
         Game/SceneInGame/EnemyTargetingComponent.cpp
         Game/SceneInGame/EnemyTargetingComponent.h
-        Game/SceneInGame/AmmoComponent.cpp
-        Game/SceneInGame/AmmoComponent.h
         Game/SceneInGame/SpawnerBase.cpp
         Game/SceneInGame/SpawnerBase.h
         Game/SceneInGame/Spawnable.cpp
