@@ -329,7 +329,9 @@ bool PolygonCollider::detectTerrainCollision_(float deltaTime) {
             if (body_ != nullptr)  {
                 body_->velocity_ = {0, 0};
             }
-            transform()->position_ = pos_;
+            if (resolverEnabled_) {
+                transform()->position_ = pos_;
+            }
         }
 
     } else { // if fast object -> use polygon casting/sweeping
@@ -367,11 +369,13 @@ bool PolygonCollider::detectTerrainCollision_(float deltaTime) {
             const Vecf v = body_->velocity_;
             const Vecf& n = contactNormal;
 
-            Vecf proj_n_v = n * v.dot(n);
-            Vecf reflVel = v + proj_n_v * -2.0;
+            if (resolverEnabled_) {
+                Vecf proj_n_v = n * v.dot(n);
+                Vecf reflVel = v + proj_n_v * -2.0;
 
-            body_->velocity_ = reflVel * 0.2;
-            transform()->position_ += toCollision * (1.01);
+                body_->velocity_ = reflVel * 0.2;
+                transform()->position_ += toCollision * (1.01);
+            }
 
             terrainCollision.raise(
                     this,
@@ -494,8 +498,21 @@ void PolygonCollider::deserialize(const json::Object &jsonObject) {
             throw std::runtime_error("PolygonCollider: sweepingStrategyThreshold must be numeric or string \"max\"");
         }
     }
+
+    if (jsonObject.HasKey("resolverEnabled")) {
+        resolverEnabled_ = jsonObject["resolverEnabled"].ToBool();
+    }
 }
 
 Tile2DComponent *PolygonCollider::clone() {
     return new PolygonCollider(*this);
+}
+
+
+bool PolygonCollider::isResolverEnabled() const {
+    return resolverEnabled_;
+}
+
+void PolygonCollider::setResolverEnabled(bool resolverEnabled) {
+    resolverEnabled_ = resolverEnabled;
 }

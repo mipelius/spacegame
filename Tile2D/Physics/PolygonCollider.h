@@ -89,6 +89,9 @@ Event<PolygonCollider, TerrainCollisionEventArgs> terrainCollision;
 
     void deserialize(const json::Object &jsonObject) override;
 
+    bool isResolverEnabled() const;
+    void setResolverEnabled(bool resolverEnabled);
+
 protected:
     void init() override;
     void onDestroy() override;
@@ -115,6 +118,8 @@ private:
     Body* body_ = nullptr;
     std::vector<Vecf> points_;
     const ColliderLayer* layer_ = nullptr;
+
+    bool resolverEnabled_ = true;
 };
 
 
