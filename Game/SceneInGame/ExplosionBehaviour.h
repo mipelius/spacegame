@@ -35,9 +35,6 @@ class ExplosionBehaviour :
 public:
     void deserialize(const json::Object &jsonObject) override;
 
-    int getRadius_() const;
-    void setRadius_(int radius_);
-
 protected:
     Tile2DComponent *clone() override;
 
@@ -46,7 +43,18 @@ protected:
     void lateUpdate() override;
 
 private:
-    int radius_ = 10;
+    float terrainRemoveRange_ = 0;
+    float damageRange_ = 0;
+    float maxDamage_ = 0;
+
+    class DamageFieldCollisionHandler : public IEventHandler<PolygonCollider, CollisionEventArgs> {
+    public:
+        float maxDamage = 0;
+        float range = 0;
+
+        void handle(PolygonCollider *owner, CollisionEventArgs args) const override;
+        IEventHandler<PolygonCollider, CollisionEventArgs> *clone() override;
+    };
 };
 
 #endif //SPACEGAME_EXPLOSIONBEHAVIOUR_H
