@@ -50,7 +50,7 @@ public:
     ResourceContainer<Texture> textures;
     ResourceContainer<Animation> animations;
     ResourceContainer<Font> fonts;
-    ResourceContainer<AudioClip> sfx;
+    ResourceContainer<AudioClip> audioClips;
     ResourceContainer<Music> music;
 };
 

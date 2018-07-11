@@ -29,14 +29,14 @@ void Resources::init(const std::string& resourcesFile) {
     auto obj = JsonFileManager::load(resourcesFile);
     textures.init(        obj["textures"]       );
     animations.init(      obj["animations"]     );
-    sfx.init(             obj["sfx"]            );
+    audioClips.init(      obj["audioClips"]     );
     music.init(           obj["music"]          );
     fonts.init(           obj["fonts"]          );
     prefabs.init(         obj["prefabs"]        );
 
     textures.reload();
     animations.reload();
-    sfx.reload();
+    audioClips.reload();
     music.reload();
     fonts.reload();
     prefabs.reload();

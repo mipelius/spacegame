@@ -55,7 +55,7 @@ include_directories(
         Tile2D/Canvas
         Tile2D/UI
         Tile2D/Physics
-        Tile2D/Sound
+        Tile2D/Audio
         Tile2D/Util/DataStructures
         Tile2D/Util/Event
         Tile2D/Util/Primitives
@@ -115,18 +115,10 @@ set(SOURCE_FILES
         Tile2D/Physics/PolygonCollider.h
         Tile2D/Physics/ColliderLayerMatrix.cpp
         Tile2D/Physics/ColliderLayerMatrix.h
-        Tile2D/Sound/Ears.cpp
-        Tile2D/Sound/Ears.h
-        Tile2D/Sound/Music.cpp
-        Tile2D/Sound/Music.h
-        Tile2D/Sound/MusicPlayer.cpp
-        Tile2D/Sound/MusicPlayer.h
-        Tile2D/Sound/Player.cpp
-        Tile2D/Sound/Player.h
-        Tile2D/Sound/AudioClip.cpp
-        Tile2D/Sound/AudioClip.h
-        Tile2D/Sound/SamplePlayer.cpp
-        Tile2D/Sound/SamplePlayer.h
+        Tile2D/Audio/Music.cpp
+        Tile2D/Audio/Music.h
+        Tile2D/Audio/AudioClip.cpp
+        Tile2D/Audio/AudioClip.h
         Tile2D/Util/DataStructures/Array2d.h
         Tile2D/Util/Event/Event.h
         Tile2D/Util/Primitives/Rect.cpp
