@@ -21,20 +21,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_MIXER_H
+#define SPACEGAME_MIXER_H
 
-#include "precompile.h"
-#include "Music.h"
-#include "Tile2D.h"
 
-Music::Music(std::string filename) {
-    filename_ = filename;
-    this->music_ = Mix_LoadMUS((Tile2D::getResourcePath() + filename).data());
-}
+#include <vector>
 
-Music::~Music() {
-    Mix_FreeMusic(music_);
-}
+class Mixer {
+    friend class Tile2D;
+    friend class AudioSource;
 
-void Music::reload() {
-    this->music_ = Mix_LoadMUS((Tile2D::getResourcePath() + filename_).data());
-}
+private:
+    Mixer() = default;
+    ~Mixer();
+    void init();
+
+    const int MIXING_CHANNELS = 32;
+    std::vector<bool> channelReservations_;
+
+    int reserveChannel_();
+    void freeChannel_(int channel);
+};
+
+
+#endif //SPACEGAME_MIXER_H

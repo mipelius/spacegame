@@ -42,6 +42,7 @@
 #include "ObjectCreator.h"
 #include "json.h"
 #include "Reflector.h"
+#include "Mixer.h"
 
 bool Tile2D::isLoaded_ = false;
 
@@ -50,6 +51,7 @@ Tile2D::Tile2D() :
         quit_(false)
 {
     SDL_Init(SDL_INIT_EVERYTHING);
+    mixer_ = new Mixer();
     reflector_ = new Reflector();
     window_ = new Window();
     resources_ = new Resources();
@@ -61,6 +63,7 @@ Tile2D::Tile2D() :
     pathFinder_ = new PathFinder();
     input_ = new Input();
     time_ = new Time();
+
 }
 
 Tile2D::~Tile2D() {
@@ -77,6 +80,7 @@ Tile2D::~Tile2D() {
     delete resources_;
     delete window_;
     delete reflector_;
+    delete mixer_;
 
     SDL_Quit();
 }
@@ -109,15 +113,17 @@ void Tile2D::load(
     instance_();
 
     // INIT
-    Tile2D::reflector().init_(std::move(classBindings));
-    Tile2D::window().init(configFile);
-    Tile2D::canvas().init(sortingLayersFile);
-    Tile2D::instance_().initTags_(tagsFile);
-    Tile2D::lightSystem().init();
-    Tile2D::physicsWorld().init(colliderLayersFile);
-    Tile2D::setIsDebugMode(false);
-    Tile2D::resources().init(resourcesFile);
-    Tile2D::sceneManager().init(scenesFile);
+
+    instance_().mixer_->init();
+    reflector().init_(std::move(classBindings));
+    window().init(configFile);
+    canvas().init(sortingLayersFile);
+    instance_().initTags_(tagsFile);
+    lightSystem().init();
+    physicsWorld().init(colliderLayersFile);
+    setIsDebugMode(false);
+    resources().init(resourcesFile);
+    sceneManager().init(scenesFile);
 
     // START LOOP
 
@@ -337,4 +343,8 @@ void Tile2D::initTags_(std::string tagsFile) {
 
         tagMap_[id] = { id, name };
     }
+}
+
+Mixer &Tile2D::mixer() {
+    return *instance_().mixer_;
 }

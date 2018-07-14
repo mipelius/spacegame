@@ -26,14 +26,25 @@
 #include "AudioClip.h"
 #include "Tile2D.h"
 
-AudioClip::AudioClip(std::string filename) {
+AudioClip::AudioClip(const std::string& filename) {
     filepath_ = filename;
 }
 
 AudioClip::~AudioClip() {
-    Mix_FreeChunk(this->chunk_);
+    Mix_FreeChunk(chunk_);
 }
 
 void AudioClip::reload() {
+    if (chunk_) {
+        Mix_FreeChunk(chunk_);
+    }
+
     chunk_ = Mix_LoadWAV((Tile2D::getResourcePath() + filepath_).data());
+
+    if (chunk_ == nullptr) {
+        std::string error = "AudioClip: Couldn't load ";
+        error += filepath_;
+
+        throw std::runtime_error(error);
+    }
 }

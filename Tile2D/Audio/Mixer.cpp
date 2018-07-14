@@ -21,24 +21,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
-#ifndef __Music_H_
-#define __Music_H_
-
-#include "precompile.h"
-
+#include <stdexcept>
 #include <string>
+#include "Mixer.h"
+#include "SDL_mixer.h"
 
-class Music {
-    friend class MusicPlayer;
-private:
-    Mix_Music* music_;
-    std::string filename_;
+void Mixer::init() {
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
+        std::string error = "Mixer: couldn't initialize, SDL_Mixer error: ";
+        error += Mix_GetError();
+        throw std::runtime_error(error);
+    }
 
-public:
-    explicit Music(std::string filename);
-    void reload();
-    ~Music();
-};
+    Mix_AllocateChannels(MIXING_CHANNELS);
 
-#endif //__Music_H_
+    channelReservations_.empty();
+    channelReservations_.reserve((unsigned long)MIXING_CHANNELS);
+
+    for (auto i = 0u; i<MIXING_CHANNELS; ++i) {
+        channelReservations_[i] = false;
+    }
+}
+
+Mixer::~Mixer() {
+    Mix_CloseAudio();
+}
+
+int Mixer::reserveChannel_() {
+    for (auto i = 0u; i<MIXING_CHANNELS; ++i) {
+        if (!channelReservations_[i]) {
+            channelReservations_[i] = true;
+            return i;
+        }
+    }
+    throw std::runtime_error("Mixer: all mixing channels reserved!");
+}
+
+void Mixer::freeChannel_(int channel) {
+    channelReservations_[channel] = false;
+}

@@ -29,7 +29,6 @@
 #include "Animation.h"
 #include "TileMap.h"
 #include "AudioClip.h"
-#include "Music.h"
 #include "TileSet.h"
 #include "Font.h"
 #include "ResourceContainer.h"
@@ -51,7 +50,6 @@ public:
     ResourceContainer<Animation> animations;
     ResourceContainer<Font> fonts;
     ResourceContainer<AudioClip> audioClips;
-    ResourceContainer<Music> music;
 };
 
 #endif //__RESOURCES_H

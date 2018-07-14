@@ -47,6 +47,7 @@ class SceneBase;
 class GameObject;
 class Time;
 class Reflector;
+class Mixer;
 
 namespace json {
     class Object;
@@ -92,6 +93,7 @@ public:
     static TileMap &tileMap();
     static PathFinder &pathFinder();
     static Reflector &reflector();
+    static Mixer &mixer();
 
     static const Input &input();
     static const Time &time();
@@ -124,6 +126,7 @@ private:
     PathFinder* pathFinder_;
     Input* input_;
     Time* time_;
+    Mixer* mixer_;
 
     void mainLoop_();
     void cleanUp_();
@@ -141,7 +144,6 @@ private:
 
     std::set<GameObject*> objects_;
     std::list<GameObject*> objectsToInit_;
-    std::list<GameObject*> objectsToDestroy_;
 
     struct DelayedFunction {
         GameObject* gameObject;

@@ -21,26 +21,52 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_AUDIOSOURCE_H
+#define SPACEGAME_AUDIOSOURCE_H
 
-#ifndef __Sample_H_
-#define __Sample_H_
+#include "ISerializable.h"
+#include "Tile2DComponent.h"
+#include "AudioClip.h"
 
-#include "precompile.h"
+class AudioSource :
+        public Tile2DComponent,
+        public ISerializable
+{
+private:
+    AudioClip* clip_ = nullptr;
+    bool loopEnabled_ = false;
+    bool playOnAwake_ = false;
+    int volume_ = 127;
+    int SDL_mixer_channel_ = -1;
 
-class AudioClip {
-    friend class AudioSource;
+protected:
+    void init() override;
+    void onDestroy() override;
+    Tile2DComponent *clone() override;
 
 public:
-    explicit AudioClip(const std::string& filename);
-    ~AudioClip();
+    void play();
+    void stop();
+    void pause();
+    bool isPlaying();
 
-    void reload();
+    void deserialize(const json::Object &jsonObject) override;
+
+    AudioClip *getClip() const;
+    void setClip(AudioClip *clip);
+
+    bool isLoopEnabled() const;
+    void setLoopEnabled(bool loopEnabled);
+
+    bool isPlayOnAwake() const;
+    void setPlayOnAwake(bool playOnAwake);
+
+    int getVolume() const;
+    void setVolume(int volume);
 
 private:
-    Mix_Chunk* chunk_ = nullptr;
-    std::string filepath_;
 
 };
 
 
-#endif //__Sample_H_
+#endif //SPACEGAME_AUDIOSOURCE_H

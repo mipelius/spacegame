@@ -30,14 +30,12 @@ void Resources::init(const std::string& resourcesFile) {
     textures.init(        obj["textures"]       );
     animations.init(      obj["animations"]     );
     audioClips.init(      obj["audioClips"]     );
-    music.init(           obj["music"]          );
     fonts.init(           obj["fonts"]          );
     prefabs.init(         obj["prefabs"]        );
 
     textures.reload();
     animations.reload();
     audioClips.reload();
-    music.reload();
     fonts.reload();
     prefabs.reload();
 }

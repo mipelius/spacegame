@@ -25,6 +25,7 @@
 #define SPACEGAME_BINDINGS_H
 
 #include <map>
+#include "AudioSource.h"
 
 #include "SceneInGame.h"
 #include "SceneTitleScreen.h"
@@ -101,6 +102,7 @@ public:
                 {"Power",                               new ObjectCreator<Power>()},
                 {"PlayerTargetingComponent",            new ObjectCreator<PlayerTargetingComponent>()},
                 {"Inventory",                           new ObjectCreator<Inventory>()},
+                {"AudioSource",                         new ObjectCreator<AudioSource>()},
 
                 // EventHandlers
 
