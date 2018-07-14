@@ -27,7 +27,7 @@
 #include "SDL_mixer.h"
 
 void Mixer::init() {
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
         std::string error = "Mixer: couldn't initialize, SDL_Mixer error: ";
         error += Mix_GetError();
         throw std::runtime_error(error);
