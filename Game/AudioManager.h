@@ -34,7 +34,7 @@ class AudioClip;
 class AudioManager : public Tile2DComponent {
 public:
     static AudioManager* getInstance();
-    void play(AudioClip *clip);
+    void play(AudioClip *clip, int volume = 128);
     void play(AudioClip *clip, const Vecf& position);
 
 protected:
@@ -43,15 +43,20 @@ protected:
     Tile2DComponent *clone() override;
 
 private:
-    AudioSource* getAudioSource();
+    struct AudioContainer {
+        AudioSource*    source;
+        Uint32          timeStamp;
+    };
 
     static AudioManager* instance_;
 
+    static const int MIN_VOLUME_DIFF_BETWEEN_PLAYING_SAME_CLIP = 64;
+    static const int MIN_DELAY_BETWEEN_PLAYING_SAME_CLIP = 48;
     static const int MAX_CHANNELS = 16;
     static constexpr float MAX_DISTANCE = 1500.0f;
 
     int currentSourceIndex_ = 0;
-    std::vector<AudioSource*> audioSources_ = std::vector<AudioSource*>(MAX_CHANNELS);
+    std::vector<AudioContainer> audioContainers_ = std::vector<AudioContainer>(MAX_CHANNELS);
 };
 
 

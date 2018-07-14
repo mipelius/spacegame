@@ -37,7 +37,7 @@ AudioManager *AudioManager::getInstance() {
 
         for (auto i = 0u; i < MAX_CHANNELS; ++i) {
             auto audioSource = gameObject->attachComponent<AudioSource>();
-            instance_->audioSources_[i] = audioSource;
+            instance_->audioContainers_[i] = { audioSource, 0 };
         }
     }
 
@@ -54,19 +54,28 @@ Tile2DComponent *AudioManager::clone() {
     throw std::runtime_error("AudioManager: cloning is now allowed!");
 }
 
-void AudioManager::play(AudioClip *clip) {
-    auto currentSource = getAudioSource();
-    currentSource->setClip(clip);
-    currentSource->setVolume(128);
-    currentSource->play();
-}
+void AudioManager::play(AudioClip *clip, int volume) {
+    auto timeStamp = SDL_GetTicks();
 
-AudioSource *AudioManager::getAudioSource() {
-    auto audioSource = audioSources_[currentSourceIndex_];
+    for (auto& audioContainer : audioContainers_) {
+        if (
+                audioContainer.source->getClip() == clip &&
+                abs(audioContainer.source->getVolume() - volume) < MIN_VOLUME_DIFF_BETWEEN_PLAYING_SAME_CLIP &&
+                timeStamp - audioContainer.timeStamp < MIN_DELAY_BETWEEN_PLAYING_SAME_CLIP
+        ) {
+            return;
+        }
+    }
+
+    auto& audioContainer = audioContainers_[currentSourceIndex_];
     ++currentSourceIndex_;
-    currentSourceIndex_ %= audioSources_.size();
+    currentSourceIndex_ %= audioContainers_.size();
 
-    return audioSource;
+    audioContainer.timeStamp = timeStamp;
+
+    audioContainer.source->setClip(clip);
+    audioContainer.source->setVolume(volume);
+    audioContainer.source->play();
 }
 
 void AudioManager::play(AudioClip *clip, const Vecf& position) {
@@ -79,8 +88,5 @@ void AudioManager::play(AudioClip *clip, const Vecf& position) {
 
     auto volume = (int)(((MAX_DISTANCE - distance) / MAX_DISTANCE) * 128);
 
-    auto currentSource = getAudioSource();
-    currentSource->setClip(clip);
-    currentSource->setVolume(volume);
-    currentSource->play();
+    play(clip, volume);
 }
