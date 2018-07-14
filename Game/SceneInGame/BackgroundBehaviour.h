@@ -30,6 +30,8 @@
 #include "Rect.h"
 #include "Background.h"
 
+class AudioSource;
+
 class BackgroundBehaviour :
     public Tile2DBehaviour,
     public ISerializable
@@ -47,8 +49,12 @@ protected:
 
 private:
     Background* bg_ = nullptr;
-    float fadeInOutSpeed_ = 1.0f;
+    AudioSource* musicSource_ = nullptr;
+
+    float fadeInOutSpeed_ = 0.5f;
     Rect area_ = {0.0f, 0.0f, 0.0f, 0.0f};
+
+    enum FadeState { NONE, OUT, IN } fadeState_ = NONE;
 };
 
 #endif //SPACEGAME_BACKGROUNDBEHAVIOUR_H

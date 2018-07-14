@@ -28,9 +28,13 @@
 #include "Tile2DMath.h"
 #include "Camera.h"
 #include "GameObject.h"
+#include "AudioSource.h"
+#include "t2Time.h"
+
 
 void BackgroundBehaviour::awake() {
     bg_ = gameObject()->getComponent<Background>();
+    musicSource_ = gameObject()->getComponent<AudioSource>();
 }
 
 void BackgroundBehaviour::update() {
@@ -43,12 +47,23 @@ void BackgroundBehaviour::lateUpdate() {
     float opacity = bg_->getOpacity();
 
     if (area_.hasPointInside(camera->getPosition())) {
-        opacity += fadeInOutSpeed_ / 60.0f;
+        opacity += fadeInOutSpeed_ * Tile2D::time().getDeltaTime();
     } else {
-        opacity -= fadeInOutSpeed_ / 60.0f;
+        opacity -= fadeInOutSpeed_ * Tile2D::time().getDeltaTime();
     }
 
     Mathf::clamp(opacity, 0.0f, 1.0f);
+
+    if (opacity != bg_->getOpacity()) {
+        musicSource_->setVolume((int)(opacity * 128));
+    }
+
+    if (opacity <= 0) {
+        musicSource_->stop();
+    }
+    else if (!musicSource_->isPlaying()) {
+        musicSource_->play();
+    }
 
     bg_->setOpacity(opacity);
 }
