@@ -89,7 +89,7 @@ private:
 
 public:
     void damage(Health *targetHealth, PolygonCollider *owner, CollisionEventArgs args) const override {
-        AudioManager::getInstance()->play(audioClip_);
+        AudioManager::getInstance()->play(audioClip_, owner->transform()->getPosition());
 
         targetHealth->damage(damage_, owner->gameObject());
         owner->gameObject()->destroy();
@@ -131,7 +131,7 @@ private:
 
 public:
     void handle(PolygonCollider* owner, TerrainCollisionEventArgs args) const override {
-        AudioManager::getInstance()->play(audioClip_);
+        AudioManager::getInstance()->play(audioClip_, owner->transform()->getPosition());
 
         owner->gameObject()->destroy();
         Tile2D::tileMap().setValueScaled(args.tileCoordinates, Tile2D::tileMap().getTileSet()->getEmptyBlock());

@@ -25,6 +25,8 @@
 #include "AudioManager.h"
 #include "Tile2D.h"
 #include "GameObject.h"
+#include "Canvas.h"
+#include "Camera.h"
 
 AudioManager* AudioManager::instance_ = nullptr;
 
@@ -53,10 +55,32 @@ Tile2DComponent *AudioManager::clone() {
 }
 
 void AudioManager::play(AudioClip *clip) {
-    auto currentSource = audioSources_[currentSourceIndex_];
+    auto currentSource = getAudioSource();
     currentSource->setClip(clip);
+    currentSource->setVolume(128);
     currentSource->play();
+}
 
+AudioSource *AudioManager::getAudioSource() {
+    auto audioSource = audioSources_[currentSourceIndex_];
     ++currentSourceIndex_;
     currentSourceIndex_ %= audioSources_.size();
+
+    return audioSource;
+}
+
+void AudioManager::play(AudioClip *clip, const Vecf& position) {
+    auto cameraPosition = Tile2D::canvas().getCamera()->getPosition();
+    auto distance = (position - cameraPosition).length();
+
+    if (distance > MAX_DISTANCE) {
+        return;
+    }
+
+    auto volume = (int)(((MAX_DISTANCE - distance) / MAX_DISTANCE) * 128);
+
+    auto currentSource = getAudioSource();
+    currentSource->setClip(clip);
+    currentSource->setVolume(volume);
+    currentSource->play();
 }

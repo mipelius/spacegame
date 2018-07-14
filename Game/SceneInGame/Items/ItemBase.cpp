@@ -26,6 +26,7 @@
 #include "ItemBase.h"
 #include "GameObject.h"
 #include "Resources.h"
+#include "Transform.h"
 
 bool ItemBase::use(GameObject *user) {
     if (timer_.getTime() < reloadDelay_) {
@@ -93,7 +94,7 @@ bool ItemBase::use_(GameObject *user) {
                 count_--;
             }
 
-            AudioManager::getInstance()->play(audioClip_);
+            AudioManager::getInstance()->play(audioClip_, user->transform().getPosition());
 
             return true;
         }

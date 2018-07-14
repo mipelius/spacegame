@@ -26,6 +26,7 @@
 
 #include "Tile2DComponent.h"
 #include <vector>
+#include "Vec.h"
 
 class AudioSource;
 class AudioClip;
@@ -34,6 +35,7 @@ class AudioManager : public Tile2DComponent {
 public:
     static AudioManager* getInstance();
     void play(AudioClip *clip);
+    void play(AudioClip *clip, const Vecf& position);
 
 protected:
     void init() override;
@@ -41,8 +43,12 @@ protected:
     Tile2DComponent *clone() override;
 
 private:
+    AudioSource* getAudioSource();
+
     static AudioManager* instance_;
+
     static const int MAX_CHANNELS = 16;
+    static constexpr float MAX_DISTANCE = 1500.0f;
 
     int currentSourceIndex_ = 0;
     std::vector<AudioSource*> audioSources_ = std::vector<AudioSource*>(MAX_CHANNELS - 1);
