@@ -51,7 +51,7 @@ private:
     static constexpr float MAX_DISTANCE = 1500.0f;
 
     int currentSourceIndex_ = 0;
-    std::vector<AudioSource*> audioSources_ = std::vector<AudioSource*>(MAX_CHANNELS - 1);
+    std::vector<AudioSource*> audioSources_ = std::vector<AudioSource*>(MAX_CHANNELS);
 };
 
 
