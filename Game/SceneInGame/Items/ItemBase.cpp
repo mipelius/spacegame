@@ -21,8 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "AudioManager.h"
+#include "AudioClip.h"
 #include "ItemBase.h"
 #include "GameObject.h"
+#include "Resources.h"
 
 bool ItemBase::use(GameObject *user) {
     if (timer_.getTime() < reloadDelay_) {
@@ -89,6 +92,9 @@ bool ItemBase::use_(GameObject *user) {
             if (count_ > 0) {
                 count_--;
             }
+
+            AudioManager::getInstance()->play(audioClip_);
+
             return true;
         }
     }
@@ -117,5 +123,9 @@ void ItemBase::deserialize(const json::Object &jsonObject) {
     }
     if (jsonObject.HasKey("reloadDelay")) {
         reloadDelay_ = jsonObject["reloadDelay"].ToInt();
+    }
+    if (jsonObject.HasKey("audioClip")) {
+        auto audioClipName = jsonObject["audioClip"].ToString();
+        audioClip_ = Tile2D::resources().audioClips[audioClipName];
     }
 }

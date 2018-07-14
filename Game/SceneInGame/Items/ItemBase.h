@@ -28,6 +28,8 @@
 #include "Timer.h"
 #include "Power.h"
 
+class AudioClip;
+
 class ItemBase : public ISerializable {
 public:
     static const int COUNT_INFINITY = -1;
@@ -58,6 +60,8 @@ private:
     bool isActivated_ = true;
     float powerConsumption_ = 0.0f;
     int count_ = COUNT_INFINITY;
+
+    AudioClip* audioClip_ = nullptr;
 
     Timer timer_;
     int reloadDelay_ = 0;

@@ -34,6 +34,7 @@
 #include "t2Time.h"
 #include "Texture.h"
 #include "Resources.h"
+#include "AudioManager.h"
 
 class CollisionDamageHandlerBase :
         public IEventHandler<PolygonCollider, CollisionEventArgs>,
@@ -84,9 +85,12 @@ protected:
 class AmmoCollisionDamageHandler : public CollisionDamageHandlerBase {
 private:
     Prefab* prefabToInstantiate_ = nullptr;
+    AudioClip* audioClip_ = nullptr;
 
 public:
     void damage(Health *targetHealth, PolygonCollider *owner, CollisionEventArgs args) const override {
+        AudioManager::getInstance()->play(audioClip_);
+
         targetHealth->damage(damage_, owner->gameObject());
         owner->gameObject()->destroy();
 
@@ -106,6 +110,10 @@ public:
             auto explosionPrefabName = jsonObject["prefabToInstantiate"].ToString();
             prefabToInstantiate_ = Tile2D::resources().prefabs[explosionPrefabName];
         }
+        if (jsonObject.HasKey("audioClip")) {
+            auto audioClipName = jsonObject["audioClip"].ToString();
+            audioClip_ = Tile2D::resources().audioClips[audioClipName];
+        }
     }
 
     IEventHandler<PolygonCollider, CollisionEventArgs> *clone() override {
@@ -119,9 +127,12 @@ class AmmoTerrainCollisionHandler :
 {
 private:
     Prefab* prefabToInstantiate_ = nullptr;
+    AudioClip* audioClip_ = nullptr;
 
 public:
     void handle(PolygonCollider* owner, TerrainCollisionEventArgs args) const override {
+        AudioManager::getInstance()->play(audioClip_);
+
         owner->gameObject()->destroy();
         Tile2D::tileMap().setValueScaled(args.tileCoordinates, Tile2D::tileMap().getTileSet()->getEmptyBlock());
         CollisionEffects::sparkles(args.tileCoordinates, args.contactNormal, {1, 1, 1});
@@ -137,6 +148,10 @@ public:
         if (jsonObject.HasKey("prefabToInstantiate")) {
             auto explosionPrefabName = jsonObject["prefabToInstantiate"].ToString();
             prefabToInstantiate_ = Tile2D::resources().prefabs[explosionPrefabName];
+        }
+        if (jsonObject.HasKey("audioClip")) {
+            auto audioClipName = jsonObject["audioClip"].ToString();
+            audioClip_ = Tile2D::resources().audioClips[audioClipName];
         }
     }
 
