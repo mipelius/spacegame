@@ -27,12 +27,12 @@
 
 int main(int argc, const char *argv[]) {
     Tile2D::load(
-            "data/config.json",
-            "data/game_setup/resources.json",
-            "data/game_setup/sorting_layers.json",
-            "data/game_setup/collider_layer_matrix.json",
-            "data/game_setup/tags.json",
-            "data/game_setup/scenes.json",
+            "res/config.json",
+            "res/resources.json",
+            "res/game_setup/sorting_layers.json",
+            "res/game_setup/collider_layer_matrix.json",
+            "res/game_setup/tags.json",
+            "res/game_setup/scenes.json",
             Bindings::createBindings()
     );
 
