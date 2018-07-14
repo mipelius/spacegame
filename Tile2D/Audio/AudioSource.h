@@ -36,7 +36,7 @@ private:
     AudioClip* clip_ = nullptr;
     bool loopEnabled_ = false;
     bool playOnAwake_ = false;
-    int volume_ = 127;
+    int volume_ = 128;
     int SDL_mixer_channel_ = -1;
 
 protected:
