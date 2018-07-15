@@ -58,7 +58,7 @@
 #include "Cannon.h"
 #include "ParticleSystem.h"
 #include "WalkingEnemyAI.h"
-
+#include "PopUpBehaviour.h"
 #include "ParticleSystemComponents.h"
 #include "EventHandlers.h"
 
@@ -103,6 +103,7 @@ public:
                 {"PlayerTargetingComponent",            new ObjectCreator<PlayerTargetingComponent>()},
                 {"Inventory",                           new ObjectCreator<Inventory>()},
                 {"AudioSource",                         new ObjectCreator<AudioSource>()},
+                {"PopUpBehaviour",                      new ObjectCreator<PopUpBehaviour>()},
 
                 // EventHandlers
 

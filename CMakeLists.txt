@@ -255,7 +255,7 @@ set(SOURCE_FILES
         Tile2D/Core/Reflector.h
         Tile2D/Core/Prefab.cpp
         Tile2D/Core/Prefab.h
-        Game/Bindings.h Game/EventHandlers.h Game/ParticleSystemComponents.h Game/CollisionEffects.cpp Game/CollisionEffects.h Game/SceneInGame/ExplosionBehaviour.cpp Game/SceneInGame/ExplosionBehaviour.h Game/SceneInGame/PlasmaExplosionBehaviour.cpp Game/SceneInGame/PlasmaExplosionBehaviour.h Tile2D/Audio/AudioSource.cpp Tile2D/Audio/AudioSource.h Tile2D/Audio/Mixer.cpp Tile2D/Audio/Mixer.h Game/AudioManager.cpp Game/AudioManager.h)
+        Game/Bindings.h Game/EventHandlers.h Game/ParticleSystemComponents.h Game/CollisionEffects.cpp Game/CollisionEffects.h Game/SceneInGame/ExplosionBehaviour.cpp Game/SceneInGame/ExplosionBehaviour.h Game/SceneInGame/PlasmaExplosionBehaviour.cpp Game/SceneInGame/PlasmaExplosionBehaviour.h Tile2D/Audio/AudioSource.cpp Tile2D/Audio/AudioSource.h Tile2D/Audio/Mixer.cpp Tile2D/Audio/Mixer.h Game/AudioManager.cpp Game/AudioManager.h Game/SceneInGame/PopUpBehaviour.cpp Game/SceneInGame/PopUpBehaviour.h)
 
 add_executable(SpaceGame ${SOURCE_FILES})
 

@@ -76,8 +76,6 @@ ItemBase *Inventory::getItem(int tag) {
     return nullptr;
 }
 
-
-
 void Inventory::awake() {
 
 }
