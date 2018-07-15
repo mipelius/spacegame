@@ -118,6 +118,7 @@ public:
                 {"CannonUpgradeCollisionEventHandler",  new ObjectCreator<CannonUpgradeCollisionEventHandler>()},
                 {"CollisionAudioHandler",               new ObjectCreator<CollisionAudioHandler>()},
                 {"TerrainCollisionAudioHandler",        new ObjectCreator<TerrainCollisionAudioHandler>()},
+                {"CollisionPopUpHandler",               new ObjectCreator<CollisionPopUpHandler>()},
 
                 // Particle settings
 

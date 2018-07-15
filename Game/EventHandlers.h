@@ -24,6 +24,8 @@
 #ifndef SPACEGAME_EVENTHANDLERS_H
 #define SPACEGAME_EVENTHANDLERS_H
 
+#include "Text.h"
+#include "Window.h"
 #include "Cannon.h"
 #include "Inventory.h"
 #include "Event.h"
@@ -35,6 +37,49 @@
 #include "Texture.h"
 #include "Resources.h"
 #include "AudioManager.h"
+#include "PopUpBehaviour.h"
+
+class CollisionPopUpHandler :
+        public IEventHandler<PolygonCollider, CollisionEventArgs>,
+        public ISerializable
+{
+private:
+    std::string text_;
+
+public:
+    void deserialize(const json::Object &jsonObject) override {
+        if (jsonObject.HasKey("text")) {
+            text_ = jsonObject["text"].ToString();
+        }
+    }
+
+    void handle(PolygonCollider *owner, CollisionEventArgs args) const override {
+        auto popUp = Tile2D::createGameObject();
+        popUp->transform().setPosition(
+                {
+                        Tile2D::window().getW() / 2.0f,
+                        Tile2D::window().getH() / 3.0f
+                }
+        );
+
+        auto popUpText = popUp->attachComponent<Text>();
+        popUpText->setFontPtr(Tile2D::resources().fonts["smallfont"]);
+        popUpText->setIsUIDrawable(true);
+        popUpText->setString(text_);
+        popUpText->setFontSize(4.0f);
+        popUpText->setHorizontalAlignment(Text::HorizontalAlignment::center);
+        popUpText->setVerticalAlignment(Text::VerticalAlignment::center);
+
+        auto popUpBehaviour = popUp->attachComponent<PopUpBehaviour>();
+        popUpBehaviour->setStartScale({1.0f, 1.0f});
+        popUpBehaviour->setEndScale({2.0f, 2.0f});
+        popUpBehaviour->setTimeToLive(1200);
+    }
+
+    IEventHandler<PolygonCollider, CollisionEventArgs> *clone() override {
+        return new CollisionPopUpHandler(*this);
+    }
+};
 
 class CollisionAudioHandler :
         public IEventHandler<PolygonCollider, CollisionEventArgs>,
