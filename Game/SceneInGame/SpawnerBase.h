@@ -24,6 +24,7 @@
 #ifndef SPACEGAME_SPAWNERBASE_H
 #define SPACEGAME_SPAWNERBASE_H
 
+#include "Prefab.h"
 #include "Tile2DBehaviour.h"
 #include "CountDownTimer.h"
 #include "Rect.h"
@@ -36,7 +37,7 @@ public:
     GameObject *getPlayer() const;
     void setPlayer(GameObject *player);
     void remove(GameObject *gameObject);
-    void setPrefab(const std::string& prefabString);
+    void setPrefab(Prefab* prefab);
     unsigned int getMaxSpawnedObjects() const;
     void setMaxSpawnedObjects(unsigned int maxSpawnedObjects);
     void setSpawningDelay(Uint32 milliseconds);
@@ -55,7 +56,7 @@ protected:
     GameObject* spawn();
 
 private:
-    std::string prefabString_;
+    Prefab* prefab_;
     std::list<GameObject*> spawnedGameObjects_;
 };
 

@@ -48,8 +48,8 @@ void SpawnerBase::remove(GameObject *gameObject) {
     spawnedGameObjects_.remove(gameObject);
 }
 
-void SpawnerBase::setPrefab(const std::string& prefabString) {
-    prefabString_ = prefabString;
+void SpawnerBase::setPrefab(Prefab* prefab) {
+    prefab_ = prefab;
 }
 
 unsigned int SpawnerBase::getMaxSpawnedObjects() const {
@@ -69,7 +69,7 @@ GameObject* SpawnerBase::spawn() {
         return nullptr;
     }
 
-    auto gameObject = Tile2D::resources().prefabs[prefabString_]->instantiate();
+    auto gameObject = prefab_->instantiate();
     auto spawnable = gameObject->attachComponent<Spawnable>();
     spawnable->setSpawner(this);
     spawnedGameObjects_.push_back(gameObject);
@@ -92,7 +92,8 @@ void SpawnerBase::setAreaRect(const Rect &areaRect) {
 
 void SpawnerBase::deserialize(const json::Object &jsonObject) {
     if (jsonObject.HasKey("prefab")) {
-        setPrefab(jsonObject["prefab"].ToString());
+        auto prefabName = jsonObject["prefab"].ToString();
+        setPrefab(Tile2D::resources().prefabs[prefabName]);
     }
     if (jsonObject.HasKey("maxSpawnedObjects")) {
         maxSpawnedObjects_ = (unsigned int)jsonObject["maxSpawnedObjects"].ToInt();
