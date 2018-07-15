@@ -58,9 +58,11 @@ int Inventory::getSelectedItem() const {
 void Inventory::selectItem(int itemNumber) {
     itemNumber;
     Mathi::clamp(itemNumber, 0, (int)(itemInfos_.size()) -1);
-    if (itemInfos_[itemNumber].item->isActivated()) {
+    if (
+            itemInfos_[itemNumber].item->isActivated() &&
+            selectedItem_ != itemNumber
+    ) {
         selectedItem_ = itemNumber;
-
         AudioManager::getInstance()->play(itemSelectAudioClip_);
     }
 }
