@@ -115,6 +115,8 @@ public:
                 {"HealthUpgradeCollisionHandler",       new ObjectCreator<HealthUpgradeCollisionHandler>()},
                 {"ItemPickupCollisionEventHandler",     new ObjectCreator<ItemPickupCollisionEventHandler>()},
                 {"CannonUpgradeCollisionEventHandler",  new ObjectCreator<CannonUpgradeCollisionEventHandler>()},
+                {"CollisionAudioHandler",               new ObjectCreator<CollisionAudioHandler>()},
+                {"TerrainCollisionAudioHandler",        new ObjectCreator<TerrainCollisionAudioHandler>()},
 
                 // Particle settings
 
