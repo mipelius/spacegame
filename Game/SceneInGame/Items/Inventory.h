@@ -71,6 +71,8 @@ private:
     std::vector<ItemInfo> itemInfos_;
     int selectedItem_ = 0;
 
+    AudioClip* itemSelectAudioClip_ = nullptr;
+
     void useSelectedItem_();
 };
 

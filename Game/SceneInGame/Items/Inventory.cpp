@@ -21,6 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "AudioManager.h"
 #include "Tile2D.h"
 #include "Power.h"
 #include "Input.h"
@@ -59,6 +60,8 @@ void Inventory::selectItem(int itemNumber) {
     Mathi::clamp(itemNumber, 0, (int)(itemInfos_.size()) -1);
     if (itemInfos_[itemNumber].item->isActivated()) {
         selectedItem_ = itemNumber;
+
+        AudioManager::getInstance()->play(itemSelectAudioClip_);
     }
 }
 
@@ -149,6 +152,10 @@ void Inventory::deserialize(const json::Object &jsonObject) {
 
             itemInfos_.push_back(itemInfo);
         }
+    }
+    if (jsonObject.HasKey("itemSelectAudioClip")) {
+        auto itemSelectAudioClipName = jsonObject["itemSelectAudioClip"];
+        itemSelectAudioClip_ = Tile2D::resources().audioClips[itemSelectAudioClipName];
     }
 }
 
