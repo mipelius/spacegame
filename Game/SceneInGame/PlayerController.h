@@ -25,11 +25,11 @@
 #ifndef __PlayerController_H
 #define __PlayerController_H
 
-#include "Inventory.h"
-#include "Body.h"
-#include "Sprite.h"
 #include "Tile2DBehaviour.h"
-#include "CountDownTimer.h"
+#include "ISerializable.h"
+
+class AudioSource;
+class Body;
 
 class PlayerController :
         public Tile2DBehaviour,
@@ -49,10 +49,12 @@ protected:
     Tile2DComponent *clone() override;
 
 private:
+    Body* body_                         = nullptr;
+    AudioSource* rocketEngineAudioSource_      = nullptr;
+
     float moveForce_    = 0.0f;
-    Body* body_         = nullptr;
-    Sprite* sprite_     = nullptr;
-    bool motorOn_       = false;
+    bool rocketEngineOn_       = false;
+
 };
 
 #endif //__PlayerController_H

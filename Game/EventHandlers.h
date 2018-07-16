@@ -38,6 +38,7 @@
 #include "Resources.h"
 #include "AudioManager.h"
 #include "PopUpBehaviour.h"
+#include "AudioSource.h"
 
 class CollisionPopUpHandler :
         public IEventHandler<PolygonCollider, CollisionEventArgs>,
@@ -278,6 +279,7 @@ private:
 public:
     void handle(Health* health, GameObjectDiedEventArgs args) const override {
         health->gameObject()->setIsActive(false);
+        health->gameObject()->getComponent<AudioSource>()->stop();
 
         auto explosion = explosionPrefab_->instantiate();
         explosion->transform().setPosition(health->transform()->getPosition());

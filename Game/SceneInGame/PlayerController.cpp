@@ -22,8 +22,9 @@
 // SOFTWARE.
 
 
-#include "Tile2D.h"
 #include "PlayerController.h"
+
+#include "Tile2D.h"
 #include "Tile2DMath.h"
 #include "GameObject.h"
 #include "Input.h"
@@ -34,10 +35,12 @@
 #include "Power.h"
 #include "FireParticleManager.h"
 #include "t2Time.h"
+#include "Body.h"
+#include "AudioSource.h"
 
 void PlayerController::awake() {
     body_ = gameObject()->getComponent<Body>();
-    sprite_ = gameObject()->getComponent<Sprite>();
+    rocketEngineAudioSource_ = gameObject()->getComponent<AudioSource>();
 }
 
 void PlayerController::update() {
@@ -49,7 +52,7 @@ void PlayerController::update() {
         Vecf force = Vecf::byAngle(transform()->getRotation(), moveForce_);
         body_->applyForce(force);
 
-        motorOn_ = true;
+        rocketEngineOn_ = true;
     }
     if (keyboard.keyState(SDL_SCANCODE_LEFT)) {
         angularVelocity -= 300;
@@ -110,7 +113,11 @@ void PlayerController::lateUpdate() {
         camera->setPosition(cameraPos);
     }
 
-    if (motorOn_) {
+    if (rocketEngineOn_) {
+        if (!rocketEngineAudioSource_->isPlaying()) {
+            rocketEngineAudioSource_->play();
+        }
+
         // NOTE: Hack for ASM2018 game dev competition
         auto velocity = Vecf::byAngle(transform()->getRotation(), -200) + body_->getVelocity();
 
@@ -126,7 +133,10 @@ void PlayerController::lateUpdate() {
         FireParticleManager::getInstance()->createParticle(transform()->getPosition() + offsetLeft, velocity);
         FireParticleManager::getInstance()->createParticle(transform()->getPosition() + offsetRight, velocity);
 
-        motorOn_ = false;
+        rocketEngineOn_ = false;
+    }
+    else {
+        rocketEngineAudioSource_->stop();
     }
 }
 
