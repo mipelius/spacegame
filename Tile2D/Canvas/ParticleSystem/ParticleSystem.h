@@ -36,7 +36,7 @@
 class ParticleSystem :
         public DrawableBase
 {
-    friend class Particle;
+friend class Particle;
 
 public:
     class IUpdater {
@@ -81,6 +81,11 @@ public:
         };
     };
 
+    void            play();
+    void            stop();
+
+    bool            emitOnce();
+
     ParticleSystem();
     ParticleSystem(ParticleSystem& other);
     ~ParticleSystem() override;
@@ -99,13 +104,22 @@ public:
     Texture         *getTexturePtr() const;
     void            setTexturePtr(Texture *texturePtr);
     void            setInitializer(void (*initFunc)(Particle *));
+    void            setInitializer(IInitializer* initializer);
     void            setUpdater(void (*updateFunc)(Particle *));
+    void            setUpdater(IUpdater* updater);
     bool            playsOnce() const;
     void            setPlaysOnce(bool playOnce);
+    bool            isPlayOnAwake() const;
+    void            setPlayOnAwake(bool playOnAwake);
+    bool            isPlaying() const;
+    unsigned        int getParticlesToSpawn() const;
+    void            setParticlesToSpawn(unsigned int particlesToSpawn);
 
     void deserialize(const json::Object &jsonObject) override;
 
 protected:
+    void init() override;
+
     void onDestroy() override;
     Tile2DComponent *clone() override;
 
@@ -114,9 +128,12 @@ private:
     GLenum          blendDestinationFactor_ = GL_ONE_MINUS_SRC_ALPHA;
     unsigned int    spawnFrequency_;
     unsigned int    maxParticles_;
+    unsigned int    particlesToSpawn_;
     Rect            particleRect_;
     Texture*        texturePtr_ = nullptr;
     bool            playsOnce_;
+    bool            playOnAwake_ = true;
+    bool            isPlaying_ = false;
     Particle*       firstParticle_ = nullptr;
     unsigned int    particleCount_ = 0;
     unsigned int    particlesSpawned_ = 0;

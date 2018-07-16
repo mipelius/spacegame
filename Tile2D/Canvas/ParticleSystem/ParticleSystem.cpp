@@ -32,7 +32,9 @@ ParticleSystem::ParticleSystem() : particleRect_({-10, -10, 10, 10}){
 }
 
 void ParticleSystem::drawActual(const Canvas &canvas) {
-    spawnParticles_();
+    if (isPlaying_) {
+        spawnParticles_();
+    }
     updateParticles_();
     drawParticles_();
 }
@@ -42,33 +44,19 @@ void ParticleSystem::spawnParticles_() {
     if (spawnFrequency_ == 0) {
         return;
     }
-    if (playsOnce_ && particlesSpawned_ >= maxParticles_) {
-        return;
-    }
     if (initializer_ != nullptr) {
         Uint32 deltaTime = SDL_GetTicks() - lastSpawnTimeStamp_;
         float threshold = 1000.0f / spawnFrequency_;
         if (deltaTime > threshold) {
-            lastSpawnTimeStamp_ = SDL_GetTicks();
             Uint32 amount = (Uint32)(deltaTime / threshold);
             for (auto i = 0u; i < amount; ++i) {
-                if (particleCount_ > maxParticles_) {
-                    break;
+                if (playsOnce_ && particlesSpawned_ >= particlesToSpawn_) {
+                    stop();
+                    return;
                 }
-                Particle* newParticle = Tile2D::instance_().particlePool_.malloc();
-
-                if (firstParticle_ != nullptr) {
-                    firstParticle_->prev_ = newParticle;
+                if (!emitOnce()) {
+                    return;
                 }
-                newParticle->next_ = firstParticle_;
-                newParticle->prev_ = nullptr;
-                newParticle->owner_ = this;
-                firstParticle_ = newParticle;
-
-                newParticle->spawnTimestamp_ = lastSpawnTimeStamp_;
-                initializer_->initialize(newParticle);
-                particleCount_++;
-                particlesSpawned_++;
             }
         }
     }
@@ -257,6 +245,12 @@ void ParticleSystem::deserialize(const json::Object &jsonObject) {
         auto updater = Tile2D::reflector().instantiate<IUpdater>(updaterJson);
         updater_ = updater;
     }
+    if (jsonObject.HasKey("playOnAwake")) {
+        playOnAwake_ = jsonObject["playOnAwake"].ToBool();
+    }
+    if (jsonObject.HasKey("particlesToSpawn")) {
+        particlesToSpawn_ = (unsigned int)jsonObject["particlesToSpawn"].ToInt();
+    }
 }
 
 ParticleSystem::ParticleSystem(ParticleSystem &other) {
@@ -267,6 +261,8 @@ ParticleSystem::ParticleSystem(ParticleSystem &other) {
     particleRect_ = other.particleRect_;
     texturePtr_ = other.texturePtr_;
     playsOnce_ = other.playsOnce_;
+    playOnAwake_ = other.playOnAwake_;
+    particlesToSpawn_ = other.particlesToSpawn_;
 
     firstParticle_ = nullptr;
     particleCount_ = 0;
@@ -279,4 +275,73 @@ ParticleSystem::ParticleSystem(ParticleSystem &other) {
     if (other.updater_ != nullptr) {
         this->updater_ = other.updater_->clone();
     }
+}
+
+void ParticleSystem::play() {
+    isPlaying_ = true;
+}
+
+void ParticleSystem::stop() {
+    particlesSpawned_ = 0;
+    isPlaying_ = false;
+}
+
+void ParticleSystem::init() {
+    DrawableBase::init();
+
+    if (playOnAwake_) {
+        play();
+    }
+}
+
+bool ParticleSystem::isPlayOnAwake() const {
+    return playOnAwake_;
+}
+
+void ParticleSystem::setPlayOnAwake(bool playOnAwake) {
+    playOnAwake_ = playOnAwake;
+}
+
+bool ParticleSystem::isPlaying() const {
+    return isPlaying_;
+}
+
+void ParticleSystem::setInitializer(ParticleSystem::IInitializer* initializer) {
+    initializer_ = initializer;
+}
+
+void ParticleSystem::setUpdater(ParticleSystem::IUpdater* updater) {
+    updater_ = updater;
+}
+
+unsigned int ParticleSystem::getParticlesToSpawn() const {
+    return particlesToSpawn_;
+}
+
+void ParticleSystem::setParticlesToSpawn(unsigned int particlesToSpawn) {
+    particlesToSpawn_ = particlesToSpawn;
+}
+
+bool ParticleSystem::emitOnce() {
+    if (particleCount_ > maxParticles_) {
+        return false;
+    }
+
+    Particle* newParticle = Tile2D::instance_().particlePool_.malloc();
+
+    if (firstParticle_ != nullptr) {
+        firstParticle_->prev_ = newParticle;
+    }
+    newParticle->next_ = firstParticle_;
+    newParticle->prev_ = nullptr;
+    newParticle->owner_ = this;
+    firstParticle_ = newParticle;
+
+    lastSpawnTimeStamp_ = SDL_GetTicks();
+    newParticle->spawnTimestamp_ = lastSpawnTimeStamp_;
+    initializer_->initialize(newParticle);
+    particleCount_++;
+    particlesSpawned_++;
+
+    return true;
 }
