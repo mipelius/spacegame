@@ -22,7 +22,7 @@
 // SOFTWARE.
 
 
-#include <Tile2D/Canvas/Drawable/Text.h>
+#include "Text.h"
 #include "JsonFileManager.h"
 #include "precompile.h"
 #include "DebugBehaviour.h"

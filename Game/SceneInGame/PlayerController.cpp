@@ -32,6 +32,8 @@
 #include "LightSystem.h"
 #include "Camera.h"
 #include "Power.h"
+#include "FireParticleManager.h"
+#include "t2Time.h"
 
 void PlayerController::awake() {
     body_ = gameObject()->getComponent<Body>();
@@ -46,6 +48,8 @@ void PlayerController::update() {
     if (keyboard.keyState(SDL_SCANCODE_UP)) {
         Vecf force = Vecf::byAngle(transform()->getRotation(), moveForce_);
         body_->applyForce(force);
+
+        motorOn_ = true;
     }
     if (keyboard.keyState(SDL_SCANCODE_LEFT)) {
         angularVelocity -= 300;
@@ -104,6 +108,25 @@ void PlayerController::lateUpdate() {
         Mathf::clamp(cameraPos, cameraBounds);
 
         camera->setPosition(cameraPos);
+    }
+
+    if (motorOn_) {
+        // NOTE: Hack for ASM2018 game dev competition
+        auto velocity = Vecf::byAngle(transform()->getRotation(), -200) + body_->getVelocity();
+
+        auto offsetLeft = Vecf(-20, -16);
+        offsetLeft.rotate(transform()->getRotation());
+
+        auto offsetRight = Vecf(-20, 16);
+        offsetRight.rotate(transform()->getRotation());
+
+        offsetLeft -= body_->getVelocity() * Tile2D::time().getDeltaTime();
+        offsetRight -= body_->getVelocity() * Tile2D::time().getDeltaTime();
+
+        FireParticleManager::getInstance()->createParticle(transform()->getPosition() + offsetLeft, velocity);
+        FireParticleManager::getInstance()->createParticle(transform()->getPosition() + offsetRight, velocity);
+
+        motorOn_ = false;
     }
 }
 

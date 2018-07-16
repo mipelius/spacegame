@@ -21,38 +21,49 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_FIREPARTICLEMANAGER_H
+#define SPACEGAME_FIREPARTICLEMANAGER_H
 
-#ifndef __PlayerController_H
-#define __PlayerController_H
+#include "Tile2DComponent.h"
+#include "ParticleSystem.h"
 
-#include "Inventory.h"
-#include "Body.h"
-#include "Sprite.h"
-#include "Tile2DBehaviour.h"
-#include "CountDownTimer.h"
+class Vecf;
 
-class PlayerController :
-        public Tile2DBehaviour,
-        public ISerializable
-{
+class FireParticleManager : public Tile2DComponent {
 public:
-    float getMoveForce() const;
-    void setMoveForce(float moveForce);
+    static FireParticleManager* getInstance();
 
-    void deserialize(const json::Object &jsonObject) override;
+    void createParticle(const Vecf& position, const Vecf &velocity);
 
 protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
-
+    void init() override;
+    void onDestroy() override;
     Tile2DComponent *clone() override;
 
 private:
-    float moveForce_    = 0.0f;
-    Body* body_         = nullptr;
-    Sprite* sprite_     = nullptr;
-    bool motorOn_       = false;
+    static FireParticleManager* instance_;
+
+    class ParticleSystemInitializer : public ParticleSystem::IInitializer {
+    public:
+        void initialize(Particle *particle) override;
+        IInitializer *clone() override;
+
+        Vecf position;
+        Vecf velocity;
+    };
+
+    class ParticleSystemUpdater : public ParticleSystem::IUpdater {
+    public:
+        void update(Particle *particle) override;
+
+        IUpdater *clone() override;
+    };
+
+    ParticleSystemInitializer* initializer_;
+    ParticleSystemUpdater* updater_;
+
+    ParticleSystem* particleSystem_ = nullptr;
 };
 
-#endif //__PlayerController_H
+
+#endif //SPACEGAME_FIREPARTICLEMANAGER_H
