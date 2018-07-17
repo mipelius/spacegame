@@ -35,7 +35,8 @@ GameObject* UIPrefabs::button(
         const Vecf& position,
         const char* string,
         const float width,
-        void (*handler) (Button* button, Button::ButtonEventArgs args)
+        IEventHandler<Button, Button::ButtonEventArgs>* handler,
+        bool active
 ) {
     auto buttonObj = Tile2D::createGameObject();
     buttonObj->transform().setPosition(position);
@@ -97,6 +98,8 @@ GameObject* UIPrefabs::button(
         setNormalButton(button);
     });
 
+    buttonObj->setIsActive(active);
+
     return buttonObj;
 }
 
@@ -106,7 +109,8 @@ GameObject* UIPrefabs::text(
         const char* string,
         float size,
         Text::HorizontalAlignment horizontalAlignment,
-        Text::VerticalAlignment verticalAlignment
+        Text::VerticalAlignment verticalAlignment,
+        bool active
 ) {
     auto textObj = Tile2D::createGameObject();
     auto text = textObj->attachComponent<Text>();
@@ -118,5 +122,23 @@ GameObject* UIPrefabs::text(
     text->setFontPtr(Tile2D::resources().fonts["smallfont"]);
     text->setFontSize(size);
 
+    textObj->setIsActive(active);
+
     return textObj;
+}
+
+GameObject *UIPrefabs::button(
+        const Vecf &position,
+        const char *string,
+        const float width,
+        void (*handler)(Button *, Button::ButtonEventArgs),
+        bool active
+) {
+    return button(
+            position,
+            string,
+            width,
+            new EventHandlerWrapper<Button, Button::ButtonEventArgs>(handler),
+            active
+    );
 }

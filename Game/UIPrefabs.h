@@ -36,8 +36,16 @@ public:
     static GameObject* button(
             const Vecf &position,
             const char *string,
-            const float width,
-            void (*handler) (Button* button, Button::ButtonEventArgs args)
+            float width,
+            IEventHandler<Button, Button::ButtonEventArgs>* handler,
+            bool active = true
+    );
+    static GameObject* button(
+            const Vecf &position,
+            const char *string,
+            float width,
+            void (*handler) (Button* button, Button::ButtonEventArgs args),
+            bool active = true
     );
 
     static GameObject* text(
@@ -45,7 +53,8 @@ public:
             const char* string,
             float size,
             Text::HorizontalAlignment horizontalAlignment = Text::HorizontalAlignment::center,
-            Text::VerticalAlignment verticalAlignment = Text::VerticalAlignment::center
+            Text::VerticalAlignment verticalAlignment = Text::VerticalAlignment::center,
+            bool active = true
     );
 
 };

@@ -40,6 +40,8 @@ void SceneTitleScreen::init() {
 
     Vecf center = {Tile2D::window().getW() / 2.0f, Tile2D::window().getH() / 2.0f};
 
+    // background and moving camera
+
     camera_ = new Camera();
     camera_->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
     Tile2D::canvas().setCamera(camera_);
@@ -53,7 +55,36 @@ void SceneTitleScreen::init() {
     auto titleScreenBehaviour = Tile2D::createGameObject();
     titleScreenBehaviour->attachComponent<MovingCameraBehaviour>();
 
-    auto welcomeText = UIPrefabs::text(
+    // create transition handlers
+
+    class ButtonClickTransitionHandler : public IEventHandler<Button, Button::ButtonEventArgs> {
+
+    public:
+        std::vector<GameObject*> UIObjectsToHide;
+        std::vector<GameObject*> UIObjectsToShow;
+
+        void handle(Button *owner, Button::ButtonEventArgs args) const override {
+            for (auto UIObjectToHide : UIObjectsToHide) {
+                UIObjectToHide->setIsActive(false);
+            }
+            for (auto UIObjectToHide : UIObjectsToShow) {
+                UIObjectToHide->setIsActive(true);
+            }
+        }
+
+        IEventHandler<Button, Button::ButtonEventArgs> *clone() override {
+            return nullptr;
+        }
+    };
+
+    auto onClickSettingsHandler = new ButtonClickTransitionHandler();
+    auto onClickCreditsHandler = new ButtonClickTransitionHandler();
+    auto settings_onClickBackToMainMenuHandler = new ButtonClickTransitionHandler();
+    auto credits_onClickBackToMainMenuHandler = new ButtonClickTransitionHandler();
+
+    // main menu UI
+
+    auto textWelcome = UIPrefabs::text(
             center + Vecf(0.0f, -300.0f),
             "Welcome to the",
             4.0f,
@@ -61,7 +92,7 @@ void SceneTitleScreen::init() {
             Text::VerticalAlignment::bottom
     );
 
-    auto spaceGameText = UIPrefabs::text(
+    auto textSpaceGame = UIPrefabs::text(
             center + Vecf(0.0f, -300.0f),
             "Space Game",
             10.0f,
@@ -70,21 +101,103 @@ void SceneTitleScreen::init() {
     );
 
     auto buttonStart = UIPrefabs::button(
-            center + Vecf(0.0f, -50.0f),
+            center + Vecf(0.0f, -90.0f),
             "Start game",
             400.0f,
             [] (Button* button, Button::ButtonEventArgs args) {
                 Tile2D::sceneManager().loadScene(1);
             }
     );
+
+    auto buttonSettings = UIPrefabs::button(
+            center + Vecf(0.0f, -30.0f),
+            "Settings",
+            200.0f,
+            onClickSettingsHandler
+    );
+
+    auto buttonCredits = UIPrefabs::button(
+            center + Vecf(0.0f, 30.0f),
+            "Credits",
+            200.0f,
+            onClickCreditsHandler
+    );
+
+
     auto buttonQuit = UIPrefabs::button(
-            center + Vecf(0.0f, 50.0f),
+            center + Vecf(0.0f, 90.0f),
             "Quit",
             200.0f,
             [] (Button* button, Button::ButtonEventArgs args) {
                 Tile2D::quit();
             }
     );
+
+    // settings menu
+
+    auto resolutionString =
+                std::string("Resolution: ")             +
+                std::to_string(Tile2D::window().getW()) +
+                " x "                                   +
+                std::to_string(Tile2D::window().getH());
+
+    auto buttonResolution = UIPrefabs::button(
+            center + Vecf(0.0f, -30.0f),
+            resolutionString.data(),
+            400.0f,
+            [] (Button* button, Button::ButtonEventArgs args) {
+                auto text = button->gameObject()->getComponent<Text>();
+                text->setString("Resolution change not implemented yet");
+            },
+            false
+    );
+
+    auto settings_buttonBackToMainMenu = UIPrefabs::button(
+            center + Vecf(0.0f, 30.0f),
+            "Back to main menu",
+            200.0f,
+            settings_onClickBackToMainMenuHandler,
+            false
+    );
+
+    // credits menu
+
+    auto textCredits = UIPrefabs::text(
+            center + Vecf(0.0f, -90.0f),
+            "Programming, graphics, music and soundfx",
+            4.0f,
+            Text::HorizontalAlignment::center,
+            Text::VerticalAlignment::top,
+            false
+    );
+    auto textCreditsMipelius = UIPrefabs::text(
+            center + Vecf(0.0f, -30.0f),
+            "mipelius",
+            4.0f,
+            Text::HorizontalAlignment::center,
+            Text::VerticalAlignment::top,
+            false
+    );
+
+    auto credits_buttonBackToMainMenu = UIPrefabs::button(
+            center + Vecf(0.0f, 80.0f),
+            "Back to main menu",
+            200.0f,
+            credits_onClickBackToMainMenuHandler,
+            false
+    );
+
+    // define transitions
+
+    onClickSettingsHandler->UIObjectsToHide = { buttonStart, buttonSettings, buttonCredits, buttonQuit };
+    onClickSettingsHandler->UIObjectsToShow = { buttonResolution, settings_buttonBackToMainMenu };
+    settings_onClickBackToMainMenuHandler->UIObjectsToHide = { buttonResolution, settings_buttonBackToMainMenu };
+    settings_onClickBackToMainMenuHandler->UIObjectsToShow = { buttonStart, buttonSettings, buttonCredits, buttonQuit };
+
+    onClickCreditsHandler->UIObjectsToHide = { buttonStart, buttonSettings, buttonCredits, buttonQuit };
+    onClickCreditsHandler->UIObjectsToShow = { textCredits, textCreditsMipelius, credits_buttonBackToMainMenu };
+    credits_onClickBackToMainMenuHandler->UIObjectsToHide = { textCredits, textCreditsMipelius, credits_buttonBackToMainMenu};
+    credits_onClickBackToMainMenuHandler->UIObjectsToShow = { buttonStart, buttonSettings, buttonCredits, buttonQuit };
 
 }
 
