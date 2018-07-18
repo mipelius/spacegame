@@ -36,12 +36,13 @@ class Window {
     friend class Tile2D;
 public:
 
-// getters and setters
+    // getters and setters
     void setSize(Veci size);
     Veci getSize();
     bool getVsync() const;
     void setVsync(bool vsync);
 
+    std::vector<Veci> getAllowedFullScreenResolutions();
 
 private:
     void swap_();

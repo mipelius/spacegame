@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 
+#include <SDL_video.h>
 #include "Window.h"
 #include "Camera.h"
 #include "JsonFileManager.h"
@@ -126,4 +127,19 @@ void Window::setVsync(bool vsync) {
     } else {
         SDL_GL_SetSwapInterval(0);
     }
+}
+
+std::vector<Veci> Window::getAllowedFullScreenResolutions() {
+    std::vector<Veci> result;
+
+    auto num = SDL_GetNumDisplayModes(0);
+
+    for (auto i = 0; i < num; ++i) {
+        SDL_DisplayMode mode;
+        SDL_GetDisplayMode(0, i, &mode);
+
+        result.emplace_back(mode.w, mode.h);
+    }
+
+    return result;
 }

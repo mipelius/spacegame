@@ -146,10 +146,29 @@ void SceneTitleScreen::init() {
             resolutionString.data(),
             400.0f,
             [] (Button* button, Button::ButtonEventArgs args) {
-                Tile2D::window().setSize({1920, 1200});
+                auto resolutions = Tile2D::window().getAllowedFullScreenResolutions();
+                auto currentResolution = Tile2D::window().getSize();
+
+                long i = 0;
+
+                for ( ; i < resolutions.size(); ++i) {
+                    if (currentResolution == resolutions[i]) {
+                        break;
+                    }
+                }
+
+                i = (i + 1) % resolutions.size();
+
+                Tile2D::window().setSize(resolutions[i]);
+
+                auto resolutionString =
+                        std::string("Resolution: ")                     +
+                        std::to_string(Tile2D::window().getSize().x)    +
+                        " x "                                           +
+                        std::to_string(Tile2D::window().getSize().y);
 
                 auto text = button->gameObject()->getComponent<Text>();
-                text->setString("Resolution change not implemented yet");
+                text->setString(resolutionString);
             },
             false
     );
