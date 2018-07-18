@@ -94,12 +94,12 @@ void Canvas::setCameraProjection_() {
 void Canvas::setUIProjection_() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    auto rect = Tile2D::window().getRect();
+    auto windowSize = Tile2D::window().getSize();
     glOrtho(
-            rect.x1,
-            rect.x2,
-            rect.y2,
-            rect.y1,
+            0,
+            windowSize.x,
+            windowSize.y,
+            0,
             -1.0,
             1.0
     );

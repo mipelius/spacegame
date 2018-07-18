@@ -112,28 +112,6 @@ void DebugBehaviour::update() {
     if (keyboard.keyPressed(SDL_SCANCODE_V)) {
         Tile2D::window().setVsync(!Tile2D::window().getVsync());
     }
-    if (keyboard.keyPressed(SDL_SCANCODE_W)) {
-        auto popUp = Tile2D::createGameObject();
-        popUp->transform().setPosition(
-                {
-                        Tile2D::window().getW() / 2.0f,
-                        Tile2D::window().getH() / 3.0f
-                }
-        );
-
-        auto popUpText = popUp->attachComponent<Text>();
-        popUpText->setFontPtr(Tile2D::resources().fonts["smallfont"]);
-        popUpText->setIsUIDrawable(true);
-        popUpText->setString("Health upgrade");
-        popUpText->setFontSize(4.0f);
-        popUpText->setHorizontalAlignment(Text::HorizontalAlignment::center);
-        popUpText->setVerticalAlignment(Text::VerticalAlignment::center);
-
-        auto popUpBehaviour = popUp->attachComponent<PopUpBehaviour>();
-        popUpBehaviour->setStartScale({1.0f, 1.0f});
-        popUpBehaviour->setEndScale({2.0f, 2.0f});
-        popUpBehaviour->setTimeToLive(1200);
-    }
 }
 
 void DebugBehaviour::lateUpdate() {

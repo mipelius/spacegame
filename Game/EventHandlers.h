@@ -56,10 +56,12 @@ public:
 
     void handle(PolygonCollider *owner, CollisionEventArgs args) const override {
         auto popUp = Tile2D::createGameObject();
+        auto windowSize = Tile2D::window().getSize();
+
         popUp->transform().setPosition(
                 {
-                        Tile2D::window().getW() / 2.0f,
-                        Tile2D::window().getH() / 3.0f
+                        windowSize.x / 2.0f,
+                        windowSize.y / 3.0f
                 }
         );
 

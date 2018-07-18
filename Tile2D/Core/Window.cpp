@@ -27,6 +27,7 @@
 #include "JsonFileManager.h"
 #include "Tile2D.h"
 #include "precompile.h"
+#include "LightSystem.h"
 
 Window::Window()
 {
@@ -45,21 +46,23 @@ void Window::init(const std::string& configJson) {
     json::Object obj = JsonFileManager::load(configJson);
     json::Object windowJson = obj["window"];
 
+    int x, y, w, h;
+
     if (windowJson["use_default_fullscreen"].ToBool()) {
         static int displayInUse = 0;
         SDL_DisplayMode mode;
         SDL_GetCurrentDisplayMode(displayInUse, &mode);
-        x_ = 0;
-        y_ = 0;
-        w_ = (unsigned)mode.w;
-        h_ = (unsigned)mode.h;
+        x = 0;
+        y = 0;
+        w = (unsigned)mode.w;
+        h = (unsigned)mode.h;
 
         isFullScreen_ = true;
     } else {
-        x_ = (unsigned)windowJson["x"].ToInt();
-        y_ = (unsigned)windowJson["y"].ToInt();
-        w_ = (unsigned)windowJson["w"].ToInt();
-        h_ = (unsigned)windowJson["h"].ToInt();
+        x = (unsigned)windowJson["x"].ToInt();
+        y = (unsigned)windowJson["y"].ToInt();
+        w = (unsigned)windowJson["w"].ToInt();
+        h = (unsigned)windowJson["h"].ToInt();
 
         isFullScreen_ = windowJson["fullscreen"].ToBool();
     }
@@ -71,10 +74,10 @@ void Window::init(const std::string& configJson) {
 
     window_ = SDL_CreateWindow(
             "",
-            x_,
-            y_,
-            w_,
-            h_,
+            x,
+            y,
+            w,
+            h,
             SDL_WINDOW_OPENGL | (isFullScreen_ ? SDL_WINDOW_FULLSCREEN : 0)
     );
 
@@ -92,6 +95,8 @@ void Window::init(const std::string& configJson) {
 
     setVsync(windowJson["vsync"]);
 
+    glViewport(x, y, w, h);
+
     isInitialized_ = true;
 }
 
@@ -99,44 +104,16 @@ void Window::swap_() {
     SDL_GL_SwapWindow(window_);
 }
 
-void Window::setSize(unsigned w, unsigned h) {
-    SDL_SetWindowSize(window_, w, h);
-    w_ = w;
-    h_ = h;
+void Window::setSize(Veci size) {
+    SDL_SetWindowSize(window_, size.x, size.y);
+    glViewport(0, 0, size.x, size.y);
+    Tile2D::lightSystem().init();
 }
 
-Vecf Window::getPosition_(void *owner) {
-    auto window = (Window*)owner;
-    return Vecf(window->x_, window->y_);
-}
-
-void Window::setPosition_(void *owner, const Vecf &value) {
-    auto window = (Window*)owner;
-    SDL_SetWindowPosition(window->window_, (int)value.x, (int)value.y);
-    window->x_ = (unsigned)value.x;
-    window->y_ = (unsigned)value.y;
-}
-
-// getters and setters
-
-unsigned int Window::getW() const {
-    return w_;
-}
-
-void Window::setW(unsigned int w) {
-    w_ = w;
-}
-
-unsigned int Window::getH() const {
-    return h_;
-}
-
-void Window::setH(unsigned int h) {
-    h_ = h;
-}
-
-Rect Window::getRect() {
-    return {0.0f, 0.0f, (float)w_, (float)h_};
+Veci Window::getSize() {
+    int w, h;
+    SDL_GetWindowSize(window_, &w, &h);
+    return { w, h };
 }
 
 bool Window::getVsync() const {
@@ -149,5 +126,4 @@ void Window::setVsync(bool vsync) {
     } else {
         SDL_GL_SetSwapInterval(0);
     }
-
 }

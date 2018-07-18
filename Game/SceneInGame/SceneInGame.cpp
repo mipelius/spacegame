@@ -69,8 +69,10 @@ void SceneInGame::init() {
     }
 
     // camera
+    auto windowSize = Tile2D::window().getSize();
+
     camera_ = new Camera;
-    camera_->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
+    camera_->setAreaRect({0, 0, (float)windowSize.x, (float)windowSize.y});
     Tile2D::canvas().setCamera(camera_);
 }
 

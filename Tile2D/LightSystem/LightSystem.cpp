@@ -48,8 +48,7 @@ enabled_                (   true )
 }
 
 void LightSystem::init() {
-    w = Tile2D::window().getW();
-    h = Tile2D::window().getH();
+    auto windowSize = Tile2D::window().getSize();
 
     if (glShadowTextureId_ == 0) {
         createShadowTexture();
@@ -58,7 +57,7 @@ void LightSystem::init() {
     GLenum texture_format = GL_BGRA;
     GLint nOfColors = 4;
 
-    auto pixels = new Uint32[(int)w * (int)h];
+    auto pixels = new Uint32[windowSize.x * windowSize.y];
 
     // Have OpenGL generate a texture object handle for us
     glGenTextures(1, &glTextureId_);
@@ -70,8 +69,7 @@ void LightSystem::init() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    // Edit the texture object's image data using the information SDL_Surface gives us
-    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, (int)w, (int)h, 0,
+    glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, windowSize.x, windowSize.y, 0,
                  texture_format, GL_UNSIGNED_BYTE, pixels);
 
     delete[] pixels;
@@ -86,9 +84,11 @@ void LightSystem::createLightMap_() {
         delete lightMap_;
     }
 
+    auto windowSize = Tile2D::window().getSize();
+
     lightMap_ = new Array2d<unsigned char>(
-            (int)(2 * MAX_LIGHT_RADIUS + w / tileW + 2),
-            (int)(2 * MAX_LIGHT_RADIUS + h / tileH + 2)
+            (2 * MAX_LIGHT_RADIUS + windowSize.x / tileW + 2),
+            (2 * MAX_LIGHT_RADIUS + windowSize.y / tileH + 2)
     );
 }
 
@@ -115,21 +115,23 @@ void LightSystem::update(const Canvas& canvas) {
     if (canvas.getCamera() == nullptr || !enabled_ || !Tile2D::tileMap().isLoaded()) {
         return;
     }
+    auto windowSize = Tile2D::window().getSize();
+
     // turn projection upside down
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, w, 0, h, -1, 1);
+    glOrtho(0, windowSize.x, 0, windowSize.y, -1, 1);
 
     // draw shadow map to texture
 
     glDisable(GL_TEXTURE_2D);
     glColor4d(0, 0, 0, 1.0);
-    glRectd(0, 0, w, h);
+    glRectd(0, 0, windowSize.x, windowSize.y);
 
     drawLightMap(canvas);
 
     glBindTexture(GL_TEXTURE_2D, glTextureId_);
-    glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, (int)w, (int)h);
+    glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, windowSize.x, windowSize.y);
 
     if (blendedShadowsEnabled_) {
         // ------- draw lights -------
@@ -138,7 +140,7 @@ void LightSystem::update(const Canvas& canvas) {
         glDisable(GL_BLEND);
 
         glColor4d(0, 0, 0, 1.0);
-        glRectd(0, 0, w, h);
+        glRectd(0, 0, windowSize.x, windowSize.y);
 
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
@@ -165,17 +167,17 @@ void LightSystem::update(const Canvas& canvas) {
         glTexCoord2f(0, 0);
         glVertex2f(0, 0);
         glTexCoord2f(1, 0);
-        glVertex2f(w, 0);
+        glVertex2f(windowSize.x, 0);
         glTexCoord2f(1, 1);
-        glVertex2f(w, h);
+        glVertex2f(windowSize.x, windowSize.y);
         glTexCoord2f(0, 1);
-        glVertex2f(0, h);
+        glVertex2f(0, windowSize.y);
         glEnd();
 
         // update mask texture
 
         glBindTexture(GL_TEXTURE_2D, glTextureId_);
-        glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, (int)w, (int)h);
+        glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, windowSize.x, windowSize.y);
     }
 }
 

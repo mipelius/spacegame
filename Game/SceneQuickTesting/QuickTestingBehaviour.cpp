@@ -45,8 +45,10 @@ void QuickTestingBehaviour::awake() {
         return endPoint;
     };
 
+    auto windowSize = Tile2D::window().getSize();
+
     auto camera = Tile2D::canvas().getCamera();
-    camera->setAreaRect({0, 0, (float)Tile2D::window().getW() * 2, (float)Tile2D::window().getH() * 2});
+    camera->setAreaRect({0, 0, (float)windowSize.x * 2, (float)windowSize.y * 2});
 
     Tile2D::canvas().getCamera()->setPosition(Vecf(8.0f, 8.0f) * 400.0f);
 

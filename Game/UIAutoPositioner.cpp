@@ -21,40 +21,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "Tile2D.h"
+#include "Window.h"
+#include "UIAutoPositioner.h"
 
-#ifndef __Window_H_
-#define __Window_H_
+Tile2DComponent *UIAutoPositioner::clone() {
+    return new UIAutoPositioner(*this);
+}
 
-class GuiComponentBase;
+void UIAutoPositioner::awake() {
 
-#include "precompile.h"
-#include <list>
-#include "Vec.h"
-#include "Rect.h"
+}
 
-class Window {
-    friend class Tile2D;
-public:
+void UIAutoPositioner::update() {
 
-// getters and setters
-    void setSize(Veci size);
-    Veci getSize();
-    bool getVsync() const;
-    void setVsync(bool vsync);
+}
+
+void UIAutoPositioner::lateUpdate() {
+    auto windowSize = Tile2D::window().getSize();
+
+    Vecf center = {
+            windowSize.x / 2.0f,
+            windowSize.y / 2.0f
+    };
+
+    transform()->setPosition(center + relativePosition_);
 
 
-private:
-    void swap_();
+}
 
-    ~Window();
-    Window();
-    void init(const std::string& configJson);
+const Vecf &UIAutoPositioner::getRelativePosition() const {
+    return relativePosition_;
+}
 
-    SDL_Window* window_;
-    SDL_GLContext context_;
-
-    bool isFullScreen_;
-    bool isInitialized_;
-};
-
-#endif //__Window_H_
+void UIAutoPositioner::setRelativePosition(const Vecf &relativePosition) {
+    relativePosition_ = relativePosition;
+}

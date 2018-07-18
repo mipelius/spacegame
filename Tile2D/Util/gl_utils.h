@@ -52,12 +52,12 @@ static void drawLine(const LineSegment& lineSegment) {
 static void prepareRendering() {
     Canvas& canvas = Tile2D::canvas();
     auto camera = Tile2D::canvas().getCamera();
-    Rect rect = Tile2D::window().getRect();
+    auto windowSize = Tile2D::window().getSize();
 
-    auto x = (GLint)(rect.x1);
-    auto y = (GLint)(Tile2D::window().getH() - rect.y2);
-    auto w = (GLint)(rect.getWidth());
-    auto h = (GLint)(rect.getHeight());
+    auto x = 0;
+    auto y = 0;
+    auto w = windowSize.x;
+    auto h = windowSize.y;
 
     const Rect& cameraAreaRect = camera->getAreaRect();
 

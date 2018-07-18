@@ -38,12 +38,12 @@ void SceneTitleScreen::init() {
     // uncomment next line to load quick testing scene
     // Tile2D::sceneManager().loadScene(Scenes::quickTesting);
 
-    Vecf center = {Tile2D::window().getW() / 2.0f, Tile2D::window().getH() / 2.0f};
-
     // background and moving camera
 
+    auto windowSize = Tile2D::window().getSize();
+
     camera_ = new Camera();
-    camera_->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
+    camera_->setAreaRect({0, 0, (float)windowSize.x, (float)windowSize.y});
     Tile2D::canvas().setCamera(camera_);
 
     auto background = Tile2D::createGameObject();
@@ -85,7 +85,7 @@ void SceneTitleScreen::init() {
     // main menu UI
 
     auto textWelcome = UIPrefabs::text(
-            center + Vecf(0.0f, -300.0f),
+            Vecf(0.0f, -300.0f),
             "Welcome to the",
             4.0f,
             Text::HorizontalAlignment::center,
@@ -93,7 +93,7 @@ void SceneTitleScreen::init() {
     );
 
     auto textSpaceGame = UIPrefabs::text(
-            center + Vecf(0.0f, -300.0f),
+            Vecf(0.0f, -300.0f),
             "Space Game",
             10.0f,
             Text::HorizontalAlignment::center,
@@ -101,7 +101,7 @@ void SceneTitleScreen::init() {
     );
 
     auto buttonStart = UIPrefabs::button(
-            center + Vecf(0.0f, -90.0f),
+            Vecf(0.0f, -90.0f),
             "Start game",
             400.0f,
             [] (Button* button, Button::ButtonEventArgs args) {
@@ -110,14 +110,14 @@ void SceneTitleScreen::init() {
     );
 
     auto buttonSettings = UIPrefabs::button(
-            center + Vecf(0.0f, -30.0f),
+            Vecf(0.0f, -30.0f),
             "Settings",
             200.0f,
             onClickSettingsHandler
     );
 
     auto buttonCredits = UIPrefabs::button(
-            center + Vecf(0.0f, 30.0f),
+            Vecf(0.0f, 30.0f),
             "Credits",
             200.0f,
             onClickCreditsHandler
@@ -125,7 +125,7 @@ void SceneTitleScreen::init() {
 
 
     auto buttonQuit = UIPrefabs::button(
-            center + Vecf(0.0f, 90.0f),
+            Vecf(0.0f, 90.0f),
             "Quit",
             200.0f,
             [] (Button* button, Button::ButtonEventArgs args) {
@@ -137,15 +137,17 @@ void SceneTitleScreen::init() {
 
     auto resolutionString =
                 std::string("Resolution: ")             +
-                std::to_string(Tile2D::window().getW()) +
+                std::to_string(windowSize.x) +
                 " x "                                   +
-                std::to_string(Tile2D::window().getH());
+                std::to_string(windowSize.y);
 
     auto buttonResolution = UIPrefabs::button(
-            center + Vecf(0.0f, -30.0f),
+            Vecf(0.0f, -30.0f),
             resolutionString.data(),
             400.0f,
             [] (Button* button, Button::ButtonEventArgs args) {
+                Tile2D::window().setSize({1920, 1200});
+
                 auto text = button->gameObject()->getComponent<Text>();
                 text->setString("Resolution change not implemented yet");
             },
@@ -153,7 +155,7 @@ void SceneTitleScreen::init() {
     );
 
     auto settings_buttonBackToMainMenu = UIPrefabs::button(
-            center + Vecf(0.0f, 30.0f),
+            Vecf(0.0f, 30.0f),
             "Back to main menu",
             200.0f,
             settings_onClickBackToMainMenuHandler,
@@ -163,7 +165,7 @@ void SceneTitleScreen::init() {
     // credits menu
 
     auto textCredits = UIPrefabs::text(
-            center + Vecf(0.0f, -90.0f),
+            Vecf(0.0f, -90.0f),
             "Programming, graphics, music and soundfx",
             4.0f,
             Text::HorizontalAlignment::center,
@@ -171,7 +173,7 @@ void SceneTitleScreen::init() {
             false
     );
     auto textCreditsMipelius = UIPrefabs::text(
-            center + Vecf(0.0f, -30.0f),
+            Vecf(0.0f, -30.0f),
             "mipelius",
             4.0f,
             Text::HorizontalAlignment::center,
@@ -180,7 +182,7 @@ void SceneTitleScreen::init() {
     );
 
     auto credits_buttonBackToMainMenu = UIPrefabs::button(
-            center + Vecf(0.0f, 80.0f),
+            Vecf(0.0f, 80.0f),
             "Back to main menu",
             200.0f,
             credits_onClickBackToMainMenuHandler,

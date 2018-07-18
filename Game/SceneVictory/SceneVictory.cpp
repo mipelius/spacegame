@@ -33,7 +33,8 @@
 #include "Resources.h"
 
 void SceneVictory::init() {
-    Vecf center = {Tile2D::window().getW() / 2.0f, Tile2D::window().getH() / 2.0f};
+    auto windowSize = Tile2D::window().getSize();
+    Vecf center = { (float)windowSize.x, (float)windowSize.y };
 
     auto youWonText = UIPrefabs::text(
             center + Vecf(0.0f, -300.0f),
@@ -51,7 +52,7 @@ void SceneVictory::init() {
     );
 
     camera_ = new Camera();
-    camera_->setAreaRect({0, 0, (float)Tile2D::window().getW(), (float)Tile2D::window().getH()});
+    camera_->setAreaRect({0, 0, (float)windowSize.x, (float)windowSize.y});
     Tile2D::canvas().setCamera(camera_);
 
     auto background = Tile2D::createGameObject();

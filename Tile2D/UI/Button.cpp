@@ -26,6 +26,7 @@
 #include "Button.h"
 #include "Tile2D.h"
 #include "Input.h"
+#include "GameObject.h"
 
 Button::Button() :
         clicked     (Event<Button, ButtonEventArgs>()),
@@ -45,6 +46,10 @@ Button::Button() :
 void Button::awake() { }
 
 void Button::update() {
+    if (!gameObject()->isActive()) {
+        return;
+    }
+
     auto& mouse = Tile2D::input().mouse();
 
     Veci mousePosition;

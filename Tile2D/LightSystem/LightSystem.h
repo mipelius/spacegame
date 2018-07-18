@@ -39,6 +39,7 @@ class PartialLightMapUpdate;
 class LightSystem {
     friend class Tile2D;
     friend class TileMap;
+    friend class Window;
 
 public:
     LightSystem();
@@ -68,8 +69,6 @@ private:
     void createLightMap_();
 
     float ambientLight_;
-    float w;
-    float h;
 
     bool softShadowsEnabled_;
     bool blendedShadowsEnabled_;

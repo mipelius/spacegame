@@ -21,40 +21,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef SPACEGAME_UIAUTOPOSITIONER_H
+#define SPACEGAME_UIAUTOPOSITIONER_H
 
-#ifndef __Window_H_
-#define __Window_H_
-
-class GuiComponentBase;
-
-#include "precompile.h"
-#include <list>
 #include "Vec.h"
-#include "Rect.h"
+#include "Tile2DBehaviour.h"
 
-class Window {
-    friend class Tile2D;
+class UIAutoPositioner : public Tile2DBehaviour {
 public:
-
-// getters and setters
-    void setSize(Veci size);
-    Veci getSize();
-    bool getVsync() const;
-    void setVsync(bool vsync);
-
+    const Vecf &getRelativePosition() const;
+    void setRelativePosition(const Vecf &relativePosition);
 
 private:
-    void swap_();
+    Vecf relativePosition_;
 
-    ~Window();
-    Window();
-    void init(const std::string& configJson);
-
-    SDL_Window* window_;
-    SDL_GLContext context_;
-
-    bool isFullScreen_;
-    bool isInitialized_;
+protected:
+    Tile2DComponent *clone() override;
+    void awake() override;
+    void update() override;
+    void lateUpdate() override;
 };
 
-#endif //__Window_H_
+
+#endif //SPACEGAME_UIAUTOPOSITIONER_H

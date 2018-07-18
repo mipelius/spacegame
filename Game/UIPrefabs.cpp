@@ -30,6 +30,7 @@
 #include "Text.h"
 #include "UIPrefabs.h"
 #include "Resources.h"
+#include "UIAutoPositioner.h"
 
 GameObject* UIPrefabs::button(
         const Vecf& position,
@@ -39,7 +40,9 @@ GameObject* UIPrefabs::button(
         bool active
 ) {
     auto buttonObj = Tile2D::createGameObject();
-    buttonObj->transform().setPosition(position);
+
+    auto uiAutoPositioner = buttonObj->attachComponent<UIAutoPositioner>();
+    uiAutoPositioner->setRelativePosition(position);
 
     Rect rect = {-width / 2.0f, -30.0f, width / 2.0f, 30.0f};
 
@@ -113,8 +116,11 @@ GameObject* UIPrefabs::text(
         bool active
 ) {
     auto textObj = Tile2D::createGameObject();
+
+    auto uiAutoPositioner = textObj->attachComponent<UIAutoPositioner>();
+    uiAutoPositioner->setRelativePosition(position);
+
     auto text = textObj->attachComponent<Text>();
-    text->transform()->setPosition(position);
     text->setHorizontalAlignment(horizontalAlignment);
     text->setVerticalAlignment(verticalAlignment);
     text->setIsUIDrawable(true);
