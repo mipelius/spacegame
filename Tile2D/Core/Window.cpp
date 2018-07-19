@@ -46,7 +46,18 @@ void Window::init(const std::string& configJson) {
 
     settingsFilePath_ = configJson;
 
-    json::Object obj = JsonFileManager::load(settingsFilePath_);
+    json::Object obj;
+    bool loadingFailed = false;
+
+    try {
+        obj = JsonFileManager::load(settingsFilePath_);
+    } catch (const std::runtime_error& error) {
+        loadingFailed = true;
+        json::Object window;
+        window["use_default_fullscreen"] = true;
+        obj["window"] = window;
+    }
+
     json::Object windowJson = obj["window"];
 
     int x, y, w, h;
@@ -101,6 +112,10 @@ void Window::init(const std::string& configJson) {
     glViewport(x, y, w, h);
 
     isInitialized_ = true;
+
+    if (loadingFailed) {
+        saveSettings();
+    }
 }
 
 void Window::swap_() {
