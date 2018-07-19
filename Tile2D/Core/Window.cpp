@@ -44,7 +44,9 @@ Window::~Window() {
 void Window::init(const std::string& configJson) {
     if (isInitialized_) return;
 
-    json::Object obj = JsonFileManager::load(configJson);
+    settingsFilePath_ = configJson;
+
+    json::Object obj = JsonFileManager::load(settingsFilePath_);
     json::Object windowJson = obj["window"];
 
     int x, y, w, h;
@@ -142,4 +144,23 @@ std::vector<Veci> Window::getAllowedFullScreenResolutions() {
     }
 
     return result;
+}
+
+void Window::saveSettings() {
+    json::Object window;
+
+    auto windowSize = getSize();
+
+    window["use_default_fullscreen"] = false;
+    window["x"] = 0;
+    window["y"] = 0;
+    window["w"] = windowSize.x;
+    window["h"] = windowSize.y;
+    window["fullscreen"] = true;
+    window["vsync"] = true;
+
+    json::Object data;
+    data["window"] = window;
+
+    JsonFileManager::save(data, settingsFilePath_);
 }

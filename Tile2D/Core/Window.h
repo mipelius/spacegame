@@ -44,6 +44,8 @@ public:
 
     std::vector<Veci> getAllowedFullScreenResolutions();
 
+    void saveSettings();
+
 private:
     void swap_();
 
@@ -56,6 +58,8 @@ private:
 
     bool isFullScreen_;
     bool isInitialized_;
+
+    std::string settingsFilePath_;
 };
 
 #endif //__Window_H_

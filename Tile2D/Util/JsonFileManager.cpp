@@ -59,8 +59,10 @@ json::Object JsonFileManager::load(std::string filename) {
 }
 
 void JsonFileManager::save(json::Object object, std::string filename) {
+    formatPath_(filename);
+
     std::ofstream file;
-    file.open (filename);
+    file.open(filename);
     file << json::Serialize(object);
     file.close();
 }

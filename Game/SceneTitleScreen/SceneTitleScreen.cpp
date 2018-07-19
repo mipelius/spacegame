@@ -159,6 +159,7 @@ void SceneTitleScreen::init() {
                 auto nextResolutionIndex = (i + resolutions.size() - 1) % resolutions.size();
                 auto newSize = resolutions[nextResolutionIndex];
                 Tile2D::window().setSize(newSize);
+                Tile2D::window().saveSettings();
 
                 Tile2D::canvas().getCamera()->setAreaRect(
                         {
