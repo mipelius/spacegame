@@ -64,6 +64,13 @@ GameObject* UIPrefabs::button(
     buttonText->setFontSize(4.0f);
     buttonText->setColor(textColorNormal);
 
+    // uncomment sprite for debugging purposes
+    //    auto sprite = buttonObj->attachComponent<Sprite>();
+    //    sprite->setRect(rect);
+    //    sprite->setColor({1.0f, 0.0f, 0.0f});
+    //    sprite->setSortingLayer(Tile2D::canvas().getSortingLayer(0));
+    //    sprite->setIsUIDrawable(true);
+
     static auto setNormalButton = [] (Button* button) {
         button->gameObject()->getComponent<Text>()->setColor(textColorNormal);
         button->gameObject()->transform().setScale(scaleNormal);

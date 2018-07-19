@@ -101,23 +101,23 @@ void SceneTitleScreen::init() {
     );
 
     auto buttonStart = UIPrefabs::button(
-            Vecf(0.0f, -90.0f),
+            Vecf(0.0f, -70.0f),
             "Start game",
-            400.0f,
+            320.0f,
             [] (Button* button, Button::ButtonEventArgs args) {
                 Tile2D::sceneManager().loadScene(1);
             }
     );
 
     auto buttonSettings = UIPrefabs::button(
-            Vecf(0.0f, -30.0f),
+            Vecf(0.0f, 0.0f),
             "Settings",
-            200.0f,
+            220.0f,
             onClickSettingsHandler
     );
 
     auto buttonCredits = UIPrefabs::button(
-            Vecf(0.0f, 30.0f),
+            Vecf(0.0f, 70.0f),
             "Credits",
             200.0f,
             onClickCreditsHandler
@@ -125,9 +125,9 @@ void SceneTitleScreen::init() {
 
 
     auto buttonQuit = UIPrefabs::button(
-            Vecf(0.0f, 90.0f),
+            Vecf(0.0f, 140.0f),
             "Quit",
-            200.0f,
+            120.0f,
             [] (Button* button, Button::ButtonEventArgs args) {
                 Tile2D::quit();
             }
@@ -156,10 +156,18 @@ void SceneTitleScreen::init() {
                         break;
                     }
                 }
+                auto nextResolutionIndex = (i + resolutions.size() - 1) % resolutions.size();
+                auto newSize = resolutions[nextResolutionIndex];
+                Tile2D::window().setSize(newSize);
 
-                i = (i + 1) % resolutions.size();
-
-                Tile2D::window().setSize(resolutions[i]);
+                Tile2D::canvas().getCamera()->setAreaRect(
+                        {
+                                0.0f,
+                                0.0f,
+                                (float)newSize.x,
+                                (float)newSize.y
+                        }
+                );
 
                 auto resolutionString =
                         std::string("Resolution: ")                     +
@@ -174,9 +182,9 @@ void SceneTitleScreen::init() {
     );
 
     auto settings_buttonBackToMainMenu = UIPrefabs::button(
-            Vecf(0.0f, 30.0f),
+            Vecf(0.0f, 35.0f),
             "Back to main menu",
-            200.0f,
+            500.0f,
             settings_onClickBackToMainMenuHandler,
             false
     );

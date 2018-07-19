@@ -41,11 +41,11 @@ public:
     Button();
     ~Button() override = default;
 
-Event<Button, ButtonEventArgs> clicked;
-Event<Button, ButtonEventArgs> pressed;
-Event<Button, ButtonEventArgs> released;
-Event<Button, ButtonEventArgs> mouseOver;
-Event<Button, ButtonEventArgs> mouseOut;
+    Event<Button, ButtonEventArgs> clicked;
+    Event<Button, ButtonEventArgs> pressed;
+    Event<Button, ButtonEventArgs> released;
+    Event<Button, ButtonEventArgs> mouseOver;
+    Event<Button, ButtonEventArgs> mouseOut;
 
     const Rect &getRect() const;
     void setRect(const Rect &rect);
