@@ -26,11 +26,12 @@
 #ifndef SPACEGAME_HEALTH_H
 #define SPACEGAME_HEALTH_H
 
-
 #include "Tile2DBehaviour.h"
 #include "Event.h"
 #include "ISerializable.h"
 #include "GameObject.h"
+
+class AudioClip;
 
 class GameObjectDiedEventArgs {
 public:
@@ -54,7 +55,13 @@ public:
     float getAutoHealingRate() const;
     void setAutoHealingRate(float autoHealingRate);
 
-Event<Health, GameObjectDiedEventArgs> onDeath;
+    float getAudioPlayingProbability() const;
+    void setAudioPlayingProbability(float audioPlayingProbability);
+
+    AudioClip *getAudioClip() const;
+    void setAudioClip(AudioClip *audioClip);
+
+    Event<Health, GameObjectDiedEventArgs> onDeath;
 
     void deserialize(const json::Object &jsonObject) override;
 
@@ -70,6 +77,9 @@ private:
     float maxHealth_;
 
     float autoHealingRate_ = 0;
+
+    float audioPlayingProbability_ = 1.0f;
+    AudioClip* audioClip_ = nullptr;
 
     void clampHealth_();
 

@@ -23,12 +23,14 @@
 
 
 
+#include "AudioManager.h"
 #include "Tile2D.h"
 #include "t2Time.h"
 #include "Health.h"
 #include "Tile2DMath.h"
 #include "GameObject.h"
 #include "Reflector.h"
+#include "Resources.h"
 
 void Health::awake() {
     reset();
@@ -59,6 +61,12 @@ void Health::damage(float amount, GameObject* damager) {
     if (health_ <= 0.0) {
         onDeath.raise(this, {damager});
     }
+    else {
+        if (rand() < audioPlayingProbability_ * RAND_MAX) {
+            AudioManager::getInstance()->play(audioClip_);
+        }
+    }
+
     clampHealth_();
 }
 
@@ -100,9 +108,33 @@ void Health::deserialize(const json::Object &jsonObject) {
         auto handlerJson = jsonObject["onDeath"].ToObject();
         onDeath.deserialize(handlerJson);
     }
+    if (jsonObject.HasKey("audioPlayingProbability")) {
+        audioPlayingProbability_ = jsonObject["audioPlayingProbability"].ToFloat();
+    }
+    if (jsonObject.HasKey("audioClip")) {
+        auto audioClipName = jsonObject["audioClip"].ToString();
+        audioClip_ = Tile2D::resources().audioClips[audioClipName];
+    }
+
     reset();
 }
 
 Tile2DComponent *Health::clone() {
     return new Health(*this);
+}
+
+float Health::getAudioPlayingProbability() const {
+    return audioPlayingProbability_;
+}
+
+void Health::setAudioPlayingProbability(float audioPlayingProbability) {
+    audioPlayingProbability_ = audioPlayingProbability;
+}
+
+AudioClip *Health::getAudioClip() const {
+    return audioClip_;
+}
+
+void Health::setAudioClip(AudioClip *audioClip) {
+    audioClip_ = audioClip;
 }
