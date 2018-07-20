@@ -55,6 +55,7 @@ void Window::init(const std::string& configJson) {
         loadingFailed = true;
         json::Object window;
         window["use_default_fullscreen"] = true;
+        window["vsync"] = true;
         obj["window"] = window;
     }
 
