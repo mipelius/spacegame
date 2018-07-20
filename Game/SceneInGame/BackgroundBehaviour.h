@@ -53,8 +53,6 @@ private:
 
     float fadeInOutSpeed_ = 0.5f;
     Rect area_ = {0.0f, 0.0f, 0.0f, 0.0f};
-
-    enum FadeState { NONE, OUT, IN } fadeState_ = NONE;
 };
 
 #endif //SPACEGAME_BACKGROUNDBEHAVIOUR_H
