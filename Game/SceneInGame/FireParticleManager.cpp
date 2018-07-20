@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <Tile2D/Util/Tile2DMath.h>
+#include "Tile2DMath.h"
 #include "FireParticleManager.h"
 #include "Tile2D.h"
 #include "GameObject.h"

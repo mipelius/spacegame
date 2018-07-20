@@ -22,7 +22,7 @@
 // SOFTWARE.
 
 
-#include <SDL_video.h>
+#include "precompile.h"
 #include "Window.h"
 #include "Camera.h"
 #include "JsonFileManager.h"

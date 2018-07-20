@@ -24,7 +24,7 @@
 #include <stdexcept>
 #include <string>
 #include "Mixer.h"
-#include "SDL_mixer.h"
+#include "precompile.h"
 
 void Mixer::init() {
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
