@@ -2,9 +2,21 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleName</key>
+	<string>SpaceGame</string>
+	<key>CFBundleDisplayName</key>
+	<string>SpaceGame</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mipelius.SpaceGame</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>spgm</string>
 	<key>CFBundleExecutable</key>
 	<string>SpaceGame</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.mipelius.SpaceGame</string>	
+	<string>com.mipelius.SpaceGame</string>
 </dict>
 </plist>
