@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 
+#include "JsonFileManager.h"
 #include "precompile.h"
 #include "AudioClip.h"
 #include "Tile2D.h"
@@ -39,7 +40,13 @@ void AudioClip::reload() {
         Mix_FreeChunk(chunk_);
     }
 
-    chunk_ = Mix_LoadWAV((Tile2D::getResourcePath() + filepath_).data());
+    auto jsonObj = JsonFileManager::load(filepath_);
+
+    auto audioFilePath = jsonObj["file"].ToString();
+    auto volume = jsonObj["volume"].ToInt();
+
+    chunk_ = Mix_LoadWAV((Tile2D::getResourcePath() + audioFilePath).data());
+    Mix_VolumeChunk(chunk_, volume);
 
     if (chunk_ == nullptr) {
         std::string error = "AudioClip: Couldn't load ";
