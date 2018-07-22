@@ -43,6 +43,7 @@ void SceneInGame::init() {
     // Scene setup: tile map, physics, light system
     Tile2D::tileMap().load(mapPath_, tileSetPath_);
     Tile2D::lightSystem().setAmbientLight(0.0f);
+    Tile2D::lightSystem().setBlendedShadowsEnabled(false);
     Tile2D::physicsWorld().setAirDensity(0.2f);
     Tile2D::physicsWorld().setGForce({0, 100.0f});
 
