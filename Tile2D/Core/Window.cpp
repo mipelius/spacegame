@@ -96,8 +96,6 @@ void Window::init(const std::string& configJson) {
             SDL_WINDOW_OPENGL | (isFullScreen_ ? SDL_WINDOW_FULLSCREEN : 0)
     );
 
-	setSize({ w, h });
-
     if (!window_) {
         std::fprintf(stderr, "Error: %s", SDL_GetError());
         return;
