@@ -9,7 +9,8 @@ cmake-build-relwithdebinfo/
 # OSX / XCODE
 
 .DS_STORE
-SpaceGame.xcodeproj/project.xcworkspace
+PlanetA18.xcodeproj/project.xcworkspace/
+PlanetA18.xcodeproj/xcuserdata/
 
 # DATA IS IGNORED FOR NOW SINCE BINARY+GIT=BAD
 

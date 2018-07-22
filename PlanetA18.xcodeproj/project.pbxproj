@@ -123,7 +123,7 @@
 		332493AFD86E4F7BC15AE8B3 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		332493C992ED93FDBC387419 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = /Library/Frameworks/SDL2_mixer.framework; sourceTree = "<absolute>"; };
 		3324951567969CEF8509B82E /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = /Library/Frameworks/SDL2_image.framework; sourceTree = "<absolute>"; };
-		3324959A3A11B10ABB1482E7 /* SpaceGame */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SpaceGame; sourceTree = BUILT_PRODUCTS_DIR; };
+		3324959A3A11B10ABB1482E7 /* PlanetA18 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PlanetA18; sourceTree = BUILT_PRODUCTS_DIR; };
 		332496C5CA7FDC6CAF40AE19 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = /Library/Frameworks/SDL2.framework; sourceTree = "<absolute>"; };
 		332499DC1016E1FD7289567D /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		33249CCBA9CB786E6BAB2F3F /* precompile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = precompile.h; sourceTree = "<group>"; };
@@ -347,7 +347,7 @@
 		332490F6ADCCDCEF26D14383 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3324959A3A11B10ABB1482E7 /* SpaceGame */,
+				3324959A3A11B10ABB1482E7 /* PlanetA18 */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -761,9 +761,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		332493A125114278AB592526 /* SpaceGame */ = {
+		332493A125114278AB592526 /* PlanetA18 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 33249C9DD3410339B728331E /* Build configuration list for PBXNativeTarget "SpaceGame" */;
+			buildConfigurationList = 33249C9DD3410339B728331E /* Build configuration list for PBXNativeTarget "PlanetA18" */;
 			buildPhases = (
 				33249452FDBD851AC54EF9E2 /* Sources */,
 				33249117D23BB411D97B60B0 /* Frameworks */,
@@ -773,9 +773,9 @@
 			);
 			dependencies = (
 			);
-			name = SpaceGame;
-			productName = SpaceGame;
-			productReference = 3324959A3A11B10ABB1482E7 /* SpaceGame */;
+			name = PlanetA18;
+			productName = PlanetA18;
+			productReference = 3324959A3A11B10ABB1482E7 /* PlanetA18 */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -786,7 +786,7 @@
 			attributes = {
 				ORGANIZATIONNAME = "___MIIKAPELKONEN___";
 			};
-			buildConfigurationList = 33249DB4B25C5109CE2F0B2A /* Build configuration list for PBXProject "SpaceGame" */;
+			buildConfigurationList = 33249DB4B25C5109CE2F0B2A /* Build configuration list for PBXProject "PlanetA18" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -798,7 +798,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				332493A125114278AB592526 /* SpaceGame */,
+				332493A125114278AB592526 /* PlanetA18 */,
 			);
 		};
 /* End PBXProject section */
@@ -1006,7 +1006,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		33249C9DD3410339B728331E /* Build configuration list for PBXNativeTarget "SpaceGame" */ = {
+		33249C9DD3410339B728331E /* Build configuration list for PBXNativeTarget "PlanetA18" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				33249A56AEA38F9BA0776C88 /* Debug */,
@@ -1015,7 +1015,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		33249DB4B25C5109CE2F0B2A /* Build configuration list for PBXProject "SpaceGame" */ = {
+		33249DB4B25C5109CE2F0B2A /* Build configuration list for PBXProject "PlanetA18" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3324916379129CF45F03C66E /* Debug */,
