@@ -228,6 +228,7 @@
     <ProjectGuid>{E6A2BDA7-C9AE-4ACD-8016-38AB2A670B6D}</ProjectGuid>
     <RootNamespace>spacegame</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <ProjectName>PlanetA18</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
