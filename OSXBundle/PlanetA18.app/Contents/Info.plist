@@ -3,20 +3,18 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
-	<string>SpaceGame</string>
+	<string>PlanetA18</string>
 	<key>CFBundleDisplayName</key>
-	<string>SpaceGame</string>
+	<string>PlanetA18</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.mipelius.SpaceGame</string>
+	<string>com.mipelius.PlanetA18</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
-	<string>spgm</string>
+	<string>pa18</string>
 	<key>CFBundleExecutable</key>
-	<string>SpaceGame</string>
-	<key>CFBundleIdentifier</key>
-	<string>com.mipelius.SpaceGame</string>
+	<string>PlanetA18</string>
 </dict>
 </plist>
