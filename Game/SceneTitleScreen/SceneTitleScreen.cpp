@@ -93,8 +93,8 @@ void SceneTitleScreen::init() {
     );
 
     auto textSpaceGame = UIPrefabs::text(
-            Vecf(0.0f, -300.0f),
-            "Space Game",
+            Vecf(0.0f, -250.0f),
+            "Planet A18",
             10.0f,
             Text::HorizontalAlignment::center,
             Text::VerticalAlignment::top
@@ -202,7 +202,7 @@ void SceneTitleScreen::init() {
     );
     auto textCreditsMipelius = UIPrefabs::text(
             Vecf(0.0f, -30.0f),
-            "mipelius",
+            "by mipelius",
             4.0f,
             Text::HorizontalAlignment::center,
             Text::VerticalAlignment::top,
