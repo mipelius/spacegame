@@ -22,7 +22,7 @@
 # SOFTWARE.
 
 cmake_minimum_required(VERSION 3.8)
-project(SpaceGame)
+project(PlanetA18)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;MinSizeRel;RelWithDebInfo")
@@ -257,9 +257,9 @@ set(SOURCE_FILES
         Tile2D/Core/Prefab.h
         Game/Bindings.h Game/EventHandlers.h Game/ParticleSystemComponents.h Game/CollisionEffects.cpp Game/CollisionEffects.h Game/SceneInGame/ExplosionBehaviour.cpp Game/SceneInGame/ExplosionBehaviour.h Game/SceneInGame/PlasmaExplosionBehaviour.cpp Game/SceneInGame/PlasmaExplosionBehaviour.h Tile2D/Audio/AudioSource.cpp Tile2D/Audio/AudioSource.h Tile2D/Audio/Mixer.cpp Tile2D/Audio/Mixer.h Game/AudioManager.cpp Game/AudioManager.h Game/SceneInGame/PopUpBehaviour.cpp Game/SceneInGame/PopUpBehaviour.h Game/SceneInGame/FireParticleManager.cpp Game/SceneInGame/FireParticleManager.h Game/UIAutoPositioner.cpp Game/UIAutoPositioner.h)
 
-add_executable(SpaceGame ${SOURCE_FILES})
+add_executable(PlanetA18 ${SOURCE_FILES})
 
-target_link_libraries(SpaceGame
+target_link_libraries(PlanetA18
         ${OPENGL_LIBRARY}
         ${SDL2_LIBRARY}
         ${SDL2_IMAGE_LIBRARY}
