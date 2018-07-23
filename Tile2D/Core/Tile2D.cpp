@@ -125,6 +125,10 @@ void Tile2D::load(
     resources().init(resourcesFile);
     sceneManager().init(scenesFile);
 
+    // HACK: AUDIO SEEMS TO INITIALIZE SLOWLY, LET'S WAIT A LITTLE BIT...
+
+    SDL_Delay(500);
+
     // START LOOP
 
     Tile2D::instance_().mainLoop_();

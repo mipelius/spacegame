@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 
+#include "MusicManager.h"
 #include "Background.h"
 #include "Resources.h"
 #include "Tile2D.h"
@@ -37,6 +38,10 @@
 void SceneTitleScreen::init() {
     // uncomment next line to load quick testing scene
     // Tile2D::sceneManager().loadScene(Scenes::quickTesting);
+
+    // music
+    auto mainThemeMusic = Tile2D::resources().audioClips["main_theme"];
+    MusicManager::getInstance()->play(mainThemeMusic, true, false);
 
     // background and moving camera
 

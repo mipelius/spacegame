@@ -117,6 +117,9 @@ void Window::init(const std::string& configJson) {
     if (loadingFailed) {
         saveSettings();
     }
+
+    glClear(GL_COLOR_BUFFER_BIT);
+    swap_();
 }
 
 void Window::swap_() {
