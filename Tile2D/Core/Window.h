@@ -60,6 +60,10 @@ private:
     bool isInitialized_;
 
     std::string settingsFilePath_;
+
+    const int MIN_RESOLUTION_W = 1280;
+    const int MIN_RESOLUTION_H = 800;
+
 };
 
 #endif //__Window_H_

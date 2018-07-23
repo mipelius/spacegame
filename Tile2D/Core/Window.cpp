@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 
+#include <SDL_video.h>
 #include "precompile.h"
 #include "Window.h"
 #include "Camera.h"
@@ -47,52 +48,58 @@ void Window::init(const std::string& configJson) {
     settingsFilePath_ = configJson;
 
     json::Object obj;
-    bool loadingFailed = false;
+
+    Veci resolution = { -1, -1 };
+    isFullScreen_ = true;
+
+    bool fail = false;
+
+    // try read window configuration from file
 
     try {
         obj = JsonFileManager::load(settingsFilePath_);
-    } catch (const std::runtime_error& error) {
-        loadingFailed = true;
-        json::Object window;
-        window["use_default_fullscreen"] = true;
-        window["vsync"] = true;
-        obj["window"] = window;
+        auto window = obj["window"];
+        resolution.x = window["w"];
+        resolution.y = window["h"];
+        if (window.HasKey("fullscreen")) {
+            isFullScreen_ = window["fullscreen"].ToBool();
+        }
+    }
+    catch (const std::runtime_error& error) {
+        fail = true;
     }
 
-    json::Object windowJson = obj["window"];
-
-    int x, y, w, h;
-
-    if (windowJson["use_default_fullscreen"].ToBool()) {
-        static int displayInUse = 0;
-        SDL_DisplayMode mode;
-        SDL_GetCurrentDisplayMode(displayInUse, &mode);
-        x = 0;
-        y = 0;
-        w = (unsigned)mode.w;
-        h = (unsigned)mode.h;
-
-        isFullScreen_ = true;
-    } else {
-        x = (unsigned)windowJson["x"].ToInt();
-        y = (unsigned)windowJson["y"].ToInt();
-        w = (unsigned)windowJson["w"].ToInt();
-        h = (unsigned)windowJson["h"].ToInt();
-
-        isFullScreen_ = windowJson["fullscreen"].ToBool();
+    // check if resolution is allowed
+    bool isAllowed = false;
+    for (const auto& allowedResolution : getAllowedFullScreenResolutions()) {
+        if (resolution == allowedResolution) {
+            isAllowed = true;
+            break;
+        }
     }
-	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+    // if not, use default desktop size
+    if (!isAllowed) {
+        SDL_DisplayMode displayMode;
+        SDL_GetCurrentDisplayMode(0, &displayMode);
+        resolution.x = displayMode.w;
+        resolution.y = displayMode.h;
+        fail = true;
+    }
+
+    // create window
+    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
     window_ = SDL_CreateWindow(
             "",
-            x,
-            y,
-            w,
-            h,
+            0,
+            0,
+            resolution.x,
+            resolution.y,
             SDL_WINDOW_OPENGL | (isFullScreen_ ? SDL_WINDOW_FULLSCREEN : 0)
     );
 
@@ -108,18 +115,19 @@ void Window::init(const std::string& configJson) {
         return;
     }
 
-    setVsync(windowJson["vsync"]);
+    setVsync(true);
 
-    glViewport(x, y, w, h);
+    glViewport(0, 0, resolution.x, resolution.y);
 
     isInitialized_ = true;
 
-    if (loadingFailed) {
-        saveSettings();
-    }
-
     glClear(GL_COLOR_BUFFER_BIT);
     swap_();
+
+    if (fail) {
+        // everything is fixed by now :)
+        saveSettings();
+    }
 }
 
 void Window::swap_() {
@@ -159,24 +167,21 @@ std::vector<Veci> Window::getAllowedFullScreenResolutions() {
         SDL_DisplayMode mode;
         SDL_GetDisplayMode(0, i, &mode);
 
-        result.emplace_back(mode.w, mode.h);
+        if (mode.w >= MIN_RESOLUTION_W && mode.h >= MIN_RESOLUTION_H) {
+            result.emplace_back(mode.w, mode.h);
+        }
     }
 
     return result;
 }
 
 void Window::saveSettings() {
+    auto resolution = getSize();
+
     json::Object window;
 
-    auto windowSize = getSize();
-
-    window["use_default_fullscreen"] = false;
-    window["x"] = 0;
-    window["y"] = 0;
-    window["w"] = windowSize.x;
-    window["h"] = windowSize.y;
-    window["fullscreen"] = true;
-    window["vsync"] = true;
+    window["w"] = resolution.x;
+    window["h"] = resolution.y;
 
     json::Object data;
     data["window"] = window;
