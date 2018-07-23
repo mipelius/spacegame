@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <Tile2D/Util/Tile2DMath.h>
+#include "Tile2DMath.h"
 #include "Tile2D.h"
 #include "MusicManager.h"
 #include "GameObject.h"
@@ -66,7 +66,7 @@ void MusicManager::play(AudioClip *clip, bool loopEnabled, bool crossFade) {
     }
 
     currentAudioSource_->setClip(clip);
-    currentAudioSource_->setLoopEnabled(true);
+    currentAudioSource_->setLoopEnabled(loopEnabled);
     if (crossFade) {
         currentAudioSource_->setVolume(0);
     }
