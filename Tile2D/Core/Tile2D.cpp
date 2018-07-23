@@ -67,7 +67,7 @@ Tile2D::Tile2D() :
 }
 
 Tile2D::~Tile2D() {
-    cleanUp_();
+    cleanUp_(true);
 
     delete time_;
     delete input_;
@@ -153,9 +153,18 @@ void Tile2D::mainLoop_() {
     }
 }
 
-void Tile2D::cleanUp_() {
-    for (auto obj : objects_) {
-        obj->destroy();
+void Tile2D::cleanUp_(bool destroyEverything) {
+    if (destroyEverything) {
+        for (auto obj : objects_) {
+            obj->destroy();
+        }
+    }
+    else {
+        for (auto obj : objects_) {
+            if (obj->destroyOnLoad_) {
+                obj->destroy();
+            }
+        }
     }
     removeDestroyedObjects_();
     objectsToInit_.clear();

@@ -53,6 +53,9 @@ public:
     bool isActive() const;
     void setIsActive(bool isActive);
 
+    bool destroysOnLoad() const;
+    void setDestroyOnLoad(bool destroyOnLoad);
+
     void setTag(const Tag& tag);
     const Tag& getTag() const;
 
@@ -67,6 +70,7 @@ private:
 
     std::list<Tile2DComponent*> components_;
 
+    bool destroyOnLoad_ = true;
     bool isInitialized_ = false;
     bool isActive_ = true;
     bool isAlive_ = true;

@@ -129,7 +129,7 @@ private:
     Mixer* mixer_;
 
     void mainLoop_();
-    void cleanUp_();
+    void cleanUp_(bool destroyEverything = false);
     void removeDestroyedObjects_();
     void initGameObjects_();
     void updateBehaviours_();

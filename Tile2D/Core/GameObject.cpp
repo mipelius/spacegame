@@ -181,3 +181,11 @@ void GameObject::setTag(const Tag &tag) {
 const Tag &GameObject::getTag() const {
     return *tag_;
 }
+
+bool GameObject::destroysOnLoad() const {
+    return destroyOnLoad_;
+}
+
+void GameObject::setDestroyOnLoad(bool destroyOnLoad) {
+    destroyOnLoad_ = destroyOnLoad;
+}
