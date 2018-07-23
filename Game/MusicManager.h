@@ -21,39 +21,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
-
-#ifndef SPACEGAME_BACKGROUNDBEHAVIOUR_H
-#define SPACEGAME_BACKGROUNDBEHAVIOUR_H
+#ifndef PLANETA18_MUSICMANAGER_H
+#define PLANETA18_MUSICMANAGER_H
 
 #include "Tile2DBehaviour.h"
-#include "Rect.h"
-#include "Background.h"
+#include <vector>
 
 class AudioClip;
+class AudioSource;
 
-class BackgroundBehaviour :
-    public Tile2DBehaviour,
-    public ISerializable
-{
+class MusicManager : public Tile2DBehaviour {
 public:
-    void setArea(const Rect &area);
-    void deserialize(const json::Object &jsonObject) override;
-
-protected:
-    void awake() override;
-    void update() override;
-    void lateUpdate() override;
-
-    Tile2DComponent *clone() override;
+    static MusicManager* getInstance();
+    void play(AudioClip *clip, bool loopEnabled = true, bool crossFade = true);
 
 private:
-    Background* bg_ = nullptr;
+    void awake() override;
 
-    AudioClip* music_ = nullptr;
+    void update() override;
 
-    float fadeInOutSpeed_ = 0.5f;
-    Rect area_ = {0.0f, 0.0f, 0.0f, 0.0f};
+    void lateUpdate() override;
+
+private:
+    static const int MUSIC_CHANNELS = 4;
+
+    static MusicManager* instance_;
+
+    AudioSource* currentAudioSource_ = nullptr;
+    std::vector<AudioSource*> audioSources_ = std::vector<AudioSource*>(MUSIC_CHANNELS);
 };
 
-#endif //SPACEGAME_BACKGROUNDBEHAVIOUR_H
+
+#endif //PLANETA18_MUSICMANAGER_H
