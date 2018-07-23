@@ -41,7 +41,7 @@ void SceneTitleScreen::init() {
 
     // music
     auto mainThemeMusic = Tile2D::resources().audioClips["main_theme"];
-    MusicManager::getInstance()->play(mainThemeMusic, true, false);
+    MusicManager::getInstance()->play(mainThemeMusic);
 
     // background and moving camera
 
