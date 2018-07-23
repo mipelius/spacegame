@@ -34,6 +34,7 @@ AudioManager *AudioManager::getInstance() {
     if (instance_ == nullptr) {
         auto gameObject = Tile2D::createGameObject();
         instance_ = gameObject->attachComponent<AudioManager>();
+        instance_->gameObject()->setDestroyOnLoad(false);
 
         for (auto i = 0u; i < MAX_CHANNELS; ++i) {
             auto audioSource = gameObject->attachComponent<AudioSource>();
