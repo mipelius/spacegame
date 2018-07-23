@@ -31,6 +31,7 @@
 #include "UIPrefabs.h"
 #include "Resources.h"
 #include "UIAutoPositioner.h"
+#include "AudioManager.h"
 
 GameObject* UIPrefabs::button(
         const Vecf& position,
@@ -103,6 +104,8 @@ GameObject* UIPrefabs::button(
     });
     buttonBehaviour->pressed.add([] (Button* button, Button::ButtonEventArgs args) {
         setPressedButton(button);
+        auto uiClickAudio = Tile2D::resources().audioClips["ui_click"];
+        AudioManager::getInstance()->play(uiClickAudio);
     });
     buttonBehaviour->released.add([] (Button* button, Button::ButtonEventArgs args) {
         setNormalButton(button);
