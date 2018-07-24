@@ -24,6 +24,7 @@
 #ifndef SPACEGAME_EVENTHANDLERS_H
 #define SPACEGAME_EVENTHANDLERS_H
 
+#include "SerializingUtils.h"
 #include "Text.h"
 #include "Window.h"
 #include "Cannon.h"
@@ -251,9 +252,11 @@ class EnemyDeathHandler :
 {
 private:
     Prefab* bloodBurstPrefab_;
+    std::vector<AudioClip*> audioClips_;
 
 public:
     void handle(Health* health, GameObjectDiedEventArgs args) const override {
+        AudioManager::getInstance()->play(audioClips_, health->transform()->getPosition());
         health->gameObject()->destroy();
         auto bloodBurst = bloodBurstPrefab_->instantiate();
         bloodBurst->transform().setPosition(health->transform()->getPosition());
@@ -263,6 +266,9 @@ public:
         if (jsonObject.HasKey("bloodBurstPrefab")) {
             auto explosionPrefabName = jsonObject["bloodBurstPrefab"].ToString();
             bloodBurstPrefab_ = Tile2D::resources().prefabs[explosionPrefabName];
+        }
+        if (jsonObject.HasKey("audioClips")) {
+            audioClips_ = utils::deserializeAudioClips(jsonObject["audioClips"].ToArray());
         }
     }
 
@@ -277,9 +283,12 @@ class PlayerDeathHandler :
 {
 private:
     Prefab* explosionPrefab_;
+    std::vector<AudioClip*> audioClips_;
 
 public:
     void handle(Health* health, GameObjectDiedEventArgs args) const override {
+        AudioManager::getInstance()->play(audioClips_);
+
         health->gameObject()->setIsActive(false);
         health->gameObject()->getComponent<AudioSource>()->stop();
 
@@ -298,6 +307,9 @@ public:
         if (jsonObject.HasKey("explosionPrefab")) {
             auto explosionPrefabName = jsonObject["explosionPrefab"].ToString();
             explosionPrefab_ = Tile2D::resources().prefabs[explosionPrefabName];
+        }
+        if (jsonObject.HasKey("audioClips")) {
+            audioClips_ = utils::deserializeAudioClips(jsonObject["audioClips"].ToArray());
         }
     }
 

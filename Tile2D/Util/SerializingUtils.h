@@ -21,46 +21,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SPACEGAME_AUDIOMANAGER_H
-#define SPACEGAME_AUDIOMANAGER_H
 
-#include "Tile2DComponent.h"
+#ifndef SPACEGAME_SERIALIZINGUTILS_H
+#define SPACEGAME_SERIALIZINGUTILS_H
+
 #include <vector>
-#include "Vec.h"
+#include "Tile2D.h"
+#include "Resources.h"
+#include "json.h"
+#include "AudioClip.h"
 
-class AudioSource;
-class AudioClip;
+namespace utils {
+    inline std::vector<AudioClip*> deserializeAudioClips(const json::Array &audioClipsJson) {
+        std::vector<AudioClip*> audioClips;
 
-class AudioManager : public Tile2DComponent {
-public:
-    static AudioManager* getInstance();
-    void play(AudioClip *clip, int volume = 128);
-    void play(AudioClip *clip, const Vecf& position);
-    void play(const std::vector<AudioClip*>& audioClips, int volume = 128);
-    void play(const std::vector<AudioClip*>& audioClips, const Vecf& position);
+        for (const json::Value& audioClipJson : audioClipsJson) {
+            auto audioClipName = audioClipJson.ToString();
+            auto audioClip = Tile2D::resources().audioClips[audioClipName];
+            audioClips.push_back(audioClip);
+        }
 
+        return audioClips;
+    }
+}
 
-protected:
-    void init() override;
-    void onDestroy() override;
-    Tile2DComponent *clone() override;
-
-private:
-    struct AudioContainer {
-        AudioSource*    source;
-        Uint32          timeStamp;
-    };
-
-    static AudioManager* instance_;
-
-    static const int MIN_VOLUME_DIFF_BETWEEN_PLAYING_SAME_CLIP = 64;
-    static const int MIN_DELAY_BETWEEN_PLAYING_SAME_CLIP = 48;
-    static const int MAX_CHANNELS = 20;
-    static constexpr float MAX_DISTANCE = 1500.0f;
-
-    int currentSourceIndex_ = 0;
-    std::vector<AudioContainer> audioContainers_ = std::vector<AudioContainer>(MAX_CHANNELS);
-};
-
-
-#endif //SPACEGAME_AUDIOMANAGER_H
+#endif //SPACEGAME_SERIALIZINGUTILS_H

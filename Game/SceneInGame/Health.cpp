@@ -23,6 +23,7 @@
 
 
 
+#include "SerializingUtils.h"
 #include "AudioManager.h"
 #include "Tile2D.h"
 #include "t2Time.h"
@@ -63,7 +64,7 @@ void Health::damage(float amount, GameObject* damager) {
     }
     else {
         if (rand() < audioPlayingProbability_ * RAND_MAX) {
-            AudioManager::getInstance()->play(audioClips_);
+            AudioManager::getInstance()->play(audioClips_, transform()->getPosition());
         }
     }
 
@@ -112,15 +113,7 @@ void Health::deserialize(const json::Object &jsonObject) {
         audioPlayingProbability_ = jsonObject["audioPlayingProbability"].ToFloat();
     }
     if (jsonObject.HasKey("audioClips")) {
-        audioClips_.clear();
-
-        auto audioClipsJson = jsonObject["audioClips"].ToArray();
-
-        for (const json::Value& audioClipJson : audioClipsJson) {
-            auto audioClipName = audioClipJson.ToString();
-            auto audioClip = Tile2D::resources().audioClips[audioClipName];
-            audioClips_.push_back(audioClip);
-        }
+        audioClips_ = utils::deserializeAudioClips(jsonObject["audioClips"].ToArray());
     }
 
     reset();
