@@ -58,9 +58,6 @@ public:
     float getAudioPlayingProbability() const;
     void setAudioPlayingProbability(float audioPlayingProbability);
 
-    AudioClip *getAudioClip() const;
-    void setAudioClip(AudioClip *audioClip);
-
     Event<Health, GameObjectDiedEventArgs> onDeath;
 
     void deserialize(const json::Object &jsonObject) override;
@@ -79,7 +76,7 @@ private:
     float autoHealingRate_ = 0;
 
     float audioPlayingProbability_ = 1.0f;
-    AudioClip* audioClip_ = nullptr;
+    std::vector<AudioClip*> audioClips_;
 
     void clampHealth_();
 

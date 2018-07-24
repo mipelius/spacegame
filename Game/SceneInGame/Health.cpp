@@ -63,7 +63,7 @@ void Health::damage(float amount, GameObject* damager) {
     }
     else {
         if (rand() < audioPlayingProbability_ * RAND_MAX) {
-            AudioManager::getInstance()->play(audioClip_);
+            AudioManager::getInstance()->play(audioClips_);
         }
     }
 
@@ -111,9 +111,16 @@ void Health::deserialize(const json::Object &jsonObject) {
     if (jsonObject.HasKey("audioPlayingProbability")) {
         audioPlayingProbability_ = jsonObject["audioPlayingProbability"].ToFloat();
     }
-    if (jsonObject.HasKey("audioClip")) {
-        auto audioClipName = jsonObject["audioClip"].ToString();
-        audioClip_ = Tile2D::resources().audioClips[audioClipName];
+    if (jsonObject.HasKey("audioClips")) {
+        audioClips_.clear();
+
+        auto audioClipsJson = jsonObject["audioClips"].ToArray();
+
+        for (const json::Value& audioClipJson : audioClipsJson) {
+            auto audioClipName = audioClipJson.ToString();
+            auto audioClip = Tile2D::resources().audioClips[audioClipName];
+            audioClips_.push_back(audioClip);
+        }
     }
 
     reset();
@@ -129,12 +136,4 @@ float Health::getAudioPlayingProbability() const {
 
 void Health::setAudioPlayingProbability(float audioPlayingProbability) {
     audioPlayingProbability_ = audioPlayingProbability;
-}
-
-AudioClip *Health::getAudioClip() const {
-    return audioClip_;
-}
-
-void Health::setAudioClip(AudioClip *audioClip) {
-    audioClip_ = audioClip;
 }
