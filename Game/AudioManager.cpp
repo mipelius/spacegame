@@ -91,3 +91,19 @@ void AudioManager::play(AudioClip *clip, const Vecf& position) {
 
     play(clip, volume);
 }
+
+void AudioManager::play(const std::vector<AudioClip *>& audioClips, int volume) {
+    if (audioClips.empty()) {
+        return;
+    }
+    auto audioClip = audioClips[rand() % audioClips.size()];
+    play(audioClip, volume);
+}
+
+void AudioManager::play(const std::vector<AudioClip *>& audioClips, const Vecf &position) {
+    if (audioClips.empty()) {
+        return;
+    }
+    auto audioClip = audioClips[rand() % audioClips.size()];
+    play(audioClip, position);
+}

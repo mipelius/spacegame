@@ -36,6 +36,9 @@ public:
     static AudioManager* getInstance();
     void play(AudioClip *clip, int volume = 128);
     void play(AudioClip *clip, const Vecf& position);
+    void play(const std::vector<AudioClip*>& audioClips, int volume = 128);
+    void play(const std::vector<AudioClip*>& audioClips, const Vecf& position);
+
 
 protected:
     void init() override;
