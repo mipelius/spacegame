@@ -76,3 +76,7 @@ void SceneManager::update_() {
     sceneToLoad_ = -1;
     scenes_[tmp]->init();
 }
+
+unsigned int SceneManager::getCount() {
+    return scenes_.size();
+}

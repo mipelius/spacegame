@@ -54,6 +54,8 @@ private:
     std::string tileSetPath_;
 
     Prefab* playerPrefab_;
+    Prefab* bossPrefab_;
+
     std::vector<Prefab*> spawnerPrefabs_;
     std::vector<PrefabSetup> otherPrefabs_;
 };

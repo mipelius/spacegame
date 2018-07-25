@@ -56,6 +56,7 @@ void AudioSource::init() {
 }
 
 void AudioSource::onDestroy() {
+    stop();
     Tile2D::mixer().freeChannel_(SDL_mixer_channel_);
 }
 

@@ -83,7 +83,10 @@ void MusicManager::update() {
     for (auto audioSource : audioSources_) {
         auto volume = audioSource->getVolume();
 
-        if (audioSource == currentAudioSource_) {
+        if (!turnedOn_) {
+            volume--;
+        }
+        else if (audioSource == currentAudioSource_) {
             volume++;
         }
         else {
@@ -104,4 +107,12 @@ void MusicManager::update() {
 
 void MusicManager::lateUpdate() {
 
+}
+
+void MusicManager::turnOff() {
+    turnedOn_ = false;
+}
+
+void MusicManager::turnOn() {
+    turnedOn_ = true;
 }

@@ -40,6 +40,7 @@ void SceneTitleScreen::init() {
     // Tile2D::sceneManager().loadScene(Scenes::quickTesting);
 
     // music
+    MusicManager::getInstance()->turnOn();
     auto mainThemeMusic = Tile2D::resources().audioClips["main_theme"];
     MusicManager::getInstance()->play(mainThemeMusic);
 

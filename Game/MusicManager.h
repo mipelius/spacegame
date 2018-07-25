@@ -34,6 +34,8 @@ class MusicManager : public Tile2DBehaviour {
 public:
     static MusicManager* getInstance();
     void play(AudioClip *clip, bool loopEnabled = true, bool crossFade = true);
+    void turnOff();
+    void turnOn();
 
 private:
     void awake() override;
@@ -49,6 +51,8 @@ private:
 
     AudioSource* currentAudioSource_ = nullptr;
     std::vector<AudioSource*> audioSources_ = std::vector<AudioSource*>(MUSIC_CHANNELS);
+
+    bool turnedOn_ = true;
 };
 
 

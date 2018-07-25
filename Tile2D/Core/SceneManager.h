@@ -33,6 +33,7 @@ class SceneManager {
 
 public:
     void loadScene(unsigned scene);
+    unsigned int getCount();
 
 private:
     SceneManager();

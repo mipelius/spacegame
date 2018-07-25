@@ -22,6 +22,7 @@
 // SOFTWARE.
 
 
+#include <Game/MusicManager.h>
 #include "JsonFileManager.h"
 #include "ItemTags.h"
 #include "DrawableMap.h"
@@ -38,8 +39,11 @@
 #include "DebugBehaviour.h"
 #include "HUD.h"
 #include "Tile2D.h"
+#include "SceneManager.h"
 
 void SceneInGame::init() {
+    MusicManager::getInstance()->turnOn();
+
     // Scene setup: tile map, physics, light system
     Tile2D::tileMap().load(mapPath_, tileSetPath_);
     Tile2D::lightSystem().setAmbientLight(0.0f);
@@ -51,6 +55,18 @@ void SceneInGame::init() {
     auto player = playerPrefab_->instantiate();
     player->attachComponent<DebugBehaviour>();
     player->transform().setPosition({500.0f, 250.0f});
+    player->getComponent<Inventory>()->getItem(4)->setIsActivated(true);
+
+    // boss
+    auto boss = bossPrefab_->instantiate();
+    boss->getComponent<EnemyAIBase>()->setTarget(&player->transform());
+    boss->transform().setPosition({3264.0f, 12984.0f});
+    boss->getComponent<Health>()->onDeath.add([] (Health* owner, GameObjectDiedEventArgs) {
+        MusicManager::getInstance()->turnOff();
+        Tile2D::executeDelayedFunction(owner->gameObject(), 2000, [] (GameObject* owner) {
+            Tile2D::sceneManager().loadScene(Tile2D::sceneManager().getCount() - 1);
+        });
+    });
 
     // hud
     auto hudObject = Tile2D::createGameObject();
@@ -89,6 +105,7 @@ void SceneInGame::deserialize(const json::Object &jsonObject) {
     tileSetPath_ = tileMapJson["tileset"].ToString();
 
     playerPrefab_ = Tile2D::resources().prefabs[jsonObject["player"].ToString()];
+    bossPrefab_ = Tile2D::resources().prefabs[jsonObject["boss"].ToString()];
 
     for (const json::Value& spawnerJson : jsonObject["spawners"].ToArray()) {
         auto spawnerPrefab = Tile2D::resources().prefabs[spawnerJson.ToString()];

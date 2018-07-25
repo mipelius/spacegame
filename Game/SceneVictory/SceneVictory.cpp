@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
+#include "MusicManager.h"
 #include "Background.h"
 #include "MovingCameraBehaviour.h"
 #include "UIPrefabs.h"
@@ -33,17 +33,19 @@
 #include "Resources.h"
 
 void SceneVictory::init() {
+    MusicManager::getInstance()->turnOn();
+    MusicManager::getInstance()->play(Tile2D::resources().audioClips["victory"], false, false);
+
     auto windowSize = Tile2D::window().getSize();
-    Vecf center = { (float)windowSize.x, (float)windowSize.y };
 
     auto youWonText = UIPrefabs::text(
-            center + Vecf(0.0f, -300.0f),
+            Vecf(0.0f, -300.0f),
             "You won!",
             10.0f
     );
 
     auto buttonMainMenu = UIPrefabs::button(
-            center + Vecf(0.0f, -50.0f),
+            Vecf(0.0f, -50.0f),
             "Back to main menu",
             700.0f,
             [] (Button* button, Button::ButtonEventArgs args){
