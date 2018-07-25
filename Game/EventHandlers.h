@@ -148,7 +148,7 @@ public:
         if (&otherGameObject->getTag() == targetTag_) {
             auto health = otherGameObject->getComponent<Health>();
             if (health == nullptr) {
-                throw std::runtime_error("CollisionDamageHandlerBase: target has no health component!");
+                return;
             }
             damage(health, owner, args);
         }
