@@ -90,18 +90,17 @@ class CollisionAudioHandler :
         public ISerializable
 {
 private:
-    AudioClip* audioClip_;
+    std::vector<AudioClip*> audioClips_;
 
 public:
     void deserialize(const json::Object &jsonObject) override {
-        if (jsonObject.HasKey("audioClip")) {
-            auto audioClipName = jsonObject["audioClip"].ToString();
-            audioClip_ = Tile2D::resources().audioClips[audioClipName];
+        if (jsonObject.HasKey("audioClips")) {
+            audioClips_ = utils::deserializeAudioClips(jsonObject["audioClips"].ToArray());
         }
     }
 
     void handle(PolygonCollider *owner, CollisionEventArgs args) const override {
-        AudioManager::getInstance()->play(audioClip_, owner->transform()->getPosition());
+        AudioManager::getInstance()->play(audioClips_, owner->transform()->getPosition());
     }
 
     IEventHandler<PolygonCollider, CollisionEventArgs> *clone() override {
@@ -114,18 +113,17 @@ class TerrainCollisionAudioHandler :
         public ISerializable
 {
 private:
-    AudioClip* audioClip_;
+    std::vector<AudioClip*> audioClips_;
 
 public:
     void deserialize(const json::Object &jsonObject) override {
-        if (jsonObject.HasKey("audioClip")) {
-            auto audioClipName = jsonObject["audioClip"].ToString();
-            audioClip_ = Tile2D::resources().audioClips[audioClipName];
+        if (jsonObject.HasKey("audioClips")) {
+            audioClips_ = utils::deserializeAudioClips(jsonObject["audioClips"].ToArray());
         }
     }
 
     void handle(PolygonCollider *owner, TerrainCollisionEventArgs args) const override {
-        AudioManager::getInstance()->play(audioClip_, owner->transform()->getPosition());
+        AudioManager::getInstance()->play(audioClips_, owner->transform()->getPosition());
     }
 
     IEventHandler<PolygonCollider, TerrainCollisionEventArgs> *clone() override {
