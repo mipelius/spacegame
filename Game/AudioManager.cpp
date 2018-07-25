@@ -58,25 +58,39 @@ Tile2DComponent *AudioManager::clone() {
 void AudioManager::play(AudioClip *clip, int volume) {
     auto timeStamp = SDL_GetTicks();
 
+    auto sameClipPlayingCount = 0;
+    auto currentAudioContainer = &audioContainers_[currentSourceIndex_];
+
     for (auto& audioContainer : audioContainers_) {
-        if (
-                audioContainer.source->getClip() == clip &&
-                abs(audioContainer.source->getVolume() - volume) < MIN_VOLUME_DIFF_BETWEEN_PLAYING_SAME_CLIP &&
-                timeStamp - audioContainer.timeStamp < MIN_DELAY_BETWEEN_PLAYING_SAME_CLIP
-        ) {
-            return;
+        if (audioContainer.source->getClip() == clip) {
+            if (
+                    abs(audioContainer.source->getVolume() - volume) < MIN_VOLUME_DIFF_BETWEEN_PLAYING_SAME_CLIP &&
+                    timeStamp - audioContainer.timeStamp < MIN_DELAY_BETWEEN_PLAYING_SAME_CLIP
+            ) {
+                return;
+            }
+
+            if (sameClipPlayingCount == 0) {
+                currentAudioContainer = &audioContainer;
+            }
+            else if (currentAudioContainer->timeStamp > audioContainer.timeStamp) {
+                currentAudioContainer = &audioContainer;
+            }
+
+            sameClipPlayingCount++;
         }
     }
 
-    auto& audioContainer = audioContainers_[currentSourceIndex_];
-    ++currentSourceIndex_;
-    currentSourceIndex_ %= audioContainers_.size();
+    if (sameClipPlayingCount <= MAX_COUNT_PLAYING_SAME_CLIP) {
+        currentAudioContainer = &audioContainers_[currentSourceIndex_];
+        ++currentSourceIndex_;
+        currentSourceIndex_ %= audioContainers_.size();
+    }
 
-    audioContainer.timeStamp = timeStamp;
-
-    audioContainer.source->setClip(clip);
-    audioContainer.source->setVolume(volume);
-    audioContainer.source->play();
+    currentAudioContainer->timeStamp = timeStamp;
+    currentAudioContainer->source->setClip(clip);
+    currentAudioContainer->source->setVolume(volume);
+    currentAudioContainer->source->play();
 }
 
 void AudioManager::play(AudioClip *clip, const Vecf& position) {

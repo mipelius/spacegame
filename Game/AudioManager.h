@@ -56,6 +56,7 @@ private:
     static const int MIN_VOLUME_DIFF_BETWEEN_PLAYING_SAME_CLIP = 64;
     static const int MIN_DELAY_BETWEEN_PLAYING_SAME_CLIP = 48;
     static const int MAX_CHANNELS = 20;
+    static const int MAX_COUNT_PLAYING_SAME_CLIP = 3;
     static constexpr float MAX_DISTANCE = 1500.0f;
 
     int currentSourceIndex_ = 0;
