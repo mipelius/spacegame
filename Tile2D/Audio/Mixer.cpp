@@ -35,7 +35,7 @@ void Mixer::init() {
 
     Mix_AllocateChannels(MIXING_CHANNELS);
 
-    channelReservations_.empty();
+    channelReservations_.clear();
     channelReservations_.reserve((unsigned long)MIXING_CHANNELS);
 
     for (auto i = 0u; i<MIXING_CHANNELS; ++i) {

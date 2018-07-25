@@ -48,8 +48,6 @@ bool AudioSource::isPlaying() {
 }
 
 void AudioSource::init() {
-    SDL_mixer_channel_ = Tile2D::mixer().reserveChannel_();
-
     Mix_Volume(SDL_mixer_channel_, volume_);
 
     if (playOnAwake_) {
@@ -114,4 +112,8 @@ void AudioSource::setVolume(int volume) {
     if (SDL_mixer_channel_ != -1) {
         Mix_Volume(SDL_mixer_channel_, volume_);
     }
+}
+
+AudioSource::AudioSource() {
+    SDL_mixer_channel_ = Tile2D::mixer().reserveChannel_();
 }

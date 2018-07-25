@@ -45,6 +45,8 @@ protected:
     Tile2DComponent *clone() override;
 
 public:
+    AudioSource();
+
     void play();
     void stop();
     void pause();
@@ -63,8 +65,6 @@ public:
 
     int getVolume() const;
     void setVolume(int volume);
-
-private:
 
 };
 
