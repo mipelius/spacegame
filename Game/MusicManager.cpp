@@ -52,6 +52,7 @@ void MusicManager::play(AudioClip *clip, bool loopEnabled, bool crossFade) {
     for (auto audioSource : audioSources_) {
         if (audioSource->isPlaying() && audioSource->getClip() == clip) {
             currentAudioSource_ = audioSource;
+            currentAudioSource_->setLoopEnabled(loopEnabled);
             return;
         }
     }
@@ -73,6 +74,8 @@ void MusicManager::play(AudioClip *clip, bool loopEnabled, bool crossFade) {
     else {
         currentAudioSource_->setVolume(128);
     }
+
+    currentAudioSource_->play();
 }
 
 void MusicManager::awake() {
@@ -98,9 +101,6 @@ void MusicManager::update() {
 
         if (volume <= 0) {
             audioSource->stop();
-        }
-        else if (!audioSource->isPlaying()) {
-            audioSource->play();
         }
     }
 }
