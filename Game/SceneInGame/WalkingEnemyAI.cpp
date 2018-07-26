@@ -71,7 +71,7 @@ void WalkingEnemyAI::setGroundCheckSensors(const std::vector<Vecf> &groundCheckS
 }
 
 void WalkingEnemyAI::updateDirection_() {
-    xDirection_ = (target_->getPosition().x - transform()->getPosition().x);
+    xDirection_ = (target_->transform().getPosition().x - transform()->getPosition().x);
     xDirection_ = xDirection_ / abs(xDirection_);
 
     Vecf scale = transform()->getScale();

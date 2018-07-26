@@ -88,7 +88,7 @@ void EnemySpawner::lateUpdate() {
         );
     }
 
-    enemyAI->setTarget(&player_->transform());
+    enemyAI->setTarget(player_);
 }
 
 const Rect &EnemySpawner::getOuterRect() const {

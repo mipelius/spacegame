@@ -53,7 +53,7 @@ void DebugBehaviour::update() {
         auto gameObject = Tile2D::resources().prefabs[prefabName]->instantiate();
         gameObject->transform().setPosition(player->transform().getPosition());
         auto AI = gameObject->getComponent<EnemyAIBase>();
-        AI->setTarget(&player->transform());
+        AI->setTarget(player);
     };
 
     struct DebugEnemyCreationSetting {

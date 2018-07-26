@@ -33,11 +33,11 @@ void EnemyAIBase::awake() {
     body_ = gameObject()->getComponent<Body>();
 }
 
-Transform *EnemyAIBase::getTarget() const {
+GameObject *EnemyAIBase::getTarget() const {
     return target_;
 }
 
-void EnemyAIBase::setTarget(Transform *target) {
+void EnemyAIBase::setTarget(GameObject *target) {
     target_ = target;
 }
 
@@ -64,7 +64,7 @@ void EnemyAIBase::shootTarget_() {
 }
 
 void EnemyAIBase::update() {
-    float distanceSqr = (target_->getPosition() - transform()->getPosition()).lengthSqr();
+    float distanceSqr = (target_->transform().getPosition() - transform()->getPosition()).lengthSqr();
 
     if (distanceSqr > (maxDistance_ * maxDistance_)) {
         gameObject()->destroy();
@@ -83,7 +83,7 @@ bool EnemyAIBase::canSeeTarget_() {
     Vecf collisionPoint;
     return !Tile2D::tileMap().castLine(
             transform()->getPosition(),
-            target_->getPosition(),
+            target_->transform().getPosition(),
             collisionPoint
     );
 }

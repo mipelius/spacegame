@@ -21,15 +21,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "AudioManager.h"
 #include "Health.h"
 #include "Medikit.h"
 #include "GameObject.h"
+#include "Prefab.h"
+#include "Resources.h"
+#include "Body.h"
+#include "t2Time.h"
 
 bool Medikit::useActual(GameObject *user) {
     auto health = user->getComponent<Health>();
     if (health == nullptr) {
         return false;
     }
+    auto power = user->getComponent<Power>();
+    power->consume(power->getPower());
+
+    auto hearts = Tile2D::resources().prefabs["fx_hearts"]->instantiate();
+
+    AudioManager::getInstance()->play(Tile2D::resources().audioClips["healing"]);
+
+    auto position =
+            user->transform().getPosition() +
+            user->getComponent<Body>()->getVelocity() * Tile2D::time().getDeltaTime();
+
+    hearts->transform().setPosition(position);
+    hearts->getComponent<Body>()->setVelocity(user->getComponent<Body>()->getVelocity());
+
+
     health->heal(healingAmount_);
     return true;
 }

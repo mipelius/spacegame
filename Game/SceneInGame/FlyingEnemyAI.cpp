@@ -41,7 +41,7 @@ void FlyingEnemyAI::update() {
     EnemyAIBase::update();
     shootTarget_();
 
-    Vecf targetDirection = target_->getPosition() - transform()->getPosition();
+    Vecf targetDirection = target_->transform().getPosition() - transform()->getPosition();
     float distanceToTarget = targetDirection.length();
 
     bool canSeeTarget = canSeeTarget_();
@@ -58,18 +58,18 @@ void FlyingEnemyAI::update() {
 
     if (canSeeTarget) {
         pathToTarget_.clear();
-        pathToTarget_.push_back(target_->getPosition());
+        pathToTarget_.push_back(target_->transform().getPosition());
     }
     else if (pathUpdateTimer_.resetIfTimeIntervalPassed()) {
         PathValidator validator(
                 collider_->boundingBox(),
                 transform()->getPosition(),
-                target_->getPosition()
+                target_->transform().getPosition()
         );
 
         std::list<Vecf> pathToTarget = Tile2D::pathFinder().constructPath(
                 transform()->getPosition(),
-                target_->getPosition(),
+                target_->transform().getPosition(),
                 maxNodesPathFinderExplores_,
                 &validator
         );

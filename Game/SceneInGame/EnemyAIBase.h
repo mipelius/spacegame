@@ -39,8 +39,8 @@ public:
 
     void deserialize(const json::Object &jsonObject) override;
 
-    void setTarget(Transform *target);
-    Transform *getTarget() const;
+    void setTarget(GameObject *target);
+    GameObject *getTarget() const;
 
     float getMaxDistance() const;
     void setMaxDistance(float maxDistance);
@@ -50,7 +50,7 @@ public:
 
 protected:
     Body* body_;
-    Transform* target_ = nullptr;
+    GameObject* target_ = nullptr;
 
     void shootTarget_();
 

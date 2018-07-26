@@ -59,7 +59,7 @@ void SceneInGame::init() {
 
     // boss
     auto boss = bossPrefab_->instantiate();
-    boss->getComponent<EnemyAIBase>()->setTarget(&player->transform());
+    boss->getComponent<EnemyAIBase>()->setTarget(player);
     boss->transform().setPosition({3264.0f, 12984.0f});
     boss->getComponent<Health>()->onDeath.add([] (Health* owner, GameObjectDiedEventArgs) {
         MusicManager::getInstance()->turnOff();
