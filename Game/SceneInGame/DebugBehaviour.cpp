@@ -80,6 +80,7 @@ void DebugBehaviour::update() {
 
     if (keyboard.keyPressed(SDL_SCANCODE_U)) {
         Tile2D::resources().prefabs.reload();
+        Tile2D::resources().audioClips.reload();
     }
 
     if (keyboard.keyPressed(SDL_SCANCODE_RETURN)) {
@@ -97,8 +98,8 @@ void DebugBehaviour::update() {
         moveToNextCheckpoint_();
     }
     if (keyboard.keyPressed(SDL_SCANCODE_R)) {
-        Tile2D::tileMap().load("data/maps/map.bmp", "data/maps/tileset.json");
-        checkpointsUpdate_();
+        //Tile2D::tileMap().load("data/maps/map.bmp", "data/maps/tileset.json");
+        //checkpointsUpdate_();
     }
     if (keyboard.keyPressed(SDL_SCANCODE_A)) {
         Tile2D::lightSystem().setEnabled(!Tile2D::lightSystem().isEnabled());

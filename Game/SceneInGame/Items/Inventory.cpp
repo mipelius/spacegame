@@ -115,6 +115,12 @@ void Inventory::lateUpdate() {
             useSelectedItem_();
         }
     }
+    if (Tile2D::input().keyboard().keyPressed(SDL_SCANCODE_R)) {
+        auto itemInfo = itemInfos_[4];
+        auto item = itemInfo.item;
+
+        item->use(gameObject());
+    }
 }
 
 void Inventory::setItemTexture(int tag, Texture *inventoryTexturePtr) {
