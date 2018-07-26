@@ -41,6 +41,8 @@ public:
 
     void deserialize(const json::Object &jsonObject) override;
 
+    void inactivateOnNextUpdate();
+
 protected:
     void awake() override;
     void update() override;
@@ -54,6 +56,8 @@ private:
 
     float moveForce_    = 0.0f;
     bool rocketEngineOn_       = false;
+
+    bool inactivateOnNextUpdate_ = false;
 
 };
 

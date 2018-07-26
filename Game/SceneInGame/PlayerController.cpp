@@ -44,6 +44,12 @@ void PlayerController::awake() {
 }
 
 void PlayerController::update() {
+    if (inactivateOnNextUpdate_) {
+        gameObject()->setIsActive(false);
+        inactivateOnNextUpdate_ = false;
+        return;
+    }
+
     auto& keyboard = Tile2D::input().keyboard();
 
     float angularVelocity = 0;
@@ -156,4 +162,8 @@ void PlayerController::deserialize(const json::Object &jsonObject) {
     if (jsonObject.HasKey("moveForce")) {
         moveForce_ = jsonObject["moveForce"].ToFloat();
     }
+}
+
+void PlayerController::inactivateOnNextUpdate() {
+    inactivateOnNextUpdate_ = true;
 }

@@ -287,7 +287,7 @@ public:
     void handle(Health* health, GameObjectDiedEventArgs args) const override {
         AudioManager::getInstance()->play(audioClips_);
 
-        health->gameObject()->setIsActive(false);
+        health->gameObject()->getComponent<PlayerController>()->inactivateOnNextUpdate();
         health->gameObject()->getComponent<AudioSource>()->stop();
 
         auto explosion = explosionPrefab_->instantiate();
