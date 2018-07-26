@@ -36,10 +36,8 @@
 #include "Camera.h"
 
 void SceneTitleScreen::init() {
-    // uncomment next line to load quick testing scene
-    // Tile2D::sceneManager().loadScene(Scenes::quickTesting);
-
     // music
+
     MusicManager::getInstance()->turnOn();
     auto mainThemeMusic = Tile2D::resources().audioClips["main_theme"];
     MusicManager::getInstance()->play(mainThemeMusic);
