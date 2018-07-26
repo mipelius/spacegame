@@ -63,10 +63,12 @@ protected:
 
     WeaponBase* weapon_ = nullptr;
 
-    int randomShootingDelay = 0;
-    static const int MAX_RANDOM_SHOOTING_DELAY = 100;
+    Timer shootingPauseTimer_;
+    int shots_ = 0;
+    int shotsAtOnce_ = -1;
+    int shootingPauseInterval_ = 0;
 
-    Timer shootingRandomizerTimer;
+    enum State { WAIT, SHOOT } state = SHOOT;
 };
 
 template<class T>

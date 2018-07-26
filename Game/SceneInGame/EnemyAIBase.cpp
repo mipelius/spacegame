@@ -31,8 +31,6 @@
 
 void EnemyAIBase::awake() {
     body_ = gameObject()->getComponent<Body>();
-
-    shootingRandomizerTimer.reset();
 }
 
 Transform *EnemyAIBase::getTarget() const {
@@ -44,15 +42,24 @@ void EnemyAIBase::setTarget(Transform *target) {
 }
 
 void EnemyAIBase::shootTarget_() {
-    if (shootingRandomizerTimer.getTime() < randomShootingDelay) {
-        return;
-    }
-
-    shootingRandomizerTimer.reset();
-    randomShootingDelay = rand() % MAX_RANDOM_SHOOTING_DELAY;
-
-    if (weapon_ != nullptr && canSeeTarget_()) {
-        weapon_->use(gameObject());
+    switch (state) {
+        case WAIT:
+            if (shootingPauseTimer_.getTime() > shootingPauseInterval_) {
+                state = SHOOT;
+            }
+            break;
+        case SHOOT:
+            if (weapon_ != nullptr && canSeeTarget_()) {
+                if (weapon_->use(gameObject())) {
+                    ++shots_;
+                }
+            }
+            if (shots_ > shotsAtOnce_ && shotsAtOnce_ != -1) {
+                shots_ = 0;
+                state = WAIT;
+                shootingPauseTimer_.reset();
+            }
+            break;
     }
 }
 
@@ -94,6 +101,12 @@ void EnemyAIBase::deserialize(const json::Object &jsonObject) {
         weapon->deserialize(propertiesJson);
 
         weapon_ = (WeaponBase*)weapon;
+    }
+    if (jsonObject.HasKey("shotsAtOnce")) {
+        shotsAtOnce_ = jsonObject["shotsAtOnce"].ToInt();
+    }
+    if (jsonObject.HasKey("shootingPauseInterval")) {
+        shootingPauseInterval_ = jsonObject["shootingPauseInterval"].ToInt();
     }
 }
 
