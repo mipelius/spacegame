@@ -40,6 +40,7 @@
 #include "HUD.h"
 #include "Tile2D.h"
 #include "SceneManager.h"
+#include "TeleportBehaviour.h"
 
 void SceneInGame::init() {
     MusicManager::getInstance()->turnOn();
@@ -53,8 +54,8 @@ void SceneInGame::init() {
 
     // player
     auto player = playerPrefab_->instantiate();
-    player->attachComponent<DebugBehaviour>();
-    player->transform().setPosition({500.0f, 250.0f});
+    //player->attachComponent<DebugBehaviour>();
+    player->transform().setPosition({500.0f, 3600.0f});
     player->getComponent<Inventory>()->getItem(4)->setIsActivated(true);
 
     // boss
@@ -91,6 +92,21 @@ void SceneInGame::init() {
     camera_ = new Camera;
     camera_->setAreaRect({0, 0, (float)windowSize.x, (float)windowSize.y});
     Tile2D::canvas().setCamera(camera_);
+
+    // teleports
+    auto teleport1 = createTeleport(
+            player,
+            {300.0f, 3600.0f}
+    );
+    teleport1->setIsActive(false);
+
+    auto teleport2 = createTeleport(
+            player,
+            {5960.0f, 8912.0f}
+    );
+
+    teleport1->getComponent<TeleportBehaviour>()->setDestinationTeleport(teleport2);
+    teleport2->getComponent<TeleportBehaviour>()->setDestinationTeleport(teleport1);
 }
 
 void SceneInGame::destroy() {
@@ -138,3 +154,27 @@ void SceneInGame::deserialize(const json::Object &jsonObject) {
     }
 }
 
+GameObject* SceneInGame::createTeleport(GameObject *player, const Vecf& position) {
+    Rect spriteRect = {-250.0f, -250.0f, 250.0f, 250.0f};
+    Rect teleportRect = {-100.0f, -100.0f, 100.0f, 100.0f};
+
+    auto teleport = Tile2D::createGameObject();
+    teleport->transform().setPosition(position);
+
+    auto teleportSprite = teleport->attachComponent<Sprite>();
+    teleportSprite->setRect(spriteRect);
+    teleportSprite->setTexturePtr(Tile2D::resources().textures["teleport"]);
+
+    auto teleportLight = teleport->attachComponent<PointLight>();
+    teleportLight->setIntensity(1.0f);
+    teleportLight->setRadius(300.0f);
+
+    auto teleportBehaviour = teleport->attachComponent<TeleportBehaviour>();
+    teleportBehaviour->setPlayer(player);
+    teleportBehaviour->setRect(teleportRect);
+
+//    auto teleportParticleSystem = teleport->attachComponent<ParticleSystem>();
+//    teleportParticleSystem
+
+    return teleport;
+}

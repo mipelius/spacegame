@@ -294,7 +294,7 @@ public:
         explosion->transform().setPosition(health->transform()->getPosition());
 
         Tile2D::executeDelayedFunction(health->gameObject(), 2000, [] (GameObject* gameObject) {
-            gameObject->transform().setPosition({500.0f, 250.0f});
+            gameObject->transform().setPosition({500.0f, 3600.0f});
             gameObject->getComponent<Body>()->setVelocity({0.0f, 0.0f});
             gameObject->setIsActive(true);
             gameObject->getComponent<Health>()->reset();

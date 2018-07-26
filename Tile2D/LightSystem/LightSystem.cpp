@@ -29,6 +29,7 @@
 #include "Window.h"
 #include "TileMap.h"
 #include "TileSet.h"
+#include "GameObject.h"
 
 GLuint LightSystem::glShadowTextureId_ = 0;
 
@@ -405,6 +406,10 @@ void LightSystem::updateLightMap(Rect *areaRect) {
     };
 
     for (auto light : lights_) {
+        if (!light->gameObject()->isActive()) {
+            continue;
+        }
+
         Veci lightOrigin        = {
                 (int)(light->transform()->getPosition().x / tileMap->getTileSet()->getTileW()),
                 (int)(light->transform()->getPosition().y / tileMap->getTileSet()->getTileH())

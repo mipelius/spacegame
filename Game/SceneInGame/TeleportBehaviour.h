@@ -21,48 +21,48 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef PLANETA18_TELEPORTBEHAVIOUR_H
+#define PLANETA18_TELEPORTBEHAVIOUR_H
 
-#ifndef __SceneInGame_H
-#define __SceneInGame_H
+#include "Sprite.h"
+#include "Timer.h"
+#include "Tile2DBehaviour.h"
 
-#include "Prefab.h"
-#include "Tile2D.h"
-#include "IScene.h"
-#include "Vec.h"
-#include "Body.h"
-#include "Camera.h"
-#include "TeleportBehaviour.h"
+class TeleportBehaviour : public Tile2DBehaviour {
 
-class SceneInGame :
-        public IScene,
-        public ISerializable
-{
-public:
-    void deserialize(const json::Object &jsonObject) override;
+protected:
+    void awake() override;
+    void update() override;
+    void lateUpdate() override;
 
 private:
-    struct PrefabSetup {
-        Prefab* prefab;
-        Vecf    position;
-    };
+    GameObject* player_;
+    GameObject* destinationTeleport_;
 
-    void init() override;
-    void destroy() override;
+    Sprite* sprite_;
+    float spriteOpacityPhase_;
 
-    Camera* camera_ = nullptr;
+    Timer timer_;
 
-    std::string mapPath_;
-    std::string tileSetPath_;
+    int timeToGo_ = 200;
+    Rect rect_;
 
-    Prefab* playerPrefab_;
-    Prefab* bossPrefab_;
+    bool enabled_ = true;
 
-    std::vector<Prefab*> spawnerPrefabs_;
-    std::vector<PrefabSetup> otherPrefabs_;
+public:
+    GameObject *getDestinationTeleport() const;
+    void setDestinationTeleport(GameObject *destinationTeleport);
 
-    GameObject* createTeleport(GameObject *player, const Vecf& position);
+    const Rect &getRect() const;
+    void setRect(const Rect &rect);
 
+    GameObject *getPlayer() const;
+    void setPlayer(GameObject *player);
+
+    bool isEnabled() const;
+
+    void setEnabled(bool enabled);
 };
 
 
-#endif //__SceneInGame_H
+#endif //PLANETA18_TELEPORTBEHAVIOUR_H
