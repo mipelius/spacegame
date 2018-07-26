@@ -43,6 +43,8 @@
 #include "TeleportBehaviour.h"
 
 void SceneInGame::init() {
+    SDL_ShowCursor(SDL_DISABLE);
+
     MusicManager::getInstance()->turnOn();
 
     // Scene setup: tile map, physics, light system
@@ -56,7 +58,6 @@ void SceneInGame::init() {
     auto player = playerPrefab_->instantiate();
     //player->attachComponent<DebugBehaviour>();
     player->transform().setPosition({500.0f, 3600.0f});
-    player->getComponent<Inventory>()->getItem(4)->setIsActivated(true);
 
     // boss
     auto boss = bossPrefab_->instantiate();

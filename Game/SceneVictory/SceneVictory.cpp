@@ -33,6 +33,8 @@
 #include "Resources.h"
 
 void SceneVictory::init() {
+    SDL_ShowCursor(SDL_ENABLE);
+
     MusicManager::getInstance()->turnOn();
     MusicManager::getInstance()->play(Tile2D::resources().audioClips["victory"], false, false);
 

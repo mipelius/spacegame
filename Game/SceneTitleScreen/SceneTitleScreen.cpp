@@ -36,6 +36,8 @@
 #include "Camera.h"
 
 void SceneTitleScreen::init() {
+    SDL_ShowCursor(SDL_ENABLE);
+
     // music
 
     MusicManager::getInstance()->turnOn();
