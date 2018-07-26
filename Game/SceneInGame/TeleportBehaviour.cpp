@@ -29,6 +29,7 @@
 #include "Transform.h"
 #include "GameObject.h"
 #include "t2Time.h"
+#include <cmath>
 
 void TeleportBehaviour::awake() {
     sprite_ = gameObject()->getComponent<Sprite>();
@@ -42,7 +43,7 @@ void TeleportBehaviour::lateUpdate() {
     transform()->setRotation(spriteOpacityPhase_ * 70.0f);
 
     spriteOpacityPhase_ += Tile2D::time().getDeltaTime();
-    sprite_->setOpacity((1.0f + sin(spriteOpacityPhase_ * (float)M_2_PI * 8)) / 4.0f + 0.5f);
+    sprite_->setOpacity((1.0f + sin(spriteOpacityPhase_ * (float)4.0)) / 4.0f + 0.5f);
 
     auto pos = transform()->getPosition();
 

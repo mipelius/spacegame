@@ -24,6 +24,7 @@
     <ClInclude Include="Game\Bindings.h" />
     <ClInclude Include="Game\CollisionEffects.h" />
     <ClInclude Include="Game\EventHandlers.h" />
+    <ClInclude Include="Game\MusicManager.h" />
     <ClInclude Include="Game\ParticleSystemComponents.h" />
     <ClInclude Include="Game\SceneInGame\BackgroundBehaviour.h" />
     <ClInclude Include="Game\SceneInGame\BombBehaviour.h" />
@@ -58,6 +59,7 @@
     <ClInclude Include="Game\SceneInGame\SpawnerBase.h" />
     <ClInclude Include="Game\SceneInGame\SwirlingBehaviour.h" />
     <ClInclude Include="Game\SceneInGame\TargetingComponentBase.h" />
+    <ClInclude Include="Game\SceneInGame\TeleportBehaviour.h" />
     <ClInclude Include="Game\SceneInGame\WalkingEnemyAI.h" />
     <ClInclude Include="Game\SceneQuickTesting\QuickTestingBehaviour.h" />
     <ClInclude Include="Game\SceneQuickTesting\SceneQuickTesting.h" />
@@ -66,7 +68,6 @@
     <ClInclude Include="Game\SceneVictory\SceneVictory.h" />
     <ClInclude Include="Game\UIAutoPositioner.h" />
     <ClInclude Include="Game\UIPrefabs.h" />
-    <ClInclude Include="precompile.h" />
     <ClInclude Include="Tile2D\Animation\AnimatedSprite.h" />
     <ClInclude Include="Tile2D\Animation\Animation.h" />
     <ClInclude Include="Tile2D\Audio\AudioClip.h" />
@@ -125,6 +126,7 @@
     <ClInclude Include="Tile2D\Util\Primitives\LineSegment.h" />
     <ClInclude Include="Tile2D\Util\Primitives\Rect.h" />
     <ClInclude Include="Tile2D\Util\Primitives\Vec.h" />
+    <ClInclude Include="Tile2D\Util\SerializingUtils.h" />
     <ClInclude Include="Tile2D\Util\Tile2DMath.h" />
     <ClInclude Include="Tile2D\Util\Timer.h" />
   </ItemGroup>
@@ -133,6 +135,7 @@
     <ClCompile Include="Game\AudioManager.cpp" />
     <ClCompile Include="Game\CollisionEffects.cpp" />
     <ClCompile Include="Game\main.cpp" />
+    <ClCompile Include="Game\MusicManager.cpp" />
     <ClCompile Include="Game\SceneInGame\BackgroundBehaviour.cpp" />
     <ClCompile Include="Game\SceneInGame\BombBehaviour.cpp" />
     <ClCompile Include="Game\SceneInGame\DebugBehaviour.cpp" />
@@ -165,6 +168,7 @@
     <ClCompile Include="Game\SceneInGame\SpawnerBase.cpp" />
     <ClCompile Include="Game\SceneInGame\SwirlingBehaviour.cpp" />
     <ClCompile Include="Game\SceneInGame\TargetingComponentBase.cpp" />
+    <ClCompile Include="Game\SceneInGame\TeleportBehaviour.cpp" />
     <ClCompile Include="Game\SceneInGame\WalkingEnemyAI.cpp" />
     <ClCompile Include="Game\SceneQuickTesting\QuickTestingBehaviour.cpp" />
     <ClCompile Include="Game\SceneQuickTesting\SceneQuickTesting.cpp" />

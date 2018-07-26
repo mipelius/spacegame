@@ -126,6 +126,10 @@ void Window::init(const std::string& configJson) {
         // everything is fixed by now :)
         saveSettings();
     }
+
+	if (getSize().x != resolution.x || getSize().y != resolution.y) {
+		setSize(resolution);
+	}
 }
 
 void Window::swap_() {

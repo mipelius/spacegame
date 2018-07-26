@@ -18,13 +18,34 @@
     <ClInclude Include="Game\SceneInGame\Health.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Game\SceneInGame\PlayerController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\SceneInGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\TeleportBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\AudioManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\BackgroundBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SceneInGame\EnemyAIBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\EventHandlers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\MusicManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Game\SceneInGame\Items\Inventory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\SceneInGame\Items\ItemBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\SceneInGame\PlayerController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\SceneInGame\PopUpBehaviour.h">
@@ -39,16 +60,7 @@
     <ClInclude Include="Game\UIPrefabs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\AudioManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\SceneInGame\BackgroundBehaviour.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Bindings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\EventHandlers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\SceneInGame\ExplosionBehaviour.h">
@@ -111,9 +123,6 @@
     <ClInclude Include="Game\SceneInGame\PulseLightBehaviour.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\SceneInGame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Game\SceneInGame\SparkleBehaviour.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -135,9 +144,6 @@
     <ClInclude Include="Game\SceneInGame\DebugBehaviour.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SceneInGame\EnemyAIBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Game\SceneInGame\EnemySpawner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -151,6 +157,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\ParticleSystemComponents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile2D\Core\GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile2D\Core\SceneManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile2D\Util\SerializingUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile2D\Core\Tile2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile2D\Core\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tile2D\Audio\AudioSource.h">
@@ -177,16 +201,7 @@
     <ClInclude Include="Tile2D\Core\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Core\Tile2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Core\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Tile2D\Audio\AudioClip.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile2D\Core\GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tile2D\Util\Primitives\Vec.h">
@@ -270,9 +285,6 @@
     <ClInclude Include="Tile2D\Core\ResourceContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tile2D\Core\SceneManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Tile2D\Core\t2Time.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -333,33 +345,39 @@
     <ClInclude Include="Tile2D\Canvas\Texture\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="3rdParty\json.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="precompile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Tile2D\Core\GameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile2D\LightSystem\LightSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile2D\Audio\Mixer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile2D\Core\SceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile2D\Core\Tile2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile2D\Core\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile2D\Audio\AudioSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Game\SceneInGame\Health.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game\SceneInGame\Items\Inventory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\Items\ItemBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\main.cpp">
+    <ClCompile Include="Game\SceneInGame\Items\Medikit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game\SceneInGame\PlayerController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\PopUpBehaviour.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneQuickTesting\QuickTestingBehaviour.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game\SceneInGame\SceneInGame.cpp">
@@ -371,13 +389,13 @@
     <ClCompile Include="Game\SceneVictory\SceneVictory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\SpawnerBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\UIAutoPositioner.cpp">
+    <ClCompile Include="Game\SceneInGame\TeleportBehaviour.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game\UIPrefabs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\WalkingEnemyAI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game\AudioManager.cpp">
@@ -387,72 +405,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game\SceneInGame\DebugBehaviour.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\ExplosionBehaviour.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\FireParticleManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneTitleScreen\MovingCameraBehaviour.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneQuickTesting\SceneQuickTesting.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\TargetingComponentBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\WalkingEnemyAI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\Items\Cannon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\LimitedLifetimeBehaviour.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\Items\Medikit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\Pickup.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\PickupSpawner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\PlasmaExplosionBehaviour.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\PlayerTargetingComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\Power.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\PulseLightBehaviour.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\SparkleBehaviour.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\Spawnable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\SwirlingBehaviour.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\Items\WeaponBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\BombBehaviour.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\SceneInGame\Items\BombDropper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\CollisionEffects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game\SceneInGame\EnemyAIBase.cpp">
@@ -467,7 +419,13 @@
     <ClCompile Include="Game\SceneInGame\FlyingEnemyAI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\SceneInGame\HUD.cpp">
+    <ClCompile Include="Game\MusicManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile2D\Audio\AudioClip.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile2D\Canvas\Texture\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Tile2D\UI\Button.cpp">
@@ -479,12 +437,6 @@
     <ClCompile Include="Tile2D\Util\JsonFileManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\LightSystem\LightSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile2D\Audio\Mixer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Tile2D\Canvas\ParticleSystem\ParticleSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -494,19 +446,28 @@
     <ClCompile Include="Tile2D\Core\Resources.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Core\Tile2D.cpp">
+    <ClCompile Include="Game\SceneInGame\Items\ItemBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Core\Window.cpp">
+    <ClCompile Include="Game\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Audio\AudioClip.cpp">
+    <ClCompile Include="Game\SceneInGame\PopUpBehaviour.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Audio\AudioSource.cpp">
+    <ClCompile Include="Game\SceneQuickTesting\QuickTestingBehaviour.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Core\GameObject.cpp">
+    <ClCompile Include="Game\SceneInGame\SpawnerBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIAutoPositioner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\ExplosionBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\FireParticleManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Tile2D\Canvas\Drawable\Sprite.cpp">
@@ -563,9 +524,6 @@
     <ClCompile Include="Tile2D\Core\Reflector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Core\SceneManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Tile2D\Core\t2Time.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -611,10 +569,64 @@
     <ClCompile Include="Tile2D\Canvas\Drawable\Text.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Canvas\Texture\Texture.cpp">
+    <ClCompile Include="Tile2D\Animation\AnimatedSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tile2D\Animation\AnimatedSprite.cpp">
+    <ClCompile Include="Game\SceneTitleScreen\MovingCameraBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneQuickTesting\SceneQuickTesting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\TargetingComponentBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Items\Cannon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\LimitedLifetimeBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Pickup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\PickupSpawner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\PlasmaExplosionBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\PlayerTargetingComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Power.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\PulseLightBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\SparkleBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Spawnable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\SwirlingBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Items\WeaponBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\BombBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\Items\BombDropper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CollisionEffects.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SceneInGame\HUD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="3rdParty\json.cpp">
