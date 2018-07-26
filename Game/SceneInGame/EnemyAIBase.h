@@ -62,6 +62,11 @@ protected:
     bool canSeeTarget_();
 
     WeaponBase* weapon_ = nullptr;
+
+    int randomShootingDelay = 0;
+    static const int MAX_RANDOM_SHOOTING_DELAY = 100;
+
+    Timer shootingRandomizerTimer;
 };
 
 template<class T>

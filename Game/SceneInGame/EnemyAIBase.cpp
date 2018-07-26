@@ -31,6 +31,8 @@
 
 void EnemyAIBase::awake() {
     body_ = gameObject()->getComponent<Body>();
+
+    shootingRandomizerTimer.reset();
 }
 
 Transform *EnemyAIBase::getTarget() const {
@@ -42,6 +44,13 @@ void EnemyAIBase::setTarget(Transform *target) {
 }
 
 void EnemyAIBase::shootTarget_() {
+    if (shootingRandomizerTimer.getTime() < randomShootingDelay) {
+        return;
+    }
+
+    shootingRandomizerTimer.reset();
+    randomShootingDelay = rand() % MAX_RANDOM_SHOOTING_DELAY;
+
     if (weapon_ != nullptr && canSeeTarget_()) {
         weapon_->use(gameObject());
     }
