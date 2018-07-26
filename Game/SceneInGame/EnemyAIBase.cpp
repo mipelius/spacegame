@@ -54,7 +54,7 @@ void EnemyAIBase::shootTarget_() {
                     ++shots_;
                 }
             }
-            if (shots_ > shotsAtOnce_ && shotsAtOnce_ != -1) {
+            if (shots_ >= shotsAtOnce_ && shotsAtOnce_ != -1) {
                 shots_ = 0;
                 state = WAIT;
                 shootingPauseTimer_.reset();
