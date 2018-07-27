@@ -21,8 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
-#include <SDL_video.h>
 #include "precompile.h"
 #include "Window.h"
 #include "Camera.h"
