@@ -21,6 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include "AudioManager.h"
 #include "Tile2D.h"
 #include "Resources.h"
 #include "Rect.h"
@@ -66,6 +67,8 @@ void TeleportBehaviour::lateUpdate() {
         if (!destinationTeleport_->isActive()) {
             destinationTeleport_->setIsActive(true);
         }
+
+        AudioManager::getInstance()->play(Tile2D::resources().audioClips["teleport"]);
     }
 }
 
