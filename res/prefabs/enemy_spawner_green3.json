@@ -1,0 +1,11 @@
+{
+  "template": {
+    "file": "res/prefabs/enemy_spawner.template",
+    "replacement": {
+      "PREFAB": "enemy_walker",
+      "SPAWNING_DELAY": 1000,
+      "MAX_SPAWNED_OBJECTS": 2,
+      "AREA_RECT": { "x1":0, "y1": 3960, "x2":6280, "y2": 6464 }
+    }
+  }
+}

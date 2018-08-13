@@ -1,0 +1,53 @@
+{
+  "components": [
+    {
+      "class": "Body",
+      "properties": {
+        "mass": 10
+      }
+    },
+    {
+      "class": "PolygonCollider",
+      "properties": {
+        "points": [
+          {
+            "x": -5,
+            "y": -5
+          },
+          {
+            "x": 5,
+            "y": -5
+          },
+          {
+            "x": 5,
+            "y": 5
+          },
+          {
+            "x": -5,
+            "y": 5
+          }
+        ]
+      }
+    },
+    {
+      "class": "Sprite",
+      "properties": {
+        "texture": "fx_light",
+        "sortingLayer": 3,
+        "rect": {
+          "x1": -40,
+          "y1": -40,
+          "x2": 40,
+          "y2": 40
+        }
+      }
+    },
+    {
+      "class": "PointLight",
+      "properties": {
+        "radius": 100,
+        "intensity": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "template": {
+    "file": "res/prefabs/pickup.template",
+    "replacement": {
+      "TEXTURE": "pickup_plasma_cannon",
+      "HANDLERS": [
+        {
+          "class": "ItemPickupCollisionEventHandler",
+          "properties": {
+            "itemIdToActivate": 4
+          }
+        },
+        {
+          "class": "CollisionAudioHandler",
+          "properties": {
+            "audioClips" : [ "pickup" ]
+          }
+        },
+        {
+          "class": "CollisionPopUpHandler",
+          "properties": {
+            "text": "Plasma cannon"
+          }
+        }
+      ]
+    }
+  }
+}

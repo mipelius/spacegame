@@ -1,0 +1,47 @@
+{
+  "tag": 0,
+  "components": [
+    {
+      "class": "ParticleSystem",
+      "properties": {
+        "playsOnce": true,
+        "particleRect": {
+          "x1": -20,
+          "y1": -20,
+          "x2": 20,
+          "y2": 20
+        },
+        "texture": "pickup_health_upgrade",
+        "maxParticles": 40,
+        "particlesToSpawn":40,
+        "playOnAwake":true,
+        "spawnFrequency": 10,
+        "blendSourceFactor": "GL_SRC_ALPHA",
+        "blendDestinationFactor": "GL_ONE",
+        "initializer": {
+          "class": "ParticleInitializer"
+        },
+        "updater": {
+          "class": "ParticleUpdater",
+          "properties": {
+            "timeToLive": 1000
+          }
+        }
+      }
+    },
+    {
+      "class":"LimitedLifetimeBehaviour",
+      "properties": {
+        "timeToLive" : 2000
+      }
+    },
+    {
+      "class": "Body",
+      "properties": {
+        "mass" : 10.0,
+        "drag": 0.8
+      }
+    }
+
+  ]
+}

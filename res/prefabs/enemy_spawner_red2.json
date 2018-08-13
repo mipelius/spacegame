@@ -1,0 +1,11 @@
+{
+  "template": {
+    "file": "res/prefabs/enemy_spawner.template",
+    "replacement": {
+      "PREFAB": "enemy_rider",
+      "SPAWNING_DELAY": 2000,
+      "MAX_SPAWNED_OBJECTS": 2,
+      "AREA_RECT": { "x1":0, "y1": 10656, "x2":6248, "y2": 14312 }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "template": {
+    "file": "res/prefabs/ammo.template",
+    "replacement": {
+      "SPRITE_RECT": {
+        "x1": -20,
+        "y1": -5,
+        "x2": 20,
+        "y2": 5
+      },
+      "SPRITE_TEXTURE": "ammo_laser",
+      "COLLIDER_POINTS": [
+        {
+          "x": -18,
+          "y": -5
+        },
+        {
+          "x": 18,
+          "y": -5
+        },
+        {
+          "x": 18,
+          "y": 5
+        },
+        {
+          "x": -18,
+          "y": 5
+        }
+      ],
+      "COLLIDER_LAYER": 0,
+      "COLLIDER_TERRAIN_COLLISION_HANDLERS": [
+        {
+          "class": "AmmoTerrainCollisionHandler"
+        },
+        {
+          "class": "TerrainCollisionAudioHandler",
+          "properties": {
+            "audioClips": [ "ammo_terrain_collision" ]
+          }
+        }
+      ],
+      "COLLIDER_COLLISION_HANDLERS": [
+        {
+          "class": "AmmoCollisionDamageHandler",
+          "properties": {
+            "damage": 20,
+            "targetTag": 1
+          }
+        },
+        {
+          "class": "CollisionAudioHandler",
+          "properties": {
+            "audioClips": [ "ammo_object_collision" ]
+          }
+        }
+      ]
+    }
+  }
+}

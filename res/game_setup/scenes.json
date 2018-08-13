@@ -1,0 +1,7 @@
+{
+  "scenes": [
+    "res/scenes/scene_title_screen.json",
+    "res/scenes/scene_in_game.json",
+    "res/scenes/scene_victory.json"
+  ]
+}

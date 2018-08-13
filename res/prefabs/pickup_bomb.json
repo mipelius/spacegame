@@ -1,0 +1,29 @@
+{
+  "template": {
+    "file": "res/prefabs/pickup.template",
+    "replacement": {
+      "TEXTURE": "pickup_bomb",
+      "HANDLERS": [
+        {
+          "class": "ItemPickupCollisionEventHandler",
+          "properties": {
+            "itemIdToActivate": 3,
+            "count": 6
+          }
+        },
+        {
+          "class": "CollisionAudioHandler",
+          "properties": {
+            "audioClips" : [ "pickup" ]
+          }
+        },
+        {
+          "class": "CollisionPopUpHandler",
+          "properties": {
+            "text": "Bombs"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "template": {
+    "file": "res/prefabs/enemy.template",
+    "replacement": {
+      "MASS": 100,
+      "GRAVITY_FACTOR": 2,
+      "POINTS": [
+        {
+          "x": -15,
+          "y": -15
+        },
+        {
+          "x": 15,
+          "y": -15
+        },
+        {
+          "x": 15,
+          "y": 13
+        },
+        {
+          "x": 5,
+          "y": 23
+        },
+        {
+          "x": -5,
+          "y": 23
+        },
+        {
+          "x": -15,
+          "y": 13
+        }
+      ],
+      "SWEEPING_STRATEGY_THRESHOLD": "max",
+      "ANIMATION": "wanderer",
+      "SORTING_LAYER": 5,
+      "RECT": {
+        "x1": -32,
+        "y1": -32,
+        "x2": 32,
+        "y2": 32
+      },
+      "MAX_HEALTH": 80
+    }
+  },
+  "components": [
+    {
+      "class": "WalkingEnemyAI",
+      "properties": {
+        "shotsAtOnce":2,
+        "shootingPauseInterval":1000,
+        "maxDistance": 1500,
+        "groundCheckSensors": [
+          {
+            "x": -24,
+            "y": 24
+          },
+          {
+            "x": -16,
+            "y": 24
+          },
+          {
+            "x": -8,
+            "y": 24
+          },
+          {
+            "x": 0,
+            "y": 24
+          },
+          {
+            "x": 8,
+            "y": 24
+          },
+          {
+            "x": 16,
+            "y": 24
+          },
+          {
+            "x": 24,
+            "y": 24
+          }
+        ],
+        "weapon": {
+          "class": "Cannon",
+          "properties": {
+            "ammoPrefab": "ammo_enemy_laser",
+            "audioClip": "laser_cannon_shoot",
+            "reloadDelay": 300,
+            "count": "infinity"
+          }
+        }
+      }
+    }
+  ]
+}

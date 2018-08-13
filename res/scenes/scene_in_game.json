@@ -1,0 +1,95 @@
+{
+  "class": "SceneInGame",
+  "properties": {
+    "tilemap": {
+      "map": "res/maps/map.png",
+      "tileset": "res/maps/tileset.json"
+    },
+    "player": "player",
+    "boss": "enemy_boss",
+    "spawners": [
+      "enemy_spawner_snow1",
+      "enemy_spawner_snow2",
+      "enemy_spawner_snow3",
+      "enemy_spawner_snow4",
+      "enemy_spawner_green1",
+      "enemy_spawner_green2",
+      "enemy_spawner_green3",
+      "enemy_spawner_blue1",
+      "enemy_spawner_blue2",
+      "enemy_spawner_blue3",
+      "enemy_spawner_blue4",
+      "enemy_spawner_red1",
+      "enemy_spawner_red2",
+      "pickup_spawner_snow_bomb",
+      "pickup_spawner_snow_medikit",
+      "pickup_spawner_green_bomb",
+      "pickup_spawner_green_medikit",
+      "pickup_spawner_blue_bomb",
+      "pickup_spawner_blue_medikit",
+      "pickup_spawner_red_bomb",
+      "pickup_spawner_red_medikit"
+    ],
+    "other": [
+      "bg_snow",
+      "bg_green",
+      "bg_blue",
+      "bg_red",
+      [
+        "pickup_laser_cannon_upgrade",
+        4800,
+        832
+      ],
+      [
+        "pickup_gatling",
+        400,
+        9744
+      ],
+      [
+        "pickup_plasma_cannon",
+        448,
+        11696
+      ],
+      [
+        "pickup_health_upgrade",
+        2928,
+        464
+      ],
+      [
+        "pickup_health_upgrade",
+        5824,
+        1792
+      ],
+      [
+        "pickup_health_upgrade",
+        5760,
+        6096
+      ],
+      [
+        "pickup_health_upgrade",
+        3680,
+        8512
+      ],
+      [
+        "pickup_power_upgrade",
+        3128,
+        1200
+      ],
+      [
+        "pickup_power_upgrade",
+        5600,
+        9104
+      ],
+      [
+        "pickup_power_upgrade",
+        2800,
+        13120
+      ],
+      [
+        "pickup_power_upgrade",
+        5024,
+        13040
+      ]
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "transform": {},
+  "tag": 1,
+  "components": [
+    {
+      "class": "Body",
+      "properties": {
+        "mass": $(MASS),
+        "gravityFactor": $(GRAVITY_FACTOR)
+      }
+    },
+    {
+      "class": "PolygonCollider",
+      "properties": {
+        "points": $(POINTS),
+        "sweepingStrategyThreshold": $(SWEEPING_STRATEGY_THRESHOLD:2.0),
+        "collision": { "handlers": $(COLLISION_HANDLERS:[]) },
+        "layer": 3
+      }
+    },
+    {
+      "class": "AnimatedSprite",
+      "properties": {
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+        },
+        "sortingLayer": $(SORTING_LAYER),
+        "rect": $(RECT),
+        "animation": $(ANIMATION),
+        "framesPerSecond": 50,
+        "playOnInit": true,
+        "loop": true
+      }
+    },
+    {
+      "class": "Health",
+      "properties": {
+        "maxHealth": $(MAX_HEALTH),
+        "autoHealingRate": 0,
+        "audioPlayingProbability": 0.8,
+        "audioClips": [
+          "enemy_hit1",
+          "enemy_hit2",
+          "enemy_hit3"
+        ],
+        "onDeath": {
+          "handlers": [
+            {
+              "class": "EnemyDeathHandler",
+              "properties": {
+                "bloodBurstPrefab" : "fx_blood_burst",
+                "audioClips" : [
+                  "enemy_death1",
+                  "enemy_death2",
+                  "enemy_death3"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "class": "EnemyTargetingComponent"
+    }
+  ]
+}

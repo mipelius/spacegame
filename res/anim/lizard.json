@@ -1,0 +1,6 @@
+{  
+  "texture"      : "res/anim/lizard.png",
+  "frames"       : 41,
+  "spriteWidth"  : 128,
+  "spriteHeight" : 64
+}

@@ -1,0 +1,137 @@
+{
+  "transform": {},
+  "tag": 1,
+  "components": [
+    {
+      "class": "Body",
+      "properties": {
+        "mass": 100,
+        "gravityFactor": 0.0
+      }
+    },
+    {
+      "class": "PolygonCollider",
+      "properties": {
+        "points": [
+          {
+            "x": -80,
+            "y": -40
+          },
+          {
+            "x": -40,
+            "y": -80
+          },
+          {
+            "x": 40,
+            "y": -80
+          },
+          {
+            "x": 80,
+            "y": -40
+          },
+          {
+            "x": 80,
+            "y": 40
+          },
+          {
+            "x": 40,
+            "y": 80
+          },
+          {
+            "x": -40,
+            "y": 80
+          },
+          {
+            "x": -80,
+            "y": 40
+          }
+        ],
+        "sweepingStrategyThreshold": 2.0,
+        "layer": 3
+      }
+    },
+    {
+      "class": "AnimatedSprite",
+      "properties": {
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+        },
+        "sortingLayer": 5,
+        "rect": {
+          "x1": -100,
+          "y1": -100,
+          "x2": 100,
+          "y2": 100
+        },
+        "animation": "boss",
+        "framesPerSecond": 50,
+        "playOnInit": true,
+        "loop": true
+      }
+    },
+    {
+      "class": "Health",
+      "properties": {
+        "maxHealth": 15000,
+        "autoHealingRate": 0,
+        "audioPlayingProbability": 0.8,
+        "audioClips": [
+          "enemy_hit1",
+          "enemy_hit2",
+          "enemy_hit3"
+        ],
+        "onDeath": {
+          "handlers": [
+            {
+              "class": "EnemyDeathHandler",
+              "properties": {
+                "bloodBurstPrefab" : "fx_boss_blood_burst",
+                "audioClips" : [
+                  "enemy_death1",
+                  "enemy_death2",
+                  "enemy_death3"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "class": "EnemyTargetingComponent"
+    },
+    {
+      "class": "PointLight",
+      "properties": {
+        "intensity" :1.0,
+        "radius": 300
+      }
+    },
+    {
+      "class": "FlyingEnemyAI",
+      "properties": {
+        "shotsAtOnce":3,
+        "shootingPauseInterval":1600,
+        "minPathFindingDistance": 500,
+        "maxPathFindingDistance": 2000,
+        "maxNodesPathFinderExplores": 1000,
+        "pathFindingInterval": 1000,
+        "speed": 300,
+        "rotates": false,
+        "flips": false,
+        "maxDistance": 1000000,
+        "weapon": {
+          "class": "Cannon",
+          "properties": {
+            "ammoPrefab": "ammo_enemy_plasma",
+            "audioClip": "plasma_cannon_shoot",
+            "reloadDelay": 1200,
+            "count": "infinity"
+          }
+        }
+      }
+    }
+  ]
+}

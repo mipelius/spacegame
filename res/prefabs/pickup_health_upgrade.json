@@ -1,0 +1,31 @@
+{
+  "template": {
+    "file": "res/prefabs/pickup.template",
+    "replacement": {
+      "TEXTURE": "pickup_health_upgrade",
+      "HANDLERS": [
+        {
+          "class": "HealthUpgradeCollisionHandler",
+          "properties": {
+            "upgrade": 100
+          }
+        },
+        {
+          "class": "CollisionAudioHandler",
+          "properties": {
+            "audioClips" : [
+              "upgrade1",
+              "upgrade2"
+            ]
+          }
+        },
+        {
+          "class": "CollisionPopUpHandler",
+          "properties": {
+            "text": "Health upgrade"
+          }
+        }
+      ]
+    }
+  }
+}

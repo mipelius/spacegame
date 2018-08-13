@@ -1,0 +1,211 @@
+{
+  "tag": 0,
+  "components": [
+    {
+      "class": "Body",
+      "properties": {
+        "mass": 100
+      }
+    },
+    {
+      "class": "PolygonCollider",
+      "properties": {
+        "points": [
+          {
+            "x": -20,
+            "y": -18
+          },
+          {
+            "x": -5,
+            "y": -18
+          },
+          {
+            "x": 18,
+            "y": 0
+          },
+          {
+            "x": -5,
+            "y": 18
+          },
+          {
+            "x": -20,
+            "y": 18
+          }
+        ],
+        "layer": 2
+      }
+    },
+    {
+      "class": "Sprite",
+      "properties": {
+        "sortingLayer": 6,
+        "rect": {
+          "x1": -20,
+          "y1": -20,
+          "x2": 20,
+          "y2": 20
+        },
+        "texture": "spaceship"
+      }
+    },
+    {
+      "class": "PointLight",
+      "properties": {
+        "intensity": 1,
+        "radius": 600
+      }
+    },
+    {
+      "class": "PlayerController",
+      "properties": {
+        "moveForce": 100000
+      }
+    },
+    {
+      "class": "Health",
+      "properties": {
+        "maxHealth": 300,
+        "autoHealingRate": 70,
+        "onDeath": {
+          "handlers": [
+            {
+              "class": "PlayerDeathHandler",
+              "properties": {
+                "explosionPrefab" : "fx_player_explosion",
+                "audioClips": [
+                  "player_death1",
+                  "player_death2"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "class": "Power",
+      "properties": {
+        "maxPower": 300,
+        "reloadDelay": 30
+      }
+    },
+    {
+      "class": "PlayerTargetingComponent"
+    },
+    {
+      "class": "AudioSource",
+      "properties": {
+        "audioClip": "rocket_engine",
+        "loopEnabled": true
+      }
+    },
+    {
+      "class": "Inventory",
+      "properties": {
+        "itemSelectAudioClip": "item_select",
+        "itemInfos": [
+          {
+            "item" : {
+              "class": "Cannon",
+              "properties": {
+                "ammoPrefab": "ammo_laser",
+                "offsets": [
+                  {
+                    "x": -10,
+                    "y": -13
+                  },
+                  {
+                    "x": -10,
+                    "y": 13
+                  }
+                ],
+                "powerConsumption": 50,
+                "reloadDelay": 100,
+                "isActivated": true,
+                "audioClip": "laser_cannon_shoot"
+              }
+            },
+            "automatic": true,
+            "inventoryTexture": "inventory_laser_cannon",
+            "tag": 1
+          },
+          {
+            "item" : {
+              "class": "Cannon",
+              "properties": {
+                "ammoPrefab": "ammo_gatling",
+                "offsets": [
+                  {
+                    "x": -10,
+                    "y": -13
+                  },
+                  {
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "x": -10,
+                    "y": 13
+                  }
+                ],
+                "powerConsumption": 15,
+                "reloadDelay": 10,
+                "isActivated": false,
+                "audioClip": "gatling_shoot"
+              }
+            },
+            "automatic": true,
+            "inventoryTexture": "inventory_gatling",
+            "tag": 2
+          },
+          {
+            "item" : {
+              "class": "BombDropper",
+              "properties": {
+                "bombPrefab": "ammo_bomb",
+                "powerConsumption": 50,
+                "count": 0,
+                "reloadDelay": 0,
+                "isActivated": false,
+                "audioClip": "bomb_drop"
+              }
+            },
+            "automatic": false,
+            "inventoryTexture": "inventory_bomb",
+            "tag": 3
+          },
+          {
+            "item" : {
+              "class": "Cannon",
+              "properties": {
+                "ammoPrefab": "ammo_plasma",
+                "powerConsumption": 300,
+                "reloadDelay": 500,
+                "isActivated": false,
+                "audioClip": "plasma_cannon_shoot"
+              }
+            },
+            "automatic": true,
+            "inventoryTexture": "inventory_plasma_cannon",
+            "tag": 4
+          },
+          {
+            "item" : {
+              "class": "Medikit",
+              "properties": {
+                "powerConsumption": 150,
+                "count": 0,
+                "reloadDelay": 0,
+                "healingAmount": 1000,
+                "isActivated": false
+              }
+            },
+            "automatic": false,
+            "inventoryTexture": "inventory_medikit",
+            "tag": 5
+          }
+        ]
+      }
+    }
+  ]
+}

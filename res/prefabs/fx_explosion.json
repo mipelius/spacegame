@@ -1,0 +1,57 @@
+{
+  "tag": 0,
+  "components": [
+    {
+      "class": "PointLight",
+      "properties": {
+        "radius": 300,
+        "intensity": 1
+      }
+    },
+    {
+      "class": "PulseLightBehaviour",
+      "properties": {
+        "timeToLive": 2000,
+        "timeToStartDiminish": 1000,
+        "radiusDiminishSpeed": 0.5,
+        "intensityDiminishSpeed": 1.5
+      }
+    },
+    {
+      "class": "ParticleSystem",
+      "properties": {
+        "playsOnce": true,
+        "particleRect": {
+          "x1": -64,
+          "y1": -64,
+          "x2": 64,
+          "y2": 64
+        },
+        "texture": "fx_explosion_particle",
+        "maxParticles": 100,
+        "particlesToSpawn":100,
+        "playOnAwake":true,
+        "spawnFrequency": 300,
+        "blendSourceFactor": "GL_SRC_ALPHA",
+        "blendDestinationFactor": "GL_ONE",
+        "initializer": {
+          "class": "ParticleInitializer"
+        },
+        "updater": {
+          "class": "ParticleUpdater",
+          "properties": {
+            "timeToLive": 1000
+          }
+        }
+      }
+    },
+    {
+      "class": "ExplosionBehaviour",
+      "properties": {
+        "terrainRemoveRange": 100,
+        "damageRange": 150,
+        "maxDamage": 200
+      }
+    }
+  ]
+}

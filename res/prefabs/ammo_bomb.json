@@ -1,0 +1,100 @@
+{
+  "components": [
+    {
+      "class": "BombBehaviour"
+    },
+    {
+      "class": "Body",
+      "properties": {
+        "mass": 10,
+        "drag": 0
+      }
+    },
+    {
+      "class": "Sprite",
+      "properties": {
+        "rect": {
+          "x1": -10,
+          "y1": -10,
+          "x2": 10,
+          "y2": 10
+        },
+        "texture": "ammo_bomb",
+        "sortingLayer": 3
+      }
+    },
+    {
+      "class": "PointLight",
+      "properties": {
+        "radius": 80,
+        "intensity": 1
+      }
+    },
+    {
+      "class": "PolygonCollider",
+      "properties": {
+        "points": [
+          {
+            "x": -9,
+            "y": -4
+          },
+          {
+            "x": 9,
+            "y": -4
+          },
+          {
+            "x": 9,
+            "y": 4
+          },
+          {
+            "x": -9,
+            "y": 4
+          }
+        ],
+        "layer": 0,
+        "terrainCollision": {
+          "handlers": [
+            {
+              "class": "AmmoTerrainCollisionHandler",
+              "properties": {
+                "prefabToInstantiate": "fx_explosion"
+              }
+            },
+            {
+              "class": "TerrainCollisionAudioHandler",
+              "properties": {
+                "audioClips": [
+                  "explosion1",
+                  "explosion2",
+                  "explosion3"
+                ]
+              }
+            }
+          ]
+        },
+        "collision": {
+          "handlers": [
+            {
+              "class": "AmmoCollisionDamageHandler",
+              "properties": {
+                "damage": 20,
+                "targetTag": 1,
+                "prefabToInstantiate": "fx_explosion"
+              }
+            },
+            {
+              "class": "CollisionAudioHandler",
+              "properties": {
+                "audioClips": [
+                  "explosion1",
+                  "explosion2",
+                  "explosion3"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

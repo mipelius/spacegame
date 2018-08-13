@@ -12,10 +12,6 @@ cmake-build-relwithdebinfo/
 PlanetA18.xcodeproj/project.xcworkspace/
 PlanetA18.xcodeproj/xcuserdata/
 
-# DATA IS IGNORED FOR NOW SINCE BINARY+GIT=BAD
-
-Data/
-
 # SDL2 DEV LIBS
 
 SDL2/

@@ -1,0 +1,6 @@
+{  
+  "texture"      : "res/anim/boss.png",
+  "frames"       : 41,
+  "spriteWidth"  : 128,
+  "spriteHeight" : 128
+}

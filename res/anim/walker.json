@@ -1,0 +1,6 @@
+{  
+  "texture"      : "res/anim/walker.png",
+  "frames"       : 41,
+  "spriteWidth"  : 64,
+  "spriteHeight" : 64
+}

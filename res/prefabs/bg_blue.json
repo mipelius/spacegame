@@ -1,0 +1,20 @@
+{
+  "template": {
+    "file": "res/prefabs/bg.template",
+    "replacement": {
+      "TEXTURE": "bg1",
+      "COLOR": {
+        "r": 0.3,
+        "g": 0.3,
+        "b": 0.6
+      },
+      "AREA": {
+        "x1": 0,
+        "y1": 6512,
+        "x2": 6400,
+        "y2": 10392
+      },
+      "AUDIO_CLIP": "blue_world"
+    }
+  }
+}

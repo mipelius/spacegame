@@ -1,0 +1,19 @@
+{
+  "template": {
+    "file": "res/prefabs/pickup_spawner.template",
+    "replacement": {
+      "PREFAB": "pickup_bomb",
+      "SPAWNING_DELAY": 5000,
+      "MAX_SPAWNED_OBJECTS": 2,
+      "AREA_RECT": {
+        "x1": 4256,
+        "y1": 3832,
+        "x2": 6256,
+        "y2": 5592
+      },
+      "MIN_DISTANCE_TO_TARGET": 3000,
+      "MAX_ITEM_COUNT": 10,
+      "ITEM_TAG": 3
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "components" : [
+    {
+      "class" : "PickupSpawner",
+      "properties": {
+        "prefab" : $(PREFAB),
+        "spawningDelay": $(SPAWNING_DELAY),
+        "maxSpawnedObjects": $(MAX_SPAWNED_OBJECTS),
+        "areaRect": $(AREA_RECT),
+        "minDistanceToTarget" : $(MIN_DISTANCE_TO_TARGET),
+        "maxItemCount" : $(MAX_ITEM_COUNT),
+        "itemTag" : $(ITEM_TAG)
+      }
+    }
+  ]
+}

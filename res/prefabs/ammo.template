@@ -1,0 +1,45 @@
+{
+  "components": [
+    {
+      "class": "Body",
+      "properties": {
+        "mass": 10,
+        "drag": 0
+      }
+    },
+    {
+      "class": "Sprite",
+      "properties": {
+        "rect": $(SPRITE_RECT),
+        "texture": $(SPRITE_TEXTURE),
+        "sortingLayer": 3
+      }
+    },
+    {
+      "class": "LimitedLifetimeBehaviour",
+      "properties": {
+        "timeToLive": 1000
+      }
+    },
+    {
+      "class": "PointLight",
+      "properties": {
+        "radius": 80,
+        "intensity": 1
+      }
+    },
+    {
+      "class": "PolygonCollider",
+      "properties": {
+        "points": $(COLLIDER_POINTS),
+        "layer": $(COLLIDER_LAYER),
+        "terrainCollision": {
+          "handlers": $(COLLIDER_TERRAIN_COLLISION_HANDLERS)
+        },
+        "collision": {
+          "handlers": $(COLLIDER_COLLISION_HANDLERS)
+        }
+      }
+    }
+  ]
+}

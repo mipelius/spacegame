@@ -1,0 +1,60 @@
+{
+  "components": [
+    {
+      "class": "Sprite",
+      "properties": {
+        "texture": $(TEXTURE),
+        "rect": {
+          "x1": -20,
+          "y1": -20,
+          "x2": 20,
+          "y2": 20
+        },
+        "sortingLayer": 2
+      }
+    },
+    {
+      "id": 1,
+      "class": "Sprite",
+      "properties": {
+        "texture": "pickup_bg",
+        "rect": {
+          "x1": -32,
+          "y1": -32,
+          "x2": 32,
+          "y2": 32
+        },
+        "sortingLayer": 1
+      }
+    },
+    {
+      "class": "Pickup",
+      "properties": {
+        "pickupBackgroundSpriteId" : 1,
+        "blinkingSpeed" : 1.0
+      }
+    },
+    {
+      "class": "Body",
+      "properties": {
+        "mass" : 100,
+        "drag" : 1.0
+      }
+    },
+    {
+      "class": "PolygonCollider",
+      "properties": {
+        "layer": 4,
+        "points": [
+          { "x": -20, "y": -20 },
+          { "x": 20, "y": -20 },
+          { "x": 20, "y": 20 },
+          { "x": -20, "y": 20 }
+        ],
+        "collision": {
+          "handlers" : $(HANDLERS)
+        }
+      }
+    }
+  ]
+}

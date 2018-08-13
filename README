@@ -1,8 +1,8 @@
-SpaceGame - project
--------------------
+PlanetA18
+---------
 
-SpaceGame is a 2D game that uses a custom 2D game engine (Tile2D). It is written in C++
-using SDL2 and OpenGL.
+PlanetA18 is a 2D game that uses a custom 2D game engine (Tile2D). It is written in C++
+using SDL2 and OpenGL. Game participated ASM '18 Game Dev competition and got 4th place.
 
 This is a list of the main features of the game engine (Tile2D):
 
@@ -19,12 +19,6 @@ This is a list of the main features of the game engine (Tile2D):
 - Math helper functions (clamping, delta angle, etc)
 - Efficient pathfinding algorithm (A*)
 - Linecasting to find out if there is a tile in a tile map between two endpoints
-
-Note that the assets of the game are not included in this repository. You'll need to
-download them separately.
-
-Website:       [ coming "soon" ]
-Documentation: [ coming "soon" ]
-Assets:        [ coming "soon" ]
+- GameObject deserialization
 
 Developer: Miika Pelkonen

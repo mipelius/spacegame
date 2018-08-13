@@ -1,0 +1,28 @@
+{
+  "template": {
+    "file": "res/prefabs/pickup.template",
+    "replacement": {
+      "TEXTURE": "pickup_gatling",
+      "HANDLERS": [
+        {
+          "class": "ItemPickupCollisionEventHandler",
+          "properties": {
+            "itemIdToActivate": 2
+          }
+        },
+        {
+          "class": "CollisionAudioHandler",
+          "properties": {
+            "audioClips" : [ "pickup" ]
+          }
+        },
+        {
+          "class": "CollisionPopUpHandler",
+          "properties": {
+            "text": "Gatling"
+          }
+        }
+      ]
+    }
+  }
+}

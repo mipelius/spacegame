@@ -1,0 +1,19 @@
+{
+  "template": {
+    "file": "res/prefabs/pickup_spawner.template",
+    "replacement": {
+      "PREFAB": "pickup_medikit",
+      "SPAWNING_DELAY": 4000,
+      "MAX_SPAWNED_OBJECTS": 2,
+      "AREA_RECT": {
+        "x1": 608,
+        "y1": 13008,
+        "x2": 3904,
+        "y2": 14288
+      },
+      "MIN_DISTANCE_TO_TARGET": 3000,
+      "MAX_ITEM_COUNT": 4,
+      "ITEM_TAG": 5
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "template": {
+    "file": "res/prefabs/enemy.template",
+    "replacement": {
+      "MASS": 100,
+      "GRAVITY_FACTOR": 0,
+      "POINTS": [
+        {
+          "x": -30,
+          "y": -30
+        },
+        {
+          "x": 30,
+          "y": -30
+        },
+        {
+          "x": 30,
+          "y": 30
+        },
+        {
+          "x": -30,
+          "y": 30
+        }
+      ],
+      "ANIMATION": "trifly",
+      "SORTING_LAYER": 5,
+      "RECT": {
+        "x1": -40,
+        "y1": -40,
+        "x2": 40,
+        "y2": 40
+      },
+      "MAX_HEALTH": 300
+    }
+  },
+  "components": [
+    {
+      "class": "FlyingEnemyAI",
+      "properties": {
+        "minPathFindingDistance": 400,
+        "maxPathFindingDistance": 2000,
+        "maxNodesPathFinderExplores": 1000,
+        "pathFindingInterval": 1000,
+        "speed": 300,
+        "rotates": false,
+        "flips": false,
+        "maxDistance": 1500,
+        "shotsAtOnce": 4,
+        "shootingPauseInterval": 1000,
+        "weapon": {
+          "class": "Cannon",
+          "properties": {
+            "ammoPrefab": "ammo_enemy_red_bullet",
+            "audioClip": "laser_cannon_shoot",
+            "reloadDelay": 120,
+            "count": "infinity"
+          }
+        }
+      }
+    },
+    {
+      "class": "SwirlingBehaviour"
+    }
+  ]
+}

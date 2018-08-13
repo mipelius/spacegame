@@ -1,0 +1,84 @@
+{
+  "template": {
+    "file": "res/prefabs/enemy.template",
+    "replacement": {
+      "MASS": 100,
+      "GRAVITY_FACTOR": 0,
+      "POINTS": [
+        {
+          "x": -40,
+          "y": -32
+        },
+        {
+          "x": 40,
+          "y": -32
+        },
+        {
+          "x": 40,
+          "y": 20
+        },
+        {
+          "x": -40,
+          "y": 20
+        }
+      ],
+      "ANIMATION": "lizard",
+      "SORTING_LAYER": 4,
+      "RECT": {
+        "x1": -64,
+        "y1": -32,
+        "x2": 64,
+        "y2": 32
+      },
+      "MAX_HEALTH": 100
+    }
+  },
+  "components": [
+    {
+      "class": "AnimatedSprite",
+      "properties": {
+        "sortingLayer": 5,
+        "rect": {
+          "x1": -32,
+          "y1": -32,
+          "x2": 32,
+          "y2": 32
+        },
+        "localTransform": {
+          "position": {
+            "x": 0,
+            "y": -12
+          }
+        },
+        "animation": "wanderer",
+        "framesPerSecond": 50,
+        "playOnInit": true,
+        "loop": true
+      }
+    },
+    {
+      "class": "FlyingEnemyAI",
+      "properties": {
+        "minPathFindingDistance": 400,
+        "maxPathFindingDistance": 2000,
+        "maxNodesPathFinderExplores": 1000,
+        "pathFindingInterval": 1000,
+        "speed": 300,
+        "rotates": true,
+        "flips": true,
+        "maxDistance": 1500,
+        "shotsAtOnce": 3,
+        "shootingPauseInterval": 1000,
+        "weapon": {
+          "class": "Cannon",
+          "properties": {
+            "ammoPrefab": "ammo_enemy_laser",
+            "reloadDelay": 500,
+            "count": "infinity",
+            "audioClip": "laser_cannon_shoot"
+          }
+        }
+      }
+    }
+  ]
+}

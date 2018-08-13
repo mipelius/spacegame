@@ -1,0 +1,6 @@
+{  
+  "texture"      : "res/anim/trifly.png",
+  "frames"       : 41,
+  "spriteWidth"  : 128,
+  "spriteHeight" : 128
+}

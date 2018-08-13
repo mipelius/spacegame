@@ -1,0 +1,25 @@
+{
+  "components" : [
+    {
+      "class" : "EnemySpawner",
+      "properties": {
+        "prefab" : $(PREFAB),
+        "spawningDelay": $(SPAWNING_DELAY),
+        "maxSpawnedObjects": $(MAX_SPAWNED_OBJECTS),
+        "areaRect": $(AREA_RECT),
+        "innerRect": {
+          "x1": -600,
+          "y1": -600,
+          "x2": 600,
+          "y2": 600
+        },
+        "outerRect": {
+          "x1": -1000,
+          "y1": -1000,
+          "x2": 1000,
+          "y2": 1000
+        }
+      }
+    }
+  ]
+}

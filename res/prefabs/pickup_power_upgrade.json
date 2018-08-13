@@ -1,0 +1,31 @@
+{
+  "template": {
+    "file": "res/prefabs/pickup.template",
+    "replacement": {
+      "TEXTURE": "pickup_power_upgrade",
+      "HANDLERS": [
+        {
+          "class": "PowerUpgradeCollisionHandler",
+          "properties": {
+            "upgrade": 100
+          }
+        },
+        {
+          "class": "CollisionAudioHandler",
+          "properties": {
+            "audioClips" : [
+              "upgrade1",
+              "upgrade2"
+            ]
+          }
+        },
+        {
+          "class": "CollisionPopUpHandler",
+          "properties": {
+            "text": "Power upgrade"
+          }
+        }
+      ]
+    }
+  }
+}

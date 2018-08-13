@@ -1,0 +1,60 @@
+{
+    "commonProperties" : {
+        "width"     : 8,
+        "height"    : 8
+    },
+
+    "blocks" : [
+        {
+            "id"                    : 0,
+            "name"                  : "air",
+            "density"               : 0.0,
+            "opacity"               : 0.0,
+            "translucency"          : 1.0,
+            "texture"               : null
+
+        },
+        {
+            "id"                    : 1,
+            "name"                  : "green tile",
+            "density"               : 0.5,
+            "opacity"               : 1.0,
+            "translucency"          : 0.9,
+            "texture"               : "res/maps/tiles/ground.png"
+
+        },
+        {
+            "id"                    : 2,
+            "name"                  : "white tile",
+            "density"               : 0.5,
+            "opacity"               : 1.0,
+            "translucency"          : 0.9,
+            "texture"               : "res/maps/tiles/snow.png"
+
+        },
+        {
+            "id"                    : 3,
+            "name"                  : "blue tile",
+            "density"               : 0.5,
+            "opacity"               : 1.0,
+            "translucency"          : 0.9,
+            "texture"               : "res/maps/tiles/blue_ground.png"
+        },
+        {
+            "id"                    : 4,
+            "name"                  : "red tile",
+            "density"               : 0.5,
+            "opacity"               : 1.0,
+            "translucency"          : 0.9,
+            "texture"               : "res/maps/tiles/red_ground.png"
+        },
+        {
+            "id"                    : 31,
+            "name"                  : "checkpoint",
+            "density"               : 0.0,
+            "opacity"               : 0.3,
+            "translucency"          : 1.0,
+            "texture"               : null
+        }
+    ]
+}

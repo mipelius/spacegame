@@ -1,0 +1,7 @@
+{
+  "tags" : [
+    { "id" : 0 , "name" : "player" },
+    { "id" : 1 , "name" : "enemy" },
+    { "id" : 2 , "name" : "pickup" }
+  ]
+}

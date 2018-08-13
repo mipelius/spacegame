@@ -1,0 +1,43 @@
+{
+  "template": {
+    "file": "res/prefabs/pickup.template",
+    "replacement": {
+      "TEXTURE": "pickup_laser_cannon_upgrade",
+      "HANDLERS": [
+        {
+          "class": "CannonUpgradeCollisionEventHandler",
+          "properties": {
+            "cannonItemId": 1,
+            "upgradedCannonTexture": "inventory_laser_cannon_upgraded",
+            "cannonOffsets": [
+              {
+                "x": -10,
+                "y": -13
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": -10,
+                "y": 13
+              }
+            ]
+          }
+        },
+        {
+          "class": "CollisionAudioHandler",
+          "properties": {
+            "audioClips" : [ "pickup" ]
+          }
+        },
+        {
+          "class": "CollisionPopUpHandler",
+          "properties": {
+            "text": "Laser cannon upgrade"
+          }
+        }
+      ]
+    }
+  }
+}

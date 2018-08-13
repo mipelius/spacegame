@@ -1,0 +1,61 @@
+{
+  "template": {
+    "file": "res/prefabs/enemy.template",
+    "replacement": {
+      "MASS": 100,
+      "GRAVITY_FACTOR": 0,
+      "POINTS": [
+        {
+          "x": -42,
+          "y": -15
+        },
+        {
+          "x": 42,
+          "y": -15
+        },
+        {
+          "x": 42,
+          "y": 15
+        },
+        {
+          "x": -42,
+          "y": 15
+        }
+      ],
+      "COLLISION_HANDLERS": [
+        {
+          "class": "ContinuousCollisionDamageHandler",
+          "properties": {
+            "damage": 200,
+            "targetTag": 0
+          }
+        }
+      ],
+      "ANIMATION": "fish",
+      "SORTING_LAYER": 5,
+      "RECT": {
+        "x1": -42,
+        "y1": -42,
+        "x2": 42,
+        "y2": 42
+      },
+      "MAX_HEALTH": 100
+    }
+  },
+  "components": [
+    {
+      "class": "FlyingEnemyAI",
+      "properties": {
+        "minPathFindingDistance": 0,
+        "maxPathFindingDistance": 2000,
+        "maxNodesPathFinderExplores": 1000,
+        "pathFindingInterval": 1000,
+        "angularSpeed": 100,
+        "speed": 400,
+        "rotates": true,
+        "flips": false,
+        "maxDistance": 1500
+      }
+    }
+  ]
+}

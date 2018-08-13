@@ -1,0 +1,29 @@
+{
+  "template": {
+    "file": "res/prefabs/pickup.template",
+    "replacement": {
+      "TEXTURE": "pickup_medikit",
+      "HANDLERS": [
+        {
+          "class": "ItemPickupCollisionEventHandler",
+          "properties": {
+            "itemIdToActivate": 5,
+            "count": 1
+          }
+        },
+        {
+          "class": "CollisionAudioHandler",
+          "properties": {
+            "audioClips" : [ "pickup" ]
+          }
+        },
+        {
+          "class": "CollisionPopUpHandler",
+          "properties": {
+            "text": "Medikit"
+          }
+        }
+      ]
+    }
+  }
+}
